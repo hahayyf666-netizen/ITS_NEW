@@ -23,9 +23,10 @@ from run_p2f_a1_dataflow import (
     p2f_cases,
 )
 
-ROOT = Path(__file__).resolve().parent
-RESULTS = ROOT / "p2f_a2_kernel_regate_results.json"
-REPORT = ROOT / "V35_P2F_A2_KERNEL_REGATE.md"
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT = SCRIPT_DIR.parents[2]
+RESULTS = ROOT / "03_verification" / "output" / "p2f" / "p2f_a2_kernel_regate_results.json"
+REPORT = ROOT / "01_docs" / "architecture" / "p2f" / "V35_P2F_A2_KERNEL_REGATE.md"
 START_CYCLES = (0, 16, 32, 48)
 VECTOR_NAMES = (
     "one_hot_0",

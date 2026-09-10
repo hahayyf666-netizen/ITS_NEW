@@ -10,8 +10,9 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
-sys.path.insert(0, str(ROOT))
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT = SCRIPT_DIR.parents[2]
+sys.path.insert(0, str(SCRIPT_DIR))
 from run_p2f_a1_dataflow import P4Dataflow  # noqa: E402
 
 OUT = ROOT / "02_rtl" / "rtl" / "p2f_step102_tables.svh"

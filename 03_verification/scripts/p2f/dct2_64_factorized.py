@@ -28,9 +28,10 @@ WIDTH = 16
 
 
 def _find_canonical() -> Path:
+    project_root = Path(__file__).resolve().parents[3]
     candidates = [
-        Path(__file__).resolve().parent / "03_verification" / "output" / "canonical_matrices.json",
-        Path(__file__).resolve().parent.parent / "ITS_STUDY_V34_LFNST_FIX" / "03_verification" / "output" / "canonical_matrices.json",
+        project_root / "03_verification" / "output" / "canonical_matrices.json",
+        project_root.parent / "ITS_STUDY_V34_LFNST_FIX" / "03_verification" / "output" / "canonical_matrices.json",
     ]
     for path in candidates:
         if path.exists():

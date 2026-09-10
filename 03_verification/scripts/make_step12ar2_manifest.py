@@ -4,7 +4,7 @@ import hashlib, json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "_step12ar2_audit"
+OUT = ROOT / "05_audit" / "current" / "step12ar2"
 MANIFEST = OUT / "STEP12A_R2_FREEZE_MANIFEST.json"
 SKIP = {".Xil", "modelsim", "work", "tclstore_run10", "tclstore_run13",
         "tclstore_clean", "tclstore_diag", "tclstore_hold_report", "__pycache__"}
@@ -25,7 +25,7 @@ def main() -> int:
         rel = p.relative_to(ROOT).as_posix()
         if any(part in SKIP for part in p.relative_to(ROOT).parts):
             continue
-        if rel.startswith("_step12ar2_audit/"):
+        if rel.startswith("05_audit/current/step12ar2/"):
             continue
         files[rel] = {"bytes": p.stat().st_size, "sha256": sha(p)}
     doc = {"step": "12A-R2", "root": str(ROOT), "cache_policy": "excluded",

@@ -1,85 +1,45 @@
-# ITS_NEW
+# ITS V3.5-13 完整工程
 
-本仓库是面向 VVC 反变换模块（ITS）的 FPGA 设计与验证工程，当前内容来自以下完整工程快照：
-
-```text
-D:\Workspace\ITS_STUDY_V35_STEP12A_R2_1_DCT2_64_2D_PRE
-```
-
-快照日期：2026-09-10。
-
-## 快速入口
-
-| 类别 | 目录/文件 | 用途 |
-|---|---|---|
-| 主 RTL 与 ROM | `02_rtl/` | 当前冻结的 RTL、ROM、综合约束 |
-| 仿真与验证 | `03_verification/` | 脚本、testbench、向量、日志、Vivado 报告 |
-| 当前 Step 12A | `README_STEP12A_R2.md`、`_step12ar2_audit/` | 当前二维预集成模型与验收证据 |
-| 历史审计 | `_v*_audit/`、`_step*_audit/` | V1～V4、R1～R4C 和早期 Step 记录 |
-| 外部参考 | `VTM/`、`华为附件.docx` | VTM 源码与赛题附件 |
-| 文档索引 | [`docs/README.md`](docs/README.md) | 当前/历史报告分类导航 |
+本目录是从 `ITS_STUDY_V35_STEP12A_R2_1_DCT2_64_2D_PRE` 完整复制并分类整理得到的新版本。旧目录保持不变；整理前的 GitHub 全量快照已由标签 `v3.5-step12ar2.1-full` 固定。
 
 ## 当前状态
 
-- 功能基线：V3.4 的主变换与 LFNST 修复结果保持冻结。
-- DCT2-64 独立 P4 计算核：每拍产生 4 个完整的一维变换结果，64 点向量启动间隔为 16 拍。
-- R4C 独立计算核：模块级 OOC post-route 已在 500 MHz（2.000 ns）约束下闭合。
-- 当前集成阶段：V3.5 Step 12A-R2.1，已建立可执行的 64×64 DCT2 二维预集成周期模型。
-- Step 12B wrapper RTL 尚未开始，需在 R2.1 证据通过独立审核后进入。
+- V3.4 功能与数学基线保持冻结。
+- 主变换使用 `A = C^T`，RTL 直接计算 `A·x`，禁止再次转置。
+- DCT2-64 R4C 一维 P4 核已证明每拍 4 个完整结果、向量启动间隔 16 拍。
+- R4C standalone OOC post-route 已在 2.000 ns 约束下闭合。
+- 当前二维集成门禁为 Step 12A-R2.1；Step 12B wrapper RTL 尚未开始。
+
+## 目录导航
+
+| 目录 | 内容 |
+|---|---|
+| `01_docs/` | 当前说明、架构文档、赛题报告和历史记录 |
+| `02_rtl/` | RTL、ROM 与约束 |
+| `03_verification/` | 脚本、testbench、向量、仿真、Vivado、波形和结果 |
+| `04_reference/` | 华为附件与 VTM 参考源码 |
+| `05_audit/` | 当前 Step 12A-R2.1 证据与 V3.4 基线审计 |
+| `06_archive/` | 旧版本审计、旧原型和本地生成缓存；不作为当前入口 |
+
+详细导航见 [`01_docs/README.md`](01_docs/README.md)。
 
 ## 当前验证入口
 
-```text
-python 03_verification/scripts/step12ar2_executable_model.py
-python 03_verification/scripts/make_step12ar2_manifest.py
+```powershell
+powershell -ExecutionPolicy Bypass -File 03_verification/scripts/run_current_checks.ps1
+python 03_verification/scripts/make_v35_13_manifest.py
 ```
 
-详细说明请参阅：
+当前证据目录：`05_audit/current/step12ar2/`。
 
-- `README_STEP12A_R2.md`
-- `03_verification/output/` 下的各阶段报告
-- `_step12ar2_audit/` 下的 Step 12A-R2.1 验收证据
-- `docs/README.md`：文档分类与当前/历史报告索引
+`run_p2f_a1_dataflow.py` 属于已退休的历史 32-group FIFO 门禁，会按其旧合同报告 FAIL；当前 kernel 门禁使用 `run_p2f_a2_kernel_regate.py`，不要把 A1 的历史结论误判为当前回归失败。
 
-## 关键数学与定点约定
+## 结论边界
 
-- 主变换：使用冻结的逆变换算子 `A = C^T`，RTL 直接执行 `A·x`，禁止再次转置。
-- 二维顺序：先进行垂直变换，再进行水平变换。
-- 主变换每个一维阶段：`raw → +32 → 算术右移 6 位 → signed16 回绕`。
-- 最终竞赛接口：保留结果低 10 位。
-- LFNST：执行 `M·x`，禁止转置；后处理为 `+64 → 算术右移 7 位 → Clip3 到 signed16`。
-- LFNST 有效输入数：4×4 和 8×8 为 8，其余适用尺寸为 16。
+目前不能宣称完整 ITS Core 已达到 500 MHz，也不能宣称所有尺寸、DST7、DCT8 与 LFNST 已完成新 P4 架构。当前已闭合的是 DCT2-64 standalone 一维核，以及 Step 12A-R2.1 的二维预集成软件门禁。
 
-## 当前结论边界
+## 整理规则
 
-已经证明的是：
-
-- DCT2-64 独立一维 P4 核功能正确；
-- 预热后可连续每拍输出 4 个完整的一维变换结果；
-- 独立 R4C 核的模块级 OOC 500 MHz 时序闭合；
-- Step 12A-R2.1 二维预集成模型当前返回 PASS。
-
-尚未证明的是：
-
-- Step 12B 的真实二维 wrapper RTL；
-- 完整 Core 集成后的 500 MHz 时序；
-- DCT2 其他尺寸、DCT8、DST7 和 LFNST 的新 P4 架构；
-- 完整二维 ITS 长期平均每拍产生 4 个最终系数。
-
-## GitHub 快照排除项
-
-原始 D 盘工程目录未被修改。本 GitHub 快照仅排除了与设计复现无关或存在安全风险的内容：
-
-- 嵌套 `.git` 元数据；
-- `.Xil`、`__pycache__`；
-- ModelSim 生成的 `work*`、`.qpg`、`.wlf`；
-- Vivado TclStore 用户缓存；
-- VTM 示例私钥。
-
-RTL、ROM、canonical 数据、测试向量、验证脚本、报告、日志和主要 Vivado 实现证据均已保留。
-
-报告没有被随意改名或搬迁，因为冻结 manifest 和生成脚本依赖原始相对路径；请通过 `docs/README.md` 区分当前入口与历史证据。
-
-## 目录整理原则
-
-仓库按“设计源代码、验证环境、当前门禁、历史审计、外部参考”分组。根目录保留少量旧阶段入口脚本和报告，是为了兼容已有 manifest 与复现命令；它们的归类和用途统一记录在 [`docs/README.md`](docs/README.md) 中。
+- 当前运行链路只使用 `02_rtl/`、`03_verification/`、`04_reference/` 和 `05_audit/`。
+- `06_archive/` 只用于历史追溯；其中旧 manifest 的原始相对路径应结合 Git 标签恢复，不作为本版本当前门禁。
+- 后续版本继续采用短编号命名，并从完整工程复制生成。

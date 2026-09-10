@@ -18,7 +18,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 CANONICAL = ROOT / "03_verification" / "output" / "canonical_matrices.json"
 OUT = ROOT / "03_verification" / "output"
-AUDIT = ROOT / "_step12ar2_audit"
+AUDIT = ROOT / "05_audit" / "current" / "step12ar2"
 N = 64
 GROUPS = 16
 READ_LATENCY = 1

@@ -12,9 +12,10 @@ from pathlib import Path
 
 from dct2_64_factorized import ExactDCT2Factorizer
 
-ROOT = Path(__file__).resolve().parent
-OUT = ROOT / "p2f_a1_schedule_results.json"
-REPORT = ROOT / "V35_P2F_A1_P4_SCHEDULE.md"
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT = SCRIPT_DIR.parents[2]
+OUT = ROOT / "03_verification" / "output" / "p2f" / "p2f_a1_schedule_results.json"
+REPORT = ROOT / "01_docs" / "architecture" / "p2f" / "V35_P2F_A1_P4_SCHEDULE.md"
 LANES = 128
 II = 16
 

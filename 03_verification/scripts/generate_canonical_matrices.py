@@ -24,8 +24,8 @@ from docx import Document
 VTM_COMMIT = "69f5112bae8c0f91f3cbc5ba0f44b58986080f16"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, "..", "output")
-ATTACHMENT_PATH = os.path.join(SCRIPT_DIR, "..", "..", "华为附件.docx")
-VTM_ROMTR_PATH = os.path.join(SCRIPT_DIR, "..", "..", "VTM", "source", "Lib", "CommonLib", "RomTr.cpp")
+ATTACHMENT_PATH = os.path.join(SCRIPT_DIR, "..", "..", "04_reference", "huawei", "华为附件.docx")
+VTM_ROMTR_PATH = os.path.join(SCRIPT_DIR, "..", "..", "04_reference", "VTM", "source", "Lib", "CommonLib", "RomTr.cpp")
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, "attachment_only_matrices.json")  # V3.3: superseded by generate_canonical_v33.py
 
 FAILED = 0

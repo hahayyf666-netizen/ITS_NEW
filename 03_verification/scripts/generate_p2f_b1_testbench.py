@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "03_verification" / "scripts" / "p2f"))
 
 from dct2_64_factorized import ExactDCT2Factorizer, wrap_signed_16  # noqa: E402
 from run_p2f_equivalence import deterministic_cases  # noqa: E402

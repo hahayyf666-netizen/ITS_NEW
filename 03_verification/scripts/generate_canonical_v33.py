@@ -12,9 +12,9 @@ import json, os, re, sys, hashlib, argparse
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJ_ROOT = os.path.normpath(os.path.join(SCRIPT_DIR, "..", ".."))
-DEFAULT_VTM = os.path.join(PROJ_ROOT, "VTM")  # ITS_STUDY/VTM
+DEFAULT_VTM = os.path.join(PROJ_ROOT, "04_reference", "VTM")
 ROMTR_REL = os.path.join("source", "Lib", "CommonLib", "RomTr.cpp")
-ATTACHMENT_REL = os.path.join("..", "..", "华为附件.docx")
+ATTACHMENT_REL = os.path.join("..", "..", "04_reference", "huawei", "华为附件.docx")
 VTM_COMMIT = "69f5112bae8c0f91f3cbc5ba0f44b58986080f16"
 
 
@@ -202,7 +202,7 @@ def main():
             transforms[tr]["inverse_operator"][str(N)] = transpose(C)
 
     # Attachment LFNST extraction (required)
-    att_path = os.path.join(SCRIPT_DIR, "..", "..", "华为附件.docx")
+    att_path = os.path.join(SCRIPT_DIR, "..", "..", "04_reference", "huawei", "华为附件.docx")
     if not os.path.exists(att_path):
         print(f"FATAL: Huawei attachment not found at {att_path}")
         sys.exit(1)

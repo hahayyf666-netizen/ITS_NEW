@@ -10,7 +10,7 @@ Usage: python audit_matrices_v33.py [--vtm D:/path/VTM] [--json path]
 import argparse, json, os, random, re, sys
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_VTM = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "..", "VTM"))
+DEFAULT_VTM = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "..", "04_reference", "VTM"))
 JSON_PATH = os.path.join(SCRIPT_DIR, "..", "output", "canonical_matrices.json")
 VTM_COMMIT = "69f5112bae8c0f91f3cbc5ba0f44b58986080f16"
 
@@ -29,7 +29,7 @@ def main():
     args = ap.parse_args()
 
     # ---- 0. Source availability (MUST be present) ----
-    att = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "..", "华为附件.docx"))
+    att = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "..", "04_reference", "huawei", "华为附件.docx"))
     romtr = os.path.join(args.vtm, "source", "Lib", "CommonLib", "RomTr.cpp")
     missing = []
     if not os.path.exists(att): missing.append(f"Huawei attachment: {att}")
@@ -88,15 +88,18 @@ def main():
     # ---- 4. Verify inverse_operator vs VTM fastInverse (one-hot + random) ----
     print("\n=== INVERSE_OPERATOR vs VTM fastInverse ===")
     vtm_model = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "..",
-                                              "_v4_audit", "vtm_fast_transform_model.py"))
+                                              "06_archive", "audits", "_v4_audit",
+                                              "vtm_fast_transform_model.py"))
     if not os.path.exists(vtm_model):
         print("FATAL: vtm_fast_transform_model.py not found "
-              f"(expected in repo-local _v4_audit): {vtm_model}")
+              f"(expected in archived V4 audit): {vtm_model}")
         sys.exit(1)
     import importlib.util
     spec = importlib.util.spec_from_file_location('vtm', vtm_model)
     vtm = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(vtm)
+    vtm.CANONICAL_JSON = os.path.abspath(args.json)
+    vtm._canonical = None
 
     fn_map = {"0": ("DCT2", vtm.fast_inv_dct2),
               "1": ("DST7", vtm.fast_inv_dst7),

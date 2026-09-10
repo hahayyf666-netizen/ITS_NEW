@@ -11,7 +11,8 @@ import re
 from collections import Counter, defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT = SCRIPT_DIR.parents[2]
 import sys
 sys.path.insert(0, str(ROOT))
 from run_p2f_a1_dataflow import P4Dataflow  # noqa: E402

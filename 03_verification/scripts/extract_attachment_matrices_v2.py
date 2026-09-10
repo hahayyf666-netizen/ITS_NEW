@@ -31,7 +31,7 @@ def main():
     import sys
     failed = 0
     _att = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                          "..", "..", "华为附件.docx"))
+                                          "..", "..", "04_reference", "huawei", "华为附件.docx"))
     if not os.path.exists(_att):
         print(f"FATAL: Huawei attachment not found at {_att}")
         sys.exit(1)

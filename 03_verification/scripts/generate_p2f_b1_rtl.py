@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "03_verification" / "scripts" / "p2f"))
 
 from run_p2f_a1_dataflow import P4Dataflow  # noqa: E402
 
