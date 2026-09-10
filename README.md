@@ -8,6 +8,17 @@ D:\Workspace\ITS_STUDY_V35_STEP12A_R2_1_DCT2_64_2D_PRE
 
 快照日期：2026-09-10。
 
+## 快速入口
+
+| 类别 | 目录/文件 | 用途 |
+|---|---|---|
+| 主 RTL 与 ROM | `02_rtl/` | 当前冻结的 RTL、ROM、综合约束 |
+| 仿真与验证 | `03_verification/` | 脚本、testbench、向量、日志、Vivado 报告 |
+| 当前 Step 12A | `README_STEP12A_R2.md`、`_step12ar2_audit/` | 当前二维预集成模型与验收证据 |
+| 历史审计 | `_v*_audit/`、`_step*_audit/` | V1～V4、R1～R4C 和早期 Step 记录 |
+| 外部参考 | `VTM/`、`华为附件.docx` | VTM 源码与赛题附件 |
+| 文档索引 | [`docs/README.md`](docs/README.md) | 当前/历史报告分类导航 |
+
 ## 当前状态
 
 - 功能基线：V3.4 的主变换与 LFNST 修复结果保持冻结。
@@ -68,3 +79,7 @@ python 03_verification/scripts/make_step12ar2_manifest.py
 RTL、ROM、canonical 数据、测试向量、验证脚本、报告、日志和主要 Vivado 实现证据均已保留。
 
 报告没有被随意改名或搬迁，因为冻结 manifest 和生成脚本依赖原始相对路径；请通过 `docs/README.md` 区分当前入口与历史证据。
+
+## 目录整理原则
+
+仓库按“设计源代码、验证环境、当前门禁、历史审计、外部参考”分组。根目录保留少量旧阶段入口脚本和报告，是为了兼容已有 manifest 与复现命令；它们的归类和用途统一记录在 [`docs/README.md`](docs/README.md) 中。
