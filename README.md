@@ -28,6 +28,7 @@ python 03_verification/scripts/make_step12ar2_manifest.py
 - `README_STEP12A_R2.md`
 - `03_verification/output/` 下的各阶段报告
 - `_step12ar2_audit/` 下的 Step 12A-R2.1 验收证据
+- `docs/README.md`：文档分类与当前/历史报告索引
 
 ## 关键数学与定点约定
 
@@ -65,3 +66,5 @@ python 03_verification/scripts/make_step12ar2_manifest.py
 - VTM 示例私钥。
 
 RTL、ROM、canonical 数据、测试向量、验证脚本、报告、日志和主要 Vivado 实现证据均已保留。
+
+报告没有被随意改名或搬迁，因为冻结 manifest 和生成脚本依赖原始相对路径；请通过 `docs/README.md` 区分当前入口与历史证据。
