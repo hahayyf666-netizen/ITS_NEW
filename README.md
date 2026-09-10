@@ -43,3 +43,9 @@ python 03_verification/scripts/make_v35_13_manifest.py
 - 当前运行链路只使用 `02_rtl/`、`03_verification/`、`04_reference/` 和 `05_audit/`。
 - `06_archive/` 只用于历史追溯；其中旧 manifest 的原始相对路径应结合 Git 标签恢复，不作为本版本当前门禁。
 - 后续版本继续采用短编号命名，并从完整工程复制生成。
+
+## 发布包
+
+- 干净发布包：`D:\Workspace\ITS_STUDY_V35_13_RELEASE.zip`
+- SHA-256：`76D002AAB4AF0497CB002048A9B124580631E3D1E2CF9749BE84F7A98A49ABCF`
+- 发布包不含 `06_archive/`、本地缓存、嵌套 `.git` 和 VTM 示例私钥；完整历史保留在本目录和 Git 标签中。
