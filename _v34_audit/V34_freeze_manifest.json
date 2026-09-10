@@ -1,0 +1,59 @@
+{
+  "version": "V3.4",
+  "status": "FUNCTIONAL_PASS / OOC_500MHz_PASS",
+  "baseline_zip_sha256": "390FC7BC7D9D58A9CFF751DBFDF7BAAA591B6088EE648A3A97B65D31517A3E64",
+  "generated_at": "2026-09-04",
+  "frozen_files_unchanged_vs_v33": {
+    "02_rtl/rtl/its_core_500.v": "04241edc0124129b2f017e71e3eeccdb06a72cb2e2881f655b75b4394c1d5ff0",
+    "02_rtl/rtl/its_transform_engine.v": "2f3b5b4da5e98ccfa009b73a3130236871d13d233f4d65d2c448ddbf7b809e24",
+    "02_rtl/rtl/async_fifo.v": "08254a2a5e06404eba40d0aec2df57f7fa08f040701f1bedf95b37c2a6df05ef",
+    "02_rtl/rtl/rom_coeffs.hex": "0063e92d212c6cd6116295928f1902d8c80b3335b36250d5ee18c13c0bde9d53",
+    "02_rtl/rtl/lfnst_coeffs.hex": "4afbaf5237afbcdbc51048e0f43bafe2dd0cc0a95173ba49a1cf8134a5d06f2c",
+    "03_verification/output/canonical_matrices.json": "d4c497cfbae64096c69d640bad154e4e3bae1f5834f82149623a83028b81e9f6"
+  },
+  "modified_files_sha256": {
+    "02_rtl/rtl/its_lfnst.v": "55750bdc73159c4d41879ae83cb9be0740cde7f78ccc010540316bf4d251be84",
+    "03_verification/tb/its_core_500_tb.v": "39065106d284a0e5664451b07787dd2764a68700f7e0a4ec5efea80f96b86b48",
+    "03_verification/scripts/ref_model.py": "9682cb2fb134f52fe46c666b504979664841e4750f034d45ad99606cea875a64",
+    "03_verification/scripts/gen_test_vectors.py": "0a6a73c21b0e10288be49c2b4a8b2541ed228de8d5a965f9f7e9c3b77dc3b5c7",
+    "03_verification/scripts/fix_lfnst_golden.py": "2576d01e3be330a86c49aa7dbce6e6ad3445c1e6b256315fde5cb09956a208de",
+    "03_verification/scripts/test_lfnst_nonzero_size.py": "1380ba7867364c1395ec1dc7493bfedcf19b15a7af5a716a2aa95b8f2598c323",
+    "03_verification/scripts/regenerate_named_lfnst_v34.py": "1de0b80dce3c25f79a658fd43eb730139378ec213418d6fa96000f4a4a5e6452",
+    "03_verification/output/V34_LFNST_nonZeroSize_report.md": "ce556c9435e35844bbd14ac6c6385ff5a24a091ad3f8ce078f7789df83582c36"
+  },
+  "tests": {
+    "audit_matrices": "PASS",
+    "audit_test_vectors": "PASS (3207 files, 1377 cases)",
+    "test_ref_model_onehot": "PASS (65)",
+    "test_lfnst_nonzero_size": "PASS (680)",
+    "staging_determinism": "PASS (2759/2759)",
+    "contest_top_single_clock": "PASS (1539/1539)",
+    "contest_top_dual_clock": "PASS (1539/1539)",
+    "core_direct": "PASS (94/94)",
+    "vivado_ooc_500mhz": "PASS (WNS +0.024 ns, TNS 0, WHS +0.004 ns, THS 0, 0 setup/hold failing)"
+  },
+  "evidence": {
+    "single_clock_log": "_v34_audit/v34_singleclk.log",
+    "dual_clock_log": "_v34_audit/v34_contest_top_dualclock.log",
+    "core_log": "_v34_audit/v34_core_500_final.log",
+    "vivado_script": "_v34_audit/vivado/run_v34_alt.tcl",
+    "vivado_timing": "_v34_audit/vivado/v34_alt_timing_summary.rpt",
+    "vivado_setup": "_v34_audit/vivado/v34_alt_setup.rpt",
+    "vivado_hold": "_v34_audit/vivado/v34_alt_hold.rpt",
+    "vivado_utilization": "_v34_audit/vivado/v34_alt_utilization.rpt",
+    "vivado_checkpoint": "_v34_audit/vivado/v34_alt.dcp"
+  },
+  "vector_diff": {
+    "old_count": 3207,
+    "current_count": 3207,
+    "changed": 176,
+    "added": 0,
+    "removed": 0
+  },
+  "notes": [
+    "主变换保持 C^T*x；LFNST 保持 M*x。",
+    "LFNST nonZeroSize=8 only for exact 4x4 and 8x8; other applicable sizes use 16.",
+    "The ExtraNetDelay_low implementation run produced WNS -0.003 ns; the frozen implementation evidence uses the passing Explore strategy.",
+    "No golden file was generated from RTL output; fix_lfnst_golden.py is fail-closed."
+  ]
+}

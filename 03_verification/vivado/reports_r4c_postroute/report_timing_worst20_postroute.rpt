@@ -1,0 +1,1141 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Thu Sep 10 12:32:41 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -delay_type max -max_paths 20 -file Z:/ITS_STUDY_V35_P2F_B2_R4C_DSP_PIPE/03_verification/vivado/reports_r4c_postroute/report_timing_worst20_postroute.rpt
+| Design            : p2f_dct2_64_b1_step102
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Routed
+| Temperature Grade : E
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             0.090ns  (required time - arrival time)
+  Source:                 red_s0_data_reg[7][0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            dot_value_bank_reg[0][5][23]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.890ns  (logic 0.649ns (34.338%)  route 1.241ns (65.662%))
+  Logic Levels:           5  (CARRY8=3 LUT2=1 LUT3=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.030     0.030    clk
+    SLICE_X74Y57         FDCE                                         r  red_s0_data_reg[7][0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X74Y57         FDCE (Prop_AFF_SLICEM_C_Q)
+                                                      0.077     0.107 r  red_s0_data_reg[7][0]/Q
+                         net (fo=1, routed)           0.248     0.355    red_s0_data_reg[7][0]
+    SLICE_X73Y60         LUT2 (Prop_A6LUT_SLICEL_I1_O)
+                                                      0.090     0.445 r  red_s1_data[3][7]_i_19/O
+                         net (fo=1, routed)           0.009     0.454    red_s1_data[3][7]_i_19_n_0
+    SLICE_X73Y60         CARRY8 (Prop_CARRY8_SLICEL_S[0]_CO[7])
+                                                      0.190     0.644 r  red_s1_data_reg[3][7]_i_3/CO[7]
+                         net (fo=1, routed)           0.026     0.670    red_s1_data_reg[3][7]_i_3_n_0
+    SLICE_X73Y61         CARRY8 (Prop_CARRY8_SLICEL_CI_CO[7])
+                                                      0.015     0.685 r  red_s1_data_reg[3][15]_i_3/CO[7]
+                         net (fo=1, routed)           0.026     0.711    red_s1_data_reg[3][15]_i_3_n_0
+    SLICE_X73Y62         CARRY8 (Prop_CARRY8_SLICEL_CI_O[7])
+                                                      0.116     0.827 r  red_s1_data_reg[3][23]_i_3/O[7]
+                         net (fo=2, routed)           0.519     1.346    red_s1_data_reg[3][23]_i_3_n_8
+    SLICE_X70Y92         LUT3 (Prop_E5LUT_SLICEL_I0_O)
+                                                      0.161     1.507 r  red_s1_data[1][23]_i_1/O
+                         net (fo=3, routed)           0.413     1.920    red_s1_data[1][23]_i_1_n_0
+    SLICE_X70Y92         FDCE                                         r  dot_value_bank_reg[0][5][23]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.020     2.020    clk
+    SLICE_X70Y92         FDCE                                         r  dot_value_bank_reg[0][5][23]/C
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X70Y92         FDCE (Setup_CFF2_SLICEL_C_D)
+                                                      0.025     2.010    dot_value_bank_reg[0][5][23]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -1.920    
+  -------------------------------------------------------------------
+                         slack                                  0.090    
+
+Slack (MET) :             0.127ns  (required time - arrival time)
+  Source:                 red_s0_data_reg[7][0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            dot_value_bank_reg[1][5][23]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.853ns  (logic 0.649ns (35.024%)  route 1.204ns (64.976%))
+  Logic Levels:           5  (CARRY8=3 LUT2=1 LUT3=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.030     0.030    clk
+    SLICE_X74Y57         FDCE                                         r  red_s0_data_reg[7][0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X74Y57         FDCE (Prop_AFF_SLICEM_C_Q)
+                                                      0.077     0.107 r  red_s0_data_reg[7][0]/Q
+                         net (fo=1, routed)           0.248     0.355    red_s0_data_reg[7][0]
+    SLICE_X73Y60         LUT2 (Prop_A6LUT_SLICEL_I1_O)
+                                                      0.090     0.445 r  red_s1_data[3][7]_i_19/O
+                         net (fo=1, routed)           0.009     0.454    red_s1_data[3][7]_i_19_n_0
+    SLICE_X73Y60         CARRY8 (Prop_CARRY8_SLICEL_S[0]_CO[7])
+                                                      0.190     0.644 r  red_s1_data_reg[3][7]_i_3/CO[7]
+                         net (fo=1, routed)           0.026     0.670    red_s1_data_reg[3][7]_i_3_n_0
+    SLICE_X73Y61         CARRY8 (Prop_CARRY8_SLICEL_CI_CO[7])
+                                                      0.015     0.685 r  red_s1_data_reg[3][15]_i_3/CO[7]
+                         net (fo=1, routed)           0.026     0.711    red_s1_data_reg[3][15]_i_3_n_0
+    SLICE_X73Y62         CARRY8 (Prop_CARRY8_SLICEL_CI_O[7])
+                                                      0.116     0.827 r  red_s1_data_reg[3][23]_i_3/O[7]
+                         net (fo=2, routed)           0.519     1.346    red_s1_data_reg[3][23]_i_3_n_8
+    SLICE_X70Y92         LUT3 (Prop_E5LUT_SLICEL_I0_O)
+                                                      0.161     1.507 r  red_s1_data[1][23]_i_1/O
+                         net (fo=3, routed)           0.376     1.883    red_s1_data[1][23]_i_1_n_0
+    SLICE_X70Y92         FDCE                                         r  dot_value_bank_reg[1][5][23]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.020     2.020    clk
+    SLICE_X70Y92         FDCE                                         r  dot_value_bank_reg[1][5][23]/C
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X70Y92         FDCE (Setup_DFF_SLICEL_C_D)
+                                                      0.025     2.010    dot_value_bank_reg[1][5][23]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -1.883    
+  -------------------------------------------------------------------
+                         slack                                  0.127    
+
+Slack (MET) :             0.152ns  (required time - arrival time)
+  Source:                 red_s1_data_reg[17][8]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            dot_value_bank_reg[0][14][21]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.830ns  (logic 0.607ns (33.169%)  route 1.223ns (66.831%))
+  Logic Levels:           4  (CARRY8=2 LUT2=1 LUT3=1)
+  Clock Path Skew:        -0.008ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.028ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.028     0.028    clk
+    SLICE_X64Y85         FDCE                                         r  red_s1_data_reg[17][8]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X64Y85         FDCE (Prop_AFF_SLICEL_C_Q)
+                                                      0.079     0.107 r  red_s1_data_reg[17][8]/Q
+                         net (fo=1, routed)           0.317     0.424    red_s1_data_reg[17][8]
+    SLICE_X64Y92         LUT2 (Prop_A6LUT_SLICEL_I1_O)
+                                                      0.050     0.474 r  red_s2_data[8][15]_i_9/O
+                         net (fo=1, routed)           0.009     0.483    red_s2_data[8][15]_i_9_n_0
+    SLICE_X64Y92         CARRY8 (Prop_CARRY8_SLICEL_S[0]_CO[7])
+                                                      0.190     0.673 r  red_s2_data_reg[8][15]_i_1/CO[7]
+                         net (fo=1, routed)           0.026     0.699    red_s2_data_reg[8][15]_i_1_n_0
+    SLICE_X64Y93         CARRY8 (Prop_CARRY8_SLICEL_CI_O[5])
+                                                      0.123     0.822 r  red_s2_data_reg[8][23]_i_1/O[5]
+                         net (fo=2, routed)           0.495     1.317    r3r_s2_sum_now[8]__0[21]
+    SLICE_X68Y99         LUT3 (Prop_B5LUT_SLICEL_I0_O)
+                                                      0.165     1.482 r  red_s2_data[6][21]_i_1/O
+                         net (fo=3, routed)           0.376     1.858    red_s2_data[6][21]_i_1_n_0
+    SLICE_X70Y99         FDCE                                         r  dot_value_bank_reg[0][14][21]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.020     2.020    clk
+    SLICE_X70Y99         FDCE                                         r  dot_value_bank_reg[0][14][21]/C
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X70Y99         FDCE (Setup_AFF2_SLICEL_C_D)
+                                                      0.025     2.010    dot_value_bank_reg[0][14][21]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -1.858    
+  -------------------------------------------------------------------
+                         slack                                  0.152    
+
+Slack (MET) :             0.153ns  (required time - arrival time)
+  Source:                 red_s1_data_reg[12][1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            dot_value_bank_reg[1][12][6]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.827ns  (logic 0.446ns (24.409%)  route 1.381ns (75.591%))
+  Logic Levels:           3  (CARRY8=1 LUT2=1 LUT3=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.029ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.029     0.029    clk
+    SLICE_X64Y83         FDCE                                         r  red_s1_data_reg[12][1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X64Y83         FDCE (Prop_HFF_SLICEL_C_Q)
+                                                      0.079     0.108 r  red_s1_data_reg[12][1]/Q
+                         net (fo=2, routed)           0.180     0.288    red_s1_data_reg[12][1]
+    SLICE_X65Y83         LUT2 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.051     0.339 r  dot_value_bank[1][12][7]_i_10/O
+                         net (fo=1, routed)           0.009     0.348    dot_value_bank[1][12][7]_i_10_n_0
+    SLICE_X65Y83         CARRY8 (Prop_CARRY8_SLICEL_S[1]_O[6])
+                                                      0.220     0.568 r  dot_value_bank_reg[1][12][7]_i_2/O[6]
+                         net (fo=2, routed)           0.642     1.210    dot_value_bank_reg[1][12][7]_i_2_n_9
+    SLICE_X70Y100        LUT3 (Prop_D5LUT_SLICEL_I0_O)
+                                                      0.096     1.306 r  dot_value_bank[1][12][6]_i_1/O
+                         net (fo=3, routed)           0.550     1.856    dot_value_bank[1][12][6]_i_1_n_0
+    SLICE_X73Y109        FDCE                                         r  dot_value_bank_reg[1][12][6]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.020     2.020    clk
+    SLICE_X73Y109        FDCE                                         r  dot_value_bank_reg[1][12][6]/C
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X73Y109        FDCE (Setup_HFF2_SLICEL_C_D)
+                                                      0.025     2.010    dot_value_bank_reg[1][12][6]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -1.856    
+  -------------------------------------------------------------------
+                         slack                                  0.153    
+
+Slack (MET) :             0.164ns  (required time - arrival time)
+  Source:                 red_s1_data_reg[3][1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            dot_value_bank_reg[0][9][22]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.816ns  (logic 0.629ns (34.639%)  route 1.187ns (65.361%))
+  Logic Levels:           5  (CARRY8=3 LUT2=1 LUT3=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.030     0.030    clk
+    SLICE_X71Y85         FDCE                                         r  red_s1_data_reg[3][1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X71Y85         FDCE (Prop_BFF_SLICEM_C_Q)
+                                                      0.078     0.108 r  red_s1_data_reg[3][1]/Q
+                         net (fo=1, routed)           0.304     0.412    red_s1_data_reg[3][1]
+    SLICE_X69Y94         LUT2 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.090     0.502 r  red_s2_data[1][7]_i_18/O
+                         net (fo=1, routed)           0.009     0.511    red_s2_data[1][7]_i_18_n_0
+    SLICE_X69Y94         CARRY8 (Prop_CARRY8_SLICEL_S[1]_CO[7])
+                                                      0.186     0.697 r  red_s2_data_reg[1][7]_i_3/CO[7]
+                         net (fo=1, routed)           0.026     0.723    red_s2_data_reg[1][7]_i_3_n_0
+    SLICE_X69Y95         CARRY8 (Prop_CARRY8_SLICEL_CI_CO[7])
+                                                      0.015     0.738 r  red_s2_data_reg[1][15]_i_3/CO[7]
+                         net (fo=1, routed)           0.026     0.764    red_s2_data_reg[1][15]_i_3_n_0
+    SLICE_X69Y96         CARRY8 (Prop_CARRY8_SLICEL_CI_O[6])
+                                                      0.103     0.867 r  red_s2_data_reg[1][23]_i_5/O[6]
+                         net (fo=1, routed)           0.347     1.214    red_s2_data_reg[1][23]_i_5_n_9
+    SLICE_X70Y101        LUT3 (Prop_D5LUT_SLICEL_I2_O)
+                                                      0.157     1.371 r  red_s2_data[1][22]_i_1/O
+                         net (fo=3, routed)           0.475     1.846    red_s2_data[1][22]_i_1_n_0
+    SLICE_X70Y104        FDCE                                         r  dot_value_bank_reg[0][9][22]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.020     2.020    clk
+    SLICE_X70Y104        FDCE                                         r  dot_value_bank_reg[0][9][22]/C
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X70Y104        FDCE (Setup_FFF_SLICEL_C_D)
+                                                      0.025     2.010    dot_value_bank_reg[0][9][22]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -1.846    
+  -------------------------------------------------------------------
+                         slack                                  0.164    
+
+Slack (MET) :             0.171ns  (required time - arrival time)
+  Source:                 red_s0_data_reg[7][0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            dot_value_bank_reg[1][7][20]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.808ns  (logic 0.527ns (29.140%)  route 1.281ns (70.860%))
+  Logic Levels:           5  (CARRY8=3 LUT2=1 LUT3=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.030     0.030    clk
+    SLICE_X74Y57         FDCE                                         r  red_s0_data_reg[7][0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X74Y57         FDCE (Prop_AFF_SLICEM_C_Q)
+                                                      0.077     0.107 r  red_s0_data_reg[7][0]/Q
+                         net (fo=1, routed)           0.248     0.355    red_s0_data_reg[7][0]
+    SLICE_X73Y60         LUT2 (Prop_A6LUT_SLICEL_I1_O)
+                                                      0.090     0.445 r  red_s1_data[3][7]_i_19/O
+                         net (fo=1, routed)           0.009     0.454    red_s1_data[3][7]_i_19_n_0
+    SLICE_X73Y60         CARRY8 (Prop_CARRY8_SLICEL_S[0]_CO[7])
+                                                      0.190     0.644 r  red_s1_data_reg[3][7]_i_3/CO[7]
+                         net (fo=1, routed)           0.026     0.670    red_s1_data_reg[3][7]_i_3_n_0
+    SLICE_X73Y61         CARRY8 (Prop_CARRY8_SLICEL_CI_CO[7])
+                                                      0.015     0.685 r  red_s1_data_reg[3][15]_i_3/CO[7]
+                         net (fo=1, routed)           0.026     0.711    red_s1_data_reg[3][15]_i_3_n_0
+    SLICE_X73Y62         CARRY8 (Prop_CARRY8_SLICEL_CI_O[4])
+                                                      0.086     0.797 r  red_s1_data_reg[3][23]_i_3/O[4]
+                         net (fo=2, routed)           0.537     1.334    red_s1_data_reg[3][23]_i_3_n_11
+    SLICE_X70Y88         LUT3 (Prop_A5LUT_SLICEL_I2_O)
+                                                      0.069     1.403 r  red_s1_data[3][20]_i_1/O
+                         net (fo=3, routed)           0.435     1.838    red_s1_data[3][20]_i_1_n_0
+    SLICE_X70Y91         FDCE                                         r  dot_value_bank_reg[1][7][20]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.020     2.020    clk
+    SLICE_X70Y91         FDCE                                         r  dot_value_bank_reg[1][7][20]/C
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X70Y91         FDCE (Setup_BFF2_SLICEL_C_D)
+                                                      0.025     2.010    dot_value_bank_reg[1][7][20]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -1.838    
+  -------------------------------------------------------------------
+                         slack                                  0.171    
+
+Slack (MET) :             0.172ns  (required time - arrival time)
+  Source:                 red_s0_data_reg[10][1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            red_s1_data_reg[3][17]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.808ns  (logic 0.555ns (30.703%)  route 1.253ns (69.297%))
+  Logic Levels:           5  (CARRY8=3 LUT2=1 LUT3=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.030     0.030    clk
+    SLICE_X62Y70         FDCE                                         r  red_s0_data_reg[10][1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y70         FDCE (Prop_BFF_SLICEM_C_Q)
+                                                      0.078     0.108 r  red_s0_data_reg[10][1]/Q
+                         net (fo=2, routed)           0.296     0.404    red_s0_data_reg[10][1]
+    SLICE_X67Y70         LUT2 (Prop_B6LUT_SLICEM_I0_O)
+                                                      0.037     0.441 r  red_s1_data[3][7]_i_10/O
+                         net (fo=1, routed)           0.016     0.457    red_s1_data[3][7]_i_10_n_0
+    SLICE_X67Y70         CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
+                                                      0.190     0.647 r  red_s1_data_reg[3][7]_i_2/CO[7]
+                         net (fo=1, routed)           0.026     0.673    red_s1_data_reg[3][7]_i_2_n_0
+    SLICE_X67Y71         CARRY8 (Prop_CARRY8_SLICEM_CI_CO[7])
+                                                      0.015     0.688 r  red_s1_data_reg[3][15]_i_2/CO[7]
+                         net (fo=1, routed)           0.026     0.714    red_s1_data_reg[3][15]_i_2_n_0
+    SLICE_X67Y72         CARRY8 (Prop_CARRY8_SLICEM_CI_O[1])
+                                                      0.076     0.790 r  red_s1_data_reg[3][23]_i_2/O[1]
+                         net (fo=2, routed)           0.512     1.302    red_s1_data_reg[3][23]_i_2_n_14
+    SLICE_X71Y92         LUT3 (Prop_C5LUT_SLICEM_I0_O)
+                                                      0.159     1.461 r  red_s1_data[3][17]_i_1/O
+                         net (fo=3, routed)           0.377     1.838    red_s1_data[3][17]_i_1_n_0
+    SLICE_X70Y93         FDCE                                         r  red_s1_data_reg[3][17]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.020     2.020    clk
+    SLICE_X70Y93         FDCE                                         r  red_s1_data_reg[3][17]/C
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X70Y93         FDCE (Setup_FFF_SLICEL_C_D)
+                                                      0.025     2.010    red_s1_data_reg[3][17]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -1.838    
+  -------------------------------------------------------------------
+                         slack                                  0.172    
+
+Slack (MET) :             0.175ns  (required time - arrival time)
+  Source:                 r4a_issue_active_reg[0]_rep__1/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            sched_coeff_reg_reg[72][7]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.806ns  (logic 0.224ns (12.404%)  route 1.582ns (87.596%))
+  Logic Levels:           1  (LUT5=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.030     0.030    clk
+    SLICE_X67Y69         FDCE                                         r  r4a_issue_active_reg[0]_rep__1/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y69         FDCE (Prop_EFF2_SLICEM_C_Q)
+                                                      0.079     0.109 r  r4a_issue_active_reg[0]_rep__1/Q
+                         net (fo=177, routed)         1.516     1.625    r4a_issue_active_reg[0]_rep__1_n_0
+    SLICE_X49Y93         LUT5 (Prop_C6LUT_SLICEM_I0_O)
+                                                      0.145     1.770 r  sched_coeff_reg[72][7]_i_1/O
+                         net (fo=1, routed)           0.066     1.836    sched_coeff_reg[72][7]_i_1_n_0
+    SLICE_X49Y93         FDCE                                         r  sched_coeff_reg_reg[72][7]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.021     2.021    clk
+    SLICE_X49Y93         FDCE                                         r  sched_coeff_reg_reg[72][7]/C
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+    SLICE_X49Y93         FDCE (Setup_CFF_SLICEM_C_D)
+                                                      0.025     2.011    sched_coeff_reg_reg[72][7]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -1.836    
+  -------------------------------------------------------------------
+                         slack                                  0.175    
+
+Slack (MET) :             0.178ns  (required time - arrival time)
+  Source:                 red_s0_data_reg[5][0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            red_s1_data_reg[0][21]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.803ns  (logic 0.657ns (36.438%)  route 1.146ns (63.562%))
+  Logic Levels:           5  (CARRY8=3 LUT2=1 LUT3=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.030     0.030    clk
+    SLICE_X55Y90         FDCE                                         r  red_s0_data_reg[5][0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X55Y90         FDCE (Prop_AFF_SLICEM_C_Q)
+                                                      0.077     0.107 r  red_s0_data_reg[5][0]/Q
+                         net (fo=1, routed)           0.417     0.524    red_s0_data_reg[5][0]
+    SLICE_X61Y94         LUT2 (Prop_A6LUT_SLICEM_I1_O)
+                                                      0.090     0.614 r  red_s1_data[2][7]_i_19/O
+                         net (fo=1, routed)           0.013     0.627    red_s1_data[2][7]_i_19_n_0
+    SLICE_X61Y94         CARRY8 (Prop_CARRY8_SLICEM_S[0]_CO[7])
+                                                      0.192     0.819 r  red_s1_data_reg[2][7]_i_3/CO[7]
+                         net (fo=1, routed)           0.026     0.845    red_s1_data_reg[2][7]_i_3_n_0
+    SLICE_X61Y95         CARRY8 (Prop_CARRY8_SLICEM_CI_CO[7])
+                                                      0.015     0.860 r  red_s1_data_reg[2][15]_i_3/CO[7]
+                         net (fo=1, routed)           0.026     0.886    red_s1_data_reg[2][15]_i_3_n_0
+    SLICE_X61Y96         CARRY8 (Prop_CARRY8_SLICEM_CI_O[5])
+                                                      0.116     1.002 r  red_s1_data_reg[2][23]_i_3/O[5]
+                         net (fo=2, routed)           0.229     1.231    red_s1_data_reg[2][23]_i_3_n_10
+    SLICE_X64Y96         LUT3 (Prop_F5LUT_SLICEL_I0_O)
+                                                      0.167     1.398 r  red_s1_data[0][21]_i_1/O
+                         net (fo=3, routed)           0.435     1.833    r3r_s1_sum_now[21]
+    SLICE_X66Y95         FDCE                                         r  red_s1_data_reg[0][21]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.021     2.021    clk
+    SLICE_X66Y95         FDCE                                         r  red_s1_data_reg[0][21]/C
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+    SLICE_X66Y95         FDCE (Setup_GFF_SLICEM_C_D)
+                                                      0.025     2.011    red_s1_data_reg[0][21]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -1.833    
+  -------------------------------------------------------------------
+                         slack                                  0.178    
+
+Slack (MET) :             0.182ns  (required time - arrival time)
+  Source:                 signal_reg_reg[5][11]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            signal_reg_reg[6][23]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.799ns  (logic 0.399ns (22.175%)  route 1.400ns (77.825%))
+  Logic Levels:           3  (CARRY8=2 LUT4=1)
+  Clock Path Skew:        -0.008ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.028ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.028     0.028    clk
+    SLICE_X72Y91         FDCE                                         r  signal_reg_reg[5][11]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X72Y91         FDCE (Prop_DFF_SLICEL_C_Q)
+                                                      0.079     0.107 r  signal_reg_reg[5][11]/Q
+                         net (fo=4, routed)           1.339     1.446    signal_reg_reg[5][11]
+    SLICE_X72Y102        LUT4 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.050     1.496 r  signal_reg[6][15]_i_6/O
+                         net (fo=1, routed)           0.009     1.505    signal_reg[6][15]_i_6_n_0
+    SLICE_X72Y102        CARRY8 (Prop_CARRY8_SLICEL_S[3]_CO[7])
+                                                      0.154     1.659 r  signal_reg_reg[6][15]_i_1/CO[7]
+                         net (fo=1, routed)           0.026     1.685    signal_reg_reg[6][15]_i_1_n_0
+    SLICE_X72Y103        CARRY8 (Prop_CARRY8_SLICEL_CI_O[7])
+                                                      0.116     1.801 r  signal_reg_reg[6][23]_i_1/O[7]
+                         net (fo=1, routed)           0.026     1.827    signal_reg_reg[6][23]_i_1_n_8
+    SLICE_X72Y103        FDCE                                         r  signal_reg_reg[6][23]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.020     2.020    clk
+    SLICE_X72Y103        FDCE                                         r  signal_reg_reg[6][23]/C
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X72Y103        FDCE (Setup_HFF_SLICEL_C_D)
+                                                      0.025     2.010    signal_reg_reg[6][23]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -1.827    
+  -------------------------------------------------------------------
+                         slack                                  0.182    
+
+Slack (MET) :             0.183ns  (required time - arrival time)
+  Source:                 signal_reg_reg[5][11]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            signal_reg_reg[6][21]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.798ns  (logic 0.399ns (22.187%)  route 1.399ns (77.813%))
+  Logic Levels:           3  (CARRY8=2 LUT4=1)
+  Clock Path Skew:        -0.008ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.028ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.028     0.028    clk
+    SLICE_X72Y91         FDCE                                         r  signal_reg_reg[5][11]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X72Y91         FDCE (Prop_DFF_SLICEL_C_Q)
+                                                      0.079     0.107 r  signal_reg_reg[5][11]/Q
+                         net (fo=4, routed)           1.339     1.446    signal_reg_reg[5][11]
+    SLICE_X72Y102        LUT4 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.050     1.496 r  signal_reg[6][15]_i_6/O
+                         net (fo=1, routed)           0.009     1.505    signal_reg[6][15]_i_6_n_0
+    SLICE_X72Y102        CARRY8 (Prop_CARRY8_SLICEL_S[3]_CO[7])
+                                                      0.154     1.659 r  signal_reg_reg[6][15]_i_1/CO[7]
+                         net (fo=1, routed)           0.026     1.685    signal_reg_reg[6][15]_i_1_n_0
+    SLICE_X72Y103        CARRY8 (Prop_CARRY8_SLICEL_CI_O[5])
+                                                      0.116     1.801 r  signal_reg_reg[6][23]_i_1/O[5]
+                         net (fo=1, routed)           0.025     1.826    signal_reg_reg[6][23]_i_1_n_10
+    SLICE_X72Y103        FDCE                                         r  signal_reg_reg[6][21]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.020     2.020    clk
+    SLICE_X72Y103        FDCE                                         r  signal_reg_reg[6][21]/C
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X72Y103        FDCE (Setup_FFF_SLICEL_C_D)
+                                                      0.025     2.010    signal_reg_reg[6][21]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -1.826    
+  -------------------------------------------------------------------
+                         slack                                  0.183    
+
+Slack (MET) :             0.186ns  (required time - arrival time)
+  Source:                 r4a_issue_active_reg[0]_rep__1/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            sched_coeff_reg_reg[9][1]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.793ns  (logic 0.225ns (12.546%)  route 1.568ns (87.454%))
+  Logic Levels:           1  (LUT5=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.030     0.030    clk
+    SLICE_X67Y69         FDCE                                         r  r4a_issue_active_reg[0]_rep__1/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y69         FDCE (Prop_EFF2_SLICEM_C_Q)
+                                                      0.079     0.109 r  r4a_issue_active_reg[0]_rep__1/Q
+                         net (fo=177, routed)         1.519     1.628    r4a_issue_active_reg[0]_rep__1_n_0
+    SLICE_X48Y97         LUT5 (Prop_D6LUT_SLICEL_I4_O)
+                                                      0.146     1.774 r  sched_coeff_reg[9][1]_i_1/O
+                         net (fo=1, routed)           0.049     1.823    sched_coeff_reg[9][1]_i_1_n_0
+    SLICE_X48Y97         FDCE                                         r  sched_coeff_reg_reg[9][1]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.020     2.020    clk
+    SLICE_X48Y97         FDCE                                         r  sched_coeff_reg_reg[9][1]/C
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X48Y97         FDCE (Setup_DFF_SLICEL_C_D)
+                                                      0.025     2.010    sched_coeff_reg_reg[9][1]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -1.823    
+  -------------------------------------------------------------------
+                         slack                                  0.186    
+
+Slack (MET) :             0.193ns  (required time - arrival time)
+  Source:                 bf_vector_id_reg[0]_rep__20/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            signal_reg_reg[71][21]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.790ns  (logic 0.551ns (30.788%)  route 1.239ns (69.212%))
+  Logic Levels:           4  (CARRY8=3 LUT4=1)
+  Clock Path Skew:        -0.007ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.028ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.028     0.028    clk
+    SLICE_X60Y126        FDCE                                         r  bf_vector_id_reg[0]_rep__20/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y126        FDCE (Prop_DFF2_SLICEL_C_Q)
+                                                      0.081     0.109 r  bf_vector_id_reg[0]_rep__20/Q
+                         net (fo=112, routed)         1.146     1.255    bf_vector_id_reg[0]_rep__20_n_0
+    SLICE_X52Y103        LUT4 (Prop_B6LUT_SLICEM_I1_O)
+                                                      0.149     1.404 r  signal_reg[71][7]_i_8/O
+                         net (fo=1, routed)           0.016     1.420    signal_reg[71][7]_i_8_n_0
+    SLICE_X52Y103        CARRY8 (Prop_CARRY8_SLICEM_S[1]_CO[7])
+                                                      0.190     1.610 r  signal_reg_reg[71][7]_i_1/CO[7]
+                         net (fo=1, routed)           0.026     1.636    signal_reg_reg[71][7]_i_1_n_0
+    SLICE_X52Y104        CARRY8 (Prop_CARRY8_SLICEM_CI_CO[7])
+                                                      0.015     1.651 r  signal_reg_reg[71][15]_i_1/CO[7]
+                         net (fo=1, routed)           0.026     1.677    signal_reg_reg[71][15]_i_1_n_0
+    SLICE_X52Y105        CARRY8 (Prop_CARRY8_SLICEM_CI_O[5])
+                                                      0.116     1.793 r  signal_reg_reg[71][21]_i_1/O[5]
+                         net (fo=1, routed)           0.025     1.818    signal_reg_reg[71][21]_i_1_n_10
+    SLICE_X52Y105        FDCE                                         r  signal_reg_reg[71][21]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.021     2.021    clk
+    SLICE_X52Y105        FDCE                                         r  signal_reg_reg[71][21]/C
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+    SLICE_X52Y105        FDCE (Setup_FFF_SLICEM_C_D)
+                                                      0.025     2.011    signal_reg_reg[71][21]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -1.818    
+  -------------------------------------------------------------------
+                         slack                                  0.193    
+
+Slack (MET) :             0.195ns  (required time - arrival time)
+  Source:                 signal_reg_reg[5][11]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            signal_reg_reg[6][22]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.786ns  (logic 0.386ns (21.609%)  route 1.400ns (78.391%))
+  Logic Levels:           3  (CARRY8=2 LUT4=1)
+  Clock Path Skew:        -0.008ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.028ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.028     0.028    clk
+    SLICE_X72Y91         FDCE                                         r  signal_reg_reg[5][11]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X72Y91         FDCE (Prop_DFF_SLICEL_C_Q)
+                                                      0.079     0.107 r  signal_reg_reg[5][11]/Q
+                         net (fo=4, routed)           1.339     1.446    signal_reg_reg[5][11]
+    SLICE_X72Y102        LUT4 (Prop_D6LUT_SLICEL_I0_O)
+                                                      0.050     1.496 r  signal_reg[6][15]_i_6/O
+                         net (fo=1, routed)           0.009     1.505    signal_reg[6][15]_i_6_n_0
+    SLICE_X72Y102        CARRY8 (Prop_CARRY8_SLICEL_S[3]_CO[7])
+                                                      0.154     1.659 r  signal_reg_reg[6][15]_i_1/CO[7]
+                         net (fo=1, routed)           0.026     1.685    signal_reg_reg[6][15]_i_1_n_0
+    SLICE_X72Y103        CARRY8 (Prop_CARRY8_SLICEL_CI_O[6])
+                                                      0.103     1.788 r  signal_reg_reg[6][23]_i_1/O[6]
+                         net (fo=1, routed)           0.026     1.814    signal_reg_reg[6][23]_i_1_n_9
+    SLICE_X72Y103        FDCE                                         r  signal_reg_reg[6][22]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.020     2.020    clk
+    SLICE_X72Y103        FDCE                                         r  signal_reg_reg[6][22]/C
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X72Y103        FDCE (Setup_GFF_SLICEL_C_D)
+                                                      0.025     2.010    signal_reg_reg[6][22]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -1.814    
+  -------------------------------------------------------------------
+                         slack                                  0.195    
+
+Slack (MET) :             0.198ns  (required time - arrival time)
+  Source:                 red_s1_data_reg[13][5]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            dot_value_bank_reg[1][14][10]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.783ns  (logic 0.546ns (30.629%)  route 1.237ns (69.371%))
+  Logic Levels:           4  (CARRY8=2 LUT2=1 LUT3=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.030     0.030    clk
+    SLICE_X66Y82         FDCE                                         r  red_s1_data_reg[13][5]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X66Y82         FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 r  red_s1_data_reg[13][5]/Q
+                         net (fo=1, routed)           0.119     0.225    red_s1_data_reg[13][5]
+    SLICE_X65Y83         LUT2 (Prop_F6LUT_SLICEL_I1_O)
+                                                      0.148     0.373 r  dot_value_bank[1][12][7]_i_6/O
+                         net (fo=1, routed)           0.011     0.384    dot_value_bank[1][12][7]_i_6_n_0
+    SLICE_X65Y83         CARRY8 (Prop_CARRY8_SLICEL_S[5]_CO[7])
+                                                      0.155     0.539 r  dot_value_bank_reg[1][12][7]_i_2/CO[7]
+                         net (fo=1, routed)           0.026     0.565    dot_value_bank_reg[1][12][7]_i_2_n_0
+    SLICE_X65Y84         CARRY8 (Prop_CARRY8_SLICEL_CI_O[2])
+                                                      0.067     0.632 r  dot_value_bank_reg[1][12][15]_i_2/O[2]
+                         net (fo=2, routed)           0.626     1.258    dot_value_bank_reg[1][12][15]_i_2_n_13
+    SLICE_X67Y99         LUT3 (Prop_B6LUT_SLICEM_I2_O)
+                                                      0.100     1.358 r  red_s2_data[6][10]_i_1/O
+                         net (fo=3, routed)           0.455     1.813    red_s2_data[6][10]_i_1_n_0
+    SLICE_X67Y105        FDCE                                         r  dot_value_bank_reg[1][14][10]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.021     2.021    clk
+    SLICE_X67Y105        FDCE                                         r  dot_value_bank_reg[1][14][10]/C
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+    SLICE_X67Y105        FDCE (Setup_GFF2_SLICEM_C_D)
+                                                      0.025     2.011    dot_value_bank_reg[1][14][10]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -1.813    
+  -------------------------------------------------------------------
+                         slack                                  0.198    
+
+Slack (MET) :             0.200ns  (required time - arrival time)
+  Source:                 r4a_issue_active_reg[0]_rep__1/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            sched_coeff_reg_reg[73][3]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.781ns  (logic 0.238ns (13.364%)  route 1.543ns (86.636%))
+  Logic Levels:           1  (LUT5=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.030     0.030    clk
+    SLICE_X67Y69         FDCE                                         r  r4a_issue_active_reg[0]_rep__1/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y69         FDCE (Prop_EFF2_SLICEM_C_Q)
+                                                      0.079     0.109 r  r4a_issue_active_reg[0]_rep__1/Q
+                         net (fo=177, routed)         1.516     1.625    r4a_issue_active_reg[0]_rep__1_n_0
+    SLICE_X49Y93         LUT5 (Prop_C5LUT_SLICEM_I0_O)
+                                                      0.159     1.784 r  sched_coeff_reg[73][3]_i_1/O
+                         net (fo=1, routed)           0.027     1.811    sched_coeff_reg[73][3]_i_1_n_0
+    SLICE_X49Y93         FDCE                                         r  sched_coeff_reg_reg[73][3]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.021     2.021    clk
+    SLICE_X49Y93         FDCE                                         r  sched_coeff_reg_reg[73][3]/C
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+    SLICE_X49Y93         FDCE (Setup_CFF2_SLICEM_C_D)
+                                                      0.025     2.011    sched_coeff_reg_reg[73][3]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -1.811    
+  -------------------------------------------------------------------
+                         slack                                  0.200    
+
+Slack (MET) :             0.201ns  (required time - arrival time)
+  Source:                 red_cycle_reg[0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            red_s0_data_reg[6][4]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.696ns  (logic 0.168ns (9.906%)  route 1.528ns (90.094%))
+  Logic Levels:           1  (LUT5=1)
+  Clock Path Skew:        -0.007ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.028ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.028     0.028    clk
+    SLICE_X65Y99         FDCE                                         r  red_cycle_reg[0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y99         FDCE (Prop_CFF_SLICEL_C_Q)
+                                                      0.079     0.107 f  red_cycle_reg[0]/Q
+                         net (fo=77, routed)          0.243     0.350    red_cycle[0]
+    SLICE_X65Y97         LUT5 (Prop_D6LUT_SLICEL_I4_O)
+                                                      0.089     0.439 r  red_s0_data[35][23]_i_1/O
+                         net (fo=1056, routed)        1.285     1.724    red_s0_data[0]
+    SLICE_X74Y60         FDCE                                         r  red_s0_data_reg[6][4]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.021     2.021    clk
+    SLICE_X74Y60         FDCE                                         r  red_s0_data_reg[6][4]/C
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+    SLICE_X74Y60         FDCE (Setup_EFF_SLICEM_C_CE)
+                                                     -0.061     1.925    red_s0_data_reg[6][4]
+  -------------------------------------------------------------------
+                         required time                          1.925    
+                         arrival time                          -1.724    
+  -------------------------------------------------------------------
+                         slack                                  0.201    
+
+Slack (MET) :             0.201ns  (required time - arrival time)
+  Source:                 red_cycle_reg[0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            red_s0_data_reg[6][5]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.696ns  (logic 0.168ns (9.906%)  route 1.528ns (90.094%))
+  Logic Levels:           1  (LUT5=1)
+  Clock Path Skew:        -0.007ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.028ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.028     0.028    clk
+    SLICE_X65Y99         FDCE                                         r  red_cycle_reg[0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y99         FDCE (Prop_CFF_SLICEL_C_Q)
+                                                      0.079     0.107 f  red_cycle_reg[0]/Q
+                         net (fo=77, routed)          0.243     0.350    red_cycle[0]
+    SLICE_X65Y97         LUT5 (Prop_D6LUT_SLICEL_I4_O)
+                                                      0.089     0.439 r  red_s0_data[35][23]_i_1/O
+                         net (fo=1056, routed)        1.285     1.724    red_s0_data[0]
+    SLICE_X74Y60         FDCE                                         r  red_s0_data_reg[6][5]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.021     2.021    clk
+    SLICE_X74Y60         FDCE                                         r  red_s0_data_reg[6][5]/C
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+    SLICE_X74Y60         FDCE (Setup_FFF_SLICEM_C_CE)
+                                                     -0.061     1.925    red_s0_data_reg[6][5]
+  -------------------------------------------------------------------
+                         required time                          1.925    
+                         arrival time                          -1.724    
+  -------------------------------------------------------------------
+                         slack                                  0.201    
+
+Slack (MET) :             0.201ns  (required time - arrival time)
+  Source:                 red_cycle_reg[0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            red_s0_data_reg[6][6]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.696ns  (logic 0.168ns (9.906%)  route 1.528ns (90.094%))
+  Logic Levels:           1  (LUT5=1)
+  Clock Path Skew:        -0.007ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.028ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.028     0.028    clk
+    SLICE_X65Y99         FDCE                                         r  red_cycle_reg[0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y99         FDCE (Prop_CFF_SLICEL_C_Q)
+                                                      0.079     0.107 f  red_cycle_reg[0]/Q
+                         net (fo=77, routed)          0.243     0.350    red_cycle[0]
+    SLICE_X65Y97         LUT5 (Prop_D6LUT_SLICEL_I4_O)
+                                                      0.089     0.439 r  red_s0_data[35][23]_i_1/O
+                         net (fo=1056, routed)        1.285     1.724    red_s0_data[0]
+    SLICE_X74Y60         FDCE                                         r  red_s0_data_reg[6][6]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.021     2.021    clk
+    SLICE_X74Y60         FDCE                                         r  red_s0_data_reg[6][6]/C
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+    SLICE_X74Y60         FDCE (Setup_GFF_SLICEM_C_CE)
+                                                     -0.061     1.925    red_s0_data_reg[6][6]
+  -------------------------------------------------------------------
+                         required time                          1.925    
+                         arrival time                          -1.724    
+  -------------------------------------------------------------------
+                         slack                                  0.201    
+
+Slack (MET) :             0.201ns  (required time - arrival time)
+  Source:                 red_cycle_reg[0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            red_s0_data_reg[6][7]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.696ns  (logic 0.168ns (9.906%)  route 1.528ns (90.094%))
+  Logic Levels:           1  (LUT5=1)
+  Clock Path Skew:        -0.007ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.028ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=18907, unset)        0.028     0.028    clk
+    SLICE_X65Y99         FDCE                                         r  red_cycle_reg[0]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y99         FDCE (Prop_CFF_SLICEL_C_Q)
+                                                      0.079     0.107 f  red_cycle_reg[0]/Q
+                         net (fo=77, routed)          0.243     0.350    red_cycle[0]
+    SLICE_X65Y97         LUT5 (Prop_D6LUT_SLICEL_I4_O)
+                                                      0.089     0.439 r  red_s0_data[35][23]_i_1/O
+                         net (fo=1056, routed)        1.285     1.724    red_s0_data[0]
+    SLICE_X74Y60         FDCE                                         r  red_s0_data_reg[6][7]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=18907, unset)        0.021     2.021    clk
+    SLICE_X74Y60         FDCE                                         r  red_s0_data_reg[6][7]/C
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+    SLICE_X74Y60         FDCE (Setup_HFF_SLICEM_C_CE)
+                                                     -0.061     1.925    red_s0_data_reg[6][7]
+  -------------------------------------------------------------------
+                         required time                          1.925    
+                         arrival time                          -1.724    
+  -------------------------------------------------------------------
+                         slack                                  0.201    
+
+
+
+

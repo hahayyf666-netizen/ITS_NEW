@@ -1,0 +1,42 @@
+{
+  "step": "11.1",
+  "baseline": "D:/Workspace/ITS_STUDY_V35_P2F_B2",
+  "workdir": "D:/Workspace/ITS_STUDY_V35_P2F_B2_R1",
+  "modified_files": [
+    "02_rtl/rtl/p2f_dct2_64_b1_step102.sv"
+  ],
+  "functional": {
+    "status": "PASS",
+    "cases": 49,
+    "fires": 784,
+    "positive_wrap_outputs": 950,
+    "negative_wrap_outputs": 935
+  },
+  "vivado_ooc": {
+    "status": "FAIL",
+    "tool": "Vivado 2025.2",
+    "part": "xcku5p-ffvb676-2-e",
+    "period_ns": 2.0,
+    "setup_wns_ns": -0.969,
+    "setup_tns_ns": -7891.720,
+    "setup_failing_endpoints": 20632,
+    "hold_whs_ns": 0.042,
+    "hold_ths_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "unconstrained_internal_endpoints": 0,
+    "clb_luts": 46897,
+    "clb_registers": 22812,
+    "dsps": 128,
+    "block_ram_tiles": 0,
+    "total_on_chip_power_w": 4.082,
+    "worst_path": {
+      "source": "red_cycle_reg[4]_rep/C",
+      "destination": "dot_value_bank_reg[1][31][23]/D",
+      "slack_ns": -0.969,
+      "data_path_delay_ns": 2.949,
+      "logic_delay_ns": 1.027,
+      "route_delay_ns": 1.922
+    }
+  },
+  "final_gate": "FAIL_STOP"
+}

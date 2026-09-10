@@ -1,0 +1,64 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Sat Sep  5 23:44:05 2026
+# Process ID         : 38288
+# Current directory  : D:/Workspace/ITS_STUDY_V35_P2F_B2/03_verification/vivado/run
+# Command line       : vivado.exe -mode batch -source D:\Workspace\ITS_STUDY_V35_P2F_B2\03_verification\vivado\run_p2f_b2_postroute_reports.tcl -log D:\Workspace\ITS_STUDY_V35_P2F_B2\03_verification\vivado\run\vivado_p2f_b2_postroute_reports.log -journal D:\Workspace\ITS_STUDY_V35_P2F_B2\03_verification\vivado\run\vivado_p2f_b2_postroute_reports.jou -notrace
+# Log file           : D:/Workspace/ITS_STUDY_V35_P2F_B2/03_verification/vivado/run/vivado_p2f_b2_postroute_reports.log
+# Journal file       : D:\Workspace\ITS_STUDY_V35_P2F_B2\03_verification\vivado\run\vivado_p2f_b2_postroute_reports.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 26750 MB
+# Total Virtual      : 43114 MB
+# Available Virtual  : 9490 MB
+#-----------------------------------------------------------
+source {D:\Workspace\ITS_STUDY_V35_P2F_B2\03_verification\vivado\run_p2f_b2_postroute_reports.tcl} -notrace
+Command: open_checkpoint D:/Workspace/ITS_STUDY_V35_P2F_B2/03_verification/vivado/reports/p2f_b2_postroute.dcp
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.035 . Memory (MB): peak = 348.715 ; gain = 4.816
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.113 . Memory (MB): peak = 1698.477 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 2767 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 1 CPU seconds
+WARNING: [Netlist 29-101] Netlist 'p2f_dct2_64_b1_step102' is not ideal for floorplanning, since the cellview 'p2f_dct2_64_b1_step102' contains a large number of primitives.  Please consider enabling hierarchy in synthesis if you want to do floorplanning.
+INFO: [Project 1-479] Netlist was created with Vivado 2025.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Read ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.040 . Memory (MB): peak = 1698.477 ; gain = 0.000
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Constraints 18-5170] The checkpoint was created with non-default parameter values which do not match the current Vivado settings.  Mismatching parameters are:
+  general.maxThreads
+INFO: [Project 1-853] Binary constraint restore complete.
+INFO: [Designutils 20-5722] Start Reading Physical Databases.
+Reading placement.
+Read Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.047 . Memory (MB): peak = 2062.188 ; gain = 2.730
+Reading placer database...
+Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.027 . Memory (MB): peak = 2075.535 ; gain = 13.348
+Read PlaceDB: Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 2131.082 ; gain = 53.039
+Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2131.082 ; gain = 0.000
+Reading routing.
+Read RouteStorage: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.406 . Memory (MB): peak = 2156.562 ; gain = 25.480
+Read Physdb Files: Time (s): cpu = 00:00:01 ; elapsed = 00:00:02 . Memory (MB): peak = 2156.562 ; gain = 97.105
+Restored from archive | CPU: 2.000000 secs | Memory: 0.000000 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2156.562 ; gain = 97.105
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.011 . Memory (MB): peak = 2505.531 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 128 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 128 instances
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2025.2 (64-bit) build 6299465
+open_checkpoint: Time (s): cpu = 00:00:27 ; elapsed = 00:00:29 . Memory (MB): peak = 2505.531 ; gain = 2172.348
+STEP11_B2_REPORT_ONLY_DONE
+INFO: [Common 17-206] Exiting Vivado at Sat Sep  5 23:44:40 2026...

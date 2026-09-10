@@ -1,0 +1,126 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Wed Sep  9 19:10:50 2026
+# Process ID         : 43732
+# Current directory  : C:/Users/Fine/Documents/Codex/2026-07-23/ni
+# Command line       : vivado.exe -mode batch -source D:\Workspace\ITS_STUDY_V35_P2F_B2_R4_PRE\03_verification\vivado\run_r4_pre_timing_census.tcl -log D:\Workspace\ITS_STUDY_V35_P2F_B2_R4_PRE\03_verification\vivado\r4_pre_timing_census.log
+# Log file           : D:/Workspace/ITS_STUDY_V35_P2F_B2_R4_PRE/03_verification/vivado/r4_pre_timing_census.log
+# Journal file       : C:/Users/Fine/Documents/Codex/2026-07-23/ni\vivado.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 36920 MB
+# Total Virtual      : 53285 MB
+# Available Virtual  : 23309 MB
+#-----------------------------------------------------------
+source {D:\Workspace\ITS_STUDY_V35_P2F_B2_R4_PRE\03_verification\vivado\run_r4_pre_timing_census.tcl}
+# set SCRIPT_DIR [file normalize [file dirname [info script]]]
+# set ROOT       [file normalize [file join $SCRIPT_DIR .. ..]]
+# set DCP        [file join $ROOT 03_verification vivado reports_r3r_postroute p2f_b2_controlled_postroute.dcp]
+# set OUT        [file join $ROOT 03_verification output r4_pre_timing_census]
+# file mkdir $OUT
+# puts "R4_PRE_TIMING_CENSUS_START"
+R4_PRE_TIMING_CENSUS_START
+# puts "DCP=$DCP"
+DCP=D:/Workspace/ITS_STUDY_V35_P2F_B2_R4_PRE/03_verification/vivado/reports_r3r_postroute/p2f_b2_controlled_postroute.dcp
+# puts "OUT=$OUT"
+OUT=D:/Workspace/ITS_STUDY_V35_P2F_B2_R4_PRE/03_verification/output/r4_pre_timing_census
+# open_checkpoint $DCP
+Command: open_checkpoint D:/Workspace/ITS_STUDY_V35_P2F_B2_R4_PRE/03_verification/vivado/reports_r3r_postroute/p2f_b2_controlled_postroute.dcp
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.033 . Memory (MB): peak = 350.879 ; gain = 3.812
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.195 . Memory (MB): peak = 1700.625 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 13343 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 1 CPU seconds
+WARNING: [Netlist 29-101] Netlist 'p2f_dct2_64_b1_step102' is not ideal for floorplanning, since the cellview 'p2f_dct2_64_b1_step102' contains a large number of primitives.  Please consider enabling hierarchy in synthesis if you want to do floorplanning.
+INFO: [Project 1-479] Netlist was created with Vivado 2025.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Read ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.097 . Memory (MB): peak = 1700.625 ; gain = 0.000
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Constraints 18-5170] The checkpoint was created with non-default parameter values which do not match the current Vivado settings.  Mismatching parameters are:
+  general.maxThreads
+INFO: [Project 1-853] Binary constraint restore complete.
+INFO: [Designutils 20-5722] Start Reading Physical Databases.
+Reading placement.
+Read Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.070 . Memory (MB): peak = 2135.875 ; gain = 0.000
+Reading placer database...
+Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.027 . Memory (MB): peak = 2148.965 ; gain = 13.090
+Read PlaceDB: Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2236.922 ; gain = 85.445
+Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2236.922 ; gain = 0.000
+Reading routing.
+Read RouteStorage: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.762 . Memory (MB): peak = 2274.766 ; gain = 37.844
+Read Physdb Files: Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2274.766 ; gain = 138.891
+Restored from archive | CPU: 3.000000 secs | Memory: 0.000000 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2274.766 ; gain = 138.891
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.016 . Memory (MB): peak = 2630.770 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 128 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 128 instances
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2025.2 (64-bit) build 6299465
+open_checkpoint: Time (s): cpu = 00:00:31 ; elapsed = 00:00:34 . Memory (MB): peak = 2630.770 ; gain = 2294.215
+# report_timing_summary -delay_type max -max_paths 20 \
+#   -file [file join $OUT timing_summary.rpt]
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+WARNING: [Timing 38-242] The property HD.CLK_SRC of clock port "clk" is not set. In out-of-context mode, this prevents timing estimation for clock delay/skew
+Resolution: Set the HD.CLK_SRC property of the out-of-context port to the location of the clock buffer instance in the top-level design
+WARNING: [Timing 38-242] The property HD.CLK_SRC of clock port "rst_n" is not set. In out-of-context mode, this prevents timing estimation for clock delay/skew
+Resolution: Set the HD.CLK_SRC property of the out-of-context port to the location of the clock buffer instance in the top-level design
+WARNING: [Timing 38-242] The property HD.CLK_SRC of clock port "vector_id_in[0]" is not set. In out-of-context mode, this prevents timing estimation for clock delay/skew
+Resolution: Set the HD.CLK_SRC property of the out-of-context port to the location of the clock buffer instance in the top-level design
+WARNING: [Timing 38-242] The property HD.CLK_SRC of clock port "vector_start" is not set. In out-of-context mode, this prevents timing estimation for clock delay/skew
+Resolution: Set the HD.CLK_SRC property of the out-of-context port to the location of the clock buffer instance in the top-level design
+report_timing_summary: Time (s): cpu = 00:00:29 ; elapsed = 00:00:18 . Memory (MB): peak = 2907.422 ; gain = 276.652
+# report_timing -delay_type max -max_paths 1000 -nworst 1 -sort_by slack \
+#   -file [file join $OUT top1000_setup_paths.rpt]
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -max_paths 1000 -nworst 1 -delay_type max -sort_by slack.
+# report_high_fanout_nets -max_nets 200 \
+#   -file [file join $OUT high_fanout.rpt]
+# report_route_status -file [file join $OUT route_status.rpt]
+# report_utilization -hierarchical \
+#   -file [file join $OUT hierarchical_utilization.rpt]
+# catch {report_design_analysis -congestion -file [file join $OUT congestion.rpt]} congestion_rc
+# if {$congestion_rc ne ""} { puts "CONGESTION_REPORT_NOTE=$congestion_rc" }
+CONGESTION_REPORT_NOTE=D:/Workspace/ITS_STUDY_V35_P2F_B2_R4_PRE/03_verification/output/r4_pre_timing_census/congestion.rpt
+# set fh [open [file join $OUT top1000_setup_paths.csv] w]
+# puts $fh "index,slack,datapath_delay,logic_levels,startpoint,endpoint"
+# set paths [get_timing_paths -delay_type max -max_paths 1000 -sort_by slack]
+# set idx 0
+# foreach p $paths {
+#     incr idx
+#     set slack ""; set delay ""; set levels ""; set sp ""; set ep ""
+#     catch {set slack [get_property SLACK $p]}
+#     catch {set delay [get_property DATAPATH_DELAY $p]}
+#     catch {set levels [get_property LOGIC_LEVELS $p]}
+#     catch {set sp [get_property STARTPOINT_PIN $p]}
+#     catch {set ep [get_property ENDPOINT_PIN $p]}
+#     set slack [string map {" " "_" "," ";"} $slack]
+#     set delay [string map {" " "_" "," ";"} $delay]
+#     set levels [string map {" " "_" "," ";"} $levels]
+#     set sp [string map {" " "_" "," ";"} $sp]
+#     set ep [string map {" " "_" "," ";"} $ep]
+#     puts $fh "$idx,$slack,$delay,$levels,$sp,$ep"
+# }
+# close $fh
+# puts "PATH_ROWS=$idx"
+PATH_ROWS=1000
+# close_project
+# puts "R4_PRE_TIMING_CENSUS_DONE"
+R4_PRE_TIMING_CENSUS_DONE
+INFO: [Common 17-206] Exiting Vivado at Wed Sep  9 19:12:00 2026...

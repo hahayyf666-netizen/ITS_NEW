@@ -1,0 +1,1877 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Fri Sep  4 21:31:43 2026
+# Process ID         : 13464
+# Current directory  : D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64
+# Command line       : vivado.exe -mode batch -source D:\Workspace\ITS_STUDY_V35_P2A_DCT2_64\vivado\run_p2a_ooc.tcl
+# Log file           : D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/vivado.log
+# Journal file       : D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64\vivado.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 22342 MB
+# Total Virtual      : 38707 MB
+# Available Virtual  : 7608 MB
+#-----------------------------------------------------------
+INFO: [Common 17-749] XILINX_TCLSTORE_USERAREA is set to 'D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/vivado/tclstore_run6/2025.2/XilinxTclStore'.
+source {D:\Workspace\ITS_STUDY_V35_P2A_DCT2_64\vivado\run_p2a_ooc.tcl}
+# set SCRIPT_DIR [file normalize [file dirname [info script]]]
+# set ROOT [file normalize [file join $SCRIPT_DIR ..]]
+# set RTL [file join $ROOT rtl p2a_dct2_64_p4.sv]
+# set COEFF [file join $ROOT rtl dct2_64_coeff.hex]
+# set REPORT [file join $ROOT vivado reports]
+# file mkdir $REPORT
+# set_param general.maxThreads 8
+# create_project -in_memory -part xcku5p-ffvb676-2-e -force
+create_project: Time (s): cpu = 00:00:32 ; elapsed = 00:00:07 . Memory (MB): peak = 578.125 ; gain = 241.711
+# set_property include_dirs [list [file join $ROOT rtl]] [current_fileset]
+# add_files -fileset sources_1 $RTL
+# set_property file_type {SystemVerilog} [get_files $RTL]
+# update_compile_order -fileset sources_1
+# cd [file join $ROOT rtl]
+# synth_design -top p2a_dct2_64_p4 -part xcku5p-ffvb676-2-e -mode out_of_context \
+#     -flatten_hierarchy none -directive RuntimeOptimized
+Command: synth_design -top p2a_dct2_64_p4 -part xcku5p-ffvb676-2-e -mode out_of_context -flatten_hierarchy none -directive RuntimeOptimized
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xcku5p'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xcku5p'
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 7 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 6380
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:03 ; elapsed = 00:00:04 . Memory (MB): peak = 1106.949 ; gain = 528.824
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'p2a_dct2_64_p4' [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:17]
+INFO: [Synth 8-3876] $readmem data file 'dct2_64_coeff_l0.hex' is read successfully [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:64]
+INFO: [Synth 8-3876] $readmem data file 'dct2_64_coeff_l1.hex' is read successfully [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:65]
+INFO: [Synth 8-3876] $readmem data file 'dct2_64_coeff_l2.hex' is read successfully [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:66]
+INFO: [Synth 8-3876] $readmem data file 'dct2_64_coeff_l3.hex' is read successfully [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:67]
+INFO: [Synth 8-6155] done synthesizing module 'p2a_dct2_64_p4' (0#1) [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:17]
+WARNING: [Synth 8-6014] Unused sequential element group_pipe_reg[10] was removed.  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:337]
+WARNING: [Synth 8-6014] Unused sequential element id_pipe_reg[10] was removed.  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:338]
+WARNING: [Synth 8-7137] Register vec_a_reg[0] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[1] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[2] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[3] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[4] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[5] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[6] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[7] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[8] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[9] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[10] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[11] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[12] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[13] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[14] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[15] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[16] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[17] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[18] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[19] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[20] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[21] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[22] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[23] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[24] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[25] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[26] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[27] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[28] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[29] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[30] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[31] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[32] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[33] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[34] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[35] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[36] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[37] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[38] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[39] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[40] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[41] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[42] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[43] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[44] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[45] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[46] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[47] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[48] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[49] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[50] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[51] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[52] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[53] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[54] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[55] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[56] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[57] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[58] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[59] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[60] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[61] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[62] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_a_reg[63] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:183]
+WARNING: [Synth 8-7137] Register vec_b_reg[0] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[1] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[2] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[3] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[4] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[5] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[6] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[7] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[8] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[9] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[10] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[11] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[12] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[13] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[14] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[15] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[16] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[17] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[18] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[19] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[20] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[21] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[22] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[23] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[24] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[25] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[26] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[27] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[28] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[29] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[30] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[31] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[32] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[33] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[34] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+WARNING: [Synth 8-7137] Register vec_b_reg[35] in module p2a_dct2_64_p4 has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:185]
+INFO: [Common 17-14] Message 'Synth 8-7137' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+WARNING: [Synth 8-4767] Trying to implement RAM 'fifo_group_reg' in registers. Block RAM or DRAM implementation is not possible; see log for reasons. [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:408]
+Reason is one or more of the following :
+	1: RAM is sensitive to asynchronous reset signal. this RTL style is not supported. 
+WARNING: [Synth 8-4767] Trying to implement RAM 'fifo_id_reg' in registers. Block RAM or DRAM implementation is not possible; see log for reasons. [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:409]
+Reason is one or more of the following :
+	1: RAM is sensitive to asynchronous reset signal. this RTL style is not supported. 
+WARNING: [Synth 8-4767] Trying to implement RAM 'fifo_first_reg' in registers. Block RAM or DRAM implementation is not possible; see log for reasons. [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:410]
+Reason is one or more of the following :
+	1: RAM is sensitive to asynchronous reset signal. this RTL style is not supported. 
+WARNING: [Synth 8-4767] Trying to implement RAM 'fifo_last_reg' in registers. Block RAM or DRAM implementation is not possible; see log for reasons. [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:411]
+Reason is one or more of the following :
+	1: RAM is sensitive to asynchronous reset signal. this RTL style is not supported. 
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 1545.648 ; gain = 967.523
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1545.648 ; gain = 967.523
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xcku5p-ffvb676-2-e
+INFO: [Synth 8-6742] Reading net delay rules and data
+---------------------------------------------------------------------------------
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1545.648 ; gain = 967.523
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:21 ; elapsed = 00:00:19 . Memory (MB): peak = 2353.613 ; gain = 1775.488
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input   41 Bit       Adders := 4     
+	   2 Input   40 Bit       Adders := 252   
+	   3 Input   32 Bit       Adders := 1     
+	   2 Input    6 Bit       Adders := 2     
+	   2 Input    5 Bit       Adders := 2     
+	   2 Input    4 Bit       Adders := 2     
++---Registers : 
+	               41 Bit    Registers := 8     
+	               40 Bit    Registers := 252   
+	               32 Bit    Registers := 303   
+	               16 Bit    Registers := 580   
+	               11 Bit    Registers := 1     
+	                6 Bit    Registers := 2     
+	                5 Bit    Registers := 2     
+	                4 Bit    Registers := 45    
+	                1 Bit    Registers := 71    
++---Muxes : 
+	   2 Input   32 Bit        Muxes := 3     
+	   2 Input   16 Bit        Muxes := 64    
+	   4 Input    6 Bit        Muxes := 1     
+	   2 Input    4 Bit        Muxes := 3     
+	   3 Input    2 Bit        Muxes := 1     
+	   2 Input    1 Bit        Muxes := 91    
+	   4 Input    1 Bit        Muxes := 1     
+	   3 Input    1 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 1824 (col length:96)
+BRAMs: 960 (col length: RAMB18 96 RAMB36 48)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[1][40][2]' (FDC) to 'coeff_selected_r_reg[1][40][5]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[1][40][3]' (FDC) to 'coeff_selected_r_reg[1][40][6]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[1][40][5]' (FDC) to 'coeff_selected_r_reg[1][40][7]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[1][40][7]' (FDC) to 'coeff_selected_r_reg[1][40][8]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[1][40][8]' (FDC) to 'coeff_selected_r_reg[1][40][9]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[1][40][9]' (FDC) to 'coeff_selected_r_reg[1][40][10]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[1][40][10]' (FDC) to 'coeff_selected_r_reg[1][40][11]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[1][40][11]' (FDC) to 'coeff_selected_r_reg[1][40][12]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[1][40][12]' (FDC) to 'coeff_selected_r_reg[1][40][13]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[1][40][13]' (FDC) to 'coeff_selected_r_reg[1][40][14]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[1][40][14]' (FDC) to 'coeff_selected_r_reg[1][40][15]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[0][41][7]' (FDC) to 'coeff_selected_r_reg[0][41][8]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[0][41][8]' (FDC) to 'coeff_selected_r_reg[0][41][9]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[0][41][9]' (FDC) to 'coeff_selected_r_reg[0][41][10]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[0][41][10]' (FDC) to 'coeff_selected_r_reg[0][41][11]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[0][41][11]' (FDC) to 'coeff_selected_r_reg[0][41][12]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[0][41][12]' (FDC) to 'coeff_selected_r_reg[0][41][13]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[0][41][13]' (FDC) to 'coeff_selected_r_reg[0][41][14]'
+INFO: [Synth 8-3886] merging instance 'coeff_selected_r_reg[0][41][14]' (FDC) to 'coeff_selected_r_reg[0][41][15]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][17][39]' (FDE) to 'tree0_r_reg[2][17][38]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][19][39]' (FDE) to 'tree0_r_reg[2][19][38]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][21][39]' (FDE) to 'tree0_r_reg[2][21][38]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][17][38]' (FDE) to 'tree0_r_reg[2][17][37]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][19][38]' (FDE) to 'tree0_r_reg[2][19][37]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][17][37]' (FDE) to 'tree0_r_reg[2][17][32]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][17][32]' (FDE) to 'tree0_r_reg[2][17][33]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][17][33]' (FDE) to 'tree0_r_reg[2][17][34]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][17][34]' (FDE) to 'tree0_r_reg[2][17][35]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][17][35]' (FDE) to 'tree0_r_reg[2][17][36]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][19][37]' (FDE) to 'tree0_r_reg[2][19][32]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][19][32]' (FDE) to 'tree0_r_reg[2][19][33]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][19][33]' (FDE) to 'tree0_r_reg[2][19][34]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][19][34]' (FDE) to 'tree0_r_reg[2][19][35]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][19][35]' (FDE) to 'tree0_r_reg[2][19][36]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][21][38]' (FDE) to 'tree0_r_reg[2][21][37]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][21][37]' (FDE) to 'tree0_r_reg[2][21][32]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][21][32]' (FDE) to 'tree0_r_reg[2][21][33]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][21][33]' (FDE) to 'tree0_r_reg[2][21][34]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][21][34]' (FDE) to 'tree0_r_reg[2][21][35]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][21][35]' (FDE) to 'tree0_r_reg[2][21][36]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][17][39]' (FDE) to 'tree0_r_reg[1][17][38]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][19][39]' (FDE) to 'tree0_r_reg[1][19][38]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][20][39]' (FDE) to 'tree0_r_reg[1][20][38]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][21][39]' (FDE) to 'tree0_r_reg[1][21][38]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][17][38]' (FDE) to 'tree0_r_reg[1][17][37]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][19][38]' (FDE) to 'tree0_r_reg[1][19][37]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][17][37]' (FDE) to 'tree0_r_reg[1][17][32]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][17][32]' (FDE) to 'tree0_r_reg[1][17][33]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][17][33]' (FDE) to 'tree0_r_reg[1][17][34]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][17][34]' (FDE) to 'tree0_r_reg[1][17][35]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][17][35]' (FDE) to 'tree0_r_reg[1][17][36]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][19][37]' (FDE) to 'tree0_r_reg[1][19][32]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][19][32]' (FDE) to 'tree0_r_reg[1][19][33]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][19][33]' (FDE) to 'tree0_r_reg[1][19][34]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][19][34]' (FDE) to 'tree0_r_reg[1][19][35]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][19][35]' (FDE) to 'tree0_r_reg[1][19][36]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][20][38]' (FDE) to 'tree0_r_reg[1][20][37]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][21][38]' (FDE) to 'tree0_r_reg[1][21][37]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][20][37]' (FDE) to 'tree0_r_reg[1][20][32]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][21][37]' (FDE) to 'tree0_r_reg[1][21][32]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][20][32]' (FDE) to 'tree0_r_reg[1][20][33]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][21][32]' (FDE) to 'tree0_r_reg[1][21][33]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][20][33]' (FDE) to 'tree0_r_reg[1][20][34]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][21][33]' (FDE) to 'tree0_r_reg[1][21][34]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][20][34]' (FDE) to 'tree0_r_reg[1][20][35]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][21][34]' (FDE) to 'tree0_r_reg[1][21][35]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][20][35]' (FDE) to 'tree0_r_reg[1][20][36]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[1][21][35]' (FDE) to 'tree0_r_reg[1][21][36]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][17][39]' (FDE) to 'tree0_r_reg[0][17][38]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][19][39]' (FDE) to 'tree0_r_reg[0][19][38]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][17][38]' (FDE) to 'tree0_r_reg[0][17][32]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][17][32]' (FDE) to 'tree0_r_reg[0][17][33]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][17][33]' (FDE) to 'tree0_r_reg[0][17][34]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][17][34]' (FDE) to 'tree0_r_reg[0][17][35]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][17][35]' (FDE) to 'tree0_r_reg[0][17][36]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][17][36]' (FDE) to 'tree0_r_reg[0][17][37]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][19][38]' (FDE) to 'tree0_r_reg[0][19][32]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][19][32]' (FDE) to 'tree0_r_reg[0][19][33]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][19][33]' (FDE) to 'tree0_r_reg[0][19][34]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][19][34]' (FDE) to 'tree0_r_reg[0][19][35]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][19][35]' (FDE) to 'tree0_r_reg[0][19][36]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[0][19][36]' (FDE) to 'tree0_r_reg[0][19][37]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][7][39]' (FDE) to 'tree0_r_reg[2][7][32]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][7][32]' (FDE) to 'tree0_r_reg[2][7][33]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][7][33]' (FDE) to 'tree0_r_reg[2][7][34]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][7][34]' (FDE) to 'tree0_r_reg[2][7][35]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][7][35]' (FDE) to 'tree0_r_reg[2][7][36]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][7][36]' (FDE) to 'tree0_r_reg[2][7][37]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[2][7][37]' (FDE) to 'tree0_r_reg[2][7][38]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[3][17][39]' (FDE) to 'tree0_r_reg[3][17][38]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[3][19][39]' (FDE) to 'tree0_r_reg[3][19][38]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[3][17][38]' (FDE) to 'tree0_r_reg[3][17][32]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[3][17][32]' (FDE) to 'tree0_r_reg[3][17][33]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[3][17][33]' (FDE) to 'tree0_r_reg[3][17][34]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[3][17][34]' (FDE) to 'tree0_r_reg[3][17][35]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[3][17][35]' (FDE) to 'tree0_r_reg[3][17][36]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[3][17][36]' (FDE) to 'tree0_r_reg[3][17][37]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[3][19][38]' (FDE) to 'tree0_r_reg[3][19][32]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[3][19][32]' (FDE) to 'tree0_r_reg[3][19][33]'
+INFO: [Synth 8-3886] merging instance 'tree0_r_reg[3][19][33]' (FDE) to 'tree0_r_reg[3][19][34]'
+INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\coeff_selected_r_reg[0][0][15] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\coeff_selected_r_reg[3][48][1] )
+INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\coeff_selected_r_reg[1][16][1] )
+INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\coeff_selected_r_reg[2][63][15] )
+INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\coeff_selected_r_reg[1][32][5] )
+INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\coeff_selected_r_reg[3][0][15] )
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:30 ; elapsed = 00:00:52 . Memory (MB): peak = 2485.355 ; gain = 1907.230
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+ROM: Preliminary Mapping Report
++---------------+-------------+---------------+----------------+
+|Module Name    | RTL Object  | Depth x Width | Implemented As | 
++---------------+-------------+---------------+----------------+
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane0 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane1 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane2 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
+|p2a_dct2_64_p4 | coeff_lane3 | 1024x16       | LUT            | 
++---------------+-------------+---------------+----------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:257]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:301]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/rtl/p2a_dct2_64_p4.sv:306]
+INFO: [Common 17-14] Message 'Synth 8-5844' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Common 17-14] Message 'Synth 8-5844' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Common 17-14] Message 'Synth 8-5844' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:34 ; elapsed = 00:01:13 . Memory (MB): peak = 2485.582 ; gain = 1907.457
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:39 ; elapsed = 00:01:21 . Memory (MB): peak = 2601.258 ; gain = 2023.133
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:39 ; elapsed = 00:01:22 . Memory (MB): peak = 2601.258 ; gain = 2023.133
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:40 ; elapsed = 00:01:22 . Memory (MB): peak = 2601.258 ; gain = 2023.133
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Static Shift Register Report:
++---------------------+----------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+|Module Name          | RTL Name             | Length | Width | Reset Signal | Pull out first Reg | Pull out last Reg | SRL16E | SRLC32E | 
++---------------------+----------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+|p2a_dct2_64_p4__GB10 | group_pipe_reg[9][3] | 9      | 4     | NO           | NO                 | NO                | 4      | 0       | 
+|p2a_dct2_64_p4__GB12 | id_pipe_reg[9][31]   | 10     | 32    | NO           | NO                 | NO                | 32     | 0       | 
++---------------------+----------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+DSP Final Report (the ' indicates corresponding REG is set)
++---------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name    | DSP Mapping | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++---------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | A*B         | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 7      | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 7      | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 7      | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 7      | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 7      | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 7      | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 7      | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 7      | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|p2a_dct2_64_p4 | (A*B)'      | 30     | 18     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 1    | 
++---------------+-------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+----------------+------+
+|      |Cell            |Count |
++------+----------------+------+
+|1     |CARRY8          |   770|
+|2     |DSP48E2         |     1|
+|3     |DSP_ALU         |   255|
+|4     |DSP_A_B_DATA    |   255|
+|5     |DSP_C_DATA      |   255|
+|6     |DSP_MULTIPLIER  |   255|
+|7     |DSP_M_DATA      |   255|
+|8     |DSP_OUTPUT      |   255|
+|9     |DSP_PREADD      |   255|
+|10    |DSP_PREADD_DATA |   255|
+|11    |LUT1            |    38|
+|12    |LUT2            |  6110|
+|13    |LUT3            |   289|
+|14    |LUT4            |  4406|
+|15    |LUT5            |   105|
+|16    |LUT6            |  2032|
+|17    |MUXF7           |   408|
+|18    |SRL16E          |    36|
+|19    |FDCE            |  3579|
+|20    |FDRE            | 11196|
++------+----------------+------+
+
+Report Instance Areas: 
++------+-------------------+----------------------+------+
+|      |Instance           |Module                |Cells |
++------+-------------------+----------------------+------+
+|1     |top                |                      | 31010|
+|2     |  unamedDSP        |unamedDSP_funnel__178 |     8|
+|3     |  unamedDSP__0     |unamedDSP_funnel__177 |     8|
+|4     |  unamedDSP__1     |unamedDSP_funnel__176 |     8|
+|5     |  unamedDSP__2     |unamedDSP_funnel__175 |     8|
+|6     |  unamedDSP__3     |unamedDSP_funnel__174 |     8|
+|7     |  unamedDSP__4     |unamedDSP_funnel__173 |     8|
+|8     |  unamedDSP__5     |unamedDSP_funnel__172 |     8|
+|9     |  unamedDSP__6     |unamedDSP_funnel__171 |     8|
+|10    |  unamedDSP__7     |unamedDSP_funnel__170 |     8|
+|11    |  unamedDSP__8     |unamedDSP_funnel__169 |     8|
+|12    |  unamedDSP__9     |unamedDSP_funnel__168 |     8|
+|13    |  unamedDSP__10    |unamedDSP_funnel__167 |     8|
+|14    |  unamedDSP__11    |unamedDSP_funnel__166 |     8|
+|15    |  unamedDSP__12    |unamedDSP_funnel__165 |     8|
+|16    |  unamedDSP__13    |unamedDSP_funnel__164 |     8|
+|17    |  unamedDSP__14    |unamedDSP_funnel__163 |     8|
+|18    |  unamedDSP__15    |unamedDSP_funnel__162 |     8|
+|19    |  unamedDSP__16    |unamedDSP_funnel__161 |     8|
+|20    |  unamedDSP__17    |unamedDSP_funnel__160 |     8|
+|21    |  unamedDSP__18    |unamedDSP_funnel__159 |     8|
+|22    |  unamedDSP__19    |unamedDSP_funnel__158 |     8|
+|23    |  unamedDSP__20    |unamedDSP_funnel__157 |     8|
+|24    |  unamedDSP__21    |unamedDSP_funnel__156 |     8|
+|25    |  unamedDSP__22    |unamedDSP_funnel__155 |     8|
+|26    |  unamedDSP__23    |unamedDSP_funnel__154 |     8|
+|27    |  unamedDSP__24    |unamedDSP_funnel__153 |     8|
+|28    |  unamedDSP__25    |unamedDSP_funnel__152 |     8|
+|29    |  unamedDSP__26    |unamedDSP_funnel__151 |     8|
+|30    |  unamedDSP__27    |unamedDSP_funnel__150 |     8|
+|31    |  unamedDSP__28    |unamedDSP_funnel__149 |     8|
+|32    |  unamedDSP__29    |unamedDSP_funnel__148 |     8|
+|33    |  unamedDSP__30    |unamedDSP_funnel__147 |     8|
+|34    |  unamedDSP__31    |unamedDSP_funnel__146 |     8|
+|35    |  unamedDSP__32    |unamedDSP_funnel__145 |     8|
+|36    |  unamedDSP__33    |unamedDSP_funnel__144 |     8|
+|37    |  unamedDSP__34    |unamedDSP_funnel__143 |     8|
+|38    |  unamedDSP__35    |unamedDSP_funnel__142 |     8|
+|39    |  unamedDSP__36    |unamedDSP_funnel__141 |     8|
+|40    |  unamedDSP__37    |unamedDSP_funnel__140 |     8|
+|41    |  unamedDSP__38    |unamedDSP_funnel__139 |     8|
+|42    |  unamedDSP__39    |unamedDSP_funnel__138 |     8|
+|43    |  unamedDSP__40    |unamedDSP_funnel__137 |     8|
+|44    |  unamedDSP__41    |unamedDSP_funnel__136 |     8|
+|45    |  unamedDSP__42    |unamedDSP_funnel__135 |     8|
+|46    |  unamedDSP__43    |unamedDSP_funnel__134 |     8|
+|47    |  unamedDSP__45    |unamedDSP_funnel__133 |     8|
+|48    |  unamedDSP__46    |unamedDSP_funnel__132 |     8|
+|49    |  unamedDSP__47    |unamedDSP_funnel__131 |     8|
+|50    |  unamedDSP__48    |unamedDSP_funnel__130 |     8|
+|51    |  unamedDSP__49    |unamedDSP_funnel__129 |     8|
+|52    |  unamedDSP__50    |unamedDSP_funnel__128 |     8|
+|53    |  unamedDSP__51    |unamedDSP_funnel__127 |     8|
+|54    |  unamedDSP__52    |unamedDSP_funnel__126 |     8|
+|55    |  unamedDSP__53    |unamedDSP_funnel__125 |     8|
+|56    |  unamedDSP__54    |unamedDSP_funnel__124 |     8|
+|57    |  unamedDSP__55    |unamedDSP_funnel__123 |     8|
+|58    |  unamedDSP__56    |unamedDSP_funnel__122 |     8|
+|59    |  unamedDSP__57    |unamedDSP_funnel__121 |     8|
+|60    |  unamedDSP__58    |unamedDSP_funnel__120 |     8|
+|61    |  unamedDSP__59    |unamedDSP_funnel__119 |     8|
+|62    |  unamedDSP__60    |unamedDSP_funnel__118 |     8|
+|63    |  unamedDSP__61    |unamedDSP_funnel__117 |     8|
+|64    |  unamedDSP__62    |unamedDSP_funnel__116 |     8|
+|65    |  unamedDSP__63    |unamedDSP_funnel__115 |     8|
+|66    |  unamedDSP__64    |unamedDSP_funnel__114 |     8|
+|67    |  unamedDSP__65    |unamedDSP_funnel__113 |     8|
+|68    |  unamedDSP__66    |unamedDSP_funnel      |     8|
+|69    |  unamedDSP__0__0  |unamedDSP_funnel__1   |     8|
+|70    |  unamedDSP__1__0  |unamedDSP_funnel__2   |     8|
+|71    |  unamedDSP__2__0  |unamedDSP_funnel__3   |     8|
+|72    |  unamedDSP__3__0  |unamedDSP_funnel__4   |     8|
+|73    |  unamedDSP__4__0  |unamedDSP_funnel__5   |     8|
+|74    |  unamedDSP__5__0  |unamedDSP_funnel__6   |     8|
+|75    |  unamedDSP__6__0  |unamedDSP_funnel__7   |     8|
+|76    |  unamedDSP__7__0  |unamedDSP_funnel__8   |     8|
+|77    |  unamedDSP__8__0  |unamedDSP_funnel__9   |     8|
+|78    |  unamedDSP__9__0  |unamedDSP_funnel__10  |     8|
+|79    |  unamedDSP__10__0 |unamedDSP_funnel__11  |     8|
+|80    |  unamedDSP__11__0 |unamedDSP_funnel__12  |     8|
+|81    |  unamedDSP__12__0 |unamedDSP_funnel__13  |     8|
+|82    |  unamedDSP__13__0 |unamedDSP_funnel__14  |     8|
+|83    |  unamedDSP__14__0 |unamedDSP_funnel__15  |     8|
+|84    |  unamedDSP__15__0 |unamedDSP_funnel__16  |     8|
+|85    |  unamedDSP__16__0 |unamedDSP_funnel__17  |     8|
+|86    |  unamedDSP__17__0 |unamedDSP_funnel__18  |     8|
+|87    |  unamedDSP__18__0 |unamedDSP_funnel__19  |     8|
+|88    |  unamedDSP__19__0 |unamedDSP_funnel__20  |     8|
+|89    |  unamedDSP__20__0 |unamedDSP_funnel__21  |     8|
+|90    |  unamedDSP__21__0 |unamedDSP_funnel__22  |     8|
+|91    |  unamedDSP__22__0 |unamedDSP_funnel__23  |     8|
+|92    |  unamedDSP__23__0 |unamedDSP_funnel__24  |     8|
+|93    |  unamedDSP__24__0 |unamedDSP_funnel__25  |     8|
+|94    |  unamedDSP__25__0 |unamedDSP_funnel__26  |     8|
+|95    |  unamedDSP__26__0 |unamedDSP_funnel__27  |     8|
+|96    |  unamedDSP__27__0 |unamedDSP_funnel__28  |     8|
+|97    |  unamedDSP__28__0 |unamedDSP_funnel__29  |     8|
+|98    |  unamedDSP__29__0 |unamedDSP_funnel__30  |     8|
+|99    |  unamedDSP__30__0 |unamedDSP_funnel__31  |     8|
+|100   |  unamedDSP__31__0 |unamedDSP_funnel__32  |     8|
+|101   |  unamedDSP__32__0 |unamedDSP_funnel__33  |     8|
+|102   |  unamedDSP__33__0 |unamedDSP_funnel__34  |     8|
+|103   |  unamedDSP__34__0 |unamedDSP_funnel__35  |     8|
+|104   |  unamedDSP__67    |unamedDSP_funnel__36  |     8|
+|105   |  unamedDSP__0__1  |unamedDSP_funnel__37  |     8|
+|106   |  unamedDSP__1__1  |unamedDSP_funnel__38  |     8|
+|107   |  unamedDSP__2__1  |unamedDSP_funnel__39  |     8|
+|108   |  unamedDSP__3__1  |unamedDSP_funnel__40  |     8|
+|109   |  unamedDSP__4__1  |unamedDSP_funnel__41  |     8|
+|110   |  unamedDSP__5__1  |unamedDSP_funnel__42  |     8|
+|111   |  unamedDSP__6__1  |unamedDSP_funnel__43  |     8|
+|112   |  unamedDSP__7__1  |unamedDSP_funnel__44  |     8|
+|113   |  unamedDSP__8__1  |unamedDSP_funnel__45  |     8|
+|114   |  unamedDSP__9__1  |unamedDSP_funnel__46  |     8|
+|115   |  unamedDSP__10__1 |unamedDSP_funnel__47  |     8|
+|116   |  unamedDSP__11__1 |unamedDSP_funnel__48  |     8|
+|117   |  unamedDSP__12__1 |unamedDSP_funnel__49  |     8|
+|118   |  unamedDSP__13__1 |unamedDSP_funnel__50  |     8|
+|119   |  unamedDSP__14__1 |unamedDSP_funnel__51  |     8|
+|120   |  unamedDSP__15__1 |unamedDSP_funnel__52  |     8|
+|121   |  unamedDSP__16__1 |unamedDSP_funnel__53  |     8|
+|122   |  unamedDSP__17__1 |unamedDSP_funnel__54  |     8|
+|123   |  unamedDSP__18__1 |unamedDSP_funnel__55  |     8|
+|124   |  unamedDSP__19__1 |unamedDSP_funnel__56  |     8|
+|125   |  unamedDSP__20__1 |unamedDSP_funnel__57  |     8|
+|126   |  unamedDSP__21__1 |unamedDSP_funnel__58  |     8|
+|127   |  unamedDSP__22__1 |unamedDSP_funnel__59  |     8|
+|128   |  unamedDSP__23__1 |unamedDSP_funnel__60  |     8|
+|129   |  unamedDSP__24__1 |unamedDSP_funnel__61  |     8|
+|130   |  unamedDSP__68    |unamedDSP_funnel__112 |     8|
+|131   |  unamedDSP__0__2  |unamedDSP_funnel__111 |     8|
+|132   |  unamedDSP__1__2  |unamedDSP_funnel__110 |     8|
+|133   |  unamedDSP__2__2  |unamedDSP_funnel__109 |     8|
+|134   |  unamedDSP__3__2  |unamedDSP_funnel__108 |     8|
+|135   |  unamedDSP__4__2  |unamedDSP_funnel__107 |     8|
+|136   |  unamedDSP__5__2  |unamedDSP_funnel__106 |     8|
+|137   |  unamedDSP__6__2  |unamedDSP_funnel__105 |     8|
+|138   |  unamedDSP__7__2  |unamedDSP_funnel__104 |     8|
+|139   |  unamedDSP__8__2  |unamedDSP_funnel__103 |     8|
+|140   |  unamedDSP__9__2  |unamedDSP_funnel__102 |     8|
+|141   |  unamedDSP__10__2 |unamedDSP_funnel__101 |     8|
+|142   |  unamedDSP__11__2 |unamedDSP_funnel__100 |     8|
+|143   |  unamedDSP__12__2 |unamedDSP_funnel__99  |     8|
+|144   |  unamedDSP__13__2 |unamedDSP_funnel__98  |     8|
+|145   |  unamedDSP__14__2 |unamedDSP_funnel__97  |     8|
+|146   |  unamedDSP__15__2 |unamedDSP_funnel__96  |     8|
+|147   |  unamedDSP__16__2 |unamedDSP_funnel__95  |     8|
+|148   |  unamedDSP__17__2 |unamedDSP_funnel__94  |     8|
+|149   |  unamedDSP__18__2 |unamedDSP_funnel__93  |     8|
+|150   |  unamedDSP__19__2 |unamedDSP_funnel__92  |     8|
+|151   |  unamedDSP__20__2 |unamedDSP_funnel__91  |     8|
+|152   |  unamedDSP__21__2 |unamedDSP_funnel__90  |     8|
+|153   |  unamedDSP__22__2 |unamedDSP_funnel__89  |     8|
+|154   |  unamedDSP__23__2 |unamedDSP_funnel__88  |     8|
+|155   |  unamedDSP__24__2 |unamedDSP_funnel__87  |     8|
+|156   |  unamedDSP__25__1 |unamedDSP_funnel__86  |     8|
+|157   |  unamedDSP__26__1 |unamedDSP_funnel__85  |     8|
+|158   |  unamedDSP__27__1 |unamedDSP_funnel__84  |     8|
+|159   |  unamedDSP__28__1 |unamedDSP_funnel__83  |     8|
+|160   |  unamedDSP__29__1 |unamedDSP_funnel__82  |     8|
+|161   |  unamedDSP__30__1 |unamedDSP_funnel__81  |     8|
+|162   |  unamedDSP__31__1 |unamedDSP_funnel__80  |     8|
+|163   |  unamedDSP__32__1 |unamedDSP_funnel__79  |     8|
+|164   |  unamedDSP__33__1 |unamedDSP_funnel__78  |     8|
+|165   |  unamedDSP__34__1 |unamedDSP_funnel__77  |     8|
+|166   |  unamedDSP__35__0 |unamedDSP_funnel__76  |     8|
+|167   |  unamedDSP__36__0 |unamedDSP_funnel__75  |     8|
+|168   |  unamedDSP__37__0 |unamedDSP_funnel__74  |     8|
+|169   |  unamedDSP__38__0 |unamedDSP_funnel__73  |     8|
+|170   |  unamedDSP__39__0 |unamedDSP_funnel__72  |     8|
+|171   |  unamedDSP__40__0 |unamedDSP_funnel__71  |     8|
+|172   |  unamedDSP__41__0 |unamedDSP_funnel__70  |     8|
+|173   |  unamedDSP__42__0 |unamedDSP_funnel__69  |     8|
+|174   |  unamedDSP__43__0 |unamedDSP_funnel__68  |     8|
+|175   |  unamedDSP__44__0 |unamedDSP_funnel__67  |     8|
+|176   |  unamedDSP__45__0 |unamedDSP_funnel__66  |     8|
+|177   |  unamedDSP__69    |unamedDSP_funnel__254 |     8|
+|178   |  unamedDSP__0__3  |unamedDSP_funnel__253 |     8|
+|179   |  unamedDSP__1__3  |unamedDSP_funnel__252 |     8|
+|180   |  unamedDSP__2__3  |unamedDSP_funnel__251 |     8|
+|181   |  unamedDSP__3__3  |unamedDSP_funnel__250 |     8|
+|182   |  unamedDSP__4__3  |unamedDSP_funnel__249 |     8|
+|183   |  unamedDSP__5__3  |unamedDSP_funnel__248 |     8|
+|184   |  unamedDSP__6__3  |unamedDSP_funnel__247 |     8|
+|185   |  unamedDSP__7__3  |unamedDSP_funnel__246 |     8|
+|186   |  unamedDSP__8__3  |unamedDSP_funnel__245 |     8|
+|187   |  unamedDSP__9__3  |unamedDSP_funnel__244 |     8|
+|188   |  unamedDSP__10__3 |unamedDSP_funnel__243 |     8|
+|189   |  unamedDSP__11__3 |unamedDSP_funnel__242 |     8|
+|190   |  unamedDSP__12__3 |unamedDSP_funnel__241 |     8|
+|191   |  unamedDSP__13__3 |unamedDSP_funnel__240 |     8|
+|192   |  unamedDSP__14__3 |unamedDSP_funnel__239 |     8|
+|193   |  unamedDSP__15__3 |unamedDSP_funnel__238 |     8|
+|194   |  unamedDSP__16__3 |unamedDSP_funnel__237 |     8|
+|195   |  unamedDSP__17__3 |unamedDSP_funnel__236 |     8|
+|196   |  unamedDSP__18__3 |unamedDSP_funnel__235 |     8|
+|197   |  unamedDSP__19__3 |unamedDSP_funnel__234 |     8|
+|198   |  unamedDSP__20__3 |unamedDSP_funnel__233 |     8|
+|199   |  unamedDSP__21__3 |unamedDSP_funnel__232 |     8|
+|200   |  unamedDSP__22__3 |unamedDSP_funnel__231 |     8|
+|201   |  unamedDSP__23__3 |unamedDSP_funnel__230 |     8|
+|202   |  unamedDSP__24__3 |unamedDSP_funnel__229 |     8|
+|203   |  unamedDSP__25__2 |unamedDSP_funnel__228 |     8|
+|204   |  unamedDSP__26__2 |unamedDSP_funnel__227 |     8|
+|205   |  unamedDSP__27__2 |unamedDSP_funnel__226 |     8|
+|206   |  unamedDSP__28__2 |unamedDSP_funnel__225 |     8|
+|207   |  unamedDSP__29__2 |unamedDSP_funnel__224 |     8|
+|208   |  unamedDSP__30__2 |unamedDSP_funnel__223 |     8|
+|209   |  unamedDSP__31__2 |unamedDSP_funnel__222 |     8|
+|210   |  unamedDSP__32__2 |unamedDSP_funnel__221 |     8|
+|211   |  unamedDSP__33__2 |unamedDSP_funnel__220 |     8|
+|212   |  unamedDSP__34__2 |unamedDSP_funnel__219 |     8|
+|213   |  unamedDSP__35__1 |unamedDSP_funnel__218 |     8|
+|214   |  unamedDSP__36__1 |unamedDSP_funnel__217 |     8|
+|215   |  unamedDSP__37__1 |unamedDSP_funnel__216 |     8|
+|216   |  unamedDSP__38__1 |unamedDSP_funnel__215 |     8|
+|217   |  unamedDSP__39__1 |unamedDSP_funnel__214 |     8|
+|218   |  unamedDSP__40__1 |unamedDSP_funnel__213 |     8|
+|219   |  unamedDSP__41__1 |unamedDSP_funnel__212 |     8|
+|220   |  unamedDSP__42__1 |unamedDSP_funnel__211 |     8|
+|221   |  unamedDSP__43__1 |unamedDSP_funnel__210 |     8|
+|222   |  unamedDSP__44__1 |unamedDSP_funnel__209 |     8|
+|223   |  unamedDSP__45__1 |unamedDSP_funnel__208 |     8|
+|224   |  unamedDSP__46__0 |unamedDSP_funnel__207 |     8|
+|225   |  unamedDSP__47__0 |unamedDSP_funnel__206 |     8|
+|226   |  unamedDSP__48__0 |unamedDSP_funnel__205 |     8|
+|227   |  unamedDSP__49__0 |unamedDSP_funnel__204 |     8|
+|228   |  unamedDSP__50__0 |unamedDSP_funnel__203 |     8|
+|229   |  unamedDSP__51__0 |unamedDSP_funnel__202 |     8|
+|230   |  unamedDSP__52__0 |unamedDSP_funnel__201 |     8|
+|231   |  unamedDSP__53__0 |unamedDSP_funnel__200 |     8|
+|232   |  unamedDSP__54__0 |unamedDSP_funnel__199 |     8|
+|233   |  unamedDSP__55__0 |unamedDSP_funnel__198 |     8|
+|234   |  unamedDSP__56__0 |unamedDSP_funnel__197 |     8|
+|235   |  unamedDSP__57__0 |unamedDSP_funnel__196 |     8|
+|236   |  unamedDSP__58__0 |unamedDSP_funnel__195 |     8|
+|237   |  unamedDSP__59__0 |unamedDSP_funnel__194 |     8|
+|238   |  unamedDSP__60__0 |unamedDSP_funnel__193 |     8|
+|239   |  unamedDSP__61__0 |unamedDSP_funnel__192 |     8|
+|240   |  unamedDSP__62__0 |unamedDSP_funnel__191 |     8|
+|241   |  unamedDSP__63__0 |unamedDSP_funnel__190 |     8|
+|242   |  unamedDSP__64__0 |unamedDSP_funnel__189 |     8|
+|243   |  unamedDSP__65__0 |unamedDSP_funnel__188 |     8|
+|244   |  unamedDSP__66__0 |unamedDSP_funnel__187 |     8|
+|245   |  unamedDSP__67__0 |unamedDSP_funnel__186 |     8|
+|246   |  unamedDSP__68__0 |unamedDSP_funnel__185 |     8|
+|247   |  unamedDSP__69__0 |unamedDSP_funnel__184 |     8|
+|248   |  unamedDSP__70    |unamedDSP_funnel__183 |     8|
+|249   |  unamedDSP__71    |unamedDSP_funnel__182 |     8|
+|250   |  unamedDSP__72    |unamedDSP_funnel__181 |     8|
+|251   |  unamedDSP__73    |unamedDSP_funnel__180 |     8|
+|252   |  unamedDSP__74    |unamedDSP_funnel__179 |     8|
+|253   |  unamedDSP__75    |unamedDSP_funnel__62  |     8|
+|254   |  unamedDSP__0__4  |unamedDSP_funnel__63  |     8|
+|255   |  unamedDSP__1__4  |unamedDSP_funnel__64  |     8|
+|256   |  unamedDSP__2__4  |unamedDSP_funnel__65  |     8|
++------+-------------------+----------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:40 ; elapsed = 00:01:22 . Memory (MB): peak = 2601.258 ; gain = 2023.133
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 538 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:40 ; elapsed = 00:01:27 . Memory (MB): peak = 2601.258 ; gain = 2023.133
+Synthesis Optimization Complete : Time (s): cpu = 00:00:40 ; elapsed = 00:01:27 . Memory (MB): peak = 2601.258 ; gain = 2023.133
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.259 . Memory (MB): peak = 2644.898 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 1434 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 2 CPU seconds
+WARNING: [Netlist 29-101] Netlist 'p2a_dct2_64_p4' is not ideal for floorplanning, since the cellview 'p2a_dct2_64_p4' contains a large number of primitives.  Please consider enabling hierarchy in synthesis if you want to do floorplanning.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.010 . Memory (MB): peak = 2810.184 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 256 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 256 instances
+
+Synth Design complete | Checksum: e13fe221
+INFO: [Common 17-83] Releasing license: Synthesis
+237 Infos, 107 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:49 ; elapsed = 00:01:40 . Memory (MB): peak = 2810.184 ; gain = 2232.059
+# create_clock -name clk -period 2.000 [get_ports clk]
+# place_design -directive Quick
+Command: place_design -directive Quick
+Attempting to get a license for feature 'Implementation' and/or device 'xcku5p'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xcku5p'
+INFO: [Common 17-83] Releasing license: Implementation
+INFO: [DRC 23-27] Running DRC with 8 threads
+WARNING: [DRC 23-814] Not all possible (connectivity based) DRCs may have been run because this design is seen as Out of Context.
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Vivado_Tcl 4-2302] The placer was invoked with the 'Quick' directive.
+Running DRC as a precondition to command place_design
+INFO: [DRC 23-27] Running DRC with 8 threads
+WARNING: [DRC 23-814] Not all possible (connectivity based) DRCs may have been run because this design is seen as Out of Context.
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 8 CPUs
+
+Starting Placer Task
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.011 . Memory (MB): peak = 2996.914 ; gain = 0.000
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 129439a7a
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.086 . Memory (MB): peak = 2996.914 ; gain = 0.000
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.010 . Memory (MB): peak = 2996.914 ; gain = 0.000
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 197b55962
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:05 . Memory (MB): peak = 2996.914 ; gain = 0.000
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: 20ce86055
+
+Time (s): cpu = 00:00:21 ; elapsed = 00:00:09 . Memory (MB): peak = 3013.949 ; gain = 17.035
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: 20ce86055
+
+Time (s): cpu = 00:00:21 ; elapsed = 00:00:09 . Memory (MB): peak = 3013.949 ; gain = 17.035
+Phase 1 Placer Initialization | Checksum: 20ce86055
+
+Time (s): cpu = 00:00:21 ; elapsed = 00:00:09 . Memory (MB): peak = 3014.719 ; gain = 17.805
+
+Phase 2 Global Placement
+
+Phase 2.1 Floorplanning
+
+Phase 2.1.1 Partition Driven Placement
+
+Phase 2.1.1.1 PBP: Partition Driven Placement
+Phase 2.1.1.1 PBP: Partition Driven Placement | Checksum: 225876740
+
+Time (s): cpu = 00:00:25 ; elapsed = 00:00:11 . Memory (MB): peak = 3021.453 ; gain = 24.539
+
+Phase 2.1.1.2 PBP: Clock Region Placement
+INFO: [Place 30-3164] Check ILP status : ILP-based clock placer is skipped.
+Phase 2.1.1.2 PBP: Clock Region Placement | Checksum: 1abe9185c
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:11 . Memory (MB): peak = 3021.453 ; gain = 24.539
+
+Phase 2.1.1.3 PBP: Compute Congestion
+Phase 2.1.1.3 PBP: Compute Congestion | Checksum: 1abe9185c
+
+Time (s): cpu = 00:00:42 ; elapsed = 00:00:18 . Memory (MB): peak = 3812.352 ; gain = 815.438
+
+Phase 2.1.1.4 PBP: Add part constraints
+Phase 2.1.1.4 PBP: Add part constraints | Checksum: 1abe9185c
+
+Time (s): cpu = 00:00:42 ; elapsed = 00:00:18 . Memory (MB): peak = 3812.352 ; gain = 815.438
+Phase 2.1.1 Partition Driven Placement | Checksum: 1abe9185c
+
+Time (s): cpu = 00:00:42 ; elapsed = 00:00:18 . Memory (MB): peak = 3812.352 ; gain = 815.438
+Phase 2.1 Floorplanning | Checksum: 1abe9185c
+
+Time (s): cpu = 00:00:42 ; elapsed = 00:00:18 . Memory (MB): peak = 3812.352 ; gain = 815.438
+
+Phase 2.2 Update Timing before SLR Path Opt
+Phase 2.2 Update Timing before SLR Path Opt | Checksum: 1abe9185c
+
+Time (s): cpu = 00:00:42 ; elapsed = 00:00:18 . Memory (MB): peak = 3812.352 ; gain = 815.438
+
+Phase 2.3 Post-Processing in Floorplanning
+Phase 2.3 Post-Processing in Floorplanning | Checksum: 1abe9185c
+
+Time (s): cpu = 00:00:42 ; elapsed = 00:00:18 . Memory (MB): peak = 3812.352 ; gain = 815.438
+
+Phase 2.4 Global Place Phase1
+Phase 2.4 Global Place Phase1 | Checksum: 26318f1b6
+
+Time (s): cpu = 00:03:02 ; elapsed = 00:01:19 . Memory (MB): peak = 4008.180 ; gain = 1011.266
+
+Phase 2.5 Global Place Phase2
+WARNING: [Place 46-29] Timing had been disabled during Placer and, therefore, physical synthesis in Placer will be skipped.
+Phase 2.5 Global Place Phase2 | Checksum: 30c08aa73
+
+Time (s): cpu = 00:03:23 ; elapsed = 00:01:28 . Memory (MB): peak = 4008.180 ; gain = 1011.266
+Phase 2 Global Placement | Checksum: 30c08aa73
+
+Time (s): cpu = 00:03:24 ; elapsed = 00:01:28 . Memory (MB): peak = 4008.180 ; gain = 1011.266
+
+Phase 3 Detail Placement
+
+Phase 3.1 Commit Multi Column Macros
+Phase 3.1 Commit Multi Column Macros | Checksum: 30c08aa73
+
+Time (s): cpu = 00:03:42 ; elapsed = 00:01:37 . Memory (MB): peak = 4008.180 ; gain = 1011.266
+
+Phase 3.2 Commit Most Macros & LUTRAMs
+Phase 3.2 Commit Most Macros & LUTRAMs | Checksum: 2b9f0daae
+
+Time (s): cpu = 00:03:43 ; elapsed = 00:01:38 . Memory (MB): peak = 4008.180 ; gain = 1011.266
+
+Phase 3.3 Small Shape DP
+
+Phase 3.3.1 Small Shape Clustering
+Phase 3.3.1 Small Shape Clustering | Checksum: 26af9beb5
+
+Time (s): cpu = 00:04:19 ; elapsed = 00:01:54 . Memory (MB): peak = 4008.180 ; gain = 1011.266
+
+Phase 3.3.2 Slice Area Swap
+
+Phase 3.3.2.1 Slice Area Swap Initial
+Phase 3.3.2.1 Slice Area Swap Initial | Checksum: 1f7c8f61f
+
+Time (s): cpu = 00:04:38 ; elapsed = 00:02:04 . Memory (MB): peak = 4008.180 ; gain = 1011.266
+Phase 3.3.2 Slice Area Swap | Checksum: 1f7c8f61f
+
+Time (s): cpu = 00:04:39 ; elapsed = 00:02:04 . Memory (MB): peak = 4008.180 ; gain = 1011.266
+Phase 3.3 Small Shape DP | Checksum: 1c0c0e895
+
+Time (s): cpu = 00:05:18 ; elapsed = 00:02:22 . Memory (MB): peak = 4026.172 ; gain = 1029.258
+
+Phase 3.4 Re-assign LUT pins
+Phase 3.4 Re-assign LUT pins | Checksum: 1c0c0e895
+
+Time (s): cpu = 00:05:20 ; elapsed = 00:02:24 . Memory (MB): peak = 4026.172 ; gain = 1029.258
+
+Phase 3.5 Pipeline Register Optimization
+Phase 3.5 Pipeline Register Optimization | Checksum: 2fd9f93dd
+
+Time (s): cpu = 00:05:20 ; elapsed = 00:02:24 . Memory (MB): peak = 4026.172 ; gain = 1029.258
+Phase 3 Detail Placement | Checksum: 2fd9f93dd
+
+Time (s): cpu = 00:05:20 ; elapsed = 00:02:24 . Memory (MB): peak = 4026.172 ; gain = 1029.258
+
+Phase 4 Post Placement Optimization and Clean-Up
+
+Phase 4.1 Post Commit Optimization
+Phase 4.1 Post Commit Optimization | Checksum: 2fd9f93dd
+
+Time (s): cpu = 00:05:39 ; elapsed = 00:02:33 . Memory (MB): peak = 4026.172 ; gain = 1029.258
+
+Phase 4.2 Post Placement Cleanup
+Phase 4.2 Post Placement Cleanup | Checksum: 2fd9f93dd
+
+Time (s): cpu = 00:06:02 ; elapsed = 00:02:46 . Memory (MB): peak = 4026.172 ; gain = 1029.258
+
+Phase 4.3 Placer Reporting
+
+Phase 4.3.1 Print Estimated Congestion
+INFO: [Place 30-612] Post-Placement Estimated Congestion 
+ ________________________________________________________________________
+|           | Global Congestion | Long Congestion   | Short Congestion  |
+| Direction | Region Size       | Region Size       | Region Size       |
+|___________|___________________|___________________|___________________|
+|      North|                1x1|                1x1|                1x1|
+|___________|___________________|___________________|___________________|
+|      South|                1x1|                1x1|                1x1|
+|___________|___________________|___________________|___________________|
+|       East|                1x1|                1x1|                1x1|
+|___________|___________________|___________________|___________________|
+|       West|                1x1|                1x1|                1x1|
+|___________|___________________|___________________|___________________|
+
+Phase 4.3.1 Print Estimated Congestion | Checksum: 2fd9f93dd
+
+Time (s): cpu = 00:06:02 ; elapsed = 00:02:46 . Memory (MB): peak = 4026.172 ; gain = 1029.258
+Phase 4.3 Placer Reporting | Checksum: 2fd9f93dd
+
+Time (s): cpu = 00:06:02 ; elapsed = 00:02:46 . Memory (MB): peak = 4026.172 ; gain = 1029.258
+
+Phase 4.4 Final Placement Cleanup
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.012 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Time (s): cpu = 00:06:02 ; elapsed = 00:02:46 . Memory (MB): peak = 4026.172 ; gain = 1029.258
+Phase 4 Post Placement Optimization and Clean-Up | Checksum: 2e1d7e4d6
+
+Time (s): cpu = 00:06:03 ; elapsed = 00:02:46 . Memory (MB): peak = 4026.172 ; gain = 1029.258
+Ending Placer Task | Checksum: 2385ecf1c
+
+Time (s): cpu = 00:06:03 ; elapsed = 00:02:46 . Memory (MB): peak = 4026.172 ; gain = 1029.258
+15 Infos, 3 Warnings, 0 Critical Warnings and 0 Errors encountered.
+place_design completed successfully
+place_design: Time (s): cpu = 00:06:34 ; elapsed = 00:03:05 . Memory (MB): peak = 4026.172 ; gain = 1215.988
+# route_design -directive Quick
+Command: route_design -directive Quick
+Attempting to get a license for feature 'Implementation' and/or device 'xcku5p'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xcku5p'
+
+
+Starting Routing Task
+INFO: [Route 35-270] Using Router directive 'Quick'.
+INFO: [Route 35-254] Multithreading enabled for route_design using a maximum of 8 CPUs
+
+Phase 1 Build RT Design
+Checksum: PlaceDB: bc7124c1 ConstDB: 0 ShapeSum: c546b6ff RouteDB: b6a6f35c
+Nodegraph reading from file.  Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.372 . Memory (MB): peak = 4026.172 ; gain = 0.000
+WARNING: [Route 35-197] Clock port "clk" does not have an associated HD.CLK_SRC. Without this constraint, timing analysis may not be accurate and upstream checks cannot be done to ensure correct clock placement.
+WARNING: [Route 35-198] Port "rst_n" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "rst_n". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[13]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[13]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[12]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[12]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[15]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[15]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[29]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[29]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[26]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[26]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[17]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[17]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[63]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[63]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[60]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[60]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[54]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[54]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[46]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[46]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[61]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[61]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[59]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[59]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[40]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[40]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[58]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[58]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[10]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[10]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[13]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[13]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[6]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[6]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[2]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[2]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[14]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[14]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[8]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[8]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[5]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[5]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[0]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[0]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[15]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[15]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[12]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[12]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[1]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[1]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[9]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[9]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[7]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[7]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[3]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[3]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[30]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[30]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[17]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[17]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[10]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[10]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[3]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[3]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[1]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[1]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[0]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[0]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[14]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[14]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[11]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[11]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[6]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[6]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[24]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[24]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[8]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[8]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[41]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[41]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[31]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[31]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[30]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[30]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[51]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[51]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[48]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[48]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[44]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[44]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[38]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[38]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[34]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[34]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[62]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[62]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[52]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[52]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[47]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[47]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[11]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[11]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[4]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[4]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[31]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[31]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[29]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[29]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[27]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[27]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[56]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[56]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[55]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[55]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[50]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[50]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[49]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[49]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[43]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[43]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[39]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[39]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[45]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[45]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[57]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[57]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[18]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[18]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[9]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[9]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[26]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[26]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[25]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[25]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[21]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[21]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[24]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[24]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[28]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[28]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[20]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[20]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[19]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[19]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[18]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[18]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[7]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[7]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[5]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[5]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[27]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[27]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[4]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[4]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[2]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[2]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[25]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[25]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[22]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[22]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[20]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[20]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[23]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[23]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[22]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[22]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start_id[16]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start_id[16]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[28]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[28]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[21]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[21]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[53]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[53]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[36]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[36]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[35]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[35]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[37]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[37]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[32]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[32]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[23]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[23]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[19]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[19]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[16]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[16]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[42]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[42]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_data[33]" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_data[33]". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "result_ready" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "result_ready". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "load_valid" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "load_valid". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+WARNING: [Route 35-198] Port "vector_start" does not have an associated HD.PARTPIN_LOCS, which will prevent the partial routing of the signal "vector_start". Without this partial route, timing analysis to/from this port will not be accurate, and no routing information for this port can be exported.
+INFO: [Common 17-14] Message 'Route 35-198' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+Post Restoration Checksum: NetGraph: 987b08d6 | NumContArr: c94800d1 | Constraints: c2a8fa9d | Timing: c2a8fa9d
+Phase 1 Build RT Design | Checksum: 2e714fee1
+
+Time (s): cpu = 00:00:05 ; elapsed = 00:00:02 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Phase 2 Router Initialization
+
+Phase 2.1 Fix Topology Constraints
+Phase 2.1 Fix Topology Constraints | Checksum: 2e714fee1
+
+Time (s): cpu = 00:00:05 ; elapsed = 00:00:02 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Phase 2.2 Pre Route Cleanup
+Phase 2.2 Pre Route Cleanup | Checksum: 2e714fee1
+
+Time (s): cpu = 00:00:05 ; elapsed = 00:00:02 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Phase 2.3 Global Clock Net Routing
+Phase 2.3 Global Clock Net Routing | Checksum: 2e714fee1
+
+Time (s): cpu = 00:00:06 ; elapsed = 00:00:02 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 0 %
+  Global Horizontal Routing Utilization  = 0 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 22075
+    (Failed Nets is the sum of unrouted and partially routed nets)
+  Number of Unrouted Nets             = 21379
+  Number of Partially Routed Nets     = 696
+  Number of Node Overlaps             = 0
+
+Phase 2 Router Initialization | Checksum: 2e714fee1
+
+Time (s): cpu = 00:00:08 ; elapsed = 00:00:03 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Phase 3 Global Routing
+Phase 3 Global Routing | Checksum: 2e714fee1
+
+Time (s): cpu = 00:00:08 ; elapsed = 00:00:03 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Phase 4 Initial Routing
+
+Phase 4.1 Initial Net Routing Pass
+Phase 4.1 Initial Net Routing Pass | Checksum: 27890ee58
+
+Time (s): cpu = 00:00:14 ; elapsed = 00:00:05 . Memory (MB): peak = 4026.172 ; gain = 0.000
+Phase 4 Initial Routing | Checksum: 27890ee58
+
+Time (s): cpu = 00:00:14 ; elapsed = 00:00:05 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Phase 5 Rip-up And Reroute
+
+Phase 5.1 Global Iteration 0
+ Number of Nodes with overlaps = 2047
+ Number of Nodes with overlaps = 85
+ Number of Nodes with overlaps = 2
+ Number of Nodes with overlaps = 0
+Phase 5.1 Global Iteration 0 | Checksum: 2a5bb7340
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:09 . Memory (MB): peak = 4026.172 ; gain = 0.000
+Phase 5 Rip-up And Reroute | Checksum: 2a5bb7340
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:09 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Phase 6 Delay and Skew Optimization
+Phase 6 Delay and Skew Optimization | Checksum: 2a5bb7340
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:09 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Phase 7 Post Hold Fix
+
+Phase 7.1 Hold Fix Iter
+Phase 7.1 Hold Fix Iter | Checksum: 2a5bb7340
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:09 . Memory (MB): peak = 4026.172 ; gain = 0.000
+Phase 7 Post Hold Fix | Checksum: 2a5bb7340
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:09 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Phase 8 Route finalize
+
+Router Utilization Summary
+  Global Vertical Routing Utilization    = 1.12118 %
+  Global Horizontal Routing Utilization  = 1.62184 %
+  Routable Net Status*
+  *Does not include unroutable nets such as driverless and loadless.
+  Run report_route_status for detailed report.
+  Number of Failed Nets               = 0
+    (Failed Nets is the sum of unrouted and partially routed nets)
+  Number of Unrouted Nets             = 0
+  Number of Partially Routed Nets     = 0
+  Number of Node Overlaps             = 0
+
+
+--GLOBAL Congestion:
+Utilization threshold used for congestion level computation: 0.85
+Congestion Report
+North Dir 1x1 Area, Max Cong = 53.9906%, No Congested Regions.
+South Dir 1x1 Area, Max Cong = 47.8673%, No Congested Regions.
+East Dir 1x1 Area, Max Cong = 59.6154%, No Congested Regions.
+West Dir 1x1 Area, Max Cong = 63.4615%, No Congested Regions.
+
+------------------------------
+Reporting congestion hotspots
+------------------------------
+Direction: North
+----------------
+Congested clusters found at Level 0
+Effective congestion level: 0 Aspect Ratio: 1 Sparse Ratio: 0
+Direction: South
+----------------
+Congested clusters found at Level 0
+Effective congestion level: 0 Aspect Ratio: 1 Sparse Ratio: 0
+Direction: East
+----------------
+Congested clusters found at Level 0
+Effective congestion level: 0 Aspect Ratio: 1 Sparse Ratio: 0
+Direction: West
+----------------
+Congested clusters found at Level 0
+Effective congestion level: 0 Aspect Ratio: 1 Sparse Ratio: 0
+
+Phase 8 Route finalize | Checksum: 2a5bb7340
+
+Time (s): cpu = 00:00:26 ; elapsed = 00:00:10 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Phase 9 Verifying routed nets
+
+ Verification completed successfully
+Phase 9 Verifying routed nets | Checksum: 2a5bb7340
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:10 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Phase 10 Depositing Routes
+Phase 10 Depositing Routes | Checksum: 2a5bb7340
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:11 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Phase 11 Resolve XTalk
+
+Skipping xtalk assignment for non timing driven mode.
+Phase 11 Resolve XTalk | Checksum: 2a5bb7340
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:11 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Phase 12 Post Process Routing
+Phase 12 Post Process Routing | Checksum: 2a5bb7340
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:11 . Memory (MB): peak = 4026.172 ; gain = 0.000
+Total Elapsed time in route_design: 11.137 secs
+
+Phase 13 Post-Route Event Processing
+Phase 13 Post-Route Event Processing | Checksum: 1c26ebd4d
+
+Time (s): cpu = 00:00:29 ; elapsed = 00:00:11 . Memory (MB): peak = 4026.172 ; gain = 0.000
+INFO: [Route 35-16] Router Completed Successfully
+Ending Routing Task | Checksum: 1c26ebd4d
+
+Time (s): cpu = 00:00:30 ; elapsed = 00:00:12 . Memory (MB): peak = 4026.172 ; gain = 0.000
+
+Routing Is Done.
+INFO: [Common 17-83] Releasing license: Implementation
+6 Infos, 101 Warnings, 0 Critical Warnings and 0 Errors encountered.
+route_design completed successfully
+route_design: Time (s): cpu = 00:00:30 ; elapsed = 00:00:12 . Memory (MB): peak = 4026.172 ; gain = 0.000
+# report_timing_summary -delay_type max -max_paths 20 -file [file join $REPORT p2a_timing_summary.rpt]
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 8 CPUs
+WARNING: [Timing 38-242] The property HD.CLK_SRC of clock port "clk" is not set. In out-of-context mode, this prevents timing estimation for clock delay/skew
+Resolution: Set the HD.CLK_SRC property of the out-of-context port to the location of the clock buffer instance in the top-level design
+report_timing_summary: Time (s): cpu = 00:00:26 ; elapsed = 00:00:07 . Memory (MB): peak = 4026.172 ; gain = 0.000
+# report_timing -delay_type max -max_paths 20 -file [file join $REPORT p2a_setup_paths.rpt]
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 8 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+# report_timing -delay_type min -max_paths 20 -file [file join $REPORT p2a_hold_paths.rpt]
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: min.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 8 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -max_paths 20 -nworst 1 -delay_type min -sort_by slack.
+# report_utilization -file [file join $REPORT p2a_utilization.rpt]
+# report_power -file [file join $REPORT p2a_power.rpt]
+Command: report_power -file D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/vivado/reports/p2a_power.rpt
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+0 Infos, 0 Warnings, 0 Critical Warnings and 0 Errors encountered.
+report_power completed successfully
+report_power: Time (s): cpu = 00:00:09 ; elapsed = 00:00:05 . Memory (MB): peak = 4026.172 ; gain = 0.000
+# write_checkpoint -force [file join $REPORT p2a_dct2_64_ooc.dcp]
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Write ShapeDB Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.062 . Memory (MB): peak = 4026.172 ; gain = 0.000
+Wrote PlaceDB: Time (s): cpu = 00:00:03 ; elapsed = 00:00:01 . Memory (MB): peak = 4026.172 ; gain = 0.000
+Wrote PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 4026.172 ; gain = 0.000
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Wrote RouteStorage: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.450 . Memory (MB): peak = 4026.172 ; gain = 0.000
+Wrote Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.068 . Memory (MB): peak = 4026.172 ; gain = 0.000
+Wrote Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.016 . Memory (MB): peak = 4026.172 ; gain = 0.000
+Write Physdb Complete: Time (s): cpu = 00:00:04 ; elapsed = 00:00:02 . Memory (MB): peak = 4026.172 ; gain = 0.000
+INFO: [Common 17-1381] The checkpoint 'D:/Workspace/ITS_STUDY_V35_P2A_DCT2_64/vivado/reports/p2a_dct2_64_ooc.dcp' has been generated.
+# close_project
+INFO: [Common 17-206] Exiting Vivado at Fri Sep  4 21:37:15 2026...

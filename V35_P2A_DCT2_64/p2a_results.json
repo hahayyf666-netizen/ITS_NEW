@@ -1,0 +1,125 @@
+{
+  "status": "FAIL",
+  "functional_status": "PASS",
+  "vivado_ooc_status": "FAIL",
+  "sim_returncode": 0,
+  "vivado_path": "D:\\AMDDesignTools\\2025.2\\Vivado\\bin\\vivado.bat",
+  "vivado_returncode": 0,
+  "vivado_metrics": {
+    "clock_period_ns": 2.0,
+    "clock_frequency_mhz": 500.0,
+    "wns_ns": -2.761,
+    "tns_ns": -2145.587,
+    "setup_failing_endpoints": 4763,
+    "whs_ns": 0.019,
+    "ths_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "unconstrained_internal_endpoints": 0
+  },
+  "requirements": {
+    "transform": "DCT2-64 1D only",
+    "multiplication_lanes": 256,
+    "reduction_trees": 4,
+    "reduction_nodes": 252,
+    "tree_width_bits": 40,
+    "postprocess": "+32 >>> 6 then signed wrap16",
+    "groups_per_invocation": 16,
+    "group_issue_interval_cycles": 1,
+    "vector_invocation_interval_cycles": 16,
+    "result_fifo_depth_groups": 32,
+    "backpressure_strategy": "B: reserve 16 slots before group0; non-stalling pipeline"
+  },
+  "wrap_vectors": [
+    {
+      "vector_id": 0,
+      "positive_wrap_terms": 17,
+      "negative_wrap_terms": 10,
+      "shifted_min": -620013,
+      "shifted_max": 1896902
+    },
+    {
+      "vector_id": 1,
+      "positive_wrap_terms": 10,
+      "negative_wrap_terms": 17,
+      "shifted_min": -1896960,
+      "shifted_max": 620032
+    },
+    {
+      "vector_id": 2,
+      "positive_wrap_terms": 17,
+      "negative_wrap_terms": 10,
+      "shifted_min": -620023,
+      "shifted_max": 1896931
+    },
+    {
+      "vector_id": 10,
+      "positive_wrap_terms": 18,
+      "negative_wrap_terms": 25,
+      "shifted_min": -853610,
+      "shifted_max": 252420
+    },
+    {
+      "vector_id": 11,
+      "positive_wrap_terms": 15,
+      "negative_wrap_terms": 31,
+      "shifted_min": -230908,
+      "shifted_max": 108031
+    }
+  ],
+  "latency_measurements": [
+    {
+      "vector_id": 10,
+      "issue_cycle": 105,
+      "stage_write_cycle": 119,
+      "observed_stage_latency_cycles": 14,
+      "output_fire_cycle": 471,
+      "output_latency_including_backpressure": 366
+    },
+    {
+      "vector_id": 11,
+      "issue_cycle": 121,
+      "stage_write_cycle": 135,
+      "observed_stage_latency_cycles": 14,
+      "output_fire_cycle": 487,
+      "output_latency_including_backpressure": 366
+    }
+  ],
+  "launch_events": [
+    {
+      "phase": 1,
+      "vector_id": 0,
+      "cycle": 22
+    },
+    {
+      "phase": 1,
+      "vector_id": 1,
+      "cycle": 38
+    },
+    {
+      "phase": 1,
+      "vector_id": 2,
+      "cycle": 54
+    },
+    {
+      "phase": 2,
+      "vector_id": 10,
+      "cycle": 105
+    },
+    {
+      "phase": 2,
+      "vector_id": 11,
+      "cycle": 121
+    }
+  ],
+  "functional_comparisons": {
+    "phase1_each_stage_or_output": 192,
+    "phase2_each_stage_or_output": 128,
+    "cumulative_each_stage_or_output": 320
+  },
+  "expected_source": "independent V35 Oracle v34_rtl_bitexact.main_1d_details",
+  "sim_log": "D:\\Workspace\\ITS_STUDY_V35_P2A_DCT2_64_R1\\V35_P2A_DCT2_64\\sim\\run.log",
+  "rtl_sha256": "4f4eff40a061e31cf31022806b1a5202756e46d4df7d2ce022f24f4c02822665",
+  "coeff_sha256": "5e5e178a0d06df48286d697daa562c3ddfadbbf4a00f8155bd4376f907bac8c0",
+  "run_log": "D:\\Workspace\\ITS_STUDY_V35_P2A_DCT2_64_R1\\V35_P2A_DCT2_64\\sim\\run.log",
+  "tb_pass_marker": true
+}

@@ -1,0 +1,19 @@
+# Nested repositories and generated caches
+.git/
+.Xil/
+__pycache__/
+*.py[cod]
+
+# ModelSim generated work libraries and wave databases
+work/
+work*/
+*.qpg
+*.wlf
+
+# Local Vivado/TclStore user state
+localdata/
+tclstore*/
+
+# VTM example private keys are not part of the ITS design
+/VTM/cfg/keystore/private/
+/VTM/cfg/keystore/ca_priv/

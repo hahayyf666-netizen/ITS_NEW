@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "expected": {
+    "events": 1304,
+    "slots": 124,
+    "fixed_slots": 96,
+    "two_choice_slots": 28,
+    "terminal_dots": 64
+  },
+  "actual": {
+    "rtl": "D:\\Workspace\\ITS_STUDY_V35_P2F_B2_R3R\\02_rtl\\rtl\\p2f_dct2_64_b1_step102.sv",
+    "static_sum_slots": 124,
+    "pair_histogram": {
+      "1": 96,
+      "2": 28
+    },
+    "reduction_static_writes": 1304,
+    "terminal_dots": 64,
+    "dynamic_red_src_in_static_blocks": false,
+    "terminal_uses_current_sum_now": true
+  },
+  "negative_tests": {
+    "wrong_fixed_source": "PASS (rejected: ValueError: source pair mismatch: {'(0, 0)': {'expected': [(0, 1)], 'actual': [(0, 2)]}})",
+    "third_pair": "PASS (rejected: ValueError: source pair mismatch: {'(0, 0)': {'expected': [(0, 1)], 'actual': [(0, 1), (0, 2)]}})",
+    "wrong_legal_pair": "PASS (rejected: ValueError: source pair mismatch: {'(0, 0)': {'expected': [(0, 1)], 'actual': [(2, 3)]}})",
+    "stale_terminal_sampling": "PASS (rejected: ValueError: actual terminal coverage is not exactly 0..63)",
+    "duplicate_terminal_dot": "PASS (rejected: ValueError: duplicate actual terminal dot 0)"
+  }
+}

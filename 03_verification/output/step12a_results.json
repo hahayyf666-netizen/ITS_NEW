@@ -1,0 +1,201 @@
+{
+  "status": "PASS",
+  "step": "12A",
+  "scope": "64x64 DCT2 vertical -> stage16 memory -> DCT2 horizontal",
+  "canonical_path": "D:\\Workspace\\ITS_STUDY_V35_STEP12A_DCT2_64_2D_PRE\\03_verification\\output\\canonical_matrices.json",
+  "canonical_sha256": "d4c497cfbae64096c69d640bad154e4e3bae1f5834f82149623a83028b81e9f6",
+  "matrix": {
+    "tr_type": 0,
+    "name": "DCT2",
+    "size": 64,
+    "orientation": "inverse_operator A=C^T; consumed directly",
+    "matrix_sha256": "0b5af1cfded0921e847b82b8e8e265f2c1131a449ecff383732768e8edc8b83b"
+  },
+  "contracts": {
+    "one_frozen_r4c_kernel": true,
+    "kernel_lanes": 128,
+    "input_dense_vector_width": 64,
+    "input_points_per_staging_cycle": 4,
+    "group_points": 4,
+    "group_ii": 1,
+    "vector_ii": 16,
+    "kernel_latency": 24,
+    "stage1": "vertical, wrap16, write 16-bit intermediate",
+    "stage2": "horizontal, wrap16, then low10",
+    "final_result_capacity_groups": 1024,
+    "final_result_capacity_points": 4096,
+    "read_latency": 1,
+    "sparse_missing_address_value": 0,
+    "lfnst": "OFF"
+  },
+  "bank_audit": {
+    "mapping": "bank=(row[1:0] XOR col[1:0]), addr=row*16+(col>>2)",
+    "all_4096_coordinates": true,
+    "unique_addresses_per_bank": true,
+    "aligned_four_point_accesses_checked": 2048,
+    "bank_conflicts": [],
+    "bank_conflict_count": 0,
+    "read_latency_cycles": 1
+  },
+  "matrix_tests": [
+    {
+      "name": "zero",
+      "load": {
+        "nonzero_entries_sent": 0,
+        "missing_entries_read_as_zero": true
+      },
+      "dense_reconstruction_equal": true,
+      "vertical_stage16_equal": true,
+      "horizontal_stage16_equal": true,
+      "final10_equal": true,
+      "vertical_raw_equal": true,
+      "horizontal_raw_equal": true
+    },
+    {
+      "name": "single_sparse",
+      "load": {
+        "nonzero_entries_sent": 1,
+        "missing_entries_read_as_zero": true
+      },
+      "dense_reconstruction_equal": true,
+      "vertical_stage16_equal": true,
+      "horizontal_stage16_equal": true,
+      "final10_equal": true,
+      "vertical_raw_equal": true,
+      "horizontal_raw_equal": true
+    },
+    {
+      "name": "alternating",
+      "load": {
+        "nonzero_entries_sent": 4096,
+        "missing_entries_read_as_zero": true
+      },
+      "dense_reconstruction_equal": true,
+      "vertical_stage16_equal": true,
+      "horizontal_stage16_equal": true,
+      "final10_equal": true,
+      "vertical_raw_equal": true,
+      "horizontal_raw_equal": true
+    },
+    {
+      "name": "random_full_range",
+      "load": {
+        "nonzero_entries_sent": 4095,
+        "missing_entries_read_as_zero": true
+      },
+      "dense_reconstruction_equal": true,
+      "vertical_stage16_equal": true,
+      "horizontal_stage16_equal": true,
+      "final10_equal": true,
+      "vertical_raw_equal": true,
+      "horizontal_raw_equal": true
+    }
+  ],
+  "stale_data_test": {
+    "tu0_nonzero": 1234,
+    "tu1_sent_nonzero": -321,
+    "tu1_stale_location_value": 0,
+    "tu1_expected_stale_location": 0,
+    "tu1_dense_equal_source": true,
+    "tu1_final10_nonzero_count": 4092,
+    "input_cache_slots": 2,
+    "tu0_input_end_seen": true,
+    "tu1_input_end_seen": true,
+    "tu0_load_cycles": 1,
+    "tu1_load_cycles": 1,
+    "vertical_start_after_input_end": true
+  },
+  "traces": {
+    "vertical": {
+      "phase": "vertical",
+      "vector_count": 64,
+      "vector_starts": [
+        17,
+        33,
+        49,
+        65,
+        1009,
+        1025
+      ],
+      "vector_ii_all_16": true,
+      "group_count_each": [
+        16
+      ],
+      "group_ii_all_1": true,
+      "first_output_cycles": [
+        41,
+        57,
+        73,
+        89
+      ],
+      "last_output_cycles": [
+        1048,
+        1064
+      ],
+      "output_group_span": [
+        15
+      ],
+      "tags_monotonic": true
+    },
+    "horizontal": {
+      "phase": "horizontal",
+      "vector_count": 64,
+      "vector_starts": [
+        1082,
+        1098,
+        1114,
+        1130,
+        2074,
+        2090
+      ],
+      "vector_ii_all_16": true,
+      "group_count_each": [
+        16
+      ],
+      "group_ii_all_1": true,
+      "first_output_cycles": [
+        1106,
+        1122,
+        1138,
+        1154
+      ],
+      "last_output_cycles": [
+        2113,
+        2129
+      ],
+      "output_group_span": [
+        15
+      ],
+      "tags_monotonic": true
+    },
+    "v_to_h_transition_cycles": 18,
+    "kernel_latency": 24,
+    "single_kernel": true
+  },
+  "reservation_stress": {
+    "capacity_groups": 1024,
+    "tu0_produced": 1024,
+    "tu1_produced": 1024,
+    "tu0_drained": 1024,
+    "tu1_drained": 1024,
+    "req_low_cycles": 64,
+    "tu0_store_matches_expected": true,
+    "tu0_drain_matches_expected": true,
+    "tu1_drain_matches_expected": true,
+    "no_loss_duplicate_reorder": true,
+    "tu1_blocked_while_tu0_full": true,
+    "tu1_admitted_after_tu0_drain": true,
+    "max_reserved_plus_occupied": 1024,
+    "capacity_invariant": true,
+    "double_count_inflight": false
+  },
+  "global_vector_id_mapping": {
+    "TU0_vertical": "0..63",
+    "TU0_horizontal": "64..127",
+    "TU1_vertical": "128..191",
+    "TU1_horizontal": "192..255",
+    "width": 16,
+    "modulus": 65536
+  },
+  "seed": 20260904
+}

@@ -1,0 +1,122 @@
+# vsim -c -lib work101 -l D:\Workspace\ITS_STUDY_V35_P2F_B1_R1\03_verification\sim\logs\p2f_b1_step101_functional.log -do "run -all; quit -f" p2f_dct2_64_b1_tb 
+# Start time: 20:34:36 on Sep 05,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.p2f_dct2_64_b1_tb(fast)
+# run -all
+# B1_FIRE tick=27 vector=0 group=0 first=1 last=0
+# B1_FIRE tick=42 vector=0 group=15 first=0 last=1
+# B1_FIRE tick=43 vector=1 group=0 first=1 last=0
+# B1_FIRE tick=58 vector=1 group=15 first=0 last=1
+# B1_FIRE tick=59 vector=2 group=0 first=1 last=0
+# B1_FIRE tick=74 vector=2 group=15 first=0 last=1
+# B1_FIRE tick=75 vector=3 group=0 first=1 last=0
+# B1_FIRE tick=90 vector=3 group=15 first=0 last=1
+# B1_FIRE tick=91 vector=4 group=0 first=1 last=0
+# B1_FIRE tick=106 vector=4 group=15 first=0 last=1
+# B1_FIRE tick=107 vector=5 group=0 first=1 last=0
+# B1_FIRE tick=122 vector=5 group=15 first=0 last=1
+# B1_FIRE tick=123 vector=6 group=0 first=1 last=0
+# B1_FIRE tick=138 vector=6 group=15 first=0 last=1
+# B1_FIRE tick=139 vector=7 group=0 first=1 last=0
+# B1_FIRE tick=154 vector=7 group=15 first=0 last=1
+# B1_FIRE tick=155 vector=8 group=0 first=1 last=0
+# B1_FIRE tick=170 vector=8 group=15 first=0 last=1
+# B1_FIRE tick=171 vector=9 group=0 first=1 last=0
+# B1_FIRE tick=186 vector=9 group=15 first=0 last=1
+# B1_FIRE tick=187 vector=10 group=0 first=1 last=0
+# B1_FIRE tick=202 vector=10 group=15 first=0 last=1
+# B1_FIRE tick=203 vector=11 group=0 first=1 last=0
+# B1_FIRE tick=218 vector=11 group=15 first=0 last=1
+# B1_FIRE tick=219 vector=12 group=0 first=1 last=0
+# B1_FIRE tick=234 vector=12 group=15 first=0 last=1
+# B1_FIRE tick=235 vector=13 group=0 first=1 last=0
+# B1_FIRE tick=250 vector=13 group=15 first=0 last=1
+# B1_FIRE tick=251 vector=14 group=0 first=1 last=0
+# B1_FIRE tick=266 vector=14 group=15 first=0 last=1
+# B1_FIRE tick=267 vector=15 group=0 first=1 last=0
+# B1_FIRE tick=282 vector=15 group=15 first=0 last=1
+# B1_FIRE tick=283 vector=16 group=0 first=1 last=0
+# B1_FIRE tick=298 vector=16 group=15 first=0 last=1
+# B1_FIRE tick=299 vector=17 group=0 first=1 last=0
+# B1_FIRE tick=314 vector=17 group=15 first=0 last=1
+# B1_FIRE tick=315 vector=18 group=0 first=1 last=0
+# B1_FIRE tick=330 vector=18 group=15 first=0 last=1
+# B1_FIRE tick=331 vector=19 group=0 first=1 last=0
+# B1_FIRE tick=346 vector=19 group=15 first=0 last=1
+# B1_FIRE tick=347 vector=20 group=0 first=1 last=0
+# B1_FIRE tick=362 vector=20 group=15 first=0 last=1
+# B1_FIRE tick=363 vector=21 group=0 first=1 last=0
+# B1_FIRE tick=378 vector=21 group=15 first=0 last=1
+# B1_FIRE tick=379 vector=22 group=0 first=1 last=0
+# B1_FIRE tick=394 vector=22 group=15 first=0 last=1
+# B1_FIRE tick=395 vector=23 group=0 first=1 last=0
+# B1_FIRE tick=410 vector=23 group=15 first=0 last=1
+# B1_FIRE tick=411 vector=24 group=0 first=1 last=0
+# B1_FIRE tick=426 vector=24 group=15 first=0 last=1
+# B1_FIRE tick=427 vector=25 group=0 first=1 last=0
+# B1_FIRE tick=442 vector=25 group=15 first=0 last=1
+# B1_FIRE tick=443 vector=26 group=0 first=1 last=0
+# B1_FIRE tick=458 vector=26 group=15 first=0 last=1
+# B1_FIRE tick=459 vector=27 group=0 first=1 last=0
+# B1_FIRE tick=474 vector=27 group=15 first=0 last=1
+# B1_FIRE tick=475 vector=28 group=0 first=1 last=0
+# B1_FIRE tick=490 vector=28 group=15 first=0 last=1
+# B1_FIRE tick=491 vector=29 group=0 first=1 last=0
+# B1_FIRE tick=506 vector=29 group=15 first=0 last=1
+# B1_FIRE tick=507 vector=30 group=0 first=1 last=0
+# B1_FIRE tick=522 vector=30 group=15 first=0 last=1
+# B1_FIRE tick=523 vector=31 group=0 first=1 last=0
+# B1_FIRE tick=538 vector=31 group=15 first=0 last=1
+# B1_FIRE tick=539 vector=32 group=0 first=1 last=0
+# B1_FIRE tick=554 vector=32 group=15 first=0 last=1
+# B1_FIRE tick=555 vector=33 group=0 first=1 last=0
+# B1_FIRE tick=570 vector=33 group=15 first=0 last=1
+# B1_FIRE tick=571 vector=34 group=0 first=1 last=0
+# B1_FIRE tick=586 vector=34 group=15 first=0 last=1
+# B1_FIRE tick=587 vector=35 group=0 first=1 last=0
+# B1_FIRE tick=602 vector=35 group=15 first=0 last=1
+# B1_FIRE tick=603 vector=36 group=0 first=1 last=0
+# B1_FIRE tick=618 vector=36 group=15 first=0 last=1
+# B1_FIRE tick=619 vector=37 group=0 first=1 last=0
+# B1_FIRE tick=634 vector=37 group=15 first=0 last=1
+# B1_FIRE tick=635 vector=38 group=0 first=1 last=0
+# B1_FIRE tick=650 vector=38 group=15 first=0 last=1
+# B1_FIRE tick=651 vector=39 group=0 first=1 last=0
+# B1_FIRE tick=666 vector=39 group=15 first=0 last=1
+# B1_FIRE tick=667 vector=40 group=0 first=1 last=0
+# B1_FIRE tick=682 vector=40 group=15 first=0 last=1
+# B1_FIRE tick=683 vector=41 group=0 first=1 last=0
+# B1_FIRE tick=698 vector=41 group=15 first=0 last=1
+# B1_FIRE tick=699 vector=42 group=0 first=1 last=0
+# B1_FIRE tick=714 vector=42 group=15 first=0 last=1
+# B1_FIRE tick=715 vector=43 group=0 first=1 last=0
+# B1_FIRE tick=730 vector=43 group=15 first=0 last=1
+# B1_FIRE tick=731 vector=44 group=0 first=1 last=0
+# B1_FIRE tick=746 vector=44 group=15 first=0 last=1
+# B1_FIRE tick=747 vector=45 group=0 first=1 last=0
+# B1_FIRE tick=762 vector=45 group=15 first=0 last=1
+# B1_FIRE tick=763 vector=46 group=0 first=1 last=0
+# B1_FIRE tick=778 vector=46 group=15 first=0 last=1
+# B1_FIRE tick=779 vector=47 group=0 first=1 last=0
+# B1_FIRE tick=794 vector=47 group=15 first=0 last=1
+# B1_FIRE tick=795 vector=48 group=0 first=1 last=0
+# B1_FIRE tick=810 vector=48 group=15 first=0 last=1
+# B1_PASS cases=49 fires=784 positive_wrap_outputs=950 negative_wrap_outputs=935
+# ** Note: $finish    : D:/Workspace/ITS_STUDY_V35_P2F_B1_R1/03_verification/tb/p2f_dct2_64_b1_tb.sv(4144)
+#    Time: 1814 ns  Iteration: 1  Instance: /p2f_dct2_64_b1_tb
+# End time: 20:34:37 on Sep 05,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0

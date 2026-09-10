@@ -1,0 +1,1947 @@
+{
+  "status": "FAIL_AUDIT",
+  "scope": "R4A active RTL/table + existing R4A reports; no RTL or implementation changes",
+  "baseline": "D:\\Workspace\\ITS_STUDY_V35_P2F_B2_R4B_PRE",
+  "evidence": {
+    "rtl": "D:\\Workspace\\ITS_STUDY_V35_P2F_B2_R4B_PRE\\02_rtl\\rtl\\p2f_dct2_64_b1_step102.sv",
+    "rtl_sha256": "3905d5dc6c19e24fefc48fcb2e75fe8f34a4fd835ce607b79bbd22a8ab66f520",
+    "tables": "D:\\Workspace\\ITS_STUDY_V35_P2F_B2_R4B_PRE\\02_rtl\\rtl\\p2f_step102_tables.svh",
+    "tables_sha256": "f2ddded5ddc4e1c529b74c9d67de6153fbaf3b95192534cd1fcbabf973407209",
+    "postroute_dcp": "D:\\Workspace\\ITS_STUDY_V35_P2F_B2_R4B_PRE\\03_verification\\vivado\\reports_r4a_postroute\\p2f_b2_controlled_postroute.dcp",
+    "postroute_dcp_sha256": "510cd61f1052a914375270db68d2e4eab2670fe702e246f68c63e005927cb6f8",
+    "postsynth_high_fanout": "D:\\Workspace\\ITS_STUDY_V35_P2F_B2_R4B_PRE\\03_verification\\vivado\\reports_r4a_postroute\\report_high_fanout_postsynth.rpt",
+    "postroute_worst20": "D:\\Workspace\\ITS_STUDY_V35_P2F_B2_R4B_PRE\\03_verification\\vivado\\reports_r4a_postroute\\report_timing_worst20_postroute.rpt"
+  },
+  "butterfly_event_count": 124,
+  "destination_count": 124,
+  "duplicate_destinations": {},
+  "source_choice_distribution": {
+    "1": 28,
+    "2": 16,
+    "8": 8
+  },
+  "slot_rows": [
+    {
+      "level": 4,
+      "slot": 0,
+      "choice_count": 1,
+      "phases": [
+        3
+      ],
+      "choices": [
+        [
+          "dot",
+          0,
+          "dot",
+          1
+        ]
+      ]
+    },
+    {
+      "level": 4,
+      "slot": 1,
+      "choice_count": 1,
+      "phases": [
+        3
+      ],
+      "choices": [
+        [
+          "dot",
+          2,
+          "dot",
+          3
+        ]
+      ]
+    },
+    {
+      "level": 4,
+      "slot": 2,
+      "choice_count": 1,
+      "phases": [
+        3
+      ],
+      "choices": [
+        [
+          "dot",
+          2,
+          "dot",
+          3
+        ]
+      ]
+    },
+    {
+      "level": 4,
+      "slot": 3,
+      "choice_count": 1,
+      "phases": [
+        3
+      ],
+      "choices": [
+        [
+          "dot",
+          0,
+          "dot",
+          1
+        ]
+      ]
+    },
+    {
+      "level": 8,
+      "slot": 0,
+      "choice_count": 1,
+      "phases": [
+        4
+      ],
+      "choices": [
+        [
+          "signal",
+          0,
+          "dot",
+          4
+        ]
+      ]
+    },
+    {
+      "level": 8,
+      "slot": 1,
+      "choice_count": 1,
+      "phases": [
+        4
+      ],
+      "choices": [
+        [
+          "signal",
+          5,
+          "dot",
+          5
+        ]
+      ]
+    },
+    {
+      "level": 8,
+      "slot": 2,
+      "choice_count": 1,
+      "phases": [
+        4
+      ],
+      "choices": [
+        [
+          "signal",
+          10,
+          "dot",
+          6
+        ]
+      ]
+    },
+    {
+      "level": 8,
+      "slot": 3,
+      "choice_count": 1,
+      "phases": [
+        4
+      ],
+      "choices": [
+        [
+          "signal",
+          15,
+          "dot",
+          7
+        ]
+      ]
+    },
+    {
+      "level": 8,
+      "slot": 4,
+      "choice_count": 1,
+      "phases": [
+        4
+      ],
+      "choices": [
+        [
+          "signal",
+          15,
+          "dot",
+          7
+        ]
+      ]
+    },
+    {
+      "level": 8,
+      "slot": 5,
+      "choice_count": 1,
+      "phases": [
+        4
+      ],
+      "choices": [
+        [
+          "signal",
+          10,
+          "dot",
+          6
+        ]
+      ]
+    },
+    {
+      "level": 8,
+      "slot": 6,
+      "choice_count": 1,
+      "phases": [
+        4
+      ],
+      "choices": [
+        [
+          "signal",
+          5,
+          "dot",
+          5
+        ]
+      ]
+    },
+    {
+      "level": 8,
+      "slot": 7,
+      "choice_count": 1,
+      "phases": [
+        4
+      ],
+      "choices": [
+        [
+          "signal",
+          0,
+          "dot",
+          4
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 0,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          1,
+          "dot",
+          8
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 1,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          6,
+          "dot",
+          9
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 2,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          11,
+          "dot",
+          10
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 3,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          16,
+          "dot",
+          11
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 4,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          20,
+          "dot",
+          12
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 5,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          24,
+          "dot",
+          13
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 6,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          28,
+          "dot",
+          14
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 7,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          32,
+          "dot",
+          15
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 8,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          32,
+          "dot",
+          15
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 9,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          28,
+          "dot",
+          14
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 10,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          24,
+          "dot",
+          13
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 11,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          20,
+          "dot",
+          12
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 12,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          16,
+          "dot",
+          11
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 13,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          11,
+          "dot",
+          10
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 14,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          6,
+          "dot",
+          9
+        ]
+      ]
+    },
+    {
+      "level": 16,
+      "slot": 15,
+      "choice_count": 1,
+      "phases": [
+        5
+      ],
+      "choices": [
+        [
+          "signal",
+          1,
+          "dot",
+          8
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 0,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          2,
+          "dot",
+          16
+        ],
+        [
+          "signal",
+          36,
+          "dot",
+          24
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 1,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          39,
+          "dot",
+          25
+        ],
+        [
+          "signal",
+          7,
+          "dot",
+          17
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 2,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          12,
+          "dot",
+          18
+        ],
+        [
+          "signal",
+          42,
+          "dot",
+          26
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 3,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          17,
+          "dot",
+          19
+        ],
+        [
+          "signal",
+          45,
+          "dot",
+          27
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 4,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          21,
+          "dot",
+          20
+        ],
+        [
+          "signal",
+          48,
+          "dot",
+          28
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 5,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          25,
+          "dot",
+          21
+        ],
+        [
+          "signal",
+          51,
+          "dot",
+          29
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 6,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          29,
+          "dot",
+          22
+        ],
+        [
+          "signal",
+          54,
+          "dot",
+          30
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 7,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          33,
+          "dot",
+          23
+        ],
+        [
+          "signal",
+          57,
+          "dot",
+          31
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 8,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          33,
+          "dot",
+          23
+        ],
+        [
+          "signal",
+          57,
+          "dot",
+          31
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 9,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          29,
+          "dot",
+          22
+        ],
+        [
+          "signal",
+          54,
+          "dot",
+          30
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 10,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          25,
+          "dot",
+          21
+        ],
+        [
+          "signal",
+          51,
+          "dot",
+          29
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 11,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          21,
+          "dot",
+          20
+        ],
+        [
+          "signal",
+          48,
+          "dot",
+          28
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 12,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          17,
+          "dot",
+          19
+        ],
+        [
+          "signal",
+          45,
+          "dot",
+          27
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 13,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          12,
+          "dot",
+          18
+        ],
+        [
+          "signal",
+          42,
+          "dot",
+          26
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 14,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          39,
+          "dot",
+          25
+        ],
+        [
+          "signal",
+          7,
+          "dot",
+          17
+        ]
+      ]
+    },
+    {
+      "level": 32,
+      "slot": 15,
+      "choice_count": 2,
+      "phases": [
+        7,
+        8
+      ],
+      "choices": [
+        [
+          "signal",
+          2,
+          "dot",
+          16
+        ],
+        [
+          "signal",
+          36,
+          "dot",
+          24
+        ]
+      ]
+    },
+    {
+      "level": 64,
+      "slot": 0,
+      "choice_count": 8,
+      "phases": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "choices": [
+        [
+          "signal",
+          22,
+          "dot",
+          36
+        ],
+        [
+          "signal",
+          3,
+          "dot",
+          32
+        ],
+        [
+          "signal",
+          37,
+          "dot",
+          40
+        ],
+        [
+          "signal",
+          49,
+          "dot",
+          44
+        ],
+        [
+          "signal",
+          60,
+          "dot",
+          48
+        ],
+        [
+          "signal",
+          68,
+          "dot",
+          52
+        ],
+        [
+          "signal",
+          76,
+          "dot",
+          56
+        ],
+        [
+          "signal",
+          84,
+          "dot",
+          60
+        ]
+      ]
+    },
+    {
+      "level": 64,
+      "slot": 1,
+      "choice_count": 8,
+      "phases": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "choices": [
+        [
+          "signal",
+          26,
+          "dot",
+          37
+        ],
+        [
+          "signal",
+          40,
+          "dot",
+          41
+        ],
+        [
+          "signal",
+          52,
+          "dot",
+          45
+        ],
+        [
+          "signal",
+          62,
+          "dot",
+          49
+        ],
+        [
+          "signal",
+          70,
+          "dot",
+          53
+        ],
+        [
+          "signal",
+          78,
+          "dot",
+          57
+        ],
+        [
+          "signal",
+          8,
+          "dot",
+          33
+        ],
+        [
+          "signal",
+          86,
+          "dot",
+          61
+        ]
+      ]
+    },
+    {
+      "level": 64,
+      "slot": 2,
+      "choice_count": 8,
+      "phases": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "choices": [
+        [
+          "signal",
+          13,
+          "dot",
+          34
+        ],
+        [
+          "signal",
+          30,
+          "dot",
+          38
+        ],
+        [
+          "signal",
+          43,
+          "dot",
+          42
+        ],
+        [
+          "signal",
+          55,
+          "dot",
+          46
+        ],
+        [
+          "signal",
+          64,
+          "dot",
+          50
+        ],
+        [
+          "signal",
+          72,
+          "dot",
+          54
+        ],
+        [
+          "signal",
+          80,
+          "dot",
+          58
+        ],
+        [
+          "signal",
+          88,
+          "dot",
+          62
+        ]
+      ]
+    },
+    {
+      "level": 64,
+      "slot": 3,
+      "choice_count": 8,
+      "phases": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "choices": [
+        [
+          "signal",
+          18,
+          "dot",
+          35
+        ],
+        [
+          "signal",
+          34,
+          "dot",
+          39
+        ],
+        [
+          "signal",
+          46,
+          "dot",
+          43
+        ],
+        [
+          "signal",
+          58,
+          "dot",
+          47
+        ],
+        [
+          "signal",
+          66,
+          "dot",
+          51
+        ],
+        [
+          "signal",
+          74,
+          "dot",
+          55
+        ],
+        [
+          "signal",
+          82,
+          "dot",
+          59
+        ],
+        [
+          "signal",
+          90,
+          "dot",
+          63
+        ]
+      ]
+    },
+    {
+      "level": 64,
+      "slot": 4,
+      "choice_count": 8,
+      "phases": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "choices": [
+        [
+          "signal",
+          18,
+          "dot",
+          35
+        ],
+        [
+          "signal",
+          34,
+          "dot",
+          39
+        ],
+        [
+          "signal",
+          46,
+          "dot",
+          43
+        ],
+        [
+          "signal",
+          58,
+          "dot",
+          47
+        ],
+        [
+          "signal",
+          66,
+          "dot",
+          51
+        ],
+        [
+          "signal",
+          74,
+          "dot",
+          55
+        ],
+        [
+          "signal",
+          82,
+          "dot",
+          59
+        ],
+        [
+          "signal",
+          90,
+          "dot",
+          63
+        ]
+      ]
+    },
+    {
+      "level": 64,
+      "slot": 5,
+      "choice_count": 8,
+      "phases": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "choices": [
+        [
+          "signal",
+          13,
+          "dot",
+          34
+        ],
+        [
+          "signal",
+          30,
+          "dot",
+          38
+        ],
+        [
+          "signal",
+          43,
+          "dot",
+          42
+        ],
+        [
+          "signal",
+          55,
+          "dot",
+          46
+        ],
+        [
+          "signal",
+          64,
+          "dot",
+          50
+        ],
+        [
+          "signal",
+          72,
+          "dot",
+          54
+        ],
+        [
+          "signal",
+          80,
+          "dot",
+          58
+        ],
+        [
+          "signal",
+          88,
+          "dot",
+          62
+        ]
+      ]
+    },
+    {
+      "level": 64,
+      "slot": 6,
+      "choice_count": 8,
+      "phases": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "choices": [
+        [
+          "signal",
+          26,
+          "dot",
+          37
+        ],
+        [
+          "signal",
+          40,
+          "dot",
+          41
+        ],
+        [
+          "signal",
+          52,
+          "dot",
+          45
+        ],
+        [
+          "signal",
+          62,
+          "dot",
+          49
+        ],
+        [
+          "signal",
+          70,
+          "dot",
+          53
+        ],
+        [
+          "signal",
+          78,
+          "dot",
+          57
+        ],
+        [
+          "signal",
+          8,
+          "dot",
+          33
+        ],
+        [
+          "signal",
+          86,
+          "dot",
+          61
+        ]
+      ]
+    },
+    {
+      "level": 64,
+      "slot": 7,
+      "choice_count": 8,
+      "phases": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "choices": [
+        [
+          "signal",
+          22,
+          "dot",
+          36
+        ],
+        [
+          "signal",
+          3,
+          "dot",
+          32
+        ],
+        [
+          "signal",
+          37,
+          "dot",
+          40
+        ],
+        [
+          "signal",
+          49,
+          "dot",
+          44
+        ],
+        [
+          "signal",
+          60,
+          "dot",
+          48
+        ],
+        [
+          "signal",
+          68,
+          "dot",
+          52
+        ],
+        [
+          "signal",
+          76,
+          "dot",
+          56
+        ],
+        [
+          "signal",
+          84,
+          "dot",
+          60
+        ]
+      ]
+    }
+  ],
+  "eight_choice_slots": [
+    "N64_slot0",
+    "N64_slot1",
+    "N64_slot2",
+    "N64_slot3",
+    "N64_slot4",
+    "N64_slot5",
+    "N64_slot6",
+    "N64_slot7"
+  ],
+  "phase_stats": [
+    {
+      "phase": 1,
+      "event_count": 0,
+      "destinations": [],
+      "levels": {}
+    },
+    {
+      "phase": 2,
+      "event_count": 0,
+      "destinations": [],
+      "levels": {}
+    },
+    {
+      "phase": 3,
+      "event_count": 4,
+      "destinations": [
+        0,
+        5,
+        10,
+        15
+      ],
+      "levels": {
+        "4": 4
+      }
+    },
+    {
+      "phase": 4,
+      "event_count": 8,
+      "destinations": [
+        1,
+        6,
+        11,
+        16,
+        20,
+        24,
+        28,
+        32
+      ],
+      "levels": {
+        "8": 8
+      }
+    },
+    {
+      "phase": 5,
+      "event_count": 16,
+      "destinations": [
+        2,
+        7,
+        12,
+        17,
+        21,
+        25,
+        29,
+        33,
+        36,
+        39,
+        42,
+        45,
+        48,
+        51,
+        54,
+        57
+      ],
+      "levels": {
+        "16": 16
+      }
+    },
+    {
+      "phase": 6,
+      "event_count": 0,
+      "destinations": [],
+      "levels": {}
+    },
+    {
+      "phase": 7,
+      "event_count": 16,
+      "destinations": [
+        3,
+        8,
+        13,
+        18,
+        22,
+        26,
+        30,
+        34,
+        76,
+        78,
+        80,
+        82,
+        84,
+        86,
+        88,
+        90
+      ],
+      "levels": {
+        "32": 16
+      }
+    },
+    {
+      "phase": 8,
+      "event_count": 16,
+      "destinations": [
+        37,
+        40,
+        43,
+        46,
+        49,
+        52,
+        55,
+        58,
+        60,
+        62,
+        64,
+        66,
+        68,
+        70,
+        72,
+        74
+      ],
+      "levels": {
+        "32": 16
+      }
+    },
+    {
+      "phase": 9,
+      "event_count": 0,
+      "destinations": [],
+      "levels": {}
+    },
+    {
+      "phase": 10,
+      "event_count": 8,
+      "destinations": [
+        4,
+        9,
+        14,
+        19,
+        120,
+        121,
+        122,
+        123
+      ],
+      "levels": {
+        "64": 8
+      }
+    },
+    {
+      "phase": 11,
+      "event_count": 8,
+      "destinations": [
+        23,
+        27,
+        31,
+        35,
+        116,
+        117,
+        118,
+        119
+      ],
+      "levels": {
+        "64": 8
+      }
+    },
+    {
+      "phase": 12,
+      "event_count": 8,
+      "destinations": [
+        38,
+        41,
+        44,
+        47,
+        112,
+        113,
+        114,
+        115
+      ],
+      "levels": {
+        "64": 8
+      }
+    },
+    {
+      "phase": 13,
+      "event_count": 8,
+      "destinations": [
+        50,
+        53,
+        56,
+        59,
+        108,
+        109,
+        110,
+        111
+      ],
+      "levels": {
+        "64": 8
+      }
+    },
+    {
+      "phase": 14,
+      "event_count": 8,
+      "destinations": [
+        61,
+        63,
+        65,
+        67,
+        104,
+        105,
+        106,
+        107
+      ],
+      "levels": {
+        "64": 8
+      }
+    },
+    {
+      "phase": 15,
+      "event_count": 8,
+      "destinations": [
+        69,
+        71,
+        73,
+        75,
+        100,
+        101,
+        102,
+        103
+      ],
+      "levels": {
+        "64": 8
+      }
+    },
+    {
+      "phase": 16,
+      "event_count": 8,
+      "destinations": [
+        77,
+        79,
+        81,
+        83,
+        96,
+        97,
+        98,
+        99
+      ],
+      "levels": {
+        "64": 8
+      }
+    },
+    {
+      "phase": 17,
+      "event_count": 8,
+      "destinations": [
+        85,
+        87,
+        89,
+        91,
+        92,
+        93,
+        94,
+        95
+      ],
+      "levels": {
+        "64": 8
+      }
+    }
+  ],
+  "dynamic_rtl_pattern_counts": {
+    "bf_cycle_key": 5,
+    "dynamic_signal_destination": 10,
+    "dynamic_signal_source": 4,
+    "dynamic_function_lookup": 25
+  },
+  "timing_evidence": {
+    "report_exists": true,
+    "bf_cycle_to_signal_reg_occurrences": 18,
+    "source_examples": [
+      "bf_cycle_reg[1]/C",
+      "bf_cycle_reg[2]/C",
+      "operand_coeff_reg_reg[40][7]/C",
+      "operand_x_reg_reg[47][9]/C"
+    ],
+    "destination_examples": [
+      "lane_product_reg_reg[40][10]/D",
+      "lane_product_reg_reg[79][11]/D",
+      "signal_reg_reg[110][17]/D",
+      "signal_reg_reg[110][19]/D",
+      "signal_reg_reg[114][13]/D",
+      "signal_reg_reg[114][17]/D",
+      "signal_reg_reg[116][18]/D",
+      "signal_reg_reg[118][11]/D",
+      "signal_reg_reg[118][20]/D",
+      "signal_reg_reg[118][21]/D",
+      "signal_reg_reg[122][21]/D",
+      "signal_reg_reg[92][18]/D",
+      "signal_reg_reg[92][19]/D",
+      "signal_reg_reg[94][10]/D",
+      "signal_reg_reg[96][21]/D",
+      "signal_reg_reg[98][17]/D",
+      "signal_reg_reg[98][21]/D",
+      "signal_reg_reg[9][13]/D",
+      "signal_reg_reg[9][19]/D",
+      "signal_reg_reg[9][21]/D"
+    ],
+    "note": "Existing R4A report is worst-20 only; full failing-endpoint census requires the read-only Vivado TCL audit."
+  },
+  "all_failing_path_count": 6320,
+  "all_failing_path_category_summary": {
+    "butterfly": {
+      "count": 2315,
+      "fraction": 0.3662974683544304,
+      "min_slack_ns": -0.626,
+      "mean_slack_ns": -0.26981641468682505,
+      "mean_datapath_delay_ns": 2.248188768898488
+    },
+    "control_schedule": {
+      "count": 85,
+      "fraction": 0.013449367088607595,
+      "min_slack_ns": -0.427,
+      "mean_slack_ns": -0.10343529411764706,
+      "mean_datapath_delay_ns": 2.0846235294117648
+    },
+    "multiplier_frontend": {
+      "count": 3126,
+      "fraction": 0.494620253164557,
+      "min_slack_ns": -0.587,
+      "mean_slack_ns": -0.33585860524632116,
+      "mean_datapath_delay_ns": 2.317260716570697
+    },
+    "other": {
+      "count": 166,
+      "fraction": 0.026265822784810128,
+      "min_slack_ns": -0.185,
+      "mean_slack_ns": -0.06646987951807229,
+      "mean_datapath_delay_ns": 1.9631867469879518
+    },
+    "output_reorder": {
+      "count": 132,
+      "fraction": 0.02088607594936709,
+      "min_slack_ns": -0.25,
+      "mean_slack_ns": -0.08667424242424243,
+      "mean_datapath_delay_ns": 1.9833787878787879
+    },
+    "reduction": {
+      "count": 496,
+      "fraction": 0.07848101265822785,
+      "min_slack_ns": -0.448,
+      "mean_slack_ns": -0.06763508064516129,
+      "mean_datapath_delay_ns": 2.0038326612903226
+    }
+  },
+  "fanout_targets": [
+    {
+      "net": "r4a_vector_buf_a[0]",
+      "fanout": 1024,
+      "driver": "LUT2"
+    },
+    {
+      "net": "r4a_vector_buf_b[0]",
+      "fanout": 1024,
+      "driver": "LUT2"
+    }
+  ],
+  "fanout_top20": [
+    {
+      "net": "output_active_i_2_n_0",
+      "fanout": 21292,
+      "driver": "LUT1"
+    },
+    {
+      "net": "red_s0_data[0]",
+      "fanout": 1056,
+      "driver": "LUT5"
+    },
+    {
+      "net": "final10_mem[1][60][0]_i_1_n_0",
+      "fanout": 1040,
+      "driver": "LUT3"
+    },
+    {
+      "net": "final10_mem[2][60][0]_i_1_n_0",
+      "fanout": 1040,
+      "driver": "LUT3"
+    },
+    {
+      "net": "final10_mem[3][60][0]_i_1_n_0",
+      "fanout": 1040,
+      "driver": "LUT3"
+    },
+    {
+      "net": "ready_vector_id[0]",
+      "fanout": 1040,
+      "driver": "LUT3"
+    },
+    {
+      "net": "r4a_vector_buf_a[0]",
+      "fanout": 1024,
+      "driver": "LUT2"
+    },
+    {
+      "net": "r4a_vector_buf_b[0]",
+      "fanout": 1024,
+      "driver": "LUT2"
+    },
+    {
+      "net": "signal_reg[42][23]_i_3_n_0",
+      "fanout": 601,
+      "driver": "LUT6"
+    },
+    {
+      "net": "red_s1_data[0]",
+      "fanout": 480,
+      "driver": "LUT5"
+    },
+    {
+      "net": "red_s0_data[63][23]_i_1_n_0",
+      "fanout": 480,
+      "driver": "LUT6"
+    },
+    {
+      "net": "signal_reg[8][23]_i_1_n_0",
+      "fanout": 384,
+      "driver": "LUT4"
+    },
+    {
+      "net": "signal_reg[40][23]_i_1_n_0",
+      "fanout": 384,
+      "driver": "LUT4"
+    },
+    {
+      "net": "signal_reg[42][23]_i_1_n_0",
+      "fanout": 336,
+      "driver": "LUT3"
+    },
+    {
+      "net": "red_s1_data[27][23]_i_1_n_0",
+      "fanout": 288,
+      "driver": "LUT6"
+    },
+    {
+      "net": "signal_reg[11][23]_i_3_n_0",
+      "fanout": 197,
+      "driver": "LUT6"
+    },
+    {
+      "net": "dot_value_bank[1][8][23]_i_1_n_0",
+      "fanout": 192,
+      "driver": "LUT6"
+    },
+    {
+      "net": "red_s2_data[13][23]_i_1_n_0",
+      "fanout": 192,
+      "driver": "LUT6"
+    },
+    {
+      "net": "red_s2_data[0]",
+      "fanout": 192,
+      "driver": "LUT5"
+    },
+    {
+      "net": "red_s3_data[0]",
+      "fanout": 192,
+      "driver": "LUT6"
+    }
+  ],
+  "postroute_fanout_top20": [
+    {
+      "net": "rst_n",
+      "fanout": 21331,
+      "driver": "PORT"
+    },
+    {
+      "net": "red_s0_data[0]",
+      "fanout": 1056,
+      "driver": "LUT5"
+    },
+    {
+      "net": "final10_mem[1][60][0]_i_1_n_0",
+      "fanout": 1040,
+      "driver": "LUT3"
+    },
+    {
+      "net": "final10_mem[2][60][0]_i_1_n_0",
+      "fanout": 1040,
+      "driver": "LUT3"
+    },
+    {
+      "net": "final10_mem[3][60][0]_i_1_n_0",
+      "fanout": 1040,
+      "driver": "LUT3"
+    },
+    {
+      "net": "ready_vector_id[0]",
+      "fanout": 1040,
+      "driver": "LUT3"
+    },
+    {
+      "net": "r4a_vector_buf_a[0]",
+      "fanout": 1024,
+      "driver": "BUFGCE"
+    },
+    {
+      "net": "r4a_vector_buf_b[0]",
+      "fanout": 1024,
+      "driver": "BUFGCE"
+    },
+    {
+      "net": "signal_reg[42][23]_i_3_n_0",
+      "fanout": 601,
+      "driver": "LUT6"
+    },
+    {
+      "net": "red_s1_data[0]",
+      "fanout": 480,
+      "driver": "LUT5"
+    },
+    {
+      "net": "red_s0_data[63][23]_i_1_n_0",
+      "fanout": 480,
+      "driver": "LUT6"
+    },
+    {
+      "net": "signal_reg[8][23]_i_1_n_0",
+      "fanout": 384,
+      "driver": "LUT4"
+    },
+    {
+      "net": "signal_reg[40][23]_i_1_n_0",
+      "fanout": 384,
+      "driver": "LUT4"
+    },
+    {
+      "net": "signal_reg[42][23]_i_1_n_0",
+      "fanout": 336,
+      "driver": "LUT3"
+    },
+    {
+      "net": "red_s1_data[27][23]_i_1_n_0",
+      "fanout": 288,
+      "driver": "LUT6"
+    },
+    {
+      "net": "sched_src_sel_reg_reg[88][0]_rep__2_n_0",
+      "fanout": 228,
+      "driver": "FDCE"
+    },
+    {
+      "net": "sched_src_sel_reg_reg[88][0]_rep__0_n_0",
+      "fanout": 227,
+      "driver": "FDCE"
+    },
+    {
+      "net": "signal_reg[11][23]_i_3_n_0",
+      "fanout": 197,
+      "driver": "LUT6"
+    },
+    {
+      "net": "sched_src_sel_reg_reg[0][0]_rep_n_0",
+      "fanout": 196,
+      "driver": "FDCE"
+    },
+    {
+      "net": "signal_reg[11][23]_i_1_n_0",
+      "fanout": 192,
+      "driver": "LUT2"
+    }
+  ],
+  "failures": [
+    "at least one butterfly slot has more than three source choices"
+  ],
+  "decision": "STOP_NO_PROVEN_REPAIR",
+  "limitations": [
+    "This stage does not claim source locality from signal indices.",
+    "This stage does not claim that static connectivity will close 2.000 ns.",
+    "The path census is endpoint/path evidence; it does not prove that static connectivity will improve physical locality."
+  ]
+}

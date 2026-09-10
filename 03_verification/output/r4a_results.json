@@ -1,0 +1,22 @@
+{
+  "variant": "R4A_OPERAND_LOCAL",
+  "date": "2026-09-09",
+  "baseline": "D:/Workspace/ITS_STUDY_V35_P2F_B2_R4_PRE",
+  "copy_file_count": 28007,
+  "variant_file_count": 28081,
+  "functional": {
+    "normal": {"cases": 49, "beats": 784, "positive_wrap_outputs": 950, "negative_wrap_outputs": 935, "pass": true},
+    "synthesis_define": {"cases": 49, "beats": 784, "positive_wrap_outputs": 950, "negative_wrap_outputs": 935, "pass": true},
+    "structure": {"pass": true, "operation_count": 1368, "lanes": 128, "clusters": 4, "lanes_per_cluster": 32, "max_source_choices": 3, "table_matches_authoritative_map": true, "negative_self_test": "PASS"}
+  },
+  "synthesis_only": {
+    "r3r": {"lut": 39632, "registers": 22486, "dsp": 128, "bram_tiles": 0, "muxf7": 9011, "muxf8": 3530, "wns_ns": -0.276, "setup_failing_endpoints": 3300},
+    "r4a": {"lut": 15677, "registers": 21324, "dsp": 128, "bram_tiles": 0, "muxf7": 0, "muxf8": 0, "wns_ns": -0.235, "setup_failing_endpoints": 3222}
+  },
+  "postroute": {
+    "r3r": {"wns_ns": -0.862, "tns_ns": -5116.327, "setup_failing_endpoints": 14287, "whs_ns": 0.042, "hold_failing_endpoints": 0, "lut": 39331, "registers": 22563, "dsp": 128, "bram_tiles": 0, "power_w": 3.519},
+    "r4a": {"wns_ns": -0.626, "tns_ns": -1740.066, "setup_failing_endpoints": 6320, "whs_ns": 0.043, "hold_failing_endpoints": 0, "lut": 15179, "registers": 21361, "dsp": 128, "bram_tiles": 0, "power_w": 1.708}
+  },
+  "fanout_residual": {"r4a_vector_buf_a0": 1024, "r4a_vector_buf_b0": 1024, "bufg_inserted": 2},
+  "gates": {"locality_functional": "PASS", "timing_500mhz": "FAIL", "overall": "FAIL"}
+}

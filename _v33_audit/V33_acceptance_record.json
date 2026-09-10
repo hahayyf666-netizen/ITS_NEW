@@ -1,0 +1,42 @@
+{
+  "generated": "2026-08-09 00:46:58",
+  "note": "V3.3 acceptance evidence: command + time + hash record (2026-08-09 recheck)",
+  "regressions": {
+    "contest_top": {
+      "command": "vsim -c -do \"do run.do\"",
+      "workdir": "03_verification/sim",
+      "time": "2026-08-09 00:17:14",
+      "result": "1539/1539 PASS, 0 failed, 0 warnings",
+      "log": "_v33_audit/v33_recheck_contest_top.log"
+    },
+    "singleclk": {
+      "command": "vsim -c -do \"do run_500_singleclk.do\"",
+      "workdir": "03_verification/sim",
+      "time": "2026-08-09 00:17:50",
+      "result": "1539/1539 PASS, 0 failed, 0 warnings",
+      "log": "_v33_audit/v33_recheck_singleclk.log"
+    },
+    "dualclock": {
+      "command": "vsim -c -do \"do run_dualclock.do\"",
+      "workdir": "03_verification/sim",
+      "time": "2026-08-09 00:19:42",
+      "result": "1539/1539 PASS, 0 failed, 0 warnings",
+      "log": "_v33_audit/v33_recheck_dualclock.log"
+    }
+  },
+  "python_checks": {
+    "audit_matrices": "AUDIT_PASS (VTM forward + VTM fastInverse + Huawei attachment, 2026-08-09)",
+    "onehot": "65 PASS, 0 FAIL",
+    "test_vectors": "3207 files validated, 1377 regression cases OK",
+    "ref_model": "exit 0"
+  },
+  "rtl_rom_json_hashes": {
+    "02_rtl/rtl/its_core_500.v": "04241edc0124129b2f017e71e3eeccdb06a72cb2e2881f655b75b4394c1d5ff0",
+    "02_rtl/rtl/its_transform_engine.v": "2f3b5b4da5e98ccfa009b73a3130236871d13d233f4d65d2c448ddbf7b809e24",
+    "02_rtl/rtl/async_fifo.v": "08254a2a5e06404eba40d0aec2df57f7fa08f040701f1bedf95b37c2a6df05ef",
+    "02_rtl/rtl/its_lfnst.v": "c6d03cd9a75d36ffd92460291beb164770da4078505eaa9dbef042ed2a7fc8b2",
+    "02_rtl/rtl/rom_coeffs.hex": "0063e92d212c6cd6116295928f1902d8c80b3335b36250d5ee18c13c0bde9d53",
+    "02_rtl/rtl/lfnst_coeffs.hex": "4afbaf5237afbcdbc51048e0f43bafe2dd0cc0a95173ba49a1cf8134a5d06f2c",
+    "03_verification/output/canonical_matrices.json": "d4c497cfbae64096c69d640bad154e4e3bae1f5834f82149623a83028b81e9f6"
+  }
+}

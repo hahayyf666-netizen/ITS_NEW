@@ -1,0 +1,374 @@
+{
+  "children": [
+    {
+      "object": "block",
+      "type": "heading_1",
+      "heading_1": {
+        "rich_text": [{"type": "text", "text": {"content": "📅 2026-07-19（Day 1）"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "heading_2",
+      "heading_2": {
+        "rich_text": [{"type": "text", "text": {"content": "📌 今日主题：its_mac.v — 2 级流水线乘累加器"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "divider",
+      "divider": {}
+    },
+    {
+      "object": "block",
+      "type": "heading_2",
+      "heading_2": {
+        "rich_text": [{"type": "text", "text": {"content": "🧠 学到的知识点"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "heading_3",
+      "heading_3": {
+        "rich_text": [{"type": "text", "text": {"content": "数字电路基础"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "补码原理：为什么数字电路用补码——一个加法器处理所有加减法，原码有问题（±0 和额外符号判断）"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "-15 的 32 位补码计算：正数取反+1，即 000...00001111 → 111...11110001"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "$signed() 的作用：告诉综合器按补码解读有符号数，不需要额外电路"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "阻塞赋值 vs 非阻塞赋值：always_ff 里用 <=（非阻塞），所有赋值在同一时钟沿同时更新"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "posedge clk or negedge rst_n：异步复位的写法，rst_n 低有效（_n = active low）"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "reg 声明 vs wire 声明：reg 在 always 块里驱动，wire 用 assign 或被模块输出驱动"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "heading_3",
+      "heading_3": {
+        "rich_text": [{"type": "text", "text": {"content": "流水线"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "2 级流水线结构：第 1 级 a×b 乘法 → product 寄存器 → 第 2 级累加 result += product"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "为什么分两拍：乘法 (~2ns) + 累加 (~0.5ns) > 2.5ns，500MHz 周期只有 2ns，组合逻辑太长时序不收敛"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "寄存器的物理作用：在第 1 拍结束时锁住乘积，第 2 拍输出稳定值给加法器——把长管道截成两段短管道"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "流水线 trade-off：单次延迟变长（2.5ns → 4ns），但时钟能跑更高频率（400MHz → 500MHz），吞吐量反而提升"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "\"两拍\"定义：一个时钟周期 = 一拍 = 2ns @ 500MHz。数据从 a,b 输入到 result 输出需要 4ns = 两拍"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "heading_3",
+      "heading_3": {
+        "rich_text": [{"type": "text", "text": {"content": "位宽与溢出"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "符号扩展：{{8{product[31]}}, product} 把 32 位扩到 40 位——正数补 8 个 0，负数补 8 个 1，数值不变"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "为什么累加器用 40 位：DCT2 64×64 最坏累加 186M，32 位虽够但 40 位留余量防溢出"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "heading_3",
+      "heading_3": {
+        "rich_text": [{"type": "text", "text": {"content": "控制信号"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "clr 优先级高于 en：if(clr) 写在 if(valid_s1) 前面 → 同时拉高时第 1 级正常乘，第 2 级清零"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "clr 和 en 同时为 1 时的行为：正好是"开始计算新输出点"的标准操作——清累加器 + 送入第一组 a,b"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "valid_s1（第1级输出有效）→ valid（第2级输出有效）延迟 1 拍"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "clr 只清零累加器，不清第 1 级——product 在下一拍自然被新 a,b 覆盖"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "heading_3",
+      "heading_3": {
+        "rich_text": [{"type": "text", "text": {"content": "项目全局"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "its_mac 在 ITS 中的调用链：its_top → its_core_500 → its_transform_engine ×4 MAC + its_lfnst ×1 MAC = 5 个 DSP"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "对应赛题要求：一拍计算四个点，支持流水——4 个 MAC 并行，每拍出 4 个输出点"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "it_data_out[39:0] = 4×10bit，500MHz 下每秒输出 20 亿个像素值"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "row_times_width 函数用 case-shift 而非真乘法器——tu_width 只有 2 的幂，移位零硬件开销"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "heading_3",
+      "heading_3": {
+        "rich_text": [{"type": "text", "text": {"content": "仿真工具链"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "流程：vlib work → vlog 编译 → vsim 仿真（-c 命令行 / 不加则 GUI / -do 脚本）"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "testbench 三要素：时钟生成（always #1 clk=~clk）、复位（拉低→拉高）、按拍给激励（@(posedge clk)）"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "@(posedge clk) = 等到下一个时钟上升沿；#N = 等 N 个时间单位（配合 timescale 1ns/1ps）"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "ModelSim 不支持中文路径（报 sqlite3_open 乱码错误）"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "divider",
+      "divider": {}
+    },
+    {
+      "object": "block",
+      "type": "heading_2",
+      "heading_2": {
+        "rich_text": [{"type": "text", "text": {"content": "❓ 面试可能会问"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "为什么乘法和累加要分两拍？不放同一拍会怎样？"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "clr 和 en 同时为 1 发生了什么？先清零还是先累加？"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "product 为什么要符号扩展到 40 位？补 0 行不行？"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "valid_s1 拉高到 valid 拉高隔了几个周期？"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "5 个 DSP 分别用在哪里？为什么不是 4 个或 6 个？"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "为什么累加器选 40 位而不是 32 位？"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "divider",
+      "divider": {}
+    },
+    {
+      "object": "block",
+      "type": "heading_2",
+      "heading_2": {
+        "rich_text": [{"type": "text", "text": {"content": "🔧 动手做了什么"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "画了 its_mac 的 2 级流水线框图：第 1 级乘法 → 寄存器 → 第 2 级累加"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "手写了 its_mac_tb.v testbench（测试 a=3×5 → 7×2，验证 result 15 → 29）"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "用 ModelSim 命令行跑通仿真：Errors 0，Warnings 0"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "在 GUI 波形窗口验证了流水线 2 拍延迟（product 比 a,b 晚 1 拍，result 晚 2 拍）"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "divider",
+      "divider": {}
+    },
+    {
+      "object": "block",
+      "type": "heading_2",
+      "heading_2": {
+        "rich_text": [{"type": "text", "text": {"content": "📁 相关文件"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "02_rtl/rtl/its_mac.v — 2 级流水线乘累加器 RTL"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "03_verification/tb/its_mac_tb.v — MAC 模块独立 testbench"}}]
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [{"type": "text", "text": {"content": "mac_wave.do — ModelSim 一键编译+仿真+波形脚本"}}]
+      }
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "step": "11",
+  "name": "P2F-B2 first Vivado 500 MHz baseline",
+  "date": "2026-09-05",
+  "project_root": "D:\\Workspace\\ITS_STUDY_V35_P2F_B2",
+  "tool": "Vivado 2025.2",
+  "part": "xcku5p-ffvb676-2-e",
+  "clock_period_ns": 2.0,
+  "clock_frequency_mhz": 500.0,
+  "top": "p2f_dct2_64_b1_step102",
+  "rtl_modified": false,
+  "dut_sha256_r2": "53DE8B1B7903D890072EC10715D48F3A1A75FFBF990659FE756237FE2D8466B3",
+  "dut_sha256_b2": "53DE8B1B7903D890072EC10715D48F3A1A75FFBF990659FE756237FE2D8466B3",
+  "functional_baseline": {
+    "source_report": "V35_P2F_B1_FUNCTIONAL_REPORT.md",
+    "cases": 49,
+    "beats": 784,
+    "status": "PASS"
+  },
+  "synthesis": {"status": "PASS", "errors": 0, "critical_warnings": 0},
+  "implementation": {"status": "PASS", "route_errors": 0},
+  "timing": {
+    "setup_wns_ns": -2.052,
+    "setup_tns_ns": -19555.092,
+    "setup_failing_endpoints": 20730,
+    "setup_total_endpoints": 29246,
+    "hold_whs_ns": 0.044,
+    "hold_ths_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "unconstrained_internal_endpoints": 0,
+    "status": "FAIL_SETUP"
+  },
+  "worst_setup_path": {
+    "source": "issue_cycle_reg[0]_replica_29/C",
+    "destination": "lane_product_reg_reg[55][2]/D",
+    "data_path_delay_ns": 4.031,
+    "logic_delay_ns": 2.116,
+    "route_delay_ns": 1.915,
+    "logic_levels": 11
+  },
+  "utilization": {
+    "clb_luts": {"used": 20709, "available": 216960, "percent": 9.55},
+    "lut_as_memory": {"used": 0, "available": 99840, "percent": 0.0},
+    "registers": {"used": 18276, "available": 433920, "percent": 4.21},
+    "dsp48e2": {"used": 128, "available": 1824, "percent": 7.02},
+    "block_ram_tiles": {"used": 0, "available": 480, "percent": 0.0},
+    "ramb18": {"used": 0, "available": 960, "percent": 0.0},
+    "ramb36_fifo": {"used": 0, "available": 480, "percent": 0.0},
+    "uram": {"used": 0, "available": 64, "percent": 0.0}
+  },
+  "power_vectorless_estimate": {
+    "total_on_chip_w": 2.464,
+    "dynamic_w": 1.997,
+    "device_static_w": 0.466,
+    "confidence": "Medium",
+    "simulation_activity_file": null
+  },
+  "evidence": {
+    "vivado_log": "03_verification/vivado/run/vivado_p2f_b2.log",
+    "timing_summary": "03_verification/vivado/reports/report_timing_summary_postroute.rpt",
+    "hold_summary": "03_verification/vivado/reports/report_timing_hold_summary_postroute.rpt",
+    "worst_paths": "03_verification/vivado/reports/report_timing_worst20_postroute.rpt",
+    "unconstrained": "03_verification/vivado/reports/report_timing_unconstrained_postroute.rpt",
+    "utilization": "03_verification/vivado/reports/report_utilization_postroute.rpt",
+    "power": "03_verification/vivado/reports/report_power_postroute.rpt",
+    "checkpoint": "03_verification/vivado/reports/p2f_b2_postroute.dcp"
+  },
+  "overall": "FAIL_SETUP"
+}

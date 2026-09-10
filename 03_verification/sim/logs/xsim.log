@@ -1,0 +1,80 @@
+#-----------------------------------------------------------
+# xsim v2024.1 (64-bit)
+# SW Build 5076996 on Wed May 22 18:37:14 MDT 2024
+# IP Build 5075265 on Wed May 22 21:45:21 MDT 2024
+# SharedData Build 5076995 on Wed May 22 18:29:18 MDT 2024
+# Start of session at: Sun Jul  5 17:40:09 2026
+# Process ID: 8964
+# Current directory: D:/WorkSpace/its_vvc/sim
+# Command line: xsim.exe -mode tcl -source {xsim.dir/its_tb_500_synth_smoke/xsim_script.tcl}
+# Log file: D:/WorkSpace/its_vvc/sim/xsim.log
+# Journal file: D:/WorkSpace/its_vvc/sim\xsim.jou
+# Running On        :lab
+# Platform          :Windows Server 2016 or Windows 10
+# Operating System  :26200
+# Processor Detail  :12th Gen Intel(R) Core(TM) i5-12400
+# CPU Frequency     :2496 MHz
+# CPU Physical cores:6
+# CPU Logical cores :12
+# Host memory       :16908 MB
+# Swap memory       :16908 MB
+# Total Virtual     :33817 MB
+# Available Virtual :20081 MB
+#-----------------------------------------------------------
+source xsim.dir/its_tb_500_synth_smoke/xsim_script.tcl
+# xsim {its_tb_500_synth_smoke} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+=== ITS 500MHz Wrapper CDC Testbench ===
+SINGLECLK_SUBMISSION: its_top_500_singleclk, clk = 100MHz sim-safe
+Full 1444-test regression + hand-written wrapper tests
+SYNTHESIS_SMOKE: representative synthesis-branch regression
+
+=== [WRAPPER] dct2_4x4 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+  [RST t=0] rst_n=0
+Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. its_tb_500.u_wrapper.u_wrapper.u_core.u_in_mem.xpm_memory_base_inst.config_drc
+Time: 1 ps  Iteration: 0  Process: /its_tb_500/u_wrapper/u_wrapper/u_core/u_in_mem/xpm_memory_base_inst/Initial302_33  Scope: its_tb_500.u_wrapper.u_wrapper.u_core.u_in_mem.xpm_memory_base_inst.config_drc  File: C:\App\Xilinx\Vivado\2024.1\data/ip/xpm/xpm_memory/hdl/xpm_memory.sv Line: 514
+  [RST t=195000] rst_n=1
+  PASS (16 outputs)
+
+=== [WRAPPER] dct2_64x64 (w=64 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+  [RST t=3655000] rst_n=0
+  [RST t=3855000] rst_n=1
+  PASS (4096 outputs)
+
+=== [WRAPPER] dct8_8x8 (w=8 h=8 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+  [RST t=6868915000] rst_n=0
+  [RST t=6869115000] rst_n=1
+  PASS (64 outputs)
+
+=== [WRAPPER] dst7_8x8 (w=8 h=8 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+  [RST t=6887635000] rst_n=0
+  [RST t=6887835000] rst_n=1
+  PASS (64 outputs)
+
+=== [WRAPPER] lfnst16_s0_i1 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+  [RST t=6906385000] rst_n=0
+  [RST t=6906585000] rst_n=1
+  PASS (16 outputs)
+
+=== [WRAPPER] lfnst48_s0_i1 (w=8 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+  [RST t=6916515000] rst_n=0
+  [RST t=6916715000] rst_n=1
+  PASS (64 outputs)
+
+=== [WRAPPER-2TU] two_tu_dct2_4x4 ===
+  [RST t=6954165000] rst_n=0
+  [RST t=6954365000] rst_n=1
+  --- TU 0 ---
+  TU0 done OK
+  --- TU 1 ---
+  TU1 done OK
+  PASS (2-TU, 16 outputs each)
+
+========================================
+Wrapper Test Summary: 7 passed, 0 failed (total 7)
+========================================
+ALL WRAPPER TESTS PASSED!
+$finish called at time : 6961165 ns : File "D:/WorkSpace/its_vvc/tb/its_tb_500.v" Line 1644
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Jul  5 17:40:14 2026...

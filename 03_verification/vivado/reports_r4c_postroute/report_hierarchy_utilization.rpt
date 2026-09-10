@@ -1,0 +1,29 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Thu Sep 10 12:32:42 2026
+| Host         : Finesse running 64-bit major release  (build 9200)
+| Command      : report_utilization -hierarchical -file Z:/ITS_STUDY_V35_P2F_B2_R4C_DSP_PIPE/03_verification/vivado/reports_r4c_postroute/report_hierarchy_utilization.rpt
+| Design       : p2f_dct2_64_b1_step102
+| Device       : xcku5p-ffvb676-2-e
+| Speed File   : -2
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++------------------------+--------+------------+------------+---------+------+-------+--------+--------+------+------------+
+|        Instance        | Module | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs  | RAMB36 | RAMB18 | URAM | DSP Blocks |
++------------------------+--------+------------+------------+---------+------+-------+--------+--------+------+------------+
+| p2f_dct2_64_b1_step102 |  (top) |      11630 |      11630 |       0 |    0 | 18140 |      0 |      0 |    0 |        128 |
++------------------------+--------+------------+------------+---------+------+-------+--------+--------+------+------------+
+* Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
+
+

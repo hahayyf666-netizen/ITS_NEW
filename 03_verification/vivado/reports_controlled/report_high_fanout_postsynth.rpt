@@ -1,0 +1,122 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Mon Sep  7 16:32:46 2026
+| Host         : Finesse running 64-bit major release  (build 9200)
+| Command      : report_high_fanout_nets -max_nets 100 -file D:/Workspace/ITS_STUDY_V35_P2F_B2_R3/03_verification/vivado/reports_controlled/report_high_fanout_postsynth.rpt
+| Design       : p2f_dct2_64_b1_step102
+| Device       : xcku5p
+| Design State : Synthesized
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+High Fan-out Nets Information
+
+1. Summary
+----------
+
++-----------------------------------------+--------+-------------+
+| Net Name                                | Fanout | Driver Type |
++-----------------------------------------+--------+-------------+
+| output_active_i_2_n_0                   |  20519 | LUT1        |
+| sched_src_reg_reg_n_0_[42][0]           |   9314 | FDCE        |
+| final10_mem[1][60][0]_i_1_n_0           |   1040 | LUT3        |
+| final10_mem[2][60][0]_i_1_n_0           |   1040 | LUT3        |
+| final10_mem[3][60][0]_i_1_n_0           |   1040 | LUT3        |
+| ready_vector_id[0]                      |   1040 | LUT3        |
+| vector_buf_a[22][15]_i_1_n_0            |   1024 | LUT3        |
+| vector_buf_b[22][15]_i_1_n_0            |   1024 | LUT3        |
+| sched_src_reg_reg_n_0_[10][1]           |    800 | FDCE        |
+| issue_active_reg_rep__4_n_0             |    457 | FDCE        |
+| issue_cycle_reg[0]_rep__4_n_0           |    305 | FDCE        |
+| issue_cycle_reg[1]_rep__1_n_0           |    304 | FDCE        |
+| issue_cycle_reg[2]_rep_n_0              |    302 | FDCE        |
+| issue_cycle_reg[3]_rep__6_n_0           |    302 | FDCE        |
+| issue_cycle_reg[4]_rep_n_0              |    301 | FDCE        |
+| signal_reg[94][21]_i_3_n_0              |    273 | LUT5        |
+| red_s0_data295_out                      |    266 | LUT6        |
+| signal_reg[46][23]_i_1_n_0              |    264 | LUT6        |
+| signal_reg[18][23]_i_1_n_0              |    264 | LUT3        |
+| issue_cycle_reg[1]_rep__5_n_0           |    239 | FDCE        |
+| issue_cycle_reg[2]_rep__3_n_0           |    238 | FDCE        |
+| issue_cycle_reg[0]_rep__0_n_0           |    238 | FDCE        |
+| issue_cycle_reg[3]_rep__2_n_0           |    237 | FDCE        |
+| issue_cycle_reg[4]_rep__3_n_0           |    236 | FDCE        |
+| issue_active_reg_rep__1_n_0             |    232 | FDCE        |
+| issue_active_reg_rep__0_n_0             |    224 | FDCE        |
+| output_group[1]_i_3_n_0                 |    209 | LUT2        |
+| (null)[0].key[2]                        |    199 | FDCE        |
+| issue_cycle_reg[0]_rep_n_0              |    192 | FDCE        |
+| (null)[0].key[1]                        |    192 | FDCE        |
+| signal_reg[32][23]_i_1_n_0              |    192 | LUT6        |
+| issue_cycle_reg[1]_rep__6_n_0           |    191 | FDCE        |
+| issue_cycle_reg[2]_rep__4_n_0           |    190 | FDCE        |
+| issue_cycle_reg[3]_rep__1_n_0           |    189 | FDCE        |
+| issue_cycle_reg[4]_rep__4_n_0           |    188 | FDCE        |
+| result_first_INST_0_i_1_n_0             |    188 | LUT2        |
+| red_s0_data[47][23]_i_3_n_0             |    185 | LUT6        |
+| result_stage16_flat[25]_INST_0_i_12_n_0 |    184 | LUT3        |
+| result_stage16_flat[25]_INST_0_i_11_n_0 |    184 | LUT3        |
+| signal_reg[48][23]_i_3_n_0              |    177 | LUT6        |
+| result_last_INST_0_i_1_n_0              |    176 | LUT2        |
+| sched_src_reg_reg[28][2]_rep__4_n_0     |    176 | FDCE        |
+| sched_src_reg_reg[15][4]_rep_n_0        |    176 | FDCE        |
+| (null)[0].key[0]                        |    173 | FDCE        |
+| operand_valid_reg_reg[45]__0            |    168 | FDCE        |
+| red_s1_data[1][23]_i_21_n_0             |    168 | LUT6        |
+| signal_reg[22][23]_i_18_n_0             |    168 | LUT6        |
+| operand_valid_reg_reg[87]_rep__1_n_0    |    168 | FDCE        |
+| output_group_reg[0]_rep__0_n_0          |    165 | FDCE        |
+| sched_valid_reg_reg[126]_rep_n_0        |    160 | FDCE        |
+| sched_src_reg_reg_n_0_[70][1]           |    160 | FDCE        |
+| sched_src_reg_reg[46][5]_rep__2_n_0     |    160 | FDCE        |
+| sched_src_reg_reg[29][2]_rep__2_n_0     |    160 | FDCE        |
+| sched_src_reg_reg[67][4]_rep__2_n_0     |    160 | FDCE        |
+| sched_src_reg_reg_n_0_[70][0]           |    160 | FDCE        |
+| sched_src_reg_reg[24][1]_rep__17_n_0    |    160 | FDCE        |
+| sched_src_reg_reg[28][1]_rep__18_n_0    |    160 | FDCE        |
+| red_s1_data[23][23]_i_6_n_0             |    156 | LUT5        |
+| (null)[0].key[5]                        |    156 | FDCE        |
+| result_valid                            |    151 | FDCE        |
+| issue_active                            |    150 | FDCE        |
+| signal_reg[32][7]_i_2_n_0               |    148 | LUT6        |
+| red_s0_data[11][23]_i_23_n_0            |    147 | LUT6        |
+| sched_src_reg_reg_n_0_[29][5]           |    146 | FDCE        |
+| red_s0_data[1][23]_i_3_n_0              |    146 | LUT2        |
+| sched_valid_reg_reg[16]__0              |    146 | FDCE        |
+| p_424_in                                |    146 | LUT6        |
+| red_s0_data[5][23]_i_3_n_0              |    145 | LUT6        |
+| sched_src_reg_reg_n_0_[28][4]           |    145 | FDCE        |
+| sched_src_reg_reg_n_0_[16][3]           |    145 | FDCE        |
+| red_s1_data[17][23]_i_22_n_0            |    145 | LUT5        |
+| operand_valid_reg_reg[58]_rep__0_n_0    |    144 | FDCE        |
+| sched_src_reg_reg[24][2]_rep__1_n_0     |    144 | FDCE        |
+| sched_src_reg_reg[71][3]_rep_n_0        |    144 | FDCE        |
+| signal_reg[94][21]_i_56_n_0             |    144 | LUT4        |
+| red_s0_data[1][23]_i_20_n_0             |    144 | LUT6        |
+| sched_src_reg_reg[67][4]_rep__1_n_0     |    144 | FDCE        |
+| sched_src_reg_reg_n_0_[75][3]           |    144 | FDCE        |
+| red_s0_data[12][23]_i_19_n_0            |    144 | LUT6        |
+| red_s0_data[55][23]_i_1_n_0             |    144 | LUT3        |
+| sched_src_reg_reg_n_0_[127][5]          |    144 | FDCE        |
+| sched_src_reg_reg[29][5]_rep__5_n_0     |    144 | FDCE        |
+| red_s2_data[13][23]_i_22_n_0            |    144 | LUT6        |
+| sched_src_reg_reg_n_0_[74][4]           |    144 | FDCE        |
+| sched_src_reg_reg[24][2]_rep__6_n_0     |    144 | FDCE        |
+| signal_reg[48][23]_i_1_n_0              |    144 | LUT4        |
+| sched_src_reg_reg_n_0_[67][1]           |    144 | FDCE        |
+| red_s0_data[12][23]_i_18_n_0            |    144 | LUT5        |
+| red_s1_data[17][23]_i_21_n_0            |    144 | LUT6        |
+| red_s0_data37_out                       |    144 | LUT2        |
+| sched_src_reg_reg[29][5]_rep__3_n_0     |    144 | FDCE        |
+| red_s0_data[19][23]_i_18_n_0            |    144 | LUT6        |
+| signal_reg[2][23]_i_19_n_0              |    144 | LUT6        |
+| sched_src_reg_reg[29][5]_rep_n_0        |    144 | FDCE        |
+| operand_valid_reg_reg_n_0_[58]          |    144 | FDCE        |
+| signal_reg[94][21]_i_57_n_0             |    144 | LUT5        |
+| sched_src_reg_reg[24][1]_rep__18_n_0    |    144 | FDCE        |
+| sched_src_reg_reg_n_0_[71][3]           |    144 | FDCE        |
+| (null)[0].key[3]                        |    143 | FDCE        |
+| (null)[0].key[4]                        |    139 | FDCE        |
++-----------------------------------------+--------+-------------+
+
+

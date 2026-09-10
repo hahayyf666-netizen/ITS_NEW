@@ -1,0 +1,376 @@
+# do run_core_500.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 18:30:36 on Jun 19,2026
+# vlog ../rtl/its_mac.v 
+# -- Compiling module its_mac
+# 
+# Top level modules:
+# 	its_mac
+# End time: 18:30:36 on Jun 19,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 18:30:36 on Jun 19,2026
+# vlog ../rtl/its_rom.v 
+# -- Compiling module its_rom
+# 
+# Top level modules:
+# 	its_rom
+# End time: 18:30:36 on Jun 19,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 18:30:36 on Jun 19,2026
+# vlog ../rtl/its_lfnst_rom.v 
+# -- Compiling module its_lfnst_rom
+# 
+# Top level modules:
+# 	its_lfnst_rom
+# End time: 18:30:36 on Jun 19,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 18:30:36 on Jun 19,2026
+# vlog ../rtl/its_transform_engine.v 
+# -- Compiling module its_transform_engine
+# 
+# Top level modules:
+# 	its_transform_engine
+# End time: 18:30:36 on Jun 19,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 18:30:36 on Jun 19,2026
+# vlog ../rtl/its_lfnst.v 
+# -- Compiling module its_lfnst
+# 
+# Top level modules:
+# 	its_lfnst
+# End time: 18:30:36 on Jun 19,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 18:30:36 on Jun 19,2026
+# vlog ../rtl/its_core_500.v 
+# -- Compiling module its_core_500
+# 
+# Top level modules:
+# 	its_core_500
+# End time: 18:30:36 on Jun 19,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 18:30:36 on Jun 19,2026
+# vlog ../tb/its_core_500_tb.v 
+# -- Compiling module its_core_500_tb
+# 
+# Top level modules:
+# 	its_core_500_tb
+# End time: 18:30:36 on Jun 19,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -t 1ps work.its_core_500_tb 
+# Start time: 18:30:36 on Jun 19,2026
+# ** Note: (vsim-8009) Loading existing optimized design _opt1
+# //  ModelSim SE-64 10.6e Jun 23 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading work.its_core_500_tb(fast)
+# 
+# === dct2_4x4 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (16 outputs)
+# 
+# === dct2_4x8 (w=4 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (32 outputs)
+# 
+# === dct2_4x16 (w=4 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# === dct2_4x32 (w=4 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dct2_4x64 (w=4 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dct2_8x4 (w=8 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (32 outputs)
+# 
+# === dct2_16x4 (w=16 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# === dct2_32x4 (w=32 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dct2_64x4 (w=64 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dct2_8x8 (w=8 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# === dct2_8x16 (w=8 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dct2_8x32 (w=8 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dct2_8x64 (w=8 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (512 outputs)
+# 
+# === dct2_16x8 (w=16 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dct2_32x8 (w=32 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dct2_64x8 (w=64 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (512 outputs)
+# 
+# === dct2_16x16 (w=16 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dct2_16x32 (w=16 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (512 outputs)
+# 
+# === dct2_16x64 (w=16 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (1024 outputs)
+# 
+# === dct2_32x16 (w=32 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (512 outputs)
+# 
+# === dct2_32x32 (w=32 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (1024 outputs)
+# 
+# === dct2_32x64 (w=32 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (2048 outputs)
+# 
+# === dct2_64x16 (w=64 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (1024 outputs)
+# 
+# === dct2_64x32 (w=64 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (2048 outputs)
+# 
+# === dct2_64x64 (w=64 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (4096 outputs)
+# 
+# === dct8_4x4 (w=4 h=4 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (16 outputs)
+# 
+# === dct8_4x8 (w=4 h=8 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (32 outputs)
+# 
+# === dct8_4x16 (w=4 h=16 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# === dct8_4x32 (w=4 h=32 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dct8_8x4 (w=8 h=4 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (32 outputs)
+# 
+# === dct8_16x4 (w=16 h=4 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# === dct8_32x4 (w=32 h=4 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dct8_8x8 (w=8 h=8 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# === dct8_8x16 (w=8 h=16 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dct8_8x32 (w=8 h=32 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dct8_16x8 (w=16 h=8 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dct8_32x8 (w=32 h=8 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dct8_16x16 (w=16 h=16 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dct8_16x32 (w=16 h=32 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (512 outputs)
+# 
+# === dct8_32x16 (w=32 h=16 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (512 outputs)
+# 
+# === dct8_32x32 (w=32 h=32 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (1024 outputs)
+# 
+# === dst7_4x4 (w=4 h=4 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (16 outputs)
+# 
+# === dst7_4x8 (w=4 h=8 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (32 outputs)
+# 
+# === dst7_4x16 (w=4 h=16 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# === dst7_4x32 (w=4 h=32 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dst7_8x4 (w=8 h=4 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (32 outputs)
+# 
+# === dst7_16x4 (w=16 h=4 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# === dst7_32x4 (w=32 h=4 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dst7_8x8 (w=8 h=8 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# === dst7_8x16 (w=8 h=16 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dst7_8x32 (w=8 h=32 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dst7_16x8 (w=16 h=8 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dst7_32x8 (w=32 h=8 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dst7_16x16 (w=16 h=16 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dst7_16x32 (w=16 h=32 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (512 outputs)
+# 
+# === dst7_32x16 (w=32 h=16 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (512 outputs)
+# 
+# === dst7_32x32 (w=32 h=32 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (1024 outputs)
+# 
+# === lfnst16_s0_i1 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s0_i2 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=2) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s1_i1 (w=4 h=4 tr_h=0 tr_v=0 sidx=1 lfnst=1) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s1_i2 (w=4 h=4 tr_h=0 tr_v=0 sidx=1 lfnst=2) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s2_i1 (w=4 h=4 tr_h=0 tr_v=0 sidx=2 lfnst=1) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s2_i2 (w=4 h=4 tr_h=0 tr_v=0 sidx=2 lfnst=2) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s3_i1 (w=4 h=4 tr_h=0 tr_v=0 sidx=3 lfnst=1) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s3_i2 (w=4 h=4 tr_h=0 tr_v=0 sidx=3 lfnst=2) ===
+#   PASS (16 outputs)
+# 
+# === lfnst48_s0_i1 (w=8 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s0_i2 (w=8 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=2) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s1_i1 (w=8 h=8 tr_h=0 tr_v=0 sidx=1 lfnst=1) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s1_i2 (w=8 h=8 tr_h=0 tr_v=0 sidx=1 lfnst=2) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s2_i1 (w=8 h=8 tr_h=0 tr_v=0 sidx=2 lfnst=1) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s2_i2 (w=8 h=8 tr_h=0 tr_v=0 sidx=2 lfnst=2) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s3_i1 (w=8 h=8 tr_h=0 tr_v=0 sidx=3 lfnst=1) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s3_i2 (w=8 h=8 tr_h=0 tr_v=0 sidx=3 lfnst=2) ===
+#   PASS (64 outputs)
+# 
+# === lfnst16_dct8_force (w=4 h=4 tr_h=1 tr_v=1 sidx=0 lfnst=1) ===
+#   PASS (16 outputs)
+# 
+# === dct2_8x16_lfnst1 (w=8 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (128 outputs)
+# 
+# === dct2_16x8_lfnst1 (w=16 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (128 outputs)
+# 
+# === dct2_16x16_lfnst1 (w=16 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (256 outputs)
+# 
+# === dct2_16x32_lfnst1 (w=16 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (512 outputs)
+# 
+# === dct2_32x16_lfnst1 (w=32 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (512 outputs)
+# 
+# === dct2_32x32_lfnst1 (w=32 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (1024 outputs)
+# 
+# === dct2_4x64_lfnst1 (w=4 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (256 outputs)
+# 
+# === dct2_64x4_lfnst1 (w=64 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (256 outputs)
+# 
+# === dct2_8x64_lfnst1 (w=8 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (512 outputs)
+# 
+# === dct2_64x8_lfnst1 (w=64 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (512 outputs)
+# 
+# === boundary_zero_4x4 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (16 outputs)
+# 
+# === boundary_dc_4x4 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (16 outputs)
+# 
+# === boundary_maxval_4x4 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (16 outputs)
+# 
+# === boundary_minval_4x4 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (16 outputs)
+# 
+# === boundary_sparse_8x8 (w=8 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# --- Output Backpressure Tests (slow_div=7) ---
+# 
+# === bp_dct2_32x32 (w=32 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (1024 outputs)
+# 
+# === bp_dct2_64x64 (w=64 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (4096 outputs)
+# 
+# === bp_dct8_32x32 (w=32 h=32 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   PASS (1024 outputs)
+# 
+# === bp_dst7_32x32 (w=32 h=32 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   PASS (1024 outputs)
+# 
+# === bp_lfnst48 (w=8 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (64 outputs)
+#   [BP] output_fifo_full_cycles during backpressure tests: 10272
+# 
+# ========================================
+# Test Summary: 94 passed, 0 failed (total 94)
+# ========================================
+# ALL TESTS PASSED!
+# ** Note: $finish    : ../tb/its_core_500_tb.v(743)
+#    Time: 7234459 ns  Iteration: 1  Instance: /its_core_500_tb
+# End time: 18:30:38 on Jun 19,2026, Elapsed time: 0:00:02
+# Errors: 0, Warnings: 0

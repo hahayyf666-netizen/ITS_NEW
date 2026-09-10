@@ -1,0 +1,54 @@
+Sources present: attachment=D:\Workspace\ITS_STUDY_V33_ORIENTATION_FIX\»ªÎª¸½¼þ.docx
+  VTM=D:/Workspace/ITS_STUDY/VTM\source\Lib\CommonLib\RomTr.cpp
+  VTM commit: 69f5112bae8c (expect 69f5112bae8c)
+  OK: trType=0 name DCT2
+  OK: trType=1 name DST7
+  OK: trType=2 name DCT8
+
+=== SOURCE_KERNEL vs VTM forward ===
+  OK: DCT2-4 source_kernel vs VTM: 0/16 diffs
+  OK: DCT2-8 source_kernel vs VTM: 0/64 diffs
+  OK: DCT2-16 source_kernel vs VTM: 0/256 diffs
+  OK: DCT2-32 source_kernel vs VTM: 0/1024 diffs
+  OK: DCT2-64 source_kernel vs VTM: 0/4096 diffs
+  OK: DST7-4 source_kernel vs VTM: 0/16 diffs
+  OK: DST7-8 source_kernel vs VTM: 0/64 diffs
+  OK: DST7-16 source_kernel vs VTM: 0/256 diffs
+  OK: DST7-32 source_kernel vs VTM: 0/1024 diffs
+  OK: DCT8-4 source_kernel vs VTM: 0/16 diffs
+  OK: DCT8-8 source_kernel vs VTM: 0/64 diffs
+  OK: DCT8-16 source_kernel vs VTM: 0/256 diffs
+  OK: DCT8-32 source_kernel vs VTM: 0/1024 diffs
+
+=== INVERSE_OPERATOR vs VTM fastInverse ===
+  OK: DCT2-4 inverse_operator vs VTM: 0 mismatches
+  OK: DCT2-8 inverse_operator vs VTM: 0 mismatches
+  OK: DCT2-16 inverse_operator vs VTM: 0 mismatches
+  OK: DCT2-32 inverse_operator vs VTM: 0 mismatches
+  OK: DCT2-64 inverse_operator vs VTM: 0 mismatches
+  OK: DST7-4 inverse_operator vs VTM: 0 mismatches
+  OK: DST7-8 inverse_operator vs VTM: 0 mismatches
+  OK: DST7-16 inverse_operator vs VTM: 0 mismatches
+  OK: DST7-32 inverse_operator vs VTM: 0 mismatches
+  OK: DCT8-4 inverse_operator vs VTM: 0 mismatches
+  OK: DCT8-8 inverse_operator vs VTM: 0 mismatches
+  OK: DCT8-16 inverse_operator vs VTM: 0 mismatches
+  OK: DCT8-32 inverse_operator vs VTM: 0 mismatches
+
+=== A == C^T ===
+  OK: DCT2-4: A == C^T
+  OK: DCT2-8: A == C^T
+  OK: DCT2-16: A == C^T
+  OK: DCT2-32: A == C^T
+  OK: DCT2-64: A == C^T
+  OK: DST7-4: A == C^T
+  OK: DST7-8: A == C^T
+  OK: DST7-16: A == C^T
+  OK: DST7-32: A == C^T
+  OK: DCT8-4: A == C^T
+  OK: DCT8-8: A == C^T
+  OK: DCT8-16: A == C^T
+  OK: DCT8-32: A == C^T
+
+============================================================
+AUDIT_PASS: source_kernel == VTM forward, inverse_operator == VTM fastInverse

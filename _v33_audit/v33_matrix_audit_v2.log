@@ -1,0 +1,85 @@
+﻿Sources present: attachment=D:\Workspace\ITS_STUDY_V33_ORIENTATION_FIX\华为附件.docx
+  VTM=D:\Workspace\ITS_STUDY_V33_ORIENTATION_FIX\VTM\source\Lib\CommonLib\RomTr.cpp
+  VTM commit: 69f5112bae8c (expect 69f5112bae8c)
+  OK: trType=0 name DCT2
+  OK: trType=1 name DST7
+  OK: trType=2 name DCT8
+
+=== SOURCE_KERNEL vs VTM forward ===
+  OK: DCT2-4 source_kernel vs VTM: 0/16 diffs
+  OK: DCT2-8 source_kernel vs VTM: 0/64 diffs
+  OK: DCT2-16 source_kernel vs VTM: 0/256 diffs
+  OK: DCT2-32 source_kernel vs VTM: 0/1024 diffs
+  OK: DCT2-64 source_kernel vs VTM: 0/4096 diffs
+  OK: DST7-4 source_kernel vs VTM: 0/16 diffs
+  OK: DST7-8 source_kernel vs VTM: 0/64 diffs
+  OK: DST7-16 source_kernel vs VTM: 0/256 diffs
+  OK: DST7-32 source_kernel vs VTM: 0/1024 diffs
+  OK: DCT8-4 source_kernel vs VTM: 0/16 diffs
+  OK: DCT8-8 source_kernel vs VTM: 0/64 diffs
+  OK: DCT8-16 source_kernel vs VTM: 0/256 diffs
+  OK: DCT8-32 source_kernel vs VTM: 0/1024 diffs
+
+=== INVERSE_OPERATOR vs VTM fastInverse ===
+  OK: DCT2-4 inverse_operator vs VTM: 0 mismatches
+  OK: DCT2-8 inverse_operator vs VTM: 0 mismatches
+  OK: DCT2-16 inverse_operator vs VTM: 0 mismatches
+  OK: DCT2-32 inverse_operator vs VTM: 0 mismatches
+  OK: DCT2-64 inverse_operator vs VTM: 0 mismatches
+  OK: DST7-4 inverse_operator vs VTM: 0 mismatches
+  OK: DST7-8 inverse_operator vs VTM: 0 mismatches
+  OK: DST7-16 inverse_operator vs VTM: 0 mismatches
+  OK: DST7-32 inverse_operator vs VTM: 0 mismatches
+  OK: DCT8-4 inverse_operator vs VTM: 0 mismatches
+  OK: DCT8-8 inverse_operator vs VTM: 0 mismatches
+  OK: DCT8-16 inverse_operator vs VTM: 0 mismatches
+  OK: DCT8-32 inverse_operator vs VTM: 0 mismatches
+
+=== A == C^T ===
+  OK: DCT2-4: A == C^T
+  OK: DCT2-8: A == C^T
+  OK: DCT2-16: A == C^T
+  OK: DCT2-32: A == C^T
+  OK: DCT2-64: A == C^T
+  OK: DST7-4: A == C^T
+  OK: DST7-8: A == C^T
+  OK: DST7-16: A == C^T
+  OK: DST7-32: A == C^T
+  OK: DCT8-4: A == C^T
+  OK: DCT8-8: A == C^T
+  OK: DCT8-16: A == C^T
+  OK: DCT8-32: A == C^T
+
+=== SOURCE_KERNEL vs HUAWEI ATTACHMENT (independent) ===
+  OK: DCT2-64 source_kernel vs attachment: 0/4096 diffs
+  OK: DST7-4 source_kernel vs attachment: 0/16 diffs
+  OK: DST7-8 source_kernel vs attachment: 0/64 diffs
+  OK: DST7-16 source_kernel vs attachment: 0/256 diffs
+  OK: DCT8-4 source_kernel vs attachment: 0/16 diffs
+  OK: DCT8-8 source_kernel vs attachment: 0/64 diffs
+  OK: DCT8-16 source_kernel vs attachment: 0/256 diffs
+  OK: DST7-32 attachment 512 entries vs VTM: d0=0 d1=0 (expect 0 0)
+  OK: DST7-32 source_kernel vs VTM full: 0/1024 diffs
+  OK: DCT8-32 attachment 512 entries vs VTM: d0=0 d1=0 (expect 0 0)
+  OK: DCT8-32 source_kernel vs VTM full: 0/1024 diffs
+
+=== LFNST vs HUAWEI ATTACHMENT (independent) ===
+  OK: lfnst nTrs=16 s0 i1: 0 diffs
+  OK: lfnst nTrs=16 s0 i2: 0 diffs
+  OK: lfnst nTrs=16 s1 i1: 0 diffs
+  OK: lfnst nTrs=16 s1 i2: 0 diffs
+  OK: lfnst nTrs=16 s2 i1: 0 diffs
+  OK: lfnst nTrs=16 s2 i2: 0 diffs
+  OK: lfnst nTrs=16 s3 i1: 0 diffs
+  OK: lfnst nTrs=16 s3 i2: 0 diffs
+  OK: lfnst nTrs=48 s0 i1: 0 diffs
+  OK: lfnst nTrs=48 s0 i2: 0 diffs
+  OK: lfnst nTrs=48 s1 i1: 0 diffs
+  OK: lfnst nTrs=48 s1 i2: 0 diffs
+  OK: lfnst nTrs=48 s2 i1: 0 diffs
+  OK: lfnst nTrs=48 s2 i2: 0 diffs
+  OK: lfnst nTrs=48 s3 i1: 0 diffs
+  OK: lfnst nTrs=48 s3 i2: 0 diffs
+
+============================================================
+AUDIT_PASS: source_kernel == VTM forward, inverse_operator == VTM fastInverse

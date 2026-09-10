@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "cases": {
+    "source_mutation": {
+      "checker_result": false,
+      "expected": "FAIL"
+    },
+    "destination_mutation": {
+      "checker_result": false,
+      "expected": "FAIL"
+    },
+    "phase_mutation": {
+      "checker_result": false,
+      "expected": "FAIL"
+    },
+    "duplicate_producer": {
+      "checker_result": false,
+      "expected": "FAIL"
+    },
+    "normal": {
+      "checker_result": true,
+      "expected": "PASS"
+    }
+  },
+  "failures": []
+}

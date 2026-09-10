@@ -1,0 +1,1198 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Sat Jul  4 18:44:37 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -setup -nworst 20 -file D:/HWWORK/its_vvc-7.1/synth/top_500_singleclk_timing_setup_paths_usp.rpt
+| Design            : its_top_500_singleclk
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Physopt postRoute
+| Temperature Grade : E
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             0.087ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_rom/coeff_reg_1/CLKARDCLK
+                            (rising edge-triggered cell RAMB36E2 clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMA/I
+                            (rising edge-triggered cell RAMD64E clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.789ns  (logic 0.960ns (53.667%)  route 0.829ns (46.333%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.033ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.076ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.076     0.076    u_wrapper/u_core/u_shared_rom/clk
+    RAMB36_X6Y32         RAMB36E2                                     r  u_wrapper/u_core/u_shared_rom/coeff_reg_1/CLKARDCLK
+  -------------------------------------------------------------------    -------------------
+    RAMB36_X6Y32         RAMB36E2 (Prop_RAMB36E2_RAMB36_CLKARDCLK_DOUTADOUT[3])
+                                                      0.960     1.036 r  u_wrapper/u_core/u_shared_rom/coeff_reg_1/DOUTADOUT[3]
+                         net (fo=117, routed)         0.829     1.865    u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/DIA
+    SLICE_X66Y159        RAMD64E                                      r  u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMA/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/WCLK
+    SLICE_X66Y159        RAMD64E                                      r  u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMA/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    SLICE_X66Y159        RAMD64E (Setup_A6LUT_SLICEM_CLK_I)
+                                                     -0.056     1.952    u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMA
+  -------------------------------------------------------------------
+                         required time                          1.952    
+                         arrival time                          -1.865    
+  -------------------------------------------------------------------
+                         slack                                  0.087    
+
+Slack (MET) :             0.087ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_rom/coeff_reg_1/CLKARDCLK
+                            (rising edge-triggered cell RAMB36E2 clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMA/I
+                            (rising edge-triggered cell RAMD64E clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.789ns  (logic 0.960ns (53.667%)  route 0.829ns (46.333%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.033ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.076ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.076     0.076    u_wrapper/u_core/u_shared_rom/clk
+    RAMB36_X6Y32         RAMB36E2                                     r  u_wrapper/u_core/u_shared_rom/coeff_reg_1/CLKARDCLK
+  -------------------------------------------------------------------    -------------------
+    RAMB36_X6Y32         RAMB36E2 (Prop_RAMB36E2_RAMB36_CLKARDCLK_DOUTADOUT[3])
+                                                      0.960     1.036 f  u_wrapper/u_core/u_shared_rom/coeff_reg_1/DOUTADOUT[3]
+                         net (fo=117, routed)         0.829     1.865    u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/DIA
+    SLICE_X66Y159        RAMD64E                                      f  u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMA/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/WCLK
+    SLICE_X66Y159        RAMD64E                                      r  u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMA/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    SLICE_X66Y159        RAMD64E (Setup_A6LUT_SLICEM_CLK_I)
+                                                     -0.056     1.952    u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMA
+  -------------------------------------------------------------------
+                         required time                          1.952    
+                         arrival time                          -1.865    
+  -------------------------------------------------------------------
+                         slack                                  0.087    
+
+Slack (MET) :             0.091ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_rom/coeff_reg_1/CLKARDCLK
+                            (rising edge-triggered cell RAMB36E2 clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMB/I
+                            (rising edge-triggered cell RAMD64E clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.785ns  (logic 0.960ns (53.788%)  route 0.825ns (46.212%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.033ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.076ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.076     0.076    u_wrapper/u_core/u_shared_rom/clk
+    RAMB36_X6Y32         RAMB36E2                                     r  u_wrapper/u_core/u_shared_rom/coeff_reg_1/CLKARDCLK
+  -------------------------------------------------------------------    -------------------
+    RAMB36_X6Y32         RAMB36E2 (Prop_RAMB36E2_RAMB36_CLKARDCLK_DOUTADOUT[3])
+                                                      0.960     1.036 r  u_wrapper/u_core/u_shared_rom/coeff_reg_1/DOUTADOUT[3]
+                         net (fo=117, routed)         0.825     1.861    u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/DIB
+    SLICE_X66Y159        RAMD64E                                      r  u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMB/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/WCLK
+    SLICE_X66Y159        RAMD64E                                      r  u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMB/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    SLICE_X66Y159        RAMD64E (Setup_B6LUT_SLICEM_CLK_I)
+                                                     -0.056     1.952    u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMB
+  -------------------------------------------------------------------
+                         required time                          1.952    
+                         arrival time                          -1.861    
+  -------------------------------------------------------------------
+                         slack                                  0.091    
+
+Slack (MET) :             0.091ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_rom/coeff_reg_1/CLKARDCLK
+                            (rising edge-triggered cell RAMB36E2 clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMB/I
+                            (rising edge-triggered cell RAMD64E clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.785ns  (logic 0.960ns (53.788%)  route 0.825ns (46.212%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.033ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.076ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.076     0.076    u_wrapper/u_core/u_shared_rom/clk
+    RAMB36_X6Y32         RAMB36E2                                     r  u_wrapper/u_core/u_shared_rom/coeff_reg_1/CLKARDCLK
+  -------------------------------------------------------------------    -------------------
+    RAMB36_X6Y32         RAMB36E2 (Prop_RAMB36E2_RAMB36_CLKARDCLK_DOUTADOUT[3])
+                                                      0.960     1.036 f  u_wrapper/u_core/u_shared_rom/coeff_reg_1/DOUTADOUT[3]
+                         net (fo=117, routed)         0.825     1.861    u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/DIB
+    SLICE_X66Y159        RAMD64E                                      f  u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMB/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/WCLK
+    SLICE_X66Y159        RAMD64E                                      r  u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMB/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    SLICE_X66Y159        RAMD64E (Setup_B6LUT_SLICEM_CLK_I)
+                                                     -0.056     1.952    u_wrapper/u_core/u_shared_engine/coeff_buf_reg_r3_64_127_7_13/RAMB
+  -------------------------------------------------------------------
+                         required time                          1.952    
+                         arrival time                          -1.861    
+  -------------------------------------------------------------------
+                         slack                                  0.091    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 f  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[27])
+                                                      0.505     1.275 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[27]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<27>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[27]_U_DATA[27])
+                                                      0.047     1.322 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[27]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<27>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[27]_ALU_OUT[27])
+                                                      0.585     1.907 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[27]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<27>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[27])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[27])
+                                                      0.505     1.275 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[27]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<27>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[27]_U_DATA[27])
+                                                      0.047     1.322 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[27]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<27>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[27]_ALU_OUT[27])
+                                                      0.585     1.907 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[27]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<27>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[27])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 f  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[27])
+                                                      0.505     1.275 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[27]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<27>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[27]_U_DATA[27])
+                                                      0.047     1.322 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[27]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<27>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[27]_ALU_OUT[27])
+                                                      0.585     1.907 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[27]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<27>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[27])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[27])
+                                                      0.505     1.275 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[27]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<27>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[27]_U_DATA[27])
+                                                      0.047     1.322 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[27]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<27>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[27]_ALU_OUT[27])
+                                                      0.585     1.907 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[27]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<27>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[27])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 f  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[27])
+                                                      0.505     1.275 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[27]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<27>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[27]_U_DATA[27])
+                                                      0.047     1.322 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[27]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<27>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[27]_ALU_OUT[27])
+                                                      0.585     1.907 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[27]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<27>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[27])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[27])
+                                                      0.505     1.275 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[27]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<27>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[27]_U_DATA[27])
+                                                      0.047     1.322 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[27]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<27>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[27]_ALU_OUT[27])
+                                                      0.585     1.907 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[27]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<27>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[27])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 f  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[27])
+                                                      0.505     1.275 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[27]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<27>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[27]_U_DATA[27])
+                                                      0.047     1.322 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[27]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<27>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[27]_ALU_OUT[27])
+                                                      0.585     1.907 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[27]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<27>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[27])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[27])
+                                                      0.505     1.275 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[27]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<27>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[27]_U_DATA[27])
+                                                      0.047     1.322 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[27]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<27>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[27]_ALU_OUT[27])
+                                                      0.585     1.907 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[27]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<27>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[27]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[27])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 f  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[28])
+                                                      0.505     1.275 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[28]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<28>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[28]_U_DATA[28])
+                                                      0.047     1.322 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[28]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<28>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[28]_ALU_OUT[28])
+                                                      0.585     1.907 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[28]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<28>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[28])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[28])
+                                                      0.505     1.275 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[28]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<28>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[28]_U_DATA[28])
+                                                      0.047     1.322 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[28]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<28>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[28]_ALU_OUT[28])
+                                                      0.585     1.907 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[28]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<28>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[28])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 f  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[28])
+                                                      0.505     1.275 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[28]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<28>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[28]_U_DATA[28])
+                                                      0.047     1.322 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[28]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<28>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[28]_ALU_OUT[28])
+                                                      0.585     1.907 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[28]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<28>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[28])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[28])
+                                                      0.505     1.275 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[28]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<28>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[28]_U_DATA[28])
+                                                      0.047     1.322 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[28]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<28>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[28]_ALU_OUT[28])
+                                                      0.585     1.907 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[28]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<28>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[28])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 f  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[27])
+                                                      0.505     1.275 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[27]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<27>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[27]_U_DATA[27])
+                                                      0.047     1.322 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[27]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<27>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[27]_ALU_OUT[28])
+                                                      0.585     1.907 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[28]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<28>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[28])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[27])
+                                                      0.505     1.275 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[27]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<27>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[27]_U_DATA[27])
+                                                      0.047     1.322 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[27]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<27>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[27]_ALU_OUT[28])
+                                                      0.585     1.907 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[28]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<28>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[28])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 f  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[27])
+                                                      0.505     1.275 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[27]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<27>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[27]_U_DATA[27])
+                                                      0.047     1.322 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[27]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<27>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[27]_ALU_OUT[28])
+                                                      0.585     1.907 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[28]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<28>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[28])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+Slack (MET) :             0.116ns  (required time - arrival time)
+  Source:                 u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+                            (rising edge-triggered cell DSP_OUTPUT clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.877ns  (logic 1.481ns (78.900%)  route 0.396ns (21.100%))
+  Logic Levels:           5  (DSP_A_B_DATA=1 DSP_ALU=1 DSP_M_DATA=1 DSP_MULTIPLIER=1 DSP_PREADD_DATA=1)
+  Clock Path Skew:        0.013ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.043ns = ( 2.043 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2707, unset)         0.030     0.030    u_wrapper/u_core/u_shared_engine/clk
+    SLICE_X67Y159        FDCE                                         r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X67Y159        FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 r  u_wrapper/u_core/u_shared_engine/mac_data_r1_reg[15]/Q
+                         net (fo=15, routed)          0.396     0.502    u_wrapper/u_core/u_shared_engine/u_mac1/product0/A[26]
+    DSP48E2_X11Y63       DSP_A_B_DATA (Prop_DSP_A_B_DATA_DSP48E2_A[26]_A2_DATA[26])
+                                                      0.192     0.694 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA_INST/A2_DATA[26]
+                         net (fo=1, routed)           0.000     0.694    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_A_B_DATA.A2_DATA<26>
+    DSP48E2_X11Y63       DSP_PREADD_DATA (Prop_DSP_PREADD_DATA_DSP48E2_A2_DATA[26]_A2A1[26])
+                                                      0.076     0.770 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA_INST/A2A1[26]
+                         net (fo=1, routed)           0.000     0.770    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_PREADD_DATA.A2A1<26>
+    DSP48E2_X11Y63       DSP_MULTIPLIER (Prop_DSP_MULTIPLIER_DSP48E2_A2A1[26]_U[27])
+                                                      0.505     1.275 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER_INST/U[27]
+                         net (fo=1, routed)           0.000     1.275    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_MULTIPLIER.U<27>
+    DSP48E2_X11Y63       DSP_M_DATA (Prop_DSP_M_DATA_DSP48E2_U[27]_U_DATA[27])
+                                                      0.047     1.322 f  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA_INST/U_DATA[27]
+                         net (fo=1, routed)           0.000     1.322    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_M_DATA.U_DATA<27>
+    DSP48E2_X11Y63       DSP_ALU (Prop_DSP_ALU_DSP48E2_U_DATA[27]_ALU_OUT[28])
+                                                      0.585     1.907 r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU_INST/ALU_OUT[28]
+                         net (fo=1, routed)           0.000     1.907    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_ALU.ALU_OUT<28>
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/ALU_OUT[28]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                                                      0.000     2.000 r  clk (IN)
+                         net (fo=2707, unset)         0.043     2.043    u_wrapper/u_core/u_shared_engine/u_mac1/product0/CLK
+    DSP48E2_X11Y63       DSP_OUTPUT                                   r  u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST/CLK
+                         clock pessimism              0.000     2.043    
+                         clock uncertainty           -0.035     2.008    
+    DSP48E2_X11Y63       DSP_OUTPUT (Setup_DSP_OUTPUT_DSP48E2_CLK_ALU_OUT[28])
+                                                      0.015     2.023    u_wrapper/u_core/u_shared_engine/u_mac1/product0/DSP_OUTPUT_INST
+  -------------------------------------------------------------------
+                         required time                          2.023    
+                         arrival time                          -1.907    
+  -------------------------------------------------------------------
+                         slack                                  0.116    
+
+
+
+

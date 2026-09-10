@@ -1,0 +1,630 @@
+Reading pref.tcl
+
+# 2020.4
+
+# do run_core_500.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Errors: 0, Warnings: 1
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 00:10:50 on Sep 04,2026
+# vlog -sv ../../02_rtl/rtl/its_mac.v 
+# -- Compiling module its_mac
+# 
+# Top level modules:
+# 	its_mac
+# End time: 00:10:50 on Sep 04,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 00:10:50 on Sep 04,2026
+# vlog -sv ../../02_rtl/rtl/its_rom.v 
+# -- Compiling module its_rom
+# 
+# Top level modules:
+# 	its_rom
+# End time: 00:10:50 on Sep 04,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 00:10:50 on Sep 04,2026
+# vlog -sv ../../02_rtl/rtl/its_lfnst_rom.v 
+# -- Compiling module its_lfnst_rom
+# 
+# Top level modules:
+# 	its_lfnst_rom
+# End time: 00:10:50 on Sep 04,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 00:10:50 on Sep 04,2026
+# vlog -sv ../../02_rtl/rtl/its_transform_engine.v 
+# -- Compiling module its_transform_engine
+# 
+# Top level modules:
+# 	its_transform_engine
+# End time: 00:10:50 on Sep 04,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 00:10:50 on Sep 04,2026
+# vlog -sv ../../02_rtl/rtl/its_lfnst.v 
+# -- Compiling module its_lfnst
+# 
+# Top level modules:
+# 	its_lfnst
+# End time: 00:10:50 on Sep 04,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 00:10:50 on Sep 04,2026
+# vlog -sv ../../02_rtl/rtl/its_core_500.v 
+# -- Compiling package its_pkg
+# -- Compiling module its_core_500
+# -- Importing package its_pkg
+# 
+# Top level modules:
+# 	its_core_500
+# End time: 00:10:50 on Sep 04,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 00:10:50 on Sep 04,2026
+# vlog -sv ../tb/its_core_500_tb.v 
+# -- Compiling module its_core_500_tb
+# 
+# Top level modules:
+# 	its_core_500_tb
+# End time: 00:10:50 on Sep 04,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -t 1ps work.its_core_500_tb 
+# Start time: 00:10:50 on Sep 04,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.its_pkg(fast)
+# Loading work.its_core_500_tb(fast)
+# 
+# === dct2_4x4 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (16 outputs)
+# 
+# === dct2_4x8 (w=4 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (32 outputs)
+# 
+# === dct2_4x16 (w=4 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# === dct2_4x32 (w=4 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dct2_4x64 (w=4 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dct2_8x4 (w=8 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (32 outputs)
+# 
+# === dct2_16x4 (w=16 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# === dct2_32x4 (w=32 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dct2_64x4 (w=64 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dct2_8x8 (w=8 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# === dct2_8x16 (w=8 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dct2_8x32 (w=8 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dct2_8x64 (w=8 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (512 outputs)
+# 
+# === dct2_16x8 (w=16 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (128 outputs)
+# 
+# === dct2_32x8 (w=32 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dct2_64x8 (w=64 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (512 outputs)
+# 
+# === dct2_16x16 (w=16 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (256 outputs)
+# 
+# === dct2_16x32 (w=16 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (512 outputs)
+# 
+# === dct2_16x64 (w=16 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (1024 outputs)
+# 
+# === dct2_32x16 (w=32 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (512 outputs)
+# 
+# === dct2_32x32 (w=32 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (1024 outputs)
+# 
+# === dct2_32x64 (w=32 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (2048 outputs)
+# 
+# === dct2_64x16 (w=64 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (1024 outputs)
+# 
+# === dct2_64x32 (w=64 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (2048 outputs)
+# 
+# === dct2_64x64 (w=64 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (4096 outputs)
+# 
+# === dct8_4x4 (w=4 h=4 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=95 got=165
+#   MISMATCH at out[1]: exp=-5 got=70
+#   MISMATCH at out[2]: exp=-82 got=-58
+#   MISMATCH at out[3]: exp=76 got=103
+#   MISMATCH at out[4]: exp=-208 got=-125
+#   FAIL: 16/16 mismatches
+# 
+# === dct8_4x8 (w=4 h=8 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=12 got=-5
+#   MISMATCH at out[1]: exp=-46 got=-37
+#   MISMATCH at out[2]: exp=153 got=235
+#   MISMATCH at out[3]: exp=-65 got=103
+#   MISMATCH at out[4]: exp=4 got=307
+#   FAIL: 32/32 mismatches
+# 
+# === dct8_4x16 (w=4 h=16 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=-16 got=26
+#   MISMATCH at out[1]: exp=57 got=-36
+#   MISMATCH at out[2]: exp=-333 got=-79
+#   MISMATCH at out[3]: exp=119 got=-187
+#   MISMATCH at out[4]: exp=184 got=277
+#   FAIL: 64/64 mismatches
+# 
+# === dct8_4x32 (w=4 h=32 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=1 got=-504
+#   MISMATCH at out[1]: exp=481 got=148
+#   MISMATCH at out[2]: exp=256 got=405
+#   MISMATCH at out[3]: exp=-255 got=-355
+#   MISMATCH at out[4]: exp=-433 got=240
+#   FAIL: 128/128 mismatches
+# 
+# === dct8_8x4 (w=8 h=4 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=-153 got=-242
+#   MISMATCH at out[1]: exp=52 got=164
+#   MISMATCH at out[2]: exp=-243 got=-484
+#   MISMATCH at out[3]: exp=374 got=103
+#   MISMATCH at out[4]: exp=-138 got=-151
+#   FAIL: 32/32 mismatches
+# 
+# === dct8_16x4 (w=16 h=4 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=34 got=189
+#   MISMATCH at out[1]: exp=-73 got=-115
+#   MISMATCH at out[2]: exp=187 got=-51
+#   MISMATCH at out[3]: exp=122 got=65
+#   MISMATCH at out[4]: exp=41 got=244
+#   FAIL: 64/64 mismatches
+# 
+# === dct8_32x4 (w=32 h=4 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=75 got=203
+#   MISMATCH at out[1]: exp=-64 got=-123
+#   MISMATCH at out[2]: exp=-164 got=1
+#   MISMATCH at out[3]: exp=35 got=12
+#   MISMATCH at out[4]: exp=-175 got=-54
+#   FAIL: 128/128 mismatches
+# 
+# === dct8_8x8 (w=8 h=8 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=-268 got=-202
+#   MISMATCH at out[1]: exp=-26 got=-91
+#   MISMATCH at out[2]: exp=-208 got=-226
+#   MISMATCH at out[3]: exp=143 got=-105
+#   MISMATCH at out[4]: exp=-114 got=-243
+#   FAIL: 64/64 mismatches
+# 
+# === dct8_8x16 (w=8 h=16 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=34 got=-208
+#   MISMATCH at out[1]: exp=412 got=283
+#   MISMATCH at out[2]: exp=-326 got=-196
+#   MISMATCH at out[3]: exp=272 got=275
+#   MISMATCH at out[4]: exp=-91 got=188
+#   FAIL: 128/128 mismatches
+# 
+# === dct8_8x32 (w=8 h=32 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=149 got=19
+#   MISMATCH at out[1]: exp=49 got=184
+#   MISMATCH at out[3]: exp=22 got=126
+#   MISMATCH at out[4]: exp=-245 got=-15
+#   MISMATCH at out[5]: exp=-27 got=-52
+#   FAIL: 255/256 mismatches
+# 
+# === dct8_16x8 (w=16 h=8 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=121 got=-298
+#   MISMATCH at out[1]: exp=-451 got=-502
+#   MISMATCH at out[2]: exp=-30 got=11
+#   MISMATCH at out[3]: exp=43 got=-167
+#   MISMATCH at out[4]: exp=351 got=437
+#   FAIL: 128/128 mismatches
+# 
+# === dct8_32x8 (w=32 h=8 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=-203 got=-70
+#   MISMATCH at out[1]: exp=-81 got=87
+#   MISMATCH at out[2]: exp=-208 got=-304
+#   MISMATCH at out[3]: exp=185 got=-80
+#   MISMATCH at out[4]: exp=132 got=9
+#   FAIL: 255/256 mismatches
+# 
+# === dct8_16x16 (w=16 h=16 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=116 got=329
+#   MISMATCH at out[1]: exp=-293 got=-31
+#   MISMATCH at out[2]: exp=130 got=-174
+#   MISMATCH at out[3]: exp=351 got=154
+#   MISMATCH at out[4]: exp=365 got=495
+#   FAIL: 256/256 mismatches
+# 
+# === dct8_16x32 (w=16 h=32 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=270 got=-23
+#   MISMATCH at out[1]: exp=162 got=-28
+#   MISMATCH at out[2]: exp=213 got=148
+#   MISMATCH at out[3]: exp=281 got=380
+#   MISMATCH at out[4]: exp=98 got=459
+#   FAIL: 512/512 mismatches
+# 
+# === dct8_32x16 (w=32 h=16 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=105 got=-77
+#   MISMATCH at out[1]: exp=30 got=240
+#   MISMATCH at out[2]: exp=-69 got=171
+#   MISMATCH at out[3]: exp=-110 got=-170
+#   MISMATCH at out[4]: exp=-43 got=-97
+#   FAIL: 512/512 mismatches
+# 
+# === dct8_32x32 (w=32 h=32 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=302 got=408
+#   MISMATCH at out[1]: exp=-271 got=19
+#   MISMATCH at out[2]: exp=-28 got=44
+#   MISMATCH at out[3]: exp=55 got=-14
+#   MISMATCH at out[4]: exp=-174 got=-145
+#   FAIL: 1020/1024 mismatches
+# 
+# === dst7_4x4 (w=4 h=4 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=108 got=3
+#   MISMATCH at out[1]: exp=-155 got=-69
+#   MISMATCH at out[2]: exp=-197 got=56
+#   MISMATCH at out[3]: exp=262 got=255
+#   MISMATCH at out[4]: exp=-316 got=-136
+#   FAIL: 16/16 mismatches
+# 
+# === dst7_4x8 (w=4 h=8 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=30 got=-113
+#   MISMATCH at out[1]: exp=-216 got=-384
+#   MISMATCH at out[2]: exp=-318 got=-46
+#   MISMATCH at out[3]: exp=-321 got=-126
+#   MISMATCH at out[4]: exp=10 got=199
+#   FAIL: 32/32 mismatches
+# 
+# === dst7_4x16 (w=4 h=16 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=-208 got=-185
+#   MISMATCH at out[1]: exp=53 got=257
+#   MISMATCH at out[2]: exp=-88 got=108
+#   MISMATCH at out[3]: exp=227 got=384
+#   MISMATCH at out[4]: exp=-305 got=-86
+#   FAIL: 64/64 mismatches
+# 
+# === dst7_4x32 (w=4 h=32 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=204 got=222
+#   MISMATCH at out[1]: exp=59 got=5
+#   MISMATCH at out[2]: exp=51 got=-51
+#   MISMATCH at out[3]: exp=160 got=-28
+#   MISMATCH at out[4]: exp=-146 got=-167
+#   FAIL: 128/128 mismatches
+# 
+# === dst7_8x4 (w=8 h=4 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=-183 got=-254
+#   MISMATCH at out[1]: exp=-124 got=32
+#   MISMATCH at out[2]: exp=320 got=356
+#   MISMATCH at out[3]: exp=209 got=171
+#   MISMATCH at out[4]: exp=-155 got=-58
+#   FAIL: 32/32 mismatches
+# 
+# === dst7_16x4 (w=16 h=4 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=-314 got=-322
+#   MISMATCH at out[1]: exp=28 got=229
+#   MISMATCH at out[2]: exp=-376 got=-18
+#   MISMATCH at out[3]: exp=19 got=356
+#   MISMATCH at out[4]: exp=68 got=35
+#   FAIL: 64/64 mismatches
+# 
+# === dst7_32x4 (w=32 h=4 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=-292 got=-91
+#   MISMATCH at out[1]: exp=235 got=-389
+#   MISMATCH at out[2]: exp=169 got=177
+#   MISMATCH at out[3]: exp=207 got=-78
+#   MISMATCH at out[4]: exp=-176 got=-151
+#   FAIL: 128/128 mismatches
+# 
+# === dst7_8x8 (w=8 h=8 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=25 got=18
+#   MISMATCH at out[1]: exp=-264 got=-251
+#   MISMATCH at out[2]: exp=-214 got=-113
+#   MISMATCH at out[3]: exp=-106 got=116
+#   MISMATCH at out[4]: exp=-34 got=118
+#   FAIL: 64/64 mismatches
+# 
+# === dst7_8x16 (w=8 h=16 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=-293 got=-307
+#   MISMATCH at out[1]: exp=-120 got=85
+#   MISMATCH at out[2]: exp=106 got=-32
+#   MISMATCH at out[3]: exp=55 got=38
+#   MISMATCH at out[4]: exp=-313 got=-386
+#   FAIL: 128/128 mismatches
+# 
+# === dst7_8x32 (w=8 h=32 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=-195 got=-332
+#   MISMATCH at out[1]: exp=12 got=329
+#   MISMATCH at out[2]: exp=-66 got=298
+#   MISMATCH at out[3]: exp=183 got=162
+#   MISMATCH at out[4]: exp=118 got=-119
+#   FAIL: 256/256 mismatches
+# 
+# === dst7_16x8 (w=16 h=8 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=30 got=-145
+#   MISMATCH at out[1]: exp=1 got=-1
+#   MISMATCH at out[2]: exp=30 got=178
+#   MISMATCH at out[3]: exp=96 got=194
+#   MISMATCH at out[4]: exp=31 got=-51
+#   FAIL: 128/128 mismatches
+# 
+# === dst7_32x8 (w=32 h=8 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=335 got=172
+#   MISMATCH at out[1]: exp=250 got=-64
+#   MISMATCH at out[2]: exp=-109 got=-183
+#   MISMATCH at out[3]: exp=-439 got=-223
+#   MISMATCH at out[4]: exp=-372 got=-80
+#   FAIL: 255/256 mismatches
+# 
+# === dst7_16x16 (w=16 h=16 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=77 got=56
+#   MISMATCH at out[1]: exp=-449 got=344
+#   MISMATCH at out[2]: exp=-440 got=307
+#   MISMATCH at out[3]: exp=-187 got=212
+#   MISMATCH at out[4]: exp=130 got=225
+#   FAIL: 256/256 mismatches
+# 
+# === dst7_16x32 (w=16 h=32 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=-300 got=-241
+#   MISMATCH at out[1]: exp=-130 got=140
+#   MISMATCH at out[2]: exp=244 got=322
+#   MISMATCH at out[3]: exp=202 got=-1
+#   MISMATCH at out[4]: exp=-165 got=-292
+#   FAIL: 512/512 mismatches
+# 
+# === dst7_32x16 (w=32 h=16 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=511 got=-199
+#   MISMATCH at out[1]: exp=216 got=492
+#   MISMATCH at out[2]: exp=337 got=-2
+#   MISMATCH at out[3]: exp=272 got=-174
+#   MISMATCH at out[4]: exp=-339 got=-466
+#   FAIL: 512/512 mismatches
+# 
+# === dst7_32x32 (w=32 h=32 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=162 got=36
+#   MISMATCH at out[1]: exp=-146 got=-108
+#   MISMATCH at out[2]: exp=202 got=165
+#   MISMATCH at out[3]: exp=-17 got=-19
+#   MISMATCH at out[4]: exp=22 got=-1
+#   FAIL: 1022/1024 mismatches
+# 
+# === lfnst16_s0_i1 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s0_i2 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=2) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s1_i1 (w=4 h=4 tr_h=0 tr_v=0 sidx=1 lfnst=1) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s1_i2 (w=4 h=4 tr_h=0 tr_v=0 sidx=1 lfnst=2) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s2_i1 (w=4 h=4 tr_h=0 tr_v=0 sidx=2 lfnst=1) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s2_i2 (w=4 h=4 tr_h=0 tr_v=0 sidx=2 lfnst=2) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s3_i1 (w=4 h=4 tr_h=0 tr_v=0 sidx=3 lfnst=1) ===
+#   PASS (16 outputs)
+# 
+# === lfnst16_s3_i2 (w=4 h=4 tr_h=0 tr_v=0 sidx=3 lfnst=2) ===
+#   PASS (16 outputs)
+# 
+# === lfnst48_s0_i1 (w=8 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s0_i2 (w=8 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=2) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s1_i1 (w=8 h=8 tr_h=0 tr_v=0 sidx=1 lfnst=1) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s1_i2 (w=8 h=8 tr_h=0 tr_v=0 sidx=1 lfnst=2) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s2_i1 (w=8 h=8 tr_h=0 tr_v=0 sidx=2 lfnst=1) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s2_i2 (w=8 h=8 tr_h=0 tr_v=0 sidx=2 lfnst=2) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s3_i1 (w=8 h=8 tr_h=0 tr_v=0 sidx=3 lfnst=1) ===
+#   PASS (64 outputs)
+# 
+# === lfnst48_s3_i2 (w=8 h=8 tr_h=0 tr_v=0 sidx=3 lfnst=2) ===
+#   PASS (64 outputs)
+# 
+# === lfnst16_dct8_force (w=4 h=4 tr_h=1 tr_v=1 sidx=0 lfnst=1) ===
+#   PASS (16 outputs)
+# 
+# === dct2_8x16_lfnst1 (w=8 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_8x16_lfnst1_input.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(355)
+#    Time: 4590685 ns  Iteration: 1  Instance: /its_core_500_tb
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_8x16_lfnst1_golden.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(356)
+#    Time: 4590685 ns  Iteration: 1  Instance: /its_core_500_tb
+#   PASS (128 outputs)
+# 
+# === dct2_16x8_lfnst1 (w=16 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_16x8_lfnst1_input.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(355)
+#    Time: 4604105 ns  Iteration: 1  Instance: /its_core_500_tb
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_16x8_lfnst1_golden.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(356)
+#    Time: 4604105 ns  Iteration: 1  Instance: /its_core_500_tb
+#   PASS (128 outputs)
+# 
+# === dct2_16x16_lfnst1 (w=16 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_16x16_lfnst1_input.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(355)
+#    Time: 4617525 ns  Iteration: 1  Instance: /its_core_500_tb
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_16x16_lfnst1_golden.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(356)
+#    Time: 4617525 ns  Iteration: 1  Instance: /its_core_500_tb
+#   PASS (256 outputs)
+# 
+# === dct2_16x32_lfnst1 (w=16 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_16x32_lfnst1_input.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(355)
+#    Time: 4645521 ns  Iteration: 1  Instance: /its_core_500_tb
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_16x32_lfnst1_golden.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(356)
+#    Time: 4645521 ns  Iteration: 1  Instance: /its_core_500_tb
+#   PASS (512 outputs)
+# 
+# === dct2_32x16_lfnst1 (w=32 h=16 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_32x16_lfnst1_input.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(355)
+#    Time: 4718029 ns  Iteration: 1  Instance: /its_core_500_tb
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_32x16_lfnst1_golden.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(356)
+#    Time: 4718029 ns  Iteration: 1  Instance: /its_core_500_tb
+#   PASS (512 outputs)
+# 
+# === dct2_32x32_lfnst1 (w=32 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_32x32_lfnst1_input.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(355)
+#    Time: 4790537 ns  Iteration: 1  Instance: /its_core_500_tb
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_32x32_lfnst1_golden.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(356)
+#    Time: 4790537 ns  Iteration: 1  Instance: /its_core_500_tb
+#   PASS (1024 outputs)
+# 
+# === dct2_4x64_lfnst1 (w=4 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_4x64_lfnst1_input.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(355)
+#    Time: 4972453 ns  Iteration: 1  Instance: /its_core_500_tb
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_4x64_lfnst1_golden.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(356)
+#    Time: 4972453 ns  Iteration: 1  Instance: /its_core_500_tb
+#   PASS (256 outputs)
+# 
+# === dct2_64x4_lfnst1 (w=64 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_64x4_lfnst1_input.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(355)
+#    Time: 5021209 ns  Iteration: 1  Instance: /its_core_500_tb
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_64x4_lfnst1_golden.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(356)
+#    Time: 5021209 ns  Iteration: 1  Instance: /its_core_500_tb
+#   PASS (256 outputs)
+# 
+# === dct2_8x64_lfnst1 (w=8 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_8x64_lfnst1_input.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(355)
+#    Time: 5069965 ns  Iteration: 1  Instance: /its_core_500_tb
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_8x64_lfnst1_golden.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(356)
+#    Time: 5069965 ns  Iteration: 1  Instance: /its_core_500_tb
+#   PASS (512 outputs)
+# 
+# === dct2_64x8_lfnst1 (w=64 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_64x8_lfnst1_input.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(355)
+#    Time: 5173337 ns  Iteration: 1  Instance: /its_core_500_tb
+# ** Warning: (vsim-7) Failed to open readmem file "../tb/test_vectors/dct2_64x8_lfnst1_golden.hex" in read mode.
+# No such file or directory. (errno = ENOENT)    : ../tb/its_core_500_tb.v(356)
+#    Time: 5173337 ns  Iteration: 1  Instance: /its_core_500_tb
+#   PASS (512 outputs)
+# 
+# === boundary_zero_4x4 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (16 outputs)
+# 
+# === boundary_dc_4x4 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=-71 got=0
+#   MISMATCH at out[1]: exp=-181 got=0
+#   MISMATCH at out[2]: exp=181 got=0
+#   MISMATCH at out[3]: exp=35 got=0
+#   MISMATCH at out[4]: exp=-181 got=0
+#   FAIL: 16/16 mismatches
+# 
+# === boundary_maxval_4x4 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=-391 got=0
+#   MISMATCH at out[1]: exp=315 got=0
+#   MISMATCH at out[2]: exp=-315 got=0
+#   MISMATCH at out[3]: exp=375 got=0
+#   MISMATCH at out[4]: exp=316 got=0
+#   FAIL: 16/16 mismatches
+# 
+# === boundary_minval_4x4 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=376 got=0
+#   MISMATCH at out[1]: exp=-312 got=0
+#   MISMATCH at out[2]: exp=312 got=0
+#   MISMATCH at out[3]: exp=-376 got=0
+#   MISMATCH at out[4]: exp=-312 got=0
+#   FAIL: 16/16 mismatches
+# 
+# === boundary_sparse_8x8 (w=8 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (64 outputs)
+# 
+# --- Output Backpressure Tests (slow_div=7) ---
+# 
+# === bp_dct2_32x32 (w=32 h=32 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (1024 outputs)
+# 
+# === bp_dct2_64x64 (w=64 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   PASS (4096 outputs)
+# 
+# === bp_dct8_32x32 (w=32 h=32 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=302 got=408
+#   MISMATCH at out[1]: exp=-271 got=19
+#   MISMATCH at out[2]: exp=-28 got=44
+#   MISMATCH at out[3]: exp=55 got=-14
+#   MISMATCH at out[4]: exp=-174 got=-145
+#   FAIL: 1020/1024 mismatches
+# 
+# === bp_dst7_32x32 (w=32 h=32 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   MISMATCH at out[0]: exp=162 got=36
+#   MISMATCH at out[1]: exp=-146 got=-108
+#   MISMATCH at out[2]: exp=202 got=165
+#   MISMATCH at out[3]: exp=-17 got=-19
+#   MISMATCH at out[4]: exp=22 got=-1
+#   FAIL: 1022/1024 mismatches
+# 
+# === bp_lfnst48 (w=8 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   PASS (64 outputs)
+#   [BP] output_fifo_full_cycles during backpressure tests: 0
+# 
+# ========================================
+# Test Summary: 57 passed, 37 failed (total 94)
+# ========================================
+# SOME TESTS FAILED!
+# ** Note: $finish    : ../tb/its_core_500_tb.v(744)
+#    Time: 7216151 ns  Iteration: 1  Instance: /its_core_500_tb
+# End time: 00:10:53 on Sep 04,2026, Elapsed time: 0:00:03
+# Errors: 0, Warnings: 20

@@ -1,0 +1,434 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Fri Sep  4 00:34:31 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -hold -nworst 10 -file D:/Workspace/ITS_STUDY_V34_LFNST_FIX/_v34_audit/vivado/v34_alt_hold.rpt
+| Design            : its_top_500_singleclk
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Physopt postRoute
+| Temperature Grade : E
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             0.004ns  (arrival time - required time)
+  Source:                 u_wrapper/u_core/output_fifo_wdata_reg[12]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG/I
+                            (rising edge-triggered cell RAMD32 clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Hold (Min at Slow Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.119ns  (logic 0.058ns (48.739%)  route 0.061ns (51.261%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.037ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.057ns
+    Source Clock Delay      (SCD):    0.020ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.020     0.020    u_wrapper/u_core/clk
+    SLICE_X65Y144        FDCE                                         r  u_wrapper/u_core/output_fifo_wdata_reg[12]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y144        FDCE (Prop_FFF_SLICEL_C_Q)
+                                                      0.058     0.078 r  u_wrapper/u_core/output_fifo_wdata_reg[12]/Q
+                         net (fo=1, routed)           0.061     0.139    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/DIG0
+    SLICE_X66Y144        RAMD32                                       r  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.057     0.057    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/WCLK
+    SLICE_X66Y144        RAMD32                                       r  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG/CLK
+                         clock pessimism              0.000     0.057    
+    SLICE_X66Y144        RAMD32 (Hold_G5LUT_SLICEM_CLK_I)
+                                                      0.078     0.135    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG
+  -------------------------------------------------------------------
+                         required time                         -0.135    
+                         arrival time                           0.139    
+  -------------------------------------------------------------------
+                         slack                                  0.004    
+
+Slack (MET) :             0.004ns  (arrival time - required time)
+  Source:                 u_wrapper/u_core/output_fifo_wdata_reg[12]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG/I
+                            (rising edge-triggered cell RAMD32 clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Hold (Min at Slow Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.119ns  (logic 0.058ns (48.739%)  route 0.061ns (51.261%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.037ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.057ns
+    Source Clock Delay      (SCD):    0.020ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.020     0.020    u_wrapper/u_core/clk
+    SLICE_X65Y144        FDCE                                         r  u_wrapper/u_core/output_fifo_wdata_reg[12]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y144        FDCE (Prop_FFF_SLICEL_C_Q)
+                                                      0.058     0.078 f  u_wrapper/u_core/output_fifo_wdata_reg[12]/Q
+                         net (fo=1, routed)           0.061     0.139    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/DIG0
+    SLICE_X66Y144        RAMD32                                       f  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.057     0.057    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/WCLK
+    SLICE_X66Y144        RAMD32                                       r  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG/CLK
+                         clock pessimism              0.000     0.057    
+    SLICE_X66Y144        RAMD32 (Hold_G5LUT_SLICEM_CLK_I)
+                                                      0.078     0.135    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG
+  -------------------------------------------------------------------
+                         required time                         -0.135    
+                         arrival time                           0.139    
+  -------------------------------------------------------------------
+                         slack                                  0.004    
+
+Slack (MET) :             0.013ns  (arrival time - required time)
+  Source:                 u_wrapper/u_core/output_fifo_wdata_reg[12]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG/I
+                            (rising edge-triggered cell RAMD32 clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.094ns  (logic 0.039ns (41.489%)  route 0.055ns (58.511%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.026ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.039ns
+    Source Clock Delay      (SCD):    0.013ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.013     0.013    u_wrapper/u_core/clk
+    SLICE_X65Y144        FDCE                                         r  u_wrapper/u_core/output_fifo_wdata_reg[12]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y144        FDCE (Prop_FFF_SLICEL_C_Q)
+                                                      0.039     0.052 r  u_wrapper/u_core/output_fifo_wdata_reg[12]/Q
+                         net (fo=1, routed)           0.055     0.107    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/DIG0
+    SLICE_X66Y144        RAMD32                                       r  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.039     0.039    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/WCLK
+    SLICE_X66Y144        RAMD32                                       r  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG/CLK
+                         clock pessimism              0.000     0.039    
+    SLICE_X66Y144        RAMD32 (Hold_G5LUT_SLICEM_CLK_I)
+                                                      0.055     0.094    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG
+  -------------------------------------------------------------------
+                         required time                         -0.094    
+                         arrival time                           0.107    
+  -------------------------------------------------------------------
+                         slack                                  0.013    
+
+Slack (MET) :             0.013ns  (arrival time - required time)
+  Source:                 u_wrapper/u_core/output_fifo_wdata_reg[12]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG/I
+                            (rising edge-triggered cell RAMD32 clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.094ns  (logic 0.039ns (41.489%)  route 0.055ns (58.511%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.026ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.039ns
+    Source Clock Delay      (SCD):    0.013ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.013     0.013    u_wrapper/u_core/clk
+    SLICE_X65Y144        FDCE                                         r  u_wrapper/u_core/output_fifo_wdata_reg[12]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y144        FDCE (Prop_FFF_SLICEL_C_Q)
+                                                      0.039     0.052 f  u_wrapper/u_core/output_fifo_wdata_reg[12]/Q
+                         net (fo=1, routed)           0.055     0.107    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/DIG0
+    SLICE_X66Y144        RAMD32                                       f  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.039     0.039    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/WCLK
+    SLICE_X66Y144        RAMD32                                       r  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG/CLK
+                         clock pessimism              0.000     0.039    
+    SLICE_X66Y144        RAMD32 (Hold_G5LUT_SLICEM_CLK_I)
+                                                      0.055     0.094    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMG
+  -------------------------------------------------------------------
+                         required time                         -0.094    
+                         arrival time                           0.107    
+  -------------------------------------------------------------------
+                         slack                                  0.013    
+
+Slack (MET) :             0.036ns  (arrival time - required time)
+  Source:                 u_wrapper/u_core/load_addr_r_reg[8]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/in_mem_wr_addr_reg[8]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.088ns  (logic 0.059ns (67.045%)  route 0.029ns (32.955%))
+  Logic Levels:           1  (LUT3=1)
+  Clock Path Skew:        0.005ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.018ns
+    Source Clock Delay      (SCD):    0.013ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.013     0.013    u_wrapper/u_core/clk
+    SLICE_X70Y159        FDCE                                         r  u_wrapper/u_core/load_addr_r_reg[8]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X70Y159        FDCE (Prop_GFF_SLICEL_C_Q)
+                                                      0.039     0.052 r  u_wrapper/u_core/load_addr_r_reg[8]/Q
+                         net (fo=1, routed)           0.023     0.075    u_wrapper/u_core/load_addr_r[8]
+    SLICE_X70Y159        LUT3 (Prop_D5LUT_SLICEL_I2_O)
+                                                      0.020     0.095 r  u_wrapper/u_core/in_mem_wr_addr[8]_i_1/O
+                         net (fo=1, routed)           0.006     0.101    u_wrapper/u_core/in_mem_wr_addr[8]_i_1_n_0
+    SLICE_X70Y159        FDRE                                         r  u_wrapper/u_core/in_mem_wr_addr_reg[8]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.018     0.018    u_wrapper/u_core/clk
+    SLICE_X70Y159        FDRE                                         r  u_wrapper/u_core/in_mem_wr_addr_reg[8]/C
+                         clock pessimism              0.000     0.018    
+    SLICE_X70Y159        FDRE (Hold_DFF2_SLICEL_C_D)
+                                                      0.047     0.065    u_wrapper/u_core/in_mem_wr_addr_reg[8]
+  -------------------------------------------------------------------
+                         required time                         -0.065    
+                         arrival time                           0.101    
+  -------------------------------------------------------------------
+                         slack                                  0.036    
+
+Slack (MET) :             0.036ns  (arrival time - required time)
+  Source:                 u_wrapper/u_core/load_addr_r_reg[8]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_core/in_mem_wr_addr_reg[8]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.088ns  (logic 0.059ns (67.045%)  route 0.029ns (32.955%))
+  Logic Levels:           1  (LUT3=1)
+  Clock Path Skew:        0.005ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.018ns
+    Source Clock Delay      (SCD):    0.013ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.013     0.013    u_wrapper/u_core/clk
+    SLICE_X70Y159        FDCE                                         r  u_wrapper/u_core/load_addr_r_reg[8]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X70Y159        FDCE (Prop_GFF_SLICEL_C_Q)
+                                                      0.039     0.052 f  u_wrapper/u_core/load_addr_r_reg[8]/Q
+                         net (fo=1, routed)           0.023     0.075    u_wrapper/u_core/load_addr_r[8]
+    SLICE_X70Y159        LUT3 (Prop_D5LUT_SLICEL_I2_O)
+                                                      0.020     0.095 f  u_wrapper/u_core/in_mem_wr_addr[8]_i_1/O
+                         net (fo=1, routed)           0.006     0.101    u_wrapper/u_core/in_mem_wr_addr[8]_i_1_n_0
+    SLICE_X70Y159        FDRE                                         f  u_wrapper/u_core/in_mem_wr_addr_reg[8]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.018     0.018    u_wrapper/u_core/clk
+    SLICE_X70Y159        FDRE                                         r  u_wrapper/u_core/in_mem_wr_addr_reg[8]/C
+                         clock pessimism              0.000     0.018    
+    SLICE_X70Y159        FDRE (Hold_DFF2_SLICEL_C_D)
+                                                      0.047     0.065    u_wrapper/u_core/in_mem_wr_addr_reg[8]
+  -------------------------------------------------------------------
+                         required time                         -0.065    
+                         arrival time                           0.101    
+  -------------------------------------------------------------------
+                         slack                                  0.036    
+
+Slack (MET) :             0.036ns  (arrival time - required time)
+  Source:                 u_wrapper/u_core/output_fifo_wdata_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB/I
+                            (rising edge-triggered cell RAMD32 clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.117ns  (logic 0.039ns (33.333%)  route 0.078ns (66.667%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.027ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.039ns
+    Source Clock Delay      (SCD):    0.012ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.012     0.012    u_wrapper/u_core/clk
+    SLICE_X65Y143        FDCE                                         r  u_wrapper/u_core/output_fifo_wdata_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y143        FDCE (Prop_DFF_SLICEL_C_Q)
+                                                      0.039     0.051 r  u_wrapper/u_core/output_fifo_wdata_reg[2]/Q
+                         net (fo=1, routed)           0.078     0.129    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/DIB0
+    SLICE_X66Y144        RAMD32                                       r  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.039     0.039    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/WCLK
+    SLICE_X66Y144        RAMD32                                       r  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB/CLK
+                         clock pessimism              0.000     0.039    
+    SLICE_X66Y144        RAMD32 (Hold_B5LUT_SLICEM_CLK_I)
+                                                      0.054     0.093    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB
+  -------------------------------------------------------------------
+                         required time                         -0.093    
+                         arrival time                           0.129    
+  -------------------------------------------------------------------
+                         slack                                  0.036    
+
+Slack (MET) :             0.036ns  (arrival time - required time)
+  Source:                 u_wrapper/u_core/output_fifo_wdata_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB/I
+                            (rising edge-triggered cell RAMD32 clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.117ns  (logic 0.039ns (33.333%)  route 0.078ns (66.667%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.027ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.039ns
+    Source Clock Delay      (SCD):    0.012ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.012     0.012    u_wrapper/u_core/clk
+    SLICE_X65Y143        FDCE                                         r  u_wrapper/u_core/output_fifo_wdata_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y143        FDCE (Prop_DFF_SLICEL_C_Q)
+                                                      0.039     0.051 f  u_wrapper/u_core/output_fifo_wdata_reg[2]/Q
+                         net (fo=1, routed)           0.078     0.129    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/DIB0
+    SLICE_X66Y144        RAMD32                                       f  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.039     0.039    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/WCLK
+    SLICE_X66Y144        RAMD32                                       r  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB/CLK
+                         clock pessimism              0.000     0.039    
+    SLICE_X66Y144        RAMD32 (Hold_B5LUT_SLICEM_CLK_I)
+                                                      0.054     0.093    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB
+  -------------------------------------------------------------------
+                         required time                         -0.093    
+                         arrival time                           0.129    
+  -------------------------------------------------------------------
+                         slack                                  0.036    
+
+Slack (MET) :             0.038ns  (arrival time - required time)
+  Source:                 u_wrapper/u_core/output_fifo_wdata_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB/I
+                            (rising edge-triggered cell RAMD32 clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Hold (Min at Slow Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.153ns  (logic 0.059ns (38.562%)  route 0.094ns (61.438%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.037ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.057ns
+    Source Clock Delay      (SCD):    0.020ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.020     0.020    u_wrapper/u_core/clk
+    SLICE_X65Y143        FDCE                                         r  u_wrapper/u_core/output_fifo_wdata_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y143        FDCE (Prop_DFF_SLICEL_C_Q)
+                                                      0.059     0.079 r  u_wrapper/u_core/output_fifo_wdata_reg[2]/Q
+                         net (fo=1, routed)           0.094     0.173    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/DIB0
+    SLICE_X66Y144        RAMD32                                       r  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.057     0.057    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/WCLK
+    SLICE_X66Y144        RAMD32                                       r  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB/CLK
+                         clock pessimism              0.000     0.057    
+    SLICE_X66Y144        RAMD32 (Hold_B5LUT_SLICEM_CLK_I)
+                                                      0.078     0.135    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB
+  -------------------------------------------------------------------
+                         required time                         -0.135    
+                         arrival time                           0.173    
+  -------------------------------------------------------------------
+                         slack                                  0.038    
+
+Slack (MET) :             0.038ns  (arrival time - required time)
+  Source:                 u_wrapper/u_core/output_fifo_wdata_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB/I
+                            (rising edge-triggered cell RAMD32 clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Hold (Min at Slow Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.153ns  (logic 0.059ns (38.562%)  route 0.094ns (61.438%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.037ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.057ns
+    Source Clock Delay      (SCD):    0.020ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.020     0.020    u_wrapper/u_core/clk
+    SLICE_X65Y143        FDCE                                         r  u_wrapper/u_core/output_fifo_wdata_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X65Y143        FDCE (Prop_DFF_SLICEL_C_Q)
+                                                      0.059     0.079 f  u_wrapper/u_core/output_fifo_wdata_reg[2]/Q
+                         net (fo=1, routed)           0.094     0.173    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/DIB0
+    SLICE_X66Y144        RAMD32                                       f  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+                                                      0.000     0.000 r  clk (IN)
+                         net (fo=2721, unset)         0.057     0.057    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/WCLK
+    SLICE_X66Y144        RAMD32                                       r  u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB/CLK
+                         clock pessimism              0.000     0.057    
+    SLICE_X66Y144        RAMD32 (Hold_B5LUT_SLICEM_CLK_I)
+                                                      0.078     0.135    u_wrapper/u_output_fifo/mem_reg_0_15_0_13/RAMB
+  -------------------------------------------------------------------
+                         required time                         -0.135    
+                         arrival time                           0.173    
+  -------------------------------------------------------------------
+                         slack                                  0.038    
+
+
+
+

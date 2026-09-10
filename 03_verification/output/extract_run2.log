@@ -1,0 +1,46 @@
+=== DCT2 (trType=0) ===
+  OK: Col0to15: 64 rows (expect 64)
+  OK: Col16to31: 64 rows (expect 64)
+  OK: Row0 all 64
+  OK: DCT-II even-row symmetry M[8][31]==M[8][32]
+  DCT2 4/8/16/32: NOT provided in attachment (only 64-point)
+  These sizes are EXCLUDED from attachment_matrices.json
+
+=== DST7 (trType=1) ===
+  OK: N=4: 4 rows
+  OK: N=8: 8 rows
+  OK: N=16: 16 rows
+  OK: Col0to15: 16 rows
+  OK: Col16to31: 16 rows
+  OK: N=32: assembled
+
+=== DCT8 (trType=2) ===
+  OK: N=4: 4 rows
+  OK: N=8: 8 rows
+  OK: N=16: 16 rows
+  OK: Col0to15: 16 rows
+  OK: Col16to31: 16 rows
+  OK: N=32: assembled
+
+=== LFNST ===
+  OK: nTrs=16 s0 i1: 16 rows
+  OK: nTrs=16 s0 i2: 16 rows
+  OK: nTrs=16 s1 i1: 16 rows
+  OK: nTrs=16 s1 i2: 16 rows
+  OK: nTrs=16 s2 i1: 16 rows
+  OK: nTrs=16 s2 i2: 16 rows
+  OK: nTrs=16 s3 i1: 16 rows
+  OK: nTrs=16 s3 i2: 16 rows
+  OK: nTrs=48 s0 i1: 3 blocks (expect 3)
+  OK: nTrs=48 s0 i2: 3 blocks (expect 3)
+  OK: nTrs=48 s1 i1: 3 blocks (expect 3)
+  OK: nTrs=48 s1 i2: 3 blocks (expect 3)
+  OK: nTrs=48 s2 i1: 3 blocks (expect 3)
+  OK: nTrs=48 s2 i2: 3 blocks (expect 3)
+  OK: nTrs=48 s3 i1: 3 blocks (expect 3)
+  OK: nTrs=48 s3 i2: 3 blocks (expect 3)
+
+============================================================
+EXTRACTION PASSED: 0 errors
+JSON: D:\Workspace\ITS_STUDY\03_verification\scripts\..\output\attachment_matrices.json
+MD5:  062052221a5aec431286a9535107f0d6

@@ -1,0 +1,68 @@
+-------------------------------------
+| Tool Version : Vivado v.2025.2
+| Date         : Sun Sep  6 15:16:34 2026
+| Host         : Finesse
+| Design       : design_1
+| Device       : xcku5p-ffvb676-2-E-
+-------------------------------------
+
+For more information on clockInfo.txt clock routing debug file see https://support.xilinx.com/s/article/000035660?language=en_US
+
+***********************
+Running Pre-CRP Checker
+***********************
+Number of global clocks: 1
+	Number of BUFGCE: 1
+	Number of BUFGCE_HDIO: 0
+	Number of BUFG_CTRL: 0
+	Number of BUFGCE_DIV: 0
+	Number of BUFG_GT: 0
+	Number of BUFG_PS: 0
+	Number of BUFG_FABRIC: 0
+	Running suboptimal placement checker for 1 clocks (and their loads) which do not have the CLOCK_LOW_FANOUT property but have a fanout less than 2000...
+**************************************
+Clock Nets/Source Overview (CRP Input)
+**************************************
+Clock 1: vector_buf_a[3][15]_i_1_n_0_bufg_place
+	Clock source type: BUFGCE
+	Clock source region: X0Y1
+	Clock regions with locked loads: X1Y0 X1Y1 X2Y0 X2Y1 X3Y0 X3Y1 
+	initial rect ((0, 0), (3, 1))
+
+
+
+*****************************
+Clocks With User Constraints:
+*****************************
+No clocks with user constraints found
+
+
+***********************
+Running Pre-CRP Checker
+***********************
+Number of global clocks: 1
+	Number of BUFGCE: 1
+	Number of BUFGCE_HDIO: 0
+	Number of BUFG_CTRL: 0
+	Number of BUFGCE_DIV: 0
+	Number of BUFG_GT: 0
+	Number of BUFG_PS: 0
+	Number of BUFG_FABRIC: 0
+	Running suboptimal placement checker for 1 clocks (and their loads) which do not have the CLOCK_LOW_FANOUT property but have a fanout less than 2000...
+**************************************
+Clock Nets/Source Overview (CRP Input)
+**************************************
+Clock 1: vector_buf_a[3][15]_i_1_n_0
+	Clock source type: BUFGCE
+	Clock source region: X0Y1
+	Clock regions with locked loads: X1Y0 X1Y1 X2Y0 X2Y1 X3Y0 X3Y1 
+	initial rect ((0, 0), (3, 1))
+
+
+
+*****************************
+Clocks With User Constraints:
+*****************************
+No clocks with user constraints found
+
+

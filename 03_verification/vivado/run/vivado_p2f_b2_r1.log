@@ -1,0 +1,30 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Sun Sep  6 15:08:08 2026
+# Process ID         : 18612
+# Current directory  : D:/Workspace/ITS_STUDY_V35_P2F_B2_R1/03_verification/vivado
+# Command line       : vivado.exe -mode batch -source .\run_p2f_b2_ooc.tcl -log .\run\vivado_p2f_b2_r1.log -journal .\run\vivado_p2f_b2_r1.jou
+# Log file           : D:/Workspace/ITS_STUDY_V35_P2F_B2_R1/03_verification/vivado/./run/vivado_p2f_b2_r1.log
+# Journal file       : D:/Workspace/ITS_STUDY_V35_P2F_B2_R1/03_verification/vivado\.\run\vivado_p2f_b2_r1.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 26725 MB
+# Total Virtual      : 43090 MB
+# Available Virtual  : 8706 MB
+#-----------------------------------------------------------
+ERROR: [Common 17-356] Failed to install all user apps.
+ERROR: [Common 17-39] 'load_features' failed due to earlier errors.
+
+    while executing
+"load_features base core vivado filemgmt board tclstore writecfgmem"
+    (file "D:/AMDDesignTools/2025.2/Vivado/lib/scripts/rdi/products/Vivado.tcl" line 10)
+INFO: [Common 17-206] Exiting Vivado at Sun Sep  6 15:08:16 2026...

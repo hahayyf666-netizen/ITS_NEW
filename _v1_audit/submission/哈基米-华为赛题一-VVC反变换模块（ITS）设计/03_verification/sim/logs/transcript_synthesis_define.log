@@ -1,0 +1,241 @@
+# do run_500_singleclk_synthesis_define.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 10:42:50 on Jul 06,2026
+# vlog -sv "+incdir+C:/App/Xilinx/Vivado/2024.1/data/ip/xpm" C:/App/Xilinx/Vivado/2024.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv 
+# -- Compiling module xpm_memory_base
+# -- Compiling module asym_bwe_bb
+# -- Compiling module xpm_memory_dpdistram
+# -- Compiling module xpm_memory_dprom
+# -- Compiling module xpm_memory_sdpram
+# -- Compiling module xpm_memory_spram
+# -- Compiling module xpm_memory_sprom
+# -- Compiling module xpm_memory_tdpram
+# 
+# Top level modules:
+# 	xpm_memory_dpdistram
+# 	xpm_memory_dprom
+# 	xpm_memory_sdpram
+# 	xpm_memory_spram
+# 	xpm_memory_sprom
+# 	xpm_memory_tdpram
+# End time: 10:42:50 on Jul 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 10:42:50 on Jul 06,2026
+# vlog -sv "+define+SYNTHESIS" ../rtl/its_mac.v 
+# -- Compiling module its_mac
+# 
+# Top level modules:
+# 	its_mac
+# End time: 10:42:50 on Jul 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 10:42:50 on Jul 06,2026
+# vlog -sv "+define+SYNTHESIS" ../rtl/its_rom.v 
+# -- Compiling module its_rom
+# 
+# Top level modules:
+# 	its_rom
+# End time: 10:42:50 on Jul 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 10:42:51 on Jul 06,2026
+# vlog -sv "+define+SYNTHESIS" ../rtl/its_lfnst_rom.v 
+# -- Compiling module its_lfnst_rom
+# 
+# Top level modules:
+# 	its_lfnst_rom
+# End time: 10:42:51 on Jul 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 10:42:51 on Jul 06,2026
+# vlog -sv "+define+SYNTHESIS" ../rtl/its_transform_engine.v 
+# -- Compiling module its_transform_engine
+# 
+# Top level modules:
+# 	its_transform_engine
+# End time: 10:42:51 on Jul 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 10:42:51 on Jul 06,2026
+# vlog -sv "+define+SYNTHESIS" ../rtl/its_lfnst.v 
+# -- Compiling module its_lfnst
+# 
+# Top level modules:
+# 	its_lfnst
+# End time: 10:42:51 on Jul 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 10:42:51 on Jul 06,2026
+# vlog -sv "+define+SYNTHESIS" ../rtl/its_core_500.v 
+# -- Compiling package its_pkg
+# -- Compiling module its_core_500
+# -- Importing package its_pkg
+# 
+# Top level modules:
+# 	its_core_500
+# End time: 10:42:51 on Jul 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 10:42:51 on Jul 06,2026
+# vlog -sv "+define+SYNTHESIS" ../rtl/rst_sync.v 
+# -- Compiling module rst_sync
+# 
+# Top level modules:
+# 	rst_sync
+# End time: 10:42:51 on Jul 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 10:42:51 on Jul 06,2026
+# vlog -sv "+define+SYNTHESIS" ../rtl/async_fifo.v 
+# -- Compiling module async_fifo
+# 
+# Top level modules:
+# 	async_fifo
+# End time: 10:42:51 on Jul 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 10:42:51 on Jul 06,2026
+# vlog -sv "+define+SYNTHESIS" ../rtl/fifo_fwft_reg_slice.v 
+# -- Compiling module fifo_fwft_reg_slice
+# 
+# Top level modules:
+# 	fifo_fwft_reg_slice
+# End time: 10:42:51 on Jul 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 10:42:51 on Jul 06,2026
+# vlog -sv "+define+SYNTHESIS" ../rtl/its_top_500_wrapper.v 
+# -- Compiling module its_top_500_wrapper
+# 
+# Top level modules:
+# 	its_top_500_wrapper
+# End time: 10:42:51 on Jul 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 10:42:51 on Jul 06,2026
+# vlog -sv "+define+SYNTHESIS" ../rtl/its_top_500_singleclk.v 
+# -- Compiling module its_top_500_singleclk
+# 
+# Top level modules:
+# 	its_top_500_singleclk
+# End time: 10:42:51 on Jul 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 10.6e Compiler 2018.06 Jun 23 2018
+# Start time: 10:42:51 on Jul 06,2026
+# vlog -sv "+define+SINGLECLK_SUBMISSION" "+define+SYNTHESIS_SMOKE" ../tb/its_tb_500.v 
+# -- Compiling module its_tb_500
+# 
+# Top level modules:
+# 	its_tb_500
+# End time: 10:42:51 on Jul 06,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -t 1ps -novopt work.its_tb_500 
+# Start time: 10:42:51 on Jul 06,2026
+# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
+# //  ModelSim SE-64 10.6e Jun 23 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.its_tb_500
+# Loading sv_std.std
+# Loading work.its_tb_500
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.its_top_500_singleclk
+# Loading work.its_top_500_singleclk
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.its_top_500_wrapper
+# Loading work.its_top_500_wrapper
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.rst_sync
+# Loading work.rst_sync
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.async_fifo
+# Loading work.async_fifo
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.fifo_fwft_reg_slice
+# Loading work.fifo_fwft_reg_slice
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.its_core_500
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.its_pkg
+# Loading work.its_pkg
+# Loading work.its_core_500
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.xpm_memory_sdpram
+# Loading work.xpm_memory_sdpram
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.xpm_memory_base
+# Loading work.xpm_memory_base
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.its_rom
+# Loading work.its_rom
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.its_lfnst_rom
+# Loading work.its_lfnst_rom
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.its_lfnst
+# Loading work.its_lfnst
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.its_mac
+# Loading work.its_mac
+# Refreshing D:/WorkSpace/its_vvc/sim/work_top.its_transform_engine
+# Loading work.its_transform_engine
+# ** Warning: (vsim-3017) ../rtl/its_core_500.v(116): [TFMPC] - Too few port connections. Expected 16, found 11.
+#    Time: 0 ps  Iteration: 0  Instance: /its_tb_500/u_wrapper/u_wrapper/u_core/u_in_mem File: C:/App/Xilinx/Vivado/2024.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv
+# ** Warning: (vsim-3722) ../rtl/its_core_500.v(116): [TFMPC] - Missing connection for port 'sleep'.
+# ** Warning: (vsim-3722) ../rtl/its_core_500.v(116): [TFMPC] - Missing connection for port 'injectsbiterra'.
+# ** Warning: (vsim-3722) ../rtl/its_core_500.v(116): [TFMPC] - Missing connection for port 'injectdbiterra'.
+# ** Warning: (vsim-3722) ../rtl/its_core_500.v(116): [TFMPC] - Missing connection for port 'sbiterrb'.
+# ** Warning: (vsim-3722) ../rtl/its_core_500.v(116): [TFMPC] - Missing connection for port 'dbiterrb'.
+# === ITS 500MHz Wrapper CDC Testbench ===
+# SINGLECLK_SUBMISSION: its_top_500_singleclk, clk = 100MHz sim-safe
+# Full 1444-test regression + hand-written wrapper tests
+# SYNTHESIS_SMOKE: representative synthesis-branch regression
+# 
+# === [WRAPPER] dct2_4x4 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   [RST t=0] rst_n=0
+# ** Info: [XPM_MEMORY 20-1] MEMORY_PRIMITIVE (0) instructs Vivado Synthesis to choose the memory primitive type. Depending on their values, other XPM_MEMORY parameters may preclude the choice of certain memory primitive types. Review XPM_MEMORY documentation and parameter values to understand any limitations, or set MEMORY_PRIMITIVE to a different value. its_tb_500.u_wrapper.u_wrapper.u_core.u_in_mem.xpm_memory_base_inst.config_drc
+#    Time: 1 ps  Scope: its_tb_500.u_wrapper.u_wrapper.u_core.u_in_mem.xpm_memory_base_inst.config_drc File: C:/App/Xilinx/Vivado/2024.1/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv Line: 514
+#   [RST t=195000] rst_n=1
+#   PASS (16 outputs)
+# 
+# === [WRAPPER] dct2_64x64 (w=64 h=64 tr_h=0 tr_v=0 sidx=0 lfnst=0) ===
+#   [RST t=3665000] rst_n=0
+#   [RST t=3865000] rst_n=1
+#   PASS (4096 outputs)
+# 
+# === [WRAPPER] dct8_8x8 (w=8 h=8 tr_h=1 tr_v=1 sidx=0 lfnst=0) ===
+#   [RST t=6868935000] rst_n=0
+#   [RST t=6869135000] rst_n=1
+#   PASS (64 outputs)
+# 
+# === [WRAPPER] dst7_8x8 (w=8 h=8 tr_h=2 tr_v=2 sidx=0 lfnst=0) ===
+#   [RST t=6887665000] rst_n=0
+#   [RST t=6887865000] rst_n=1
+#   PASS (64 outputs)
+# 
+# === [WRAPPER] lfnst16_s0_i1 (w=4 h=4 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   [RST t=6906425000] rst_n=0
+#   [RST t=6906625000] rst_n=1
+#   PASS (16 outputs)
+# 
+# === [WRAPPER] lfnst48_s0_i1 (w=8 h=8 tr_h=0 tr_v=0 sidx=0 lfnst=1) ===
+#   [RST t=6916565000] rst_n=0
+#   [RST t=6916765000] rst_n=1
+#   PASS (64 outputs)
+# 
+# === [WRAPPER-2TU] two_tu_dct2_4x4 ===
+#   [RST t=6954225000] rst_n=0
+#   [RST t=6954425000] rst_n=1
+#   --- TU 0 ---
+#   TU0 done OK
+#   --- TU 1 ---
+#   TU1 done OK
+#   PASS (2-TU, 16 outputs each)
+# 
+# ========================================
+# Wrapper Test Summary: 7 passed, 0 failed (total 7)
+# ========================================
+# ALL WRAPPER TESTS PASSED!
+# ** Note: $finish    : ../tb/its_tb_500.v(1644)
+#    Time: 6961235 ns  Iteration: 0  Instance: /its_tb_500
+# End time: 10:42:56 on Jul 06,2026, Elapsed time: 0:00:05
+# Errors: 0, Warnings: 7

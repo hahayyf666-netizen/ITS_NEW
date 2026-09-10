@@ -1,0 +1,40 @@
+=== DCT2: 25 sizes �� 9 LFNST = 225 ===
+=== MTS: 16 sizes �� 8 combos �� 9 LFNST = 1152 ===
+
+Total test cases: 1377
+
+Generating hex files...
+  [   0/1377] 4x4_DCT2xDCT2_lfnst0_s0: 3 in -> 16 out
+  [ 100/1377] 8x32_DCT2xDCT2_lfnst1_s0: 16 in -> 256 out
+  [ 200/1377] 64x16_DCT2xDCT2_lfnst1_s1: 16 in -> 1024 out
+  [ 300/1377] 4x8_DST7xDCT8_lfnst1_s2: 16 in -> 32 out
+  [ 400/1377] 4x16_DST7xDST7_lfnst1_s3: 16 in -> 64 out
+  [ 500/1377] 4x32_DCT2xDST7_lfnst2_s0: 16 in -> 128 out
+  [ 600/1377] 16x4_DCT8xDST7_lfnst2_s1: 16 in -> 64 out
+  [ 700/1377] 32x4_DCT2xDCT8_lfnst2_s2: 16 in -> 128 out
+  [ 800/1377] 8x8_DST7xDCT2_lfnst2_s3: 16 in -> 64 out
+  [ 900/1377] 8x32_DST7xDST7_lfnst0_s0: 1 in -> 256 out
+  [1000/1377] 16x8_DCT2xDST7_lfnst1_s0: 16 in -> 128 out
+  [1100/1377] 16x16_DCT8xDST7_lfnst1_s1: 16 in -> 256 out
+  [1200/1377] 16x32_DCT2xDCT8_lfnst1_s2: 16 in -> 512 out
+  [1300/1377] 32x16_DST7xDCT2_lfnst1_s3: 16 in -> 512 out
+  [1376/1377] 32x32_DST7xDCT2_lfnst2_s3: done
+
+Generating regression_tests.vh...
+
+Generating backpressure_tests.vh (37 cases)...
+
+Generating end_same_cycle_tests.vh (10 cases)...
+
+Generating continuous_tests.vh (20 cases)...
+
+Generating regression_index.txt...
+
+============================================================
+Generated 1377 regression test cases
+  Backpressure: 37
+  End-same-cycle: 10
+  Continuous: 20
+  Total test invocations: 1444
+============================================================
+Done!
