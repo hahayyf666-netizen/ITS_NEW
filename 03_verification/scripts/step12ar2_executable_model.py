@@ -1,4 +1,4 @@
-"""V3.5-15 Step 12A-R2.3 temporal/protocol closure model.
+"""V3.5-16 Step 12A-R2.3 temporal/protocol closure model.
 
 One IntegrationModel.tick() owns time and advances input handshakes, banked
 synchronous memories, the single persistent R4C contract, transform phases,
@@ -17,7 +17,7 @@ from typing import Any, Callable
 ROOT = Path(__file__).resolve().parents[2]
 CANONICAL = ROOT / "03_verification" / "output" / "canonical_matrices.json"
 OUT = ROOT / "03_verification" / "output"
-AUDIT = ROOT / "05_audit" / "current" / "15"
+AUDIT = ROOT / "05_audit" / "current" / "16"
 # The independent P1-A oracle is frozen inside this repository.  Keeping the
 # import repository-relative makes a clean clone reproducible and prevents an
 # accidental fallback to a sibling or historical workspace.
@@ -246,7 +246,8 @@ class ResultMemory:
         self.reserved += RESULT_GROUPS
         return True
 
-    def write_group(self, cycle: int, index: int, values: list[int], vector_id: int, tu: int) -> None:
+    def write_group(self, cycle: int, index: int, values: list[int], vector_id: int,
+                    serial: int, tu: int) -> None:
         if not (0 <= index < self.capacity) or len(values) != 4:
             raise ModelError("result group index/width error")
         if self.reserved <= 0 or index in self.beats:
@@ -256,7 +257,8 @@ class ResultMemory:
         self.occupied += 1
         self.writes += 1
         self.trace.append({"cycle": cycle, "event": "result_write", "group": index,
-                           "vector_id": vector_id, "tu": tu, "phase": "H",
+                           "vector_id": vector_id, "serial": serial,
+                           "tu": tu, "phase": "H",
                            "values": list(self.beats[index])})
 
     def tick(self, cycle: int, req: bool) -> list[tuple[int, tuple[int, int, int, int]]]:
@@ -452,7 +454,7 @@ class PhaseTask:
                                      "serial": event.serial, "group": event.group,
                                      "values": list(event.values)})
             self.model.result.write_group(event.cycle, vector * GROUPS + event.group,
-                                          event.values, event.vector_id, self.tu)
+                                          event.values, event.vector_id, event.serial, self.tu)
         if self.accepted == N and len(self.events) == N * GROUPS:
             self.done = True
             self.model.trace.append({"cycle": event.cycle, "event": "phase_done",
@@ -672,29 +674,41 @@ def source_case(name: str, seed: int = 20260904) -> list[list[int]]:
 
 
 def validate_kernel_events(trace: list[dict[str, Any]], vector_ids: list[int]) -> dict[str, Any]:
-    """Derive II/group/tag properties from real kernel events, never constants."""
-    starts = {int(e["vector_id"]): int(e["cycle"])
-              for e in trace if e.get("event") == "vector_start"}
-    groups: dict[int, list[dict[str, Any]]] = {vid: [] for vid in vector_ids}
+    """Use permanent serial identity; validate the visible 16-bit vector tag separately."""
+    expected = {serial: int(vid) & 0xFFFF for serial, vid in enumerate(vector_ids)}
+    starts: dict[int, int] = {}
+    groups: dict[int, list[dict[str, Any]]] = {serial: [] for serial in expected}
     for event in trace:
-        if event.get("event") == "kernel_group" and int(event.get("vector_id", -1)) in groups:
-            groups[int(event["vector_id"])].append(event)
-    if set(starts) != set(vector_ids):
+        kind = event.get("event")
+        if kind not in ("vector_start", "kernel_group"):
+            continue
+        serial = int(event.get("serial", -1))
+        if serial not in expected:
+            continue
+        if int(event.get("vector_id", -1)) != expected[serial]:
+            raise ModelError(f"serial {serial}: visible vector_id mismatch")
+        if kind == "vector_start":
+            if serial in starts:
+                raise ModelError(f"serial {serial}: duplicate vector_start")
+            starts[serial] = int(event["cycle"])
+        else:
+            groups[serial].append(event)
+    if set(starts) != set(expected):
         raise ModelError("kernel vector_start set mismatch")
     group_ii: set[int] = set()
-    for vid in vector_ids:
-        evs = sorted(groups[vid], key=lambda e: int(e["group"]))
+    for serial in expected:
+        evs = sorted(groups[serial], key=lambda e: int(e["group"]))
         if [int(e["group"]) for e in evs] != list(range(GROUPS)):
-            raise ModelError(f"vector {vid}: group sequence mismatch")
+            raise ModelError(f"serial {serial}: group sequence mismatch")
         cycles = [int(e["cycle"]) for e in evs]
         if cycles != list(range(cycles[0], cycles[0] + GROUPS)):
-            raise ModelError(f"vector {vid}: group interval is not 1")
+            raise ModelError(f"serial {serial}: group interval is not 1")
         if not evs[0].get("first") or not evs[-1].get("last"):
-            raise ModelError(f"vector {vid}: first/last tag mismatch")
+            raise ModelError(f"serial {serial}: first/last tag mismatch")
         if any(bool(e.get("first")) for e in evs[1:]) or any(bool(e.get("last")) for e in evs[:-1]):
-            raise ModelError(f"vector {vid}: first/last tag repeated")
+            raise ModelError(f"serial {serial}: first/last tag repeated")
         group_ii.update(b - a for a, b in zip(cycles, cycles[1:]))
-    ordered_starts = [starts[vid] for vid in vector_ids]
+    ordered_starts = [starts[serial] for serial in expected]
     # A 64-vector vertical or horizontal phase is the steady-state unit.  Do
     # not mistake the legal V->H/TU boundary gap for a vector II violation.
     phase_iis: list[list[int]] = []
@@ -710,15 +724,34 @@ def validate_kernel_events(trace: list[dict[str, Any]], vector_ids: list[int]) -
 
 def validate_result_causality(trace: list[dict[str, Any]]) -> bool:
     """Every H kernel group must write the corresponding result beat that cycle."""
-    kernel = {(int(e["vector_id"]), int(e["group"])): int(e["cycle"])
+    kernel = {(int(e["serial"]), int(e["group"])): int(e["cycle"])
               for e in trace if e.get("event") == "kernel_group"}
     writes = [e for e in trace if e.get("event") == "result_write"]
     for event in writes:
-        vid = int(event["vector_id"])
+        serial = int(event["serial"])
         local_group = int(event["group"]) % GROUPS
-        if (vid, local_group) not in kernel or kernel[(vid, local_group)] != int(event["cycle"]):
+        if ((serial, local_group) not in kernel
+                or kernel[(serial, local_group)] != int(event["cycle"])):
             return False
     return True
+
+
+def validator_serial_identity_test() -> bool:
+    """Prove repeated 16-bit tags remain distinct through permanent serial IDs."""
+    trace: list[dict[str, Any]] = []
+    for serial, start in ((0, 0), (1, 16)):
+        trace.append({"cycle": start, "event": "vector_start",
+                      "serial": serial, "vector_id": 0})
+        for group in range(GROUPS):
+            cycle = start + KERNEL_LATENCY + group
+            trace.append({"cycle": cycle, "event": "kernel_group",
+                          "serial": serial, "vector_id": 0, "group": group,
+                          "first": group == 0, "last": group == GROUPS - 1})
+            trace.append({"cycle": cycle, "event": "result_write",
+                          "serial": serial, "vector_id": 0, "group": group})
+    trace.sort(key=lambda event: int(event["cycle"]))
+    metrics = validate_kernel_events(trace, [0, 0])
+    return metrics["vectors"] == 2 and validate_result_causality(trace)
 
 
 def validate_trace(trace: list[dict[str, Any]]) -> bool:
@@ -995,8 +1028,8 @@ def negative_tests(matrix: list[list[int]]) -> dict[str, bool]:
         over = ResultMemory([])
         over.reserve_tu()
         for index in range(RESULT_GROUPS):
-            over.write_group(0, index, [0, 0, 0, 0], 64, 0)
-        over.write_group(0, RESULT_GROUPS, [0, 0, 0, 0], 64, 0)
+            over.write_group(0, index, [0, 0, 0, 0], 64, 64, 0)
+        over.write_group(0, RESULT_GROUPS, [0, 0, 0, 0], 64, 64, 0)
         out["result_overcapacity_rejected"] = False
     except ModelError:
         out["result_overcapacity_rejected"] = True
@@ -1031,6 +1064,7 @@ def main() -> int:
     negatives = negative_tests(matrix)
     epoch = epoch_wrap_test()
     ident = vector_id_wrap_test(matrix)
+    serial_identity = validator_serial_identity_test()
     input_contract = input_protocol_tests()
     all_pass = (all(c["vertical_stage16_match"] and c["horizontal_stage16_match"]
                     and c["final10_match"] and c["result_writes"] == RESULT_GROUPS
@@ -1040,12 +1074,13 @@ def main() -> int:
                 and two["long_backpressure"] and two["capacity_wait"] and two["tag_order_ok"]
                 and two["data_ok"]
                 and all(negatives.values()) and all(input_contract.values())
-                and epoch["pass"] and ident["pass"])
-    result = {"status": "PASS" if all_pass else "FAIL", "step": "V3.5-15",
+                and epoch["pass"] and ident["pass"] and serial_identity)
+    result = {"status": "PASS" if all_pass else "FAIL", "step": "V3.5-16",
               "cases": cases, "wrap_case": wrap_case,
               "two_tu": {k: v for k, v in two.items() if k != "trace"},
               "negative_tests": negatives, "input_contract": input_contract,
               "epoch_wrap": epoch, "vector_id_wrap": ident,
+              "validator_serial_identity": serial_identity,
               "contracts": {"global_tick": True, "result_write_same_cycle": True,
                             "result_read_latency": 1, "holding": True,
                             "input_data_fire": "vld && req", "input_end_fire": "end && req",
@@ -1053,7 +1088,7 @@ def main() -> int:
     (AUDIT / "step12ar2_results.json").write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
     (AUDIT / "step12ar2_negative_tests.json").write_text(json.dumps(negatives, indent=2), encoding="utf-8")
     (AUDIT / "step12ar2_event_trace.json").write_text(json.dumps({"two_tu": two["trace"]}, indent=2), encoding="utf-8")
-    report = ["# V3.5-15 Temporal & Protocol Closure", "",
+    report = ["# V3.5-16 Pre-Step12B Validator Closure", "",
               f"Status: **{result['status']}**", "",
               "- One IntegrationModel.tick() owns the absolute cycle.",
               "- H kernel groups write ResultMemory in the same cycle; historical replay is forbidden.",
@@ -1063,8 +1098,9 @@ def main() -> int:
               "- Four-bank memories model one read and one write port per bank.",
               "- Epoch wrap scrubs four tag banks in parallel for 1024 cycles.",
               "- Negative mutations are fail-closed and part of the overall gate.",
+              "- Validator identity uses permanent invocation serial; vector_id is checked only as the visible 16-bit tag.",
               "- The frozen independent P1-A oracle is vendored under 04_reference/oracle.", ""]
-    (OUT / "V35_15_REPORT.md").write_text("\n".join(report), encoding="utf-8")
+    (OUT / "V35_16_REPORT.md").write_text("\n".join(report), encoding="utf-8")
     return 0 if all_pass else 1
 
 
