@@ -11,14 +11,16 @@
       "final10_match": true,
       "result_writes": 1024,
       "result_fires": 1024,
-      "trace_events": 30932,
+      "trace_events": 30933,
       "backpressure_cycles": 0,
       "vector_ii": [
         16
       ],
       "group_ii": [
         1
-      ]
+      ],
+      "kernel_groups_checked": 2048,
+      "input_handshakes": 1
     },
     {
       "name": "sparse",
@@ -29,60 +31,93 @@
       "final10_match": true,
       "result_writes": 1024,
       "result_fires": 1024,
-      "trace_events": 30938,
+      "trace_events": 30940,
       "backpressure_cycles": 0,
       "vector_ii": [
         16
       ],
       "group_ii": [
         1
-      ]
+      ],
+      "kernel_groups_checked": 2048,
+      "input_handshakes": 2
     },
     {
       "name": "alternating",
       "status": "PASS",
-      "cycles": 7588,
+      "cycles": 10318,
       "vertical_stage16_match": true,
       "horizontal_stage16_match": true,
       "final10_match": true,
       "result_writes": 1024,
       "result_fires": 1024,
-      "trace_events": 43561,
+      "trace_events": 53117,
       "backpressure_cycles": 682,
       "vector_ii": [
         16
       ],
       "group_ii": [
         1
-      ]
+      ],
+      "kernel_groups_checked": 2048,
+      "input_handshakes": 6826
     },
     {
       "name": "random",
       "status": "PASS",
-      "cycles": 7588,
+      "cycles": 10318,
       "vertical_stage16_match": true,
       "horizontal_stage16_match": true,
       "final10_match": true,
       "result_writes": 1024,
       "result_fires": 1024,
-      "trace_events": 43559,
+      "trace_events": 53114,
       "backpressure_cycles": 683,
       "vector_ii": [
         16
       ],
       "group_ii": [
         1
-      ]
+      ],
+      "kernel_groups_checked": 2048,
+      "input_handshakes": 6825
     }
   ],
+  "wrap_case": {
+    "name": "wrap",
+    "status": "PASS",
+    "cycles": 10318,
+    "vertical_stage16_match": true,
+    "horizontal_stage16_match": true,
+    "final10_match": true,
+    "result_writes": 1024,
+    "result_fires": 1024,
+    "trace_events": 53114,
+    "backpressure_cycles": 683,
+    "vector_ii": [
+      16
+    ],
+    "group_ii": [
+      1
+    ],
+    "kernel_groups_checked": 2048,
+    "input_handshakes": 6825
+  },
   "two_tu": {
     "status": "PASS",
-    "cycles": 6393,
+    "cycles": 6395,
     "result_writes": 2048,
     "result_fires": 2048,
     "long_backpressure": true,
     "capacity_wait": true,
     "tag_order_ok": true,
+    "kernel_groups_checked": 4096,
+    "vector_ii": [
+      16
+    ],
+    "group_ii": [
+      1
+    ],
     "data_ok": true
   },
   "negative_tests": {
@@ -98,6 +133,18 @@
     "epoch_scrub_disabled_rejected": true,
     "bank_conflict_rejected": true,
     "horizontal_stage16_mutation_rejected": true
+  },
+  "input_contract": {
+    "data_fire_requires_req": true,
+    "end_without_req_rejected": true,
+    "same_cycle_data_end_accepted": true,
+    "standalone_end_accepted": true,
+    "cache_full_rejected": true,
+    "cache_recovery_reaccepted": true,
+    "address_valid": true,
+    "duplicate_address_rejected": true,
+    "reverse_address_rejected": true,
+    "out_of_range_rejected": true
   },
   "epoch_wrap": {
     "pass": true,

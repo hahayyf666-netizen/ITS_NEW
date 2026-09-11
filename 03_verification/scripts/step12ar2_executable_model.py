@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import random
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
@@ -17,6 +18,13 @@ ROOT = Path(__file__).resolve().parents[2]
 CANONICAL = ROOT / "03_verification" / "output" / "canonical_matrices.json"
 OUT = ROOT / "03_verification" / "output"
 AUDIT = ROOT / "05_audit" / "current" / "step12ar2"
+ORACLE_ROOT = ROOT.parent / "ITS_STUDY_V35_ORACLE"
+if str(ORACLE_ROOT) not in sys.path:
+    sys.path.insert(0, str(ORACLE_ROOT))
+try:
+    from v34_rtl_bitexact import main_2d_details as independent_main_2d_details
+except ImportError as exc:  # fail closed: no silently duplicated expected model
+    raise RuntimeError(f"independent P1-A oracle unavailable: {ORACLE_ROOT}") from exc
 N = 64
 GROUPS = 16
 RESULT_GROUPS = 1024
@@ -48,27 +56,13 @@ def load_matrix() -> list[list[int]]:
     return data["transforms"]["0"]["inverse_operator"]["64"]
 
 
-def oracle_1d(matrix: list[list[int]], vector: list[int]) -> tuple[list[int], list[int], list[int]]:
-    raw = []
-    for output in range(N):
-        total = 0
-        for source, value in enumerate(vector):
-            total += int(matrix[output][source]) * int(value)
-        raw.append(total)
-    shifted = [(value + 32) >> 6 for value in raw]
-    return raw, shifted, [wrap16(value) for value in shifted]
-
-
 def oracle_2d(matrix: list[list[int]], source: list[list[int]]) -> tuple[list[list[int]], list[list[int]], list[list[int]]]:
-    vertical = [[0] * N for _ in range(N)]
-    for col in range(N):
-        stage = oracle_1d(matrix, [source[row][col] for row in range(N)])[2]
-        for row, value in enumerate(stage):
-            vertical[row][col] = value
-    horizontal = [[0] * N for _ in range(N)]
-    for row in range(N):
-        horizontal[row] = oracle_1d(matrix, vertical[row])[2]
-    return vertical, horizontal, [[low10(value) for value in row] for row in horizontal]
+    # Expected values come from the separately frozen P1-A oracle.  The
+    # scheduled kernel below intentionally keeps its own implementation so a
+    # defect cannot make both sides pass through one helper.
+    details = independent_main_2d_details(source, 0, 0, N, N)
+    return (details["stage1_stage16"], details["stage2_stage16"],
+            details["final10"])
 
 
 class BankedMemory:
@@ -285,6 +279,7 @@ class ResultMemory:
 class KernelEvent:
     cycle: int
     vector_id: int
+    serial: int
     group: int
     values: list[int]
     first: bool
@@ -328,7 +323,8 @@ class PersistentR4C:
                     total += int(item["vector"][source]) * int(self.matrix[output_index][source])
                 values.append(wrap16((total + 32) >> 6))
             item["done"].add(group)
-            event = KernelEvent(cycle, item["vector_id"], group, values, group == 0, group == 15)
+            event = KernelEvent(cycle, item["vector_id"], item["serial"], group,
+                                values, group == 0, group == 15)
             self.trace.append({"cycle": cycle, "event": "kernel_group", "vector_id": event.vector_id,
                                "group": group, "first": event.first, "last": event.last,
                                "serial": item["serial"]})
@@ -347,6 +343,7 @@ class PhaseTask:
         self.source = source
         self.dest = dest
         self.vector_base = vector_base
+        self.vector_base_serial = model.kernel.serial
         self.cache_slot = cache_slot
         self.key = (tu, phase)
         self.load_vector = 0
@@ -386,7 +383,7 @@ class PhaseTask:
         if self.load_vector < N:
             values = self.staging.get(self.load_vector)
             if values is not None and all(value is not None for value in values):
-                self.model.kernel.accept(cycle, self.vector_base + self.load_vector,
+                self.model.kernel.accept(cycle, (self.vector_base + self.load_vector) & 0xFFFF,
                                          [int(value) for value in values])
                 self.accepted += 1
                 self.load_vector += 1
@@ -400,7 +397,9 @@ class PhaseTask:
         return []
 
     def handle(self, event: KernelEvent) -> None:
-        vector = event.vector_id - self.vector_base
+        # Serial is the permanent internal identity; vector_id is only the
+        # 16-bit externally visible tag and may wrap during this phase.
+        vector = event.serial - self.vector_base_serial
         if not (0 <= vector < N):
             return
         for k, value in enumerate(event.values):
@@ -422,7 +421,8 @@ class PhaseTask:
         if self.phase == "horizontal":
             self.model.trace.append({"cycle": event.cycle, "event": "final_stage16_write",
                                      "tu": self.tu, "vector_id": event.vector_id,
-                                     "group": event.group, "values": list(event.values)})
+                                     "serial": event.serial, "group": event.group,
+                                     "values": list(event.values)})
             self.model.result.write_group(event.cycle, vector * GROUPS + event.group,
                                           event.values, event.vector_id, self.tu)
         if self.accepted == N and len(self.events) == N * GROUPS:
@@ -434,10 +434,13 @@ class PhaseTask:
 class IntegrationModel:
     """The only object allowed to advance the absolute cycle."""
     def __init__(self, matrix: list[list[int]], sources: list[list[list[int]]],
-                 output_req: Callable[["IntegrationModel"], bool], mutate: str | None = None):
+                 output_req: Callable[["IntegrationModel"], bool], mutate: str | None = None,
+                 input_req: Callable[["IntegrationModel"], bool] | None = None,
+                 initial_vector_id: int = 0):
         self.matrix = matrix
         self.sources = sources
         self.output_req_fn = output_req
+        self.input_req_fn = input_req or (lambda _model: True)
         self.mutate = mutate
         self.cycle = 0
         self.trace: list[dict[str, Any]] = []
@@ -454,7 +457,8 @@ class IntegrationModel:
             end_mode = "same" if events and events[-1][0] == N * N - 1 else "standalone"
             self.input_queue.append((tu, events, end_mode))
         self.input_active: tuple[int, str, EpochInputCache, list[tuple[int, int]], str] | None = None
-        self.kernel = PersistentR4C(matrix, self.trace)
+        self.initial_vector_id = initial_vector_id & 0xFFFF
+        self.kernel = PersistentR4C(matrix, self.trace, initial_vector_id=self.initial_vector_id)
         self.inter = {tu: BankedMemory(f"intermediate{tu}", self.trace) for tu in range(len(sources))}
         self.result = ResultMemory(self.trace)
         self.current: PhaseTask | None = None
@@ -465,7 +469,9 @@ class IntegrationModel:
                       "output_backpressure": 0, "epoch_scrub": 0}
 
     def data_req(self) -> bool:
-        return self.input_active is not None and not self.input_active[2].scrubbing
+        return (self.input_active is not None and
+                not self.input_active[2].scrubbing and
+                bool(self.input_req_fn(self)))
 
     def try_start_input(self) -> None:
         if self.input_active is not None or not self.input_queue:
@@ -490,15 +496,24 @@ class IntegrationModel:
         if self.input_active is None:
             return
         tu, slot, cache, events, end_mode = self.input_active
+        req = self.data_req()
         if not events:
-            if self.data_req():
+            self.trace.append({"cycle": self.cycle, "event": "input_handshake",
+                               "tu": tu, "vld": False, "end": True,
+                               "req": req, "data_fire": False,
+                               "end_fire": req})
+            if req:
                 self.controller.end(slot)
                 self.tu_state[tu]["input"] = "READY"
                 self.ready_v.append(tu)
                 self.input_active = None
             return
         addr, value = events[0]
-        if not self.data_req():
+        self.trace.append({"cycle": self.cycle, "event": "input_handshake",
+                           "tu": tu, "vld": True, "end": bool(len(events) == 1 and end_mode == "same"),
+                           "req": req, "data_fire": req,
+                           "end_fire": bool(req and len(events) == 1 and end_mode == "same")})
+        if not req:
             self.stats["input_cache_full"] += 1
             return
         row, col = divmod(addr, N)
@@ -527,7 +542,7 @@ class IntegrationModel:
                     continue
                 state["horizontal"] = "RUNNING"
                 self.current = PhaseTask(self, tu, "horizontal", self.inter[tu], None,
-                                         tu * 128 + 64, None)
+                                         (self.initial_vector_id + tu * 128 + 64) & 0xFFFF, None)
                 self.current.start(self.cycle)
                 return
         if self.ready_v:
@@ -535,7 +550,8 @@ class IntegrationModel:
             slot, cache = self.cache_tu[tu]
             self.controller.start_read(slot)
             self.tu_state[tu]["vertical"] = "RUNNING"
-            self.current = PhaseTask(self, tu, "vertical", cache, self.inter[tu], tu * 128, slot)
+            self.current = PhaseTask(self, tu, "vertical", cache, self.inter[tu],
+                                     (self.initial_vector_id + tu * 128) & 0xFFFF, slot)
             self.current.start(self.cycle)
 
     def finish_phase(self) -> None:
@@ -621,6 +637,56 @@ def source_case(name: str, seed: int = 20260904) -> list[list[int]]:
     return [[rng.randint(-32768, 32767) for _ in range(N)] for _ in range(N)]
 
 
+def validate_kernel_events(trace: list[dict[str, Any]], vector_ids: list[int]) -> dict[str, Any]:
+    """Derive II/group/tag properties from real kernel events, never constants."""
+    starts = {int(e["vector_id"]): int(e["cycle"])
+              for e in trace if e.get("event") == "vector_start"}
+    groups: dict[int, list[dict[str, Any]]] = {vid: [] for vid in vector_ids}
+    for event in trace:
+        if event.get("event") == "kernel_group" and int(event.get("vector_id", -1)) in groups:
+            groups[int(event["vector_id"])].append(event)
+    if set(starts) != set(vector_ids):
+        raise ModelError("kernel vector_start set mismatch")
+    group_ii: set[int] = set()
+    for vid in vector_ids:
+        evs = sorted(groups[vid], key=lambda e: int(e["group"]))
+        if [int(e["group"]) for e in evs] != list(range(GROUPS)):
+            raise ModelError(f"vector {vid}: group sequence mismatch")
+        cycles = [int(e["cycle"]) for e in evs]
+        if cycles != list(range(cycles[0], cycles[0] + GROUPS)):
+            raise ModelError(f"vector {vid}: group interval is not 1")
+        if not evs[0].get("first") or not evs[-1].get("last"):
+            raise ModelError(f"vector {vid}: first/last tag mismatch")
+        if any(bool(e.get("first")) for e in evs[1:]) or any(bool(e.get("last")) for e in evs[:-1]):
+            raise ModelError(f"vector {vid}: first/last tag repeated")
+        group_ii.update(b - a for a, b in zip(cycles, cycles[1:]))
+    ordered_starts = [starts[vid] for vid in vector_ids]
+    # A 64-vector vertical or horizontal phase is the steady-state unit.  Do
+    # not mistake the legal V->H/TU boundary gap for a vector II violation.
+    phase_iis: list[list[int]] = []
+    for base in range(0, len(vector_ids), N):
+        phase_starts = ordered_starts[base:base + N]
+        if len(phase_starts) > 1:
+            phase_iis.append(sorted(set(b - a for a, b in zip(phase_starts, phase_starts[1:]))))
+    if any(ii != [16] for ii in phase_iis) or group_ii != {1}:
+        raise ModelError(f"kernel II mismatch: phases={phase_iis}, group={sorted(group_ii)}")
+    return {"vectors": len(vector_ids), "vector_ii": [16], "phase_vector_ii": phase_iis,
+            "group_ii": [1], "groups_per_vector": GROUPS}
+
+
+def validate_result_causality(trace: list[dict[str, Any]]) -> bool:
+    """Every H kernel group must write the corresponding result beat that cycle."""
+    kernel = {(int(e["vector_id"]), int(e["group"])): int(e["cycle"])
+              for e in trace if e.get("event") == "kernel_group"}
+    writes = [e for e in trace if e.get("event") == "result_write"]
+    for event in writes:
+        vid = int(event["vector_id"])
+        local_group = int(event["group"]) % GROUPS
+        if (vid, local_group) not in kernel or kernel[(vid, local_group)] != int(event["cycle"]):
+            return False
+    return True
+
+
 def validate_trace(trace: list[dict[str, Any]]) -> bool:
     previous = -1
     requests: dict[tuple[str, str], int] = {}
@@ -642,26 +708,35 @@ def validate_trace(trace: list[dict[str, Any]]) -> bool:
             key = ("result", str(event["group"]))
             if key not in requests or cycle != requests[key] + READ_LATENCY:
                 return False
-    return True
+    return validate_result_causality(trace)
 
 
-def validate_output_hold(trace: list[dict[str, Any]]) -> bool:
+def validate_output_hold(trace: list[dict[str, Any]], require_req_drop: bool = False) -> bool:
     """Check that a response under req=0 remains held and unconsumed."""
+    saw_req_drop_response = False
+    requests: dict[int, int] = {}
     for event in trace:
+        if event.get("event") == "result_read_request":
+            requests[int(event["group"])] = int(event["cycle"])
         if event.get("event") != "result_read_response":
             continue
+        if not isinstance(event.get("cycle"), int):
+            return False
         if not event.get("req", True):
+            saw_req_drop_response = True
             if not event.get("hold_valid", False):
                 return False
             if event.get("occupied_after") != event.get("occupied_before"):
                 return False
             if event.get("output_fire", False):
                 return False
+    if require_req_drop and not saw_req_drop_response:
+        return False
     return True
 
 
 def run_case(matrix: list[list[int]], name: str, req_mode: str = "ready",
-             mutate: str | None = None) -> dict[str, Any]:
+             mutate: str | None = None, initial_vector_id: int = 0) -> dict[str, Any]:
     source = source_case(name)
     expected_v, expected_h, expected_f = oracle_2d(matrix, source)
 
@@ -670,10 +745,18 @@ def run_case(matrix: list[list[int]], name: str, req_mode: str = "ready",
             return True
         return (model.cycle % 7) not in (2, 3)
 
-    model = IntegrationModel(matrix, [source], req_fn, mutate=mutate)
+    def input_req_fn(model: IntegrationModel) -> bool:
+        return req_mode == "ready" or (model.cycle % 5) not in (1, 2)
+
+    model = IntegrationModel(matrix, [source], req_fn, mutate=mutate,
+                             input_req=input_req_fn, initial_vector_id=initial_vector_id)
     model.run()
     if not validate_trace(model.trace):
         raise ModelError(f"{name}: trace causality failure")
+    expected_vector_ids = [((initial_vector_id + i) & 0xFFFF) for i in range(128)]
+    kernel_metrics = validate_kernel_events(model.trace, expected_vector_ids)
+    if not validate_output_hold(model.trace, require_req_drop=req_mode != "ready"):
+        raise ModelError(f"{name}: output holding contract failure")
     actual_v = [[0] * N for _ in range(N)]
     for row in range(N):
         for col in range(N):
@@ -681,7 +764,7 @@ def run_case(matrix: list[list[int]], name: str, req_mode: str = "ready",
             actual_v[row][col] = model.inter[0].data[bank][addr]
     actual_h = [[0] * N for _ in range(N)]
     for event in (e for e in model.trace if e.get("event") == "final_stage16_write"):
-        row, group = int(event["vector_id"]) - 64, int(event["group"])
+        row, group = int(event["serial"]) - 64, int(event["group"])
         actual_h[row][group * 4:group * 4 + 4] = list(event["values"])
     final = [[low10(value) for value in row] for row in actual_h]
     drained_final = [[0] * N for _ in range(N)]
@@ -701,7 +784,10 @@ def run_case(matrix: list[list[int]], name: str, req_mode: str = "ready",
             "final10_match": drained_final == expected_f, "result_writes": model.result.writes,
             "result_fires": model.result.fires, "trace_events": len(model.trace),
             "backpressure_cycles": model.stats["output_backpressure"],
-            "vector_ii": [16], "group_ii": [1]}
+            "vector_ii": kernel_metrics["vector_ii"],
+            "group_ii": kernel_metrics["group_ii"],
+            "kernel_groups_checked": kernel_metrics["vectors"] * GROUPS,
+            "input_handshakes": sum(e.get("event") == "input_handshake" for e in model.trace)}
 
 
 def two_tu_case(matrix: list[list[int]]) -> dict[str, Any]:
@@ -718,10 +804,14 @@ def two_tu_case(matrix: list[list[int]]) -> dict[str, Any]:
                 return False
         return model.cycle >= holder["tu0_done"] + 128
 
-    model = IntegrationModel(matrix, [src0, src1], req_fn)
+    model = IntegrationModel(matrix, [src0, src1], req_fn,
+                             input_req=lambda m: (m.cycle % 5) not in (1, 2))
     model.run()
     if not validate_trace(model.trace):
         raise ModelError("two-TU trace causality failure")
+    kernel_metrics = validate_kernel_events(model.trace, list(range(256)))
+    if not validate_output_hold(model.trace, require_req_drop=False):
+        raise ModelError("two-TU output holding contract failure")
     writes = [e for e in model.trace if e.get("event") == "result_write"]
     fires = [e for e in model.trace if e.get("event") == "output_fire"]
     _, _, expected0 = oracle_2d(matrix, src0)
@@ -736,6 +826,9 @@ def two_tu_case(matrix: list[list[int]]) -> dict[str, Any]:
             "result_fires": len(fires), "long_backpressure": model.stats["output_backpressure"] >= 128,
             "capacity_wait": model.stats["result_capacity_wait"] > 0,
             "tag_order_ok": [e["group"] for e in fires] == list(range(RESULT_GROUPS)) * 2,
+            "kernel_groups_checked": kernel_metrics["vectors"] * GROUPS,
+            "vector_ii": kernel_metrics["vector_ii"],
+            "group_ii": kernel_metrics["group_ii"],
             "data_ok": data_ok,
             "trace": model.trace}
 
@@ -767,6 +860,39 @@ def epoch_wrap_test() -> dict[str, Any]:
             cache.begin_tu()
     return {"pass": old == 1234 and cache.read_tagged(3, 7) == 0,
             "scrub_count": cache.scrub_count, "scrub_cycles": scrub_cycles}
+
+
+def input_protocol_tests() -> dict[str, bool]:
+    """Small executable contract tests for input fire/end and A/B ownership."""
+    out: dict[str, bool] = {}
+    data_fire = lambda vld, req: bool(vld and req)
+    end_fire = lambda end, req: bool(end and req)
+    out["data_fire_requires_req"] = (not data_fire(True, False)) and data_fire(True, True)
+    out["end_without_req_rejected"] = not end_fire(True, False)
+    out["same_cycle_data_end_accepted"] = data_fire(True, True) and end_fire(True, True)
+    out["standalone_end_accepted"] = (not data_fire(False, True)) and end_fire(True, True)
+
+    owners = InputController()
+    first = owners.admit()
+    second = owners.admit()
+    third = owners.admit()
+    full_rejected = first is not None and second is not None and third is None
+    if first is not None:
+        owners.end(first)
+        owners.start_read(first)
+        owners.release(first)
+    recovered = owners.admit() == first
+    out["cache_full_rejected"] = full_rejected
+    out["cache_recovery_reaccepted"] = recovered
+
+    valid = [0, 1, 4095]
+    duplicate = [0, 1, 1]
+    reverse = [1, 0]
+    out["address_valid"] = valid == sorted(set(valid)) and all(0 <= a < N * N for a in valid)
+    out["duplicate_address_rejected"] = duplicate != sorted(set(duplicate))
+    out["reverse_address_rejected"] = reverse != sorted(reverse)
+    out["out_of_range_rejected"] = not all(0 <= a < N * N for a in [0, 4096])
+    return out
 
 
 def negative_tests(matrix: list[list[int]]) -> dict[str, bool]:
@@ -840,21 +966,26 @@ def main() -> int:
     matrix = load_matrix()
     cases = [run_case(matrix, name, mode) for name, mode in
              (("zero", "ready"), ("sparse", "ready"), ("alternating", "toggle"), ("random", "toggle"))]
+    wrap_case = run_case(matrix, "wrap", "toggle", initial_vector_id=0xFFFE)
     two = two_tu_case(matrix)
     negatives = negative_tests(matrix)
     epoch = epoch_wrap_test()
     ident = vector_id_wrap_test(matrix)
+    input_contract = input_protocol_tests()
     all_pass = (all(c["vertical_stage16_match"] and c["horizontal_stage16_match"]
                     and c["final10_match"] and c["result_writes"] == RESULT_GROUPS
-                    and c["result_fires"] == RESULT_GROUPS for c in cases)
+                    and c["result_fires"] == RESULT_GROUPS for c in cases + [wrap_case])
                 and two["result_writes"] == 2 * RESULT_GROUPS
                 and two["result_fires"] == 2 * RESULT_GROUPS
                 and two["long_backpressure"] and two["capacity_wait"] and two["tag_order_ok"]
                 and two["data_ok"]
-                and all(negatives.values()) and epoch["pass"] and ident["pass"])
+                and all(negatives.values()) and all(input_contract.values())
+                and epoch["pass"] and ident["pass"])
     result = {"status": "PASS" if all_pass else "FAIL", "step": "12A-R2.2",
-              "cases": cases, "two_tu": {k: v for k, v in two.items() if k != "trace"},
-              "negative_tests": negatives, "epoch_wrap": epoch, "vector_id_wrap": ident,
+              "cases": cases, "wrap_case": wrap_case,
+              "two_tu": {k: v for k, v in two.items() if k != "trace"},
+              "negative_tests": negatives, "input_contract": input_contract,
+              "epoch_wrap": epoch, "vector_id_wrap": ident,
               "contracts": {"global_tick": True, "result_write_same_cycle": True,
                             "result_read_latency": 1, "holding": True,
                             "input_data_fire": "vld && req", "input_end_fire": "end && req",
