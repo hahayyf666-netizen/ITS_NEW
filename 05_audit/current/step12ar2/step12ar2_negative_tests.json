@@ -1,11 +1,14 @@
 {
-  "same_bank_read_rejected": true,
-  "duplicate_result_rejected": true,
-  "short_vector_ii_rejected": true,
+  "trace_rollback_rejected": true,
+  "ram_early_response_rejected": true,
+  "missing_group_rejected": true,
+  "duplicate_group_rejected": true,
   "wrong_vector_id_rejected": true,
-  "capacity_overwrite_rejected": true,
-  "end_without_req_rejected": true,
-  "horizontal_stage16_mutation_rejected": true,
-  "input_cache_full_rejected": true,
-  "nonmonotonic_input_rejected": true
+  "premature_vertical_start_rejected": true,
+  "wrong_result_data_rejected": true,
+  "output_holding_failure_rejected": true,
+  "result_overcapacity_rejected": true,
+  "epoch_scrub_disabled_rejected": true,
+  "bank_conflict_rejected": true,
+  "horizontal_stage16_mutation_rejected": true
 }

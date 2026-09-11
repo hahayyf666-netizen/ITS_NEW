@@ -1,9 +1,10 @@
 // ===================================================================
-// ITS Top Level Module — final submission entry (v7.0)
+// ITS Top Level Module — LEGACY / V3.4 compatibility baseline
 // 22-bit it_info interface per competition spec.
 //
-// Instantiates its_top_500_singleclk — verified at 1539/1539 PASS,
-// 500MHz UltraScale+ timing closed (see doc/core_500mhz_timing_report.md).
+// This file instantiates the frozen V3.4 single-clock top.  It is not the
+// current P4/Step12B integration and must not be used to claim full-core
+// 500MHz closure.
 // ===================================================================
 
 module its_top (

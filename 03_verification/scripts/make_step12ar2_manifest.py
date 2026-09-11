@@ -1,4 +1,4 @@
-"""Create a reproducible non-cache SHA-256 manifest for Step 12A-R2."""
+"""Create a reproducible non-cache SHA-256 manifest for Step 12A-R2.2."""
 from __future__ import annotations
 import hashlib, json
 from pathlib import Path
@@ -28,10 +28,11 @@ def main() -> int:
         if rel.startswith("05_audit/current/step12ar2/"):
             continue
         files[rel] = {"bytes": p.stat().st_size, "sha256": sha(p)}
-    doc = {"step": "12A-R2", "root": str(ROOT), "cache_policy": "excluded",
+    doc = {"step": "12A-R2.2", "root_policy": "workspace-relative",
+           "cache_policy": "excluded",
            "file_count": len(files), "files": dict(sorted(files.items()))}
     MANIFEST.write_text(json.dumps(doc, indent=2, ensure_ascii=False), encoding="utf-8")
-    print(f"STEP12A-R2 manifest: {len(files)} files")
+    print(f"STEP12A-R2.2 manifest: {len(files)} files")
     return 0
 
 if __name__ == "__main__":
