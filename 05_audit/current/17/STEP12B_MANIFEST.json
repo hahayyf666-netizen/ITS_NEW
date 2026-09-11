@@ -1,0 +1,97 @@
+{
+  "version": "V3.5-17-Step12B-functional-prototype",
+  "status": "functional_smoke_pass_not_frozen",
+  "r4c_unchanged_reference": "02_rtl/rtl/p2f_dct2_64_b1_step102.sv",
+  "files": [
+    {
+      "path": "01_docs/current/Step12B.md",
+      "exists": true,
+      "sha256": "4a23880f1567f24dee91cf2ef6574eb86eb9137298f0d4ea0b7dff3622c1ec39",
+      "bytes": 4228
+    },
+    {
+      "path": "02_rtl/rtl/p2f_dct2_64_b1_step102.sv",
+      "exists": true,
+      "sha256": "15aa962c197c4ce0b9daf2e5478b64c51f3c6712e582f8950df6bf1c339c31b1",
+      "bytes": 435657
+    },
+    {
+      "path": "02_rtl/rtl/step12b_dct2_64_wrapper.sv",
+      "exists": true,
+      "sha256": "52c220f18aea17cf986ec1545567f02cca693dd9112d877ab596f4f175578601",
+      "bytes": 20230
+    },
+    {
+      "path": "03_verification/scripts/step12b_cycle_model.py",
+      "exists": true,
+      "sha256": "b7abbeab7c4c973697f671bcc5f88c8f35be3ae25ddd648c915641e8080042ae",
+      "bytes": 30978
+    },
+    {
+      "path": "03_verification/scripts/run_step12b_checks.ps1",
+      "exists": true,
+      "sha256": "42a961ef2d9fd0af73f23725d6e19b8b34d0f527e7b42edfdf61c7c287224c32",
+      "bytes": 2172
+    },
+    {
+      "path": "03_verification/tb/step12b_dct2_64_wrapper_tb.sv",
+      "exists": true,
+      "sha256": "88fc302ea917ff32e7d9d00e345da265abc4c2675e775edc32759ff39aef9fd6",
+      "bytes": 8137
+    },
+    {
+      "path": "03_verification/sim/run_step12b.do",
+      "exists": true,
+      "sha256": "95cd337f733b3adf66966a43e95ec73a4c18fe69cf3b820a89f8f9969f7bbe29",
+      "bytes": 321
+    },
+    {
+      "path": "03_verification/sim/run_step12b_synthesis.do",
+      "exists": true,
+      "sha256": "66f7597d4ecc65145bf226ca502bf7f34347b501ddda79a68e89ae02d6d4d035",
+      "bytes": 342
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_normal.log",
+      "exists": true,
+      "sha256": "54ac7e6a1ba80bc5bc920e42f77b11c3f0534a758d235ff8de1fc920b2871e37",
+      "bytes": 29892
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_normal_compile.log",
+      "exists": true,
+      "sha256": "1ccb8f14f5ed96abdde3e2ac998498e3f29fbc4e6abc10a4d79b77ff297fece0",
+      "bytes": 1098
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_synthesis.log",
+      "exists": true,
+      "sha256": "21947a0fb4bfa7c219631bc32bcbf07901da56957fd0ff6bdbb2d0718aa4b85f",
+      "bytes": 29892
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_synthesis_compile.log",
+      "exists": true,
+      "sha256": "7e916ee6aace82bf4bee7da5d3f0b8c44c6d7b333846ec2a10ecc4696fda8612",
+      "bytes": 1138
+    },
+    {
+      "path": "05_audit/current/17/step12b_cycle_results.json",
+      "exists": true,
+      "sha256": "4a22b3cae41af40f933d6bbba60d39d45db75efe809f1ec66bd2735ee3dd3617",
+      "bytes": 2371
+    },
+    {
+      "path": "05_audit/current/17/step12b_cycle_trace.json",
+      "exists": true,
+      "sha256": "b5d8acf17c23e1d9645d69726e9583a58c0ac2ba31caa643bd21f3c492027989",
+      "bytes": 5543229
+    },
+    {
+      "path": "05_audit/current/17/V35_STEP12B_REPORT.md",
+      "exists": true,
+      "sha256": "493c661e89716d6c173758ec27b0ee06d234e8d178a17c25ed1dbcb7a3984661",
+      "bytes": 1738
+    }
+  ]
+}

@@ -1,0 +1,170 @@
+`timescale 1ns/1ps
+
+module step12b_dct2_64_wrapper_tb;
+    reg clk = 0;
+    reg rst_n = 0;
+    reg [21:0] it_info = 0;
+    reg it_info_vld = 0;
+    reg signed [15:0] it_data_in = 0;
+    reg [11:0] it_data_addr = 0;
+    reg it_data_in_vld = 0;
+    reg it_data_end = 0;
+    wire it_data_in_req;
+    reg it_data_out_req = 1;
+    wire [39:0] it_data_out;
+    wire it_data_out_vld;
+    wire it_done;
+    wire protocol_error;
+    wire debug_stage16_valid;
+    wire [5:0] debug_stage16_row, debug_stage16_col;
+    wire signed [15:0] debug_stage16_data;
+    integer cycles, fires, data_errors, hold_errors;
+    reg [39:0] held_data;
+    reg stall_active;
+    reg [39:0] stall_data;
+
+    // Independent canonical DCT2-64 coefficient column A[i][1].  The
+    // sparse test below injects only input[1][1]=100, so this single column
+    // is sufficient to derive every expected 2-D output beat without using
+    // RTL results as a golden source.
+    function automatic integer coeff_col1(input integer idx);
+        begin
+            case (idx)
+                0: coeff_col1=91;  1: coeff_col1=90;  2: coeff_col1=90;  3: coeff_col1=90;
+                4: coeff_col1=88;  5: coeff_col1=87;  6: coeff_col1=86;  7: coeff_col1=84;
+                8: coeff_col1=83;  9: coeff_col1=81; 10: coeff_col1=79; 11: coeff_col1=77;
+               12: coeff_col1=73; 13: coeff_col1=71; 14: coeff_col1=69; 15: coeff_col1=65;
+               16: coeff_col1=62; 17: coeff_col1=59; 18: coeff_col1=56; 19: coeff_col1=52;
+               20: coeff_col1=48; 21: coeff_col1=44; 22: coeff_col1=41; 23: coeff_col1=37;
+               24: coeff_col1=33; 25: coeff_col1=28; 26: coeff_col1=24; 27: coeff_col1=20;
+               28: coeff_col1=15; 29: coeff_col1=11; 30: coeff_col1=7;  31: coeff_col1=2;
+               32: coeff_col1=-2; 33: coeff_col1=-7; 34: coeff_col1=-11;35: coeff_col1=-15;
+               36: coeff_col1=-20;37: coeff_col1=-24;38: coeff_col1=-28;39: coeff_col1=-33;
+               40: coeff_col1=-37;41: coeff_col1=-41;42: coeff_col1=-44;43: coeff_col1=-48;
+               44: coeff_col1=-52;45: coeff_col1=-56;46: coeff_col1=-59;47: coeff_col1=-62;
+               48: coeff_col1=-65;49: coeff_col1=-69;50: coeff_col1=-71;51: coeff_col1=-73;
+               52: coeff_col1=-77;53: coeff_col1=-79;54: coeff_col1=-81;55: coeff_col1=-83;
+               56: coeff_col1=-84;57: coeff_col1=-86;58: coeff_col1=-87;59: coeff_col1=-88;
+               60: coeff_col1=-90;61: coeff_col1=-90;62: coeff_col1=-90;63: coeff_col1=-91;
+              default: coeff_col1=0;
+            endcase
+        end
+    endfunction
+
+    function automatic integer wrap16_i(input integer value);
+        integer u;
+        begin
+            u = value & 32'hffff;
+            if (u & 32'h8000) wrap16_i = u - 32'h10000;
+            else wrap16_i = u;
+        end
+    endfunction
+
+    function automatic [9:0] expected_point(input integer row, input integer col);
+        integer stage1;
+        integer raw2;
+        begin
+            // Stage-1 vertical: only column 1 has input value 100.
+            stage1 = wrap16_i((coeff_col1(row) * 100 + 32) >>> 6);
+            // Stage-2 horizontal: only intermediate column 1 is non-zero.
+            raw2 = coeff_col1(col) * stage1;
+            expected_point = wrap16_i((raw2 + 32) >>> 6) & 10'h3ff;
+        end
+    endfunction
+
+    function automatic [39:0] expected_beat(input integer row, input integer group);
+        integer k;
+        begin
+            expected_beat = 40'd0;
+            for (k = 0; k < 4; k = k + 1)
+                expected_beat[k*10 +: 10] = expected_point(row, group*4+k);
+        end
+    endfunction
+
+    always #1 clk = ~clk;
+    always @(posedge clk) begin
+        if (rst_n && dut.r4c_start) $display("WRAP_START t=%0t phase=%0d lc=%0d lb=%0d readyA=%0d readyB=%0d since=%0d", $time, dut.phase, dut.launch_count, dut.launch_bank, dut.stage_ready_a, dut.stage_ready_b, dut.cycles_since_launch);
+        if (rst_n && dut.r4c_result_valid && dut.r4c_result_last) $display("WRAP_LAST t=%0t phase=%0d vid=%0d", $time, dut.phase, dut.r4c_result_vector_id);
+    end
+
+    step12b_dct2_64_wrapper dut (
+        .clk(clk), .rst_n(rst_n), .it_info(it_info), .it_info_vld(it_info_vld),
+        .it_data_in(it_data_in), .it_data_addr(it_data_addr),
+        .it_data_in_vld(it_data_in_vld), .it_data_end(it_data_end),
+        .it_data_in_req(it_data_in_req), .it_data_out_req(it_data_out_req),
+        .it_data_out(it_data_out), .it_data_out_vld(it_data_out_vld),
+        .it_done(it_done), .protocol_error(protocol_error),
+        .debug_stage16_valid(debug_stage16_valid),
+        .debug_stage16_row(debug_stage16_row), .debug_stage16_col(debug_stage16_col),
+        .debug_stage16_data(debug_stage16_data)
+    );
+
+    initial begin
+        cycles = 0; fires = 0; data_errors = 0; hold_errors = 0; held_data = 0;
+        stall_active = 1'b0; stall_data = 40'd0;
+        repeat (4) @(posedge clk);
+        rst_n <= 1;
+        @(posedge clk);
+        // Descriptor bind; data is deliberately sent from the next cycle.
+        it_info_vld <= 1;
+        @(posedge clk);
+        it_info_vld <= 0;
+        wait (it_data_in_req);
+        @(posedge clk);
+        // Deterministic sparse non-zero input.  data+end on the same accepted
+        // edge verifies that the final write is included before TU READY.
+        it_data_addr <= 12'd65; // raster address (row=1,col=1)
+        it_data_in <= 16'sd100;
+        it_data_in_vld <= 1'b1;
+        it_data_end <= 1;
+        @(posedge clk);
+        it_data_in_vld <= 1'b0;
+        it_data_end <= 0;
+        while (!it_done && cycles < 8000) begin
+            // Sample after the DUT's posedge state update.  Driving and
+            // checking at the following negedge avoids observing pre-NBA
+            // values and makes the ready/valid hold assertion cycle-accurate.
+            @(negedge clk);
+            cycles = cycles + 1;
+            // Exercise the C request / C+1 response hold contract with a
+            // deterministic 1->0 transition pattern.
+            if ((cycles % 19) >= 5 && (cycles % 19) <= 8)
+                it_data_out_req <= 1'b0;
+            else
+                it_data_out_req <= 1'b1;
+            // During a request stall, the externally visible beat must remain
+            // stable.  Capture the first stalled value, then compare all
+            // subsequent stalled cycles against that value.
+            if (!it_data_out_req) begin
+                if (stall_active && it_data_out !== stall_data)
+                    hold_errors = hold_errors + 1;
+                else if (!stall_active) begin
+                    stall_active = 1'b1;
+                    stall_data = it_data_out;
+                end
+            end else begin
+                stall_active = 1'b0;
+            end
+            held_data = it_data_out;
+            if (it_data_out_vld) begin
+                fires = fires + 1;
+                if (it_data_out !== expected_beat((fires-1) / 16, (fires-1) % 16)) begin
+                    data_errors = data_errors + 1;
+                    if (data_errors < 4)
+                        $display("DATA_MISMATCH beat=%0d got=%h exp=%h", fires-1,
+                                 it_data_out, expected_beat((fires-1) / 16, (fires-1) % 16));
+                end
+            end
+        end
+        if (protocol_error) $fatal(1, "Step12B protocol_error asserted");
+        if (!it_done) begin
+            $display("Step12B timeout state phase=%0d result_occ=%0d rd=%0d issue=%0d pending=%0d hold=%0d skid=%0d final=%0d", dut.phase, dut.result_occupied, dut.result_read_index, dut.result_issue_index, dut.result_read_pending, dut.result_hold_valid, dut.result_skid_valid, dut.final_compute_seen);
+            $fatal(1, "Step12B timeout");
+        end
+        if (fires != 1024) $fatal(1, "Step12B expected 1024 output beats, got %0d", fires);
+        if (data_errors != 0) $fatal(1, "Step12B sparse data errors=%0d", data_errors);
+        if (hold_errors != 0) $fatal(1, "Step12B output hold errors=%0d", hold_errors);
+        $display("STEP12B_WRAPPER_PASS cycles=%0d output_beats=%0d", cycles, fires);
+        $finish;
+    end
+endmodule

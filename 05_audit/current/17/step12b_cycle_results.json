@@ -1,0 +1,116 @@
+{
+  "version": "V3.5-17-Step12B-cycle-model",
+  "status": "PASS",
+  "cases": [
+    {
+      "kind": "zero",
+      "cycles": 2130,
+      "vectors": 128,
+      "vector_ii": {
+        "vertical": [
+          16
+        ],
+        "horizontal": [
+          16
+        ]
+      },
+      "result_writes": 1024,
+      "result_fires": 1024,
+      "stats": {
+        "input_cache_full": 0,
+        "staging_wait": 0,
+        "result_capacity_wait": 0,
+        "output_backpressure": 0,
+        "epoch_scrub": 0
+      }
+    },
+    {
+      "kind": "sparse",
+      "cycles": 2135,
+      "vectors": 128,
+      "vector_ii": {
+        "vertical": [
+          16
+        ],
+        "horizontal": [
+          16
+        ]
+      },
+      "result_writes": 1024,
+      "result_fires": 1024,
+      "stats": {
+        "input_cache_full": 0,
+        "staging_wait": 0,
+        "result_capacity_wait": 0,
+        "output_backpressure": 0,
+        "epoch_scrub": 0
+      }
+    },
+    {
+      "kind": "alternating",
+      "cycles": 6226,
+      "vectors": 128,
+      "vector_ii": {
+        "vertical": [
+          16
+        ],
+        "horizontal": [
+          16
+        ]
+      },
+      "result_writes": 1024,
+      "result_fires": 1024,
+      "stats": {
+        "input_cache_full": 0,
+        "staging_wait": 0,
+        "result_capacity_wait": 0,
+        "output_backpressure": 0,
+        "epoch_scrub": 0
+      }
+    },
+    {
+      "kind": "random",
+      "cycles": 6225,
+      "vectors": 128,
+      "vector_ii": {
+        "vertical": [
+          16
+        ],
+        "horizontal": [
+          16
+        ]
+      },
+      "result_writes": 1024,
+      "result_fires": 1024,
+      "stats": {
+        "input_cache_full": 0,
+        "staging_wait": 0,
+        "result_capacity_wait": 0,
+        "output_backpressure": 0,
+        "epoch_scrub": 0
+      }
+    }
+  ],
+  "backpressure": {
+    "kind": "backpressure",
+    "cycles": 2565,
+    "vectors": 128,
+    "vector_ii": {
+      "vertical": [
+        16
+      ],
+      "horizontal": [
+        16
+      ]
+    },
+    "result_writes": 1024,
+    "result_fires": 1024,
+    "stats": {
+      "input_cache_full": 0,
+      "staging_wait": 0,
+      "result_capacity_wait": 0,
+      "output_backpressure": 755,
+      "epoch_scrub": 0
+    }
+  }
+}
