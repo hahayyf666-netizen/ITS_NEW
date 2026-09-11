@@ -1,4 +1,4 @@
-"""V3.5-14 Step 12A-R2.2 temporal/protocol closure model.
+"""V3.5-15 Step 12A-R2.3 temporal/protocol closure model.
 
 One IntegrationModel.tick() owns time and advances input handshakes, banked
 synchronous memories, the single persistent R4C contract, transform phases,
@@ -17,8 +17,11 @@ from typing import Any, Callable
 ROOT = Path(__file__).resolve().parents[2]
 CANONICAL = ROOT / "03_verification" / "output" / "canonical_matrices.json"
 OUT = ROOT / "03_verification" / "output"
-AUDIT = ROOT / "05_audit" / "current" / "step12ar2"
-ORACLE_ROOT = ROOT.parent / "ITS_STUDY_V35_ORACLE"
+AUDIT = ROOT / "05_audit" / "current" / "15"
+# The independent P1-A oracle is frozen inside this repository.  Keeping the
+# import repository-relative makes a clean clone reproducible and prevents an
+# accidental fallback to a sibling or historical workspace.
+ORACLE_ROOT = ROOT / "04_reference" / "oracle"
 if str(ORACLE_ROOT) not in sys.path:
     sys.path.insert(0, str(ORACLE_ROOT))
 try:
@@ -184,9 +187,9 @@ class InputController:
     def __init__(self):
         self.state = {"A": "FREE", "B": "FREE"}
 
-    def admit(self) -> str | None:
+    def admit(self, usable: Callable[[str], bool] | None = None) -> str | None:
         for name in ("A", "B"):
-            if self.state[name] == "FREE":
+            if self.state[name] == "FREE" and (usable is None or usable(name)):
                 self.state[name] = "FILLING"
                 return name
         return None
@@ -208,24 +211,38 @@ class InputController:
 
 
 class ResultMemory:
-    """1024 groups with one-cycle RAM response and one-beat holding."""
-    def __init__(self, trace: list[dict[str, Any]]):
+    """1024 groups with a one-cycle RAM and a two-entry elastic read path.
+
+    ``hold`` is the head entry visible to the output interface and ``skid``
+    is the second response slot.  A separate issue index and a one-entry
+    pending RAM request permit one request and one output fire per cycle in
+    the ready steady state, while the credit check prevents a response from
+    arriving when both elastic slots are occupied during backpressure.
+    """
+    def __init__(self, trace: list[dict[str, Any]], mutate: str | None = None):
         self.capacity = RESULT_GROUPS
         self.beats: dict[int, tuple[int, int, int, int]] = {}
         self.reserved = 0
         self.occupied = 0  # includes memory, pending and holding beats
         self.read_index = 0
+        self.issue_index = 0
         self.pending: tuple[int, int] | None = None
         self.hold: tuple[int, tuple[int, int, int, int]] | None = None
+        self.skid: list[tuple[int, tuple[int, int, int, int]]] = []
         self.trace = trace
         self.writes = 0
         self.fires = 0
+        self.mutate = mutate
 
     def reserve_tu(self) -> bool:
         if self.capacity - self.reserved - self.occupied < RESULT_GROUPS:
             return False
         if self.occupied == 0 and self.reserved == 0:
             self.read_index = 0
+            self.issue_index = 0
+            self.pending = None
+            self.hold = None
+            self.skid.clear()
         self.reserved += RESULT_GROUPS
         return True
 
@@ -257,21 +274,32 @@ class ResultMemory:
             self.trace.append({"cycle": cycle, "event": "output_fire", "group": index,
                                "values": list(beat), "req": True,
                                "occupied_after": self.occupied})
+            if self.skid:
+                self.hold = self.skid.pop(0)
         if self.pending is not None and self.pending[0] == cycle:
             index = self.pending[1]
-            if self.hold is not None:
+            if self.hold is not None and len(self.skid) >= 1:
                 raise ModelError("result holding overflow")
             if index not in self.beats:
                 raise ModelError("result response missing beat")
-            self.hold = (index, self.beats[index])
+            entry = (index, self.beats[index])
+            if self.hold is None:
+                self.hold = entry
+            else:
+                self.skid.append(entry)
             self.pending = None
-            self.trace.append({"cycle": cycle, "event": "result_read_response", "group": index,
+            response_cycle = cycle - 1 if self.mutate == "early_response" else cycle
+            self.trace.append({"cycle": response_cycle, "event": "result_read_response", "group": index,
                                "req": req, "hold_valid": True,
                                "occupied_before": self.occupied,
                                "occupied_after": self.occupied, "output_fire": False})
-        if self.hold is None and self.pending is None and req and self.read_index in self.beats:
-            self.pending = (cycle + READ_LATENCY, self.read_index)
-            self.trace.append({"cycle": cycle, "event": "result_read_request", "group": self.read_index})
+        # A request consumes one credit until its response enters hold/skid.
+        # The issue pointer is independent of the output retirement pointer.
+        elastic_entries = int(self.hold is not None) + len(self.skid)
+        if req and self.pending is None and elastic_entries < 2 and self.issue_index in self.beats:
+            self.pending = (cycle + READ_LATENCY, self.issue_index)
+            self.trace.append({"cycle": cycle, "event": "result_read_request", "group": self.issue_index})
+            self.issue_index += 1
         return fired
 
 
@@ -460,7 +488,7 @@ class IntegrationModel:
         self.initial_vector_id = initial_vector_id & 0xFFFF
         self.kernel = PersistentR4C(matrix, self.trace, initial_vector_id=self.initial_vector_id)
         self.inter = {tu: BankedMemory(f"intermediate{tu}", self.trace) for tu in range(len(sources))}
-        self.result = ResultMemory(self.trace)
+        self.result = ResultMemory(self.trace, mutate=mutate)
         self.current: PhaseTask | None = None
         self.ready_v: list[int] = []
         self.completed_h: set[int] = set()
@@ -477,7 +505,7 @@ class IntegrationModel:
         if self.input_active is not None or not self.input_queue:
             return
         tu, events, end_mode = self.input_queue[0]
-        slot = self.controller.admit()
+        slot = self.controller.admit(lambda name: not self.caches[name].scrubbing)
         if slot is None:
             self.stats["input_cache_full"] += 1
             return
@@ -585,11 +613,15 @@ class IntegrationModel:
         for event in self.kernel.tick(self.cycle):
             if self.current is None:
                 raise ModelError("kernel output without phase owner")
+            if self.mutate == "missing_group" and event.vector_id >= 64 and event.group == 5:
+                continue
             if self.mutate == "wrong_result" and event.vector_id >= 64:
                 event.values[0] += 1
             if self.mutate == "horizontal_plus1024" and event.vector_id >= 64:
                 event.values = [wrap16(v + 1024) for v in event.values]
             self.current.handle(event)
+            if self.mutate == "duplicate_group" and event.vector_id >= 64 and event.group == 5:
+                self.current.handle(event)
 
         self.finish_phase()
         self.choose_phase()
@@ -613,8 +645,10 @@ class IntegrationModel:
     def done(self) -> bool:
         inputs_done = not self.input_queue and self.input_active is None
         phases_done = all(state["horizontal"] == "DONE" for state in self.tu_state)
-        return inputs_done and phases_done and self.current is None and self.result.occupied == 0 \
-            and self.result.pending is None and self.result.hold is None
+        return (inputs_done and phases_done and self.current is None
+                and self.result.occupied == 0
+                and self.result.pending is None and self.result.hold is None
+                and not self.result.skid)
 
     def run(self, limit: int = 300000) -> None:
         while not self.done() and self.cycle < limit:
@@ -751,6 +785,12 @@ def run_case(matrix: list[list[int]], name: str, req_mode: str = "ready",
     model = IntegrationModel(matrix, [source], req_fn, mutate=mutate,
                              input_req=input_req_fn, initial_vector_id=initial_vector_id)
     model.run()
+    output_fire_cycles = [int(e["cycle"]) for e in model.trace
+                          if e.get("event") == "output_fire"]
+    output_fire_ii = sorted(set(b - a for a, b in zip(output_fire_cycles,
+                                                       output_fire_cycles[1:])))
+    if req_mode == "ready" and output_fire_ii != [1]:
+        raise ModelError(f"{name}: output fire II is {output_fire_ii}, expected [1]")
     if not validate_trace(model.trace):
         raise ModelError(f"{name}: trace causality failure")
     expected_vector_ids = [((initial_vector_id + i) & 0xFFFF) for i in range(128)]
@@ -784,6 +824,7 @@ def run_case(matrix: list[list[int]], name: str, req_mode: str = "ready",
             "final10_match": drained_final == expected_f, "result_writes": model.result.writes,
             "result_fires": model.result.fires, "trace_events": len(model.trace),
             "backpressure_cycles": model.stats["output_backpressure"],
+            "output_fire_ii": output_fire_ii,
             "vector_ii": kernel_metrics["vector_ii"],
             "group_ii": kernel_metrics["group_ii"],
             "kernel_groups_checked": kernel_metrics["vectors"] * GROUPS,
@@ -884,6 +925,10 @@ def input_protocol_tests() -> dict[str, bool]:
     recovered = owners.admit() == first
     out["cache_full_rejected"] = full_rejected
     out["cache_recovery_reaccepted"] = recovered
+    scrub_owners = InputController()
+    scrub_owners.state["A"] = "FREE"
+    scrub_owners.state["B"] = "FREE"
+    out["scrub_cache_bypassed"] = scrub_owners.admit(lambda name: name != "A") == "B"
 
     valid = [0, 1, 4095]
     duplicate = [0, 1, 1]
@@ -901,11 +946,26 @@ def negative_tests(matrix: list[list[int]]) -> dict[str, bool]:
     out["ram_early_response_rejected"] = not validate_trace([
         {"cycle": 0, "event": "result_read_request", "group": 0},
         {"cycle": 0, "event": "result_read_response", "group": 0}])
+    try:
+        run_case(matrix, "sparse", mutate="early_response")
+        out["integration_early_response_rejected"] = False
+    except ModelError:
+        out["integration_early_response_rejected"] = True
     groups = list(range(GROUPS))
     def valid_groups(values: list[int]) -> bool:
         return len(values) == GROUPS and sorted(values) == groups
     out["missing_group_rejected"] = not valid_groups(groups[:-1])
     out["duplicate_group_rejected"] = not valid_groups(groups + [0])
+    try:
+        run_case(matrix, "sparse", mutate="missing_group")
+        out["integration_missing_group_rejected"] = False
+    except ModelError:
+        out["integration_missing_group_rejected"] = True
+    try:
+        run_case(matrix, "sparse", mutate="duplicate_group")
+        out["integration_duplicate_group_rejected"] = False
+    except ModelError:
+        out["integration_duplicate_group_rejected"] = True
     try:
         bad_kernel = PersistentR4C(matrix, [], initial_vector_id=0)
         bad_kernel.accept(0, 1, [0] * N)
@@ -981,7 +1041,7 @@ def main() -> int:
                 and two["data_ok"]
                 and all(negatives.values()) and all(input_contract.values())
                 and epoch["pass"] and ident["pass"])
-    result = {"status": "PASS" if all_pass else "FAIL", "step": "12A-R2.2",
+    result = {"status": "PASS" if all_pass else "FAIL", "step": "V3.5-15",
               "cases": cases, "wrap_case": wrap_case,
               "two_tu": {k: v for k, v in two.items() if k != "trace"},
               "negative_tests": negatives, "input_contract": input_contract,
@@ -993,17 +1053,18 @@ def main() -> int:
     (AUDIT / "step12ar2_results.json").write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
     (AUDIT / "step12ar2_negative_tests.json").write_text(json.dumps(negatives, indent=2), encoding="utf-8")
     (AUDIT / "step12ar2_event_trace.json").write_text(json.dumps({"two_tu": two["trace"]}, indent=2), encoding="utf-8")
-    report = ["# V35-14 Step 12A-R2.2 Temporal & Protocol Closure", "",
+    report = ["# V3.5-15 Temporal & Protocol Closure", "",
               f"Status: **{result['status']}**", "",
               "- One IntegrationModel.tick() owns the absolute cycle.",
               "- H kernel groups write ResultMemory in the same cycle; historical replay is forbidden.",
-              "- Result output uses one-cycle synchronous response and one-beat holding under req=0.",
+              "- Result output uses one-cycle synchronous response and a two-entry elastic holding path; ready steady-state output_fire II=1.",
               "- Input data/end are accepted only on vld&&req / end&&req.",
               "- A persistent R4C contract is reused across both phases.",
               "- Four-bank memories model one read and one write port per bank.",
               "- Epoch wrap scrubs four tag banks in parallel for 1024 cycles.",
-              "- Negative mutations are fail-closed and part of the overall gate.", ""]
-    (OUT / "V35_14_REPORT.md").write_text("\n".join(report), encoding="utf-8")
+              "- Negative mutations are fail-closed and part of the overall gate.",
+              "- The frozen independent P1-A oracle is vendored under 04_reference/oracle.", ""]
+    (OUT / "V35_15_REPORT.md").write_text("\n".join(report), encoding="utf-8")
     return 0 if all_pass else 1
 
 

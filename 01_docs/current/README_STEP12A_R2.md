@@ -1,4 +1,7 @@
-# V3.5 Step 12A-R2.1
+# V3.5 Step 12A-R2（历史说明）
+
+> 本页保留 R2.1/R2.2 的历史门禁说明。当前版本为 V3.5-15，运行入口和
+> 当前证据目录以根目录 `README.md` 为准。
 
 This complete project copy closes the remaining Step 12A-R2 gate gaps. The
 old Step 12A, Step 12A-R and Step 12A-R2 outputs remain as historical evidence

@@ -15,4 +15,4 @@ Run-Check "03_verification\scripts\audit_matrices.py"
 Run-Check "03_verification\scripts\p2f\run_p2f_equivalence.py"
 Run-Check "03_verification\scripts\p2f\run_p2f_a2_kernel_regate.py"
 
-Write-Output "V35_13_CURRENT_CHECKS_PASS"
+Write-Output "V35_15_CURRENT_CHECKS_PASS"
