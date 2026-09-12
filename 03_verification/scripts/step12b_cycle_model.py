@@ -174,9 +174,14 @@ class ResultMemory:
     def __init__(self, trace: list[dict[str, Any]]):
         self.trace = trace
         self.beats: dict[int, tuple[int, int, int, int]] = {}
+        self.beat_tu: dict[int, int] = {}
         self.write_cycle: dict[int, int] = {}
         self.reserved = 0
         self.occupied = 0
+        self.produced = 0
+        self.issued = 0
+        self.consumed = 0
+        self.owner_tu: int | None = None
         self.read_index = 0
         self.issue_index = 0
         self.pending: tuple[int, int] | None = None
@@ -185,17 +190,22 @@ class ResultMemory:
         self.writes = 0
         self.fires = 0
 
-    def reserve(self, cycle: int) -> bool:
-        if self.reserved or self.occupied:
+    def reserve(self, cycle: int, tu: int) -> bool:
+        if (self.owner_tu is not None or self.reserved or self.occupied or
+                self.pending is not None or self.hold is not None or self.skid is not None):
             return False
         # A completed TU has fully retired its 1024-beat address space.  A
         # subsequent TU reuses the same result memory from raster index zero.
         self.read_index = 0
         self.issue_index = 0
+        self.produced = 0
+        self.issued = 0
+        self.consumed = 0
         self.pending = None
         self.hold = None
         self.skid = None
         self.reserved = RESULT_GROUPS
+        self.owner_tu = tu
         self.trace.append({"cycle": cycle, "event": "result_reserve",
                            "groups": RESULT_GROUPS})
         return True
@@ -204,13 +214,15 @@ class ResultMemory:
                     vector: int, group: int) -> None:
         if not (0 <= index < RESULT_GROUPS) or len(values) != 4:
             raise ContractError("result write shape/range error")
-        if self.reserved <= 0 or index in self.beats:
+        if self.owner_tu != tu or self.reserved <= 0 or index in self.beats:
             raise ContractError("result write without reservation or duplicate")
         beat = tuple(low10(v) for v in values)
         self.beats[index] = beat
+        self.beat_tu[index] = tu
         self.write_cycle[index] = cycle
         self.reserved -= 1
         self.occupied += 1
+        self.produced += 1
         self.writes += 1
         self.trace.append({"cycle": cycle, "event": "result_write", "tu": tu,
                            "vector": vector, "group": group, "index": index,
@@ -223,14 +235,20 @@ class ResultMemory:
             index, beat = self.hold
             if index != self.read_index:
                 raise ContractError("result read order error")
+            tu = self.beat_tu.get(index)
+            if tu is None:
+                raise ContractError("result beat lost TU ownership")
             fired.append((index, beat))
             del self.beats[index]
+            del self.beat_tu[index]
             self.write_cycle.pop(index, None)
             self.read_index += 1
             self.occupied -= 1
+            self.consumed += 1
             self.fires += 1
             self.trace.append({"cycle": cycle, "event": "output_fire",
-                               "index": index, "values": list(beat), "req": True})
+                               "index": index, "tu": tu,
+                               "values": list(beat), "req": True})
             self.hold = self.skid
             self.skid = None
 
@@ -262,6 +280,24 @@ class ResultMemory:
                 self.trace.append({"cycle": cycle, "event": "result_read_request",
                                    "index": self.issue_index})
                 self.issue_index += 1
+                self.issued += 1
+        if self.owner_tu is not None:
+            if not (0 <= self.reserved <= RESULT_GROUPS and
+                    0 <= self.occupied <= RESULT_GROUPS and
+                    self.reserved + self.occupied <= RESULT_GROUPS and
+                    0 <= self.consumed <= self.issued <= self.produced <= RESULT_GROUPS and
+                    self.produced + self.reserved == RESULT_GROUPS and
+                    self.occupied == self.produced - self.consumed and
+                    self.issued - self.consumed ==
+                    int(self.pending is not None) + int(self.hold is not None) +
+                    int(self.skid is not None)):
+                raise ContractError("result accounting invariant failure")
+            if (self.reserved == 0 and self.occupied == 0 and
+                    self.produced == self.issued == self.consumed == RESULT_GROUPS and
+                    self.pending is None and self.hold is None and self.skid is None):
+                self.trace.append({"cycle": cycle, "event": "result_release",
+                                   "tu": self.owner_tu})
+                self.owner_tu = None
         return fired
 
 
@@ -337,6 +373,9 @@ class PhaseTask:
     next_vector: int = 0
     next_group: int = 0
     values: dict[int, list[int | None]] = field(default_factory=dict)
+    capture_cycle: dict[int, int] = field(default_factory=dict)
+    stage_slot: dict[int, str] = field(default_factory=dict)
+    stage_ready: dict[str, int] = field(default_factory=lambda: {"A": -1, "B": -1})
     accepted: dict[int, int] = field(default_factory=dict)
     emitted: int = 0
     done: bool = False
@@ -352,7 +391,7 @@ class PhaseTask:
             return [(group * 4 + k, vector) for k in range(4)]
         return [(vector, group * 4 + k) for k in range(4)]
 
-    def consume(self, responses: Iterable[tuple[Any, int]]) -> None:
+    def consume(self, responses: Iterable[tuple[Any, int]], cycle: int) -> None:
         for token, value in responses:
             if not (isinstance(token, tuple) and token[0] == self.phase):
                 continue
@@ -360,6 +399,16 @@ class PhaseTask:
             if vector not in self.values:
                 self.values[vector] = [None] * N
             self.values[vector][first] = int(value)
+            if all(v is not None for v in self.values[vector]):
+                slot = "A" if (vector & 1) == 0 else "B"
+                if self.stage_ready[slot] >= 0:
+                    raise ContractError(f"{self.phase}: staging {slot} overwrite")
+                self.capture_cycle[vector] = cycle
+                self.stage_slot[vector] = slot
+                self.stage_ready[slot] = vector
+                self.model.trace.append({"cycle": cycle, "event": "stage_capture",
+                                         "tu": self.tu, "phase": self.phase,
+                                         "vector": vector, "slot": slot})
 
     def tick(self, cycle: int) -> list[tuple[int, int, Any]]:
         if self.done:
@@ -383,10 +432,14 @@ class PhaseTask:
             if vector in self.accepted or vector >= N:
                 continue
             vals = self.values[vector]
-            if all(v is not None for v in vals):
+            slot = self.stage_slot.get(vector)
+            if (slot is not None and self.stage_ready[slot] == vector and
+                    self.capture_cycle.get(vector, -1) < cycle and
+                    all(v is not None for v in vals)):
                 serial = self.model.kernel.accept(
                     cycle, [int(v) for v in vals])
                 self.accepted[vector] = serial
+                self.stage_ready[slot] = -1
                 self.model.trace.append({"cycle": cycle, "event": "phase_vector_start",
                                          "tu": self.tu, "phase": self.phase,
                                          "vector": vector, "serial": serial})
@@ -406,6 +459,16 @@ class PhaseTask:
             if self.dest is not None:
                 self.dest.issue(self.model.cycle, [],
                                 [(row, col, value, (self.phase, vector, idx))])
+            self.model.trace.append({
+                "cycle": event.cycle,
+                "event": "stage16_write",
+                "tu": self.tu,
+                "phase": self.phase,
+                "vector": vector,
+                "row": row,
+                "col": col,
+                "value": int(value),
+            })
         self.emitted += 1
         if self.phase == "horizontal":
             self.model.write_result_from_h(event, self.tu, vector)
@@ -459,7 +522,10 @@ class IntegrationModel:
             return
         for slot in ("A", "B"):
             cache = self.caches[slot]
-            if self.cache_owner.get(-1) == slot:
+            # A/B ownership is held until the owner's vertical phase has
+            # consumed the cache.  The input stream itself has no TU tag, so
+            # only one cache may be the active input target at a time.
+            if slot in self.cache_owner.values():
                 continue
             if cache.scrubbing:
                 continue
@@ -508,7 +574,7 @@ class IntegrationModel:
         # Single intermediate owner and one R4C.  H has priority once V is done.
         for tu, st in enumerate(self.tu_state):
             if st["vertical"] == "DONE" and st["horizontal"] == "PENDING":
-                if self.intermediate_owner != tu or not self.result.reserve(self.cycle):
+                if self.intermediate_owner != tu or not self.result.reserve(self.cycle, tu):
                     self.stats["result_capacity_wait"] += 1
                     continue
                 st["horizontal"] = "RUNNING"
@@ -550,7 +616,10 @@ class IntegrationModel:
             slot = task.cache_slot
             self.tu_state[task.tu]["vertical"] = "DONE"
             if slot is not None:
-                self.caches[slot].epoch = self.caches[slot].epoch
+                # The vertical source is no longer needed after the phase's
+                # final output.  Release it so the other input stream can
+                # fill that cache while this TU waits for H/result capacity.
+                self.cache_owner.pop(task.tu, None)
             self.trace.append({"cycle": self.cycle, "event": "vertical_owner_hold",
                                "tu": task.tu})
         else:
@@ -565,9 +634,9 @@ class IntegrationModel:
         if self.current is not None:
             for cache in self.caches.values():
                 if self.current.source is cache:
-                    self.current.consume(cache.consume(self.cycle))
+                    self.current.consume(cache.consume(self.cycle), self.cycle)
             if self.current.source is self.intermediate:
-                self.current.consume(self.intermediate.consume(self.cycle))
+                    self.current.consume(self.intermediate.consume(self.cycle), self.cycle)
         else:
             for cache in self.caches.values():
                 cache.consume(self.cycle)
@@ -606,7 +675,8 @@ class IntegrationModel:
         while self.cycle < max_cycles:
             self.tick()
             done = all(st["horizontal"] == "DONE" for st in self.tu_state)
-            if done and self.result.occupied == 0 and self.result.reserved == 0:
+            if (done and self.result.owner_tu is None and
+                    self.result.occupied == 0 and self.result.reserved == 0):
                 break
         else:
             raise ContractError("integration did not finish before timeout")
@@ -634,6 +704,115 @@ def make_case(kind: str, seed: int = 20260904) -> list[list[int]]:
     raise ValueError(kind)
 
 
+def validate_event_trace(trace: list[dict[str, Any]],
+                         expected_result_writes: int = RESULT_GROUPS) -> None:
+    """Fail closed on causality, staging-edge, and output-order violations."""
+    cycles = [int(e["cycle"]) for e in trace if "cycle" in e]
+    if any(b < a for a, b in zip(cycles, cycles[1:])):
+        raise ContractError("event trace cycle rollback")
+    captures = {(e.get("tu"), e.get("phase"), e.get("vector")): int(e["cycle"])
+                for e in trace if e.get("event") == "stage_capture"}
+    starts = [e for e in trace if e.get("event") == "phase_vector_start"]
+    for e in starts:
+        key = (e.get("tu"), e.get("phase"), e.get("vector"))
+        if key not in captures or int(e["cycle"]) <= captures[key]:
+            raise ContractError("vector_start occurred before staging capture settled")
+    fires = [e for e in trace if e.get("event") == "output_fire"]
+    expected_index = 0
+    previous_tu: int | None = None
+    for e in fires:
+        tu = int(e.get("tu", 0))
+        if previous_tu is not None and tu != previous_tu:
+            expected_index = 0
+        if int(e["index"]) != expected_index:
+            raise ContractError("output order/index gap")
+        expected_index += 1
+        previous_tu = tu
+    fire_cycles = [int(e["cycle"]) for e in fires]
+    if any(b <= a for a, b in zip(fire_cycles, fire_cycles[1:])):
+        raise ContractError("output fire cycle is not strictly increasing")
+    writes = [e for e in trace if e.get("event") == "result_write"]
+    if len(writes) != expected_result_writes:
+        raise ContractError("result write count mismatch")
+    write_keys = {(int(e["tu"]), int(e["vector"]), int(e["group"])) for e in writes}
+    if len(write_keys) != len(writes):
+        raise ContractError("duplicate result write identity")
+
+
+def validate_stage16_values(trace: list[dict[str, Any]],
+                            expected: dict[str, Any]) -> None:
+    for e in trace:
+        if e.get("event") != "stage16_write":
+            continue
+        row, col = int(e["row"]), int(e["col"])
+        if e.get("phase") == "vertical":
+            want = expected["stage1_stage16"][row][col]
+        elif e.get("phase") == "horizontal":
+            want = expected["stage2_stage16"][row][col]
+        else:
+            raise ContractError("stage16 write has invalid phase")
+        if int(e["value"]) != int(want):
+            raise ContractError("stage16 value mismatch")
+
+
+def validate_result_values(trace: list[dict[str, Any]],
+                           expected: list[list[int]], tu: int = 0) -> None:
+    for e in trace:
+        if e.get("event") != "result_write" or int(e.get("tu", 0)) != tu:
+            continue
+        vector, group = int(e["vector"]), int(e["group"])
+        want = expected[vector][group * 4:group * 4 + 4]
+        if [int(v) for v in e["values"]] != [int(v) for v in want]:
+            raise ContractError("result value mismatch")
+
+
+def validate_mutation_gate(trace: list[dict[str, Any]],
+                           expected: dict[str, Any]) -> dict[str, bool]:
+    """Checker self-tests; mutations must be rejected without touching RTL."""
+    checks: dict[str, bool] = {}
+    bad_rollback = [dict(e) for e in trace]
+    if len(bad_rollback) > 2:
+        bad_rollback[2] = dict(bad_rollback[2])
+        bad_rollback[2]["cycle"] = -1
+    try:
+        validate_event_trace(bad_rollback)
+    except ContractError:
+        checks["trace_rollback_rejected"] = True
+    else:
+        checks["trace_rollback_rejected"] = False
+    missing = [e for e in trace if e.get("event") != "result_write"]
+    try:
+        validate_event_trace(missing)
+    except ContractError:
+        checks["missing_result_write_rejected"] = True
+    else:
+        checks["missing_result_write_rejected"] = False
+    stage_mut = [dict(e) for e in trace]
+    for e in stage_mut:
+        if e.get("event") == "stage16_write" and e.get("phase") == "horizontal":
+            e["value"] = int(e["value"]) + 1024
+            break
+    try:
+        validate_stage16_values(stage_mut, expected)
+    except ContractError:
+        checks["horizontal_stage16_mutation_rejected"] = True
+    else:
+        checks["horizontal_stage16_mutation_rejected"] = False
+    result_mut = [dict(e) for e in trace]
+    for e in result_mut:
+        if e.get("event") == "result_write":
+            e["values"] = list(e["values"])
+            e["values"][0] = (int(e["values"][0]) + 1) & 0x3FF
+            break
+    try:
+        validate_result_values(result_mut, expected["final10"])
+    except ContractError:
+        checks["result_value_mutation_rejected"] = True
+    else:
+        checks["result_value_mutation_rejected"] = False
+    return checks
+
+
 def validate_case(kind: str, source: list[list[int]], req_fn=None) -> dict[str, Any]:
     model = IntegrationModel([source], initial_vector_id=0, output_req=req_fn)
     run = model.run()
@@ -646,6 +825,14 @@ def validate_case(kind: str, source: list[list[int]], req_fn=None) -> dict[str, 
             actual[row][group * 4 + k] = value
     if actual != expected["final10"]:
         raise ContractError(f"{kind}: final10 mismatch")
+    # Check the actual scheduled stage writes, not just the final low10
+    # projection.  This prevents a +1024 horizontal mutation from being
+    # masked by the final 10-bit interface.
+    stage_writes = [e for e in run["trace"] if e.get("event") == "stage16_write"]
+    if len(stage_writes) != 2 * N * N:
+        raise ContractError(f"{kind}: stage16 write count {len(stage_writes)}")
+    validate_stage16_values(run["trace"], expected)
+    validate_result_values(run["trace"], expected["final10"])
     events = [e for e in run["trace"] if e.get("event") == "phase_vector_start"]
     if len(events) != 128:
         raise ContractError(f"{kind}: expected 128 V/H vector starts, got {len(events)}")
@@ -659,12 +846,79 @@ def validate_case(kind: str, source: list[list[int]], req_fn=None) -> dict[str, 
     writes = [e for e in run["trace"] if e.get("event") == "result_write"]
     if len(writes) != RESULT_GROUPS:
         raise ContractError(f"{kind}: result write count {len(writes)}")
-    if any(int(e["cycle"]) < 0 for e in writes):
-        raise ContractError(f"{kind}: retroactive result event")
+    validate_event_trace(run["trace"])
+    if req_fn is None:
+        fire_cycles = [int(e["cycle"]) for e in run["trace"]
+                       if e.get("event") == "output_fire"]
+        if any(b - a != 1 for a, b in zip(fire_cycles, fire_cycles[1:])):
+            raise ContractError(f"{kind}: ready-high output fire II is not 1")
     return {"kind": kind, "cycles": run["cycles"], "vectors": len(events),
             "vector_ii": phase_iis,
             "result_writes": len(writes), "result_fires": len(run["drained"]),
+            "output_fire_ii": 1 if req_fn is None else "backpressure",
             "stats": run["stats"]}
+
+
+def validate_vector_id_wrap() -> dict[str, Any]:
+    model = IntegrationModel([make_case("zero")], initial_vector_id=0xFFFE)
+    run = model.run()
+    groups = [e for e in run["trace"] if e.get("event") == "kernel_group"]
+    seen = []
+    for e in groups:
+        vid = int(e["vector_id"])
+        if e.get("group") == 0:
+            seen.append(vid)
+    if seen[:4] != [0xFFFE, 0xFFFF, 0, 1]:
+        raise ContractError(f"vector-id wrap sequence mismatch: {seen[:4]}")
+    if len(groups) != 128 * GROUPS:
+        raise ContractError("vector-id wrap group count mismatch")
+    validate_event_trace(run["trace"])
+    return {"groups": len(groups), "first_ids": seen[:4]}
+
+
+def validate_epoch_wrap() -> dict[str, Any]:
+    # EPOCH_BITS=2 in the executable model intentionally forces a physical
+    # wrap; the cache must scrub all four banks before re-admission.
+    model = IntegrationModel([make_case("zero", seed=20260904 + i)
+                               for i in range(10)])
+    run = model.run(max_cycles=60000)
+    scrub = [e for e in run["trace"] if e.get("event") == "epoch_scrub"]
+    if len(scrub) < 1024:
+        raise ContractError("epoch wrap did not execute a full 4-bank scrub")
+    if len([e for e in run["trace"] if e.get("event") == "output_fire"]) != 10 * RESULT_GROUPS:
+        raise ContractError("epoch-wrap output count mismatch")
+    return {"tus": 10, "scrub_events": len(scrub), "cycles": run["cycles"]}
+
+
+def validate_two_tu() -> dict[str, Any]:
+    sources = [make_case("sparse"), make_case("random", seed=20260905)]
+    stall_until = 5000
+
+    def two_tu_req(cycle: int, _model: IntegrationModel) -> bool:
+        return cycle >= stall_until
+
+    model = IntegrationModel(sources, output_req=two_tu_req)
+    run = model.run(max_cycles=40000)
+    validate_event_trace(run["trace"], expected_result_writes=2 * RESULT_GROUPS)
+    fires = [e for e in run["trace"] if e.get("event") == "output_fire"]
+    writes = [e for e in run["trace"] if e.get("event") == "result_write"]
+    if len(writes) != 2 * RESULT_GROUPS or len(fires) != 2 * RESULT_GROUPS:
+        raise ContractError("two-TU result count mismatch")
+    for tu, source in enumerate(sources):
+        expected = main_2d_details(source, 0, 0, N, N)
+        validate_stage16_values(
+            [e for e in run["trace"] if int(e.get("tu", -1)) == tu], expected)
+        validate_result_values(run["trace"], expected["final10"], tu=tu)
+    tu_fire = [int(e["tu"]) for e in fires]
+    if tu_fire != [0] * RESULT_GROUPS + [1] * RESULT_GROUPS:
+        raise ContractError("two-TU output ownership/order mismatch")
+    if not any(e.get("event") == "result_capacity_wait" for e in run["trace"]):
+        # The statistic is the authoritative indicator; the trace is optional
+        # in the current compact model.
+        if run["stats"]["result_capacity_wait"] == 0:
+            raise ContractError("two-TU backpressure did not block H admission")
+    return {"cycles": run["cycles"], "result_writes": len(writes),
+            "result_fires": len(fires), "stats": run["stats"]}
 
 
 def main() -> int:
@@ -680,6 +934,9 @@ def main() -> int:
         return not (cycle % 17 in (4, 5, 6, 7, 8))
 
     results["backpressure"] = validate_case("backpressure", make_case("sparse"), bursty)
+    results["two_tu"] = validate_two_tu()
+    results["vector_id_wrap"] = validate_vector_id_wrap()
+    results["epoch_wrap"] = validate_epoch_wrap()
     out = ROOT / "05_audit" / "current" / "17"
     out.mkdir(parents=True, exist_ok=True)
     (out / "step12b_cycle_results.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
@@ -687,6 +944,11 @@ def main() -> int:
     trace_model = IntegrationModel([make_case("sparse")], output_req=bursty)
     trace_model.run()
     (out / "step12b_cycle_trace.json").write_text(json.dumps(trace_model.trace, indent=2), encoding="utf-8")
+    mutation = validate_mutation_gate(
+        trace_model.trace, main_2d_details(make_case("sparse"), 0, 0, N, N))
+    if not all(mutation.values()):
+        raise ContractError("negative mutation gate failed")
+    results["mutation_gate"] = mutation
     report = ["# V3.5-17 Step12B cycle model", "", "Status: PASS", "",
               "A single IntegrationModel.tick() advances input, synchronous memories,",
               "the persistent R4C contract, V/H scheduling, live result writes and output hold/skid.", "",
@@ -694,6 +956,10 @@ def main() -> int:
               "|---|---:|---:|---|---:|---:|"]
     for item in results["cases"]:
         report.append(f"| {item['kind']} | {item['cycles']} | {item['vectors']} | {item['vector_ii']} | {item['result_writes']} | {item['result_fires']} |")
+    report += ["", f"two-TU: {results['two_tu']}",
+               f"vector_id_wrap: {results['vector_id_wrap']}",
+               f"epoch_wrap: {results['epoch_wrap']}",
+               f"mutation_gate: {mutation}"]
     report += ["", "The model is a Step12B functional/protocol pre-gate; no Vivado or full-core timing claim is made."]
     (out / "V35_STEP12B_CYCLE_MODEL_REPORT.md").write_text("\n".join(report) + "\n", encoding="utf-8")
     print(json.dumps(results, indent=2))

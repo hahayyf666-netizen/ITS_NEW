@@ -6,8 +6,8 @@
     {
       "path": "01_docs/current/Step12B.md",
       "exists": true,
-      "sha256": "4a23880f1567f24dee91cf2ef6574eb86eb9137298f0d4ea0b7dff3622c1ec39",
-      "bytes": 4228
+      "sha256": "c401965ebdbcbf320eb1401ff202220e40033c3a1dcc4134a57aca853f33edde",
+      "bytes": 6122
     },
     {
       "path": "02_rtl/rtl/p2f_dct2_64_b1_step102.sv",
@@ -18,26 +18,62 @@
     {
       "path": "02_rtl/rtl/step12b_dct2_64_wrapper.sv",
       "exists": true,
-      "sha256": "52c220f18aea17cf986ec1545567f02cca693dd9112d877ab596f4f175578601",
-      "bytes": 20230
+      "sha256": "737830f4472f1771762c322fe1765995d407c8ddfd58ec6fb6884498cf6cc7e5",
+      "bytes": 35701
     },
     {
       "path": "03_verification/scripts/step12b_cycle_model.py",
       "exists": true,
-      "sha256": "b7abbeab7c4c973697f671bcc5f88c8f35be3ae25ddd648c915641e8080042ae",
-      "bytes": 30978
+      "sha256": "dc2cfb2d716f6e5c7ec96395e1ebd0d9ccf7c92250fee74bcaee3b736044535d",
+      "bytes": 43990
+    },
+    {
+      "path": "03_verification/scripts/gen_step12b_rtl_random_vectors.py",
+      "exists": true,
+      "sha256": "07d7b4361ee807fec5519b5e0070cc22f2c4573290b53178b460b63106c146ba",
+      "bytes": 2467
+    },
+    {
+      "path": "03_verification/scripts/validate_step12b_rtl_trace.py",
+      "exists": true,
+      "sha256": "07da4ee86d02443810c0d1776cb5039797f702de1655e04a4feaa7206222a235",
+      "bytes": 2175
     },
     {
       "path": "03_verification/scripts/run_step12b_checks.ps1",
       "exists": true,
-      "sha256": "42a961ef2d9fd0af73f23725d6e19b8b34d0f527e7b42edfdf61c7c287224c32",
-      "bytes": 2172
+      "sha256": "ad4af9abb2215b8a529cf5991969a490a552ee90e8be1fd0760cf35029903e71",
+      "bytes": 7371
     },
     {
       "path": "03_verification/tb/step12b_dct2_64_wrapper_tb.sv",
       "exists": true,
-      "sha256": "88fc302ea917ff32e7d9d00e345da265abc4c2675e775edc32759ff39aef9fd6",
-      "bytes": 8137
+      "sha256": "847008743317d424e75f7c3cba6944e1162acfd8767c0f9da987c462065c122d",
+      "bytes": 10904
+    },
+    {
+      "path": "03_verification/tb/step12b_dct2_64_wrapper_two_tu_tb.sv",
+      "exists": true,
+      "sha256": "88d209e5ef243db66fb4e39398f406c6f601df132df3fbc1b465b8f7db399f18",
+      "bytes": 4747
+    },
+    {
+      "path": "03_verification/tb/step12b_dct2_64_wrapper_descriptor_tb.sv",
+      "exists": true,
+      "sha256": "fe5298c2a01731af55b54c3ac1114c9f18cf492f5b6baf23fbd83f172f0d4eed",
+      "bytes": 2145
+    },
+    {
+      "path": "03_verification/tb/step12b_dct2_64_wrapper_epoch_tb.sv",
+      "exists": true,
+      "sha256": "fcac9e7f9f1ea1b5a50acd442057abe3e619cbb382d7dd6773498ca2d4a621db",
+      "bytes": 3816
+    },
+    {
+      "path": "03_verification/tb/step12b_dct2_64_wrapper_random_tb.sv",
+      "exists": true,
+      "sha256": "d24d0a8b42d4c091a99573bf1196a437908e72f88418886ff6e4f893ead06af5",
+      "bytes": 3321
     },
     {
       "path": "03_verification/sim/run_step12b.do",
@@ -54,44 +90,146 @@
     {
       "path": "03_verification/logs/step12b_wrapper_normal.log",
       "exists": true,
-      "sha256": "54ac7e6a1ba80bc5bc920e42f77b11c3f0534a758d235ff8de1fc920b2871e37",
-      "bytes": 29892
+      "sha256": "ef3069c504d3f71b4f60f229be4c514ccee8293db88a226241023c1486d658c8",
+      "bytes": 29836
     },
     {
       "path": "03_verification/logs/step12b_wrapper_normal_compile.log",
       "exists": true,
-      "sha256": "1ccb8f14f5ed96abdde3e2ac998498e3f29fbc4e6abc10a4d79b77ff297fece0",
-      "bytes": 1098
+      "sha256": "5795eb3f03b9970b8edf9b7df83d08cc9a38bfbea30d4e101f3074006bceb7c4",
+      "bytes": 2292
     },
     {
       "path": "03_verification/logs/step12b_wrapper_synthesis.log",
       "exists": true,
-      "sha256": "21947a0fb4bfa7c219631bc32bcbf07901da56957fd0ff6bdbb2d0718aa4b85f",
-      "bytes": 29892
+      "sha256": "0ac1e8765dd11a6311f7a007e341772ac6b93d610bd110d9b6bfb7516c7c31f1",
+      "bytes": 29836
     },
     {
       "path": "03_verification/logs/step12b_wrapper_synthesis_compile.log",
       "exists": true,
-      "sha256": "7e916ee6aace82bf4bee7da5d3f0b8c44c6d7b333846ec2a10ecc4696fda8612",
-      "bytes": 1138
+      "sha256": "64e9b60aac67a254b60d6c6ba0328360b2256b0fa539a05c8e1c2faa5ac8baf5",
+      "bytes": 2332
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_two_tu_normal.log",
+      "exists": true,
+      "sha256": "f1a85cae46046dae670bf634b3df545f872799ef20edddba454347772e0dd0b0",
+      "bytes": 2382
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_two_tu_synthesis.log",
+      "exists": true,
+      "sha256": "849fa9b10f295546cb439769d429057a1b7bd796b8234d69354c8b902d95c80f",
+      "bytes": 2382
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_descriptor_normal.log",
+      "exists": true,
+      "sha256": "1e1d8ed791e789d3c90c1df1af390db21521b90e6cc53c44280f8254917072ec",
+      "bytes": 2358
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_descriptor_synthesis.log",
+      "exists": true,
+      "sha256": "59cd4e38062bb0c15f98bfbf4e9bc4f3feb9ddb90dc0ec16dfb9aa596987cb48",
+      "bytes": 2358
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_epoch_normal.log",
+      "exists": true,
+      "sha256": "fb5487572dd70dca6003b44d23fa59859eb277e16fff6b2b003cea6ad2cc3107",
+      "bytes": 2388
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_epoch_synthesis.log",
+      "exists": true,
+      "sha256": "e766ac441faa6c1a84851caea3f03b495c266a84a50f05ff93dcd045441beefb",
+      "bytes": 2388
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_random_normal.log",
+      "exists": true,
+      "sha256": "68ecf693fafb96c165aff510ca6a16ba329e291134bd065436f96d75919dc9ee",
+      "bytes": 2366
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_random_synthesis.log",
+      "exists": true,
+      "sha256": "0f55dd8f1bc747a6858ec6f70632c281794a2188b21b4af56f28138edda07295",
+      "bytes": 2366
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_extreme_normal.log",
+      "exists": true,
+      "sha256": "ff34a4b07ee5971137caa71a5f69532f34fa264c16385ace8df00bcbf6565071",
+      "bytes": 2638
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_extreme_synthesis.log",
+      "exists": true,
+      "sha256": "c49f62c84ffb4188d1e1148fcdcb56ca8d1b16b39128e8bb0e41c9ed98c2a42c",
+      "bytes": 2638
+    },
+    {
+      "path": "03_verification/generated/step12b_random_input.mem",
+      "exists": true,
+      "sha256": "ce6d91ec38784b5af6bbdd2d185b61d8f7252632d347813f146e89f306fe4b2a",
+      "bytes": 24576
+    },
+    {
+      "path": "03_verification/generated/step12b_random_expected.mem",
+      "exists": true,
+      "sha256": "e619446375af1ebda15c631e6399f5e90c8e6437b45314d3100bbfea826823fb",
+      "bytes": 12288
+    },
+    {
+      "path": "03_verification/generated/step12b_random_meta.json",
+      "exists": true,
+      "sha256": "fe5d02fc6d5e2a3d9de2351fb69fe0b66c1ac59bcc9b9bdff9d26477d793641f",
+      "bytes": 166
+    },
+    {
+      "path": "03_verification/generated/step12b_extreme_input.mem",
+      "exists": true,
+      "sha256": "6af6fb3cab48b1fbf93a1832c6d021667f6a703a91af0ecd2f7a2f6849715ff3",
+      "bytes": 24576
+    },
+    {
+      "path": "03_verification/generated/step12b_extreme_expected.mem",
+      "exists": true,
+      "sha256": "ea37f2424eb9f2eadcb2bbcc46f1c20ff9e382b4e7dda6b233bc337fcf2ca532",
+      "bytes": 12288
+    },
+    {
+      "path": "05_audit/current/17/step12b_rtl_event_trace_normal.csv",
+      "exists": true,
+      "sha256": "4c3d00591ff9e14008060f80095d4fcd9873dd1decf8184850bd9bc3c15504c2",
+      "bytes": 121136
+    },
+    {
+      "path": "05_audit/current/17/step12b_rtl_event_trace_synthesis.csv",
+      "exists": true,
+      "sha256": "4c3d00591ff9e14008060f80095d4fcd9873dd1decf8184850bd9bc3c15504c2",
+      "bytes": 121136
     },
     {
       "path": "05_audit/current/17/step12b_cycle_results.json",
       "exists": true,
-      "sha256": "4a22b3cae41af40f933d6bbba60d39d45db75efe809f1ec66bd2735ee3dd3617",
-      "bytes": 2371
+      "sha256": "fc4ad89b702ba4e4af498f6bc17a7199af016e3696b98d81a4482e1bfa413954",
+      "bytes": 3007
     },
     {
       "path": "05_audit/current/17/step12b_cycle_trace.json",
       "exists": true,
-      "sha256": "b5d8acf17c23e1d9645d69726e9583a58c0ac2ba31caa643bd21f3c492027989",
-      "bytes": 5543229
+      "sha256": "f042d2018564f92750b13b98bafc9ce509e0d34bfbc61ad4c9458b1e1d8bd664",
+      "bytes": 6977989
     },
     {
       "path": "05_audit/current/17/V35_STEP12B_REPORT.md",
       "exists": true,
-      "sha256": "493c661e89716d6c173758ec27b0ee06d234e8d178a17c25ed1dbcb7a3984661",
-      "bytes": 1738
+      "sha256": "6f3224b1b548e0b2f14c3fabda779efbdde1b42c465ae2e97be6ad54b702ef99",
+      "bytes": 2666
     }
   ]
 }

@@ -18,10 +18,18 @@ module step12b_dct2_64_wrapper_tb;
     wire debug_stage16_valid;
     wire [5:0] debug_stage16_row, debug_stage16_col;
     wire signed [15:0] debug_stage16_data;
-    integer cycles, fires, data_errors, hold_errors;
+    integer cycles, fires, data_errors, hold_errors, last_fire_cycle, fire_ii_errors;
     reg [39:0] held_data;
     reg stall_active;
+    reg stall_valid;
     reg [39:0] stall_data;
+    integer trace_fd, trace_cycle;
+
+`ifdef SYNTHESIS
+    localparam TRACE_FILE = "05_audit/current/17/step12b_rtl_event_trace_synthesis.csv";
+`else
+    localparam TRACE_FILE = "05_audit/current/17/step12b_rtl_event_trace_normal.csv";
+`endif
 
     // Independent canonical DCT2-64 coefficient column A[i][1].  The
     // sparse test below injects only input[1][1]=100, so this single column
@@ -82,6 +90,39 @@ module step12b_dct2_64_wrapper_tb;
     endfunction
 
     always #1 clk = ~clk;
+
+    initial begin
+        trace_fd = $fopen(TRACE_FILE, "w");
+        trace_cycle = 0;
+        if (trace_fd == 0) $fatal(1, "cannot open RTL event trace");
+        $fwrite(trace_fd, "cycle,event,phase,vector,group,index,addr,end\n");
+    end
+
+    always @(posedge clk) begin
+        if (!rst_n) begin
+            trace_cycle = 0;
+        end else begin
+            trace_cycle = trace_cycle + 1;
+            if (it_data_in_vld && it_data_in_req)
+                $fwrite(trace_fd, "%0d,input_fire,%0d,,,,%0d,%0d\n", trace_cycle,
+                        dut.phase, it_data_addr, it_data_end);
+            if (dut.r4c_start)
+                $fwrite(trace_fd, "%0d,vector_start,%0d,%0d,,,,\n", trace_cycle,
+                        dut.phase, dut.r4c_vector_id);
+            if (dut.r4c_result_valid) begin
+                $fwrite(trace_fd, "%0d,kernel_group,%0d,%0d,%0d,,,\n", trace_cycle,
+                        dut.phase, dut.r4c_result_vector_id, dut.r4c_result_group);
+                if (dut.phase == 2)
+                    $fwrite(trace_fd, "%0d,result_write,%0d,%0d,%0d,,,\n", trace_cycle,
+                            dut.phase, dut.r4c_result_vector_id, dut.r4c_result_group);
+            end
+            if (dut.result_hold_valid && it_data_out_req)
+                $fwrite(trace_fd, "%0d,output_fire,,,,%0d,,\n", trace_cycle,
+                        dut.result_read_index);
+            if (it_done)
+                $fwrite(trace_fd, "%0d,it_done,,,,,,\n", trace_cycle);
+        end
+    end
     always @(posedge clk) begin
         if (rst_n && dut.r4c_start) $display("WRAP_START t=%0t phase=%0d lc=%0d lb=%0d readyA=%0d readyB=%0d since=%0d", $time, dut.phase, dut.launch_count, dut.launch_bank, dut.stage_ready_a, dut.stage_ready_b, dut.cycles_since_launch);
         if (rst_n && dut.r4c_result_valid && dut.r4c_result_last) $display("WRAP_LAST t=%0t phase=%0d vid=%0d", $time, dut.phase, dut.r4c_result_vector_id);
@@ -100,8 +141,9 @@ module step12b_dct2_64_wrapper_tb;
     );
 
     initial begin
-        cycles = 0; fires = 0; data_errors = 0; hold_errors = 0; held_data = 0;
-        stall_active = 1'b0; stall_data = 40'd0;
+        cycles = 0; fires = 0; data_errors = 0; hold_errors = 0;
+        last_fire_cycle = -1; fire_ii_errors = 0; held_data = 0;
+        stall_active = 1'b0; stall_valid = 1'b0; stall_data = 40'd0;
         repeat (4) @(posedge clk);
         rst_n <= 1;
         @(posedge clk);
@@ -120,33 +162,48 @@ module step12b_dct2_64_wrapper_tb;
         @(posedge clk);
         it_data_in_vld <= 1'b0;
         it_data_end <= 0;
-        while (!it_done && cycles < 8000) begin
-            // Sample after the DUT's posedge state update.  Driving and
-            // checking at the following negedge avoids observing pre-NBA
-            // values and makes the ready/valid hold assertion cycle-accurate.
+        while (cycles < 8000) begin
+            // At each negedge, drive the request for the next accepting edge
+            // and inspect the currently held response.  The corresponding
+            // fire occurs on the following posedge; this avoids counting a
+            // response after it_done has already been asserted.
             @(negedge clk);
             cycles = cycles + 1;
             // Exercise the C request / C+1 response hold contract with a
             // deterministic 1->0 transition pattern.
             if ((cycles % 19) >= 5 && (cycles % 19) <= 8)
-                it_data_out_req <= 1'b0;
+                it_data_out_req = 1'b0;
             else
-                it_data_out_req <= 1'b1;
+                it_data_out_req = 1'b1;
             // During a request stall, the externally visible beat must remain
             // stable.  Capture the first stalled value, then compare all
             // subsequent stalled cycles against that value.
             if (!it_data_out_req) begin
-                if (stall_active && it_data_out !== stall_data)
-                    hold_errors = hold_errors + 1;
-                else if (!stall_active) begin
+                if (!stall_active) begin
                     stall_active = 1'b1;
-                    stall_data = it_data_out;
+                    stall_valid = it_data_out_vld;
+                    if (it_data_out_vld)
+                        stall_data = it_data_out;
+                end else if (it_data_out_vld) begin
+                    if (stall_valid && it_data_out !== stall_data)
+                        hold_errors = hold_errors + 1;
+                    else if (!stall_valid) begin
+                        stall_valid = 1'b1;
+                        stall_data = it_data_out;
+                    end
                 end
             end else begin
                 stall_active = 1'b0;
+                stall_valid = 1'b0;
             end
+            if (!it_data_out_req)
+                last_fire_cycle = -1;
             held_data = it_data_out;
-            if (it_data_out_vld) begin
+            if (it_data_out_vld && it_data_out_req) begin
+                if (last_fire_cycle >= 0 && cycles - last_fire_cycle != 1 &&
+                    (cycles - last_fire_cycle) > 1)
+                    fire_ii_errors = fire_ii_errors + 1;
+                last_fire_cycle = cycles;
                 fires = fires + 1;
                 if (it_data_out !== expected_beat((fires-1) / 16, (fires-1) % 16)) begin
                     data_errors = data_errors + 1;
@@ -155,6 +212,8 @@ module step12b_dct2_64_wrapper_tb;
                                  it_data_out, expected_beat((fires-1) / 16, (fires-1) % 16));
                 end
             end
+            if (it_done)
+                break;
         end
         if (protocol_error) $fatal(1, "Step12B protocol_error asserted");
         if (!it_done) begin
@@ -164,7 +223,9 @@ module step12b_dct2_64_wrapper_tb;
         if (fires != 1024) $fatal(1, "Step12B expected 1024 output beats, got %0d", fires);
         if (data_errors != 0) $fatal(1, "Step12B sparse data errors=%0d", data_errors);
         if (hold_errors != 0) $fatal(1, "Step12B output hold errors=%0d", hold_errors);
+        if (fire_ii_errors != 0) $fatal(1, "Step12B ready-high output II errors=%0d", fire_ii_errors);
         $display("STEP12B_WRAPPER_PASS cycles=%0d output_beats=%0d", cycles, fires);
+        $fclose(trace_fd);
         $finish;
     end
 endmodule

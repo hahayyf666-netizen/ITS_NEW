@@ -4,7 +4,7 @@
   "cases": [
     {
       "kind": "zero",
-      "cycles": 2130,
+      "cycles": 2132,
       "vectors": 128,
       "vector_ii": {
         "vertical": [
@@ -16,6 +16,7 @@
       },
       "result_writes": 1024,
       "result_fires": 1024,
+      "output_fire_ii": 1,
       "stats": {
         "input_cache_full": 0,
         "staging_wait": 0,
@@ -26,7 +27,7 @@
     },
     {
       "kind": "sparse",
-      "cycles": 2135,
+      "cycles": 2137,
       "vectors": 128,
       "vector_ii": {
         "vertical": [
@@ -38,6 +39,7 @@
       },
       "result_writes": 1024,
       "result_fires": 1024,
+      "output_fire_ii": 1,
       "stats": {
         "input_cache_full": 0,
         "staging_wait": 0,
@@ -48,7 +50,7 @@
     },
     {
       "kind": "alternating",
-      "cycles": 6226,
+      "cycles": 6228,
       "vectors": 128,
       "vector_ii": {
         "vertical": [
@@ -60,6 +62,7 @@
       },
       "result_writes": 1024,
       "result_fires": 1024,
+      "output_fire_ii": 1,
       "stats": {
         "input_cache_full": 0,
         "staging_wait": 0,
@@ -70,7 +73,7 @@
     },
     {
       "kind": "random",
-      "cycles": 6225,
+      "cycles": 6227,
       "vectors": 128,
       "vector_ii": {
         "vertical": [
@@ -82,6 +85,7 @@
       },
       "result_writes": 1024,
       "result_fires": 1024,
+      "output_fire_ii": 1,
       "stats": {
         "input_cache_full": 0,
         "staging_wait": 0,
@@ -105,6 +109,7 @@
     },
     "result_writes": 1024,
     "result_fires": 1024,
+    "output_fire_ii": "backpressure",
     "stats": {
       "input_cache_full": 0,
       "staging_wait": 0,
@@ -112,5 +117,31 @@
       "output_backpressure": 755,
       "epoch_scrub": 0
     }
+  },
+  "two_tu": {
+    "cycles": 7094,
+    "result_writes": 2048,
+    "result_fires": 2048,
+    "stats": {
+      "input_cache_full": 0,
+      "staging_wait": 0,
+      "result_capacity_wait": 860,
+      "output_backpressure": 5000,
+      "epoch_scrub": 0
+    }
+  },
+  "vector_id_wrap": {
+    "groups": 2048,
+    "first_ids": [
+      65534,
+      65535,
+      0,
+      1
+    ]
+  },
+  "epoch_wrap": {
+    "tus": 10,
+    "scrub_events": 2048,
+    "cycles": 21284
   }
 }
