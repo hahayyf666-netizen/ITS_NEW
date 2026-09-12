@@ -1,0 +1,39 @@
+{
+  "version": "V3.5-17.2",
+  "status": "STOP",
+  "reason": "RTL cache/intermediate read-to-stage timing does not match the frozen Python READ_LATENCY=1 contract",
+  "base_commit": "32d1a9591944cf92e43a1c2493c776677feb2ca0",
+  "rtl_tree_changed": false,
+  "r4c_sha256": "15aa962c197c4ce0b9daf2e5478b64c51f3c6712e582f8950df6bf1c339c31b1",
+  "wrapper_sha256": "1cf3d2554a6a54a4a0b0db820ffb290a80544d6c1e6c13faf1d5334b2483c584",
+  "probe": {
+    "normal_compile": "PASS",
+    "normal_simulation": "PASS",
+    "read_requests": 8192,
+    "read_responses": 8192,
+    "lane_captures": 8192,
+    "stage_full": 128,
+    "vertical_writes": 4096,
+    "rtl_first_request_cycle": 6,
+    "rtl_first_lane_capture_cycle": 6,
+    "rtl_first_stage_full_cycle": 21,
+    "model_first_request_cycle": 1,
+    "model_first_response_cycle": 2,
+    "model_first_stage_full_cycle": 17,
+    "rtl_request_to_capture_cycles": 0,
+    "model_request_to_response_cycles": 1,
+    "rtl_request_to_stage_full_cycles": 15,
+    "model_request_to_stage_full_cycles": 16
+  },
+  "evidence": [
+    "03_verification/tb/step12b_memory_timing_probe_tb.sv",
+    "05_audit/current/17_2/memory_timing_probe_normal.csv",
+    "05_audit/current/17/step12b_cycle_trace.json"
+  ],
+  "forbidden_until_review": [
+    "modify Python model",
+    "modify 02_rtl/rtl",
+    "create v3.5-17.2 tag",
+    "Step12C/Vivado"
+  ]
+}
