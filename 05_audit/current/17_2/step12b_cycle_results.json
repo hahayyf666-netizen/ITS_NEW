@@ -1,0 +1,187 @@
+{
+  "version": "V3.5-17.2-Step12B-cycle-model",
+  "status": "PASS",
+  "cases": [
+    {
+      "kind": "zero",
+      "cycles": 2130,
+      "vectors": 128,
+      "vector_ii": {
+        "vertical": [
+          16
+        ],
+        "horizontal": [
+          16
+        ]
+      },
+      "result_writes": 1024,
+      "result_fires": 1024,
+      "output_fire_ii": 1,
+      "stats": {
+        "input_cache_full": 0,
+        "staging_wait": 0,
+        "result_capacity_wait": 0,
+        "output_backpressure": 0,
+        "epoch_scrub": 0
+      }
+    },
+    {
+      "kind": "sparse",
+      "cycles": 2135,
+      "vectors": 128,
+      "vector_ii": {
+        "vertical": [
+          16
+        ],
+        "horizontal": [
+          16
+        ]
+      },
+      "result_writes": 1024,
+      "result_fires": 1024,
+      "output_fire_ii": 1,
+      "stats": {
+        "input_cache_full": 0,
+        "staging_wait": 0,
+        "result_capacity_wait": 0,
+        "output_backpressure": 0,
+        "epoch_scrub": 0
+      }
+    },
+    {
+      "kind": "alternating",
+      "cycles": 6226,
+      "vectors": 128,
+      "vector_ii": {
+        "vertical": [
+          16
+        ],
+        "horizontal": [
+          16
+        ]
+      },
+      "result_writes": 1024,
+      "result_fires": 1024,
+      "output_fire_ii": 1,
+      "stats": {
+        "input_cache_full": 0,
+        "staging_wait": 0,
+        "result_capacity_wait": 0,
+        "output_backpressure": 0,
+        "epoch_scrub": 0
+      }
+    },
+    {
+      "kind": "random",
+      "cycles": 6225,
+      "vectors": 128,
+      "vector_ii": {
+        "vertical": [
+          16
+        ],
+        "horizontal": [
+          16
+        ]
+      },
+      "result_writes": 1024,
+      "result_fires": 1024,
+      "output_fire_ii": 1,
+      "stats": {
+        "input_cache_full": 0,
+        "staging_wait": 0,
+        "result_capacity_wait": 0,
+        "output_backpressure": 0,
+        "epoch_scrub": 0
+      }
+    }
+  ],
+  "backpressure": {
+    "kind": "backpressure",
+    "cycles": 2563,
+    "vectors": 128,
+    "vector_ii": {
+      "vertical": [
+        16
+      ],
+      "horizontal": [
+        16
+      ]
+    },
+    "result_writes": 1024,
+    "result_fires": 1024,
+    "output_fire_ii": "backpressure",
+    "stats": {
+      "input_cache_full": 0,
+      "staging_wait": 0,
+      "result_capacity_wait": 0,
+      "output_backpressure": 755,
+      "epoch_scrub": 0
+    }
+  },
+  "two_tu": {
+    "cycles": 7090,
+    "result_writes": 2048,
+    "result_fires": 2048,
+    "stats": {
+      "input_cache_full": 0,
+      "staging_wait": 0,
+      "result_capacity_wait": 858,
+      "output_backpressure": 5000,
+      "epoch_scrub": 0
+    }
+  },
+  "vector_id_wrap": {
+    "groups": 2048,
+    "first_ids": [
+      65534,
+      65535,
+      0,
+      1
+    ]
+  },
+  "epoch_wrap": {
+    "tus": 10,
+    "scrub_events": 8192,
+    "scrub_episodes": {
+      "inputA:1": 4096,
+      "inputB:1": 4096
+    },
+    "other_cache_progress_during_scrub": true,
+    "scrub_mutation_gate": {
+      "wrong_scrub_index_rejected": true,
+      "missing_scrub_transaction_rejected": true,
+      "missing_scrub_bank_rejected": true,
+      "wrong_scrub_cache_rejected": true,
+      "scrub_access_rejected": true
+    },
+    "cycles": 27897
+  },
+  "mutation_gate": {
+    "trace_rollback_rejected": true,
+    "missing_result_write_rejected": true,
+    "horizontal_stage16_mutation_rejected": true,
+    "result_value_mutation_rejected": true,
+    "early_vector_start_rejected": true,
+    "duplicate_kernel_group_rejected": true,
+    "wrong_vector_group_rejected": true,
+    "intermediate_overwrite_rejected": true,
+    "write_without_reservation_rejected": true,
+    "same_address_rdw_rejected": true,
+    "early_ram_response_rejected": true,
+    "late_ram_response_rejected": true,
+    "output_hold_mutation_rejected": true,
+    "output_drop_rejected": true,
+    "output_duplicate_rejected": true,
+    "wrong_done_timing_rejected": true,
+    "descriptor_misbind_rejected": true,
+    "bank_conflict_rejected": true,
+    "scrub_access_rejected": true,
+    "wrong_stage_tu_owner_rejected": true,
+    "wrong_stage_lane_rejected": true,
+    "wrong_stage_slot_rejected": true,
+    "wrong_stage_bank_rejected": true,
+    "swapped_memory_request_id_rejected": true,
+    "missing_memory_response_rejected": true,
+    "duplicate_memory_response_rejected": true
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "version": "V3.5-17.2",
+  "status": "STOP",
+  "scope": "same-edge staging model versus frozen RTL probe/public trace",
+  "rtl_tree_changed": false,
+  "staging_contract": {
+    "input_cache_request_to_capture": "PASS / delta=0",
+    "input_cache_first_request_to_stage_full": "PASS / delta=15",
+    "vertical_lane_trace": "PASS under one anchor"
+  },
+  "unresolved": [
+    {
+      "stream": "horizontal staging read request",
+      "result": "FAIL-CLOSED",
+      "detail": "first horizontal/intermediate read is one edge later in the frozen RTL probe than the current model after the same single anchor; normalized model cycle=1069, RTL cycle=1070 for phase=H, TU=0, vector=0, group=0, lane=0, bank=0, addr=0",
+      "evidence": "validate_step12b_memory_timing.py exits: model/RTL staging read-request lane trace mismatch"
+    },
+    {
+      "stream": "public wrapper trace",
+      "result": "FAIL-CLOSED",
+      "detail": "same-edge model versus existing wrapper event trace fails at vector_start; model cycle+anchor=22, RTL trace cycle=23; no event-specific offset was applied",
+      "evidence": "validate_step12b_rtl_trace.py exits: vector_start cycle mismatch"
+    }
+  ],
+  "decision": "Do not tag v3.5-17.2 and do not enter Step12C. Review the V/H phase-boundary transaction semantics and trace monitor before changing the model again.",
+  "forbidden": [
+    "per-event offset",
+    "TU-specific offset",
+    "normal/SYNTHESIS-specific offset",
+    "02_rtl/rtl modification",
+    "Vivado"
+  ]
+}

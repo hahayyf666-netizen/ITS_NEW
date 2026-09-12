@@ -1,6 +1,6 @@
 # V3.5 Step 12B：64×64 DCT2×DCT2 wrapper 功能合同
 
-状态：v3.5-17 historical functional closure；当前进行 v3.5-17.1 audit/timing-semantics/reproducibility closure。R4C、主数据通路数学和 v3.5-17 tag 只读冻结；本阶段不运行 Vivado。
+状态：v3.5-17 historical functional closure；当前进行 v3.5-17.2 verification-only timing/trace closure。R4C、wrapper、主数据通路数学和 v3.5-17 tag 只读冻结；本阶段不运行 Vivado。
 
 ## 范围
 
@@ -22,10 +22,10 @@
 
 ## 存储和时序
 
-- A/B input cache：每个 4 bank、每 bank 1 写口/1 读口、同步读延迟 1；`bank=(row[1:0] XOR col[1:0])`，`addr=row*16+(col>>2)` 作为候选并由周期检查器逐访问验证；4 点读/写必须无同 bank 冲突。
-- staging A/B：两个 `64×16 bit` vector buffer。每 16 个周期从 cache/intermediate 组装一个 64 点向量；最后一次写入后下一周期才 `vector_start`。V/H 不并行，故同一对 staging 可按 ownership 复用。
+- A/B input cache：每个 4 bank、每 bank 1 写口/1 读口；`bank=(row[1:0] XOR col[1:0])`，`addr=row*16+(col>>2)` 作为候选并由周期检查器逐访问验证；4 点读/写必须无同 bank 冲突。当前冻结 RTL 在 staging load 时直接完成数组读和 lane capture，因此 input-cache 的 `read_request → lane_capture` 为同一事务边沿（delta=0），不是人为补出的 `+1` response。
+- staging A/B：两个 `64×16 bit` vector buffer。每 16 个周期从 cache/intermediate 组装一个 64 点向量；首个 request/capture 到 `stage_full` 的 delta=15，最后一次写入后下一周期才允许 `vector_start`。V/H 不并行，故同一对 staging 可按 ownership 复用。
 - 单一 intermediate memory 只服务一个 TU：`FREE → V_RUNNING → WAITING_FOR_H → H_RUNNING → FREE`。V 输出以 16 bit stage16 写回；V 未完成不得启动 H。TU0 的 H 若因结果容量阻塞，后续 TU 只能缓存，不能让另一个 TU 覆盖 intermediate。
-- intermediate：4 bank、每 bank 1 写口/1 读口、同步读延迟 1；不依赖同地址 read-during-write（结构上禁止同拍同地址读写）。
+- intermediate：4 bank、每 bank 1 写口/1 读口；当前冻结 RTL 的 staging read 同样采用 request/capture same-edge 事务语义，结构上禁止同一 physical bank/address 同拍 read-during-write。
 - ResultMemory：1024 个 40-bit beat，1 写口+1 读口，读请求 C、响应 C+1；内部响应进入两级 elastic output（hold+skid）。官方接口规定 `it_data_out_req=0` 时外部 `it_data_out_vld=0`，但内部 hold/skid 数据和 valid 状态必须保持稳定；只有 `output_fire = result_hold_valid && it_data_out_req` 才推进读指针并减少占用。结果写入必须在 H kernel group 到达的同一全局周期完成：stage16 shadow 与 low10 result 同拍写入；禁止事后 replay。
 
 ### ResultMemory 状态不变量
@@ -60,6 +60,12 @@ R4C `result_accept` 永远绑定 1。每个完整向量必须在 `vector_start` 
 2. **post-NBA 状态可见性（独立断言语义）**：需要检查的寄存器在同一上升沿后的 `#1step` 再采样；它不改变事务所属 cycle。尤其 `it_done` 必须满足：最后一个 `output_fire` 的事务边沿记录 `it_done` event；该边沿后 `it_done==1`，下一上升沿后 `it_done==0`。
 
 冻结 R4C standalone transaction latency 合同：`result_accept=1` 时，`group0_result_fire_edge - vector_start_accept_edge == 23`，16 个 group 连续且 group II=1。23 是相对事务延迟，不是某次仿真的绝对 cycle 编号。
+
+### v3.5-17.2 memory timing decision record
+
+`v3.5-17.2` 是 verification-only closure，不修改 `02_rtl/rtl/`。独立 timing probe 已确认当前 wrapper 的 V/H staging 读取在同一 accepting edge 完成：`read_request == lane_capture`，首个 request/capture 到 `stage_full` 为 15 个 edge。Python 模型因此使用独立的 `STAGING_CAPTURE_EDGE_DELTA=0`；ResultMemory 仍保持真实 `request C → response C+1`，由 `RESULT_READ_LATENCY=1` 建模。不得用 per-event offset 迎合；若重新实测与该决定不一致，必须 STOP 并保留差异证据。
+
+内部 memory trace 事件必须记录真实 transaction/fire，至少包含 TU/phase、memory owner、bank、address、lane 或 index、request_id（适用时）和 episode（scrub 时）。`stage_lane_capture` 为每个 lane 事件，`stage_full` 仅在 64 个 lane 均已捕获后产生。每个 epoch scrub episode 为 1024 个 cycle、4 bank/cycle（4096 个 tag-clear transactions）；scrub cache 不得普通读写，另一 cache 必须有真实 descriptor bind 或 data_fire 进展。
 
 ## 测试门禁
 

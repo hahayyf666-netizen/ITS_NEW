@@ -27,7 +27,11 @@ from v34_rtl_bitexact import main_2d_details  # type: ignore
 N = 64
 GROUPS = 16
 RESULT_GROUPS = 1024
-READ_LATENCY = 1
+# The frozen wrapper has two deliberately different memory timing contracts.
+# Input-cache/intermediate reads are consumed on the same accepting edge as
+# the staging load; ResultMemory remains a real synchronous-read boundary.
+STAGING_CAPTURE_EDGE_DELTA = 0
+RESULT_READ_LATENCY = 1
 # Measured wrapper-visible latency from vector_start accepting edge to the
 # first result group.  The frozen R4C source is unchanged; this is the
 # externally observable contract used by the Step12B integration model.
@@ -62,36 +66,55 @@ def load_matrix() -> list[list[int]]:
 
 
 class SyncBankedMemory:
-    """4-bank, 1R/1W-per-bank memory with explicit +1 read response."""
+    """4-bank, 1R/1W-per-bank memory with an explicit read-edge contract."""
 
-    def __init__(self, name: str, trace: list[dict[str, Any]], words: int = 1024):
+    def __init__(self, name: str, trace: list[dict[str, Any]], words: int = 1024,
+                 read_latency: int = STAGING_CAPTURE_EDGE_DELTA):
         self.name = name
         self.trace = trace
         self.data = [[0] * words for _ in range(4)]
-        self.pending: dict[int, list[tuple[Any, int, int]]] = {}
+        self.pending: dict[int, list[tuple[Any, int, int, int]]] = {}
         self.words = words
+        self.read_latency = int(read_latency)
+        self.request_seq = 0
         self.reads = 0
         self.writes = 0
 
+    def _read_value(self, bank: int, addr: int) -> int:
+        return int(self.data[bank][addr])
+
     def issue(self, cycle: int, reads: list[tuple[int, int, Any]],
-              writes: list[tuple[int, int, int, Any]]) -> None:
+              writes: list[tuple[int, int, int, Any]]) -> list[tuple[Any, int]]:
         read_banks: set[int] = set()
         write_banks: set[int] = set()
+        read_pairs: set[tuple[int, int]] = set()
+        write_pairs: set[tuple[int, int]] = set()
+        immediate: list[tuple[Any, int, int, int, int]] = []
         for row, col, token in reads:
             bank, addr = bank_addr(row, col)
             if bank in read_banks:
                 raise ContractError(f"{self.name}: read bank conflict at {cycle}")
             read_banks.add(bank)
-            self.pending.setdefault(cycle + READ_LATENCY, []).append((token, bank, addr))
+            read_pairs.add((bank, addr))
+            request_id = self.request_seq
+            self.request_seq += 1
+            if self.read_latency == STAGING_CAPTURE_EDGE_DELTA:
+                immediate.append((token, bank, addr, request_id, row * N + col))
+            else:
+                self.pending.setdefault(cycle + self.read_latency, []).append(
+                    (token, bank, addr, request_id))
             self.reads += 1
             self.trace.append({"cycle": cycle, "event": "memory_read_request",
                                "memory": self.name, "token": repr(token),
-                               "row": row, "col": col, "bank": bank, "addr": addr})
+                               "row": row, "col": col, "bank": bank, "addr": addr,
+                               "request_id": request_id,
+                               "read_latency": self.read_latency})
         for row, col, value, token in writes:
             bank, addr = bank_addr(row, col)
             if bank in write_banks:
                 raise ContractError(f"{self.name}: write bank conflict at {cycle}")
             write_banks.add(bank)
+            write_pairs.add((bank, addr))
             if not (0 <= addr < self.words):
                 raise ContractError(f"{self.name}: address out of range {addr}")
             self.data[bank][addr] = int(value)
@@ -100,15 +123,29 @@ class SyncBankedMemory:
                                "memory": self.name, "token": repr(token),
                                "row": row, "col": col, "bank": bank, "addr": addr,
                                "value": int(value)})
+        if read_pairs & write_pairs:
+            raise ContractError(f"{self.name}: same-address read/write conflict at {cycle}")
+        responses: list[tuple[Any, int]] = []
+        for token, bank, addr, request_id, _linear in immediate:
+            value = self._read_value(bank, addr)
+            responses.append((token, value))
+            self.trace.append({"cycle": cycle, "event": "memory_read_response",
+                               "memory": self.name, "token": repr(token),
+                               "bank": bank, "addr": addr, "value": value,
+                               "request_id": request_id,
+                               "read_latency": self.read_latency})
+        return responses
 
     def consume(self, cycle: int) -> list[tuple[Any, int]]:
         out: list[tuple[Any, int]] = []
-        for token, bank, addr in self.pending.pop(cycle, []):
-            value = self.data[bank][addr]
+        for token, bank, addr, request_id in self.pending.pop(cycle, []):
+            value = self._read_value(bank, addr)
             out.append((token, value))
             self.trace.append({"cycle": cycle, "event": "memory_read_response",
                                "memory": self.name, "token": repr(token),
-                               "bank": bank, "addr": addr, "value": value})
+                               "bank": bank, "addr": addr, "value": value,
+                               "request_id": request_id,
+                               "read_latency": self.read_latency})
         return out
 
 
@@ -119,6 +156,13 @@ class EpochInputCache(SyncBankedMemory):
         self.epoch = -1
         self.scrubbing = False
         self.scrub_index = 0
+        self.scrub_episode = 0
+        self.active_scrub_episode: int | None = None
+        self.just_finished_scrub = False
+
+    def _read_value(self, bank: int, addr: int) -> int:
+        live = self.epoch >= 0 and self.tags[bank][addr] == self.epoch
+        return int(self.data[bank][addr]) if live else 0
 
     def begin_tu(self) -> bool:
         if self.scrubbing:
@@ -127,6 +171,8 @@ class EpochInputCache(SyncBankedMemory):
         if self.epoch >= 0 and nxt == 0:
             self.scrubbing = True
             self.scrub_index = 0
+            self.scrub_episode += 1
+            self.active_scrub_episode = self.scrub_episode
             self.epoch = -1
             return False
         self.epoch = nxt
@@ -139,20 +185,25 @@ class EpochInputCache(SyncBankedMemory):
         # per cycle, so a wrap scrub is exactly 1024 cycles.
         for bank in range(4):
             self.tags[bank][self.scrub_index] = -1
-        self.trace.append({"cycle": cycle, "event": "epoch_scrub",
-                           "memory": self.name, "index": self.scrub_index})
+            self.trace.append({"cycle": cycle, "event": "epoch_scrub",
+                               "memory": self.name, "episode": self.active_scrub_episode,
+                               "bank": bank, "index": self.scrub_index,
+                               "addr": self.scrub_index, "epoch": self.epoch})
         self.scrub_index += 1
         if self.scrub_index == 1024:
             self.scrubbing = False
             self.epoch = 0
+            self.active_scrub_episode = None
+            self.just_finished_scrub = True
 
-    def issue(self, cycle: int, reads, writes) -> None:
+    def issue(self, cycle: int, reads, writes) -> list[tuple[Any, int]]:
         if self.scrubbing and (reads or writes):
             raise ContractError(f"{self.name}: access during scrub")
-        super().issue(cycle, reads, writes)
+        responses = super().issue(cycle, reads, writes)
         for row, col, _value, _token in writes:
             bank, addr = bank_addr(row, col)
             self.tags[bank][addr] = self.epoch
+        return responses
 
     def consume(self, cycle: int) -> list[tuple[Any, int]]:
         if self.scrubbing and self.pending.get(cycle):
@@ -160,14 +211,15 @@ class EpochInputCache(SyncBankedMemory):
         if self.scrubbing:
             return []
         out: list[tuple[Any, int]] = []
-        for token, bank, addr in self.pending.pop(cycle, []):
+        for token, bank, addr, request_id in self.pending.pop(cycle, []):
             live = self.epoch >= 0 and self.tags[bank][addr] == self.epoch
-            value = self.data[bank][addr] if live else 0
+            value = self._read_value(bank, addr)
             out.append((token, value))
             self.trace.append({"cycle": cycle, "event": "memory_read_response",
                                "memory": self.name, "token": repr(token),
                                "bank": bank, "addr": addr, "value": value,
-                               "tag_valid": live})
+                               "tag_valid": live, "request_id": request_id,
+                               "read_latency": self.read_latency})
         return out
 
 
@@ -282,7 +334,7 @@ class ResultMemory:
         if self.pending is None and elastic < 2:
             if (self.issue_index in self.beats and
                     self.write_cycle[self.issue_index] < cycle):
-                self.pending = (cycle + READ_LATENCY, self.issue_index)
+                self.pending = (cycle + RESULT_READ_LATENCY, self.issue_index)
                 self.trace.append({"cycle": cycle, "event": "result_read_request",
                                    "index": self.issue_index})
                 self.issue_index += 1
@@ -401,12 +453,22 @@ class PhaseTask:
         for token, value in responses:
             if not (isinstance(token, tuple) and token[0] == self.phase):
                 continue
-            _, vector, first = token
+            _, token_tu, vector, first, row, col = token
+            if int(token_tu) != self.tu:
+                raise ContractError("memory response TU ownership mismatch")
             if vector not in self.values:
                 self.values[vector] = [None] * N
             self.values[vector][first] = int(value)
+            slot = "A" if (vector & 1) == 0 else "B"
+            bank, addr = bank_addr(int(row), int(col))
+            self.model.trace.append({"cycle": cycle, "event": "stage_lane_capture",
+                                     "tu": self.tu, "phase": self.phase,
+                                     "vector": vector, "group": first // 4,
+                                     "lane": first % 4, "index": first,
+                                     "row": int(row), "col": int(col),
+                                     "slot": slot, "bank": bank, "addr": addr,
+                                     "value": int(value)})
             if all(v is not None for v in self.values[vector]):
-                slot = "A" if (vector & 1) == 0 else "B"
                 if self.stage_ready[slot] >= 0:
                     raise ContractError(f"{self.phase}: staging {slot} overwrite")
                 self.capture_cycle[vector] = cycle
@@ -415,6 +477,10 @@ class PhaseTask:
                 self.model.trace.append({"cycle": cycle, "event": "stage_capture",
                                          "tu": self.tu, "phase": self.phase,
                                          "vector": vector, "slot": slot})
+                self.model.trace.append({"cycle": cycle, "event": "stage_full",
+                                         "tu": self.tu, "phase": self.phase,
+                                         "vector": vector, "slot": slot,
+                                         "lane_count": N})
 
     def tick(self, cycle: int) -> list[tuple[int, int, Any]]:
         if self.done:
@@ -423,7 +489,8 @@ class PhaseTask:
         if self.next_vector < N:
             self.values.setdefault(self.next_vector, [None] * N)
             coords = self.coords(self.next_vector, self.next_group)
-            reads = [(r, c, (self.phase, self.next_vector, self.next_group * 4 + k))
+            reads = [(r, c, (self.phase, self.tu, self.next_vector,
+                             self.next_group * 4 + k, r, c))
                      for k, (r, c) in enumerate(coords)]
             self.next_group += 1
             if self.next_group == GROUPS:
@@ -539,7 +606,7 @@ class IntegrationModel:
             # only one cache may be the active input target at a time.
             if slot in self.cache_owner.values():
                 continue
-            if cache.scrubbing:
+            if cache.scrubbing or cache.just_finished_scrub:
                 continue
             if self.tu_state[self.input_queue[0]]["input"] != "PENDING":
                 continue
@@ -667,6 +734,7 @@ class IntegrationModel:
                 cache.consume(self.cycle)
             self.intermediate.consume(self.cycle)
         for cache in self.caches.values():
+            cache.just_finished_scrub = False
             if cache.scrubbing:
                 cache.scrub_tick(self.cycle)
 
@@ -681,7 +749,9 @@ class IntegrationModel:
         if self.current is not None:
             reads = self.current.tick(self.cycle)
             if reads:
-                self.current.source.issue(self.cycle, reads, [])
+                immediate = self.current.source.issue(self.cycle, reads, [])
+                if immediate:
+                    self.current.consume(immediate, self.cycle)
 
         req = bool(self.output_req(self.cycle, self))
         if not req:
@@ -784,15 +854,33 @@ def validate_event_trace(trace: list[dict[str, Any]],
             raise ContractError("input data without descriptor binding")
         if e.get("event") == "input_data_fire" and e.get("slot") != binds[e.get("tu")]:
             raise ContractError("descriptor/cache misbind")
-    # Every synchronous memory request has exactly one response one cycle
-    # later.  This also makes early/late response mutations fail closed.
+    # Staging memories intentionally capture on the accepting edge in the
+    # frozen RTL.  ResultMemory is the separate synchronous-read boundary.
+    # Keeping the two contracts explicit prevents a global READ_LATENCY
+    # constant from hiding a real request/capture mismatch.
     requests = {(e.get("memory"), e.get("token")): int(e["cycle"])
                 for e in trace if e.get("event") == "memory_read_request"}
     responses = {(e.get("memory"), e.get("token")): int(e["cycle"])
                  for e in trace if e.get("event") == "memory_read_response"}
-    if set(requests) != set(responses) or any(responses[k] != c + READ_LATENCY
-                                              for k, c in requests.items()):
+    request_events = [e for e in trace if e.get("event") == "memory_read_request"]
+    response_events = [e for e in trace if e.get("event") == "memory_read_response"]
+    staging_memories = {"inputA", "inputB", "intermediate"}
+    if (len(request_events) != len(requests) or
+            len(response_events) != len(responses) or
+            set(requests) != set(responses)):
         raise ContractError("memory response latency/identity mismatch")
+    request_ids = {(e.get("memory"), e.get("token")): e.get("request_id")
+                   for e in request_events}
+    response_ids = {(e.get("memory"), e.get("token")): e.get("request_id")
+                    for e in response_events}
+    if request_ids != response_ids:
+        raise ContractError("memory request_id mismatch")
+    for key, request_cycle in requests.items():
+        memory = str(key[0])
+        expected_delta = (STAGING_CAPTURE_EDGE_DELTA
+                          if memory in staging_memories else None)
+        if expected_delta is None or responses[key] != request_cycle + expected_delta:
+            raise ContractError("memory response latency/identity mismatch")
     # Four-bank accesses are physically checked per cycle, not just within a
     # single helper call.
     for kind in ("memory_read_request", "memory_write"):
@@ -805,6 +893,18 @@ def validate_event_trace(trace: list[dict[str, Any]],
             if bank in by_cycle.setdefault(key, set()):
                 raise ContractError("bank conflict")
             by_cycle[key].add(bank)
+    reads_by_cycle: dict[tuple[int, str], set[tuple[int, int]]] = {}
+    writes_by_cycle: dict[tuple[int, str], set[tuple[int, int]]] = {}
+    for e in trace:
+        if e.get("event") not in ("memory_read_request", "memory_write"):
+            continue
+        key = (int(e["cycle"]), str(e.get("memory")))
+        pair = (int(e.get("bank", -1)), int(e.get("addr", -1)))
+        target = reads_by_cycle if e.get("event") == "memory_read_request" else writes_by_cycle
+        target.setdefault(key, set()).add(pair)
+    for key, pairs in reads_by_cycle.items():
+        if pairs & writes_by_cycle.get(key, set()):
+            raise ContractError("same physical memory same-address RDW")
     scrub_cycles = {(int(e["cycle"]), str(e.get("memory"))) for e in trace
                     if e.get("event") == "epoch_scrub"}
     if any((int(e["cycle"]), str(e.get("memory"))) in scrub_cycles
@@ -822,9 +922,34 @@ def validate_event_trace(trace: list[dict[str, Any]],
                    if e.get("event") == "result_read_request"}
     result_rsps = {int(e["index"]): int(e["cycle"]) for e in trace
                    if e.get("event") == "result_read_response"}
-    if set(result_reqs) != set(result_rsps) or any(result_rsps[i] != c + READ_LATENCY
+    if set(result_reqs) != set(result_rsps) or any(result_rsps[i] != c + RESULT_READ_LATENCY
                                                    for i, c in result_reqs.items()):
         raise ContractError("result RAM response latency/identity mismatch")
+    lane_captures: dict[tuple[Any, Any, Any], list[dict[str, Any]]] = {}
+    for e in trace:
+        if e.get("event") == "stage_lane_capture":
+            key = (e.get("tu"), e.get("phase"), e.get("vector"))
+            lane_captures.setdefault(key, []).append(e)
+    for full in (e for e in trace if e.get("event") == "stage_full"):
+        key = (full.get("tu"), full.get("phase"), full.get("vector"))
+        lanes = lane_captures.get(key, [])
+        if int(full.get("lane_count", -1)) != N or len(lanes) != N:
+            raise ContractError("stage_full lane coverage mismatch")
+        if {int(e.get("index", -1)) for e in lanes} != set(range(N)):
+            raise ContractError("stage_full lane identity mismatch")
+        if any(int(e.get("lane", -1)) != int(e.get("index", -1)) % 4 or
+               int(e.get("group", -1)) != int(e.get("index", -1)) // 4
+               for e in lanes):
+            raise ContractError("stage_full lane/group mismatch")
+        if max(int(e["cycle"]) for e in lanes) != int(full["cycle"]):
+            raise ContractError("stage_full precedes final lane capture")
+    for e in (e for e in trace if e.get("event") == "stage_lane_capture"):
+        expected_bank, expected_addr = bank_addr(int(e["row"]), int(e["col"]))
+        expected_slot = "A" if (int(e.get("vector", -1)) & 1) == 0 else "B"
+        if (int(e.get("bank", -1)), int(e.get("addr", -1))) != (expected_bank, expected_addr):
+            raise ContractError("stage lane bank/address mismatch")
+        if e.get("slot") != expected_slot:
+            raise ContractError("stage lane slot mismatch")
     fires = [e for e in trace if e.get("event") == "output_fire"]
     expected_index = 0
     previous_tu: int | None = None
@@ -1015,6 +1140,53 @@ def validate_mutation_gate(trace: list[dict[str, Any]],
     scrub.append({"cycle": int(memreq["cycle"]), "event": "epoch_scrub",
                   "memory": memreq.get("memory"), "index": 0})
     rejected("scrub_access_rejected", scrub, validate_event_trace)
+
+    owner = [dict(e) for e in trace]
+    for e in owner:
+        if e.get("event") == "stage_lane_capture":
+            e["tu"] = int(e.get("tu", 0)) + 1
+            break
+    rejected("wrong_stage_tu_owner_rejected", owner, validate_event_trace)
+
+    lane = [dict(e) for e in trace]
+    for e in lane:
+        if e.get("event") == "stage_lane_capture":
+            e["lane"] = int(e.get("lane", 0)) + 1
+            break
+    rejected("wrong_stage_lane_rejected", lane, validate_event_trace)
+
+    slot = [dict(e) for e in trace]
+    for e in slot:
+        if e.get("event") == "stage_lane_capture":
+            e["slot"] = "B" if e.get("slot") == "A" else "A"
+            break
+    rejected("wrong_stage_slot_rejected", slot, validate_event_trace)
+
+    bank_addr_mut = [dict(e) for e in trace]
+    for e in bank_addr_mut:
+        if e.get("event") == "stage_lane_capture":
+            e["bank"] = (int(e.get("bank", 0)) + 1) % 4
+            break
+    rejected("wrong_stage_bank_rejected", bank_addr_mut, validate_event_trace)
+
+    response_id = [dict(e) for e in trace]
+    for e in response_id:
+        if e.get("event") == "memory_read_response":
+            e["request_id"] = int(e.get("request_id", 0)) + 1
+            break
+    rejected("swapped_memory_request_id_rejected", response_id, validate_event_trace)
+
+    response_drop = [dict(e) for e in trace]
+    for index, e in enumerate(response_drop):
+        if e.get("event") == "memory_read_response":
+            del response_drop[index]
+            break
+    rejected("missing_memory_response_rejected", response_drop, validate_event_trace)
+
+    response_duplicate = [dict(e) for e in trace]
+    response_source = next(e for e in trace if e.get("event") == "memory_read_response")
+    response_duplicate.append(dict(response_source))
+    rejected("duplicate_memory_response_rejected", response_duplicate, validate_event_trace)
     return checks
 
 
@@ -1081,18 +1253,127 @@ def validate_vector_id_wrap() -> dict[str, Any]:
     return {"groups": len(groups), "first_ids": seen[:4]}
 
 
+def validate_scrub_trace(trace: list[dict[str, Any]]) -> None:
+    episodes: dict[tuple[str, int], list[dict[str, Any]]] = {}
+    for event in trace:
+        if event.get("event") != "epoch_scrub":
+            continue
+        key = (str(event.get("memory")), int(event.get("episode", -1)))
+        episodes.setdefault(key, []).append(event)
+    if not episodes:
+        raise ContractError("no epoch scrub transactions")
+    for key, events in episodes.items():
+        if len(events) != 4 * 1024:
+            raise ContractError(f"scrub episode {key} transaction count mismatch")
+        if len({(int(e["cycle"]), int(e["bank"])) for e in events}) != len(events):
+            raise ContractError(f"scrub episode {key} duplicate bank transaction")
+        if len({(int(e["bank"]), int(e["index"])) for e in events}) != len(events):
+            raise ContractError(f"scrub episode {key} duplicate bank/index clear")
+        if {int(e.get("bank", -1)) for e in events} != set(range(4)):
+            raise ContractError(f"scrub episode {key} bank coverage mismatch")
+        if {int(e.get("index", -1)) for e in events} != set(range(1024)):
+            raise ContractError(f"scrub episode {key} index coverage mismatch")
+        cycles = sorted({int(e["cycle"]) for e in events})
+        if len(cycles) != 1024 or cycles[-1] - cycles[0] != 1023:
+            raise ContractError(f"scrub episode {key} cycle span mismatch")
+        for cycle in cycles:
+            at_cycle = [e for e in events if int(e["cycle"]) == cycle]
+            if len(at_cycle) != 4 or {int(e["bank"]) for e in at_cycle} != set(range(4)):
+                raise ContractError(f"scrub episode {key} is not 4-bank parallel")
+        memory = key[0]
+        lo, hi = cycles[0], cycles[-1]
+        if any(e.get("memory") == memory and
+               e.get("event") in ("memory_read_request", "memory_write") and
+               lo <= int(e.get("cycle", -1)) <= hi for e in trace):
+            raise ContractError(f"ordinary access during scrub {key}")
+
+
 def validate_epoch_wrap() -> dict[str, Any]:
     # EPOCH_BITS=2 in the executable model intentionally forces a physical
     # wrap; the cache must scrub all four banks before re-admission.
-    model = IntegrationModel([make_case("zero", seed=20260904 + i)
+    model = IntegrationModel([make_case("sparse", seed=20260904 + i)
+                               if i % 2 == 0 else make_case("random", seed=20260904 + i)
                                for i in range(10)])
     run = model.run(max_cycles=60000)
     scrub = [e for e in run["trace"] if e.get("event") == "epoch_scrub"]
-    if len(scrub) < 1024:
-        raise ContractError("epoch wrap did not execute a full 4-bank scrub")
+    validate_scrub_trace(run["trace"])
+    episodes: dict[tuple[str, int], list[dict[str, Any]]] = {}
+    for event in scrub:
+        key = (str(event.get("memory")), int(event.get("episode", -1)))
+        episodes.setdefault(key, []).append(event)
+    if not episodes:
+        raise ContractError("epoch wrap did not execute a scrub episode")
+    for key, events in episodes.items():
+        if len(events) != 4 * 1024:
+            raise ContractError(f"scrub episode {key} transaction count mismatch")
+        if {int(e.get("bank", -1)) for e in events} != set(range(4)):
+            raise ContractError(f"scrub episode {key} bank coverage mismatch")
+        if {int(e.get("index", -1)) for e in events} != set(range(1024)):
+            raise ContractError(f"scrub episode {key} index coverage mismatch")
+        cycles = sorted({int(e["cycle"]) for e in events})
+        if len(cycles) != 1024 or cycles[-1] - cycles[0] != 1023:
+            raise ContractError(f"scrub episode {key} cycle span mismatch")
+        memory, _episode = key
+        blocked = [e for e in run["trace"]
+                   if e.get("memory") == memory and
+                   e.get("event") in ("memory_read_request", "memory_write") and
+                   cycles[0] <= int(e.get("cycle", -1)) <= cycles[-1]]
+        if blocked:
+            raise ContractError(f"scrubbing cache accessed during scrub {key}")
+    # A focused ownership test proves the bypass contract independently of
+    # the long single-input-stream scheduler: while A is physically scrubbing,
+    # B must be able to bind and accept a real input write.
+    bypass_trace: list[dict[str, Any]] = []
+    cache_a = EpochInputCache("inputA", bypass_trace)
+    cache_b = EpochInputCache("inputB", bypass_trace)
+    cache_a.epoch = EPOCH_MOD - 1
+    if cache_a.begin_tu() or not cache_a.scrubbing:
+        raise ContractError("scrub bypass setup did not enter A scrub")
+    if not cache_b.begin_tu():
+        raise ContractError("free B cache was blocked by A scrub")
+    bypass_trace.append({"cycle": 10, "event": "descriptor_bind", "tu": 99, "slot": "B"})
+    cache_b.issue(11, [], [(0, 0, 7, ("input", 99, 0))])
+    bypass_trace.append({"cycle": 11, "event": "input_data_fire", "tu": 99,
+                         "slot": "B", "addr": 0, "value": 7, "req": True})
+    for cycle in range(10, 10 + 1024):
+        cache_a.scrub_tick(cycle)
+    scrub_cycles = {int(e["cycle"]) for e in bypass_trace if e.get("event") == "epoch_scrub"}
+    progress_cycles = [int(e["cycle"]) for e in bypass_trace
+                       if e.get("event") in ("descriptor_bind", "input_data_fire")]
+    if not scrub_cycles or not any(c in scrub_cycles for c in progress_cycles):
+        raise ContractError("other cache did not make progress during scrub")
+    scrub_mutations: dict[str, bool] = {}
+    def scrub_rejected(name: str, mutated: list[dict[str, Any]]) -> None:
+        try:
+            validate_scrub_trace(mutated)
+        except ContractError:
+            scrub_mutations[name] = True
+        else:
+            scrub_mutations[name] = False
+    scrub_bad_index = [dict(e) for e in scrub]
+    scrub_bad_index[0]["index"] = 1
+    scrub_rejected("wrong_scrub_index_rejected", scrub_bad_index)
+    scrub_missing = [dict(e) for e in scrub[1:]]
+    scrub_rejected("missing_scrub_transaction_rejected", scrub_missing)
+    scrub_bad_bank = [dict(e) for e in scrub]
+    scrub_bad_bank[0]["bank"] = 1
+    scrub_rejected("missing_scrub_bank_rejected", scrub_bad_bank)
+    scrub_bad_owner = [dict(e) for e in scrub]
+    scrub_bad_owner[0]["memory"] = "inputB" if scrub_bad_owner[0]["memory"] == "inputA" else "inputA"
+    scrub_rejected("wrong_scrub_cache_rejected", scrub_bad_owner)
+    scrub_access = [dict(e) for e in scrub]
+    scrub_access.append({"cycle": int(scrub[0]["cycle"]), "event": "memory_write",
+                         "memory": scrub[0]["memory"], "bank": 0, "addr": 0})
+    scrub_rejected("scrub_access_rejected", scrub_access)
+    if not all(scrub_mutations.values()):
+        raise ContractError("scrub mutation gate failed")
     if len([e for e in run["trace"] if e.get("event") == "output_fire"]) != 10 * RESULT_GROUPS:
         raise ContractError("epoch-wrap output count mismatch")
-    return {"tus": 10, "scrub_events": len(scrub), "cycles": run["cycles"]}
+    return {"tus": 10, "scrub_events": len(scrub),
+            "scrub_episodes": {f"{m}:{ep}": len(v) for (m, ep), v in episodes.items()},
+            "other_cache_progress_during_scrub": True,
+            "scrub_mutation_gate": scrub_mutations,
+            "cycles": run["cycles"]}
 
 
 def validate_two_tu() -> dict[str, Any]:
@@ -1128,7 +1409,7 @@ def validate_two_tu() -> dict[str, Any]:
 
 
 def main() -> int:
-    results: dict[str, Any] = {"version": "V3.5-17-Step12B-cycle-model",
+    results: dict[str, Any] = {"version": "V3.5-17.2-Step12B-cycle-model",
                                "status": "PASS", "cases": []}
     for kind in ("zero", "sparse", "alternating", "random"):
         results["cases"].append(validate_case(kind, make_case(kind)))
@@ -1143,7 +1424,7 @@ def main() -> int:
     results["two_tu"] = validate_two_tu()
     results["vector_id_wrap"] = validate_vector_id_wrap()
     results["epoch_wrap"] = validate_epoch_wrap()
-    out = ROOT / "05_audit" / "current" / "17"
+    out = ROOT / "05_audit" / "current" / "17_2"
     out.mkdir(parents=True, exist_ok=True)
     # Keep a cycle-compare trace for the exact deterministic one-point RTL
     # stimulus.  The request pattern is intentionally identical to the TB;
@@ -1161,10 +1442,13 @@ def main() -> int:
     results["mutation_gate"] = mutation
     (out / "step12b_cycle_results.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
     (out / "step12b_mutation_manifest.json").write_text(
-        json.dumps({"version": "V3.5-17", "scope": "cycle-model checker fault injection",
-                    "all_pass": all(mutation.values()), "checks": mutation}, indent=2),
+        json.dumps({"version": "V3.5-17.2", "scope": "cycle-model checker fault injection",
+                    "all_pass": all(mutation.values()) and
+                                all(results["epoch_wrap"]["scrub_mutation_gate"].values()),
+                    "checks": mutation,
+                    "scrub_checks": results["epoch_wrap"]["scrub_mutation_gate"]}, indent=2),
         encoding="utf-8")
-    report = ["# V3.5-17 Step12B cycle model", "", "Status: PASS", "",
+    report = ["# V3.5-17.2 Step12B cycle model", "", "Status: PASS", "",
               "A single IntegrationModel.tick() advances input, synchronous memories,",
               "the persistent R4C contract, V/H scheduling, live result writes and output hold/skid.", "",
               "| case | cycles | vectors | vector II | result writes | result fires |",
@@ -1175,8 +1459,9 @@ def main() -> int:
                f"vector_id_wrap: {results['vector_id_wrap']}",
                f"epoch_wrap: {results['epoch_wrap']}",
                f"mutation_gate ({len(mutation)} checker mutations): {mutation}",
-               "RTL/Model cycle compare: one input-fire anchor; normal and SYNTHESIS traces must match with no free event offsets."]
-    report += ["", "Functional/protocol candidate gate is complete for the scoped 64x64 DCT2xDCT2 wrapper; no Vivado or full-core timing claim is made."]
+              "Staging reads use same-edge request/capture (delta=0); ResultMemory uses request C → response C+1.",
+              "This is the executable Python contract gate. Public RTL trace reconciliation remains a separate fail-closed audit; no free event offsets are permitted."]
+    report += ["", "Model-side functional/protocol gate is PASS for the scoped 64x64 DCT2xDCT2 wrapper; no Vivado or full-core timing claim is made."]
     (out / "V35_STEP12B_CYCLE_MODEL_REPORT.md").write_text("\n".join(report) + "\n", encoding="utf-8")
     print(json.dumps(results, indent=2))
     return 0
