@@ -1,6 +1,6 @@
 # V3.5 Step 12B：64×64 DCT2×DCT2 wrapper 功能合同
 
-状态：Step12B RTL prototype / functional closure in progress；尚未宣称 v3.5-17、完整 RTL gate 或 500 MHz 通过。V3.5-16、R4C 和 P1-A/P1-B/P1.5/P2F 证据只读冻结。
+状态：v3.5-17 historical functional closure；当前进行 v3.5-17.1 audit/timing-semantics/reproducibility closure。R4C、主数据通路数学和 v3.5-17 tag 只读冻结；本阶段不运行 Vivado。
 
 ## 范围
 
@@ -18,7 +18,7 @@
 
 `it_info` 始终按题面保留完整 22 bit。Step12B 当前只接受 `width=64`、`height=64`、`tr_type_hor=DCT2`、`tr_type_ver=DCT2`、`lfnst_idx=0`；`lfnst_tr_set_idx` 在 `lfnst_idx=0` 时是本阶段工程合同中的 don't-care，只保存原始值，不强制为 0。其他 descriptor 必须报协议错误且不得入队。descriptor FIFO 可以排队多个 descriptor，但数据端口没有 TU ID，因此任何时刻只能有一个 `active_input_tu`：FIFO head 绑定一个 FREE cache 后，该 cache 独占后续 `data_fire/end_fire`，直到该 TU 的 `end_fire`；随后才允许下一个 descriptor 成为 active。不能让两个 cache 交错接收同一条输入流。`desc_full` 按当前时钟沿前占用状态判断；`desc_full && it_info_vld` 是非法上游激励，必须 assertion/error，不能静默丢弃。
 
-`it_done` 冻结为 TU 完成脉冲：最后一个 1024th result beat 被 `output_fire` 接受的时钟沿置位，保持一个周期后清零；每个 TU 恰好一个 pulse，未发生最后 `output_fire` 时禁止 `it_done`。
+`it_done` 冻结为 TU 完成脉冲：最后一个 1024th result beat 被 `output_fire` 接受的事务边沿置位，保持一个周期后清零；每个 TU 恰好一个 pulse，未发生最后 `output_fire` 时禁止 `it_done`。
 
 ## 存储和时序
 
@@ -52,7 +52,14 @@ issued - consumed = RAM pending + hold/skid 中尚未消费的 beat 数
 
 ## R4C 连接和标签
 
-R4C `result_accept` 永远绑定 1。每个完整向量必须在 `vector_start` 前稳定交给 R4C；R4C 输出的 `result_stage16_flat` 作为 V/H stage16 数据，H 阶段再取 `result_final10_flat` 写 ResultMemory。全局标签为 `{tu_id, phase, vector_index, group, vector_id}`；`vector_id` 是 16-bit 可回绕显示标签，内部唯一身份使用永久 invocation serial。RTL trace 的 cycle 定义冻结为“第 C 个上升沿发生且该时刻 NBA 更新完成后的可观察状态”；Python、normal ModelSim、SYNTHESIS ModelSim 使用同一采样定义。所有事件只允许使用一个全局锚点，禁止按事件类型、TU 或编译模式自由平移。R4C latency 必须从冻结 RTL 仿真/trace 实测后写入模型，不得凭经验硬编码。
+R4C `result_accept` 永远绑定 1。每个完整向量必须在 `vector_start` 前稳定交给 R4C；R4C 输出的 `result_stage16_flat` 作为 V/H stage16 数据，H 阶段再取 `result_final10_flat` 写 ResultMemory。全局标签为 `{tu_id, phase, vector_index, group, vector_id}`；`vector_id` 是 16-bit 可回绕显示标签，内部唯一身份使用永久 invocation serial。
+
+周期合同分成两层，禁止混用：
+
+1. **事务边沿时间戳（正式 trace 语义）**：事件记为 cycle `C`，当且仅当对应事务在第 `C` 个上升沿被接受/发生。predicate、tag、地址和 group 均从该上升沿的 edge-qualified transaction snapshot 捕获；`#1step` 只用于避免 testbench 日志竞争，不重新采样事件。所有 Python、normal ModelSim、SYNTHESIS ModelSim 事件共用一个全局锚点，禁止按事件类型、TU 或编译模式自由平移。
+2. **post-NBA 状态可见性（独立断言语义）**：需要检查的寄存器在同一上升沿后的 `#1step` 再采样；它不改变事务所属 cycle。尤其 `it_done` 必须满足：最后一个 `output_fire` 的事务边沿记录 `it_done` event；该边沿后 `it_done==1`，下一上升沿后 `it_done==0`。
+
+冻结 R4C standalone transaction latency 合同：`result_accept=1` 时，`group0_result_fire_edge - vector_start_accept_edge == 23`，16 个 group 连续且 group II=1。23 是相对事务延迟，不是某次仿真的绝对 cycle 编号。
 
 ## 测试门禁
 

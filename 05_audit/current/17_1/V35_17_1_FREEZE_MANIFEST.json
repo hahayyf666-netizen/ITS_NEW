@@ -1,0 +1,171 @@
+{
+  "version": "V3.5-17.1-Step12B-audit-closure",
+  "status": "PASS",
+  "historical_functional_tag": "v3.5-17",
+  "historical_functional_commit": "00850c12bf574b92bb8ab85c3bd8515851f067b4",
+  "r4c_sha256": "15aa962c197c4ce0b9daf2e5478b64c51f3c6712e582f8950df6bf1c339c31b1",
+  "files": [
+    {
+      "path": "README.md",
+      "exists": true,
+      "sha256": "20213cef5767cfce5d4de265cf6fe344365cce95f6c552a9f73ddbbbddfb0334",
+      "bytes": 3681
+    },
+    {
+      "path": "01_docs/current/Step12B.md",
+      "exists": true,
+      "sha256": "410a7a7f97c82bbd5a63c32344c970c685c6517ae9004ef04630dce89303c258",
+      "bytes": 7547
+    },
+    {
+      "path": "02_rtl/rtl/p2f_dct2_64_b1_step102.sv",
+      "exists": true,
+      "sha256": "15aa962c197c4ce0b9daf2e5478b64c51f3c6712e582f8950df6bf1c339c31b1",
+      "bytes": 435657
+    },
+    {
+      "path": "02_rtl/rtl/step12b_dct2_64_wrapper.sv",
+      "exists": true,
+      "sha256": "1cf3d2554a6a54a4a0b0db820ffb290a80544d6c1e6c13faf1d5334b2483c584",
+      "bytes": 36153
+    },
+    {
+      "path": "03_verification/scripts/step12b_cycle_model.py",
+      "exists": true,
+      "sha256": "53360ca049ade914b59393a3b317ec984c14ff7cd152a28b6e4969fb5de637e3",
+      "bytes": 55596
+    },
+    {
+      "path": "03_verification/scripts/validate_step12b_rtl_trace.py",
+      "exists": true,
+      "sha256": "bad816bad4650c705de162e3c46e9ac35f93681eb48c56cdea06b01fb7f46049",
+      "bytes": 6263
+    },
+    {
+      "path": "03_verification/scripts/validate_step12b_internal_trace.py",
+      "exists": true,
+      "sha256": "f6d13bed095da91d960cc2a1d0a38dccd5d5fabc97f33dd673b933e6362ed60a",
+      "bytes": 5155
+    },
+    {
+      "path": "03_verification/scripts/run_step12b_trace_mutations.py",
+      "exists": true,
+      "sha256": "811c89fbdf07f5af2015a8ef34bc0818126764b019376b9328bed691c9a1499b",
+      "bytes": 3699
+    },
+    {
+      "path": "03_verification/scripts/make_v35_17_1_manifest.py",
+      "exists": true,
+      "sha256": "4a096610f3f2ef414a784112571c152b8bf1a27aff5d2197f3035a62417bb304",
+      "bytes": 5328
+    },
+    {
+      "path": "03_verification/scripts/run_step12b_checks.ps1",
+      "exists": true,
+      "sha256": "c3d5ea152c839c0e044a6db7920eee53bcf2d33919bc69f928fbfb2bc39f474b",
+      "bytes": 10674
+    },
+    {
+      "path": "03_verification/tb/step12b_dct2_64_wrapper_tb.sv",
+      "exists": true,
+      "sha256": "17e252fe77d4ab47045194e16472ddad4873ef0aa0b2ba035d0814755eab1a07",
+      "bytes": 15717
+    },
+    {
+      "path": "03_verification/tb/r4c_latency_contract_tb.sv",
+      "exists": true,
+      "sha256": "9e75931a5e319a33174a48b02b64b09e751ca104570e2ccf36228dbbc80b5489",
+      "bytes": 4433
+    },
+    {
+      "path": "03_verification/logs/r4c_latency_normal.log",
+      "exists": true,
+      "sha256": "8a5a4f6f7422b428b65fb3ca928861eac02192fbdae00f47cade1c817d05e6f9",
+      "bytes": 2404
+    },
+    {
+      "path": "03_verification/logs/r4c_latency_synthesis.log",
+      "exists": true,
+      "sha256": "1de84f5f3575580b5ee0fe85693b227ac8d2a858e47422055021f78950faa4ed",
+      "bytes": 2404
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_normal.log",
+      "exists": true,
+      "sha256": "fa870ff5e73acecd365fadb7a84d78482ba1259c217842109967896b76c5ed87",
+      "bytes": 29842
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_synthesis.log",
+      "exists": true,
+      "sha256": "6442fda7c6873ab246a5a8155f0d4fc5cc0af32c00a78e3759a0e163834ce897",
+      "bytes": 29842
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_normal_compile.log",
+      "exists": true,
+      "sha256": "abc68da5eeb3cc99e15224c0e8cf26387dc0815b6440710957ba28d092779ae8",
+      "bytes": 2526
+    },
+    {
+      "path": "03_verification/logs/step12b_wrapper_synthesis_compile.log",
+      "exists": true,
+      "sha256": "0e7cd07980553d5a4f220fc512519c19315fe2d295f66afd23a0c48845b7fc36",
+      "bytes": 2566
+    },
+    {
+      "path": "05_audit/current/17/step12b_cycle_results.json",
+      "exists": true,
+      "sha256": "a168a990400ce7d95d534328fd589f13f61e723495efa4b25b029f7dcbfd9123",
+      "bytes": 3835
+    },
+    {
+      "path": "05_audit/current/17/step12b_cycle_trace.json",
+      "exists": true,
+      "sha256": "11f9dc8503d7957eb161f5f599e20c45d3fd218bbe0358b4d892e0e454920263",
+      "bytes": 6934180
+    },
+    {
+      "path": "05_audit/current/17/step12b_mutation_manifest.json",
+      "exists": true,
+      "sha256": "2432e88f4068327b8e6946eb0a354b916c3fb5f4bd3f47c5d9ac1b966d2a8709",
+      "bytes": 921
+    },
+    {
+      "path": "05_audit/current/17/step12b_rtl_event_trace_normal.csv",
+      "exists": true,
+      "sha256": "9fb0e3b02a9d7ec61793c0ceb68c0883d4cf1fd37eafbd334360f041ce1880da",
+      "bytes": 236346
+    },
+    {
+      "path": "05_audit/current/17/step12b_rtl_event_trace_synthesis.csv",
+      "exists": true,
+      "sha256": "9fb0e3b02a9d7ec61793c0ceb68c0883d4cf1fd37eafbd334360f041ce1880da",
+      "bytes": 236346
+    },
+    {
+      "path": "05_audit/current/17_1/step12b_internal_trace_results.json",
+      "exists": true,
+      "sha256": "b513ec0b3c9728cbc514c4ecf6f993b4788d92c300e00e3c7cc5c1883323e2f9",
+      "bytes": 499
+    },
+    {
+      "path": "05_audit/current/17_1/step12b_internal_trace_synthesis_results.json",
+      "exists": true,
+      "sha256": "b513ec0b3c9728cbc514c4ecf6f993b4788d92c300e00e3c7cc5c1883323e2f9",
+      "bytes": 499
+    },
+    {
+      "path": "05_audit/current/17_1/step12b_trace_mutation_results.json",
+      "exists": true,
+      "sha256": "5967c4e0f2b2033acf19691ebf16a0b2c42d043006460e385c1f117beb50617a",
+      "bytes": 314
+    },
+    {
+      "path": "05_audit/current/17_1/V35_17_1_AUDIT.md",
+      "exists": true,
+      "sha256": "ee6764ef6a30d90cb0a47d90985942baac1e861bfa6b121dc3e1a35465904250",
+      "bytes": 2250
+    }
+  ]
+}

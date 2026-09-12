@@ -17,7 +17,8 @@ try {
     03_verification/tb/step12b_dct2_64_wrapper_two_tu_tb.sv `
     03_verification/tb/step12b_dct2_64_wrapper_descriptor_tb.sv `
     03_verification/tb/step12b_dct2_64_wrapper_epoch_tb.sv `
-    03_verification/tb/step12b_dct2_64_wrapper_random_tb.sv | Tee-Object 03_verification/logs/step12b_wrapper_normal_compile.log
+    03_verification/tb/step12b_dct2_64_wrapper_random_tb.sv `
+    03_verification/tb/r4c_latency_contract_tb.sv | Tee-Object 03_verification/logs/step12b_wrapper_normal_compile.log
   if ($LASTEXITCODE -ne 0) { throw "normal vlog failed" }
   $normalSim = (& (Join-Path $vs "vsim.exe") -c work.step12b_dct2_64_wrapper_tb -do "run -all; quit -f" 2>&1 |
     Tee-Object 03_verification/logs/step12b_wrapper_normal.log) -join "`n"
@@ -30,6 +31,20 @@ try {
     --model-trace (Join-Path $root "05_audit\current\17\step12b_cycle_trace.json") 2>&1) -join "`n"
   if ($LASTEXITCODE -ne 0 -or $traceCheck -notmatch "STEP12B_RTL_TRACE_PASS") {
     throw "RTL event trace validation failed: $traceCheck"
+  }
+  $internalCheck = (& $python (Join-Path $root "03_verification\scripts\validate_step12b_internal_trace.py") `
+    --rtl-trace (Join-Path $root "05_audit\current\17\step12b_rtl_event_trace_normal.csv") `
+    --model-trace (Join-Path $root "05_audit\current\17\step12b_cycle_trace.json") `
+    --out (Join-Path $root "05_audit\current\17_1\step12b_internal_trace_results.json") 2>&1) -join "`n"
+  if ($LASTEXITCODE -ne 0 -or $internalCheck -notmatch "STEP12B_INTERNAL_TRACE_PASS") {
+    throw "internal transaction trace audit failed: $internalCheck"
+  }
+  $traceMutations = (& $python (Join-Path $root "03_verification\scripts\run_step12b_trace_mutations.py") `
+    --rtl-trace (Join-Path $root "05_audit\current\17\step12b_rtl_event_trace_normal.csv") `
+    --model-trace (Join-Path $root "05_audit\current\17\step12b_cycle_trace.json") `
+    --out (Join-Path $root "05_audit\current\17_1\step12b_trace_mutation_results.json") 2>&1) -join "`n"
+  if ($LASTEXITCODE -ne 0 -or $traceMutations -notmatch "STEP12B_TRACE_MUTATION_PASS") {
+    throw "trace comparator mutation audit failed: $traceMutations"
   }
   $normalTwo = (& (Join-Path $vs "vsim.exe") -c work.step12b_dct2_64_wrapper_two_tu_tb -do "run -all; quit -f" 2>&1 |
     Tee-Object 03_verification/logs/step12b_wrapper_two_tu_normal.log) -join "`n"
@@ -51,6 +66,11 @@ try {
   if ($LASTEXITCODE -ne 0 -or $normalRandom -notmatch "STEP12B_RANDOM_PASS" -or $normalRandom -notmatch "Errors: 0") {
     throw "normal random simulation did not report a clean PASS"
   }
+  $normalLatency = (& (Join-Path $vs "vsim.exe") -c work.r4c_latency_contract_tb -do "run -all; quit -f" 2>&1 |
+    Tee-Object 03_verification/logs/r4c_latency_normal.log) -join "`n"
+  if ($LASTEXITCODE -ne 0 -or $normalLatency -notmatch "R4C_LATENCY_PASS" -or $normalLatency -notmatch "transaction_latency=23") {
+    throw "normal R4C latency contract failed"
+  }
   $normalExtreme = (& (Join-Path $vs "vsim.exe") -c work.step12b_dct2_64_wrapper_random_tb `
     "-gINPUT_FILE=03_verification/generated/step12b_extreme_input.mem" `
     "-gEXPECTED_FILE=03_verification/generated/step12b_extreme_expected.mem" `
@@ -65,7 +85,8 @@ try {
     03_verification/tb/step12b_dct2_64_wrapper_two_tu_tb.sv `
     03_verification/tb/step12b_dct2_64_wrapper_descriptor_tb.sv `
     03_verification/tb/step12b_dct2_64_wrapper_epoch_tb.sv `
-    03_verification/tb/step12b_dct2_64_wrapper_random_tb.sv | Tee-Object 03_verification/logs/step12b_wrapper_synthesis_compile.log
+    03_verification/tb/step12b_dct2_64_wrapper_random_tb.sv `
+    03_verification/tb/r4c_latency_contract_tb.sv | Tee-Object 03_verification/logs/step12b_wrapper_synthesis_compile.log
   if ($LASTEXITCODE -ne 0) { throw "synthesis vlog failed" }
   $synthSim = (& (Join-Path $vs "vsim.exe") -c work.step12b_dct2_64_wrapper_tb -do "run -all; quit -f" 2>&1 |
     Tee-Object 03_verification/logs/step12b_wrapper_synthesis.log) -join "`n"
@@ -78,6 +99,13 @@ try {
     --model-trace (Join-Path $root "05_audit\current\17\step12b_cycle_trace.json") 2>&1) -join "`n"
   if ($LASTEXITCODE -ne 0 -or $synthTraceCheck -notmatch "STEP12B_RTL_TRACE_PASS") {
     throw "SYNTHESIS RTL event trace comparison failed: $synthTraceCheck"
+  }
+  $synthInternalCheck = (& $python (Join-Path $root "03_verification\scripts\validate_step12b_internal_trace.py") `
+    --rtl-trace (Join-Path $root "05_audit\current\17\step12b_rtl_event_trace_synthesis.csv") `
+    --model-trace (Join-Path $root "05_audit\current\17\step12b_cycle_trace.json") `
+    --out (Join-Path $root "05_audit\current\17_1\step12b_internal_trace_synthesis_results.json") 2>&1) -join "`n"
+  if ($LASTEXITCODE -ne 0 -or $synthInternalCheck -notmatch "STEP12B_INTERNAL_TRACE_PASS") {
+    throw "SYNTHESIS internal transaction trace audit failed: $synthInternalCheck"
   }
   $synthTwo = (& (Join-Path $vs "vsim.exe") -c work.step12b_dct2_64_wrapper_two_tu_tb -do "run -all; quit -f" 2>&1 |
     Tee-Object 03_verification/logs/step12b_wrapper_two_tu_synthesis.log) -join "`n"
@@ -98,6 +126,11 @@ try {
     Tee-Object 03_verification/logs/step12b_wrapper_random_synthesis.log) -join "`n"
   if ($LASTEXITCODE -ne 0 -or $synthRandom -notmatch "STEP12B_RANDOM_PASS" -or $synthRandom -notmatch "Errors: 0") {
     throw "synthesis random simulation did not report a clean PASS"
+  }
+  $synthLatency = (& (Join-Path $vs "vsim.exe") -c work.r4c_latency_contract_tb -do "run -all; quit -f" 2>&1 |
+    Tee-Object 03_verification/logs/r4c_latency_synthesis.log) -join "`n"
+  if ($LASTEXITCODE -ne 0 -or $synthLatency -notmatch "R4C_LATENCY_PASS" -or $synthLatency -notmatch "transaction_latency=23") {
+    throw "SYNTHESIS R4C latency contract failed"
   }
   $synthExtreme = (& (Join-Path $vs "vsim.exe") -c work.step12b_dct2_64_wrapper_random_tb `
     "-gINPUT_FILE=03_verification/generated/step12b_extreme_input.mem" `

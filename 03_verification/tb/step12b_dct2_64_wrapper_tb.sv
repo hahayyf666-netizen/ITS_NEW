@@ -19,6 +19,7 @@ module step12b_dct2_64_wrapper_tb;
     wire [5:0] debug_stage16_row, debug_stage16_col;
     wire signed [15:0] debug_stage16_data;
     integer cycles, fires, data_errors, hold_errors, last_fire_cycle, fire_ii_errors;
+    integer done_postnba_errors;
     reg [39:0] held_data;
     reg stall_active;
     reg stall_valid;
@@ -31,6 +32,13 @@ module step12b_dct2_64_wrapper_tb;
     reg [1:0] trace_phase_s;
     reg [11:0] trace_addr_s;
     reg trace_end_s;
+    reg trace_stage_capture_s, trace_intermediate_write_s;
+    reg trace_result_reserve_s, trace_result_read_request_s;
+    reg trace_result_read_response_s, trace_scrub_s;
+    reg [6:0] trace_internal_vector_s;
+    reg [4:0] trace_internal_group_s;
+    reg [9:0] trace_internal_index_s;
+    reg [10:0] trace_result_issued_prev;
 
 `ifdef SYNTHESIS
     localparam TRACE_FILE = "05_audit/current/17/step12b_rtl_event_trace_synthesis.csv";
@@ -105,9 +113,9 @@ module step12b_dct2_64_wrapper_tb;
         $fwrite(trace_fd, "cycle,event,phase,vector,group,index,addr,end\n");
     end
 
-    // Capture edge-qualified transactions at the accepting edge, then emit
-    // the record after #1step so post-NBA state is visible.  This is the
-    // single sampling convention used by normal and SYNTHESIS traces.
+    // The CSV is a transaction-edge trace.  Predicates and tags are captured
+    // before NBA at the accepting rising edge; #1step only defers file I/O.
+    // Post-NBA visibility is checked separately for it_done below.
     always @(posedge clk) begin
         if (!rst_n) begin
             trace_cycle = 0;
@@ -116,7 +124,6 @@ module step12b_dct2_64_wrapper_tb;
             trace_start_s = dut.r4c_start;
             trace_result_s = dut.r4c_result_valid;
             trace_fire_s = dut.result_hold_valid && it_data_out_req;
-            trace_done_s = it_done;
             trace_addr_s = it_data_addr;
             trace_end_s = it_data_end;
             trace_start_vid_s = dut.r4c_vector_id;
@@ -124,8 +131,32 @@ module step12b_dct2_64_wrapper_tb;
             trace_group_s = dut.r4c_result_group;
             trace_index_s = dut.result_read_index;
             trace_phase_s = dut.phase;
+            // The completion transaction is the final output_fire, not a
+            // mixed pre/post-NBA read of the it_done register.
+            trace_done_s = trace_fire_s && (trace_index_s == 10'd1023);
+            trace_stage_capture_s = ((dut.phase == 2'd1) || (dut.phase == 2'd2)) &&
+                                    (dut.load_vector < 7'd64) &&
+                                    (dut.load_group == 5'd15) &&
+                                    ((dut.load_bank == 1'b0 && !dut.stage_ready_a) ||
+                                     (dut.load_bank == 1'b1 && !dut.stage_ready_b));
+            trace_intermediate_write_s = trace_result_s && (dut.phase == 2'd1);
+            trace_result_reserve_s = (dut.phase == 2'd3) && !dut.result_owner_valid;
+            // A response and a new request may share one edge.  Therefore a
+            // request is detected from the post-NBA issued-count increment,
+            // not from the pre-edge pending bit alone.
+            trace_result_read_request_s = 1'b0;
+            trace_result_read_response_s = dut.result_read_pending;
+            trace_scrub_s = dut.cache_scrubbing[0] || dut.cache_scrubbing[1];
+            trace_internal_vector_s = dut.load_vector;
+            trace_internal_group_s = dut.load_group;
+            trace_internal_index_s = dut.result_issue_index;
             #1step;
             trace_cycle = trace_cycle + 1;
+            if (it_done !== trace_done_s) begin
+                done_postnba_errors = done_postnba_errors + 1;
+                $fatal(1, "it_done post-NBA mismatch at transaction cycle %0d expected=%0d got=%0d",
+                       trace_cycle, trace_done_s, it_done);
+            end
             if (trace_input_s)
                 $fwrite(trace_fd, "%0d,input_fire,%0d,,,,%0d,%0d\n", trace_cycle,
                         trace_phase_s, trace_addr_s, trace_end_s);
@@ -142,8 +173,31 @@ module step12b_dct2_64_wrapper_tb;
             if (trace_fire_s)
                 $fwrite(trace_fd, "%0d,output_fire,,,,%0d,,\n", trace_cycle,
                         trace_index_s);
-            if (trace_done_s || dut.it_done)
+            if (trace_done_s)
                 $fwrite(trace_fd, "%0d,it_done,,,,,,\n", trace_cycle);
+            if (trace_stage_capture_s)
+                $fwrite(trace_fd, "%0d,stage_capture,%0d,%0d,%0d,%0d,,\n", trace_cycle,
+                        trace_phase_s, trace_internal_vector_s, trace_internal_group_s,
+                        trace_internal_vector_s);
+            if (trace_intermediate_write_s)
+                $fwrite(trace_fd, "%0d,intermediate_write,%0d,%0d,%0d,,,%0d\n", trace_cycle,
+                        trace_phase_s, trace_vid_s, trace_group_s, trace_group_s);
+            if (trace_result_reserve_s)
+                $fwrite(trace_fd, "%0d,result_reserve,%0d,,,,,,\n", trace_cycle, trace_phase_s);
+            if (trace_result_read_request_s)
+                $fwrite(trace_fd, "%0d,result_read_request,%0d,,,%0d,,\n", trace_cycle,
+                        trace_phase_s, trace_internal_index_s);
+            if (dut.result_issued != trace_result_issued_prev) begin
+                $fwrite(trace_fd, "%0d,result_read_request,%0d,,,%0d,,\n", trace_cycle,
+                        trace_phase_s, (dut.result_issued - 1'b1));
+            end
+            if (trace_result_read_response_s)
+                $fwrite(trace_fd, "%0d,result_read_response,%0d,,,%0d,,\n", trace_cycle,
+                        trace_phase_s, trace_internal_index_s);
+            if (trace_scrub_s)
+                $fwrite(trace_fd, "%0d,epoch_scrub,%0d,,,,%0d,\n", trace_cycle,
+                        trace_phase_s, trace_internal_index_s);
+            trace_result_issued_prev = dut.result_issued;
         end
     end
     always @(posedge clk) begin
@@ -165,8 +219,10 @@ module step12b_dct2_64_wrapper_tb;
 
     initial begin
         cycles = 0; fires = 0; data_errors = 0; hold_errors = 0;
+        done_postnba_errors = 0;
         last_fire_cycle = -1; fire_ii_errors = 0; held_data = 0;
         stall_active = 1'b0; stall_valid = 1'b0; stall_data = 40'd0;
+        trace_result_issued_prev = 11'd0;
         repeat (4) @(posedge clk);
         rst_n <= 1;
         @(posedge clk);
