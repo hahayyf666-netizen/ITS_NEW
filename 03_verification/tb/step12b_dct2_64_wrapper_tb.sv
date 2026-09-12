@@ -3,7 +3,7 @@
 module step12b_dct2_64_wrapper_tb;
     reg clk = 0;
     reg rst_n = 0;
-    reg [21:0] it_info = 0;
+    reg [21:0] it_info = 22'h002040;
     reg it_info_vld = 0;
     reg signed [15:0] it_data_in = 0;
     reg [11:0] it_data_addr = 0;
@@ -24,6 +24,13 @@ module step12b_dct2_64_wrapper_tb;
     reg stall_valid;
     reg [39:0] stall_data;
     integer trace_fd, trace_cycle;
+    reg trace_input_s, trace_start_s, trace_result_s, trace_fire_s, trace_done_s;
+    reg [15:0] trace_vid_s, trace_start_vid_s;
+    reg [4:0] trace_group_s;
+    reg [9:0] trace_index_s;
+    reg [1:0] trace_phase_s;
+    reg [11:0] trace_addr_s;
+    reg trace_end_s;
 
 `ifdef SYNTHESIS
     localparam TRACE_FILE = "05_audit/current/17/step12b_rtl_event_trace_synthesis.csv";
@@ -98,28 +105,44 @@ module step12b_dct2_64_wrapper_tb;
         $fwrite(trace_fd, "cycle,event,phase,vector,group,index,addr,end\n");
     end
 
+    // Capture edge-qualified transactions at the accepting edge, then emit
+    // the record after #1step so post-NBA state is visible.  This is the
+    // single sampling convention used by normal and SYNTHESIS traces.
     always @(posedge clk) begin
         if (!rst_n) begin
             trace_cycle = 0;
         end else begin
+            trace_input_s = it_data_in_vld && it_data_in_req;
+            trace_start_s = dut.r4c_start;
+            trace_result_s = dut.r4c_result_valid;
+            trace_fire_s = dut.result_hold_valid && it_data_out_req;
+            trace_done_s = it_done;
+            trace_addr_s = it_data_addr;
+            trace_end_s = it_data_end;
+            trace_start_vid_s = dut.r4c_vector_id;
+            trace_vid_s = dut.r4c_result_vector_id;
+            trace_group_s = dut.r4c_result_group;
+            trace_index_s = dut.result_read_index;
+            trace_phase_s = dut.phase;
+            #1step;
             trace_cycle = trace_cycle + 1;
-            if (it_data_in_vld && it_data_in_req)
+            if (trace_input_s)
                 $fwrite(trace_fd, "%0d,input_fire,%0d,,,,%0d,%0d\n", trace_cycle,
-                        dut.phase, it_data_addr, it_data_end);
-            if (dut.r4c_start)
+                        trace_phase_s, trace_addr_s, trace_end_s);
+            if (trace_start_s)
                 $fwrite(trace_fd, "%0d,vector_start,%0d,%0d,,,,\n", trace_cycle,
-                        dut.phase, dut.r4c_vector_id);
-            if (dut.r4c_result_valid) begin
+                        trace_phase_s, trace_start_vid_s);
+            if (trace_result_s) begin
                 $fwrite(trace_fd, "%0d,kernel_group,%0d,%0d,%0d,,,\n", trace_cycle,
-                        dut.phase, dut.r4c_result_vector_id, dut.r4c_result_group);
-                if (dut.phase == 2)
+                        trace_phase_s, trace_vid_s, trace_group_s);
+                if (trace_phase_s == 2)
                     $fwrite(trace_fd, "%0d,result_write,%0d,%0d,%0d,,,\n", trace_cycle,
-                            dut.phase, dut.r4c_result_vector_id, dut.r4c_result_group);
+                            trace_phase_s, trace_vid_s, trace_group_s);
             end
-            if (dut.result_hold_valid && it_data_out_req)
+            if (trace_fire_s)
                 $fwrite(trace_fd, "%0d,output_fire,,,,%0d,,\n", trace_cycle,
-                        dut.result_read_index);
-            if (it_done)
+                        trace_index_s);
+            if (trace_done_s || dut.it_done)
                 $fwrite(trace_fd, "%0d,it_done,,,,,,\n", trace_cycle);
         end
     end
@@ -148,6 +171,7 @@ module step12b_dct2_64_wrapper_tb;
         rst_n <= 1;
         @(posedge clk);
         // Descriptor bind; data is deliberately sent from the next cycle.
+        it_info <= 22'h002040;
         it_info_vld <= 1;
         @(posedge clk);
         it_info_vld <= 0;
@@ -175,21 +199,25 @@ module step12b_dct2_64_wrapper_tb;
                 it_data_out_req = 1'b0;
             else
                 it_data_out_req = 1'b1;
-            // During a request stall, the externally visible beat must remain
-            // stable.  Capture the first stalled value, then compare all
-            // subsequent stalled cycles against that value.
+            // Allow the combinational external vld (which is gated by the
+            // newly driven req) to settle before sampling this accepting edge.
+            #1step;
+            // Official protocol: vld must be low while req is low.  The
+            // internal hold/data must still remain stable until recovery.
             if (!it_data_out_req) begin
+                if (it_data_out_vld)
+                    hold_errors = hold_errors + 1;
                 if (!stall_active) begin
                     stall_active = 1'b1;
-                    stall_valid = it_data_out_vld;
-                    if (it_data_out_vld)
-                        stall_data = it_data_out;
-                end else if (it_data_out_vld) begin
-                    if (stall_valid && it_data_out !== stall_data)
+                    stall_valid = dut.result_hold_valid;
+                    if (dut.result_hold_valid)
+                        stall_data = dut.result_hold_data;
+                end else if (dut.result_hold_valid) begin
+                    if (stall_valid && dut.result_hold_data !== stall_data)
                         hold_errors = hold_errors + 1;
                     else if (!stall_valid) begin
                         stall_valid = 1'b1;
-                        stall_data = it_data_out;
+                        stall_data = dut.result_hold_data;
                     end
                 end
             end else begin

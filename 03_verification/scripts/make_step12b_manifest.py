@@ -45,6 +45,7 @@ FILES = [
     "05_audit/current/17/step12b_rtl_event_trace_synthesis.csv",
     "05_audit/current/17/step12b_cycle_results.json",
     "05_audit/current/17/step12b_cycle_trace.json",
+    "05_audit/current/17/step12b_mutation_manifest.json",
     "05_audit/current/17/V35_STEP12B_REPORT.md",
 ]
 
@@ -64,8 +65,8 @@ def main() -> None:
         entries.append({"path": rel, "exists": path.is_file(),
                         "sha256": sha(path) if path.is_file() else None,
                         "bytes": path.stat().st_size if path.is_file() else 0})
-    payload = {"version": "V3.5-17-Step12B-functional-prototype",
-               "status": "functional_smoke_pass_not_frozen",
+    payload = {"version": "V3.5-17-Step12B-functional-candidate",
+               "status": "functional_gate_pass_pending_remote_freeze",
                "r4c_unchanged_reference": "02_rtl/rtl/p2f_dct2_64_b1_step102.sv",
                "files": entries}
     OUT.mkdir(parents=True, exist_ok=True)

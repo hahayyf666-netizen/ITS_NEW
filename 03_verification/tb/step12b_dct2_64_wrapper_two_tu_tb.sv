@@ -7,7 +7,7 @@
 module step12b_dct2_64_wrapper_two_tu_tb;
     reg clk = 0;
     reg rst_n = 0;
-    reg [21:0] it_info = 0;
+    reg [21:0] it_info = 22'h002040;
     reg it_info_vld = 0;
     reg signed [15:0] it_data_in = 0;
     reg [11:0] it_data_addr = 0;
@@ -53,7 +53,7 @@ module step12b_dct2_64_wrapper_two_tu_tb;
         @(posedge clk);
 
         // TU0 descriptor.
-        it_info <= 22'h155001;
+        it_info <= 22'h002040;
         it_info_vld <= 1'b1;
         @(posedge clk);
         it_info_vld <= 1'b0;
@@ -65,7 +65,7 @@ module step12b_dct2_64_wrapper_two_tu_tb;
         it_data_in <= 16'sd100;
         it_data_in_vld <= 1'b1;
         it_data_end <= 1'b1;
-        it_info <= 22'h2AA155;
+        it_info <= 22'h042040;
         it_info_vld <= 1'b1;
         @(posedge clk);
         it_data_in_vld <= 1'b0;
@@ -89,13 +89,16 @@ module step12b_dct2_64_wrapper_two_tu_tb;
                 it_data_out_req = 1'b0;
             else
                 it_data_out_req = 1'b1;
+            #1step;
 
             if (!it_data_out_req) begin
-                if (it_data_out_vld) begin
-                    if (hold_seen && it_data_out !== hold_data)
+                if (it_data_out_vld)
+                    errors = errors + 1;
+                if (dut.result_hold_valid) begin
+                    if (hold_seen && dut.result_hold_data !== hold_data)
                         errors = errors + 1;
                     hold_seen = 1'b1;
-                    hold_data = it_data_out;
+                    hold_data = dut.result_hold_data;
                 end
             end else begin
                 hold_seen = 1'b0;

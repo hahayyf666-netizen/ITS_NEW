@@ -150,17 +150,16 @@ module step12b_dct2_64_wrapper #(
         coord_addr = row * 16 + (col >> 2);
     endfunction
 
-    // Output contract: valid is independent of request; during req=0 the
-    // hold/skid contents remain unchanged until a real output_fire edge.
+    // Official contest output contract: vld may rise only when req is high.
+    // The internal hold/skid state remains valid and stable while req=0;
+    // output_fire is the consuming edge, not the external vld indication.
     always @* begin
         it_data_in_req = 1'b0;
         if ((desc_count != 0) && (desc_slot_q[0] != DESC_UNBOUND) && !desc_bind_guard &&
             (cache_state[desc_slot_q[0]] == CACHE_FILL))
             it_data_in_req = 1'b1;
         it_data_out = result_hold_data;
-        // Valid is independent of ready/request.  A stalled response remains
-        // asserted and stable until the accepting edge.
-        it_data_out_vld = result_hold_valid;
+        it_data_out_vld = result_hold_valid && it_data_out_req;
     end
 
     integer i;
@@ -185,7 +184,15 @@ module step12b_dct2_64_wrapper #(
     reg result_owner_v_tmp;
     reg [1:0] push_slot_calc;
 
-    wire desc_push_ok = it_info_vld && (desc_count < 2);
+    // Step12B functional scope is exactly 64x64 DCT2xDCT2 with LFNST off.
+    // lfnst_tr_set_idx is retained losslessly but is don't-care when idx=0.
+    wire descriptor_supported =
+        (it_info[6:0]   == 7'd64) &&
+        (it_info[13:7]  == 7'd64) &&
+        (it_info[15:14] == 2'd0) &&
+        (it_info[17:16] == 2'd0) &&
+        (it_info[21:20] == 2'd0);
+    wire desc_push_ok = it_info_vld && (desc_count < 2) && descriptor_supported;
     wire input_end_fire = (desc_count != 0) && it_data_end && it_data_in_req;
 
     always @(posedge clk) begin
@@ -301,7 +308,9 @@ module step12b_dct2_64_wrapper #(
             // retained even when both caches are occupied.  Only the FIFO
             // head may own the input stream; data has no TU tag.
             if (it_info_vld) begin
-                if (desc_count >= 2) begin
+                if (!descriptor_supported) begin
+                    protocol_error <= 1'b1;
+                end else if (desc_count >= 2) begin
                     protocol_error <= 1'b1;
                 end else begin
                     desc_info_q[desc_count] <= it_info;

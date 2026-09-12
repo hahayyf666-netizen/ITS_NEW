@@ -4,7 +4,7 @@
 // proves that omitted addresses never resurrect data from an older TU.
 module step12b_dct2_64_wrapper_epoch_tb;
     reg clk = 0, rst_n = 0;
-    reg [21:0] it_info = 0;
+    reg [21:0] it_info = 22'h002040;
     reg it_info_vld = 0;
     reg signed [15:0] it_data_in = 0;
     reg [11:0] it_data_addr = 0;
@@ -58,7 +58,7 @@ module step12b_dct2_64_wrapper_epoch_tb;
         repeat (4) @(posedge clk);
         rst_n = 1'b1;
         @(posedge clk);
-        pulse_info(22'h100000);
+        pulse_info(22'h002040);
         wait (it_data_in_req);
         it_data_addr = 12'd65;
         it_data_in = 16'sd100;
@@ -68,7 +68,7 @@ module step12b_dct2_64_wrapper_epoch_tb;
         it_data_in_vld = 1'b0;
         it_data_end = 1'b0;
         for (t = 1; t < 10; t = t + 1) begin
-            pulse_info(22'h100000 + t);
+            pulse_info(22'h002040 + ((t % 4) << 18));
             finish_empty_tu();
         end
         input_done = 1'b1;
@@ -79,6 +79,7 @@ module step12b_dct2_64_wrapper_epoch_tb;
     always @(negedge clk) begin
         sim_cycles = sim_cycles + 1;
         it_data_out_req = (sim_cycles >= 5000);
+        #1step;
         if (it_data_out_vld && it_data_out_req) begin
             fires = fires + 1;
             if (fires == 1 && it_data_out !== 40'h320c8320ca)

@@ -5,7 +5,7 @@ module step12b_dct2_64_wrapper_random_tb #(
     parameter string EXPECTED_FILE = "03_verification/generated/step12b_random_expected.mem"
 );
     reg clk = 0, rst_n = 0;
-    reg [21:0] it_info = 0;
+    reg [21:0] it_info = 22'h002040;
     reg it_info_vld = 0;
     reg signed [15:0] it_data_in = 0;
     reg [11:0] it_data_addr = 0;
@@ -41,7 +41,7 @@ module step12b_dct2_64_wrapper_random_tb #(
         repeat (4) @(posedge clk);
         rst_n = 1'b1;
         @(posedge clk);
-        it_info = 22'h2A5A5A;
+        it_info = 22'h002040;
         it_info_vld = 1'b1;
         @(posedge clk);
         it_info_vld = 1'b0;

@@ -1,4 +1,4 @@
-# ITS V3.5-17 Step12B 功能原型（未冻结）
+# ITS V3.5-17 Step12B 功能候选（未冻结）
 
 本目录是 ITS 工程的唯一持续工作目录。版本历史通过 GitHub commit/tag 保存，不再为每个版本复制整套本地工程。`v3.5-16` 保留为上一冻结点；当前工作版本为 Step12B 功能原型，尚未打正式冻结 tag。
 
@@ -9,7 +9,7 @@
 - DCT2-64 R4C 一维 P4 核已证明每拍 4 个完整结果、向量启动间隔 16 拍。
 - R4C standalone OOC post-route 已在 2.000 ns 约束下闭合。
 - Step 12A-R2.1 与 R2.2 为历史证据；V3.5-15 即 Step 12A-R2.3（Output & Reproducibility Closure）。V3.5-16 在不改数学与调度的前提下，统一文档命名并将 validator 内部身份改为永久 `invocation_serial`。
-- R4C standalone 一维核保持冻结；Step12B 已新增 64×64 DCT2×DCT2 单 R4C wrapper 原型。ModelSim normal/SYNTHESIS 稀疏 TU smoke 均通过，完整 RTL Oracle/事件对拍仍未闭合。
+- R4C standalone 一维核保持冻结；Step12B 已新增 64×64 DCT2×DCT2 单 R4C wrapper。ModelSim normal/SYNTHESIS、随机/极值、双 TU、descriptor、epoch、外部 req/vld 合同和 RTL↔Python 事件周期对拍均已通过；正式 tag 仍需远端复核后创建。
 
 ## 目录导航
 
@@ -39,7 +39,7 @@ Step12B 功能合同见 [`01_docs/current/Step12B.md`](01_docs/current/Step12B.m
 
 ## 结论边界
 
-目前不能宣称完整 ITS Core 已达到 500 MHz，也不能宣称所有尺寸、DST7、DCT8 与 LFNST 已完成新 P4 架构。当前已闭合的是 DCT2-64 standalone 一维核，以及 Step 12A-R2.3 / V3.5-15 二维预 RTL 集成门禁；Step12B 目前仅有功能原型 smoke PASS，尚未达到正式冻结条件。
+目前不能宣称完整 ITS Core 已达到 500 MHz，也不能宣称所有尺寸、DST7、DCT8 与 LFNST 已完成新 P4 架构。当前已闭合的是 DCT2-64 standalone 一维核，以及 Step12A-R2.3 / V3.5-15 二维预 RTL 集成门禁；Step12B 已达到本轮功能候选门禁，但尚未完成远端复核和正式冻结 tag。
 
 ## 整理规则
 

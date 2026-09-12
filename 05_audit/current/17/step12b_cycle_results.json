@@ -97,7 +97,7 @@
   ],
   "backpressure": {
     "kind": "backpressure",
-    "cycles": 2565,
+    "cycles": 2563,
     "vectors": 128,
     "vector_ii": {
       "vertical": [
@@ -119,13 +119,13 @@
     }
   },
   "two_tu": {
-    "cycles": 7094,
+    "cycles": 7091,
     "result_writes": 2048,
     "result_fires": 2048,
     "stats": {
       "input_cache_full": 0,
       "staging_wait": 0,
-      "result_capacity_wait": 860,
+      "result_capacity_wait": 857,
       "output_backpressure": 5000,
       "epoch_scrub": 0
     }
@@ -143,5 +143,26 @@
     "tus": 10,
     "scrub_events": 2048,
     "cycles": 21284
+  },
+  "mutation_gate": {
+    "trace_rollback_rejected": true,
+    "missing_result_write_rejected": true,
+    "horizontal_stage16_mutation_rejected": true,
+    "result_value_mutation_rejected": true,
+    "early_vector_start_rejected": true,
+    "duplicate_kernel_group_rejected": true,
+    "wrong_vector_group_rejected": true,
+    "intermediate_overwrite_rejected": true,
+    "write_without_reservation_rejected": true,
+    "same_address_rdw_rejected": true,
+    "early_ram_response_rejected": true,
+    "late_ram_response_rejected": true,
+    "output_hold_mutation_rejected": true,
+    "output_drop_rejected": true,
+    "output_duplicate_rejected": true,
+    "wrong_done_timing_rejected": true,
+    "descriptor_misbind_rejected": true,
+    "bank_conflict_rejected": true,
+    "scrub_access_rejected": true
   }
 }

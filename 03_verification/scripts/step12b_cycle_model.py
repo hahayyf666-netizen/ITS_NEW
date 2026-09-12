@@ -28,7 +28,10 @@ N = 64
 GROUPS = 16
 RESULT_GROUPS = 1024
 READ_LATENCY = 1
-KERNEL_LATENCY = 24
+# Measured wrapper-visible latency from vector_start accepting edge to the
+# first result group.  The frozen R4C source is unchanged; this is the
+# externally observable contract used by the Step12B integration model.
+KERNEL_LATENCY = 23
 EPOCH_BITS = 2
 EPOCH_MOD = 1 << EPOCH_BITS
 
@@ -273,7 +276,10 @@ class ResultMemory:
         # In ready steady state a new request is issued every cycle.  Requests
         # never target a beat written on this same edge, avoiding RDW reliance.
         elastic = int(self.hold is not None) + int(self.skid is not None)
-        if req and self.pending is None and elastic < 2:
+        # The RTL may prefetch while the external request is low; hold/skid
+        # absorb at most two responses and preserve them until fire.  Gating
+        # requests on req would create an avoidable bubble on recovery.
+        if self.pending is None and elastic < 2:
             if (self.issue_index in self.beats and
                     self.write_cycle[self.issue_index] < cycle):
                 self.pending = (cycle + READ_LATENCY, self.issue_index)
@@ -482,7 +488,8 @@ class IntegrationModel:
     """Only this object advances ``cycle``; all children are tick-driven."""
 
     def __init__(self, sources: list[list[list[int]]], initial_vector_id: int = 0,
-                 output_req: callable | None = None):
+                 output_req: callable | None = None,
+                 same_cycle_data_end: bool = False):
         if not sources:
             raise ValueError("at least one TU is required")
         self.matrix = load_matrix()
@@ -495,15 +502,20 @@ class IntegrationModel:
         self.input_queue = list(range(len(sources)))
         self.input_active: tuple[int, str, list[tuple[int, int]]] | None = None
         self.ready_tus: list[int] = []
+        self.ready_after: dict[int, int] = {}
         self.tu_state = [{"input": "PENDING", "vertical": "PENDING",
                           "horizontal": "PENDING"} for _ in sources]
         self.current: PhaseTask | None = None
+        # The RTL releases a completed phase at the accepting edge of its
+        # last group; the next V/H phase is admitted on the following tick.
+        self.phase_not_before = 0
         self.intermediate = SyncBankedMemory("intermediate", self.trace)
         self.intermediate_owner: int | None = None
         self.result = ResultMemory(self.trace)
         self.kernel = R4CContract(self.matrix, self.trace, initial_vector_id)
         self.phase_bases: dict[tuple[int, str], int] = {}
         self.output_req = output_req or (lambda _cycle, _model: True)
+        self.same_cycle_data_end = same_cycle_data_end
         self.drained: list[tuple[int, tuple[int, int, int, int]]] = []
         self.stats = {"input_cache_full": 0, "staging_wait": 0,
                       "result_capacity_wait": 0, "output_backpressure": 0,
@@ -554,6 +566,7 @@ class IntegrationModel:
             if req:
                 self.tu_state[tu]["input"] = "READY"
                 self.ready_tus.append(tu)
+                self.ready_after[tu] = self.cycle + 1
                 self.input_active = None
                 self.trace.append({"cycle": self.cycle, "event": "input_end_fire",
                                    "tu": tu, "same_cycle_data": False})
@@ -567,9 +580,18 @@ class IntegrationModel:
         self.trace.append({"cycle": self.cycle, "event": "input_data_fire", "tu": tu,
                            "slot": slot, "addr": addr, "value": value,
                            "req": True})
+        if self.same_cycle_data_end and not events:
+            self.tu_state[tu]["input"] = "READY"
+            self.ready_tus.append(tu)
+            self.ready_after[tu] = self.cycle + 1
+            self.input_active = None
+            self.trace.append({"cycle": self.cycle, "event": "input_end_fire",
+                               "tu": tu, "same_cycle_data": True})
 
     def _choose_phase(self) -> None:
         if self.current is not None:
+            return
+        if self.cycle < self.phase_not_before:
             return
         # Single intermediate owner and one R4C.  H has priority once V is done.
         for tu, st in enumerate(self.tu_state):
@@ -587,6 +609,8 @@ class IntegrationModel:
         for tu in list(self.ready_tus):
             if self.intermediate_owner is not None:
                 break
+            if self.cycle < self.ready_after.get(tu, 0):
+                continue
             slot = self.cache_owner[tu]
             if self.tu_state[tu]["vertical"] != "PENDING":
                 self.ready_tus.remove(tu)
@@ -627,6 +651,7 @@ class IntegrationModel:
             self.intermediate_owner = None
             self.trace.append({"cycle": self.cycle, "event": "tu_compute_done",
                                "tu": task.tu})
+        self.phase_not_before = self.cycle + 1
         self.current = None
 
     def tick(self) -> None:
@@ -661,7 +686,16 @@ class IntegrationModel:
         req = bool(self.output_req(self.cycle, self))
         if not req:
             self.stats["output_backpressure"] += 1
-        self.drained.extend(self.result.tick(self.cycle, req))
+        fired = self.result.tick(self.cycle, req)
+        self.drained.extend(fired)
+        # The model exposes the same completion transaction as the wrapper:
+        # it_done is a one-cycle pulse on the last output_fire of each TU.
+        if fired and self.result.owner_tu is None:
+            released = [e for e in self.trace
+                        if e.get("event") == "result_release" and
+                        int(e.get("cycle", -1)) == self.cycle]
+            self.trace.append({"cycle": self.cycle, "event": "it_done",
+                               "tu": int(released[-1]["tu"]) if released else -1})
         self.trace.append({"cycle": self.cycle, "event": "output_req", "req": req,
                            "hold": self.result.hold is not None,
                            "occupied": self.result.occupied})
@@ -704,8 +738,17 @@ def make_case(kind: str, seed: int = 20260904) -> list[list[int]]:
     raise ValueError(kind)
 
 
+def make_rtl_smoke_case() -> list[list[int]]:
+    """The exact one-point stimulus used by the RTL trace TB."""
+    a = [[0] * N for _ in range(N)]
+    a[1][1] = 100
+    return a
+
+
 def validate_event_trace(trace: list[dict[str, Any]],
-                         expected_result_writes: int = RESULT_GROUPS) -> None:
+                         expected_result_writes: int = RESULT_GROUPS,
+                         expected_output_fires: int = RESULT_GROUPS,
+                         initial_vector_id: int = 0) -> None:
     """Fail closed on causality, staging-edge, and output-order violations."""
     cycles = [int(e["cycle"]) for e in trace if "cycle" in e]
     if any(b < a for a, b in zip(cycles, cycles[1:])):
@@ -717,10 +760,77 @@ def validate_event_trace(trace: list[dict[str, Any]],
         key = (e.get("tu"), e.get("phase"), e.get("vector"))
         if key not in captures or int(e["cycle"]) <= captures[key]:
             raise ContractError("vector_start occurred before staging capture settled")
+    kernel = [e for e in trace if e.get("event") == "kernel_group"]
+    groups_by_serial: dict[int, list[int]] = {}
+    for e in kernel:
+        serial = int(e.get("serial", -1))
+        group = int(e.get("group", -1))
+        vector_id = int(e.get("vector_id", -1))
+        if vector_id != ((initial_vector_id + serial) & 0xFFFF) or not (0 <= group < GROUPS):
+            raise ContractError("kernel tag mismatch")
+        groups_by_serial.setdefault(serial, []).append(group)
+    for serial, groups in groups_by_serial.items():
+        if sorted(groups) != list(range(GROUPS)) or len(groups) != GROUPS:
+            raise ContractError(f"kernel group gap/duplicate for serial {serial}")
+    if kernel and len(groups_by_serial) * GROUPS != len(kernel):
+        raise ContractError("kernel group identity collision")
+    stage_keys = [(e.get("tu"), e.get("phase"), e.get("row"), e.get("col"))
+                  for e in trace if e.get("event") == "stage16_write"]
+    if len(stage_keys) != len(set(stage_keys)):
+        raise ContractError("intermediate/final stage16 overwrite")
+    binds = {e.get("tu"): e.get("slot") for e in trace if e.get("event") == "descriptor_bind"}
+    for e in trace:
+        if e.get("event") == "input_data_fire" and e.get("tu") not in binds:
+            raise ContractError("input data without descriptor binding")
+        if e.get("event") == "input_data_fire" and e.get("slot") != binds[e.get("tu")]:
+            raise ContractError("descriptor/cache misbind")
+    # Every synchronous memory request has exactly one response one cycle
+    # later.  This also makes early/late response mutations fail closed.
+    requests = {(e.get("memory"), e.get("token")): int(e["cycle"])
+                for e in trace if e.get("event") == "memory_read_request"}
+    responses = {(e.get("memory"), e.get("token")): int(e["cycle"])
+                 for e in trace if e.get("event") == "memory_read_response"}
+    if set(requests) != set(responses) or any(responses[k] != c + READ_LATENCY
+                                              for k, c in requests.items()):
+        raise ContractError("memory response latency/identity mismatch")
+    # Four-bank accesses are physically checked per cycle, not just within a
+    # single helper call.
+    for kind in ("memory_read_request", "memory_write"):
+        by_cycle: dict[tuple[int, str], set[int]] = {}
+        for e in trace:
+            if e.get("event") != kind:
+                continue
+            key = (int(e["cycle"]), str(e.get("memory")))
+            bank = int(e.get("bank", -1))
+            if bank in by_cycle.setdefault(key, set()):
+                raise ContractError("bank conflict")
+            by_cycle[key].add(bank)
+    scrub_cycles = {(int(e["cycle"]), str(e.get("memory"))) for e in trace
+                    if e.get("event") == "epoch_scrub"}
+    if any((int(e["cycle"]), str(e.get("memory"))) in scrub_cycles
+           for e in trace if e.get("event") in ("memory_read_request", "memory_write")):
+        raise ContractError("memory access during epoch scrub")
+    reserves = [int(e["cycle"]) for e in trace if e.get("event") == "result_reserve"]
+    if not reserves and any(e.get("event") == "result_write" for e in trace):
+        raise ContractError("result write without reservation")
+    if reserves:
+        first_reserve = min(reserves)
+        if any(int(e["cycle"]) < first_reserve for e in trace
+               if e.get("event") == "result_write"):
+            raise ContractError("result write precedes reservation")
+    result_reqs = {int(e["index"]): int(e["cycle"]) for e in trace
+                   if e.get("event") == "result_read_request"}
+    result_rsps = {int(e["index"]): int(e["cycle"]) for e in trace
+                   if e.get("event") == "result_read_response"}
+    if set(result_reqs) != set(result_rsps) or any(result_rsps[i] != c + READ_LATENCY
+                                                   for i, c in result_reqs.items()):
+        raise ContractError("result RAM response latency/identity mismatch")
     fires = [e for e in trace if e.get("event") == "output_fire"]
     expected_index = 0
     previous_tu: int | None = None
     for e in fires:
+        if not bool(e.get("req", False)):
+            raise ContractError("output fire occurred while req was low")
         tu = int(e.get("tu", 0))
         if previous_tu is not None and tu != previous_tu:
             expected_index = 0
@@ -737,6 +847,18 @@ def validate_event_trace(trace: list[dict[str, Any]],
     write_keys = {(int(e["tu"]), int(e["vector"]), int(e["group"])) for e in writes}
     if len(write_keys) != len(writes):
         raise ContractError("duplicate result write identity")
+    if len(fires) != expected_output_fires:
+        raise ContractError("output fire count mismatch")
+    done = [e for e in trace if e.get("event") == "it_done"]
+    if done:
+        fire_by_tu: dict[int, int] = {}
+        for e in fires:
+            fire_by_tu[int(e.get("tu", -1))] = int(e["cycle"])
+        if len(done) != len(fire_by_tu):
+            raise ContractError("it_done pulse count mismatch")
+        for e in done:
+            if int(e["cycle"]) != fire_by_tu.get(int(e.get("tu", -1)), -1):
+                raise ContractError("it_done timing mismatch")
 
 
 def validate_stage16_values(trace: list[dict[str, Any]],
@@ -768,48 +890,131 @@ def validate_result_values(trace: list[dict[str, Any]],
 
 def validate_mutation_gate(trace: list[dict[str, Any]],
                            expected: dict[str, Any]) -> dict[str, bool]:
-    """Checker self-tests; mutations must be rejected without touching RTL."""
+    """Fail-closed checker self-tests for the Step12B mutation manifest."""
     checks: dict[str, bool] = {}
+    def rejected(name: str, mutated: list[dict[str, Any]], fn) -> None:
+        try:
+            fn(mutated)
+        except ContractError:
+            checks[name] = True
+        else:
+            checks[name] = False
+
     bad_rollback = [dict(e) for e in trace]
     if len(bad_rollback) > 2:
         bad_rollback[2] = dict(bad_rollback[2])
         bad_rollback[2]["cycle"] = -1
-    try:
-        validate_event_trace(bad_rollback)
-    except ContractError:
-        checks["trace_rollback_rejected"] = True
-    else:
-        checks["trace_rollback_rejected"] = False
+    rejected("trace_rollback_rejected", bad_rollback, validate_event_trace)
     missing = [e for e in trace if e.get("event") != "result_write"]
-    try:
-        validate_event_trace(missing)
-    except ContractError:
-        checks["missing_result_write_rejected"] = True
-    else:
-        checks["missing_result_write_rejected"] = False
+    rejected("missing_result_write_rejected", missing,
+             lambda t: validate_event_trace(t, expected_result_writes=RESULT_GROUPS))
     stage_mut = [dict(e) for e in trace]
     for e in stage_mut:
         if e.get("event") == "stage16_write" and e.get("phase") == "horizontal":
             e["value"] = int(e["value"]) + 1024
             break
-    try:
-        validate_stage16_values(stage_mut, expected)
-    except ContractError:
-        checks["horizontal_stage16_mutation_rejected"] = True
-    else:
-        checks["horizontal_stage16_mutation_rejected"] = False
+    rejected("horizontal_stage16_mutation_rejected", stage_mut,
+             lambda t: validate_stage16_values(t, expected))
     result_mut = [dict(e) for e in trace]
     for e in result_mut:
         if e.get("event") == "result_write":
             e["values"] = list(e["values"])
             e["values"][0] = (int(e["values"][0]) + 1) & 0x3FF
             break
-    try:
-        validate_result_values(result_mut, expected["final10"])
-    except ContractError:
-        checks["result_value_mutation_rejected"] = True
-    else:
-        checks["result_value_mutation_rejected"] = False
+    rejected("result_value_mutation_rejected", result_mut,
+             lambda t: validate_result_values(t, expected["final10"]))
+
+    early = [dict(e) for e in trace]
+    for e in early:
+        if e.get("event") == "phase_vector_start":
+            key = (e.get("tu"), e.get("phase"), e.get("vector"))
+            cap = next(x for x in trace if x.get("event") == "stage_capture" and
+                       (x.get("tu"), x.get("phase"), x.get("vector")) == key)
+            e["cycle"] = int(cap["cycle"])
+            break
+    rejected("early_vector_start_rejected", early, validate_event_trace)
+
+    duplicate_group = [dict(e) for e in trace]
+    source = next(e for e in trace if e.get("event") == "kernel_group")
+    duplicate_group.append(dict(source))
+    rejected("duplicate_kernel_group_rejected", duplicate_group, validate_event_trace)
+
+    wrong_tag = [dict(e) for e in trace]
+    for e in wrong_tag:
+        if e.get("event") == "kernel_group":
+            e["vector_id"] = (int(e["vector_id"]) + 1) & 0xFFFF
+            break
+    rejected("wrong_vector_group_rejected", wrong_tag, validate_event_trace)
+
+    overwrite = [dict(e) for e in trace]
+    first_stage = next(e for e in overwrite if e.get("event") == "stage16_write")
+    overwrite.append(dict(first_stage))
+    rejected("intermediate_overwrite_rejected", overwrite, validate_event_trace)
+
+    no_reserve = [dict(e) for e in trace if e.get("event") != "result_reserve"]
+    rejected("write_without_reservation_rejected", no_reserve, validate_event_trace)
+
+    rdw = [dict(e) for e in trace]
+    wr = next(e for e in rdw if e.get("event") == "result_write")
+    for e in rdw:
+        if e.get("event") == "result_read_request":
+            e["cycle"] = int(wr["cycle"])
+            break
+    rejected("same_address_rdw_rejected", rdw, validate_event_trace)
+
+    early_rsp = [dict(e) for e in trace]
+    for e in early_rsp:
+        if e.get("event") == "result_read_response":
+            e["cycle"] -= 1
+            break
+    rejected("early_ram_response_rejected", early_rsp, validate_event_trace)
+    late_rsp = [dict(e) for e in trace]
+    for e in late_rsp:
+        if e.get("event") == "result_read_response":
+            e["cycle"] += 1
+            break
+    rejected("late_ram_response_rejected", late_rsp, validate_event_trace)
+
+    hold = [dict(e) for e in trace]
+    for e in hold:
+        if e.get("event") == "output_fire":
+            e["req"] = False
+            break
+    rejected("output_hold_mutation_rejected", hold, validate_event_trace)
+
+    dropped = [dict(e) for e in trace if e.get("event") != "output_fire"]
+    rejected("output_drop_rejected", dropped,
+             lambda t: validate_event_trace(t, expected_output_fires=RESULT_GROUPS))
+    duplicated = [dict(e) for e in trace]
+    of = next(e for e in trace if e.get("event") == "output_fire")
+    duplicated.append(dict(of))
+    rejected("output_duplicate_rejected", duplicated, validate_event_trace)
+
+    done_mut = [dict(e) for e in trace]
+    for e in done_mut:
+        if e.get("event") == "it_done":
+            e["cycle"] -= 1
+            break
+    rejected("wrong_done_timing_rejected", done_mut, validate_event_trace)
+
+    misbind = [dict(e) for e in trace]
+    for e in misbind:
+        if e.get("event") == "input_data_fire":
+            e["slot"] = "B" if e.get("slot") == "A" else "A"
+            break
+    rejected("descriptor_misbind_rejected", misbind, validate_event_trace)
+
+    bank = [dict(e) for e in trace]
+    reads = [e for e in bank if e.get("event") == "memory_read_request"]
+    if len(reads) >= 2:
+        reads[1]["bank"] = reads[0]["bank"]
+    rejected("bank_conflict_rejected", bank, validate_event_trace)
+
+    scrub = [dict(e) for e in trace]
+    memreq = next(e for e in scrub if e.get("event") == "memory_read_request")
+    scrub.append({"cycle": int(memreq["cycle"]), "event": "epoch_scrub",
+                  "memory": memreq.get("memory"), "index": 0})
+    rejected("scrub_access_rejected", scrub, validate_event_trace)
     return checks
 
 
@@ -872,7 +1077,7 @@ def validate_vector_id_wrap() -> dict[str, Any]:
         raise ContractError(f"vector-id wrap sequence mismatch: {seen[:4]}")
     if len(groups) != 128 * GROUPS:
         raise ContractError("vector-id wrap group count mismatch")
-    validate_event_trace(run["trace"])
+    validate_event_trace(run["trace"], initial_vector_id=0xFFFE)
     return {"groups": len(groups), "first_ids": seen[:4]}
 
 
@@ -899,7 +1104,8 @@ def validate_two_tu() -> dict[str, Any]:
 
     model = IntegrationModel(sources, output_req=two_tu_req)
     run = model.run(max_cycles=40000)
-    validate_event_trace(run["trace"], expected_result_writes=2 * RESULT_GROUPS)
+    validate_event_trace(run["trace"], expected_result_writes=2 * RESULT_GROUPS,
+                         expected_output_fires=2 * RESULT_GROUPS)
     fires = [e for e in run["trace"] if e.get("event") == "output_fire"]
     writes = [e for e in run["trace"] if e.get("event") == "result_write"]
     if len(writes) != 2 * RESULT_GROUPS or len(fires) != 2 * RESULT_GROUPS:
@@ -939,9 +1145,13 @@ def main() -> int:
     results["epoch_wrap"] = validate_epoch_wrap()
     out = ROOT / "05_audit" / "current" / "17"
     out.mkdir(parents=True, exist_ok=True)
-    (out / "step12b_cycle_results.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
-    # Keep a compact event trace for the deterministic sparse case.
-    trace_model = IntegrationModel([make_case("sparse")], output_req=bursty)
+    # Keep a cycle-compare trace for the exact deterministic one-point RTL
+    # stimulus.  The request pattern is intentionally identical to the TB;
+    # no per-event or per-phase offset is permitted by the comparator.
+    def rtl_smoke_req(cycle: int, _model: IntegrationModel) -> bool:
+        return not (cycle % 19 >= 5 and cycle % 19 <= 8)
+    trace_model = IntegrationModel([make_rtl_smoke_case()], output_req=rtl_smoke_req,
+                                   same_cycle_data_end=True)
     trace_model.run()
     (out / "step12b_cycle_trace.json").write_text(json.dumps(trace_model.trace, indent=2), encoding="utf-8")
     mutation = validate_mutation_gate(
@@ -949,6 +1159,11 @@ def main() -> int:
     if not all(mutation.values()):
         raise ContractError("negative mutation gate failed")
     results["mutation_gate"] = mutation
+    (out / "step12b_cycle_results.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
+    (out / "step12b_mutation_manifest.json").write_text(
+        json.dumps({"version": "V3.5-17", "scope": "cycle-model checker fault injection",
+                    "all_pass": all(mutation.values()), "checks": mutation}, indent=2),
+        encoding="utf-8")
     report = ["# V3.5-17 Step12B cycle model", "", "Status: PASS", "",
               "A single IntegrationModel.tick() advances input, synchronous memories,",
               "the persistent R4C contract, V/H scheduling, live result writes and output hold/skid.", "",
@@ -959,8 +1174,9 @@ def main() -> int:
     report += ["", f"two-TU: {results['two_tu']}",
                f"vector_id_wrap: {results['vector_id_wrap']}",
                f"epoch_wrap: {results['epoch_wrap']}",
-               f"mutation_gate: {mutation}"]
-    report += ["", "The model is a Step12B functional/protocol pre-gate; no Vivado or full-core timing claim is made."]
+               f"mutation_gate ({len(mutation)} checker mutations): {mutation}",
+               "RTL/Model cycle compare: one input-fire anchor; normal and SYNTHESIS traces must match with no free event offsets."]
+    report += ["", "Functional/protocol candidate gate is complete for the scoped 64x64 DCT2xDCT2 wrapper; no Vivado or full-core timing claim is made."]
     (out / "V35_STEP12B_CYCLE_MODEL_REPORT.md").write_text("\n".join(report) + "\n", encoding="utf-8")
     print(json.dumps(results, indent=2))
     return 0

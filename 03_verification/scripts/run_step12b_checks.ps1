@@ -25,7 +25,9 @@ try {
   if ($normalSim -notmatch "STEP12B_WRAPPER_PASS" -or $normalSim -notmatch "Errors: 0") {
     throw "normal simulation did not report a clean PASS"
   }
-  $traceCheck = (& $python (Join-Path $root "03_verification\scripts\validate_step12b_rtl_trace.py") 2>&1) -join "`n"
+  $traceCheck = (& $python (Join-Path $root "03_verification\scripts\validate_step12b_rtl_trace.py") `
+    --rtl-trace (Join-Path $root "05_audit\current\17\step12b_rtl_event_trace_normal.csv") `
+    --model-trace (Join-Path $root "05_audit\current\17\step12b_cycle_trace.json") 2>&1) -join "`n"
   if ($LASTEXITCODE -ne 0 -or $traceCheck -notmatch "STEP12B_RTL_TRACE_PASS") {
     throw "RTL event trace validation failed: $traceCheck"
   }
@@ -36,7 +38,7 @@ try {
   }
   $normalDesc = (& (Join-Path $vs "vsim.exe") -c work.step12b_dct2_64_wrapper_descriptor_tb -do "run -all; quit -f" 2>&1 |
     Tee-Object 03_verification/logs/step12b_wrapper_descriptor_normal.log) -join "`n"
-  if ($LASTEXITCODE -ne 0 -or $normalDesc -notmatch "STEP12B_DESCRIPTOR_OVERFLOW_PASS" -or $normalDesc -notmatch "Errors: 0") {
+  if ($LASTEXITCODE -ne 0 -or $normalDesc -notmatch "STEP12B_DESCRIPTOR_SEMANTICS_PASS" -or $normalDesc -notmatch "STEP12B_DESCRIPTOR_OVERFLOW_PASS" -or $normalDesc -notmatch "Errors: 0") {
     throw "normal descriptor simulation did not report a clean PASS"
   }
   $normalEpoch = (& (Join-Path $vs "vsim.exe") -c work.step12b_dct2_64_wrapper_epoch_tb -do "run -all; quit -f" 2>&1 |
@@ -71,6 +73,12 @@ try {
   if ($synthSim -notmatch "STEP12B_WRAPPER_PASS" -or $synthSim -notmatch "Errors: 0") {
     throw "synthesis simulation did not report a clean PASS"
   }
+  $synthTraceCheck = (& $python (Join-Path $root "03_verification\scripts\validate_step12b_rtl_trace.py") `
+    --rtl-trace (Join-Path $root "05_audit\current\17\step12b_rtl_event_trace_synthesis.csv") `
+    --model-trace (Join-Path $root "05_audit\current\17\step12b_cycle_trace.json") 2>&1) -join "`n"
+  if ($LASTEXITCODE -ne 0 -or $synthTraceCheck -notmatch "STEP12B_RTL_TRACE_PASS") {
+    throw "SYNTHESIS RTL event trace comparison failed: $synthTraceCheck"
+  }
   $synthTwo = (& (Join-Path $vs "vsim.exe") -c work.step12b_dct2_64_wrapper_two_tu_tb -do "run -all; quit -f" 2>&1 |
     Tee-Object 03_verification/logs/step12b_wrapper_two_tu_synthesis.log) -join "`n"
   if ($LASTEXITCODE -ne 0 -or $synthTwo -notmatch "STEP12B_TWO_TU_PASS" -or $synthTwo -notmatch "Errors: 0") {
@@ -78,7 +86,7 @@ try {
   }
   $synthDesc = (& (Join-Path $vs "vsim.exe") -c work.step12b_dct2_64_wrapper_descriptor_tb -do "run -all; quit -f" 2>&1 |
     Tee-Object 03_verification/logs/step12b_wrapper_descriptor_synthesis.log) -join "`n"
-  if ($LASTEXITCODE -ne 0 -or $synthDesc -notmatch "STEP12B_DESCRIPTOR_OVERFLOW_PASS" -or $synthDesc -notmatch "Errors: 0") {
+  if ($LASTEXITCODE -ne 0 -or $synthDesc -notmatch "STEP12B_DESCRIPTOR_SEMANTICS_PASS" -or $synthDesc -notmatch "STEP12B_DESCRIPTOR_OVERFLOW_PASS" -or $synthDesc -notmatch "Errors: 0") {
     throw "synthesis descriptor simulation did not report a clean PASS"
   }
   $synthEpoch = (& (Join-Path $vs "vsim.exe") -c work.step12b_dct2_64_wrapper_epoch_tb -do "run -all; quit -f" 2>&1 |
