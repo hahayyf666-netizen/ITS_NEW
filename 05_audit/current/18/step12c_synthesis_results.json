@@ -1,0 +1,32 @@
+{
+  "step": "Step12C-1",
+  "status": "STOP_NOT_PASS",
+  "reason": "Vivado synthesis did not complete within the controlled run; no formal utilization/timing reports were produced.",
+  "tool": "Vivado 2025.2",
+  "part": "xcku5p-ffvb676-2-e",
+  "period_ns": 2.0,
+  "top": "step12b_dct2_64_wrapper",
+  "rtl_changed": false,
+  "r4c_sha256": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1",
+  "wrapper_sha256": "1CF3D2554A6A54A4A0B0DB820FFB290A80544D6C1E6C13FAF1D5334B2483C584",
+  "observed_component_statistics": {
+    "input_cache_a_registers": 65536,
+    "input_cache_b_registers": 65536,
+    "intermediate_mem_registers": 65536,
+    "input_tag_a_registers": 32768,
+    "input_tag_b_registers": 32768,
+    "mux_4_to_1_16bit": 8257,
+    "mux_2_to_1_8bit": 22528,
+    "mux_4_to_1_8bit": 4096,
+    "mux_2_to_1_1bit": 42340,
+    "adder_2_input_40bit": 250,
+    "adder_3_input_40bit": 62
+  },
+  "formal_reports": {
+    "utilization": "not produced",
+    "timing_summary": "not produced",
+    "checkpoint": "not produced",
+    "postroute": "not run"
+  },
+  "next_step": "STOP; define a separately reviewed memory-structure repair before rerunning Step12C"
+}
