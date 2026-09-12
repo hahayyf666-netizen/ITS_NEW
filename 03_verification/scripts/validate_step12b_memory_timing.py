@@ -27,6 +27,13 @@ def model_request_key(event: dict) -> tuple[int, int, int, int, int, int, int, i
             int(event["addr"]), int(event["cycle"]))
 
 
+def model_capture_key(event: dict) -> tuple[int, int, int, int, int, int, int, int]:
+    phase_id = 1 if event["phase"] == "vertical" else 2
+    return (phase_id, int(event["tu"]), int(event["vector"]), int(event["group"]),
+            int(event["lane"]), int(event["bank"]), int(event["addr"]),
+            int(event["cycle"]))
+
+
 def rtl_key(row: dict) -> tuple[int, int, int, int, int, int, int, int]:
     return (int(row["phase"]), int(row["tu"]), int(row["vector"]), int(row["group"]),
             int(row["lane"]), int(row["bank"]), int(row["addr"]), int(row["cycle"]))
@@ -61,7 +68,7 @@ def main() -> int:
     if model_req_keys != rtl_req_keys:
         fail("model/RTL staging read-request lane trace mismatch")
 
-    model_cap_keys = [model_request_key(e)[:-1] + (int(e["cycle"]) + anchor,)
+    model_cap_keys = [model_capture_key(e)[:-1] + (int(e["cycle"]) + anchor,)
                       for e in model_cap]
     rtl_cap_keys = [rtl_key(r) for r in rtl_cap]
     if model_cap_keys != rtl_cap_keys:

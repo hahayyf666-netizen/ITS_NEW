@@ -1,6 +1,6 @@
 # V3.5 Step 12B：64×64 DCT2×DCT2 wrapper 功能合同
 
-状态：v3.5-17 historical functional closure；当前进行 v3.5-17.2 verification-only timing/trace closure。R4C、wrapper、主数据通路数学和 v3.5-17 tag 只读冻结；本阶段不运行 Vivado。
+状态：v3.5-17 historical functional closure；v3.5-17.2 verification-only timing/trace closure 已 PASS/冻结。R4C、wrapper、主数据通路数学和 v3.5-17 tag 只读冻结；本阶段不运行 Vivado。
 
 ## 范围
 
@@ -66,6 +66,12 @@ R4C `result_accept` 永远绑定 1。每个完整向量必须在 `vector_start` 
 `v3.5-17.2` 是 verification-only closure，不修改 `02_rtl/rtl/`。独立 timing probe 已确认当前 wrapper 的 V/H staging 读取在同一 accepting edge 完成：`read_request == lane_capture`，首个 request/capture 到 `stage_full` 为 15 个 edge。Python 模型因此使用独立的 `STAGING_CAPTURE_EDGE_DELTA=0`；ResultMemory 仍保持真实 `request C → response C+1`，由 `RESULT_READ_LATENCY=1` 建模。不得用 per-event offset 迎合；若重新实测与该决定不一致，必须 STOP 并保留差异证据。
 
 内部 memory trace 事件必须记录真实 transaction/fire，至少包含 TU/phase、memory owner、bank、address、lane 或 index、request_id（适用时）和 episode（scrub 时）。`stage_lane_capture` 为每个 lane 事件，`stage_full` 仅在 64 个 lane 均已捕获后产生。每个 epoch scrub episode 为 1024 个 cycle、4 bank/cycle（4096 个 tag-clear transactions）；scrub cache 不得普通读写，另一 cache 必须有真实 descriptor bind 或 data_fire 进展。
+
+### v3.5-17.2 closure
+
+Python phase admission 已补齐与冻结 RTL 一致的边沿语义：phase 被 admission 的 accepting edge 不发首个 staging read，首读最早在下一 edge；staging request/capture 仍为 same-edge，`stage_full → vector_start` 至少一拍，ResultMemory 仍为 request C → response C+1。该修正只修改 verification model/checker，`02_rtl/rtl/` 零改动。
+
+normal 与 `SYNTHESIS` 的 memory timing、公共事件、内部事件 comparator，以及 7 项 RTL trace mutation 均通过；R4C latency 合同仍为 23 个 transaction edges。旧的 STOP 记录保留在 `05_audit/current/17_2/`，仅作为历史证据，已由本节及最终 closure report supersede。
 
 ## 测试门禁
 

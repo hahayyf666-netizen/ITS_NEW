@@ -4,7 +4,7 @@
   "cases": [
     {
       "kind": "zero",
-      "cycles": 2130,
+      "cycles": 2132,
       "vectors": 128,
       "vector_ii": {
         "vertical": [
@@ -27,7 +27,7 @@
     },
     {
       "kind": "sparse",
-      "cycles": 2135,
+      "cycles": 2137,
       "vectors": 128,
       "vector_ii": {
         "vertical": [
@@ -50,7 +50,7 @@
     },
     {
       "kind": "alternating",
-      "cycles": 6226,
+      "cycles": 6228,
       "vectors": 128,
       "vector_ii": {
         "vertical": [
@@ -73,7 +73,7 @@
     },
     {
       "kind": "random",
-      "cycles": 6225,
+      "cycles": 6227,
       "vectors": 128,
       "vector_ii": {
         "vertical": [
@@ -119,13 +119,13 @@
     }
   },
   "two_tu": {
-    "cycles": 7090,
+    "cycles": 7091,
     "result_writes": 2048,
     "result_fires": 2048,
     "stats": {
       "input_cache_full": 0,
       "staging_wait": 0,
-      "result_capacity_wait": 858,
+      "result_capacity_wait": 857,
       "output_backpressure": 5000,
       "epoch_scrub": 0
     }
@@ -154,7 +154,7 @@
       "wrong_scrub_cache_rejected": true,
       "scrub_access_rejected": true
     },
-    "cycles": 27897
+    "cycles": 27903
   },
   "mutation_gate": {
     "trace_rollback_rejected": true,

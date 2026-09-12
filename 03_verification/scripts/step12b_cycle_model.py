@@ -576,6 +576,12 @@ class IntegrationModel:
         # The RTL releases a completed phase at the accepting edge of its
         # last group; the next V/H phase is admitted on the following tick.
         self.phase_not_before = 0
+        # A phase admission edge only changes the RTL phase/state.  Because
+        # the frozen wrapper evaluates its staging loader from the pre-NBA
+        # phase, the first staging read cannot be issued until the following
+        # accepting edge.  Keep this separate from memory read latency: the
+        # staging request/capture contract remains same-edge (delta=0).
+        self.phase_read_not_before = 0
         self.intermediate = SyncBankedMemory("intermediate", self.trace)
         self.intermediate_owner: int | None = None
         self.result = ResultMemory(self.trace)
@@ -672,6 +678,7 @@ class IntegrationModel:
                 self.current = PhaseTask(self, tu, "horizontal", self.intermediate,
                                          None, None, (tu * 128 + 64) & 0xFFFF)
                 self.current.begin(self.cycle)
+                self.phase_read_not_before = self.cycle + 1
                 return
         for tu in list(self.ready_tus):
             if self.intermediate_owner is not None:
@@ -690,6 +697,7 @@ class IntegrationModel:
             self.current = PhaseTask(self, tu, "vertical", self.caches[slot],
                                      self.intermediate, slot, (tu * 128) & 0xFFFF)
             self.current.begin(self.cycle)
+            self.phase_read_not_before = self.cycle + 1
             return
 
     def write_result_from_h(self, event: KernelEvent, tu: int, vector: int) -> None:
@@ -746,7 +754,8 @@ class IntegrationModel:
 
         self._finish_phase()
         self._choose_phase()
-        if self.current is not None:
+        if (self.current is not None and
+                self.cycle >= self.phase_read_not_before):
             reads = self.current.tick(self.cycle)
             if reads:
                 immediate = self.current.source.issue(self.cycle, reads, [])

@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "scope": "single-TU verification-only internal transaction events",
+  "events": {
+    "stage_capture": 128,
+    "intermediate_write": 1024,
+    "result_reserve": 1,
+    "result_read_request": 1024,
+    "result_read_response": 1024,
+    "epoch_scrub": 0
+  },
+  "result_read_latency": 1,
+  "global_anchor": 5,
+  "model_event_counts": {
+    "stage_capture": 128,
+    "result_reserve": 1,
+    "result_read_request": 1024,
+    "result_read_response": 1024
+  }
+}
