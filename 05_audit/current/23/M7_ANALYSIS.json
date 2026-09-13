@@ -1,0 +1,74 @@
+{
+  "version": "Step12C-M7",
+  "status": "STOP",
+  "decision": "Staging address localization did not close the 2.000 ns post-route setup gate; do not create v3.5-18.",
+  "baseline_commit": "8aeda56f5a1ecec9c1b3ec3f453f3679a9ca8a90",
+  "scope": {
+    "change": "local staging read-address registers for input-cache A/B data/tag and intermediate banks",
+    "r4c_modified": false,
+    "xdc_modified": false,
+    "result_memory_modified": false,
+    "throughput_contract_changed": false
+  },
+  "functional": {
+    "normal": "PASS",
+    "synthesis_define": "PASS",
+    "two_tu": "PASS",
+    "descriptor": "PASS",
+    "epoch": "PASS",
+    "random_extreme": "PASS",
+    "r4c_latency_23": "PASS",
+    "vector_ii_16": "PASS",
+    "group_ii_1": "PASS",
+    "trace_public_normal": "PASS",
+    "trace_internal_normal": "PASS",
+    "trace_mutations_normal": "PASS"
+  },
+  "hashes": {
+    "r4c_sha256": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1",
+    "wrapper_sha256": "CF3CC6026AB6B9C459ABD7108C0BFEE648CDC877A80A62080F3ECF0669946EAB"
+  },
+  "synthesis": {
+    "wns_ns": -0.066,
+    "tns_ns": -12.163,
+    "failing_endpoints": 295,
+    "lut": 21023,
+    "lutram": 5888,
+    "ff": 21502,
+    "dsp": 128,
+    "bram": 0,
+    "uram": 0
+  },
+  "post_route": {
+    "wns_ns": -0.197,
+    "tns_ns": -229.303,
+    "setup_failing_endpoints": 4317,
+    "whs_ns": 0.012,
+    "ths_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "unrouted_nets": 0,
+    "partially_routed_nets": 0,
+    "lut": 20250,
+    "lutram": 5888,
+    "ff": 21572,
+    "dsp": 128,
+    "bram": 0,
+    "uram": 0,
+    "vectorless_power_w": 1.021
+  },
+  "worst_path": {
+    "source": "u_dut/stage_rsp_epoch_q_reg[0]/C",
+    "destination": "u_dut/stage_b_reg[40][6]/D",
+    "slack_ns": -0.197,
+    "data_path_ns": 2.132,
+    "logic_ns": 0.284,
+    "route_ns": 1.848,
+    "logic_levels": 3
+  },
+  "constraints": {
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "clock_period_ns": 2.0
+  },
+  "next_action": "Preserve M7 STOP evidence; do not tag. Choose the next narrow timing action only from the new routed worst-path evidence."
+}

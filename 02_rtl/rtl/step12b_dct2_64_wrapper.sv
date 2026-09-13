@@ -118,11 +118,22 @@ module step12b_dct2_64_wrapper #(
     reg stage_read_cache;
     reg stage_read_bank;
     reg [EPOCH_BITS-1:0] stage_read_epoch;
-    // Bank-local address/selector metadata.  The response edge reads each
-    // physical bank once; only the small post-read lane permutation is
-    // data-dependent on the vector low bits.
-    reg [9:0] stage_bank_addr0, stage_bank_addr1;
-    reg [9:0] stage_bank_addr2, stage_bank_addr3;
+    // M7 physical-local read addresses.  The four logical bank addresses are
+    // copied into the selected physical memory family at the request edge.
+    // Data and tag arrays have separate copies so one address net does not
+    // fan out across unrelated distributed-RAM instances.  The intermediate
+    // family has its own copies as well.  These are timing-localization
+    // registers only; they do not add a staging cycle.
+    reg [9:0] stage_addr_a_data0_q, stage_addr_a_data1_q;
+    reg [9:0] stage_addr_a_data2_q, stage_addr_a_data3_q;
+    reg [9:0] stage_addr_a_tag0_q, stage_addr_a_tag1_q;
+    reg [9:0] stage_addr_a_tag2_q, stage_addr_a_tag3_q;
+    reg [9:0] stage_addr_b_data0_q, stage_addr_b_data1_q;
+    reg [9:0] stage_addr_b_data2_q, stage_addr_b_data3_q;
+    reg [9:0] stage_addr_b_tag0_q, stage_addr_b_tag1_q;
+    reg [9:0] stage_addr_b_tag2_q, stage_addr_b_tag3_q;
+    reg [9:0] stage_addr_i_data0_q, stage_addr_i_data1_q;
+    reg [9:0] stage_addr_i_data2_q, stage_addr_i_data3_q;
     reg [1:0] stage_read_perm;
     reg stage_rsp_pending_q;
     reg stage_rsp_phase_q;
@@ -522,10 +533,26 @@ module step12b_dct2_64_wrapper #(
             stage_read_cache <= 1'b0;
             stage_read_bank <= 1'b0;
             stage_read_epoch <= 0;
-            stage_bank_addr0 <= 0;
-            stage_bank_addr1 <= 0;
-            stage_bank_addr2 <= 0;
-            stage_bank_addr3 <= 0;
+            stage_addr_a_data0_q <= 0;
+            stage_addr_a_data1_q <= 0;
+            stage_addr_a_data2_q <= 0;
+            stage_addr_a_data3_q <= 0;
+            stage_addr_a_tag0_q <= 0;
+            stage_addr_a_tag1_q <= 0;
+            stage_addr_a_tag2_q <= 0;
+            stage_addr_a_tag3_q <= 0;
+            stage_addr_b_data0_q <= 0;
+            stage_addr_b_data1_q <= 0;
+            stage_addr_b_data2_q <= 0;
+            stage_addr_b_data3_q <= 0;
+            stage_addr_b_tag0_q <= 0;
+            stage_addr_b_tag1_q <= 0;
+            stage_addr_b_tag2_q <= 0;
+            stage_addr_b_tag3_q <= 0;
+            stage_addr_i_data0_q <= 0;
+            stage_addr_i_data1_q <= 0;
+            stage_addr_i_data2_q <= 0;
+            stage_addr_i_data3_q <= 0;
             stage_read_perm <= 0;
             stage_rsp_pending_q <= 1'b0;
             stage_rsp_phase_q <= 1'b0;
@@ -1040,37 +1067,37 @@ module step12b_dct2_64_wrapper #(
                 stage_bank_valid3_tmp = 1'b0;
                 if (stage_read_phase == 1'b0) begin
                     if (stage_read_cache == 1'b0) begin
-                        stage_bank_data0_tmp = input_cache_a0[stage_bank_addr0];
-                        stage_bank_data1_tmp = input_cache_a1[stage_bank_addr1];
-                        stage_bank_data2_tmp = input_cache_a2[stage_bank_addr2];
-                        stage_bank_data3_tmp = input_cache_a3[stage_bank_addr3];
-                        stage_bank_tag0_tmp = input_tag_a0[stage_bank_addr0];
-                        stage_bank_tag1_tmp = input_tag_a1[stage_bank_addr1];
-                        stage_bank_tag2_tmp = input_tag_a2[stage_bank_addr2];
-                        stage_bank_tag3_tmp = input_tag_a3[stage_bank_addr3];
+                        stage_bank_data0_tmp = input_cache_a0[stage_addr_a_data0_q];
+                        stage_bank_data1_tmp = input_cache_a1[stage_addr_a_data1_q];
+                        stage_bank_data2_tmp = input_cache_a2[stage_addr_a_data2_q];
+                        stage_bank_data3_tmp = input_cache_a3[stage_addr_a_data3_q];
+                        stage_bank_tag0_tmp = input_tag_a0[stage_addr_a_tag0_q];
+                        stage_bank_tag1_tmp = input_tag_a1[stage_addr_a_tag1_q];
+                        stage_bank_tag2_tmp = input_tag_a2[stage_addr_a_tag2_q];
+                        stage_bank_tag3_tmp = input_tag_a3[stage_addr_a_tag3_q];
                         stage_bank_valid0_tmp = 1'b1;
                         stage_bank_valid1_tmp = 1'b1;
                         stage_bank_valid2_tmp = 1'b1;
                         stage_bank_valid3_tmp = 1'b1;
                     end else begin
-                        stage_bank_data0_tmp = input_cache_b0[stage_bank_addr0];
-                        stage_bank_data1_tmp = input_cache_b1[stage_bank_addr1];
-                        stage_bank_data2_tmp = input_cache_b2[stage_bank_addr2];
-                        stage_bank_data3_tmp = input_cache_b3[stage_bank_addr3];
-                        stage_bank_tag0_tmp = input_tag_b0[stage_bank_addr0];
-                        stage_bank_tag1_tmp = input_tag_b1[stage_bank_addr1];
-                        stage_bank_tag2_tmp = input_tag_b2[stage_bank_addr2];
-                        stage_bank_tag3_tmp = input_tag_b3[stage_bank_addr3];
+                        stage_bank_data0_tmp = input_cache_b0[stage_addr_b_data0_q];
+                        stage_bank_data1_tmp = input_cache_b1[stage_addr_b_data1_q];
+                        stage_bank_data2_tmp = input_cache_b2[stage_addr_b_data2_q];
+                        stage_bank_data3_tmp = input_cache_b3[stage_addr_b_data3_q];
+                        stage_bank_tag0_tmp = input_tag_b0[stage_addr_b_tag0_q];
+                        stage_bank_tag1_tmp = input_tag_b1[stage_addr_b_tag1_q];
+                        stage_bank_tag2_tmp = input_tag_b2[stage_addr_b_tag2_q];
+                        stage_bank_tag3_tmp = input_tag_b3[stage_addr_b_tag3_q];
                         stage_bank_valid0_tmp = 1'b1;
                         stage_bank_valid1_tmp = 1'b1;
                         stage_bank_valid2_tmp = 1'b1;
                         stage_bank_valid3_tmp = 1'b1;
                     end
                 end else begin
-                    stage_bank_data0_tmp = intermediate_mem0[stage_bank_addr0];
-                    stage_bank_data1_tmp = intermediate_mem1[stage_bank_addr1];
-                    stage_bank_data2_tmp = intermediate_mem2[stage_bank_addr2];
-                    stage_bank_data3_tmp = intermediate_mem3[stage_bank_addr3];
+                    stage_bank_data0_tmp = intermediate_mem0[stage_addr_i_data0_q];
+                    stage_bank_data1_tmp = intermediate_mem1[stage_addr_i_data1_q];
+                    stage_bank_data2_tmp = intermediate_mem2[stage_addr_i_data2_q];
+                    stage_bank_data3_tmp = intermediate_mem3[stage_addr_i_data3_q];
                     stage_bank_tag0_tmp = {EPOCH_BITS{1'b0}};
                     stage_bank_tag1_tmp = {EPOCH_BITS{1'b0}};
                     stage_bank_tag2_tmp = {EPOCH_BITS{1'b0}};
@@ -1107,20 +1134,37 @@ module step12b_dct2_64_wrapper #(
                 stage_read_perm <= load_vector[1:0];
                 if (phase == PH_VERTICAL) begin
                     // For a vertical vector, the four rows map to distinct
-                    // physical banks.  Compute the address for each physical
-                    // bank before the request edge; response logic never
-                    // performs a bank-indexed memory select.
-                    stage_bank_addr0 <= ((load_group * 4 + load_vector[1:0]) << 4) + (load_vector >> 2);
-                    stage_bank_addr1 <= ((load_group * 4 + (2'd1 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
-                    stage_bank_addr2 <= ((load_group * 4 + (2'd2 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
-                    stage_bank_addr3 <= ((load_group * 4 + (2'd3 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                    // physical banks.  Compute the address for each bank at
+                    // the request edge and copy it only into the selected
+                    // cache's data/tag address registers.  This keeps the
+                    // address net local to the active distributed-RAM family.
+                    if (active_cache == 1'b0) begin
+                        stage_addr_a_data0_q <= ((load_group * 4 + load_vector[1:0]) << 4) + (load_vector >> 2);
+                        stage_addr_a_data1_q <= ((load_group * 4 + (2'd1 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                        stage_addr_a_data2_q <= ((load_group * 4 + (2'd2 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                        stage_addr_a_data3_q <= ((load_group * 4 + (2'd3 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                        stage_addr_a_tag0_q <= ((load_group * 4 + load_vector[1:0]) << 4) + (load_vector >> 2);
+                        stage_addr_a_tag1_q <= ((load_group * 4 + (2'd1 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                        stage_addr_a_tag2_q <= ((load_group * 4 + (2'd2 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                        stage_addr_a_tag3_q <= ((load_group * 4 + (2'd3 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                    end else begin
+                        stage_addr_b_data0_q <= ((load_group * 4 + load_vector[1:0]) << 4) + (load_vector >> 2);
+                        stage_addr_b_data1_q <= ((load_group * 4 + (2'd1 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                        stage_addr_b_data2_q <= ((load_group * 4 + (2'd2 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                        stage_addr_b_data3_q <= ((load_group * 4 + (2'd3 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                        stage_addr_b_tag0_q <= ((load_group * 4 + load_vector[1:0]) << 4) + (load_vector >> 2);
+                        stage_addr_b_tag1_q <= ((load_group * 4 + (2'd1 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                        stage_addr_b_tag2_q <= ((load_group * 4 + (2'd2 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                        stage_addr_b_tag3_q <= ((load_group * 4 + (2'd3 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                    end
                 end else begin
                     // For a horizontal vector, all four lanes share the
                     // same physical word address and differ only by bank.
-                    stage_bank_addr0 <= (load_vector << 4) + load_group;
-                    stage_bank_addr1 <= (load_vector << 4) + load_group;
-                    stage_bank_addr2 <= (load_vector << 4) + load_group;
-                    stage_bank_addr3 <= (load_vector << 4) + load_group;
+                    // Keep one local address register per intermediate bank.
+                    stage_addr_i_data0_q <= (load_vector << 4) + load_group;
+                    stage_addr_i_data1_q <= (load_vector << 4) + load_group;
+                    stage_addr_i_data2_q <= (load_vector << 4) + load_group;
+                    stage_addr_i_data3_q <= (load_vector << 4) + load_group;
                 end
                 if (load_group == 15) begin
                     load_group <= 0;
