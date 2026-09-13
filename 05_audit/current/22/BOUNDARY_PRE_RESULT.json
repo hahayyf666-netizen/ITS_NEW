@@ -1,0 +1,60 @@
+{
+  "stage": "Step12C-Boundary-PRE",
+  "status": "DIAGNOSTIC_COMPLETE_INTERNAL_SETUP_STOP",
+  "purpose": "Verification-only registered-neighbor physical-context experiment; not a v3.5-18 signoff.",
+  "base_commit": "0e28e6031f160a44ff705ebdbf85cf2ab89f5543",
+  "tool": {
+    "vivado": "2025.2 (Build 6299465)",
+    "part": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0,
+    "top": "step12c_registered_neighbor_harness"
+  },
+  "dut_freeze": {
+    "rtl_tree_changed": false,
+    "r4c_sha256": "15aa962c197c4ce0b9daf2e5478b64c51f3c6712e582f8950df6bf1c339c31b1",
+    "r4c_git_blob": "f5d8f7b9a38a1d77cc4f1724dbf56c22061c6503",
+    "wrapper_sha256": "32c4519f806c311981f8afbec2c0ac14b6b82942217ab47914171e15630d4e41",
+    "wrapper_git_blob": "64bfd451a9e5cadcdc9332765bba97cf5495207a"
+  },
+  "postroute": {
+    "setup_wns_ns": -0.099,
+    "setup_tns_ns": -12.920,
+    "setup_failing_endpoints": 608,
+    "hold_whs_ns": 0.011,
+    "hold_ths_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "unconstrained_internal_endpoints": 0,
+    "missing_input_delay": 0,
+    "missing_output_delay": 0,
+    "combinational_loops": 0,
+    "valid_timing_exceptions": 0,
+    "route_complete": true
+  },
+  "boundary_paths": {
+    "source_register_to_dut_setup_worst_ns": 0.238,
+    "source_register_to_dut_hold_worst_ns": 0.131,
+    "dut_to_sink_register_setup_worst_ns": 0.823,
+    "note": "Registered-neighbor data paths meet timing in this diagnostic context; the DUT internal path remains the limiting setup path."
+  },
+  "worst_internal_setup": {
+    "source": "u_dut/frozen_r4c/output_vector_id_reg[3]/C",
+    "destination": "u_dut/v_wr_data0_q_reg[11]/R",
+    "path_delay_ns": 1.922,
+    "logic_levels": 7
+  },
+  "drc_and_methodology": {
+    "methodology_checks": 0,
+    "critical_warnings": [
+      "NSTD-1/UCIO-1 on diagnostic clk port without package I/O context",
+      "RTSTAT-10 no routable loads"
+    ],
+    "nonblocking_warning": "256 DPIP-2 frozen-R4C DSP input-pipelining warnings; no related violations"
+  },
+  "decision": {
+    "boundary_hold_attribution": "The prior OOC port-to-first-command-FF hold violation is not reproduced when data is launched/captured by internal registered neighbors; it must not be treated as proof that DUT delay cells are required.",
+    "current_gate": "STOP",
+    "reason": "Internal post-route setup remains negative; this experiment is not a final wrapper signoff and v3.5-18 must not be created.",
+    "next": "Freeze the physical-boundary interpretation and separately address the reported internal setup path using the existing stage/architecture evidence; do not change R4C or hide timing with exceptions."
+  },
+  "evidence_dir": "05_audit/current/22/boundary_pre_core2"
+}
