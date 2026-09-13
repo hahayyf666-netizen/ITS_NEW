@@ -3,7 +3,7 @@ Reading pref.tcl
 # 2020.4
 
 # vsim -c work.step12b_dct2_64_wrapper_tb -do "run -all; quit -f" 
-# Start time: 11:10:09 on Sep 13,2026
+# Start time: 13:55:20 on Sep 13,2026
 # ** Note: (vsim-3812) Design is being optimized...
 # //  ModelSim SE-64 2020.4 Oct 13 2020
 # //
@@ -21,264 +21,264 @@ Reading pref.tcl
 # Loading sv_std.std
 # Loading work.step12b_dct2_64_wrapper_tb(fast)
 # run -all
-# WRAP_START t=2101000 phase=1 lc=0 lb=0 readyA=1 readyB=0 since=33
-# WRAP_START t=2133000 phase=1 lc=1 lb=1 readyA=0 readyB=1 since=15
-# WRAP_START t=2165000 phase=1 lc=2 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=2177000 phase=1 vid=0
-# WRAP_START t=2197000 phase=1 lc=3 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=2209000 phase=1 vid=1
-# WRAP_START t=2229000 phase=1 lc=4 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=2241000 phase=1 vid=2
-# WRAP_START t=2261000 phase=1 lc=5 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=2273000 phase=1 vid=3
-# WRAP_START t=2293000 phase=1 lc=6 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=2305000 phase=1 vid=4
-# WRAP_START t=2325000 phase=1 lc=7 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=2337000 phase=1 vid=5
-# WRAP_START t=2357000 phase=1 lc=8 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=2369000 phase=1 vid=6
-# WRAP_START t=2389000 phase=1 lc=9 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=2401000 phase=1 vid=7
-# WRAP_START t=2421000 phase=1 lc=10 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=2433000 phase=1 vid=8
-# WRAP_START t=2453000 phase=1 lc=11 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=2465000 phase=1 vid=9
-# WRAP_START t=2485000 phase=1 lc=12 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=2497000 phase=1 vid=10
-# WRAP_START t=2517000 phase=1 lc=13 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=2529000 phase=1 vid=11
-# WRAP_START t=2549000 phase=1 lc=14 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=2561000 phase=1 vid=12
-# WRAP_START t=2581000 phase=1 lc=15 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=2593000 phase=1 vid=13
-# WRAP_START t=2613000 phase=1 lc=16 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=2625000 phase=1 vid=14
-# WRAP_START t=2645000 phase=1 lc=17 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=2657000 phase=1 vid=15
-# WRAP_START t=2677000 phase=1 lc=18 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=2689000 phase=1 vid=16
-# WRAP_START t=2709000 phase=1 lc=19 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=2721000 phase=1 vid=17
-# WRAP_START t=2741000 phase=1 lc=20 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=2753000 phase=1 vid=18
-# WRAP_START t=2773000 phase=1 lc=21 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=2785000 phase=1 vid=19
-# WRAP_START t=2805000 phase=1 lc=22 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=2817000 phase=1 vid=20
-# WRAP_START t=2837000 phase=1 lc=23 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=2849000 phase=1 vid=21
-# WRAP_START t=2869000 phase=1 lc=24 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=2881000 phase=1 vid=22
-# WRAP_START t=2901000 phase=1 lc=25 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=2913000 phase=1 vid=23
-# WRAP_START t=2933000 phase=1 lc=26 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=2945000 phase=1 vid=24
-# WRAP_START t=2965000 phase=1 lc=27 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=2977000 phase=1 vid=25
-# WRAP_START t=2997000 phase=1 lc=28 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3009000 phase=1 vid=26
-# WRAP_START t=3029000 phase=1 lc=29 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3041000 phase=1 vid=27
-# WRAP_START t=3061000 phase=1 lc=30 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3073000 phase=1 vid=28
-# WRAP_START t=3093000 phase=1 lc=31 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3105000 phase=1 vid=29
-# WRAP_START t=3125000 phase=1 lc=32 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3137000 phase=1 vid=30
-# WRAP_START t=3157000 phase=1 lc=33 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3169000 phase=1 vid=31
-# WRAP_START t=3189000 phase=1 lc=34 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3201000 phase=1 vid=32
-# WRAP_START t=3221000 phase=1 lc=35 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3233000 phase=1 vid=33
-# WRAP_START t=3253000 phase=1 lc=36 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3265000 phase=1 vid=34
-# WRAP_START t=3285000 phase=1 lc=37 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3297000 phase=1 vid=35
-# WRAP_START t=3317000 phase=1 lc=38 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3329000 phase=1 vid=36
-# WRAP_START t=3349000 phase=1 lc=39 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3361000 phase=1 vid=37
-# WRAP_START t=3381000 phase=1 lc=40 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3393000 phase=1 vid=38
-# WRAP_START t=3413000 phase=1 lc=41 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3425000 phase=1 vid=39
-# WRAP_START t=3445000 phase=1 lc=42 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3457000 phase=1 vid=40
-# WRAP_START t=3477000 phase=1 lc=43 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3489000 phase=1 vid=41
-# WRAP_START t=3509000 phase=1 lc=44 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3521000 phase=1 vid=42
-# WRAP_START t=3541000 phase=1 lc=45 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3553000 phase=1 vid=43
-# WRAP_START t=3573000 phase=1 lc=46 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3585000 phase=1 vid=44
-# WRAP_START t=3605000 phase=1 lc=47 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3617000 phase=1 vid=45
-# WRAP_START t=3637000 phase=1 lc=48 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3649000 phase=1 vid=46
-# WRAP_START t=3669000 phase=1 lc=49 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3681000 phase=1 vid=47
-# WRAP_START t=3701000 phase=1 lc=50 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3713000 phase=1 vid=48
-# WRAP_START t=3733000 phase=1 lc=51 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3745000 phase=1 vid=49
-# WRAP_START t=3765000 phase=1 lc=52 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3777000 phase=1 vid=50
-# WRAP_START t=3797000 phase=1 lc=53 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3809000 phase=1 vid=51
-# WRAP_START t=3829000 phase=1 lc=54 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3841000 phase=1 vid=52
-# WRAP_START t=3861000 phase=1 lc=55 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3873000 phase=1 vid=53
-# WRAP_START t=3893000 phase=1 lc=56 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3905000 phase=1 vid=54
-# WRAP_START t=3925000 phase=1 lc=57 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=3937000 phase=1 vid=55
-# WRAP_START t=3957000 phase=1 lc=58 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=3969000 phase=1 vid=56
-# WRAP_START t=3989000 phase=1 lc=59 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4001000 phase=1 vid=57
-# WRAP_START t=4021000 phase=1 lc=60 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=4033000 phase=1 vid=58
-# WRAP_START t=4053000 phase=1 lc=61 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4065000 phase=1 vid=59
-# WRAP_START t=4085000 phase=1 lc=62 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=4097000 phase=1 vid=60
-# WRAP_START t=4117000 phase=1 lc=63 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4129000 phase=1 vid=61
-# WRAP_LAST t=4161000 phase=1 vid=62
-# WRAP_LAST t=4193000 phase=1 vid=63
-# WRAP_START t=4233000 phase=2 lc=0 lb=0 readyA=1 readyB=0 since=33
-# WRAP_START t=4265000 phase=2 lc=1 lb=1 readyA=0 readyB=1 since=15
-# WRAP_START t=4297000 phase=2 lc=2 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=4309000 phase=2 vid=64
-# WRAP_START t=4329000 phase=2 lc=3 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4341000 phase=2 vid=65
-# WRAP_START t=4361000 phase=2 lc=4 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=4373000 phase=2 vid=66
-# WRAP_START t=4393000 phase=2 lc=5 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4405000 phase=2 vid=67
-# WRAP_START t=4425000 phase=2 lc=6 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=4437000 phase=2 vid=68
-# WRAP_START t=4457000 phase=2 lc=7 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4469000 phase=2 vid=69
-# WRAP_START t=4489000 phase=2 lc=8 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=4501000 phase=2 vid=70
-# WRAP_START t=4521000 phase=2 lc=9 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4533000 phase=2 vid=71
-# WRAP_START t=4553000 phase=2 lc=10 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=4565000 phase=2 vid=72
-# WRAP_START t=4585000 phase=2 lc=11 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4597000 phase=2 vid=73
-# WRAP_START t=4617000 phase=2 lc=12 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=4629000 phase=2 vid=74
-# WRAP_START t=4649000 phase=2 lc=13 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4661000 phase=2 vid=75
-# WRAP_START t=4681000 phase=2 lc=14 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=4693000 phase=2 vid=76
-# WRAP_START t=4713000 phase=2 lc=15 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4725000 phase=2 vid=77
-# WRAP_START t=4745000 phase=2 lc=16 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=4757000 phase=2 vid=78
-# WRAP_START t=4777000 phase=2 lc=17 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4789000 phase=2 vid=79
-# WRAP_START t=4809000 phase=2 lc=18 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=4821000 phase=2 vid=80
-# WRAP_START t=4841000 phase=2 lc=19 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4853000 phase=2 vid=81
-# WRAP_START t=4873000 phase=2 lc=20 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=4885000 phase=2 vid=82
-# WRAP_START t=4905000 phase=2 lc=21 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4917000 phase=2 vid=83
-# WRAP_START t=4937000 phase=2 lc=22 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=4949000 phase=2 vid=84
-# WRAP_START t=4969000 phase=2 lc=23 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=4981000 phase=2 vid=85
-# WRAP_START t=5001000 phase=2 lc=24 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5013000 phase=2 vid=86
-# WRAP_START t=5033000 phase=2 lc=25 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5045000 phase=2 vid=87
-# WRAP_START t=5065000 phase=2 lc=26 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5077000 phase=2 vid=88
-# WRAP_START t=5097000 phase=2 lc=27 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5109000 phase=2 vid=89
-# WRAP_START t=5129000 phase=2 lc=28 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5141000 phase=2 vid=90
-# WRAP_START t=5161000 phase=2 lc=29 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5173000 phase=2 vid=91
-# WRAP_START t=5193000 phase=2 lc=30 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5205000 phase=2 vid=92
-# WRAP_START t=5225000 phase=2 lc=31 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5237000 phase=2 vid=93
-# WRAP_START t=5257000 phase=2 lc=32 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5269000 phase=2 vid=94
-# WRAP_START t=5289000 phase=2 lc=33 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5301000 phase=2 vid=95
-# WRAP_START t=5321000 phase=2 lc=34 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5333000 phase=2 vid=96
-# WRAP_START t=5353000 phase=2 lc=35 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5365000 phase=2 vid=97
-# WRAP_START t=5385000 phase=2 lc=36 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5397000 phase=2 vid=98
-# WRAP_START t=5417000 phase=2 lc=37 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5429000 phase=2 vid=99
-# WRAP_START t=5449000 phase=2 lc=38 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5461000 phase=2 vid=100
-# WRAP_START t=5481000 phase=2 lc=39 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5493000 phase=2 vid=101
-# WRAP_START t=5513000 phase=2 lc=40 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5525000 phase=2 vid=102
-# WRAP_START t=5545000 phase=2 lc=41 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5557000 phase=2 vid=103
-# WRAP_START t=5577000 phase=2 lc=42 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5589000 phase=2 vid=104
-# WRAP_START t=5609000 phase=2 lc=43 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5621000 phase=2 vid=105
-# WRAP_START t=5641000 phase=2 lc=44 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5653000 phase=2 vid=106
-# WRAP_START t=5673000 phase=2 lc=45 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5685000 phase=2 vid=107
-# WRAP_START t=5705000 phase=2 lc=46 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5717000 phase=2 vid=108
-# WRAP_START t=5737000 phase=2 lc=47 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5749000 phase=2 vid=109
-# WRAP_START t=5769000 phase=2 lc=48 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5781000 phase=2 vid=110
-# WRAP_START t=5801000 phase=2 lc=49 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5813000 phase=2 vid=111
-# WRAP_START t=5833000 phase=2 lc=50 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5845000 phase=2 vid=112
-# WRAP_START t=5865000 phase=2 lc=51 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5877000 phase=2 vid=113
-# WRAP_START t=5897000 phase=2 lc=52 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5909000 phase=2 vid=114
-# WRAP_START t=5929000 phase=2 lc=53 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=5941000 phase=2 vid=115
-# WRAP_START t=5961000 phase=2 lc=54 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=5973000 phase=2 vid=116
-# WRAP_START t=5993000 phase=2 lc=55 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=6005000 phase=2 vid=117
-# WRAP_START t=6025000 phase=2 lc=56 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=6037000 phase=2 vid=118
-# WRAP_START t=6057000 phase=2 lc=57 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=6069000 phase=2 vid=119
-# WRAP_START t=6089000 phase=2 lc=58 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=6101000 phase=2 vid=120
-# WRAP_START t=6121000 phase=2 lc=59 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=6133000 phase=2 vid=121
-# WRAP_START t=6153000 phase=2 lc=60 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=6165000 phase=2 vid=122
-# WRAP_START t=6185000 phase=2 lc=61 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=6197000 phase=2 vid=123
-# WRAP_START t=6217000 phase=2 lc=62 lb=0 readyA=1 readyB=0 since=15
-# WRAP_LAST t=6229000 phase=2 vid=124
-# WRAP_START t=6249000 phase=2 lc=63 lb=1 readyA=0 readyB=1 since=15
-# WRAP_LAST t=6261000 phase=2 vid=125
-# WRAP_LAST t=6293000 phase=2 vid=126
-# WRAP_LAST t=6325000 phase=2 vid=127
-# STEP12B_WRAPPER_PASS cycles=2407 output_beats=1024
+# WRAP_START t=2103000 phase=1 lc=0 lb=0 readyA=1 readyB=0 since=34
+# WRAP_START t=2135000 phase=1 lc=1 lb=1 readyA=0 readyB=1 since=15
+# WRAP_START t=2167000 phase=1 lc=2 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=2179000 phase=1 vid=0
+# WRAP_START t=2199000 phase=1 lc=3 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=2211000 phase=1 vid=1
+# WRAP_START t=2231000 phase=1 lc=4 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=2243000 phase=1 vid=2
+# WRAP_START t=2263000 phase=1 lc=5 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=2275000 phase=1 vid=3
+# WRAP_START t=2295000 phase=1 lc=6 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=2307000 phase=1 vid=4
+# WRAP_START t=2327000 phase=1 lc=7 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=2339000 phase=1 vid=5
+# WRAP_START t=2359000 phase=1 lc=8 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=2371000 phase=1 vid=6
+# WRAP_START t=2391000 phase=1 lc=9 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=2403000 phase=1 vid=7
+# WRAP_START t=2423000 phase=1 lc=10 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=2435000 phase=1 vid=8
+# WRAP_START t=2455000 phase=1 lc=11 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=2467000 phase=1 vid=9
+# WRAP_START t=2487000 phase=1 lc=12 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=2499000 phase=1 vid=10
+# WRAP_START t=2519000 phase=1 lc=13 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=2531000 phase=1 vid=11
+# WRAP_START t=2551000 phase=1 lc=14 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=2563000 phase=1 vid=12
+# WRAP_START t=2583000 phase=1 lc=15 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=2595000 phase=1 vid=13
+# WRAP_START t=2615000 phase=1 lc=16 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=2627000 phase=1 vid=14
+# WRAP_START t=2647000 phase=1 lc=17 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=2659000 phase=1 vid=15
+# WRAP_START t=2679000 phase=1 lc=18 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=2691000 phase=1 vid=16
+# WRAP_START t=2711000 phase=1 lc=19 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=2723000 phase=1 vid=17
+# WRAP_START t=2743000 phase=1 lc=20 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=2755000 phase=1 vid=18
+# WRAP_START t=2775000 phase=1 lc=21 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=2787000 phase=1 vid=19
+# WRAP_START t=2807000 phase=1 lc=22 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=2819000 phase=1 vid=20
+# WRAP_START t=2839000 phase=1 lc=23 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=2851000 phase=1 vid=21
+# WRAP_START t=2871000 phase=1 lc=24 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=2883000 phase=1 vid=22
+# WRAP_START t=2903000 phase=1 lc=25 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=2915000 phase=1 vid=23
+# WRAP_START t=2935000 phase=1 lc=26 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=2947000 phase=1 vid=24
+# WRAP_START t=2967000 phase=1 lc=27 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=2979000 phase=1 vid=25
+# WRAP_START t=2999000 phase=1 lc=28 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3011000 phase=1 vid=26
+# WRAP_START t=3031000 phase=1 lc=29 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3043000 phase=1 vid=27
+# WRAP_START t=3063000 phase=1 lc=30 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3075000 phase=1 vid=28
+# WRAP_START t=3095000 phase=1 lc=31 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3107000 phase=1 vid=29
+# WRAP_START t=3127000 phase=1 lc=32 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3139000 phase=1 vid=30
+# WRAP_START t=3159000 phase=1 lc=33 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3171000 phase=1 vid=31
+# WRAP_START t=3191000 phase=1 lc=34 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3203000 phase=1 vid=32
+# WRAP_START t=3223000 phase=1 lc=35 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3235000 phase=1 vid=33
+# WRAP_START t=3255000 phase=1 lc=36 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3267000 phase=1 vid=34
+# WRAP_START t=3287000 phase=1 lc=37 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3299000 phase=1 vid=35
+# WRAP_START t=3319000 phase=1 lc=38 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3331000 phase=1 vid=36
+# WRAP_START t=3351000 phase=1 lc=39 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3363000 phase=1 vid=37
+# WRAP_START t=3383000 phase=1 lc=40 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3395000 phase=1 vid=38
+# WRAP_START t=3415000 phase=1 lc=41 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3427000 phase=1 vid=39
+# WRAP_START t=3447000 phase=1 lc=42 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3459000 phase=1 vid=40
+# WRAP_START t=3479000 phase=1 lc=43 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3491000 phase=1 vid=41
+# WRAP_START t=3511000 phase=1 lc=44 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3523000 phase=1 vid=42
+# WRAP_START t=3543000 phase=1 lc=45 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3555000 phase=1 vid=43
+# WRAP_START t=3575000 phase=1 lc=46 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3587000 phase=1 vid=44
+# WRAP_START t=3607000 phase=1 lc=47 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3619000 phase=1 vid=45
+# WRAP_START t=3639000 phase=1 lc=48 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3651000 phase=1 vid=46
+# WRAP_START t=3671000 phase=1 lc=49 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3683000 phase=1 vid=47
+# WRAP_START t=3703000 phase=1 lc=50 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3715000 phase=1 vid=48
+# WRAP_START t=3735000 phase=1 lc=51 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3747000 phase=1 vid=49
+# WRAP_START t=3767000 phase=1 lc=52 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3779000 phase=1 vid=50
+# WRAP_START t=3799000 phase=1 lc=53 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3811000 phase=1 vid=51
+# WRAP_START t=3831000 phase=1 lc=54 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3843000 phase=1 vid=52
+# WRAP_START t=3863000 phase=1 lc=55 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3875000 phase=1 vid=53
+# WRAP_START t=3895000 phase=1 lc=56 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3907000 phase=1 vid=54
+# WRAP_START t=3927000 phase=1 lc=57 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=3939000 phase=1 vid=55
+# WRAP_START t=3959000 phase=1 lc=58 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=3971000 phase=1 vid=56
+# WRAP_START t=3991000 phase=1 lc=59 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4003000 phase=1 vid=57
+# WRAP_START t=4023000 phase=1 lc=60 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=4035000 phase=1 vid=58
+# WRAP_START t=4055000 phase=1 lc=61 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4067000 phase=1 vid=59
+# WRAP_START t=4087000 phase=1 lc=62 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=4099000 phase=1 vid=60
+# WRAP_START t=4119000 phase=1 lc=63 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4131000 phase=1 vid=61
+# WRAP_LAST t=4163000 phase=1 vid=62
+# WRAP_LAST t=4195000 phase=1 vid=63
+# WRAP_START t=4237000 phase=2 lc=0 lb=0 readyA=1 readyB=0 since=34
+# WRAP_START t=4269000 phase=2 lc=1 lb=1 readyA=0 readyB=1 since=15
+# WRAP_START t=4301000 phase=2 lc=2 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=4313000 phase=2 vid=64
+# WRAP_START t=4333000 phase=2 lc=3 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4345000 phase=2 vid=65
+# WRAP_START t=4365000 phase=2 lc=4 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=4377000 phase=2 vid=66
+# WRAP_START t=4397000 phase=2 lc=5 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4409000 phase=2 vid=67
+# WRAP_START t=4429000 phase=2 lc=6 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=4441000 phase=2 vid=68
+# WRAP_START t=4461000 phase=2 lc=7 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4473000 phase=2 vid=69
+# WRAP_START t=4493000 phase=2 lc=8 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=4505000 phase=2 vid=70
+# WRAP_START t=4525000 phase=2 lc=9 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4537000 phase=2 vid=71
+# WRAP_START t=4557000 phase=2 lc=10 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=4569000 phase=2 vid=72
+# WRAP_START t=4589000 phase=2 lc=11 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4601000 phase=2 vid=73
+# WRAP_START t=4621000 phase=2 lc=12 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=4633000 phase=2 vid=74
+# WRAP_START t=4653000 phase=2 lc=13 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4665000 phase=2 vid=75
+# WRAP_START t=4685000 phase=2 lc=14 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=4697000 phase=2 vid=76
+# WRAP_START t=4717000 phase=2 lc=15 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4729000 phase=2 vid=77
+# WRAP_START t=4749000 phase=2 lc=16 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=4761000 phase=2 vid=78
+# WRAP_START t=4781000 phase=2 lc=17 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4793000 phase=2 vid=79
+# WRAP_START t=4813000 phase=2 lc=18 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=4825000 phase=2 vid=80
+# WRAP_START t=4845000 phase=2 lc=19 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4857000 phase=2 vid=81
+# WRAP_START t=4877000 phase=2 lc=20 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=4889000 phase=2 vid=82
+# WRAP_START t=4909000 phase=2 lc=21 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4921000 phase=2 vid=83
+# WRAP_START t=4941000 phase=2 lc=22 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=4953000 phase=2 vid=84
+# WRAP_START t=4973000 phase=2 lc=23 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=4985000 phase=2 vid=85
+# WRAP_START t=5005000 phase=2 lc=24 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5017000 phase=2 vid=86
+# WRAP_START t=5037000 phase=2 lc=25 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5049000 phase=2 vid=87
+# WRAP_START t=5069000 phase=2 lc=26 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5081000 phase=2 vid=88
+# WRAP_START t=5101000 phase=2 lc=27 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5113000 phase=2 vid=89
+# WRAP_START t=5133000 phase=2 lc=28 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5145000 phase=2 vid=90
+# WRAP_START t=5165000 phase=2 lc=29 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5177000 phase=2 vid=91
+# WRAP_START t=5197000 phase=2 lc=30 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5209000 phase=2 vid=92
+# WRAP_START t=5229000 phase=2 lc=31 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5241000 phase=2 vid=93
+# WRAP_START t=5261000 phase=2 lc=32 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5273000 phase=2 vid=94
+# WRAP_START t=5293000 phase=2 lc=33 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5305000 phase=2 vid=95
+# WRAP_START t=5325000 phase=2 lc=34 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5337000 phase=2 vid=96
+# WRAP_START t=5357000 phase=2 lc=35 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5369000 phase=2 vid=97
+# WRAP_START t=5389000 phase=2 lc=36 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5401000 phase=2 vid=98
+# WRAP_START t=5421000 phase=2 lc=37 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5433000 phase=2 vid=99
+# WRAP_START t=5453000 phase=2 lc=38 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5465000 phase=2 vid=100
+# WRAP_START t=5485000 phase=2 lc=39 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5497000 phase=2 vid=101
+# WRAP_START t=5517000 phase=2 lc=40 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5529000 phase=2 vid=102
+# WRAP_START t=5549000 phase=2 lc=41 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5561000 phase=2 vid=103
+# WRAP_START t=5581000 phase=2 lc=42 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5593000 phase=2 vid=104
+# WRAP_START t=5613000 phase=2 lc=43 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5625000 phase=2 vid=105
+# WRAP_START t=5645000 phase=2 lc=44 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5657000 phase=2 vid=106
+# WRAP_START t=5677000 phase=2 lc=45 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5689000 phase=2 vid=107
+# WRAP_START t=5709000 phase=2 lc=46 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5721000 phase=2 vid=108
+# WRAP_START t=5741000 phase=2 lc=47 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5753000 phase=2 vid=109
+# WRAP_START t=5773000 phase=2 lc=48 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5785000 phase=2 vid=110
+# WRAP_START t=5805000 phase=2 lc=49 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5817000 phase=2 vid=111
+# WRAP_START t=5837000 phase=2 lc=50 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5849000 phase=2 vid=112
+# WRAP_START t=5869000 phase=2 lc=51 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5881000 phase=2 vid=113
+# WRAP_START t=5901000 phase=2 lc=52 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5913000 phase=2 vid=114
+# WRAP_START t=5933000 phase=2 lc=53 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=5945000 phase=2 vid=115
+# WRAP_START t=5965000 phase=2 lc=54 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=5977000 phase=2 vid=116
+# WRAP_START t=5997000 phase=2 lc=55 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=6009000 phase=2 vid=117
+# WRAP_START t=6029000 phase=2 lc=56 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=6041000 phase=2 vid=118
+# WRAP_START t=6061000 phase=2 lc=57 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=6073000 phase=2 vid=119
+# WRAP_START t=6093000 phase=2 lc=58 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=6105000 phase=2 vid=120
+# WRAP_START t=6125000 phase=2 lc=59 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=6137000 phase=2 vid=121
+# WRAP_START t=6157000 phase=2 lc=60 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=6169000 phase=2 vid=122
+# WRAP_START t=6189000 phase=2 lc=61 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=6201000 phase=2 vid=123
+# WRAP_START t=6221000 phase=2 lc=62 lb=0 readyA=1 readyB=0 since=15
+# WRAP_LAST t=6233000 phase=2 vid=124
+# WRAP_START t=6253000 phase=2 lc=63 lb=1 readyA=0 readyB=1 since=15
+# WRAP_LAST t=6265000 phase=2 vid=125
+# WRAP_LAST t=6297000 phase=2 vid=126
+# WRAP_LAST t=6329000 phase=2 vid=127
+# STEP12B_WRAPPER_PASS cycles=2409 output_beats=1024
 # ** Note: $finish    : 03_verification/tb/step12b_dct2_64_wrapper_tb.sv(366)
-#    Time: 6876001 ps  Iteration: 0  Instance: /step12b_dct2_64_wrapper_tb
-# End time: 11:10:10 on Sep 13,2026, Elapsed time: 0:00:01
+#    Time: 6880001 ps  Iteration: 0  Instance: /step12b_dct2_64_wrapper_tb
+# End time: 13:55:21 on Sep 13,2026, Elapsed time: 0:00:01
 # Errors: 0, Warnings: 0

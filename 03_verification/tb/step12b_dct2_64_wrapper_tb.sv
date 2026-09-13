@@ -42,9 +42,9 @@ module step12b_dct2_64_wrapper_tb;
     reg scrub_prev_a, scrub_prev_b;
 
 `ifdef SYNTHESIS
-    localparam TRACE_FILE = "05_audit/current/18/m2/step12b_rtl_event_trace_synthesis.csv";
+    localparam TRACE_FILE = "05_audit/current/19/m3/step12b_rtl_event_trace_synthesis.csv";
 `else
-    localparam TRACE_FILE = "05_audit/current/18/m2/step12b_rtl_event_trace_normal.csv";
+    localparam TRACE_FILE = "05_audit/current/19/m3/step12b_rtl_event_trace_normal.csv";
 `endif
 
     // Independent canonical DCT2-64 coefficient column A[i][1].  The
@@ -135,14 +135,14 @@ module step12b_dct2_64_wrapper_tb;
             // The completion transaction is the final output_fire, not a
             // mixed pre/post-NBA read of the it_done register.
             trace_done_s = trace_fire_s && (trace_index_s == 10'd1023);
-            // M1 staging capture is the response edge of the explicit
-            // request metadata pipeline, not the edge that launches the
-            // next request.  A group-15 response is the stage_full event.
-            trace_stage_capture_s = dut.stage_read_pending &&
-                                    (dut.stage_read_group == 5'd15);
+            // M3 staging capture is the edge after the registered bank
+            // response.  A group-15 capture is the stage_full event; the
+            // request and response metadata are intentionally distinct.
+            trace_stage_capture_s = dut.stage_rsp_pending_q &&
+                                    (dut.stage_rsp_group_q == 5'd15);
             trace_intermediate_write_s = trace_result_s && (dut.phase == 2'd1);
             // Record the actual H-admission transaction, not every cycle in
-            // PH_WAIT_H while the owner is still absent.  M2's commit gate
+            // PH_WAIT_H while the owner is still absent.  M3's commit gate
             // intentionally leaves one waiting edge between the final V
             // write and the reservation edge.
             trace_result_reserve_s = (dut.phase == 2'd3) &&
@@ -155,8 +155,8 @@ module step12b_dct2_64_wrapper_tb;
             trace_result_read_request_s = 1'b0;
             trace_result_read_response_s = dut.result_read_pending;
             trace_scrub_s = 1'b0;
-            trace_internal_vector_s = dut.stage_read_vector;
-            trace_internal_group_s = dut.stage_read_group;
+            trace_internal_vector_s = dut.stage_rsp_vector_q;
+            trace_internal_group_s = dut.stage_rsp_group_q;
             trace_internal_index_s = dut.result_issue_index;
             #1step;
             trace_cycle = trace_cycle + 1;

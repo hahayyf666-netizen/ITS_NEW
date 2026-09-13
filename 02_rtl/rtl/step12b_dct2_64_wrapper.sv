@@ -106,9 +106,11 @@ module step12b_dct2_64_wrapper #(
     reg launch_bank;
     reg [5:0] cycles_since_launch;
 
-    // One outstanding staging read is allowed.  A request at edge C is
-    // captured and consumed at edge C+1, while a new request may be issued
-    // at every edge.  The metadata is the response routing contract.
+    // One staging read request may be issued every edge.  M3 separates the
+    // physical bank response register from the staging capture register:
+    // request at C -> bank response/metadata at C+1 -> lane permutation and
+    // staging capture at C+2.  The request and response metadata pipelines
+    // are independent of the R4C datapath and preserve request II=1.
     reg stage_read_pending;
     reg stage_read_phase;
     reg [6:0] stage_read_vector;
@@ -122,6 +124,18 @@ module step12b_dct2_64_wrapper #(
     reg [9:0] stage_bank_addr0, stage_bank_addr1;
     reg [9:0] stage_bank_addr2, stage_bank_addr3;
     reg [1:0] stage_read_perm;
+    reg stage_rsp_pending_q;
+    reg stage_rsp_phase_q;
+    reg [6:0] stage_rsp_vector_q;
+    reg [4:0] stage_rsp_group_q;
+    reg stage_rsp_cache_q;
+    reg stage_rsp_bank_q;
+    reg [EPOCH_BITS-1:0] stage_rsp_epoch_q;
+    reg [1:0] stage_rsp_perm_q;
+    reg signed [15:0] stage_rsp_data0_q, stage_rsp_data1_q;
+    reg signed [15:0] stage_rsp_data2_q, stage_rsp_data3_q;
+    reg stage_rsp_valid0_q, stage_rsp_valid1_q;
+    reg stage_rsp_valid2_q, stage_rsp_valid3_q;
 
     wire r4c_start;
     wire [VECTOR_ID_W-1:0] r4c_vector_id;
@@ -429,6 +443,22 @@ module step12b_dct2_64_wrapper #(
             stage_bank_addr2 <= 0;
             stage_bank_addr3 <= 0;
             stage_read_perm <= 0;
+            stage_rsp_pending_q <= 1'b0;
+            stage_rsp_phase_q <= 1'b0;
+            stage_rsp_vector_q <= 0;
+            stage_rsp_group_q <= 0;
+            stage_rsp_cache_q <= 1'b0;
+            stage_rsp_bank_q <= 1'b0;
+            stage_rsp_epoch_q <= 0;
+            stage_rsp_perm_q <= 0;
+            stage_rsp_data0_q <= 0;
+            stage_rsp_data1_q <= 0;
+            stage_rsp_data2_q <= 0;
+            stage_rsp_data3_q <= 0;
+            stage_rsp_valid0_q <= 1'b0;
+            stage_rsp_valid1_q <= 1'b0;
+            stage_rsp_valid2_q <= 1'b0;
+            stage_rsp_valid3_q <= 1'b0;
             v_wr_valid_q <= 1'b0;
             v_wr_last_q <= 1'b0;
             v_wr_addr0_q <= 0;
@@ -748,11 +778,67 @@ module step12b_dct2_64_wrapper #(
                     can_load_tmp = 1'b0;
             end
 
-            // Synchronous bank response for the previous request.
+            // M3 capture stage.  The bank response register above is
+            // consumed one edge later, so request C -> bank response C+1
+            // -> lane permutation/stage capture C+2.  The selector and all
+            // ownership metadata come from the same registered response.
+            if (stage_rsp_pending_q) begin
+                case (stage_rsp_perm_q)
+                    2'd0: begin
+                        stage_lane0_tmp = stage_rsp_valid0_q ? stage_rsp_data0_q : 16'sd0;
+                        stage_lane1_tmp = stage_rsp_valid1_q ? stage_rsp_data1_q : 16'sd0;
+                        stage_lane2_tmp = stage_rsp_valid2_q ? stage_rsp_data2_q : 16'sd0;
+                        stage_lane3_tmp = stage_rsp_valid3_q ? stage_rsp_data3_q : 16'sd0;
+                    end
+                    2'd1: begin
+                        stage_lane0_tmp = stage_rsp_valid1_q ? stage_rsp_data1_q : 16'sd0;
+                        stage_lane1_tmp = stage_rsp_valid0_q ? stage_rsp_data0_q : 16'sd0;
+                        stage_lane2_tmp = stage_rsp_valid3_q ? stage_rsp_data3_q : 16'sd0;
+                        stage_lane3_tmp = stage_rsp_valid2_q ? stage_rsp_data2_q : 16'sd0;
+                    end
+                    2'd2: begin
+                        stage_lane0_tmp = stage_rsp_valid2_q ? stage_rsp_data2_q : 16'sd0;
+                        stage_lane1_tmp = stage_rsp_valid3_q ? stage_rsp_data3_q : 16'sd0;
+                        stage_lane2_tmp = stage_rsp_valid0_q ? stage_rsp_data0_q : 16'sd0;
+                        stage_lane3_tmp = stage_rsp_valid1_q ? stage_rsp_data1_q : 16'sd0;
+                    end
+                    default: begin
+                        stage_lane0_tmp = stage_rsp_valid3_q ? stage_rsp_data3_q : 16'sd0;
+                        stage_lane1_tmp = stage_rsp_valid2_q ? stage_rsp_data2_q : 16'sd0;
+                        stage_lane2_tmp = stage_rsp_valid1_q ? stage_rsp_data1_q : 16'sd0;
+                        stage_lane3_tmp = stage_rsp_valid0_q ? stage_rsp_data0_q : 16'sd0;
+                    end
+                endcase
+                if (stage_rsp_bank_q == 1'b0) begin
+                    stage_a[stage_rsp_group_q*4+0] <= stage_lane0_tmp;
+                    stage_a[stage_rsp_group_q*4+1] <= stage_lane1_tmp;
+                    stage_a[stage_rsp_group_q*4+2] <= stage_lane2_tmp;
+                    stage_a[stage_rsp_group_q*4+3] <= stage_lane3_tmp;
+                end else begin
+                    stage_b[stage_rsp_group_q*4+0] <= stage_lane0_tmp;
+                    stage_b[stage_rsp_group_q*4+1] <= stage_lane1_tmp;
+                    stage_b[stage_rsp_group_q*4+2] <= stage_lane2_tmp;
+                    stage_b[stage_rsp_group_q*4+3] <= stage_lane3_tmp;
+                end
+                if (stage_rsp_group_q == 15) begin
+                    if (stage_rsp_bank_q == 1'b0) stage_ready_a <= 1'b1;
+                    else stage_ready_b <= 1'b1;
+                end
+            end
+
+            // Bank response register for the previous request.  Each bank is
+            // read exactly once here; no lane permutation or bank selection
+            // remains in the RAM-to-register path.  The response metadata is
+            // delayed with the data so the next block is fully self-routed.
+            stage_rsp_pending_q <= stage_read_pending;
             if (stage_read_pending) begin
-                // Read each physical bank exactly once using bank-local
-                // metadata.  The low two vector bits only select the small
-                // post-read lane permutation below.
+                stage_rsp_phase_q <= stage_read_phase;
+                stage_rsp_vector_q <= stage_read_vector;
+                stage_rsp_group_q <= stage_read_group;
+                stage_rsp_cache_q <= stage_read_cache;
+                stage_rsp_bank_q <= stage_read_bank;
+                stage_rsp_epoch_q <= stage_read_epoch;
+                stage_rsp_perm_q <= stage_read_perm;
                 stage_bank_data0_tmp = 16'sd0;
                 stage_bank_data1_tmp = 16'sd0;
                 stage_bank_data2_tmp = 16'sd0;
@@ -791,47 +877,14 @@ module step12b_dct2_64_wrapper #(
                     stage_bank_valid2_tmp = 1'b1;
                     stage_bank_valid3_tmp = 1'b1;
                 end
-                case (stage_read_perm)
-                    2'd0: begin
-                        stage_lane0_tmp = stage_bank_valid0_tmp ? stage_bank_data0_tmp : 16'sd0;
-                        stage_lane1_tmp = stage_bank_valid1_tmp ? stage_bank_data1_tmp : 16'sd0;
-                        stage_lane2_tmp = stage_bank_valid2_tmp ? stage_bank_data2_tmp : 16'sd0;
-                        stage_lane3_tmp = stage_bank_valid3_tmp ? stage_bank_data3_tmp : 16'sd0;
-                    end
-                    2'd1: begin
-                        stage_lane0_tmp = stage_bank_valid1_tmp ? stage_bank_data1_tmp : 16'sd0;
-                        stage_lane1_tmp = stage_bank_valid0_tmp ? stage_bank_data0_tmp : 16'sd0;
-                        stage_lane2_tmp = stage_bank_valid3_tmp ? stage_bank_data3_tmp : 16'sd0;
-                        stage_lane3_tmp = stage_bank_valid2_tmp ? stage_bank_data2_tmp : 16'sd0;
-                    end
-                    2'd2: begin
-                        stage_lane0_tmp = stage_bank_valid2_tmp ? stage_bank_data2_tmp : 16'sd0;
-                        stage_lane1_tmp = stage_bank_valid3_tmp ? stage_bank_data3_tmp : 16'sd0;
-                        stage_lane2_tmp = stage_bank_valid0_tmp ? stage_bank_data0_tmp : 16'sd0;
-                        stage_lane3_tmp = stage_bank_valid1_tmp ? stage_bank_data1_tmp : 16'sd0;
-                    end
-                    default: begin
-                        stage_lane0_tmp = stage_bank_valid3_tmp ? stage_bank_data3_tmp : 16'sd0;
-                        stage_lane1_tmp = stage_bank_valid2_tmp ? stage_bank_data2_tmp : 16'sd0;
-                        stage_lane2_tmp = stage_bank_valid1_tmp ? stage_bank_data1_tmp : 16'sd0;
-                        stage_lane3_tmp = stage_bank_valid0_tmp ? stage_bank_data0_tmp : 16'sd0;
-                    end
-                endcase
-                if (stage_read_bank == 1'b0) begin
-                    stage_a[stage_read_group*4+0] <= stage_lane0_tmp;
-                    stage_a[stage_read_group*4+1] <= stage_lane1_tmp;
-                    stage_a[stage_read_group*4+2] <= stage_lane2_tmp;
-                    stage_a[stage_read_group*4+3] <= stage_lane3_tmp;
-                end else begin
-                    stage_b[stage_read_group*4+0] <= stage_lane0_tmp;
-                    stage_b[stage_read_group*4+1] <= stage_lane1_tmp;
-                    stage_b[stage_read_group*4+2] <= stage_lane2_tmp;
-                    stage_b[stage_read_group*4+3] <= stage_lane3_tmp;
-                end
-                if (stage_read_group == 15) begin
-                    if (stage_read_bank == 1'b0) stage_ready_a <= 1'b1;
-                    else stage_ready_b <= 1'b1;
-                end
+                stage_rsp_data0_q <= stage_bank_data0_tmp;
+                stage_rsp_data1_q <= stage_bank_data1_tmp;
+                stage_rsp_data2_q <= stage_bank_data2_tmp;
+                stage_rsp_data3_q <= stage_bank_data3_tmp;
+                stage_rsp_valid0_q <= stage_bank_valid0_tmp;
+                stage_rsp_valid1_q <= stage_bank_valid1_tmp;
+                stage_rsp_valid2_q <= stage_bank_valid2_tmp;
+                stage_rsp_valid3_q <= stage_bank_valid3_tmp;
             end
 
             // Issue the next banked read.  The response will be captured on
@@ -888,8 +941,10 @@ module step12b_dct2_64_wrapper #(
             // result beat in the same clock/event.
             if (r4c_result_valid) begin
                 vec_tmp = r4c_result_vector_id - phase_vector_base;
+`ifndef SYNTHESIS
                 if (vec_tmp < 0 || vec_tmp >= 64)
                     protocol_error <= 1'b1;
+`endif
                 for (i = 0; i < 4; i = i + 1) begin
                     row_tmp = r4c_result_group * 4 + i;
                     if (phase == PH_VERTICAL) begin

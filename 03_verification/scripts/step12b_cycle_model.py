@@ -28,11 +28,11 @@ from v34_rtl_bitexact import main_2d_details  # type: ignore
 N = 64
 GROUPS = 16
 RESULT_GROUPS = 1024
-# Step12C-M2 uses inference-friendly fixed-bank synchronous reads for the staging
-# memories.  A request accepted at edge C produces its lane capture at C+1.
-# ResultMemory remains a separate synchronous-read boundary with the same
-# one-edge response, but it is intentionally kept as a distinct contract.
-STAGING_CAPTURE_EDGE_DELTA = 1
+# Step12C-M3 models the bank-response register and the following staging
+# capture register separately.  A request accepted at edge C produces the
+# registered bank response at C+1 and lane capture at C+2.  ResultMemory
+# remains a separate synchronous-read boundary with a one-edge response.
+STAGING_CAPTURE_EDGE_DELTA = 2
 RESULT_READ_LATENCY = 1
 # Measured wrapper-visible latency from vector_start accepting edge to the
 # first result group.  The frozen R4C source is unchanged; this is the
@@ -535,7 +535,7 @@ class PhaseTask:
                 row, col = vector, idx
             if self.dest is not None:
                 if self.phase == "vertical":
-                    # Step12C-M2 models the RTL's registered V write command:
+                    # Step12C-M3 retains the RTL's registered V write command:
                     # the R4C result is accepted at C, but the physical
                     # intermediate-bank write commits at C+1.  Do not make
                     # the H phase visible until the last queued command has
@@ -597,7 +597,7 @@ class IntegrationModel:
         # staging request/capture is the explicit one-edge RAM contract.
         self.phase_read_not_before = 0
         # Pending bank-local V write commands.  Each entry is committed on
-        # the following integration tick, matching the M2 RTL pipeline.
+                # the following integration tick, matching the M3 RTL pipeline.
         self.pending_vertical_writes: dict[int, list[tuple[int, int, int, Any]]] = {}
         self.pending_vertical_last: dict[int, int] = {}
         self.vertical_commit_tu: int | None = None
@@ -744,7 +744,7 @@ class IntegrationModel:
         task = self.current
         if task.phase == "vertical":
             if self.vertical_commit_tu != task.tu:
-                # The final R4C group has been emitted, but M2 keeps the
+                # The final R4C group has been emitted, but M3 keeps the
                 # phase owner until the registered final bank write commits.
                 return
             slot = task.cache_slot
@@ -911,10 +911,10 @@ def validate_event_trace(trace: list[dict[str, Any]],
             raise ContractError("input data without descriptor binding")
         if e.get("event") == "input_data_fire" and e.get("slot") != binds[e.get("tu")]:
             raise ContractError("descriptor/cache misbind")
-    # Staging memories intentionally capture on the accepting edge in the
-    # frozen RTL.  ResultMemory is the separate synchronous-read boundary.
-    # Keeping the two contracts explicit prevents a global READ_LATENCY
-    # constant from hiding a real request/capture mismatch.
+    # M3 staging memories have an explicit bank-response register followed by
+    # the staging capture register.  ResultMemory is the separate
+    # synchronous-read boundary.  Keeping the two contracts explicit prevents
+    # one global latency constant from hiding a real request/capture mismatch.
     requests = {(e.get("memory"), e.get("token")): int(e["cycle"])
                 for e in trace if e.get("event") == "memory_read_request"}
     responses = {(e.get("memory"), e.get("token")): int(e["cycle"])
@@ -1531,7 +1531,7 @@ def main() -> int:
                f"vector_id_wrap: {results['vector_id_wrap']}",
                f"epoch_wrap: {results['epoch_wrap']}",
                f"mutation_gate ({len(mutation)} checker mutations): {mutation}",
-              "Staging reads use request C → capture C+1; ResultMemory uses request C → response C+1.",
+              "M3 staging reads use request C → bank response C+1 → capture C+2; ResultMemory uses request C → response C+1.",
               "This is the executable Python contract gate. Public RTL trace reconciliation remains a separate fail-closed audit; no free event offsets are permitted."]
     report += ["", "Model-side functional/protocol gate is PASS for the scoped 64x64 DCT2xDCT2 wrapper; no Vivado or full-core timing claim is made."]
     (out / "V35_STEP12B_CYCLE_MODEL_REPORT.md").write_text("\n".join(report) + "\n", encoding="utf-8")
