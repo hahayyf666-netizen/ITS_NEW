@@ -1,0 +1,30 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Sun Sep 13 11:22:47 2026
+| Host         : Finesse running 64-bit major release  (build 9200)
+| Command      : report_utilization -hierarchical -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/18/m2_synth/report_hierarchy_utilization_postsynth.rpt
+| Design       : step12b_dct2_64_wrapper
+| Device       : xcku5p-ffvb676-2-e
+| Speed File   : -2
+| Design State : Synthesized
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++-----------------------------+------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+|           Instance          |         Module         | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs  | RAMB36 | RAMB18 | URAM | DSP Blocks |
++-----------------------------+------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+| step12b_dct2_64_wrapper     |                  (top) |      22044 |      14876 |    7168 |    0 | 20829 |      0 |      0 |    0 |        128 |
+|   (step12b_dct2_64_wrapper) |                  (top) |      10468 |       3300 |    7168 |    0 |  2836 |      0 |      0 |    0 |          0 |
+|   frozen_r4c                | p2f_dct2_64_b1_step102 |      11576 |      11576 |       0 |    0 | 17993 |      0 |      0 |    0 |        128 |
++-----------------------------+------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+
+

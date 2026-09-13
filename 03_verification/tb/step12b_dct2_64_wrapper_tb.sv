@@ -42,9 +42,9 @@ module step12b_dct2_64_wrapper_tb;
     reg scrub_prev_a, scrub_prev_b;
 
 `ifdef SYNTHESIS
-    localparam TRACE_FILE = "05_audit/current/18/m1/step12b_rtl_event_trace_synthesis.csv";
+    localparam TRACE_FILE = "05_audit/current/18/m2/step12b_rtl_event_trace_synthesis.csv";
 `else
-    localparam TRACE_FILE = "05_audit/current/18/m1/step12b_rtl_event_trace_normal.csv";
+    localparam TRACE_FILE = "05_audit/current/18/m2/step12b_rtl_event_trace_normal.csv";
 `endif
 
     // Independent canonical DCT2-64 coefficient column A[i][1].  The
@@ -141,7 +141,14 @@ module step12b_dct2_64_wrapper_tb;
             trace_stage_capture_s = dut.stage_read_pending &&
                                     (dut.stage_read_group == 5'd15);
             trace_intermediate_write_s = trace_result_s && (dut.phase == 2'd1);
-            trace_result_reserve_s = (dut.phase == 2'd3) && !dut.result_owner_valid;
+            // Record the actual H-admission transaction, not every cycle in
+            // PH_WAIT_H while the owner is still absent.  M2's commit gate
+            // intentionally leaves one waiting edge between the final V
+            // write and the reservation edge.
+            trace_result_reserve_s = (dut.phase == 2'd3) &&
+                                     dut.vertical_commit_done &&
+                                     !dut.v_wr_valid_q &&
+                                     !dut.result_owner_valid;
             // A response and a new request may share one edge.  Therefore a
             // request is detected from the post-NBA issued-count increment,
             // not from the pre-edge pending bit alone.

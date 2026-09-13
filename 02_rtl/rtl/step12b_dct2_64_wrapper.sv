@@ -116,6 +116,12 @@ module step12b_dct2_64_wrapper #(
     reg stage_read_cache;
     reg stage_read_bank;
     reg [EPOCH_BITS-1:0] stage_read_epoch;
+    // Bank-local address/selector metadata.  The response edge reads each
+    // physical bank once; only the small post-read lane permutation is
+    // data-dependent on the vector low bits.
+    reg [9:0] stage_bank_addr0, stage_bank_addr1;
+    reg [9:0] stage_bank_addr2, stage_bank_addr3;
+    reg [1:0] stage_read_perm;
 
     wire r4c_start;
     wire [VECTOR_ID_W-1:0] r4c_vector_id;
@@ -221,6 +227,10 @@ module step12b_dct2_64_wrapper #(
     integer stage_addr0_tmp, stage_addr1_tmp, stage_addr2_tmp, stage_addr3_tmp;
     reg signed [15:0] stage_lane0_tmp, stage_lane1_tmp;
     reg signed [15:0] stage_lane2_tmp, stage_lane3_tmp;
+    reg signed [15:0] stage_bank_data0_tmp, stage_bank_data1_tmp;
+    reg signed [15:0] stage_bank_data2_tmp, stage_bank_data3_tmp;
+    reg stage_bank_valid0_tmp, stage_bank_valid1_tmp;
+    reg stage_bank_valid2_tmp, stage_bank_valid3_tmp;
 
     // The sparse input stream has one write transaction per cycle.  Keeping
     // the decoded bank/address as wires makes the four bank write ports
@@ -236,6 +246,12 @@ module step12b_dct2_64_wrapper #(
     reg inter_wr_en0, inter_wr_en1, inter_wr_en2, inter_wr_en3;
     reg [9:0] inter_wr_addr0, inter_wr_addr1, inter_wr_addr2, inter_wr_addr3;
     reg signed [15:0] inter_wr_data0, inter_wr_data1, inter_wr_data2, inter_wr_data3;
+    // One-cycle V write-command pipeline.  The command is accepted every
+    // result group; the bank write processes commit the previous command.
+    reg v_wr_valid_q, v_wr_last_q;
+    reg [9:0] v_wr_addr0_q, v_wr_addr1_q, v_wr_addr2_q, v_wr_addr3_q;
+    reg signed [15:0] v_wr_data0_q, v_wr_data1_q, v_wr_data2_q, v_wr_data3_q;
+    reg vertical_commit_done;
     integer inter_comb_i;
     integer inter_comb_row;
     integer inter_comb_vec;
@@ -359,10 +375,13 @@ module step12b_dct2_64_wrapper #(
     end
 
     // Intermediate storage has one statically decoded write port per bank.
-    always @(posedge clk) if (inter_wr_en0) intermediate_mem0[inter_wr_addr0] <= inter_wr_data0;
-    always @(posedge clk) if (inter_wr_en1) intermediate_mem1[inter_wr_addr1] <= inter_wr_data1;
-    always @(posedge clk) if (inter_wr_en2) intermediate_mem2[inter_wr_addr2] <= inter_wr_data2;
-    always @(posedge clk) if (inter_wr_en3) intermediate_mem3[inter_wr_addr3] <= inter_wr_data3;
+    // The registered command is committed one edge after the R4C result;
+    // this removes the result-vector -> RAM WE timing cone while retaining
+    // one command per group.
+    always @(posedge clk) if (v_wr_valid_q) intermediate_mem0[v_wr_addr0_q] <= v_wr_data0_q;
+    always @(posedge clk) if (v_wr_valid_q) intermediate_mem1[v_wr_addr1_q] <= v_wr_data1_q;
+    always @(posedge clk) if (v_wr_valid_q) intermediate_mem2[v_wr_addr2_q] <= v_wr_data2_q;
+    always @(posedge clk) if (v_wr_valid_q) intermediate_mem3[v_wr_addr3_q] <= v_wr_data3_q;
 
     always @(posedge clk) begin
         if (!rst_n) begin
@@ -405,6 +424,22 @@ module step12b_dct2_64_wrapper #(
             stage_read_cache <= 1'b0;
             stage_read_bank <= 1'b0;
             stage_read_epoch <= 0;
+            stage_bank_addr0 <= 0;
+            stage_bank_addr1 <= 0;
+            stage_bank_addr2 <= 0;
+            stage_bank_addr3 <= 0;
+            stage_read_perm <= 0;
+            v_wr_valid_q <= 1'b0;
+            v_wr_last_q <= 1'b0;
+            v_wr_addr0_q <= 0;
+            v_wr_addr1_q <= 0;
+            v_wr_addr2_q <= 0;
+            v_wr_addr3_q <= 0;
+            v_wr_data0_q <= 0;
+            v_wr_data1_q <= 0;
+            v_wr_data2_q <= 0;
+            v_wr_data3_q <= 0;
+            vertical_commit_done <= 1'b0;
             result_occupied <= 0;
             result_reserved <= 0;
             result_produced <= 0;
@@ -439,6 +474,25 @@ module step12b_dct2_64_wrapper #(
         end else begin
             debug_stage16_valid <= 1'b0;
             it_done <= 1'b0;
+            // Commit the previous V write command at this edge and capture
+            // the current R4C V group for the next edge.  The explicit last
+            // command marker is the only condition that releases H admission.
+            v_wr_valid_q <= 1'b0;
+            v_wr_last_q <= 1'b0;
+            if (v_wr_valid_q && v_wr_last_q)
+                vertical_commit_done <= 1'b1;
+            if (r4c_result_valid && phase == PH_VERTICAL) begin
+                v_wr_valid_q <= 1'b1;
+                v_wr_last_q <= (r4c_result_vector_id == (phase_vector_base + 63)) && r4c_result_last;
+                v_wr_addr0_q <= inter_wr_addr0;
+                v_wr_addr1_q <= inter_wr_addr1;
+                v_wr_addr2_q <= inter_wr_addr2;
+                v_wr_addr3_q <= inter_wr_addr3;
+                v_wr_data0_q <= inter_wr_data0;
+                v_wr_data1_q <= inter_wr_data1;
+                v_wr_data2_q <= inter_wr_data2;
+                v_wr_data3_q <= inter_wr_data3;
+            end
             if (desc_bind_guard)
                 desc_bind_guard <= 1'b0;
 
@@ -654,7 +708,7 @@ module step12b_dct2_64_wrapper #(
             // H admission is separately gated by the single ResultMemory
             // owner.  A completed V phase may wait here while an earlier TU
             // is still under output backpressure.
-            if (phase == PH_WAIT_H && !result_owner_valid) begin
+            if (phase == PH_WAIT_H && vertical_commit_done && !v_wr_valid_q && !result_owner_valid) begin
                 result_owner_valid <= 1'b1;
                 result_owner_tu <= active_tu;
                 result_reserved <= 11'd1024;
@@ -678,6 +732,7 @@ module step12b_dct2_64_wrapper #(
                 stage_ready_a <= 0;
                 stage_ready_b <= 0;
                 cycles_since_launch <= 6'd16;
+                vertical_commit_done <= 1'b0;
             end
 
             // Four-point-per-cycle staging.  A request is registered here;
@@ -695,102 +750,73 @@ module step12b_dct2_64_wrapper #(
 
             // Synchronous bank response for the previous request.
             if (stage_read_pending) begin
+                // Read each physical bank exactly once using bank-local
+                // metadata.  The low two vector bits only select the small
+                // post-read lane permutation below.
+                stage_bank_data0_tmp = 16'sd0;
+                stage_bank_data1_tmp = 16'sd0;
+                stage_bank_data2_tmp = 16'sd0;
+                stage_bank_data3_tmp = 16'sd0;
+                stage_bank_valid0_tmp = 1'b0;
+                stage_bank_valid1_tmp = 1'b0;
+                stage_bank_valid2_tmp = 1'b0;
+                stage_bank_valid3_tmp = 1'b0;
                 if (stage_read_phase == 1'b0) begin
-                    stage_addr0_tmp = ((stage_read_group * 4 + 0) * 16) +
-                                      (stage_read_vector >> 2);
-                    stage_addr1_tmp = ((stage_read_group * 4 + 1) * 16) +
-                                      (stage_read_vector >> 2);
-                    stage_addr2_tmp = ((stage_read_group * 4 + 2) * 16) +
-                                      (stage_read_vector >> 2);
-                    stage_addr3_tmp = ((stage_read_group * 4 + 3) * 16) +
-                                      (stage_read_vector >> 2);
                     if (stage_read_cache == 1'b0) begin
-                        case (stage_read_vector[1:0])
-                            2'd0: begin
-                                stage_lane0_tmp = (input_tag_a0[stage_addr0_tmp] == stage_read_epoch) ? input_cache_a0[stage_addr0_tmp] : 16'sd0;
-                                stage_lane1_tmp = (input_tag_a1[stage_addr1_tmp] == stage_read_epoch) ? input_cache_a1[stage_addr1_tmp] : 16'sd0;
-                                stage_lane2_tmp = (input_tag_a2[stage_addr2_tmp] == stage_read_epoch) ? input_cache_a2[stage_addr2_tmp] : 16'sd0;
-                                stage_lane3_tmp = (input_tag_a3[stage_addr3_tmp] == stage_read_epoch) ? input_cache_a3[stage_addr3_tmp] : 16'sd0;
-                            end
-                            2'd1: begin
-                                stage_lane0_tmp = (input_tag_a1[stage_addr0_tmp] == stage_read_epoch) ? input_cache_a1[stage_addr0_tmp] : 16'sd0;
-                                stage_lane1_tmp = (input_tag_a0[stage_addr1_tmp] == stage_read_epoch) ? input_cache_a0[stage_addr1_tmp] : 16'sd0;
-                                stage_lane2_tmp = (input_tag_a3[stage_addr2_tmp] == stage_read_epoch) ? input_cache_a3[stage_addr2_tmp] : 16'sd0;
-                                stage_lane3_tmp = (input_tag_a2[stage_addr3_tmp] == stage_read_epoch) ? input_cache_a2[stage_addr3_tmp] : 16'sd0;
-                            end
-                            2'd2: begin
-                                stage_lane0_tmp = (input_tag_a2[stage_addr0_tmp] == stage_read_epoch) ? input_cache_a2[stage_addr0_tmp] : 16'sd0;
-                                stage_lane1_tmp = (input_tag_a3[stage_addr1_tmp] == stage_read_epoch) ? input_cache_a3[stage_addr1_tmp] : 16'sd0;
-                                stage_lane2_tmp = (input_tag_a0[stage_addr2_tmp] == stage_read_epoch) ? input_cache_a0[stage_addr2_tmp] : 16'sd0;
-                                stage_lane3_tmp = (input_tag_a1[stage_addr3_tmp] == stage_read_epoch) ? input_cache_a1[stage_addr3_tmp] : 16'sd0;
-                            end
-                            default: begin
-                                stage_lane0_tmp = (input_tag_a3[stage_addr0_tmp] == stage_read_epoch) ? input_cache_a3[stage_addr0_tmp] : 16'sd0;
-                                stage_lane1_tmp = (input_tag_a2[stage_addr1_tmp] == stage_read_epoch) ? input_cache_a2[stage_addr1_tmp] : 16'sd0;
-                                stage_lane2_tmp = (input_tag_a1[stage_addr2_tmp] == stage_read_epoch) ? input_cache_a1[stage_addr2_tmp] : 16'sd0;
-                                stage_lane3_tmp = (input_tag_a0[stage_addr3_tmp] == stage_read_epoch) ? input_cache_a0[stage_addr3_tmp] : 16'sd0;
-                            end
-                        endcase
+                        stage_bank_data0_tmp = input_cache_a0[stage_bank_addr0];
+                        stage_bank_data1_tmp = input_cache_a1[stage_bank_addr1];
+                        stage_bank_data2_tmp = input_cache_a2[stage_bank_addr2];
+                        stage_bank_data3_tmp = input_cache_a3[stage_bank_addr3];
+                        stage_bank_valid0_tmp = (input_tag_a0[stage_bank_addr0] == stage_read_epoch);
+                        stage_bank_valid1_tmp = (input_tag_a1[stage_bank_addr1] == stage_read_epoch);
+                        stage_bank_valid2_tmp = (input_tag_a2[stage_bank_addr2] == stage_read_epoch);
+                        stage_bank_valid3_tmp = (input_tag_a3[stage_bank_addr3] == stage_read_epoch);
                     end else begin
-                        case (stage_read_vector[1:0])
-                            2'd0: begin
-                                stage_lane0_tmp = (input_tag_b0[stage_addr0_tmp] == stage_read_epoch) ? input_cache_b0[stage_addr0_tmp] : 16'sd0;
-                                stage_lane1_tmp = (input_tag_b1[stage_addr1_tmp] == stage_read_epoch) ? input_cache_b1[stage_addr1_tmp] : 16'sd0;
-                                stage_lane2_tmp = (input_tag_b2[stage_addr2_tmp] == stage_read_epoch) ? input_cache_b2[stage_addr2_tmp] : 16'sd0;
-                                stage_lane3_tmp = (input_tag_b3[stage_addr3_tmp] == stage_read_epoch) ? input_cache_b3[stage_addr3_tmp] : 16'sd0;
-                            end
-                            2'd1: begin
-                                stage_lane0_tmp = (input_tag_b1[stage_addr0_tmp] == stage_read_epoch) ? input_cache_b1[stage_addr0_tmp] : 16'sd0;
-                                stage_lane1_tmp = (input_tag_b0[stage_addr1_tmp] == stage_read_epoch) ? input_cache_b0[stage_addr1_tmp] : 16'sd0;
-                                stage_lane2_tmp = (input_tag_b3[stage_addr2_tmp] == stage_read_epoch) ? input_cache_b3[stage_addr2_tmp] : 16'sd0;
-                                stage_lane3_tmp = (input_tag_b2[stage_addr3_tmp] == stage_read_epoch) ? input_cache_b2[stage_addr3_tmp] : 16'sd0;
-                            end
-                            2'd2: begin
-                                stage_lane0_tmp = (input_tag_b2[stage_addr0_tmp] == stage_read_epoch) ? input_cache_b2[stage_addr0_tmp] : 16'sd0;
-                                stage_lane1_tmp = (input_tag_b3[stage_addr1_tmp] == stage_read_epoch) ? input_cache_b3[stage_addr1_tmp] : 16'sd0;
-                                stage_lane2_tmp = (input_tag_b0[stage_addr2_tmp] == stage_read_epoch) ? input_cache_b0[stage_addr2_tmp] : 16'sd0;
-                                stage_lane3_tmp = (input_tag_b1[stage_addr3_tmp] == stage_read_epoch) ? input_cache_b1[stage_addr3_tmp] : 16'sd0;
-                            end
-                            default: begin
-                                stage_lane0_tmp = (input_tag_b3[stage_addr0_tmp] == stage_read_epoch) ? input_cache_b3[stage_addr0_tmp] : 16'sd0;
-                                stage_lane1_tmp = (input_tag_b2[stage_addr1_tmp] == stage_read_epoch) ? input_cache_b2[stage_addr1_tmp] : 16'sd0;
-                                stage_lane2_tmp = (input_tag_b1[stage_addr2_tmp] == stage_read_epoch) ? input_cache_b1[stage_addr2_tmp] : 16'sd0;
-                                stage_lane3_tmp = (input_tag_b0[stage_addr3_tmp] == stage_read_epoch) ? input_cache_b0[stage_addr3_tmp] : 16'sd0;
-                            end
-                        endcase
+                        stage_bank_data0_tmp = input_cache_b0[stage_bank_addr0];
+                        stage_bank_data1_tmp = input_cache_b1[stage_bank_addr1];
+                        stage_bank_data2_tmp = input_cache_b2[stage_bank_addr2];
+                        stage_bank_data3_tmp = input_cache_b3[stage_bank_addr3];
+                        stage_bank_valid0_tmp = (input_tag_b0[stage_bank_addr0] == stage_read_epoch);
+                        stage_bank_valid1_tmp = (input_tag_b1[stage_bank_addr1] == stage_read_epoch);
+                        stage_bank_valid2_tmp = (input_tag_b2[stage_bank_addr2] == stage_read_epoch);
+                        stage_bank_valid3_tmp = (input_tag_b3[stage_bank_addr3] == stage_read_epoch);
                     end
                 end else begin
-                    stage_addr0_tmp = stage_read_vector * 16 + stage_read_group;
-                    stage_addr1_tmp = stage_addr0_tmp;
-                    stage_addr2_tmp = stage_addr0_tmp;
-                    stage_addr3_tmp = stage_addr0_tmp;
-                    case (stage_read_vector[1:0])
-                        2'd0: begin
-                            stage_lane0_tmp = intermediate_mem0[stage_addr0_tmp];
-                            stage_lane1_tmp = intermediate_mem1[stage_addr1_tmp];
-                            stage_lane2_tmp = intermediate_mem2[stage_addr2_tmp];
-                            stage_lane3_tmp = intermediate_mem3[stage_addr3_tmp];
-                        end
-                        2'd1: begin
-                            stage_lane0_tmp = intermediate_mem1[stage_addr0_tmp];
-                            stage_lane1_tmp = intermediate_mem0[stage_addr1_tmp];
-                            stage_lane2_tmp = intermediate_mem3[stage_addr2_tmp];
-                            stage_lane3_tmp = intermediate_mem2[stage_addr3_tmp];
-                        end
-                        2'd2: begin
-                            stage_lane0_tmp = intermediate_mem2[stage_addr0_tmp];
-                            stage_lane1_tmp = intermediate_mem3[stage_addr1_tmp];
-                            stage_lane2_tmp = intermediate_mem0[stage_addr2_tmp];
-                            stage_lane3_tmp = intermediate_mem1[stage_addr3_tmp];
-                        end
-                        default: begin
-                            stage_lane0_tmp = intermediate_mem3[stage_addr0_tmp];
-                            stage_lane1_tmp = intermediate_mem2[stage_addr1_tmp];
-                            stage_lane2_tmp = intermediate_mem1[stage_addr2_tmp];
-                            stage_lane3_tmp = intermediate_mem0[stage_addr3_tmp];
-                        end
-                    endcase
+                    stage_bank_data0_tmp = intermediate_mem0[stage_bank_addr0];
+                    stage_bank_data1_tmp = intermediate_mem1[stage_bank_addr1];
+                    stage_bank_data2_tmp = intermediate_mem2[stage_bank_addr2];
+                    stage_bank_data3_tmp = intermediate_mem3[stage_bank_addr3];
+                    stage_bank_valid0_tmp = 1'b1;
+                    stage_bank_valid1_tmp = 1'b1;
+                    stage_bank_valid2_tmp = 1'b1;
+                    stage_bank_valid3_tmp = 1'b1;
                 end
+                case (stage_read_perm)
+                    2'd0: begin
+                        stage_lane0_tmp = stage_bank_valid0_tmp ? stage_bank_data0_tmp : 16'sd0;
+                        stage_lane1_tmp = stage_bank_valid1_tmp ? stage_bank_data1_tmp : 16'sd0;
+                        stage_lane2_tmp = stage_bank_valid2_tmp ? stage_bank_data2_tmp : 16'sd0;
+                        stage_lane3_tmp = stage_bank_valid3_tmp ? stage_bank_data3_tmp : 16'sd0;
+                    end
+                    2'd1: begin
+                        stage_lane0_tmp = stage_bank_valid1_tmp ? stage_bank_data1_tmp : 16'sd0;
+                        stage_lane1_tmp = stage_bank_valid0_tmp ? stage_bank_data0_tmp : 16'sd0;
+                        stage_lane2_tmp = stage_bank_valid3_tmp ? stage_bank_data3_tmp : 16'sd0;
+                        stage_lane3_tmp = stage_bank_valid2_tmp ? stage_bank_data2_tmp : 16'sd0;
+                    end
+                    2'd2: begin
+                        stage_lane0_tmp = stage_bank_valid2_tmp ? stage_bank_data2_tmp : 16'sd0;
+                        stage_lane1_tmp = stage_bank_valid3_tmp ? stage_bank_data3_tmp : 16'sd0;
+                        stage_lane2_tmp = stage_bank_valid0_tmp ? stage_bank_data0_tmp : 16'sd0;
+                        stage_lane3_tmp = stage_bank_valid1_tmp ? stage_bank_data1_tmp : 16'sd0;
+                    end
+                    default: begin
+                        stage_lane0_tmp = stage_bank_valid3_tmp ? stage_bank_data3_tmp : 16'sd0;
+                        stage_lane1_tmp = stage_bank_valid2_tmp ? stage_bank_data2_tmp : 16'sd0;
+                        stage_lane2_tmp = stage_bank_valid1_tmp ? stage_bank_data1_tmp : 16'sd0;
+                        stage_lane3_tmp = stage_bank_valid0_tmp ? stage_bank_data0_tmp : 16'sd0;
+                    end
+                endcase
                 if (stage_read_bank == 1'b0) begin
                     stage_a[stage_read_group*4+0] <= stage_lane0_tmp;
                     stage_a[stage_read_group*4+1] <= stage_lane1_tmp;
@@ -818,6 +844,24 @@ module step12b_dct2_64_wrapper #(
                 stage_read_cache <= active_cache;
                 stage_read_bank <= load_bank;
                 stage_read_epoch <= (active_cache == 1'b0) ? cache_epoch[0] : cache_epoch[1];
+                stage_read_perm <= load_vector[1:0];
+                if (phase == PH_VERTICAL) begin
+                    // For a vertical vector, the four rows map to distinct
+                    // physical banks.  Compute the address for each physical
+                    // bank before the request edge; response logic never
+                    // performs a bank-indexed memory select.
+                    stage_bank_addr0 <= ((load_group * 4 + load_vector[1:0]) << 4) + (load_vector >> 2);
+                    stage_bank_addr1 <= ((load_group * 4 + (2'd1 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                    stage_bank_addr2 <= ((load_group * 4 + (2'd2 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                    stage_bank_addr3 <= ((load_group * 4 + (2'd3 ^ load_vector[1:0])) << 4) + (load_vector >> 2);
+                end else begin
+                    // For a horizontal vector, all four lanes share the
+                    // same physical word address and differ only by bank.
+                    stage_bank_addr0 <= (load_vector << 4) + load_group;
+                    stage_bank_addr1 <= (load_vector << 4) + load_group;
+                    stage_bank_addr2 <= (load_vector << 4) + load_group;
+                    stage_bank_addr3 <= (load_vector << 4) + load_group;
+                end
                 if (load_group == 15) begin
                     load_group <= 0;
                     load_vector <= load_vector + 1'b1;
@@ -892,7 +936,7 @@ module step12b_dct2_64_wrapper #(
             response_valid_tmp = result_read_pending;
             response_value_tmp = result_mem[result_pending_index];
 
-            if (phase == PH_WAIT_H && !result_owner_valid) begin
+            if (phase == PH_WAIT_H && vertical_commit_done && !result_owner_valid) begin
                 result_owner_v_tmp = 1'b1;
                 result_reserved_tmp = 11'd1024;
                 result_occupied_tmp = 0;
@@ -973,9 +1017,11 @@ module step12b_dct2_64_wrapper #(
                 end
             end
 
-            // Fail closed on any reservation/accounting inconsistency.  The
-            // counters are 11-bit so the terminal value 1024 is representable;
-            // result_issue_index remains only a 10-bit RAM address.
+`ifndef SYNTHESIS
+            // Verification-only fail-closed checks.  The counters are 11-bit
+            // so the terminal value 1024 is representable; result_issue_index
+            // remains only a 10-bit RAM address.  Functional protocol and
+            // capacity admission errors above remain synthesizable.
             if (result_owner_v_tmp) begin
                 if (result_reserved_tmp > 11'd1024 ||
                     result_occupied_tmp > 11'd1024 ||
@@ -1002,6 +1048,7 @@ module step12b_dct2_64_wrapper #(
                              (result_consumed_tmp == 11'd1024))) begin
                 protocol_error <= 1'b1;
             end
+`endif
 
             result_owner_valid <= result_owner_v_tmp;
             result_reserved <= result_reserved_tmp;

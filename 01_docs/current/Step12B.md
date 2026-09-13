@@ -1,6 +1,6 @@
 # V3.5 Step 12B：64×64 DCT2×DCT2 wrapper 功能合同
 
-状态：v3.5-17 historical functional closure；v3.5-17.2 verification-only timing/trace closure 已 PASS/冻结。R4C、wrapper、主数据通路数学和 v3.5-17 tag 只读冻结；本阶段不运行 Vivado。
+状态：v3.5-17 historical functional closure；v3.5-17.2 verification-only timing/trace closure 已 PASS/冻结。Step12C-M2 已完成 RTL 功能回归并完成 synthesis-only，但 2.000 ns synthesis timing 仍 FAIL，当前 STOP；未进入 place/route，也未创建 v3.5-18。R4C、数学和官方接口不变。
 
 ## 范围
 
@@ -25,7 +25,7 @@
 - A/B input cache：每个 4 bank、每 bank 1 写口/1 读口；`bank=(row[1:0] XOR col[1:0])`，`addr=row*16+(col>>2)` 作为候选并由周期检查器逐访问验证；4 点读/写必须无同 bank 冲突。当前冻结 RTL 在 staging load 时直接完成数组读和 lane capture，因此 input-cache 的 `read_request → lane_capture` 为同一事务边沿（delta=0），不是人为补出的 `+1` response。
 - staging A/B：两个 `64×16 bit` vector buffer。每 16 个周期从 cache/intermediate 组装一个 64 点向量；首个 request/capture 到 `stage_full` 的 delta=15，最后一次写入后下一周期才允许 `vector_start`。V/H 不并行，故同一对 staging 可按 ownership 复用。
 - 单一 intermediate memory 只服务一个 TU：`FREE → V_RUNNING → WAITING_FOR_H → H_RUNNING → FREE`。V 输出以 16 bit stage16 写回；V 未完成不得启动 H。TU0 的 H 若因结果容量阻塞，后续 TU 只能缓存，不能让另一个 TU 覆盖 intermediate。
-- intermediate：4 个物理 bank、每 bank 1 写口/1 读口；Step12C-M1 将 staging read 固定为 inference-friendly synchronous RAM：request 在 C，lane capture 在 C+1，结构上禁止同一 physical bank/address 同拍 read-during-write。
+- intermediate：4 个物理 bank、每 bank 1 写口/1 读口；Step12C-M2 在 request 侧固定 bank-local 地址/元数据，response 侧只做小型 lane permutation；request 在 C，lane capture 在 C+1，结构上禁止同一 physical bank/address 同拍 read-during-write。V 写回增加一级 registered write-command，最后一条写命令提交后才允许 H admission。
 - ResultMemory：1024 个 40-bit beat，1 写口+1 读口，读请求 C、响应 C+1；内部响应进入两级 elastic output（hold+skid）。官方接口规定 `it_data_out_req=0` 时外部 `it_data_out_vld=0`，但内部 hold/skid 数据和 valid 状态必须保持稳定；只有 `output_fire = result_hold_valid && it_data_out_req` 才推进读指针并减少占用。结果写入必须在 H kernel group 到达的同一全局周期完成：stage16 shadow 与 low10 result 同拍写入；禁止事后 replay。
 
 ### ResultMemory 状态不变量
@@ -61,17 +61,17 @@ R4C `result_accept` 永远绑定 1。每个完整向量必须在 `vector_start` 
 
 冻结 R4C standalone transaction latency 合同：`result_accept=1` 时，`group0_result_fire_edge - vector_start_accept_edge == 23`，16 个 group 连续且 group II=1。23 是相对事务延迟，不是某次仿真的绝对 cycle 编号。
 
-### v3.5-17.2 memory timing decision record
+### Step12C-M2 memory/control decision record
 
-`v3.5-17.2` 保留为上一版冻结证据。Step12C-M1 将 input-cache/intermediate 的物理合同改为 `read_request C → lane_capture C+1`，ResultMemory 仍保持 `request C → response C+1`。phase admission 后首个 request 仍最早在下一 edge，最后一次 capture 后下一 edge 才允许 `vector_start`；不得用 per-event offset 迎合。
+`v3.5-17.2` 保留为上一版冻结证据。Step12C-M2 将 input-cache/intermediate 的访问控制固定为 request 侧 bank-local 地址/元数据寄存、response 侧小型 permutation：`read_request C → lane_capture C+1`；ResultMemory 仍保持 `request C → response C+1`。V 结果先进入 registered write-command，最后一条 command 在下一 edge 提交；`vertical_commit_done` 后才允许 H admission。不得用 per-event offset 迎合。
 
 内部 memory trace 事件必须记录真实 transaction/fire，至少包含 TU/phase、memory owner、bank、address、lane 或 index、request_id（适用时）和 episode（scrub 时）。`stage_lane_capture` 为每个 lane 事件，`stage_full` 仅在 64 个 lane 均已捕获后产生。每个 epoch scrub episode 为 1024 个 cycle、4 bank/cycle（4096 个 tag-clear transactions）；scrub cache 不得普通读写，另一 cache 必须有真实 descriptor bind 或 data_fire 进展。
 
-### v3.5-17.2 closure
+### Step12C-M2 closure status
 
-Step12C-M1 的周期合同：phase 被 admission 的 accepting edge 不发首个 staging read，首读最早在下一 edge；staging request/capture 为 request C → capture C+1，`stage_full → vector_start` 至少一拍，ResultMemory 仍为 request C → response C+1。input data/tag/intermediate/result data array 不做 bulk reset；复位后 tag bank 先逐地址 startup scrub，完成后 cache 才可绑定 TU。
+Step12C-M2 保持以下周期合同：phase 被 admission 的 accepting edge 不发首个 staging read，首读最早在下一 edge；staging request/capture 为 request C → capture C+1，`stage_full → vector_start` 至少一拍，ResultMemory 仍为 request C → response C+1。V 最后 result 与 intermediate 的实际 commit 分离一个 edge，H 只能在 `vertical_commit_done` 后 admission。input data/tag/intermediate/result data array 不做 bulk reset；复位后 tag bank 先逐地址 startup scrub，完成后 cache 才可绑定 TU。
 
-normal 与 `SYNTHESIS` 的 memory timing、公共事件、内部事件 comparator，以及 7 项 RTL trace mutation 均通过；R4C latency 合同仍为 23 个 transaction edges。旧的 STOP 记录保留在 `05_audit/current/17_2/`，仅作为历史证据，已由本节及最终 closure report supersede。
+normal 与 `SYNTHESIS` 的功能/周期回归、公共事件、内部事件 comparator、two-TU、epoch scrub 和 mutation 均通过；R4C latency 合同仍为 23 个 transaction edges。Step12C-M2 synthesis-only 已完成，但 WNS=-0.252 ns、TNS=-156.002 ns、4609 个 setup failing endpoints，因此 Step12C-1 仍 STOP；不得进入 route。完整证据保存在 `05_audit/current/18/m2_synth/`。
 
 ## 测试门禁
 

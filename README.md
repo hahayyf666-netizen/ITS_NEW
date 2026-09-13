@@ -39,7 +39,7 @@ Step12B 功能合同见 [`01_docs/current/Step12B.md`](01_docs/current/Step12B.m
 
 ## 结论边界
 
-目前不能宣称完整 ITS Core 已达到 500 MHz，也不能宣称所有尺寸、DST7、DCT8 与 LFNST 已完成新 P4 架构。当前已闭合的是 DCT2-64 standalone 一维核，以及 Step12A-R2.3 / V3.5-15 二维预 RTL 集成门禁；`v3.5-17` 是 Step12B 功能冻结点，`v3.5-17.1` 是历史审计收尾，`v3.5-17.2` 是 phase/timing trace verification-only closure；Vivado、RAM inference 和 500 MHz 仍属于 Step12C / `v3.5-18`。
+目前不能宣称完整 ITS Core 已达到 500 MHz，也不能宣称所有尺寸、DST7、DCT8 与 LFNST 已完成新 P4 架构。当前已闭合的是 DCT2-64 standalone 一维核，以及 Step12A-R2.3 / V3.5-15 二维预 RTL 集成门禁；`v3.5-17` 是 Step12B 功能冻结点，`v3.5-17.1` 是历史审计收尾，`v3.5-17.2` 是 phase/timing trace verification-only closure。当前 Step12C-M2 已完成功能回归和 synthesis-only，但 2 ns synthesis 仍为 STOP（WNS -0.252 ns、TNS -156.002 ns）；尚未运行 place/route，也没有 `v3.5-18`。完整 Vivado/RAM inference/500 MHz 结论仍未闭合。
 
 ## 整理规则
 

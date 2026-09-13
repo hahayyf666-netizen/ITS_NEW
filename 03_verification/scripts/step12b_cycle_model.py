@@ -28,7 +28,7 @@ from v34_rtl_bitexact import main_2d_details  # type: ignore
 N = 64
 GROUPS = 16
 RESULT_GROUPS = 1024
-# Step12C-M1 uses inference-friendly synchronous bank reads for the staging
+# Step12C-M2 uses inference-friendly fixed-bank synchronous reads for the staging
 # memories.  A request accepted at edge C produces its lane capture at C+1.
 # ResultMemory remains a separate synchronous-read boundary with the same
 # one-edge response, but it is intentionally kept as a distinct contract.
@@ -534,8 +534,18 @@ class PhaseTask:
             else:
                 row, col = vector, idx
             if self.dest is not None:
-                self.dest.issue(self.model.cycle, [],
-                                [(row, col, value, (self.phase, vector, idx))])
+                if self.phase == "vertical":
+                    # Step12C-M2 models the RTL's registered V write command:
+                    # the R4C result is accepted at C, but the physical
+                    # intermediate-bank write commits at C+1.  Do not make
+                    # the H phase visible until the last queued command has
+                    # actually committed.
+                    self.model.queue_vertical_write(
+                        event.cycle, self.tu, row, col, value,
+                        vector == N - 1 and event.group == GROUPS - 1 and k == 3)
+                else:
+                    self.dest.issue(self.model.cycle, [],
+                                    [(row, col, value, (self.phase, vector, idx))])
             self.model.trace.append({
                 "cycle": event.cycle,
                 "event": "stage16_write",
@@ -586,6 +596,11 @@ class IntegrationModel:
         # accepting edge.  Keep this separate from memory read latency: the
         # staging request/capture is the explicit one-edge RAM contract.
         self.phase_read_not_before = 0
+        # Pending bank-local V write commands.  Each entry is committed on
+        # the following integration tick, matching the M2 RTL pipeline.
+        self.pending_vertical_writes: dict[int, list[tuple[int, int, int, Any]]] = {}
+        self.pending_vertical_last: dict[int, int] = {}
+        self.vertical_commit_tu: int | None = None
         self.intermediate = SyncBankedMemory("intermediate", self.trace)
         self.intermediate_owner: int | None = None
         self.result = ResultMemory(self.trace)
@@ -600,6 +615,18 @@ class IntegrationModel:
 
     def phase_serial_base(self, task: PhaseTask) -> int:
         return self.phase_bases[(task.tu, task.phase)]
+
+    def queue_vertical_write(self, cycle: int, tu: int, row: int, col: int,
+                             value: int, last: bool) -> None:
+        due = int(cycle) + 1
+        self.pending_vertical_writes.setdefault(due, []).append(
+            (int(row), int(col), int(value), ("vertical_commit", int(tu), int(row), int(col))))
+        if last:
+            self.pending_vertical_last[due] = int(tu)
+        self.trace.append({"cycle": cycle, "event": "intermediate_write_command",
+                           "tu": int(tu), "row": int(row), "col": int(col),
+                           "value": int(value), "commit_cycle": due,
+                           "last": bool(last)})
 
     def _events_for(self, tu: int) -> list[tuple[int, int]]:
         src = self.sources[tu]
@@ -716,6 +743,10 @@ class IntegrationModel:
             return
         task = self.current
         if task.phase == "vertical":
+            if self.vertical_commit_tu != task.tu:
+                # The final R4C group has been emitted, but M2 keeps the
+                # phase owner until the registered final bank write commits.
+                return
             slot = task.cache_slot
             self.tu_state[task.tu]["vertical"] = "DONE"
             if slot is not None:
@@ -725,6 +756,7 @@ class IntegrationModel:
                 self.cache_owner.pop(task.tu, None)
             self.trace.append({"cycle": self.cycle, "event": "vertical_owner_hold",
                                "tu": task.tu})
+            self.vertical_commit_tu = None
         else:
             self.tu_state[task.tu]["horizontal"] = "DONE"
             self.intermediate_owner = None
@@ -734,6 +766,18 @@ class IntegrationModel:
         self.current = None
 
     def tick(self) -> None:
+        # Commit registered V write commands before any phase-admission
+        # decision at this edge.  H admission is still deferred by the
+        # phase_not_before guard below, so the first H request cannot occur on
+        # the commit edge itself.
+        pending_writes = self.pending_vertical_writes.pop(self.cycle, [])
+        if pending_writes:
+            self.intermediate.issue(self.cycle, [], pending_writes)
+            if self.cycle in self.pending_vertical_last:
+                self.vertical_commit_tu = self.pending_vertical_last.pop(self.cycle)
+                self.trace.append({"cycle": self.cycle,
+                                   "event": "vertical_commit_done",
+                                   "tu": self.vertical_commit_tu})
         # Response phase of synchronous memories.
         if self.current is not None:
             for cache in self.caches.values():

@@ -1,32 +1,42 @@
 {
-  "step": "Step12C-1",
+  "step": "Step12C-M2",
   "status": "STOP_NOT_PASS",
-  "reason": "Vivado synthesis did not complete within the controlled run; no formal utilization/timing reports were produced.",
+  "reason": "Synthesis completed and memory mapping improved, but 2.000 ns setup timing remains negative; place/route is blocked.",
   "tool": "Vivado 2025.2",
   "part": "xcku5p-ffvb676-2-e",
   "period_ns": 2.0,
   "top": "step12b_dct2_64_wrapper",
-  "rtl_changed": false,
+  "flow": "synthesis_only",
   "r4c_sha256": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1",
-  "wrapper_sha256": "1CF3D2554A6A54A4A0B0DB820FFB290A80544D6C1E6C13FAF1D5334B2483C584",
-  "observed_component_statistics": {
-    "input_cache_a_registers": 65536,
-    "input_cache_b_registers": 65536,
-    "intermediate_mem_registers": 65536,
-    "input_tag_a_registers": 32768,
-    "input_tag_b_registers": 32768,
-    "mux_4_to_1_16bit": 8257,
-    "mux_2_to_1_8bit": 22528,
-    "mux_4_to_1_8bit": 4096,
-    "mux_2_to_1_1bit": 42340,
-    "adder_2_input_40bit": 250,
-    "adder_3_input_40bit": 62
+  "wrapper_sha256": "55C639331BF003CF338DC64F5EF4C99A2551B3B334DA64BC1030CE2452109838",
+  "rtl_math_changed": false,
+  "functional_regression": "PASS",
+  "resource_summary": {
+    "clb_lut": 22044,
+    "lut_as_logic": 14876,
+    "lut_as_distributed_ram": 7168,
+    "clb_register": 20829,
+    "dsp48e2": 128,
+    "bram_tile": 0,
+    "uram": 0,
+    "ram_primitives": ["RAM64M", "RAM64M8", "RAM64X1D"]
   },
-  "formal_reports": {
-    "utilization": "not produced",
-    "timing_summary": "not produced",
-    "checkpoint": "not produced",
-    "postroute": "not run"
+  "timing_summary": {
+    "wns_ns": -0.252,
+    "tns_ns": -156.002,
+    "setup_failing_endpoints": 4609,
+    "whs_ns": null,
+    "ths_ns": null,
+    "unconstrained_internal_endpoints": 0
   },
-  "next_step": "STOP; define a separately reviewed memory-structure repair before rerunning Step12C"
+  "critical_paths": {
+    "worst": "frozen_r4c/output_bank -> protocol_error_reg/D",
+    "next": "stage_bank_addr0 -> stage_a_reg via RAMD64E/lane permutation"
+  },
+  "high_fanout": {
+    "frozen_r4c/output_active_i_2_n_0": 18217,
+    "it_data_addr_bits_max": 4096
+  },
+  "post_route": false,
+  "next_step": "STOP; define the next narrowly scoped repair from the M2 synthesized critical paths."
 }

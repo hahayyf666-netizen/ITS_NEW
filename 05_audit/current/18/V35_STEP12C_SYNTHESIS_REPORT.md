@@ -1,7 +1,6 @@
-# V3.5 Step12C-1 — Step12B Wrapper Synthesis Gate
+# V3.5 Step12C-1 — Step12C-M2 Wrapper Synthesis Gate
 
-Status: **STOP — synthesis-only gate not closed**
-
+Status: **STOP — 2.000 ns synthesis timing gate not closed**  
 Date: 2026-09-13
 
 ## Scope
@@ -10,46 +9,81 @@ Date: 2026-09-13
 - Configuration: 64×64 DCT2×DCT2, LFNST OFF, one frozen R4C
 - Device: `xcku5p-ffvb676-2-e`
 - Vivado: 2025.2
-- Clock: `clk = 2.000 ns`
-- Boundary contract: registered-neighbor, explicit zero-delay input/output budget
-- RTL: no modifications
+- Clock: `clk = 2.000 ns` / 500 MHz
+- Flow: synthesis-only, clean Vivado user-data/TclStore directories
+- No place/route was run
 
-## Frozen source hashes
+M2 changes are limited to fixed-bank staging read metadata/permutation, registered V→intermediate write command/commit barrier, and removal of internal verification invariant logic from the synthesized `protocol_error` cone. R4C source and mathematics were not modified.
+
+## Functional gate
+
+Normal and `SYNTHESIS` ModelSim regression, the M2 cycle model, public/internal event traces, two-TU backpressure, descriptor, random/extreme, vector-ID wrap, epoch scrub and mutation gates all passed. The exact evidence is under:
+
+- `05_audit/current/18/m2/`
+- `05_audit/current/18/m2_model/`
+
+## Frozen hashes
 
 | File | SHA-256 |
 |---|---|
 | `02_rtl/rtl/p2f_dct2_64_b1_step102.sv` | `15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1` |
-| `02_rtl/rtl/step12b_dct2_64_wrapper.sv` | `1CF3D2554A6A54A4A0B0DB820FFB290A80544D6C1E6C13FAF1D5334B2483C584` |
+| `02_rtl/rtl/step12b_dct2_64_wrapper.sv` | `55C639331BF003CF338DC64F5EF4C99A2551B3B334DA64BC1030CE2452109838` |
 
-## Observed synthesis evidence
+The R4C hash is unchanged from the frozen baseline. The wrapper hash changes because M2 is the intentional wrapper repair revision.
 
-Vivado successfully loaded the part, elaborated the wrapper and frozen R4C, parsed the 2 ns XDC, and entered RTL optimization. It did not reach the report-generation commands within the controlled run. The process was stopped after more than one hour because the synthesis remained in cross-boundary/area optimization with approximately 9 GB main-process memory and multi-GB helper processes.
+## Synthesis result
 
-Before termination, Vivado reported:
+| Metric | M1 synthesis | M2 synthesis | Decision |
+|---|---:|---:|---|
+| CLB LUTs | 35,817 | 22,044 | improved |
+| LUT as distributed RAM | 18,688 | 7,168 | improved |
+| CLB registers | 20,716 | 20,829 | comparable |
+| DSP48E2 | 128 | 128 | unchanged |
+| BRAM / URAM | 0 / 0 | 0 / 0 | distributed RAM mapping |
+| WNS (ns) | -1.640 | **-0.252** | **FAIL** |
+| TNS (ns) | -3,639.102 | **-156.002** | **FAIL** |
+| setup failing endpoints | 18,433 | **4,609** | **FAIL** |
 
-- `input_cache_a_reg`: 65,536 registers
-- `input_cache_b_reg`: 65,536 registers
-- `intermediate_mem_reg`: 65,536 registers
-- `input_tag_a_reg`: 32,768 registers
-- `input_tag_b_reg`: 32,768 registers
-- approximately 8,257 4:1 16-bit muxes
-- approximately 22,528 2:1 8-bit muxes
-- approximately 4,096 4:1 8-bit muxes
-- approximately 42,340 2:1 1-bit muxes
-- approximately 250 two-input 40-bit adders and 62 three-input 40-bit adders
+Vivado completed synthesis with 0 errors and 0 critical warnings (69 ordinary warnings). `check_timing` reports zero unconstrained internal endpoints, zero missing input/output delays, zero loops and zero missing clocks. No valid timing exceptions were found.
 
-These are synthesis component statistics, not post-synthesis utilization numbers. No utilization, timing summary, checkpoint, or post-route report was available at termination.
+The memories are recognized as distributed RAM primitives (`RAM64M`, `RAM64M8`, `RAM64X1D`), including the 1K×40 result storage and the banked input/intermediate/tag arrays. This removes the prior bulk register-memory expansion, but the resulting control/read topology is not yet a 2 ns solution.
+
+## Remaining synthesis bottlenecks
+
+The worst setup path is:
+
+```text
+frozen_r4c/output_bank_reg[0]_rep__4
+  → bank/write-address decode and protocol_error cone
+  → protocol_error_reg/D
+```
+
+It has 2.233 ns data-path delay (0.810 ns logic + 1.423 ns estimated routing), 9 logic levels, and WNS -0.252 ns. The next repeated path is:
+
+```text
+stage_bank_addr0_reg[1]_rep__20
+  → RAMD64E + lane/permutation logic
+  → stage_a_reg[*]
+```
+
+with WNS about -0.074 ns and route-dominated delay. High fanout remains visible on `frozen_r4c/output_active_i_2_n_0` (18,217 loads) and several `it_data_addr` bits (4,096 loads).
 
 ## Gate decision
 
 `Step12C-1 = STOP / NOT PASS`.
 
-The current wrapper cannot yet be advanced to place/route because synthesis did not complete and the observed RTL component structure already shows large register-memory and mux expansion. This is a structural implementation blocker, not a functional-oracle failure.
+M2 is a substantive improvement: synthesis now completes, distributed-memory mapping is visible, LUT usage and timing violations drop sharply, and DSP/R4C resources remain unchanged. However, WNS/TNS and setup failing endpoints are still negative/nonzero, so the design must not enter place/route and `v3.5-18` must not be created.
 
-No RTL, R4C source, canonical data, or functional evidence was modified. Step12C-2, `v3.5-18`, other transform sizes, DST7/DCT8, LFNST expansion, and full-core integration remain blocked.
+The next revision must be defined only from these new synthesized critical paths; no other transform sizes, DST7/DCT8, LFNST expansion, full-core integration, or unrelated verification gates are in scope.
 
-## Files used
+## Evidence files
 
-- `03_verification/vivado/run_step12c_wrapper_ooc.tcl`
-- `03_verification/vivado/step12c_wrapper_2ns.xdc`
-
+- `05_audit/current/18/m2_synth/report_utilization_postsynth.rpt`
+- `05_audit/current/18/m2_synth/report_timing_summary_postsynth.rpt`
+- `05_audit/current/18/m2_synth/report_timing_worst100_postsynth.rpt`
+- `05_audit/current/18/m2_synth/report_high_fanout_postsynth.rpt`
+- `05_audit/current/18/m2_synth/report_check_timing_postsynth.rpt`
+- `05_audit/current/18/m2_synth/report_exceptions_postsynth.rpt`
+- `05_audit/current/18/m2_synth/report_methodology_postsynth.rpt`
+- `05_audit/current/18/m2_synth/report_drc_postsynth.rpt`
+- `05_audit/current/18/m2_synth/step12c_wrapper_postsynth.dcp`
