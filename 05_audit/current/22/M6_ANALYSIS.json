@@ -1,0 +1,99 @@
+{
+  "stage": "Step12C-M6 routed root-cause analysis",
+  "source_commit": "b6129e62753cfe264a8414572ad50a7abc939bef",
+  "source_report": "m6_timing/report_timing_worst100_postroute.rpt",
+  "status": "ANALYSIS_ONLY_NO_M7_APPROVED",
+  "timing": {
+    "setup_wns_ns": -0.037,
+    "setup_tns_ns": -0.636,
+    "setup_failing_endpoints": 53,
+    "hold_whs_ns": 0.004,
+    "hold_ths_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "rounded_path_tns_ns": -0.635,
+    "rounding_note": "The 0.001 ns difference from Vivado TNS is due to per-path report rounding."
+  },
+  "classification": {
+    "A_staging_ram_response": {
+      "count": 11,
+      "rounded_tns_ns": -0.169,
+      "worst_slack_ns": -0.037,
+      "severity_bins": {"le_minus_030": 1, "minus_030_to_020": 2, "minus_020_to_010": 5, "gt_minus_010": 3},
+      "memory_breakdown": {"input_cache_data": 6, "input_cache_tag": 4, "intermediate": 1}
+    },
+    "B_staging_capture": {
+      "count": 4,
+      "rounded_tns_ns": -0.075,
+      "worst_slack_ns": -0.035,
+      "severity_bins": {"le_minus_030": 1, "minus_030_to_020": 0, "minus_020_to_010": 3, "gt_minus_010": 0},
+      "observed_shape": "stage_rsp_tag_q to stage_a/stage_b registers"
+    },
+    "C_result_memory_write": {
+      "count": 12,
+      "rounded_tns_ns": -0.180,
+      "worst_slack_ns": -0.030,
+      "severity_bins": {"le_minus_030": 1, "minus_030_to_020": 2, "minus_020_to_010": 5, "gt_minus_010": 4},
+      "source_breakdown": {"frozen_r4c_output_bank": 11, "frozen_r4c_stage16_mem": 1}
+    },
+    "D1_pure_r4c_internal": {
+      "count": 15,
+      "rounded_tns_ns": -0.125,
+      "worst_slack_ns": -0.020
+    },
+    "D2_wrapper_launch_to_r4c": {
+      "count": 8,
+      "rounded_tns_ns": -0.066,
+      "worst_slack_ns": -0.012
+    },
+    "F_residual_v_write": {
+      "count": 3,
+      "rounded_tns_ns": -0.020,
+      "worst_slack_ns": -0.009,
+      "slacks_ns": [-0.009, -0.007, -0.004]
+    }
+  },
+  "physical_evidence": {
+    "A_worst": {
+      "path": "stage_bank_addr0_reg[2]_rep__0/C -> stage_rsp_data1_q_reg[15]/D",
+      "data_path_delay_ns": 1.922,
+      "logic_delay_ns": 0.458,
+      "route_delay_ns": 1.464,
+      "route_fraction": 0.76168,
+      "logic_levels": "LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1",
+      "observed_fanout": "stage_bank_addr net fo=144"
+    },
+    "A_tag_example": {
+      "path": "stage_bank_addr0_reg[1]_rep__32/C -> stage_rsp_tag2_q_reg[0]/D",
+      "data_path_delay_ns": 1.789,
+      "logic_delay_ns": 0.453,
+      "route_delay_ns": 1.336,
+      "route_fraction": 0.74678,
+      "logic_levels": "LUT6=2 MUXF7=1 RAMD64E=1",
+      "observed_fanout": "stage_bank_addr net fo=112"
+    },
+    "B_worst": {
+      "path": "stage_rsp_tag1_q_reg[3]/C -> stage_b_reg[37][12]/D",
+      "data_path_delay_ns": 1.936,
+      "logic_delay_ns": 0.526,
+      "route_delay_ns": 1.410,
+      "route_fraction": 0.72837,
+      "logic_levels": "LUT6=3",
+      "observed_fanout_sequence": [16, 4, 32]
+    },
+    "C_worst": {
+      "path": "frozen_r4c/output_bank_reg[1]_rep__5/C -> result_mem_reg_832_895_14_20/RAMG/I",
+      "data_path_delay_ns": 1.854,
+      "logic_delay_ns": 0.383,
+      "route_delay_ns": 1.471,
+      "route_fraction": 0.79340,
+      "logic_levels": "LUT4=1 LUT5=1 LUT6=1 MUXF7=1 MUXF8=1",
+      "observed_fanout": "output_bank net fo=122"
+    }
+  },
+  "conclusions": {
+    "m6_effect": "The dominant V-write blocker was removed from the worst-path position; three shallow V-write violations remain.",
+    "common_root_cause": "Not established. A/B staging and C ResultMemory are all routing-heavy, but their logical cones differ.",
+    "priority": ["A+B staging response/capture", "C ResultMemory write", "D2 wrapper launch", "F residual V-write", "D1 frozen R4C internal"],
+    "next_action": "Continue read-only routed root-cause analysis; do not modify RTL, R4C, ResultMemory, staging, Boundary/XDC, or create v3.5-18 until a minimal M7 scope is explicitly approved."
+  }
+}
