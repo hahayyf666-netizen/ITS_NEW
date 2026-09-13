@@ -42,9 +42,9 @@ module step12b_dct2_64_wrapper_tb;
     reg scrub_prev_a, scrub_prev_b;
 
 `ifdef SYNTHESIS
-    localparam TRACE_FILE = "05_audit/current/19/m3/step12b_rtl_event_trace_synthesis.csv";
+    localparam TRACE_FILE = "05_audit/current/20/m4/step12b_rtl_event_trace_synthesis.csv";
 `else
-    localparam TRACE_FILE = "05_audit/current/19/m3/step12b_rtl_event_trace_normal.csv";
+    localparam TRACE_FILE = "05_audit/current/20/m4/step12b_rtl_event_trace_normal.csv";
 `endif
 
     // Independent canonical DCT2-64 coefficient column A[i][1].  The

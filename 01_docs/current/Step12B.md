@@ -1,6 +1,6 @@
 # V3.5 Step 12B：64×64 DCT2×DCT2 wrapper 功能合同
 
-状态：v3.5-17 historical functional closure；v3.5-17.2 verification-only timing/trace closure 已 PASS/冻结。Step12C-M3 已完成 RTL 功能回归和 synthesis-only；distributed-RAM 结构生成成功，但 2.000 ns synthesis timing 仍 FAIL，当前 STOP；未进入 place/route，也未创建 v3.5-18。R4C、数学和官方接口不变。
+状态：v3.5-17 historical functional closure；v3.5-17.2 verification-only timing/trace closure 已 PASS/冻结。Step12C-M4 已完成 RTL 功能回归和 synthesis-only；distributed-RAM 结构生成成功，setup 已通过但 hold timing 仍 FAIL，当前 STOP；未进入 place/route，也未创建 v3.5-18。R4C、数学和官方接口不变。
 
 ## 范围
 
@@ -27,6 +27,7 @@
 - 单一 intermediate memory 只服务一个 TU：`FREE → V_RUNNING → WAITING_FOR_H → H_RUNNING → FREE`。V 输出以 16 bit stage16 写回；V 未完成不得启动 H。TU0 的 H 若因结果容量阻塞，后续 TU 只能缓存，不能让另一个 TU 覆盖 intermediate。
 - intermediate：4 个物理 bank、每 bank 1 写口/1 读口；Step12C-M3 在 request 侧固定 bank-local 地址/元数据，bank response 进入一级寄存器，之后只做小型 lane permutation；request 在 C，lane capture 在 C+2，结构上禁止同一 physical bank/address 同拍 read-during-write。V 写回增加一级 registered write-command，最后一条写命令提交后才允许 H admission。
 - ResultMemory：1024 个 40-bit beat，1 写口+1 读口，读请求 C、响应 C+1；内部响应进入两级 elastic output（hold+skid）。官方接口规定 `it_data_out_req=0` 时外部 `it_data_out_vld=0`，但内部 hold/skid 数据和 valid 状态必须保持稳定；只有 `output_fire = result_hold_valid && it_data_out_req` 才推进读指针并减少占用。结果写入必须在 H kernel group 到达的同一全局周期完成：stage16 shadow 与 low10 result 同拍写入；禁止事后 replay。
+- M4 input boundary：`data_fire` 在 C 接受后，按 cache/bank/address/data/epoch/last 锁存一个 bank-local write command；物理 input data/tag RAM 在 C+1 commit，接受和 commit 均保持 II=1。带 data 的 `end_fire` 只有在最后 command commit 后才能把 cache 置 `CACHE_READY`；standalone end 无 data write 时沿用已有直接完成语义。
 
 ### ResultMemory 状态不变量
 
@@ -85,6 +86,14 @@ M3 功能/周期回归：PASS。normal 与 `SYNTHESIS`、zero/sparse/alternating
 M3 Step12C-1 synthesis-only：STOP。Vivado 2025.2、xcku5p-ffvb676-2-e、2.000 ns clock；综合网表识别 22,673 LUT（其中 7,168 LUTRAM）、20,918 FF、128 DSP、0 BRAM/URAM，0 synthesis error/critical warning。setup WNS=`-0.002 ns`、TNS=`-6.030 ns`、2,560 个 failing endpoints；独立 hold summary 为 WHS=`-0.148 ns`、THS=`-2521.236 ns`、17,487 个 failing endpoints。`check_timing` 报告 0 个 unconstrained internal endpoints。由于 synthesis timing 未满足，按门禁不进入 place/route；完整证据保存在 `05_audit/current/19/m3_synth/`，下一轮必须基于新的真实 worst path 单独评审，不在 M3 内继续扩大修改。
 
 M3 的当前最差 setup 路径已转移到 descriptor/input-cache 写入控制（`desc_slot_q → input_cache_a0.../WE`，约 1.800 ns，主要为 routing），不是 R4C vector sanity path；因此 M3 结论是“结构和功能继续改善，但 Step12C-1 仍 STOP”，不能创建 `v3.5-18`。
+
+### Step12C-M4 synthesis closure（当前，STOP）
+
+M4 只处理 M3 已暴露的 input-cache 写入边界：外部 `data_fire`/descriptor/address 不再直接驱动物理 input cache/tag RAM 写端口，而是先进入按 cache/bank 分组的 write-command 寄存器，下一 edge 执行 data/tag commit；最后一条带 `end` 的 command commit 后才释放 cache。R4C、M3 staging、V→intermediate write pipeline、ResultMemory reader、数学和 XDC boundary contract 均未修改。R4C SHA-256 仍为 `15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1`。
+
+M4 功能/周期回归：PASS。Python model、normal/SYNTHESIS ModelSim、zero/sparse/alternating/random、backpressure、two-TU、vector-ID wrap、epoch scrub、26 项 mutation 均通过；典型 single-TU 结果为 1024 result writes、1024 output fires、ready-high output fire II=1、V/H vector II=16。
+
+M4 Step12C-1 synthesis-only：Vivado 2025.2、xcku5p-ffvb676-2-e、2.000 ns clock；综合网表识别 input cache/tag/intermediate/result 为 distributed RAM，资源为 22,921 LUT（7,168 LUTRAM）、21,315 FF、128 DSP、0 BRAM/URAM，synthesis errors/critical warnings 为 0，`check_timing` 的 unconstrained internal endpoint 为 0。Setup WNS=`+0.087 ns`、TNS=`0 ns`、setup failing endpoints=0；独立 hold summary 为 WHS=`-0.076 ns`、THS=`-17.454 ns`、293 个 hold failing endpoints。当前按 Step12C-1 门禁 STOP，不进入 place/route；完整证据位于 `05_audit/current/20/m4_synth/`。
 
 ## 测试门禁
 

@@ -28,10 +28,12 @@ from v34_rtl_bitexact import main_2d_details  # type: ignore
 N = 64
 GROUPS = 16
 RESULT_GROUPS = 1024
-# Step12C-M3 models the bank-response register and the following staging
+# Step12C-M3/M4 models the bank-response register and the following staging
 # capture register separately.  A request accepted at edge C produces the
-# registered bank response at C+1 and lane capture at C+2.  ResultMemory
-# remains a separate synchronous-read boundary with a one-edge response.
+# registered bank response at C+1 and lane capture at C+2.  M4 additionally
+# models the input data/tag write command committing one edge after data_fire.
+# ResultMemory remains a separate synchronous-read boundary with a one-edge
+# response.
 STAGING_CAPTURE_EDGE_DELTA = 2
 RESULT_READ_LATENCY = 1
 # Measured wrapper-visible latency from vector_start accepting edge to the
@@ -155,6 +157,7 @@ class EpochInputCache(SyncBankedMemory):
     def __init__(self, name: str, trace: list[dict[str, Any]]):
         super().__init__(name, trace)
         self.tags = [[-1] * 1024 for _ in range(4)]
+        self.pending_writes: dict[int, list[tuple[int, int, int, Any]]] = {}
         # Match the RTL startup contract: tag contents are unknown until a
         # physical four-bank scrub has completed, so no cache may bind a TU.
         self.epoch = -1
@@ -203,11 +206,39 @@ class EpochInputCache(SyncBankedMemory):
     def issue(self, cycle: int, reads, writes) -> list[tuple[Any, int]]:
         if self.scrubbing and (reads or writes):
             raise ContractError(f"{self.name}: access during scrub")
-        responses = super().issue(cycle, reads, writes)
-        for row, col, _value, _token in writes:
+        # Input writes model the M4 boundary: acceptance/command capture is
+        # at C, while the physical bank/data+tag commit is at C+1.  Reads keep
+        # the inherited staging request/response contract.
+        responses = super().issue(cycle, reads, [])
+        write_banks: set[int] = set()
+        read_pairs = {(bank_addr(row, col)[0], bank_addr(row, col)[1])
+                      for row, col, _token in reads}
+        for row, col, value, token in writes:
             bank, addr = bank_addr(row, col)
-            self.tags[bank][addr] = self.epoch
+            if bank in write_banks:
+                raise ContractError(f"{self.name}: write bank conflict at {cycle}")
+            if (bank, addr) in read_pairs:
+                raise ContractError(f"{self.name}: same-address read/write conflict at {cycle}")
+            write_banks.add(bank)
+            self.pending_writes.setdefault(cycle + 1, []).append(
+                (bank, addr, int(value), token))
+            self.trace.append({"cycle": cycle, "event": "input_cache_write_command",
+                               "memory": self.name, "token": repr(token),
+                               "bank": bank, "addr": addr, "value": int(value),
+                               "commit_cycle": cycle + 1})
         return responses
+
+    def commit_writes(self, cycle: int) -> None:
+        for bank, addr, value, token in self.pending_writes.pop(cycle, []):
+            if self.scrubbing:
+                raise ContractError(f"{self.name}: write commit during scrub")
+            self.data[bank][addr] = int(value)
+            self.tags[bank][addr] = self.epoch
+            self.writes += 1
+            self.trace.append({"cycle": cycle, "event": "memory_write",
+                               "memory": self.name, "token": repr(token),
+                               "bank": bank, "addr": addr, "value": int(value),
+                               "write_latency": 1})
 
     def consume(self, cycle: int) -> list[tuple[Any, int]]:
         if self.scrubbing and self.pending.get(cycle):
@@ -582,6 +613,7 @@ class IntegrationModel:
         self.cache_owner: dict[int, str] = {}
         self.input_queue = list(range(len(sources)))
         self.input_active: tuple[int, str, list[tuple[int, int]]] | None = None
+        self.pending_input_ready: dict[int, list[tuple[int, str]]] = {}
         self.ready_tus: list[int] = []
         self.ready_after: dict[int, int] = {}
         self.tu_state = [{"input": "PENDING", "vertical": "PENDING",
@@ -670,10 +702,15 @@ class IntegrationModel:
             if req:
                 self.tu_state[tu]["input"] = "READY"
                 self.ready_tus.append(tu)
+                # The last data command committed at this edge.  The model's
+                # phase selector runs after that commit, so a +1 guard makes
+                # V admission occur on the following integration edge, which
+                # is the RTL pre-NBA boundary.
                 self.ready_after[tu] = self.cycle + 1
                 self.input_active = None
                 self.trace.append({"cycle": self.cycle, "event": "input_end_fire",
-                                   "tu": tu, "same_cycle_data": False})
+                                   "tu": tu, "same_cycle_data": False,
+                                   "after_commit": True})
             return
         addr, value = events.pop(0)
         if not req:
@@ -685,12 +722,13 @@ class IntegrationModel:
                            "slot": slot, "addr": addr, "value": value,
                            "req": True})
         if self.same_cycle_data_end and not events:
-            self.tu_state[tu]["input"] = "READY"
-            self.ready_tus.append(tu)
-            self.ready_after[tu] = self.cycle + 1
+            # End is accepted with the last data at C, but CACHE_READY is
+            # delayed until the input-cache bank command commits at C+1.
+            self.pending_input_ready.setdefault(self.cycle + 1, []).append((tu, slot))
             self.input_active = None
             self.trace.append({"cycle": self.cycle, "event": "input_end_fire",
-                               "tu": tu, "same_cycle_data": True})
+                               "tu": tu, "same_cycle_data": True,
+                               "commit_cycle": self.cycle + 1})
 
     def _choose_phase(self) -> None:
         if self.current is not None:
@@ -766,6 +804,18 @@ class IntegrationModel:
         self.current = None
 
     def tick(self) -> None:
+        # M4 input-cache command commit.  The command was accepted at the
+        # previous edge; only after the physical bank/data+tag commit may a
+        # final TU become READY and be eligible for V admission.
+        for slot, cache in self.caches.items():
+            cache.commit_writes(self.cycle)
+        for tu, slot in self.pending_input_ready.pop(self.cycle, []):
+            self.tu_state[tu]["input"] = "READY"
+            self.ready_tus.append(tu)
+            self.ready_after[tu] = self.cycle + 1
+            self.trace.append({"cycle": self.cycle, "event": "input_cache_ready",
+                               "tu": tu, "slot": slot, "after_commit": True})
+
         # Commit registered V write commands before any phase-admission
         # decision at this edge.  H admission is still deferred by the
         # phase_not_before guard below, so the first H request cannot occur on

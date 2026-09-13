@@ -75,6 +75,7 @@ module step12b_dct2_64_wrapper_two_tu_tb;
         // TU1 is empty: standalone end is legal once its descriptor has been
         // bound and req is asserted.  Its output must be all zero, proving no
         // stale TU0 cache data leaked through the epoch/tag path.
+        #1step;
         wait (it_data_in_req);
         it_data_end <= 1'b1;
         @(posedge clk);

@@ -1,0 +1,40 @@
+{
+  "version": "V3.5-Step12C-M4",
+  "scope": "cycle-model checker fault injection",
+  "all_pass": true,
+  "checks": {
+    "trace_rollback_rejected": true,
+    "missing_result_write_rejected": true,
+    "horizontal_stage16_mutation_rejected": true,
+    "result_value_mutation_rejected": true,
+    "early_vector_start_rejected": true,
+    "duplicate_kernel_group_rejected": true,
+    "wrong_vector_group_rejected": true,
+    "intermediate_overwrite_rejected": true,
+    "write_without_reservation_rejected": true,
+    "same_address_rdw_rejected": true,
+    "early_ram_response_rejected": true,
+    "late_ram_response_rejected": true,
+    "output_hold_mutation_rejected": true,
+    "output_drop_rejected": true,
+    "output_duplicate_rejected": true,
+    "wrong_done_timing_rejected": true,
+    "descriptor_misbind_rejected": true,
+    "bank_conflict_rejected": true,
+    "scrub_access_rejected": true,
+    "wrong_stage_tu_owner_rejected": true,
+    "wrong_stage_lane_rejected": true,
+    "wrong_stage_slot_rejected": true,
+    "wrong_stage_bank_rejected": true,
+    "swapped_memory_request_id_rejected": true,
+    "missing_memory_response_rejected": true,
+    "duplicate_memory_response_rejected": true
+  },
+  "scrub_checks": {
+    "wrong_scrub_index_rejected": true,
+    "missing_scrub_transaction_rejected": true,
+    "missing_scrub_bank_rejected": true,
+    "wrong_scrub_cache_rejected": true,
+    "scrub_access_rejected": true
+  }
+}

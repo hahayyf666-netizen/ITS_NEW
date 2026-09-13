@@ -1,12 +1,14 @@
 $ErrorActionPreference = "Stop"
 $root = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 $python = if (Get-Command python -ErrorAction SilentlyContinue) { "python" } else { throw "python not found" }
-$auditDir = if ($env:STEP12B_AUDIT_DIR) { $env:STEP12B_AUDIT_DIR } else { "05_audit\current\19\m3" }
-$modelDir = if ($env:STEP12B_MODEL_DIR) { $env:STEP12B_MODEL_DIR } else { "05_audit\current\19\m3_model" }
+$auditDir = if ($env:STEP12B_AUDIT_DIR) { $env:STEP12B_AUDIT_DIR } else { "05_audit\current\20\m4" }
+$modelDir = if ($env:STEP12B_MODEL_DIR) { $env:STEP12B_MODEL_DIR } else { "05_audit\current\20\m4_model" }
 $auditAbs = Join-Path $root $auditDir
 $modelAbs = Join-Path $root $modelDir
+$null = New-Item -ItemType Directory -Force -Path $auditAbs
+$null = New-Item -ItemType Directory -Force -Path $modelAbs
 $env:STEP12B_AUDIT_OUT = $modelAbs
-$env:STEP12B_MODEL_VERSION = if ($env:STEP12B_MODEL_VERSION) { $env:STEP12B_MODEL_VERSION } else { "V3.5-Step12C-M3" }
+$env:STEP12B_MODEL_VERSION = if ($env:STEP12B_MODEL_VERSION) { $env:STEP12B_MODEL_VERSION } else { "V3.5-Step12C-M4" }
 & $python (Join-Path $root "03_verification\scripts\step12b_cycle_model.py")
 if ($LASTEXITCODE -ne 0) { throw "Step12B cycle model failed" }
 & $python (Join-Path $root "03_verification\scripts\gen_step12b_rtl_random_vectors.py")
@@ -147,4 +149,4 @@ try {
     throw "synthesis extreme simulation did not report a clean PASS"
   }
 } finally { Pop-Location }
-Write-Output "V35_STEP12C_M3_FUNCTIONAL_REGRESSION_PASS"
+Write-Output "V35_STEP12C_M4_FUNCTIONAL_REGRESSION_PASS"

@@ -1,0 +1,49 @@
+{
+  "version": "V3.5-Step12C-M4",
+  "status": "FUNCTIONAL_PASS_SYNTHESIS_HOLD_STOP",
+  "commit_status": "candidate_not_frozen",
+  "scope": "input-cache bank-local write-command pipeline only",
+  "route_run": false,
+  "r4c_sha256": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1",
+  "wrapper_sha256": "D1459B652666E2DBBB0D3464002E88DD30867C4BA6E4715E6865B5164E664943",
+  "functional": {
+    "python_model": "PASS",
+    "modelsim_normal": "PASS",
+    "modelsim_synthesis": "PASS",
+    "two_tu": "PASS",
+    "epoch_scrub": "PASS",
+    "mutation_gate": "PASS",
+    "output_fire_ii_ready_high": 1,
+    "vector_ii": 16
+  },
+  "synthesis": {
+    "vivado": "2025.2",
+    "part": "xcku5p-ffvb676-2-e",
+    "period_ns": 2.0,
+    "lut": 22921,
+    "lutram": 7168,
+    "ff": 21315,
+    "dsp48e2": 128,
+    "bram": 0,
+    "uram": 0,
+    "errors": 0,
+    "critical_warnings": 0,
+    "unconstrained_internal_endpoints": 0,
+    "wns_ns": 0.087,
+    "tns_ns": 0.0,
+    "setup_failing_endpoints": 0,
+    "whs_ns": -0.076,
+    "ths_ns": -17.454,
+    "hold_failing_endpoints": 293,
+    "gate": "STOP_HOLD_TIMING"
+  },
+  "evidence": {
+    "functional_dir": "05_audit/current/20/m4",
+    "model_dir": "05_audit/current/20/m4_model",
+    "synthesis_dir": "05_audit/current/20/m4_synth",
+    "synthesis_report": "05_audit/current/20/m4_synth/V35_STEP12C_M4_SYNTHESIS_REPORT.md",
+    "post_synth_dcp": "05_audit/current/20/m4_synth/step12c_wrapper_postsynth.dcp",
+    "post_synth_dcp_sha256": "49B703F36D6E6DDDB070ABCC8CC331B74CF6454402A0C4FAB299C58E129D1DCB"
+  },
+  "next": "STOP; review only the measured input-port to input_wr_addr hold path before any route"
+}

@@ -205,12 +205,41 @@ module step12b_dct2_64_wrapper #(
         coord_addr = row * 16 + (col >> 2);
     endfunction
 
+    // M4 input boundary pipeline.  The external transaction is accepted at
+    // edge C, then a bank-local command is committed to the physical data/tag
+    // arrays at edge C+1.  Each cycle has at most one valid command, but the
+    // command is held in the selected physical bank's own registers so that
+    // it_data_addr/desc_slot_q do not directly drive all RAM write ports.
+    reg input_wr_valid_a0_q, input_wr_valid_a1_q;
+    reg input_wr_valid_a2_q, input_wr_valid_a3_q;
+    reg input_wr_valid_b0_q, input_wr_valid_b1_q;
+    reg input_wr_valid_b2_q, input_wr_valid_b3_q;
+    reg [9:0] input_wr_addr_a0_q, input_wr_addr_a1_q;
+    reg [9:0] input_wr_addr_a2_q, input_wr_addr_a3_q;
+    reg [9:0] input_wr_addr_b0_q, input_wr_addr_b1_q;
+    reg [9:0] input_wr_addr_b2_q, input_wr_addr_b3_q;
+    reg signed [15:0] input_wr_data_a0_q, input_wr_data_a1_q;
+    reg signed [15:0] input_wr_data_a2_q, input_wr_data_a3_q;
+    reg signed [15:0] input_wr_data_b0_q, input_wr_data_b1_q;
+    reg signed [15:0] input_wr_data_b2_q, input_wr_data_b3_q;
+    reg [EPOCH_BITS-1:0] input_wr_epoch_a0_q, input_wr_epoch_a1_q;
+    reg [EPOCH_BITS-1:0] input_wr_epoch_a2_q, input_wr_epoch_a3_q;
+    reg [EPOCH_BITS-1:0] input_wr_epoch_b0_q, input_wr_epoch_b1_q;
+    reg [EPOCH_BITS-1:0] input_wr_epoch_b2_q, input_wr_epoch_b3_q;
+    reg input_wr_cache_q, input_wr_last_q;
+    wire input_wr_pending = input_wr_valid_a0_q || input_wr_valid_a1_q ||
+                            input_wr_valid_a2_q || input_wr_valid_a3_q ||
+                            input_wr_valid_b0_q || input_wr_valid_b1_q ||
+                            input_wr_valid_b2_q || input_wr_valid_b3_q;
+    wire input_wr_last_pending = input_wr_pending && input_wr_last_q;
+
     // Official contest output contract: vld may rise only when req is high.
     // The internal hold/skid state remains valid and stable while req=0;
     // output_fire is the consuming edge, not the external vld indication.
     always @* begin
         it_data_in_req = 1'b0;
         if ((desc_count != 0) && (desc_slot_q[0] != DESC_UNBOUND) && !desc_bind_guard &&
+            !input_wr_last_pending &&
             (cache_state[desc_slot_q[0]] == CACHE_FILL))
             it_data_in_req = 1'b1;
         it_data_out = result_hold_data;
@@ -331,60 +360,63 @@ module step12b_dct2_64_wrapper #(
     // Explicit one-write-port bank processes.  The tag arrays are invalidated
     // by the existing per-cache scrub controller; data words do not need to
     // be cleared because a tag mismatch makes the corresponding value zero.
+    // M4 commits the bank-local command captured on the previous edge.  The
+    // final command is therefore visible to the cache state machine only on
+    // this commit edge, never on the external acceptance edge.
     always @(posedge clk) begin
         if (cache_scrubbing[0]) input_tag_a0[scrub_index[0]] <= 0;
-        else if (sparse_input_fire && desc_slot_q[0] == 0 && sparse_input_bank == 2'd0) begin
-            input_cache_a0[sparse_input_addr] <= it_data_in;
-            input_tag_a0[sparse_input_addr] <= cache_epoch[0];
+        else if (input_wr_valid_a0_q) begin
+            input_cache_a0[input_wr_addr_a0_q] <= input_wr_data_a0_q;
+            input_tag_a0[input_wr_addr_a0_q] <= input_wr_epoch_a0_q;
         end
     end
     always @(posedge clk) begin
         if (cache_scrubbing[0]) input_tag_a1[scrub_index[0]] <= 0;
-        else if (sparse_input_fire && desc_slot_q[0] == 0 && sparse_input_bank == 2'd1) begin
-            input_cache_a1[sparse_input_addr] <= it_data_in;
-            input_tag_a1[sparse_input_addr] <= cache_epoch[0];
+        else if (input_wr_valid_a1_q) begin
+            input_cache_a1[input_wr_addr_a1_q] <= input_wr_data_a1_q;
+            input_tag_a1[input_wr_addr_a1_q] <= input_wr_epoch_a1_q;
         end
     end
     always @(posedge clk) begin
         if (cache_scrubbing[0]) input_tag_a2[scrub_index[0]] <= 0;
-        else if (sparse_input_fire && desc_slot_q[0] == 0 && sparse_input_bank == 2'd2) begin
-            input_cache_a2[sparse_input_addr] <= it_data_in;
-            input_tag_a2[sparse_input_addr] <= cache_epoch[0];
+        else if (input_wr_valid_a2_q) begin
+            input_cache_a2[input_wr_addr_a2_q] <= input_wr_data_a2_q;
+            input_tag_a2[input_wr_addr_a2_q] <= input_wr_epoch_a2_q;
         end
     end
     always @(posedge clk) begin
         if (cache_scrubbing[0]) input_tag_a3[scrub_index[0]] <= 0;
-        else if (sparse_input_fire && desc_slot_q[0] == 0 && sparse_input_bank == 2'd3) begin
-            input_cache_a3[sparse_input_addr] <= it_data_in;
-            input_tag_a3[sparse_input_addr] <= cache_epoch[0];
+        else if (input_wr_valid_a3_q) begin
+            input_cache_a3[input_wr_addr_a3_q] <= input_wr_data_a3_q;
+            input_tag_a3[input_wr_addr_a3_q] <= input_wr_epoch_a3_q;
         end
     end
     always @(posedge clk) begin
         if (cache_scrubbing[1]) input_tag_b0[scrub_index[1]] <= 0;
-        else if (sparse_input_fire && desc_slot_q[0] == 1 && sparse_input_bank == 2'd0) begin
-            input_cache_b0[sparse_input_addr] <= it_data_in;
-            input_tag_b0[sparse_input_addr] <= cache_epoch[1];
+        else if (input_wr_valid_b0_q) begin
+            input_cache_b0[input_wr_addr_b0_q] <= input_wr_data_b0_q;
+            input_tag_b0[input_wr_addr_b0_q] <= input_wr_epoch_b0_q;
         end
     end
     always @(posedge clk) begin
         if (cache_scrubbing[1]) input_tag_b1[scrub_index[1]] <= 0;
-        else if (sparse_input_fire && desc_slot_q[0] == 1 && sparse_input_bank == 2'd1) begin
-            input_cache_b1[sparse_input_addr] <= it_data_in;
-            input_tag_b1[sparse_input_addr] <= cache_epoch[1];
+        else if (input_wr_valid_b1_q) begin
+            input_cache_b1[input_wr_addr_b1_q] <= input_wr_data_b1_q;
+            input_tag_b1[input_wr_addr_b1_q] <= input_wr_epoch_b1_q;
         end
     end
     always @(posedge clk) begin
         if (cache_scrubbing[1]) input_tag_b2[scrub_index[1]] <= 0;
-        else if (sparse_input_fire && desc_slot_q[0] == 1 && sparse_input_bank == 2'd2) begin
-            input_cache_b2[sparse_input_addr] <= it_data_in;
-            input_tag_b2[sparse_input_addr] <= cache_epoch[1];
+        else if (input_wr_valid_b2_q) begin
+            input_cache_b2[input_wr_addr_b2_q] <= input_wr_data_b2_q;
+            input_tag_b2[input_wr_addr_b2_q] <= input_wr_epoch_b2_q;
         end
     end
     always @(posedge clk) begin
         if (cache_scrubbing[1]) input_tag_b3[scrub_index[1]] <= 0;
-        else if (sparse_input_fire && desc_slot_q[0] == 1 && sparse_input_bank == 2'd3) begin
-            input_cache_b3[sparse_input_addr] <= it_data_in;
-            input_tag_b3[sparse_input_addr] <= cache_epoch[1];
+        else if (input_wr_valid_b3_q) begin
+            input_cache_b3[input_wr_addr_b3_q] <= input_wr_data_b3_q;
+            input_tag_b3[input_wr_addr_b3_q] <= input_wr_epoch_b3_q;
         end
     end
 
@@ -501,9 +533,54 @@ module step12b_dct2_64_wrapper #(
             end
             desc_info_q[0] <= 0;
             desc_info_q[1] <= 0;
+            input_wr_valid_a0_q <= 1'b0;
+            input_wr_valid_a1_q <= 1'b0;
+            input_wr_valid_a2_q <= 1'b0;
+            input_wr_valid_a3_q <= 1'b0;
+            input_wr_valid_b0_q <= 1'b0;
+            input_wr_valid_b1_q <= 1'b0;
+            input_wr_valid_b2_q <= 1'b0;
+            input_wr_valid_b3_q <= 1'b0;
+            input_wr_addr_a0_q <= 0;
+            input_wr_addr_a1_q <= 0;
+            input_wr_addr_a2_q <= 0;
+            input_wr_addr_a3_q <= 0;
+            input_wr_addr_b0_q <= 0;
+            input_wr_addr_b1_q <= 0;
+            input_wr_addr_b2_q <= 0;
+            input_wr_addr_b3_q <= 0;
+            input_wr_data_a0_q <= 0;
+            input_wr_data_a1_q <= 0;
+            input_wr_data_a2_q <= 0;
+            input_wr_data_a3_q <= 0;
+            input_wr_data_b0_q <= 0;
+            input_wr_data_b1_q <= 0;
+            input_wr_data_b2_q <= 0;
+            input_wr_data_b3_q <= 0;
+            input_wr_epoch_a0_q <= 0;
+            input_wr_epoch_a1_q <= 0;
+            input_wr_epoch_a2_q <= 0;
+            input_wr_epoch_a3_q <= 0;
+            input_wr_epoch_b0_q <= 0;
+            input_wr_epoch_b1_q <= 0;
+            input_wr_epoch_b2_q <= 0;
+            input_wr_epoch_b3_q <= 0;
+            input_wr_cache_q <= 1'b0;
+            input_wr_last_q <= 1'b0;
         end else begin
             debug_stage16_valid <= 1'b0;
             it_done <= 1'b0;
+            // Clear the one-entry command valid bits.  A new input fire below
+            // may set exactly one bank valid again on this same edge, while
+            // the bank processes above commit the previous command.
+            input_wr_valid_a0_q <= 1'b0;
+            input_wr_valid_a1_q <= 1'b0;
+            input_wr_valid_a2_q <= 1'b0;
+            input_wr_valid_a3_q <= 1'b0;
+            input_wr_valid_b0_q <= 1'b0;
+            input_wr_valid_b1_q <= 1'b0;
+            input_wr_valid_b2_q <= 1'b0;
+            input_wr_valid_b3_q <= 1'b0;
             // Commit the previous V write command at this edge and capture
             // the current R4C V group for the next edge.  The explicit last
             // command marker is the only condition that releases H admission.
@@ -650,33 +727,87 @@ module step12b_dct2_64_wrapper #(
             // Sparse input fire.  The stream is accepted only while the
             // bound cache is filling; data/end in the bind cycle is rejected
             // by it_data_in_req=0.  Addresses are raster-monotonic.
+            if (input_wr_pending && input_wr_last_q) begin
+                cache_state[input_wr_cache_q] <= CACHE_READY;
+                if (desc_count == 2) begin
+                    desc_slot_q[0] <= desc_slot_q[1];
+                    desc_tu_q[0] <= desc_tu_q[1];
+                    desc_info_q[0] <= desc_info_q[1];
+                    desc_count <= 1;
+                end else if (desc_push_ok) begin
+                    desc_slot_q[0] <= push_slot_calc;
+                    desc_tu_q[0] <= next_tu_serial;
+                    desc_info_q[0] <= it_info;
+                    desc_count <= 1;
+                end else begin
+                    desc_count <= 0;
+                end
+                desc_bind_guard <= 1'b0;
+            end
+
             if (sparse_input_fire) begin
                 if (last_input_valid[desc_slot_q[0]] &&
-                    it_data_addr <= last_input_addr[desc_slot_q[0]])
+                    it_data_addr <= last_input_addr[desc_slot_q[0]]) begin
                     protocol_error <= 1'b1;
+                end
                 last_input_addr[desc_slot_q[0]] <= it_data_addr;
                 last_input_valid[desc_slot_q[0]] <= 1'b1;
-                if (it_data_end) begin
-                    cache_state[desc_slot_q[0]] <= CACHE_READY;
-                    // Pop the descriptor only after the final data has been
-                    // written at this same edge.
-                    if (desc_count == 2) begin
-                        desc_slot_q[0] <= desc_slot_q[1];
-                        desc_tu_q[0] <= desc_tu_q[1];
-                        desc_info_q[0] <= desc_info_q[1];
-                        desc_count <= 1;
-                    end else if (desc_push_ok) begin
-                        // A descriptor pushed while the active descriptor
-                        // ends in this same edge occupies q1 in the push
-                        // block above; promote it to the new FIFO head.
-                        desc_slot_q[0] <= push_slot_calc;
-                        desc_tu_q[0] <= next_tu_serial;
-                        desc_info_q[0] <= it_info;
-                        desc_count <= 1;
-                    end else begin
-                        desc_count <= 0;
-                    end
-                    desc_bind_guard <= 1'b0;
+                input_wr_cache_q <= desc_slot_q[0];
+                input_wr_last_q <= it_data_end;
+                if (desc_slot_q[0] == 1'b0) begin
+                    case (sparse_input_bank)
+                        2'd0: begin
+                            input_wr_valid_a0_q <= 1'b1;
+                            input_wr_addr_a0_q <= sparse_input_addr;
+                            input_wr_data_a0_q <= it_data_in;
+                            input_wr_epoch_a0_q <= cache_epoch[0];
+                        end
+                        2'd1: begin
+                            input_wr_valid_a1_q <= 1'b1;
+                            input_wr_addr_a1_q <= sparse_input_addr;
+                            input_wr_data_a1_q <= it_data_in;
+                            input_wr_epoch_a1_q <= cache_epoch[0];
+                        end
+                        2'd2: begin
+                            input_wr_valid_a2_q <= 1'b1;
+                            input_wr_addr_a2_q <= sparse_input_addr;
+                            input_wr_data_a2_q <= it_data_in;
+                            input_wr_epoch_a2_q <= cache_epoch[0];
+                        end
+                        default: begin
+                            input_wr_valid_a3_q <= 1'b1;
+                            input_wr_addr_a3_q <= sparse_input_addr;
+                            input_wr_data_a3_q <= it_data_in;
+                            input_wr_epoch_a3_q <= cache_epoch[0];
+                        end
+                    endcase
+                end else begin
+                    case (sparse_input_bank)
+                        2'd0: begin
+                            input_wr_valid_b0_q <= 1'b1;
+                            input_wr_addr_b0_q <= sparse_input_addr;
+                            input_wr_data_b0_q <= it_data_in;
+                            input_wr_epoch_b0_q <= cache_epoch[1];
+                        end
+                        2'd1: begin
+                            input_wr_valid_b1_q <= 1'b1;
+                            input_wr_addr_b1_q <= sparse_input_addr;
+                            input_wr_data_b1_q <= it_data_in;
+                            input_wr_epoch_b1_q <= cache_epoch[1];
+                        end
+                        2'd2: begin
+                            input_wr_valid_b2_q <= 1'b1;
+                            input_wr_addr_b2_q <= sparse_input_addr;
+                            input_wr_data_b2_q <= it_data_in;
+                            input_wr_epoch_b2_q <= cache_epoch[1];
+                        end
+                        default: begin
+                            input_wr_valid_b3_q <= 1'b1;
+                            input_wr_addr_b3_q <= sparse_input_addr;
+                            input_wr_data_b3_q <= it_data_in;
+                            input_wr_epoch_b3_q <= cache_epoch[1];
+                        end
+                    endcase
                 end
             end else if (desc_count != 0 && it_data_in_req && it_data_end) begin
                 // Standalone end is legal and completes an otherwise empty
@@ -942,8 +1073,9 @@ module step12b_dct2_64_wrapper #(
             if (r4c_result_valid) begin
                 vec_tmp = r4c_result_vector_id - phase_vector_base;
 `ifndef SYNTHESIS
-                if (vec_tmp < 0 || vec_tmp >= 64)
+                if (vec_tmp < 0 || vec_tmp >= 64) begin
                     protocol_error <= 1'b1;
+                end
 `endif
                 for (i = 0; i < 4; i = i + 1) begin
                     row_tmp = r4c_result_group * 4 + i;
@@ -1018,8 +1150,9 @@ module step12b_dct2_64_wrapper #(
 
                 if (r4c_result_valid && phase == PH_HORIZONTAL) begin
                     if (!result_owner_valid || result_owner_tu != active_tu ||
-                        result_reserved == 0)
+                        result_reserved == 0) begin
                         protocol_error <= 1'b1;
+                    end
                     result_reserved_tmp = result_reserved_tmp - 1'b1;
                     result_occupied_tmp = result_occupied_tmp + 1'b1;
                     result_produced_tmp = result_produced_tmp + 1'b1;
@@ -1090,7 +1223,9 @@ module step12b_dct2_64_wrapper #(
                       ((result_pending_v_tmp ? 1 : 0) +
                        (result_hold_v_tmp ? 1 : 0) +
                        (result_skid_v_tmp ? 1 : 0)))
-                    protocol_error <= 1'b1;
+                     begin
+                         protocol_error <= 1'b1;
+                     end
             end else if (!((result_reserved_tmp == 0) &&
                            (result_occupied_tmp == 0) &&
                            (result_produced_tmp == 0) &&
@@ -1101,7 +1236,9 @@ module step12b_dct2_64_wrapper #(
                              (result_produced_tmp == 11'd1024) &&
                              (result_issued_tmp == 11'd1024) &&
                              (result_consumed_tmp == 11'd1024))) begin
-                protocol_error <= 1'b1;
+                 begin
+                     protocol_error <= 1'b1;
+                 end
             end
 `endif
 

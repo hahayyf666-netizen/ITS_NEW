@@ -1,0 +1,30 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Sun Sep 13 15:12:42 2026
+| Host         : Finesse running 64-bit major release  (build 9200)
+| Command      : report_utilization -hierarchical -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/20/m4_synth/report_hierarchy_utilization_postsynth.rpt
+| Design       : step12b_dct2_64_wrapper
+| Device       : xcku5p-ffvb676-2-e
+| Speed File   : -2
+| Design State : Synthesized
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++-----------------------------+------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+|           Instance          |         Module         | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs  | RAMB36 | RAMB18 | URAM | DSP Blocks |
++-----------------------------+------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+| step12b_dct2_64_wrapper     |                  (top) |      22921 |      15753 |    7168 |    0 | 21315 |      0 |      0 |    0 |        128 |
+|   (step12b_dct2_64_wrapper) |                  (top) |      11250 |       4082 |    7168 |    0 |  3213 |      0 |      0 |    0 |          0 |
+|   frozen_r4c                | p2f_dct2_64_b1_step102 |      11671 |      11671 |       0 |    0 | 18102 |      0 |      0 |    0 |        128 |
++-----------------------------+------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+
+
