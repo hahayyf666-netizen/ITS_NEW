@@ -1,0 +1,16 @@
+strategy=Performance_NetDelay_high
+input_dcp=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/22/m6_timing/step12c_boundary_pre_postsynth.dcp
+maxThreads=4
+open_checkpoint C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/22/m6_timing/step12c_boundary_pre_postsynth.dcp
+part=xcku5p-ffvb676-2-e
+top=step12c_registered_neighbor_harness
+opt_design=-directive Default
+place_design=-directive ExtraNetDelay_high
+phys_opt_design=-directive AggressiveExplore
+route_design=-directive NoTimingRelaxation
+post_route_phys_opt=0
+opt_design -directive Default
+place_design -directive ExtraNetDelay_high
+phys_opt_design -directive AggressiveExplore
+route_design -directive NoTimingRelaxation
+write_checkpoint C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/25/m6_sweep/Performance_NetDelay_high_rerun/final.dcp

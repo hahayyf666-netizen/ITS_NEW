@@ -1,0 +1,117 @@
+{
+  "record": "Step12C M6 implementation-only strategy sweep",
+  "status": "FIRST_PASS_FOUND_AND_INDEPENDENT_RERUN_PASS",
+  "date": "2026-09-14",
+  "scope": "implementation-only; no RTL, R4C, XDC, functional contract, or M8 changes",
+  "source": {
+    "baseline_commit": "74b35313b77e103faf4be1b18be547ab74fd3ce7",
+    "postsynth_dcp": "05_audit/current/22/m6_timing/step12c_boundary_pre_postsynth.dcp",
+    "postsynth_dcp_sha256": "2011E6BC16BEB7BE7988152B05C95EA361EC4DF5F4AA2FDB0BA11B1D5F4185EA",
+    "postsynth_dcp_bytes": 29901476,
+    "wrapper_sha256": "45E581A5CC542EE31ADAD49171076F804854B85D675B0CC37E2E8B0064D12A5C",
+    "r4c_sha256": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1",
+    "xdc_sha256": "16C340095F55CD22048B54E8218981649897CD9B794469CA1DA8C52245DAA1B4",
+    "rtl_tree_changed": false,
+    "r4c_changed": false,
+    "xdc_changed": false
+  },
+  "tool": {
+    "vivado": "2025.2",
+    "build": "6299465",
+    "part": "xcku5p-ffvb676-2-e",
+    "top": "step12c_registered_neighbor_harness",
+    "max_threads": 4,
+    "input_dcp_policy": "each flow opened the same original postsynth DCP in a fresh Vivado process"
+  },
+  "frozen_gate": {
+    "setup": "WNS >= 0, TNS = 0",
+    "hold": "WHS >= 0, THS = 0",
+    "constraints": "unconstrained internal endpoints = 0; no input/output delay omissions; no combinational loops; no valid timing exceptions",
+    "route": "failed/unrouted/partially routed nets = 0 in final Vivado route logs"
+  },
+  "flows": [
+    {
+      "strategy": "Performance_Explore",
+      "directives": {
+        "opt_design": "Explore",
+        "place_design": "Explore",
+        "phys_opt_design": "Explore",
+        "route_design": "Explore",
+        "post_route_phys_opt": false
+      },
+      "setup": {"wns_ns": -0.027, "tns_ns": -2.645, "failing_endpoints": 288},
+      "hold": {"whs_ns": 0.013, "ths_ns": 0.0, "failing_endpoints": 0},
+      "resources": {"clb_luts": 20331, "clb_registers": 21668, "bram_tiles": 0, "uram": 0, "dsps": 128},
+      "route_complete": true,
+      "final_dcp_sha256": "D45CCEA4FFF2C9CFACBEB1C761E55B28D043781A38C2C24204CE4FAFF2D45ABA",
+      "evidence_dir": "05_audit/current/25/m6_sweep/Performance_Explore"
+    },
+    {
+      "strategy": "Performance_NetDelay_high",
+      "directives": {
+        "opt_design": "Default",
+        "place_design": "ExtraNetDelay_high",
+        "phys_opt_design": "AggressiveExplore",
+        "route_design": "NoTimingRelaxation",
+        "post_route_phys_opt": false
+      },
+      "setup": {"wns_ns": 0.011, "tns_ns": 0.0, "failing_endpoints": 0},
+      "hold": {"whs_ns": 0.011, "ths_ns": 0.0, "failing_endpoints": 0},
+      "resources": {"clb_luts": 20333, "clb_registers": 21610, "bram_tiles": 0, "uram": 0, "dsps": 128},
+      "route_complete": true,
+      "final_dcp_sha256": "6A36BD1718956CBB81F76037E7DDD4A30D8DEE7EF149A6A9CD11405EDD654B57",
+      "evidence_dir": "05_audit/current/25/m6_sweep/Performance_NetDelay_high"
+    },
+    {
+      "strategy": "Performance_ExtraTimingOpt",
+      "directives": {
+        "opt_design": "Default",
+        "place_design": "ExtraTimingOpt",
+        "phys_opt_design": "Explore",
+        "route_design": "NoTimingRelaxation",
+        "post_route_phys_opt": false
+      },
+      "setup": {"wns_ns": 0.021, "tns_ns": 0.0, "failing_endpoints": 0},
+      "hold": {"whs_ns": 0.010, "ths_ns": 0.0, "failing_endpoints": 0},
+      "resources": {"clb_luts": 20650, "clb_registers": 21769, "bram_tiles": 0, "uram": 0, "dsps": 128},
+      "route_complete": true,
+      "final_dcp_sha256": "FF30A352432217FACC77E435D95134E61156B72D121707059DC38F9CD05F53D8",
+      "evidence_dir": "05_audit/current/25/m6_sweep/Performance_ExtraTimingOpt"
+    },
+    {
+      "strategy": "Performance_ExplorePostRoutePhysOpt",
+      "directives": {
+        "opt_design": "Explore",
+        "place_design": "Explore",
+        "phys_opt_design": "Explore",
+        "route_design": "Explore",
+        "post_route_phys_opt": true
+      },
+      "setup": {"wns_ns": -0.025, "tns_ns": -1.193, "failing_endpoints": 144},
+      "hold": {"whs_ns": 0.013, "ths_ns": 0.0, "failing_endpoints": 0},
+      "resources": {"clb_luts": 20331, "clb_registers": 21668, "bram_tiles": 0, "uram": 0, "dsps": 128},
+      "route_complete": true,
+      "final_dcp_sha256": "5BA2D46372FEDB94D51A13ACC044D2DF39A93BAF548455B2E8967912528737B1",
+      "evidence_dir": "05_audit/current/25/m6_sweep/Performance_ExplorePostRoutePhysOpt"
+    }
+  ],
+  "first_passing_strategy": "Performance_NetDelay_high",
+  "independent_rerun": {
+    "strategy": "Performance_NetDelay_high",
+    "input_dcp": "05_audit/current/22/m6_timing/step12c_boundary_pre_postsynth.dcp",
+    "setup": {"wns_ns": 0.011, "tns_ns": 0.0, "failing_endpoints": 0},
+    "hold": {"whs_ns": 0.011, "ths_ns": 0.0, "failing_endpoints": 0},
+    "route_complete": true,
+    "final_dcp_sha256": "B71D7537D658B90937A0EA94BE25868E883B8AA89081AC421C9BFB95CF5EFBF2",
+    "evidence_dir": "05_audit/current/25/m6_sweep/Performance_NetDelay_high_rerun",
+    "result": "PASS"
+  },
+  "decision": {
+    "implementation_only_closure_candidate": true,
+    "m6_strategy_sweep": "PASS",
+    "rtl_changed": false,
+    "v3_5_18_created": false,
+    "tag_created": false,
+    "next_action": "remote audit of committed sweep evidence before any freeze tag"
+  }
+}

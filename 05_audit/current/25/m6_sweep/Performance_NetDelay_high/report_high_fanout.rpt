@@ -1,0 +1,222 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Mon Sep 14 01:10:19 2026
+| Host         : Finesse running 64-bit major release  (build 9200)
+| Command      : report_high_fanout_nets -max_nets 200 -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/25/m6_sweep/Performance_NetDelay_high/report_high_fanout.rpt
+| Design       : step12c_registered_neighbor_harness
+| Device       : xcku5p
+| Design State : Routed
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+High Fan-out Nets Information
+
+1. Summary
+----------
+
++-------------------------------------------------------+--------+-------------+
+| Net Name                                              | Fanout | Driver Type |
++-------------------------------------------------------+--------+-------------+
+| u_dut/frozen_r4c/stage16_mem[0][50][15]_i_1_n_0       |   1041 | LUT3        |
+| u_dut/frozen_r4c/stage16_mem[1][50][15]_i_1_n_0       |   1041 | LUT3        |
+| u_dut/frozen_r4c/stage16_mem[2][50][15]_i_1_n_0       |   1041 | LUT3        |
+| u_dut/frozen_r4c/stage16_mem[3][50][15]_i_1_n_0       |   1041 | LUT3        |
+| u_dut/frozen_r4c/r4a_vector_buf_a[0]                  |   1024 | LUT2        |
+| u_dut/frozen_r4c/r4a_vector_buf_b[0]                  |   1024 | LUT2        |
+| u_dut/frozen_r4c/result_group[2]                      |   1019 | FDCE        |
+| u_dut/frozen_r4c/result_group[3]                      |    954 | FDCE        |
+| u_dut/frozen_r4c/result_group[1]                      |    949 | FDCE        |
+| u_dut/debug_stage16_col[2]                            |    897 | FDRE        |
+| u_dut/debug_stage16_col[3]                            |    897 | FDRE        |
+| u_dut/debug_stage16_col[4]                            |    897 | FDRE        |
+| u_dut/debug_stage16_col[5]                            |    897 | FDRE        |
+| u_dut/frozen_r4c/result_group[0]                      |    875 | FDCE        |
+| u_dut/result_mem_reg_0_63_0_6_i_1_n_0                 |    864 | LUT3        |
+| u_dut/result_mem_reg_0_63_0_6_i_2_n_0                 |    864 | LUT2        |
+| u_dut/debug_stage16_col[0]                            |    738 | FDRE        |
+| u_dut/debug_stage16_col[1]                            |    737 | FDRE        |
+| u_dut/v_wr_addr1_q[4]                                 |    736 | FDRE        |
+| u_dut/v_wr_addr2_q[5]                                 |    736 | FDRE        |
+| u_dut/debug_stage16_col_reg[2]_rep_n_0                |    576 | FDRE        |
+| u_dut/debug_stage16_col_reg[3]_rep_n_0                |    576 | FDRE        |
+| u_dut/debug_stage16_col_reg[4]_rep_n_0                |    576 | FDRE        |
+| u_dut/debug_stage16_col_reg[5]_rep_n_0                |    576 | FDRE        |
+| u_dut/frozen_r4c/red_s0_data[63][23]_i_1_n_0          |    480 | LUT6        |
+| u_dut/frozen_r4c/red_s1_data[0]                       |    480 | LUT5        |
+| u_dut/frozen_r4c/red_s0_data[0]                       |    441 | LUT5        |
+| u_dut/input_wr_addr_a2_q[4]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b1_q[5]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b2_q[0]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a2_q[3]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a2_q[2]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b2_q[1]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a2_q[1]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a2_q[0]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a3_q[5]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a3_q[4]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a3_q[3]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a3_q[2]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a3_q[1]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a3_q[0]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b2_q[3]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a0_q[5]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a0_q[3]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b2_q[5]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b0_q[0]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b0_q[1]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a0_q[4]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b0_q[2]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b0_q[3]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b2_q[4]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b3_q[1]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b3_q[2]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a1_q[0]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b3_q[3]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a1_q[1]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b3_q[4]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b3_q[5]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a1_q[2]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b0_q[4]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a1_q[5]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a1_q[3]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a1_q[4]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b0_q[5]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b1_q[0]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b1_q[1]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b1_q[2]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b2_q[2]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b3_q[0]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b1_q[3]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_b1_q[4]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a2_q[5]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a0_q[0]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a0_q[1]                           |    369 | FDRE        |
+| u_dut/input_wr_addr_a0_q[2]                           |    369 | FDRE        |
+| u_dut/p_45_in                                         |    368 | LUT6        |
+| u_dut/frozen_r4c/signal_reg[2][21]_i_1_n_0            |    360 | LUT4        |
+| u_dut/frozen_r4c/signal_reg[68][21]_i_1_n_0           |    352 | LUT4        |
+| u_dut/frozen_r4c/signal_reg[90][21]_i_1_n_0           |    352 | LUT6        |
+| u_dut/frozen_r4c/red_s1_data[27][23]_i_1_n_0          |    288 | LUT6        |
+| u_dut/frozen_r4c/red_s0_data[0]_repN                  |    288 | LUT5        |
+| u_dut/phase[0]                                        |    243 | FDRE        |
+| u_dut/phase[1]                                        |    240 | FDRE        |
+| u_dut/launch_bank_reg_n_0_repN_4                      |    227 | FDRE        |
+| u_dut/launch_bank_reg_n_0_repN_3                      |    203 | FDRE        |
+| u_dut/tag_wr_addr_a0[0]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a0[1]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a0[2]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a0[3]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b3[2]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a0[4]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a0[5]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b3[3]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b3[4]                               |    192 | LUT3        |
+| u_dut/frozen_r4c/red_s2_data[0]                       |    192 | LUT5        |
+| u_dut/tag_wr_addr_b3[5]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a1[0]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a1[1]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a1[2]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a1[3]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a1[4]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b0[0]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a1[5]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a2[0]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a2[1]                               |    192 | LUT3        |
+| u_dut/frozen_r4c/red_s3_data[0]                       |    192 | LUT6        |
+| u_dut/tag_wr_addr_a2[2]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a2[3]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a2[4]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a2[5]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a3[0]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a3[1]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a3[2]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a3[3]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a3[4]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_a3[5]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b0[1]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b0[2]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b0[3]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b0[4]                               |    192 | LUT3        |
+| u_dut/frozen_r4c/red_s2_data[15][23]_i_1_n_0          |    192 | LUT6        |
+| u_dut/tag_wr_addr_b0[5]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b1[0]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b1[1]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b1[2]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b1[3]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b1[4]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b1[5]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b2[0]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b2[1]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b2[2]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b2[3]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b2[4]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b2[5]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b3[0]                               |    192 | LUT3        |
+| u_dut/tag_wr_addr_b3[1]                               |    192 | LUT3        |
+| u_dut/frozen_r4c/dot_value_bank[0][8][21]_i_1_n_0     |    186 | LUT6        |
+| u_dut/frozen_r4c/dot_value_bank[1][8][21]_i_1_n_0     |    186 | LUT6        |
+| u_dut/frozen_r4c/signal_reg[24][23]_i_1_n_0           |    186 | LUT4        |
+| u_dut/frozen_r4c/bf_bank_reg_n_0                      |    170 | FDCE        |
+| u_dut/frozen_r4c/sched_bank_reg_reg[0]_rep_n_0        |    163 | FDCE        |
+| u_dut/launch_bank_reg_n_0_repN_2                      |    162 | FDRE        |
+| u_dut/result_pending_index[6]                         |    160 | FDRE        |
+| u_dut/result_pending_index[7]                         |    160 | FDRE        |
+| u_dut/frozen_r4c/bf_bank_reg_rep__16_n_0              |    158 | FDCE        |
+| u_dut/frozen_r4c/bf_bank_reg_rep__11_n_0              |    158 | FDCE        |
+| u_dut/frozen_r4c/bf_bank_reg_rep_n_0                  |    156 | FDCE        |
+| u_dut/launch_bank_reg_n_0_repN_6                      |    155 | FDRE        |
+| u_dut/cache_scrubbing_reg[1]__0                       |    155 | FDSE        |
+| u_dut/frozen_r4c/bf_bank_reg_rep__15_n_0              |    154 | FDCE        |
+| u_dut/frozen_r4c/bf_bank_reg_rep__5_n_0               |    154 | FDCE        |
+| u_dut/cache_scrubbing_reg[0]__0                       |    151 | FDSE        |
+| u_dut/stage_bank_addr3_reg[5]_rep_n_0                 |    144 | FDRE        |
+| u_dut/frozen_r4c/signal_reg[107][21]_i_1_n_0          |    144 | LUT4        |
+| u_dut/stage_bank_addr0_reg[3]_rep__2_n_0              |    144 | FDRE        |
+| u_dut/stage_bank_addr0_reg[2]_rep__2_n_0              |    144 | FDRE        |
+| u_dut/stage_bank_addr0_reg[1]_rep__2_n_0              |    144 | FDRE        |
+| u_dut/stage_bank_addr0_reg[5]_rep_n_0                 |    144 | FDRE        |
+| u_dut/stage_bank_addr0_reg[0]_rep__2_n_0              |    144 | FDRE        |
+| u_dut/stage_bank_addr2_reg[5]_rep_n_0                 |    144 | FDRE        |
+| u_dut/stage_bank_addr0_reg[4]_rep_n_0                 |    144 | FDRE        |
+| u_dut/stage_bank_addr0_reg[3]_rep_n_0                 |    144 | FDRE        |
+| u_dut/stage_bank_addr1_reg[4]_rep_n_0                 |    144 | FDRE        |
+| u_dut/frozen_r4c/sched_bank_reg_reg[0]_rep__0_n_0     |    144 | FDCE        |
+| u_dut/stage_bank_addr0_reg[1]_rep_n_0                 |    144 | FDRE        |
+| u_dut/frozen_r4c/signal_reg[99][21]_i_1_n_0           |    144 | LUT4        |
+| u_dut/frozen_r4c/signal_reg[91][21]_i_1_n_0           |    144 | LUT4        |
+| u_dut/frozen_r4c/bf_bank_reg_rep__1_n_0               |    144 | FDCE        |
+| u_dut/stage_bank_addr0_reg[0]_rep_n_0                 |    144 | FDRE        |
+| u_dut/stage_bank_addr1_reg[5]_rep_n_0                 |    144 | FDRE        |
+| u_dut/frozen_r4c/sched_bank_reg_reg_n_0_[0]           |    144 | FDCE        |
+| u_dut/stage_bank_addr0_reg[2]_rep__0_n_0              |    144 | FDRE        |
+| u_dut/stage_bank_addr0_reg[0]_rep__0_n_0              |    144 | FDRE        |
+| u_dut/frozen_r4c/signal_reg[116][21]_i_1_n_0          |    144 | LUT4        |
+| u_dut/frozen_r4c/signal_reg[108][21]_i_1_n_0          |    144 | LUT6        |
+| u_dut/frozen_r4c/signal_reg[123][21]_i_1_n_0          |    144 | LUT4        |
+| u_dut/stage_bank_addr0_reg[4]_rep__0_n_0              |    144 | FDRE        |
+| u_dut/stage_bank_addr0_reg[1]_rep__0_n_0              |    144 | FDRE        |
+| u_dut/frozen_r4c/signal_reg[103][21]_i_1_n_0          |    144 | LUT5        |
+| u_dut/frozen_r4c/bf_bank_reg_rep__0_n_0               |    144 | FDCE        |
+| u_dut/frozen_r4c/signal_reg[115][21]_i_1_n_0          |    144 | LUT4        |
+| u_dut/stage_bank_addr0_reg[3]_rep__0_n_0              |    144 | FDRE        |
+| u_dut/frozen_r4c/r4a_issue_active_reg[0]__0           |    142 | FDCE        |
+| u_dut/stage_bank_addr0[7]                             |    136 | FDRE        |
+| u_dut/stage_bank_addr1[7]                             |    136 | FDRE        |
+| u_dut/stage_bank_addr3[6]                             |    136 | FDRE        |
+| u_dut/stage_bank_addr3[7]                             |    136 | FDRE        |
+| u_dut/stage_bank_addr1[6]                             |    136 | FDRE        |
+| u_dut/stage_bank_addr2[6]                             |    136 | FDRE        |
+| u_dut/stage_bank_addr2[7]                             |    136 | FDRE        |
+| u_dut/stage_bank_addr0[6]                             |    136 | FDRE        |
+| u_dut/frozen_r4c/r4a_issue_cycle_reg[0][0]_rep_n_0    |    134 | FDCE        |
+| u_dut/frozen_r4c/r4a_issue_cycle_reg[0][2]_rep_n_0    |    133 | FDCE        |
+| u_dut/frozen_r4c/r4a_issue_cycle_reg[0][0]_rep__3_n_0 |    133 | FDCE        |
+| u_dut/frozen_r4c/bf_bank_reg_rep__4_n_0               |    132 | FDCE        |
+| u_dut/frozen_r4c/r4a_issue_cycle_reg[0][2]_rep__4_n_0 |    132 | FDCE        |
+| u_dut/frozen_r4c/r4a_issue_cycle_reg[0][1]_rep__5_n_0 |    131 | FDCE        |
+| u_dut/frozen_r4c/r4a_issue_cycle_reg[0][1]_rep__1_n_0 |    130 | FDCE        |
+| u_dut/frozen_r4c/sched_src_sel_reg_reg[88][0]_rep_n_0 |    128 | FDCE        |
+| u_dut/frozen_r4c/sched_valid_reg_reg[0]_rep__2_n_0    |    128 | FDCE        |
++-------------------------------------------------------+--------+-------------+
+
+

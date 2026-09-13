@@ -1,0 +1,33 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Mon Sep 14 00:30:03 2026
+| Host         : Finesse running 64-bit major release  (build 9200)
+| Command      : report_utilization -hierarchical -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/25/m6_sweep/Performance_Explore/report_hierarchy_utilization.rpt
+| Design       : step12c_registered_neighbor_harness
+| Device       : xcku5p-ffvb676-2-e
+| Speed File   : -2
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++-----------------------------------------+-------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+|                 Instance                |          Module         | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs  | RAMB36 | RAMB18 | URAM | DSP Blocks |
++-----------------------------------------+-------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+| step12c_registered_neighbor_harness     |                   (top) |      20331 |      14443 |    5888 |    0 | 21668 |      0 |      0 |    0 |        128 |
+|   (step12c_registered_neighbor_harness) |                   (top) |          1 |          1 |       0 |    0 |   167 |      0 |      0 |    0 |          0 |
+|   u_dut                                 | step12b_dct2_64_wrapper |      20330 |      14442 |    5888 |    0 | 21501 |      0 |      0 |    0 |        128 |
+|     (u_dut)                             | step12b_dct2_64_wrapper |       8989 |       3101 |    5888 |    0 |  3277 |      0 |      0 |    0 |          0 |
+|     frozen_r4c                          |  p2f_dct2_64_b1_step102 |      11341 |      11341 |       0 |    0 | 18224 |      0 |      0 |    0 |        128 |
++-----------------------------------------+-------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+* Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
+
+
