@@ -1,0 +1,31 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Sun Sep 13 16:34:05 2026
+| Host         : Finesse running 64-bit major release  (build 9200)
+| Command      : report_utilization -hierarchical -file 05_audit/current/20/m4_impl/report_hierarchy_utilization_postroute.rpt
+| Design       : step12b_dct2_64_wrapper
+| Device       : xcku5p-ffvb676-2-e
+| Speed File   : -2
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++-----------------------------+------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+|           Instance          |         Module         | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs  | RAMB36 | RAMB18 | URAM | DSP Blocks |
++-----------------------------+------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+| step12b_dct2_64_wrapper     |                  (top) |      21841 |      14673 |    7168 |    0 | 21352 |      0 |      0 |    0 |        128 |
+|   (step12b_dct2_64_wrapper) |                  (top) |      10548 |       3380 |    7168 |    0 |  3228 |      0 |      0 |    0 |          0 |
+|   frozen_r4c                | p2f_dct2_64_b1_step102 |      11294 |      11294 |       0 |    0 | 18124 |      0 |      0 |    0 |        128 |
++-----------------------------+------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+* Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
+
+

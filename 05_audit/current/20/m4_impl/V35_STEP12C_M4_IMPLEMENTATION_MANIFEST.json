@@ -1,0 +1,49 @@
+{
+  "version": "V3.5-Step12C-M4-implementation",
+  "status": "IMPLEMENTATION_COMPLETE_TIMING_STOP",
+  "commit": "bb65abf60b3036e5535bf7056402e971e0e1a855",
+  "scope": "M4 wrapper/XDC unchanged; Step12C-2 place and route evidence",
+  "vivado": "2025.2",
+  "part": "xcku5p-ffvb676-2-e",
+  "period_ns": 2.0,
+  "route_completed": true,
+  "route_status": {
+    "unrouted_nets": 0,
+    "partially_routed_nets": 0,
+    "node_overlaps": 0
+  },
+  "timing": {
+    "wns_ns": -0.052,
+    "tns_ns": -4.030,
+    "setup_failing_endpoints": 291,
+    "whs_ns": -0.080,
+    "ths_ns": -17.614,
+    "hold_failing_endpoints": 281,
+    "unconstrained_internal_endpoints": 0,
+    "exceptions": "none",
+    "gate": "STOP"
+  },
+  "utilization_postroute": {
+    "lut_total": 21841,
+    "lut_logic": 14673,
+    "lutram": 7168,
+    "ff": 21352,
+    "dsp48e2": 128,
+    "bram36": 0,
+    "bram18": 0,
+    "uram": 0
+  },
+  "power_postroute": {
+    "total_w": 1.227,
+    "dynamic_w": 0.771,
+    "static_w": 0.456,
+    "confidence": "Medium",
+    "activity_source": "vectorless"
+  },
+  "sha256": {
+    "r4c": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1",
+    "wrapper": "D1459B652666E2DBBB0D3464002E88DD30867C4BA6E4715E6865B5164E664943",
+    "postroute_dcp": "386D3DF0C6A829FF1408052B12D49D61A741D2C01EAC4A1A490108CBE494F529"
+  },
+  "next": "Do not tag v3.5-18; perform a narrowly scoped post-route timing root-cause review"
+}
