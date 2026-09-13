@@ -1,0 +1,20 @@
+{
+  "analysis": "M6 routed physical root-cause extraction",
+  "dcp": "03_verification/vivado/../../05_audit/current/22/m6_timing/step12c_boundary_pre_postroute.dcp",
+  "negative_setup_paths": 53,
+  "read_only": true,
+  "categories": {
+    "A_staging_response": {"count": 11, "tns_ns": -0.169000, "worst_slack_ns": -0.037000, "representative": {"startpoint": "u_dut/stage_bank_addr0_reg[2]_rep__0/C", "endpoint": "u_dut/stage_rsp_data1_q_reg[15]/D", "start_cell": "u_dut/stage_bank_addr0_reg[2]_rep__0", "start_loc": "SLICE_X69Y50", "end_cell": "u_dut/stage_rsp_data1_q_reg[15]", "end_loc": "SLICE_X72Y41", "start_net_fanout": 144, "datapath_delay_ns": 1.922, "logic_delay_ns": 0.458, "route_delay_ns": 1.464, "logic_levels": 5}},
+    "B_staging_capture": {"count": 4, "tns_ns": -0.075000, "worst_slack_ns": -0.035000, "representative": {"startpoint": "u_dut/stage_rsp_tag1_q_reg[3]/C", "endpoint": "u_dut/stage_b_reg[37][12]/D", "start_cell": "u_dut/stage_rsp_tag1_q_reg[3]", "start_loc": "SLICE_X76Y55", "end_cell": "u_dut/stage_b_reg[37][12]", "end_loc": "SLICE_X86Y23", "start_net_fanout": 32, "datapath_delay_ns": 1.936, "logic_delay_ns": 0.526, "route_delay_ns": 1.410, "logic_levels": 3}},
+    "C_result_write": {"count": 12, "tns_ns": -0.180000, "worst_slack_ns": -0.030000, "representative": {"startpoint": "u_dut/frozen_r4c/output_bank_reg[1]_rep__5/C", "endpoint": "u_dut/result_mem_reg_832_895_14_20/RAMG/I", "start_cell": "u_dut/frozen_r4c/output_bank_reg[1]_rep__5", "start_loc": "SLICE_X78Y90", "end_cell": "u_dut/result_mem_reg_832_895_14_20/RAMG", "end_loc": "SLICE_X81Y89", "start_net_fanout": 122, "datapath_delay_ns": 1.854, "logic_delay_ns": 0.383, "route_delay_ns": 1.471, "logic_levels": 5}},
+    "D_r4c_or_launch": {"count": 23, "tns_ns": -0.191000, "worst_slack_ns": -0.020000, "representative": {"startpoint": "u_dut/frozen_r4c/sched_bank_reg_reg[0]_rep/C", "endpoint": "u_dut/frozen_r4c/operand_x_reg_reg[54][8]/D", "start_cell": "u_dut/frozen_r4c/sched_bank_reg_reg[0]_rep", "start_loc": "SLICE_X70Y11", "end_cell": "u_dut/frozen_r4c/operand_x_reg_reg[54][8]", "end_loc": "SLICE_X90Y24", "start_net_fanout": 163, "datapath_delay_ns": 1.869, "logic_delay_ns": 0.131, "route_delay_ns": 1.738, "logic_levels": 1}},
+    "E_other_wrapper": {"count": 0, "tns_ns": 0.000000, "worst_slack_ns": 0.000000},
+    "F_v_write": {"count": 3, "tns_ns": -0.020000, "worst_slack_ns": -0.009000, "representative": {"startpoint": "u_dut/frozen_r4c/output_bank_reg[1]_rep__7/C", "endpoint": "u_dut/v_wr_data0_q_reg[2]/D", "start_cell": "u_dut/frozen_r4c/output_bank_reg[1]_rep__7", "start_loc": "SLICE_X84Y87", "end_cell": "u_dut/v_wr_data0_q_reg[2]", "end_loc": "SLICE_X73Y88", "start_net_fanout": 122, "datapath_delay_ns": 1.926, "logic_delay_ns": 0.499, "route_delay_ns": 1.427, "logic_levels": 6}}
+  },
+  "interpretation": {
+    "A_B": "A/B are concentrated in input-cache/tag response and tag-validity-to-staging capture; physical evidence is adjacent but does not prove one common RTL fix.",
+    "C": "ResultMemory write paths are separately dominated by frozen R4C output to distributed-RAM write topology; no common root cause is assumed.",
+    "D_F": "Observed and retained as follow-on paths only; no M7 RTL is approved by this analysis."
+  },
+  "decision": "ANALYSIS_ONLY_NO_M7_APPROVED"
+}
