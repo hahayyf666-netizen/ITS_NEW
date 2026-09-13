@@ -1,0 +1,84 @@
+{
+  "stage": "Step12C M6-M7 routed delta analysis",
+  "status": "M7_NEGATIVE_EXPERIMENT",
+  "m6_commit": "8aeda56f5a1ecec9c1b3ec3f453f3679a9ca8a90",
+  "m7_commit": "46840e5c4cc35a99de43d0f5ef8639975e6a71c9",
+  "scope": {
+    "m7_change": "local staging read-address registers for input-cache A/B data/tag and intermediate banks",
+    "r4c_modified": false,
+    "xdc_modified": false,
+    "result_memory_modified": false,
+    "functional_contract_changed": false
+  },
+  "timing_delta": {
+    "m6_post_route": {
+      "setup_wns_ns": -0.037,
+      "setup_tns_ns": -0.636,
+      "setup_failing_endpoints": 53,
+      "hold_whs_ns": 0.004,
+      "hold_ths_ns": 0.0
+    },
+    "m7_post_route": {
+      "setup_wns_ns": -0.197,
+      "setup_tns_ns": -229.303,
+      "setup_failing_endpoints": 4317,
+      "hold_whs_ns": 0.012,
+      "hold_ths_ns": 0.0
+    },
+    "setup_regression": {
+      "wns_delta_ns": -0.160,
+      "tns_delta_ns": -228.667,
+      "failing_endpoint_delta": 4264
+    }
+  },
+  "target_a_delta": {
+    "m6_worst_shape": "stage_bank_addr -> RAMD64E/mux -> stage_rsp_data/tag",
+    "m6_worst_slack_ns": -0.037,
+    "m7_observed_shapes": [
+      "stage_addr_a_data0_q -> stage_rsp_tag0_q",
+      "stage_addr_a_data0_q -> stage_rsp_data2_q",
+      "stage_addr_b_data0_q -> stage_rsp_tag0_q"
+    ],
+    "m7_observed_worst_slacks_ns": [-0.167, -0.149, -0.147],
+    "result": "A-family staging read paths did not improve; several became substantially worse."
+  },
+  "target_b_delta": {
+    "m6_worst_slack_ns": -0.035,
+    "m7_worst_slacks_ns": [-0.197, -0.195, -0.192],
+    "result": "Staging capture paths became the dominant failing family."
+  },
+  "fanout_delta": {
+    "m7_observed": {
+      "stage_addr_i_data3_q": 144,
+      "stage_addr_b_tag0_q": 128,
+      "stage_addr_b_data0_q_replicated": 128
+    },
+    "result": "Manual address copies did not produce the intended low-fanout physical topology; synthesis still replicated/localized nets at roughly 128-144 loads."
+  },
+  "interpretation": {
+    "proven": [
+      "M7 is functionally compatible with the existing contract.",
+      "M7 is a setup-timing regression relative to M6.",
+      "M7 target A did not improve and target B worsened substantially.",
+      "M7 hold remains passing."
+    ],
+    "not_proven": [
+      "A unique physical cause such as SLICEM pressure, congestion, or a single placement mechanism."
+    ],
+    "decision": "Do not use M7 as the next RTL optimization baseline; retain it as a historical negative experiment and resume future work from the M6 RTL state."
+  },
+  "gates": {
+    "step12c": "STOP",
+    "create_v3_5_18": false,
+    "tag_m7": false,
+    "next_m8_approval": "NOT_APPROVED"
+  },
+  "evidence": {
+    "m6_timing_summary": "../22/m6_timing/report_timing_summary_postroute.rpt",
+    "m6_timing_worst100": "../22/m6_timing/report_timing_worst100_postroute.rpt",
+    "m6_high_fanout": "../22/m6_timing/report_high_fanout_postroute.rpt",
+    "m7_timing_summary": "../23/m7_timing/report_timing_summary_postroute.rpt",
+    "m7_timing_worst100": "../23/m7_timing/report_timing_worst100_postroute.rpt",
+    "m7_high_fanout": "../23/m7_timing/report_high_fanout_postroute.rpt"
+  }
+}
