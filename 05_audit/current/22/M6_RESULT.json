@@ -1,0 +1,75 @@
+{
+  "stage": "Step12C-M6",
+  "objective": "V-write command setup closure",
+  "status": "STOP_POST_ROUTE_SETUP",
+  "parent_commit": "523d80fb298973aa497a47d34d605cfc0d0f2e51",
+  "m5_base_commit": "0e28e6031f160a44ff705ebdbf85cf2ab89f5543",
+  "boundary_pre_reference": "523d80fb298973aa497a47d34d605cfc0d0f2e51",
+  "rtl_scope": {
+    "wrapper_modified": true,
+    "r4c_modified": false,
+    "xdc_modified": false,
+    "result_memory_modified": false,
+    "staging_contract": "unchanged",
+    "vector_ii": 16,
+    "group_ii": 1,
+    "r4c_latency": 23
+  },
+  "functional_regression": {
+    "normal": "PASS",
+    "synthesis_mode": "PASS",
+    "two_tu": "PASS",
+    "descriptor": "PASS",
+    "epoch_wrap": "PASS",
+    "random_extreme": "PASS",
+    "trace_comparator": "PASS",
+    "internal_trace_validator": "PASS",
+    "note": "The repository helper script still has hard-coded historical trace paths; the same frozen tests and validators were run manually with the current M6 trace paths."
+  },
+  "implementation": {
+    "tool": "Vivado 2025.2 build 6299465",
+    "device": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0,
+    "post_route_setup_wns_ns": -0.037,
+    "post_route_setup_tns_ns": -0.636,
+    "post_route_setup_failing_endpoints": 53,
+    "post_route_hold_whs_ns": 0.004,
+    "post_route_hold_ths_ns": 0.0,
+    "post_route_hold_failing_endpoints": 0,
+    "post_route_unrouted_nets": 0,
+    "post_route_partial_nets": 0,
+    "post_route_worst_setup_path": "stage_bank_addr0_reg[2]_rep__0/C -> stage_rsp_data1_q_reg[15]/D",
+    "post_route_worst_setup_path_delay_ns": 1.922,
+    "post_route_worst_setup_route_fraction": 0.76168,
+    "post_route_second_setup_path": "stage_rsp_tag1_q_reg[3]/C -> stage_b_reg[37][12]/D",
+    "post_route_third_setup_path": "frozen_r4c/output_bank_reg[1]_rep__5/C -> result_mem_reg_832_895_14_20/RAMG/I",
+    "resource_post_route": {
+      "lut": 20324,
+      "lut_as_logic": 14436,
+      "lutram": 5888,
+      "ff": 21492,
+      "dsp": 128,
+      "bram": 0,
+      "uram": 0
+    },
+    "constraints": {
+      "unconstrained_internal_endpoints": 0,
+      "no_input_delay": 0,
+      "no_output_delay": 0,
+      "valid_timing_exceptions": 0
+    },
+    "drc": {
+      "critical_warnings": ["NSTD-1", "UCIO-1"],
+      "warnings": ["DPIP-2 (256)", "RTSTAT-10 (1)"],
+      "methodology_checks": 0,
+      "note": "NSTD-1/UCIO-1 are the expected OOC harness clock port context warnings; they are retained as evidence and are not treated as a functional-pass claim."
+    }
+  },
+  "decision": {
+    "m6_setup_target": "IMPROVED_BUT_OVERALL_SETUP_NOT_CLOSED",
+    "hold_target": "PASS_POST_ROUTE",
+    "step12c_2": "STOP",
+    "v3_5_18_created": false,
+    "next": "Classify the new staging-response/result-memory setup families from the M6 routed evidence before approving any further narrow repair."
+  }
+}

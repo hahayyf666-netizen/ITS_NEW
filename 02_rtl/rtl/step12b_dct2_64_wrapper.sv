@@ -200,13 +200,6 @@ module step12b_dct2_64_wrapper #(
     localparam [2:0] CACHE_SCRUB = 3'd4;
     localparam [1:0] DESC_UNBOUND = 2'd2;
 
-    function integer coord_bank(input integer row, input integer col);
-        coord_bank = ((row & 3) ^ (col & 3));
-    endfunction
-    function integer coord_addr(input integer row, input integer col);
-        coord_addr = row * 16 + (col >> 2);
-    endfunction
-
     // M4 input boundary pipeline.  The external transaction is accepted at
     // edge C, then a bank-local command is committed to the physical data/tag
     // arrays at edge C+1.  Each cycle has at most one valid command, but the
@@ -339,11 +332,7 @@ module step12b_dct2_64_wrapper #(
     reg [9:0] v_wr_addr0_q, v_wr_addr1_q, v_wr_addr2_q, v_wr_addr3_q;
     reg signed [15:0] v_wr_data0_q, v_wr_data1_q, v_wr_data2_q, v_wr_data3_q;
     reg vertical_commit_done;
-    integer inter_comb_i;
-    integer inter_comb_row;
-    integer inter_comb_vec;
-    integer inter_comb_bank;
-    integer inter_comb_addr;
+    reg [5:0] inter_local_col;
     always @* begin
         inter_wr_en0 = 1'b0;
         inter_wr_en1 = 1'b0;
@@ -357,36 +346,63 @@ module step12b_dct2_64_wrapper #(
         inter_wr_data1 = 16'sd0;
         inter_wr_data2 = 16'sd0;
         inter_wr_data3 = 16'sd0;
-        inter_comb_vec = r4c_result_vector_id - phase_vector_base;
-        if (r4c_result_valid && phase == PH_VERTICAL &&
-            inter_comb_vec >= 0 && inter_comb_vec < 64) begin
-            for (inter_comb_i = 0; inter_comb_i < 4; inter_comb_i = inter_comb_i + 1) begin
-                inter_comb_row = r4c_result_group * 4 + inter_comb_i;
-                inter_comb_bank = coord_bank(inter_comb_row, inter_comb_vec);
-                inter_comb_addr = coord_addr(inter_comb_row, inter_comb_vec);
-                case (inter_comb_bank)
-                    0: begin
-                        inter_wr_en0 = 1'b1;
-                        inter_wr_addr0 = inter_comb_addr;
-                        inter_wr_data0 = $signed(r4c_result_stage16[inter_comb_i*16 +: 16]);
-                    end
-                    1: begin
-                        inter_wr_en1 = 1'b1;
-                        inter_wr_addr1 = inter_comb_addr;
-                        inter_wr_data1 = $signed(r4c_result_stage16[inter_comb_i*16 +: 16]);
-                    end
-                    2: begin
-                        inter_wr_en2 = 1'b1;
-                        inter_wr_addr2 = inter_comb_addr;
-                        inter_wr_data2 = $signed(r4c_result_stage16[inter_comb_i*16 +: 16]);
-                    end
-                    default: begin
-                        inter_wr_en3 = 1'b1;
-                        inter_wr_addr3 = inter_comb_addr;
-                        inter_wr_data3 = $signed(r4c_result_stage16[inter_comb_i*16 +: 16]);
-                    end
-                endcase
-            end
+        // The V phase vector window is aligned to a 128-point TU base, so
+        // result_vector_id[5:0] is the local column in the 64-vector window.
+        // The full-ID window check remains in the verification-only live
+        // result checker below.
+        inter_local_col = r4c_result_vector_id[5:0];
+        if (r4c_result_valid && phase == PH_VERTICAL) begin
+            // For row lane i and local column c:
+            //   bank = i XOR c[1:0]
+            //   addr = {group[3:0], i[1:0], c[5:2]}
+            // Each bank receives exactly one lane.  The four fixed cases
+            // avoid a general subtract/multiply/variable-bank decode cone.
+            inter_wr_en0 = 1'b1;
+            inter_wr_en1 = 1'b1;
+            inter_wr_en2 = 1'b1;
+            inter_wr_en3 = 1'b1;
+            case (inter_local_col[1:0])
+                2'd0: begin
+                    inter_wr_addr0 = {r4c_result_group[3:0], 2'd0, inter_local_col[5:2]};
+                    inter_wr_addr1 = {r4c_result_group[3:0], 2'd1, inter_local_col[5:2]};
+                    inter_wr_addr2 = {r4c_result_group[3:0], 2'd2, inter_local_col[5:2]};
+                    inter_wr_addr3 = {r4c_result_group[3:0], 2'd3, inter_local_col[5:2]};
+                    inter_wr_data0 = $signed(r4c_result_stage16[0*16 +: 16]);
+                    inter_wr_data1 = $signed(r4c_result_stage16[1*16 +: 16]);
+                    inter_wr_data2 = $signed(r4c_result_stage16[2*16 +: 16]);
+                    inter_wr_data3 = $signed(r4c_result_stage16[3*16 +: 16]);
+                end
+                2'd1: begin
+                    inter_wr_addr0 = {r4c_result_group[3:0], 2'd1, inter_local_col[5:2]};
+                    inter_wr_addr1 = {r4c_result_group[3:0], 2'd0, inter_local_col[5:2]};
+                    inter_wr_addr2 = {r4c_result_group[3:0], 2'd3, inter_local_col[5:2]};
+                    inter_wr_addr3 = {r4c_result_group[3:0], 2'd2, inter_local_col[5:2]};
+                    inter_wr_data0 = $signed(r4c_result_stage16[1*16 +: 16]);
+                    inter_wr_data1 = $signed(r4c_result_stage16[0*16 +: 16]);
+                    inter_wr_data2 = $signed(r4c_result_stage16[3*16 +: 16]);
+                    inter_wr_data3 = $signed(r4c_result_stage16[2*16 +: 16]);
+                end
+                2'd2: begin
+                    inter_wr_addr0 = {r4c_result_group[3:0], 2'd2, inter_local_col[5:2]};
+                    inter_wr_addr1 = {r4c_result_group[3:0], 2'd3, inter_local_col[5:2]};
+                    inter_wr_addr2 = {r4c_result_group[3:0], 2'd0, inter_local_col[5:2]};
+                    inter_wr_addr3 = {r4c_result_group[3:0], 2'd1, inter_local_col[5:2]};
+                    inter_wr_data0 = $signed(r4c_result_stage16[2*16 +: 16]);
+                    inter_wr_data1 = $signed(r4c_result_stage16[3*16 +: 16]);
+                    inter_wr_data2 = $signed(r4c_result_stage16[0*16 +: 16]);
+                    inter_wr_data3 = $signed(r4c_result_stage16[1*16 +: 16]);
+                end
+                default: begin
+                    inter_wr_addr0 = {r4c_result_group[3:0], 2'd3, inter_local_col[5:2]};
+                    inter_wr_addr1 = {r4c_result_group[3:0], 2'd2, inter_local_col[5:2]};
+                    inter_wr_addr2 = {r4c_result_group[3:0], 2'd1, inter_local_col[5:2]};
+                    inter_wr_addr3 = {r4c_result_group[3:0], 2'd0, inter_local_col[5:2]};
+                    inter_wr_data0 = $signed(r4c_result_stage16[3*16 +: 16]);
+                    inter_wr_data1 = $signed(r4c_result_stage16[2*16 +: 16]);
+                    inter_wr_data2 = $signed(r4c_result_stage16[1*16 +: 16]);
+                    inter_wr_data3 = $signed(r4c_result_stage16[0*16 +: 16]);
+                end
+            endcase
         end
     end
 
