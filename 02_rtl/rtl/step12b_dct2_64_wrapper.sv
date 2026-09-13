@@ -134,6 +134,8 @@ module step12b_dct2_64_wrapper #(
     reg [1:0] stage_rsp_perm_q;
     reg signed [15:0] stage_rsp_data0_q, stage_rsp_data1_q;
     reg signed [15:0] stage_rsp_data2_q, stage_rsp_data3_q;
+    reg [EPOCH_BITS-1:0] stage_rsp_tag0_q, stage_rsp_tag1_q;
+    reg [EPOCH_BITS-1:0] stage_rsp_tag2_q, stage_rsp_tag3_q;
     reg stage_rsp_valid0_q, stage_rsp_valid1_q;
     reg stage_rsp_valid2_q, stage_rsp_valid3_q;
 
@@ -272,8 +274,22 @@ module step12b_dct2_64_wrapper #(
     reg signed [15:0] stage_lane2_tmp, stage_lane3_tmp;
     reg signed [15:0] stage_bank_data0_tmp, stage_bank_data1_tmp;
     reg signed [15:0] stage_bank_data2_tmp, stage_bank_data3_tmp;
+    reg [EPOCH_BITS-1:0] stage_bank_tag0_tmp, stage_bank_tag1_tmp;
+    reg [EPOCH_BITS-1:0] stage_bank_tag2_tmp, stage_bank_tag3_tmp;
     reg stage_bank_valid0_tmp, stage_bank_valid1_tmp;
     reg stage_bank_valid2_tmp, stage_bank_valid3_tmp;
+
+    // Raw tag validity is evaluated only after the registered bank response.
+    // Horizontal/intermediate responses are intrinsically valid; vertical
+    // input-cache responses use the delayed raw tag and request epoch.
+    wire stage_rsp_effective_valid0 = stage_rsp_phase_q ? stage_rsp_valid0_q :
+                                      (stage_rsp_tag0_q == stage_rsp_epoch_q);
+    wire stage_rsp_effective_valid1 = stage_rsp_phase_q ? stage_rsp_valid1_q :
+                                      (stage_rsp_tag1_q == stage_rsp_epoch_q);
+    wire stage_rsp_effective_valid2 = stage_rsp_phase_q ? stage_rsp_valid2_q :
+                                      (stage_rsp_tag2_q == stage_rsp_epoch_q);
+    wire stage_rsp_effective_valid3 = stage_rsp_phase_q ? stage_rsp_valid3_q :
+                                      (stage_rsp_tag3_q == stage_rsp_epoch_q);
 
     // The sparse input stream has one write transaction per cycle.  Keeping
     // the decoded bank/address as wires makes the four bank write ports
@@ -282,6 +298,34 @@ module step12b_dct2_64_wrapper #(
     wire sparse_input_fire = it_data_in_vld && it_data_in_req;
     wire [1:0] sparse_input_bank = it_data_addr[7:6] ^ it_data_addr[1:0];
     wire [9:0] sparse_input_addr = {it_data_addr[11:6], it_data_addr[5:2]};
+
+    // Select the tag write command before the RAM process.  Scrub has
+    // priority over a stale input command, and each physical tag bank below
+    // therefore has exactly one variable-address write expression.
+    wire tag_wr_en_a0 = cache_scrubbing[0] || input_wr_valid_a0_q;
+    wire tag_wr_en_a1 = cache_scrubbing[0] || input_wr_valid_a1_q;
+    wire tag_wr_en_a2 = cache_scrubbing[0] || input_wr_valid_a2_q;
+    wire tag_wr_en_a3 = cache_scrubbing[0] || input_wr_valid_a3_q;
+    wire tag_wr_en_b0 = cache_scrubbing[1] || input_wr_valid_b0_q;
+    wire tag_wr_en_b1 = cache_scrubbing[1] || input_wr_valid_b1_q;
+    wire tag_wr_en_b2 = cache_scrubbing[1] || input_wr_valid_b2_q;
+    wire tag_wr_en_b3 = cache_scrubbing[1] || input_wr_valid_b3_q;
+    wire [9:0] tag_wr_addr_a0 = cache_scrubbing[0] ? scrub_index[0] : input_wr_addr_a0_q;
+    wire [9:0] tag_wr_addr_a1 = cache_scrubbing[0] ? scrub_index[0] : input_wr_addr_a1_q;
+    wire [9:0] tag_wr_addr_a2 = cache_scrubbing[0] ? scrub_index[0] : input_wr_addr_a2_q;
+    wire [9:0] tag_wr_addr_a3 = cache_scrubbing[0] ? scrub_index[0] : input_wr_addr_a3_q;
+    wire [9:0] tag_wr_addr_b0 = cache_scrubbing[1] ? scrub_index[1] : input_wr_addr_b0_q;
+    wire [9:0] tag_wr_addr_b1 = cache_scrubbing[1] ? scrub_index[1] : input_wr_addr_b1_q;
+    wire [9:0] tag_wr_addr_b2 = cache_scrubbing[1] ? scrub_index[1] : input_wr_addr_b2_q;
+    wire [9:0] tag_wr_addr_b3 = cache_scrubbing[1] ? scrub_index[1] : input_wr_addr_b3_q;
+    wire [EPOCH_BITS-1:0] tag_wr_data_a0 = cache_scrubbing[0] ? {EPOCH_BITS{1'b0}} : input_wr_epoch_a0_q;
+    wire [EPOCH_BITS-1:0] tag_wr_data_a1 = cache_scrubbing[0] ? {EPOCH_BITS{1'b0}} : input_wr_epoch_a1_q;
+    wire [EPOCH_BITS-1:0] tag_wr_data_a2 = cache_scrubbing[0] ? {EPOCH_BITS{1'b0}} : input_wr_epoch_a2_q;
+    wire [EPOCH_BITS-1:0] tag_wr_data_a3 = cache_scrubbing[0] ? {EPOCH_BITS{1'b0}} : input_wr_epoch_a3_q;
+    wire [EPOCH_BITS-1:0] tag_wr_data_b0 = cache_scrubbing[1] ? {EPOCH_BITS{1'b0}} : input_wr_epoch_b0_q;
+    wire [EPOCH_BITS-1:0] tag_wr_data_b1 = cache_scrubbing[1] ? {EPOCH_BITS{1'b0}} : input_wr_epoch_b1_q;
+    wire [EPOCH_BITS-1:0] tag_wr_data_b2 = cache_scrubbing[1] ? {EPOCH_BITS{1'b0}} : input_wr_epoch_b2_q;
+    wire [EPOCH_BITS-1:0] tag_wr_data_b3 = cache_scrubbing[1] ? {EPOCH_BITS{1'b0}} : input_wr_epoch_b3_q;
 
     // Vertical result writes are decoded once into one write per physical
     // intermediate bank.  There is at most one lane per bank for a result
@@ -364,60 +408,52 @@ module step12b_dct2_64_wrapper #(
     // final command is therefore visible to the cache state machine only on
     // this commit edge, never on the external acceptance edge.
     always @(posedge clk) begin
-        if (cache_scrubbing[0]) input_tag_a0[scrub_index[0]] <= 0;
-        else if (input_wr_valid_a0_q) begin
+        if (!cache_scrubbing[0] && input_wr_valid_a0_q)
             input_cache_a0[input_wr_addr_a0_q] <= input_wr_data_a0_q;
-            input_tag_a0[input_wr_addr_a0_q] <= input_wr_epoch_a0_q;
-        end
+        if (tag_wr_en_a0)
+            input_tag_a0[tag_wr_addr_a0] <= tag_wr_data_a0;
     end
     always @(posedge clk) begin
-        if (cache_scrubbing[0]) input_tag_a1[scrub_index[0]] <= 0;
-        else if (input_wr_valid_a1_q) begin
+        if (!cache_scrubbing[0] && input_wr_valid_a1_q)
             input_cache_a1[input_wr_addr_a1_q] <= input_wr_data_a1_q;
-            input_tag_a1[input_wr_addr_a1_q] <= input_wr_epoch_a1_q;
-        end
+        if (tag_wr_en_a1)
+            input_tag_a1[tag_wr_addr_a1] <= tag_wr_data_a1;
     end
     always @(posedge clk) begin
-        if (cache_scrubbing[0]) input_tag_a2[scrub_index[0]] <= 0;
-        else if (input_wr_valid_a2_q) begin
+        if (!cache_scrubbing[0] && input_wr_valid_a2_q)
             input_cache_a2[input_wr_addr_a2_q] <= input_wr_data_a2_q;
-            input_tag_a2[input_wr_addr_a2_q] <= input_wr_epoch_a2_q;
-        end
+        if (tag_wr_en_a2)
+            input_tag_a2[tag_wr_addr_a2] <= tag_wr_data_a2;
     end
     always @(posedge clk) begin
-        if (cache_scrubbing[0]) input_tag_a3[scrub_index[0]] <= 0;
-        else if (input_wr_valid_a3_q) begin
+        if (!cache_scrubbing[0] && input_wr_valid_a3_q)
             input_cache_a3[input_wr_addr_a3_q] <= input_wr_data_a3_q;
-            input_tag_a3[input_wr_addr_a3_q] <= input_wr_epoch_a3_q;
-        end
+        if (tag_wr_en_a3)
+            input_tag_a3[tag_wr_addr_a3] <= tag_wr_data_a3;
     end
     always @(posedge clk) begin
-        if (cache_scrubbing[1]) input_tag_b0[scrub_index[1]] <= 0;
-        else if (input_wr_valid_b0_q) begin
+        if (!cache_scrubbing[1] && input_wr_valid_b0_q)
             input_cache_b0[input_wr_addr_b0_q] <= input_wr_data_b0_q;
-            input_tag_b0[input_wr_addr_b0_q] <= input_wr_epoch_b0_q;
-        end
+        if (tag_wr_en_b0)
+            input_tag_b0[tag_wr_addr_b0] <= tag_wr_data_b0;
     end
     always @(posedge clk) begin
-        if (cache_scrubbing[1]) input_tag_b1[scrub_index[1]] <= 0;
-        else if (input_wr_valid_b1_q) begin
+        if (!cache_scrubbing[1] && input_wr_valid_b1_q)
             input_cache_b1[input_wr_addr_b1_q] <= input_wr_data_b1_q;
-            input_tag_b1[input_wr_addr_b1_q] <= input_wr_epoch_b1_q;
-        end
+        if (tag_wr_en_b1)
+            input_tag_b1[tag_wr_addr_b1] <= tag_wr_data_b1;
     end
     always @(posedge clk) begin
-        if (cache_scrubbing[1]) input_tag_b2[scrub_index[1]] <= 0;
-        else if (input_wr_valid_b2_q) begin
+        if (!cache_scrubbing[1] && input_wr_valid_b2_q)
             input_cache_b2[input_wr_addr_b2_q] <= input_wr_data_b2_q;
-            input_tag_b2[input_wr_addr_b2_q] <= input_wr_epoch_b2_q;
-        end
+        if (tag_wr_en_b2)
+            input_tag_b2[tag_wr_addr_b2] <= tag_wr_data_b2;
     end
     always @(posedge clk) begin
-        if (cache_scrubbing[1]) input_tag_b3[scrub_index[1]] <= 0;
-        else if (input_wr_valid_b3_q) begin
+        if (!cache_scrubbing[1] && input_wr_valid_b3_q)
             input_cache_b3[input_wr_addr_b3_q] <= input_wr_data_b3_q;
-            input_tag_b3[input_wr_addr_b3_q] <= input_wr_epoch_b3_q;
-        end
+        if (tag_wr_en_b3)
+            input_tag_b3[tag_wr_addr_b3] <= tag_wr_data_b3;
     end
 
     // Intermediate storage has one statically decoded write port per bank.
@@ -487,6 +523,10 @@ module step12b_dct2_64_wrapper #(
             stage_rsp_data1_q <= 0;
             stage_rsp_data2_q <= 0;
             stage_rsp_data3_q <= 0;
+            stage_rsp_tag0_q <= 0;
+            stage_rsp_tag1_q <= 0;
+            stage_rsp_tag2_q <= 0;
+            stage_rsp_tag3_q <= 0;
             stage_rsp_valid0_q <= 1'b0;
             stage_rsp_valid1_q <= 1'b0;
             stage_rsp_valid2_q <= 1'b0;
@@ -916,28 +956,28 @@ module step12b_dct2_64_wrapper #(
             if (stage_rsp_pending_q) begin
                 case (stage_rsp_perm_q)
                     2'd0: begin
-                        stage_lane0_tmp = stage_rsp_valid0_q ? stage_rsp_data0_q : 16'sd0;
-                        stage_lane1_tmp = stage_rsp_valid1_q ? stage_rsp_data1_q : 16'sd0;
-                        stage_lane2_tmp = stage_rsp_valid2_q ? stage_rsp_data2_q : 16'sd0;
-                        stage_lane3_tmp = stage_rsp_valid3_q ? stage_rsp_data3_q : 16'sd0;
+                        stage_lane0_tmp = stage_rsp_effective_valid0 ? stage_rsp_data0_q : 16'sd0;
+                        stage_lane1_tmp = stage_rsp_effective_valid1 ? stage_rsp_data1_q : 16'sd0;
+                        stage_lane2_tmp = stage_rsp_effective_valid2 ? stage_rsp_data2_q : 16'sd0;
+                        stage_lane3_tmp = stage_rsp_effective_valid3 ? stage_rsp_data3_q : 16'sd0;
                     end
                     2'd1: begin
-                        stage_lane0_tmp = stage_rsp_valid1_q ? stage_rsp_data1_q : 16'sd0;
-                        stage_lane1_tmp = stage_rsp_valid0_q ? stage_rsp_data0_q : 16'sd0;
-                        stage_lane2_tmp = stage_rsp_valid3_q ? stage_rsp_data3_q : 16'sd0;
-                        stage_lane3_tmp = stage_rsp_valid2_q ? stage_rsp_data2_q : 16'sd0;
+                        stage_lane0_tmp = stage_rsp_effective_valid1 ? stage_rsp_data1_q : 16'sd0;
+                        stage_lane1_tmp = stage_rsp_effective_valid0 ? stage_rsp_data0_q : 16'sd0;
+                        stage_lane2_tmp = stage_rsp_effective_valid3 ? stage_rsp_data3_q : 16'sd0;
+                        stage_lane3_tmp = stage_rsp_effective_valid2 ? stage_rsp_data2_q : 16'sd0;
                     end
                     2'd2: begin
-                        stage_lane0_tmp = stage_rsp_valid2_q ? stage_rsp_data2_q : 16'sd0;
-                        stage_lane1_tmp = stage_rsp_valid3_q ? stage_rsp_data3_q : 16'sd0;
-                        stage_lane2_tmp = stage_rsp_valid0_q ? stage_rsp_data0_q : 16'sd0;
-                        stage_lane3_tmp = stage_rsp_valid1_q ? stage_rsp_data1_q : 16'sd0;
+                        stage_lane0_tmp = stage_rsp_effective_valid2 ? stage_rsp_data2_q : 16'sd0;
+                        stage_lane1_tmp = stage_rsp_effective_valid3 ? stage_rsp_data3_q : 16'sd0;
+                        stage_lane2_tmp = stage_rsp_effective_valid0 ? stage_rsp_data0_q : 16'sd0;
+                        stage_lane3_tmp = stage_rsp_effective_valid1 ? stage_rsp_data1_q : 16'sd0;
                     end
                     default: begin
-                        stage_lane0_tmp = stage_rsp_valid3_q ? stage_rsp_data3_q : 16'sd0;
-                        stage_lane1_tmp = stage_rsp_valid2_q ? stage_rsp_data2_q : 16'sd0;
-                        stage_lane2_tmp = stage_rsp_valid1_q ? stage_rsp_data1_q : 16'sd0;
-                        stage_lane3_tmp = stage_rsp_valid0_q ? stage_rsp_data0_q : 16'sd0;
+                        stage_lane0_tmp = stage_rsp_effective_valid3 ? stage_rsp_data3_q : 16'sd0;
+                        stage_lane1_tmp = stage_rsp_effective_valid2 ? stage_rsp_data2_q : 16'sd0;
+                        stage_lane2_tmp = stage_rsp_effective_valid1 ? stage_rsp_data1_q : 16'sd0;
+                        stage_lane3_tmp = stage_rsp_effective_valid0 ? stage_rsp_data0_q : 16'sd0;
                     end
                 endcase
                 if (stage_rsp_bank_q == 1'b0) begin
@@ -974,6 +1014,10 @@ module step12b_dct2_64_wrapper #(
                 stage_bank_data1_tmp = 16'sd0;
                 stage_bank_data2_tmp = 16'sd0;
                 stage_bank_data3_tmp = 16'sd0;
+                stage_bank_tag0_tmp = {EPOCH_BITS{1'b0}};
+                stage_bank_tag1_tmp = {EPOCH_BITS{1'b0}};
+                stage_bank_tag2_tmp = {EPOCH_BITS{1'b0}};
+                stage_bank_tag3_tmp = {EPOCH_BITS{1'b0}};
                 stage_bank_valid0_tmp = 1'b0;
                 stage_bank_valid1_tmp = 1'b0;
                 stage_bank_valid2_tmp = 1'b0;
@@ -984,25 +1028,37 @@ module step12b_dct2_64_wrapper #(
                         stage_bank_data1_tmp = input_cache_a1[stage_bank_addr1];
                         stage_bank_data2_tmp = input_cache_a2[stage_bank_addr2];
                         stage_bank_data3_tmp = input_cache_a3[stage_bank_addr3];
-                        stage_bank_valid0_tmp = (input_tag_a0[stage_bank_addr0] == stage_read_epoch);
-                        stage_bank_valid1_tmp = (input_tag_a1[stage_bank_addr1] == stage_read_epoch);
-                        stage_bank_valid2_tmp = (input_tag_a2[stage_bank_addr2] == stage_read_epoch);
-                        stage_bank_valid3_tmp = (input_tag_a3[stage_bank_addr3] == stage_read_epoch);
+                        stage_bank_tag0_tmp = input_tag_a0[stage_bank_addr0];
+                        stage_bank_tag1_tmp = input_tag_a1[stage_bank_addr1];
+                        stage_bank_tag2_tmp = input_tag_a2[stage_bank_addr2];
+                        stage_bank_tag3_tmp = input_tag_a3[stage_bank_addr3];
+                        stage_bank_valid0_tmp = 1'b1;
+                        stage_bank_valid1_tmp = 1'b1;
+                        stage_bank_valid2_tmp = 1'b1;
+                        stage_bank_valid3_tmp = 1'b1;
                     end else begin
                         stage_bank_data0_tmp = input_cache_b0[stage_bank_addr0];
                         stage_bank_data1_tmp = input_cache_b1[stage_bank_addr1];
                         stage_bank_data2_tmp = input_cache_b2[stage_bank_addr2];
                         stage_bank_data3_tmp = input_cache_b3[stage_bank_addr3];
-                        stage_bank_valid0_tmp = (input_tag_b0[stage_bank_addr0] == stage_read_epoch);
-                        stage_bank_valid1_tmp = (input_tag_b1[stage_bank_addr1] == stage_read_epoch);
-                        stage_bank_valid2_tmp = (input_tag_b2[stage_bank_addr2] == stage_read_epoch);
-                        stage_bank_valid3_tmp = (input_tag_b3[stage_bank_addr3] == stage_read_epoch);
+                        stage_bank_tag0_tmp = input_tag_b0[stage_bank_addr0];
+                        stage_bank_tag1_tmp = input_tag_b1[stage_bank_addr1];
+                        stage_bank_tag2_tmp = input_tag_b2[stage_bank_addr2];
+                        stage_bank_tag3_tmp = input_tag_b3[stage_bank_addr3];
+                        stage_bank_valid0_tmp = 1'b1;
+                        stage_bank_valid1_tmp = 1'b1;
+                        stage_bank_valid2_tmp = 1'b1;
+                        stage_bank_valid3_tmp = 1'b1;
                     end
                 end else begin
                     stage_bank_data0_tmp = intermediate_mem0[stage_bank_addr0];
                     stage_bank_data1_tmp = intermediate_mem1[stage_bank_addr1];
                     stage_bank_data2_tmp = intermediate_mem2[stage_bank_addr2];
                     stage_bank_data3_tmp = intermediate_mem3[stage_bank_addr3];
+                    stage_bank_tag0_tmp = {EPOCH_BITS{1'b0}};
+                    stage_bank_tag1_tmp = {EPOCH_BITS{1'b0}};
+                    stage_bank_tag2_tmp = {EPOCH_BITS{1'b0}};
+                    stage_bank_tag3_tmp = {EPOCH_BITS{1'b0}};
                     stage_bank_valid0_tmp = 1'b1;
                     stage_bank_valid1_tmp = 1'b1;
                     stage_bank_valid2_tmp = 1'b1;
@@ -1012,6 +1068,10 @@ module step12b_dct2_64_wrapper #(
                 stage_rsp_data1_q <= stage_bank_data1_tmp;
                 stage_rsp_data2_q <= stage_bank_data2_tmp;
                 stage_rsp_data3_q <= stage_bank_data3_tmp;
+                stage_rsp_tag0_q <= stage_bank_tag0_tmp;
+                stage_rsp_tag1_q <= stage_bank_tag1_tmp;
+                stage_rsp_tag2_q <= stage_bank_tag2_tmp;
+                stage_rsp_tag3_q <= stage_bank_tag3_tmp;
                 stage_rsp_valid0_q <= stage_bank_valid0_tmp;
                 stage_rsp_valid1_q <= stage_bank_valid1_tmp;
                 stage_rsp_valid2_q <= stage_bank_valid2_tmp;

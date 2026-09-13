@@ -1,6 +1,6 @@
 # V3.5 Step 12B：64×64 DCT2×DCT2 wrapper 功能合同
 
-状态：v3.5-17 historical functional closure；v3.5-17.2 verification-only timing/trace closure 已 PASS/冻结。Step12C-M4 已完成 RTL 功能回归和 synthesis-only；distributed-RAM 结构生成成功，setup 已通过但 hold timing 仍 FAIL，当前 STOP；未进入 place/route，也未创建 v3.5-18。R4C、数学和官方接口不变。
+状态：v3.5-17 historical functional closure；v3.5-17.2 verification-only timing/trace closure 已 PASS/冻结。Step12C-M5-Setup 已完成 RTL 功能回归和 synthesis-only；distributed-RAM 结构生成成功，setup 已通过，hold 仍等待独立 Boundary-PRE，当前不进入新的 place/route，也未创建 v3.5-18。R4C、数学和官方接口不变。
 
 ## 范围
 
@@ -94,6 +94,12 @@ M4 只处理 M3 已暴露的 input-cache 写入边界：外部 `data_fire`/descr
 M4 功能/周期回归：PASS。Python model、normal/SYNTHESIS ModelSim、zero/sparse/alternating/random、backpressure、two-TU、vector-ID wrap、epoch scrub、26 项 mutation 均通过；典型 single-TU 结果为 1024 result writes、1024 output fires、ready-high output fire II=1、V/H vector II=16。
 
 M4 Step12C-1 synthesis-only：Vivado 2025.2、xcku5p-ffvb676-2-e、2.000 ns clock；综合网表识别 input cache/tag/intermediate/result 为 distributed RAM，资源为 22,921 LUT（7,168 LUTRAM）、21,315 FF、128 DSP、0 BRAM/URAM，synthesis errors/critical warnings 为 0，`check_timing` 的 unconstrained internal endpoint 为 0。Setup WNS=`+0.087 ns`、TNS=`0 ns`、setup failing endpoints=0；独立 hold summary 为 WHS=`-0.076 ns`、THS=`-17.454 ns`、293 个 hold failing endpoints。当前按 Step12C-1 门禁 STOP，不进入 place/route；完整证据位于 `05_audit/current/20/m4_synth/`。
+
+### Step12C-M5-Setup synthesis closure（当前，Boundary-PRE pending）
+
+M5-Setup 只统一 input-tag 的 scrub/normal bank-local write command，并把 input-cache raw tag 先寄存、epoch compare 后移；R4C、数学、官方接口、M3 staging、V→intermediate write pipeline、ResultMemory reader 和 XDC 均未修改。功能/周期回归（normal/SYNTHESIS、random/extreme、two-TU、descriptor、epoch、trace/mutation、R4C latency）全部 PASS，R4C SHA-256 仍为 `15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1`。
+
+M5 synthesis-only：Vivado 2025.2、xcku5p-ffvb676-2-e、2.000 ns clock；综合网表仍识别 input cache/tag/intermediate/result 为 distributed RAM，资源为 21,313 LUT（5,888 LUTRAM）、21,336 FF、128 DSP、0 BRAM/URAM，synthesis errors/critical warnings 为 0，`check_timing` 的 unconstrained internal endpoint 为 0。Setup WNS=`+0.075 ns`、TNS=`0 ns`、setup failing endpoints=0；独立 hold summary 为 WHS=`-0.076 ns`、THS=`-17.135 ns`、251 个 hold failing endpoints。setup/structure gate PASS；hold 数值等待 Boundary-PRE 的 OOC clock/interface physical context 评审，不把缺少 `HD.CLK_SRC`/partition-pin 直接写成 hold 数值的唯一因果，也不通过 RTL delay、false path 或随意 input-delay 修复。完整证据位于 `05_audit/current/21/m5_synth/`。
 
 ## 测试门禁
 

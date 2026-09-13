@@ -1,0 +1,52 @@
+{
+  "version": "V3.5-Step12C-M5-Setup",
+  "status": "SYNTHESIS_SETUP_PASS_BOUNDARY_PRE_PENDING",
+  "baseline_commit": "d773b919e3cff6735872b436278b5477400df1de",
+  "scope": "input-tag bank-local write command and delayed raw-tag compare only",
+  "vivado": "2025.2",
+  "part": "xcku5p-ffvb676-2-e",
+  "period_ns": 2.0,
+  "route_run": false,
+  "functional_regression": {
+    "normal": "PASS",
+    "synthesis": "PASS",
+    "random_extreme": "PASS",
+    "two_tu": "PASS",
+    "descriptor": "PASS",
+    "epoch_wrap": "PASS",
+    "trace_mutations": "PASS",
+    "r4c_latency": 23,
+    "vector_ii": 16,
+    "group_ii": 1,
+    "output_fire_ii": 1
+  },
+  "timing_postsynth": {
+    "setup_wns_ns": 0.075,
+    "setup_tns_ns": 0.0,
+    "setup_failing_endpoints": 0,
+    "hold_whs_ns": -0.076,
+    "hold_ths_ns": -17.135,
+    "hold_failing_endpoints": 251,
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": "none",
+    "setup_gate": "PASS",
+    "hold_gate": "BOUNDARY_PRE_PENDING"
+  },
+  "utilization_postsynth": {
+    "lut_total": 21313,
+    "lut_logic": 15425,
+    "lutram": 5888,
+    "ff": 21336,
+    "dsp48e2": 128,
+    "bram18": 0,
+    "bram36": 0,
+    "uram": 0
+  },
+  "sha256": {
+    "r4c": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1",
+    "wrapper": "32C4519F806C311981F8AFBEC2C0AC14B6B82942217AB47914171E15630D4E41",
+    "xdc": "5FC2465A7E852A99BE1B7C6B484C9EDF85FB96DDAF256F277D4A2E3DB467F2F3",
+    "postsynth_dcp": "AECD46CD4F4122A5A654BE496DEDC106449DEBEE58E8C48C4C3F114B230A5E48"
+  },
+  "next": "Boundary-PRE for OOC clock/interface physical context; no route or v3.5-18 yet"
+}
