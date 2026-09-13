@@ -1,6 +1,12 @@
 $ErrorActionPreference = "Stop"
 $root = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 $python = if (Get-Command python -ErrorAction SilentlyContinue) { "python" } else { throw "python not found" }
+$auditDir = if ($env:STEP12B_AUDIT_DIR) { $env:STEP12B_AUDIT_DIR } else { "05_audit\current\18\m1" }
+$modelDir = if ($env:STEP12B_MODEL_DIR) { $env:STEP12B_MODEL_DIR } else { "05_audit\current\18\m1_model" }
+$auditAbs = Join-Path $root $auditDir
+$modelAbs = Join-Path $root $modelDir
+$env:STEP12B_AUDIT_OUT = $modelAbs
+$env:STEP12B_MODEL_VERSION = if ($env:STEP12B_MODEL_VERSION) { $env:STEP12B_MODEL_VERSION } else { "V3.5-Step12C-M1" }
 & $python (Join-Path $root "03_verification\scripts\step12b_cycle_model.py")
 if ($LASTEXITCODE -ne 0) { throw "Step12B cycle model failed" }
 & $python (Join-Path $root "03_verification\scripts\gen_step12b_rtl_random_vectors.py")
@@ -27,22 +33,22 @@ try {
     throw "normal simulation did not report a clean PASS"
   }
   $traceCheck = (& $python (Join-Path $root "03_verification\scripts\validate_step12b_rtl_trace.py") `
-    --rtl-trace (Join-Path $root "05_audit\current\17\step12b_rtl_event_trace_normal.csv") `
-    --model-trace (Join-Path $root "05_audit\current\17_2\step12b_cycle_trace.json") 2>&1) -join "`n"
+    --rtl-trace (Join-Path $auditAbs "step12b_rtl_event_trace_normal.csv") `
+    --model-trace (Join-Path $modelAbs "step12b_cycle_trace.json") 2>&1) -join "`n"
   if ($LASTEXITCODE -ne 0 -or $traceCheck -notmatch "STEP12B_RTL_TRACE_PASS") {
     throw "RTL event trace validation failed: $traceCheck"
   }
   $internalCheck = (& $python (Join-Path $root "03_verification\scripts\validate_step12b_internal_trace.py") `
-    --rtl-trace (Join-Path $root "05_audit\current\17\step12b_rtl_event_trace_normal.csv") `
-    --model-trace (Join-Path $root "05_audit\current\17_2\step12b_cycle_trace.json") `
-    --out (Join-Path $root "05_audit\current\17_2\step12b_internal_trace_results.json") 2>&1) -join "`n"
+    --rtl-trace (Join-Path $auditAbs "step12b_rtl_event_trace_normal.csv") `
+    --model-trace (Join-Path $modelAbs "step12b_cycle_trace.json") `
+    --out (Join-Path $auditAbs "step12b_internal_trace_results.json") 2>&1) -join "`n"
   if ($LASTEXITCODE -ne 0 -or $internalCheck -notmatch "STEP12B_INTERNAL_TRACE_PASS") {
     throw "internal transaction trace audit failed: $internalCheck"
   }
   $traceMutations = (& $python (Join-Path $root "03_verification\scripts\run_step12b_trace_mutations.py") `
-    --rtl-trace (Join-Path $root "05_audit\current\17\step12b_rtl_event_trace_normal.csv") `
-    --model-trace (Join-Path $root "05_audit\current\17_2\step12b_cycle_trace.json") `
-    --out (Join-Path $root "05_audit\current\17_2\step12b_trace_mutation_results.json") 2>&1) -join "`n"
+    --rtl-trace (Join-Path $auditAbs "step12b_rtl_event_trace_normal.csv") `
+    --model-trace (Join-Path $modelAbs "step12b_cycle_trace.json") `
+    --out (Join-Path $auditAbs "step12b_trace_mutation_results.json") 2>&1) -join "`n"
   if ($LASTEXITCODE -ne 0 -or $traceMutations -notmatch "STEP12B_TRACE_MUTATION_PASS") {
     throw "trace comparator mutation audit failed: $traceMutations"
   }
@@ -95,15 +101,15 @@ try {
     throw "synthesis simulation did not report a clean PASS"
   }
   $synthTraceCheck = (& $python (Join-Path $root "03_verification\scripts\validate_step12b_rtl_trace.py") `
-    --rtl-trace (Join-Path $root "05_audit\current\17\step12b_rtl_event_trace_synthesis.csv") `
-    --model-trace (Join-Path $root "05_audit\current\17_2\step12b_cycle_trace.json") 2>&1) -join "`n"
+    --rtl-trace (Join-Path $auditAbs "step12b_rtl_event_trace_synthesis.csv") `
+    --model-trace (Join-Path $modelAbs "step12b_cycle_trace.json") 2>&1) -join "`n"
   if ($LASTEXITCODE -ne 0 -or $synthTraceCheck -notmatch "STEP12B_RTL_TRACE_PASS") {
     throw "SYNTHESIS RTL event trace comparison failed: $synthTraceCheck"
   }
   $synthInternalCheck = (& $python (Join-Path $root "03_verification\scripts\validate_step12b_internal_trace.py") `
-    --rtl-trace (Join-Path $root "05_audit\current\17\step12b_rtl_event_trace_synthesis.csv") `
-    --model-trace (Join-Path $root "05_audit\current\17_2\step12b_cycle_trace.json") `
-    --out (Join-Path $root "05_audit\current\17_2\step12b_internal_trace_synthesis_results.json") 2>&1) -join "`n"
+    --rtl-trace (Join-Path $auditAbs "step12b_rtl_event_trace_synthesis.csv") `
+    --model-trace (Join-Path $modelAbs "step12b_cycle_trace.json") `
+    --out (Join-Path $auditAbs "step12b_internal_trace_synthesis_results.json") 2>&1) -join "`n"
   if ($LASTEXITCODE -ne 0 -or $synthInternalCheck -notmatch "STEP12B_INTERNAL_TRACE_PASS") {
     throw "SYNTHESIS internal transaction trace audit failed: $synthInternalCheck"
   }
@@ -141,4 +147,4 @@ try {
     throw "synthesis extreme simulation did not report a clean PASS"
   }
 } finally { Pop-Location }
-Write-Output "V35_17_2_STEP12B_FUNCTIONAL_REGRESSION_PASS"
+Write-Output "V35_STEP12C_M1_FUNCTIONAL_REGRESSION_PASS"

@@ -39,11 +39,12 @@ module step12b_dct2_64_wrapper_tb;
     reg [4:0] trace_internal_group_s;
     reg [9:0] trace_internal_index_s;
     reg [10:0] trace_result_issued_prev;
+    reg scrub_prev_a, scrub_prev_b;
 
 `ifdef SYNTHESIS
-    localparam TRACE_FILE = "05_audit/current/17/step12b_rtl_event_trace_synthesis.csv";
+    localparam TRACE_FILE = "05_audit/current/18/m1/step12b_rtl_event_trace_synthesis.csv";
 `else
-    localparam TRACE_FILE = "05_audit/current/17/step12b_rtl_event_trace_normal.csv";
+    localparam TRACE_FILE = "05_audit/current/18/m1/step12b_rtl_event_trace_normal.csv";
 `endif
 
     // Independent canonical DCT2-64 coefficient column A[i][1].  The
@@ -110,7 +111,7 @@ module step12b_dct2_64_wrapper_tb;
         trace_fd = $fopen(TRACE_FILE, "w");
         trace_cycle = 0;
         if (trace_fd == 0) $fatal(1, "cannot open RTL event trace");
-        $fwrite(trace_fd, "cycle,event,phase,vector,group,index,addr,end\n");
+        $fwrite(trace_fd, "cycle,event,phase,vector,group,index,addr,end,cache,bank,request_id\n");
     end
 
     // The CSV is a transaction-edge trace.  Predicates and tags are captured
@@ -134,11 +135,11 @@ module step12b_dct2_64_wrapper_tb;
             // The completion transaction is the final output_fire, not a
             // mixed pre/post-NBA read of the it_done register.
             trace_done_s = trace_fire_s && (trace_index_s == 10'd1023);
-            trace_stage_capture_s = ((dut.phase == 2'd1) || (dut.phase == 2'd2)) &&
-                                    (dut.load_vector < 7'd64) &&
-                                    (dut.load_group == 5'd15) &&
-                                    ((dut.load_bank == 1'b0 && !dut.stage_ready_a) ||
-                                     (dut.load_bank == 1'b1 && !dut.stage_ready_b));
+            // M1 staging capture is the response edge of the explicit
+            // request metadata pipeline, not the edge that launches the
+            // next request.  A group-15 response is the stage_full event.
+            trace_stage_capture_s = dut.stage_read_pending &&
+                                    (dut.stage_read_group == 5'd15);
             trace_intermediate_write_s = trace_result_s && (dut.phase == 2'd1);
             trace_result_reserve_s = (dut.phase == 2'd3) && !dut.result_owner_valid;
             // A response and a new request may share one edge.  Therefore a
@@ -146,9 +147,9 @@ module step12b_dct2_64_wrapper_tb;
             // not from the pre-edge pending bit alone.
             trace_result_read_request_s = 1'b0;
             trace_result_read_response_s = dut.result_read_pending;
-            trace_scrub_s = dut.cache_scrubbing[0] || dut.cache_scrubbing[1];
-            trace_internal_vector_s = dut.load_vector;
-            trace_internal_group_s = dut.load_group;
+            trace_scrub_s = 1'b0;
+            trace_internal_vector_s = dut.stage_read_vector;
+            trace_internal_group_s = dut.stage_read_group;
             trace_internal_index_s = dut.result_issue_index;
             #1step;
             trace_cycle = trace_cycle + 1;
@@ -194,10 +195,55 @@ module step12b_dct2_64_wrapper_tb;
             if (trace_result_read_response_s)
                 $fwrite(trace_fd, "%0d,result_read_response,%0d,,,%0d,,\n", trace_cycle,
                         trace_phase_s, trace_internal_index_s);
-            if (trace_scrub_s)
-                $fwrite(trace_fd, "%0d,epoch_scrub,%0d,,,,%0d,\n", trace_cycle,
-                        trace_phase_s, trace_internal_index_s);
             trace_result_issued_prev = dut.result_issued;
+        end
+    end
+
+    // Scrub is a physical tag-bank transaction.  Observe it on the falling
+    // edge after the accepting rising edge so the just-completed index is
+    // unambiguous, without adding any DUT instrumentation.  While a cache
+    // remains in SCRUB, scrub_index=N means index N-1 was cleared on the
+    // preceding edge; the first edge therefore records index 0.  The edge
+    // that leaves SCRUB records the final index 1023.
+    always @(negedge clk) begin
+        if (!rst_n) begin
+            scrub_prev_a = 1'b0;
+            scrub_prev_b = 1'b0;
+        end else begin
+            if (dut.cache_scrubbing[0]) begin
+                if (dut.scrub_index[0] != 0) begin
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,%0d,,A,0,\n", trace_cycle, dut.scrub_index[0]-1'b1);
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,%0d,,A,1,\n", trace_cycle, dut.scrub_index[0]-1'b1);
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,%0d,,A,2,\n", trace_cycle, dut.scrub_index[0]-1'b1);
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,%0d,,A,3,\n", trace_cycle, dut.scrub_index[0]-1'b1);
+                end
+                scrub_prev_a = 1'b1;
+            end else begin
+                if (scrub_prev_a) begin
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,1023,,A,0,\n", trace_cycle);
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,1023,,A,1,\n", trace_cycle);
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,1023,,A,2,\n", trace_cycle);
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,1023,,A,3,\n", trace_cycle);
+                end
+                scrub_prev_a = 1'b0;
+            end
+            if (dut.cache_scrubbing[1]) begin
+                if (dut.scrub_index[1] != 0) begin
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,%0d,,B,0,\n", trace_cycle, dut.scrub_index[1]-1'b1);
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,%0d,,B,1,\n", trace_cycle, dut.scrub_index[1]-1'b1);
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,%0d,,B,2,\n", trace_cycle, dut.scrub_index[1]-1'b1);
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,%0d,,B,3,\n", trace_cycle, dut.scrub_index[1]-1'b1);
+                end
+                scrub_prev_b = 1'b1;
+            end else begin
+                if (scrub_prev_b) begin
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,1023,,B,0,\n", trace_cycle);
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,1023,,B,1,\n", trace_cycle);
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,1023,,B,2,\n", trace_cycle);
+                    $fwrite(trace_fd, "%0d,epoch_scrub,0,,,,1023,,B,3,\n", trace_cycle);
+                end
+                scrub_prev_b = 1'b0;
+            end
         end
     end
     always @(posedge clk) begin

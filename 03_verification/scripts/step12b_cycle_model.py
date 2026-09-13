@@ -11,6 +11,7 @@ writes, and an output hold/skid path.
 from __future__ import annotations
 
 import json
+import os
 import random
 import sys
 from dataclasses import dataclass, field
@@ -27,10 +28,11 @@ from v34_rtl_bitexact import main_2d_details  # type: ignore
 N = 64
 GROUPS = 16
 RESULT_GROUPS = 1024
-# The frozen wrapper has two deliberately different memory timing contracts.
-# Input-cache/intermediate reads are consumed on the same accepting edge as
-# the staging load; ResultMemory remains a real synchronous-read boundary.
-STAGING_CAPTURE_EDGE_DELTA = 0
+# Step12C-M1 uses inference-friendly synchronous bank reads for the staging
+# memories.  A request accepted at edge C produces its lane capture at C+1.
+# ResultMemory remains a separate synchronous-read boundary with the same
+# one-edge response, but it is intentionally kept as a distinct contract.
+STAGING_CAPTURE_EDGE_DELTA = 1
 RESULT_READ_LATENCY = 1
 # Measured wrapper-visible latency from vector_start accepting edge to the
 # first result group.  The frozen R4C source is unchanged; this is the
@@ -98,7 +100,7 @@ class SyncBankedMemory:
             read_pairs.add((bank, addr))
             request_id = self.request_seq
             self.request_seq += 1
-            if self.read_latency == STAGING_CAPTURE_EDGE_DELTA:
+            if self.read_latency == 0:
                 immediate.append((token, bank, addr, request_id, row * N + col))
             else:
                 self.pending.setdefault(cycle + self.read_latency, []).append(
@@ -153,11 +155,13 @@ class EpochInputCache(SyncBankedMemory):
     def __init__(self, name: str, trace: list[dict[str, Any]]):
         super().__init__(name, trace)
         self.tags = [[-1] * 1024 for _ in range(4)]
+        # Match the RTL startup contract: tag contents are unknown until a
+        # physical four-bank scrub has completed, so no cache may bind a TU.
         self.epoch = -1
-        self.scrubbing = False
+        self.scrubbing = True
         self.scrub_index = 0
-        self.scrub_episode = 0
-        self.active_scrub_episode: int | None = None
+        self.scrub_episode = 1
+        self.active_scrub_episode: int | None = 1
         self.just_finished_scrub = False
 
     def _read_value(self, bank: int, addr: int) -> int:
@@ -192,7 +196,7 @@ class EpochInputCache(SyncBankedMemory):
         self.scrub_index += 1
         if self.scrub_index == 1024:
             self.scrubbing = False
-            self.epoch = 0
+            self.epoch = 1
             self.active_scrub_episode = None
             self.just_finished_scrub = True
 
@@ -580,7 +584,7 @@ class IntegrationModel:
         # the frozen wrapper evaluates its staging loader from the pre-NBA
         # phase, the first staging read cannot be issued until the following
         # accepting edge.  Keep this separate from memory read latency: the
-        # staging request/capture contract remains same-edge (delta=0).
+        # staging request/capture is the explicit one-edge RAM contract.
         self.phase_read_not_before = 0
         self.intermediate = SyncBankedMemory("intermediate", self.trace)
         self.intermediate_owner: int | None = None
@@ -1335,6 +1339,12 @@ def validate_epoch_wrap() -> dict[str, Any]:
     bypass_trace: list[dict[str, Any]] = []
     cache_a = EpochInputCache("inputA", bypass_trace)
     cache_b = EpochInputCache("inputB", bypass_trace)
+    # Model the post-startup state for this focused wrap test; the long test
+    # above already exercises both physical startup scrub episodes.
+    cache_a.scrubbing = False
+    cache_b.scrubbing = False
+    cache_a.epoch = 1
+    cache_b.epoch = 1
     cache_a.epoch = EPOCH_MOD - 1
     if cache_a.begin_tu() or not cache_a.scrubbing:
         raise ContractError("scrub bypass setup did not enter A scrub")
@@ -1387,7 +1397,9 @@ def validate_epoch_wrap() -> dict[str, Any]:
 
 def validate_two_tu() -> dict[str, Any]:
     sources = [make_case("sparse"), make_case("random", seed=20260905)]
-    stall_until = 5000
+    # Keep the output occupied long enough that TU1 reaches H admission while
+    # TU0 still owns the single 1024-group ResultMemory.
+    stall_until = 8000
 
     def two_tu_req(cycle: int, _model: IntegrationModel) -> bool:
         return cycle >= stall_until
@@ -1418,7 +1430,8 @@ def validate_two_tu() -> dict[str, Any]:
 
 
 def main() -> int:
-    results: dict[str, Any] = {"version": "V3.5-17.2-Step12B-cycle-model",
+    version = os.environ.get("STEP12B_MODEL_VERSION", "V3.5-17.2-Step12B-cycle-model")
+    results: dict[str, Any] = {"version": version,
                                "status": "PASS", "cases": []}
     for kind in ("zero", "sparse", "alternating", "random"):
         results["cases"].append(validate_case(kind, make_case(kind)))
@@ -1433,13 +1446,19 @@ def main() -> int:
     results["two_tu"] = validate_two_tu()
     results["vector_id_wrap"] = validate_vector_id_wrap()
     results["epoch_wrap"] = validate_epoch_wrap()
-    out = ROOT / "05_audit" / "current" / "17_2"
+    out = Path(os.environ.get("STEP12B_AUDIT_OUT",
+                             str(ROOT / "05_audit" / "current" / "17_2")))
     out.mkdir(parents=True, exist_ok=True)
     # Keep a cycle-compare trace for the exact deterministic one-point RTL
     # stimulus.  The request pattern is intentionally identical to the TB;
-    # no per-event or per-phase offset is permitted by the comparator.
+    # it is relative to the first accepted input edge, just as the RTL TB's
+    # local ``cycles`` counter is.  This is stimulus phase, not an event
+    # alignment offset: all resulting events still use the one input-fire
+    # anchor in the comparator.
+    rtl_smoke_input_cycle = 1024  # both input caches finish startup scrub first
     def rtl_smoke_req(cycle: int, _model: IntegrationModel) -> bool:
-        return not (cycle % 19 >= 5 and cycle % 19 <= 8)
+        local_cycle = cycle - rtl_smoke_input_cycle
+        return not (local_cycle % 19 >= 5 and local_cycle % 19 <= 8)
     trace_model = IntegrationModel([make_rtl_smoke_case()], output_req=rtl_smoke_req,
                                    same_cycle_data_end=True)
     trace_model.run()
@@ -1451,13 +1470,13 @@ def main() -> int:
     results["mutation_gate"] = mutation
     (out / "step12b_cycle_results.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
     (out / "step12b_mutation_manifest.json").write_text(
-        json.dumps({"version": "V3.5-17.2", "scope": "cycle-model checker fault injection",
+        json.dumps({"version": version, "scope": "cycle-model checker fault injection",
                     "all_pass": all(mutation.values()) and
                                 all(results["epoch_wrap"]["scrub_mutation_gate"].values()),
                     "checks": mutation,
                     "scrub_checks": results["epoch_wrap"]["scrub_mutation_gate"]}, indent=2),
         encoding="utf-8")
-    report = ["# V3.5-17.2 Step12B cycle model", "", "Status: PASS", "",
+    report = [f"# {version} Step12B cycle model", "", "Status: PASS", "",
               "A single IntegrationModel.tick() advances input, synchronous memories,",
               "the persistent R4C contract, V/H scheduling, live result writes and output hold/skid.", "",
               "| case | cycles | vectors | vector II | result writes | result fires |",
@@ -1468,7 +1487,7 @@ def main() -> int:
                f"vector_id_wrap: {results['vector_id_wrap']}",
                f"epoch_wrap: {results['epoch_wrap']}",
                f"mutation_gate ({len(mutation)} checker mutations): {mutation}",
-              "Staging reads use same-edge request/capture (delta=0); ResultMemory uses request C → response C+1.",
+              "Staging reads use request C → capture C+1; ResultMemory uses request C → response C+1.",
               "This is the executable Python contract gate. Public RTL trace reconciliation remains a separate fail-closed audit; no free event offsets are permitted."]
     report += ["", "Model-side functional/protocol gate is PASS for the scoped 64x64 DCT2xDCT2 wrapper; no Vivado or full-core timing claim is made."]
     (out / "V35_STEP12B_CYCLE_MODEL_REPORT.md").write_text("\n".join(report) + "\n", encoding="utf-8")

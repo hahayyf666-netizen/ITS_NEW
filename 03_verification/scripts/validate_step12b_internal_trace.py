@@ -48,7 +48,9 @@ def main() -> int:
         "result_reserve": 1,
         "result_read_request": 1024,
         "result_read_response": 1024,
-        "epoch_scrub": 0,
+        # Startup scrub clears four banks in each of the two input caches on
+        # each of 1024 edges: 2 * 4 * 1024 physical tag transactions.
+        "epoch_scrub": 8192,
     }
     model_expected = {
         "stage_capture": 128,
@@ -62,6 +64,33 @@ def main() -> int:
     for event, count in model_expected.items():
         if sum(1 for e in model if e.get("event") == event) != count:
             fail(f"model {event} count mismatch")
+
+    scrub = rows("epoch_scrub")
+    scrub_keys = {(r.get("cache"), r.get("bank")) for r in scrub}
+    if scrub_keys != {(cache, str(bank)) for cache in ("A", "B")
+                      for bank in range(4)}:
+        fail("epoch scrub cache/bank coverage mismatch")
+    for cache in ("A", "B"):
+        for bank in range(4):
+            seq = [int(r["addr"]) for r in scrub
+                   if r.get("cache") == cache and r.get("bank") == str(bank)]
+            if seq != list(range(1024)):
+                fail(f"epoch scrub sequence mismatch cache={cache} bank={bank}")
+    model_scrub = [e for e in model if e.get("event") == "epoch_scrub"]
+    if len(model_scrub) != 8192:
+        fail(f"model epoch scrub count mismatch: got {len(model_scrub)}")
+    model_scrub_keys = {(str(e.get("memory", ""))[-1], str(e.get("bank")))
+                        for e in model_scrub}
+    if model_scrub_keys != {(cache, str(bank)) for cache in ("A", "B")
+                            for bank in range(4)}:
+        fail("model epoch scrub cache/bank coverage mismatch")
+    for cache in ("A", "B"):
+        for bank in range(4):
+            seq = [int(e["index"]) for e in model_scrub
+                   if str(e.get("memory", ""))[-1] == cache and
+                   str(e.get("bank")) == str(bank)]
+            if seq != list(range(1024)):
+                fail(f"model epoch scrub sequence mismatch cache={cache} bank={bank}")
 
     stages = rows("stage_capture")
     stage_keys = [(int(r["phase"]), int(r["vector"])) for r in stages]

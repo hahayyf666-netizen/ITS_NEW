@@ -39,10 +39,25 @@ module step12b_dct2_64_wrapper #(
 
     // Two physical input caches.  Epoch tags make omitted sparse addresses
     // read as zero without a 4096-cycle clear on every TU.
-    reg signed [15:0] input_cache_a [0:3][0:1023];
-    reg signed [15:0] input_cache_b [0:3][0:1023];
-    reg [EPOCH_BITS-1:0] input_tag_a [0:3][0:1023];
-    reg [EPOCH_BITS-1:0] input_tag_b [0:3][0:1023];
+    // Keep every physical bank as a separate inference candidate.  The
+    // staging reader below accesses one fixed bank per lane, so Vivado does
+    // not have to infer a multi-dimensional RAM with a variable bank port.
+    (* ram_style = "block" *) reg signed [15:0] input_cache_a0 [0:1023];
+    (* ram_style = "block" *) reg signed [15:0] input_cache_a1 [0:1023];
+    (* ram_style = "block" *) reg signed [15:0] input_cache_a2 [0:1023];
+    (* ram_style = "block" *) reg signed [15:0] input_cache_a3 [0:1023];
+    (* ram_style = "block" *) reg signed [15:0] input_cache_b0 [0:1023];
+    (* ram_style = "block" *) reg signed [15:0] input_cache_b1 [0:1023];
+    (* ram_style = "block" *) reg signed [15:0] input_cache_b2 [0:1023];
+    (* ram_style = "block" *) reg signed [15:0] input_cache_b3 [0:1023];
+    (* ram_style = "block" *) reg [EPOCH_BITS-1:0] input_tag_a0 [0:1023];
+    (* ram_style = "block" *) reg [EPOCH_BITS-1:0] input_tag_a1 [0:1023];
+    (* ram_style = "block" *) reg [EPOCH_BITS-1:0] input_tag_a2 [0:1023];
+    (* ram_style = "block" *) reg [EPOCH_BITS-1:0] input_tag_a3 [0:1023];
+    (* ram_style = "block" *) reg [EPOCH_BITS-1:0] input_tag_b0 [0:1023];
+    (* ram_style = "block" *) reg [EPOCH_BITS-1:0] input_tag_b1 [0:1023];
+    (* ram_style = "block" *) reg [EPOCH_BITS-1:0] input_tag_b2 [0:1023];
+    (* ram_style = "block" *) reg [EPOCH_BITS-1:0] input_tag_b3 [0:1023];
     reg [EPOCH_BITS-1:0] cache_epoch [0:1];
     reg [2:0] cache_state [0:1];
     reg cache_scrubbing [0:1];
@@ -60,10 +75,19 @@ module step12b_dct2_64_wrapper #(
     reg desc_bind_guard;
     reg [15:0] next_tu_serial;
 
-    // One shared intermediate store.  The first prototype uses registers;
-    // Step12C will decide BRAM/LUTRAM inference after functional closure.
-    reg signed [15:0] intermediate_mem [0:3][0:1023];
+    // One shared intermediate store.  Each bank has a single explicit write
+    // process below; the staging reader is the synchronous read side.  This
+    // fixed-port form is intentional: Step12C must not leave bank writes to
+    // a variable-index loop for Vivado to reconstruct.
+    (* ram_style = "block" *) reg signed [15:0] intermediate_mem0 [0:1023];
+    (* ram_style = "block" *) reg signed [15:0] intermediate_mem1 [0:1023];
+    (* ram_style = "block" *) reg signed [15:0] intermediate_mem2 [0:1023];
+    (* ram_style = "block" *) reg signed [15:0] intermediate_mem3 [0:1023];
+    // Verification shadow only.  It is not read by the functional datapath
+    // and is omitted from synthesis so it cannot consume implementation RAM.
+`ifndef SYNTHESIS
     reg signed [15:0] result_stage16_mem [0:4095];
+`endif
     reg intermediate_owned;
     reg [1:0] active_cache;
     reg [15:0] active_tu;
@@ -81,6 +105,17 @@ module step12b_dct2_64_wrapper #(
     reg [6:0] launch_count;
     reg launch_bank;
     reg [5:0] cycles_since_launch;
+
+    // One outstanding staging read is allowed.  A request at edge C is
+    // captured and consumed at edge C+1, while a new request may be issued
+    // at every edge.  The metadata is the response routing contract.
+    reg stage_read_pending;
+    reg stage_read_phase;
+    reg [6:0] stage_read_vector;
+    reg [4:0] stage_read_group;
+    reg stage_read_cache;
+    reg stage_read_bank;
+    reg [EPOCH_BITS-1:0] stage_read_epoch;
 
     wire r4c_start;
     wire [VECTOR_ID_W-1:0] r4c_vector_id;
@@ -123,7 +158,7 @@ module step12b_dct2_64_wrapper #(
 
     // Result memory is a 1024-beat logical 40-bit store.  The reader below
     // has one synchronous request cycle and two elastic entries (hold/skid).
-    reg [39:0] result_mem [0:1023];
+    (* ram_style = "block" *) reg [39:0] result_mem [0:1023];
     reg result_present [0:1023];
     reg [10:0] result_reserved;
     reg [10:0] result_occupied;
@@ -183,6 +218,74 @@ module step12b_dct2_64_wrapper #(
     reg [10:0] result_produced_tmp, result_issued_tmp, result_consumed_tmp;
     reg result_owner_v_tmp;
     reg [1:0] push_slot_calc;
+    integer stage_addr0_tmp, stage_addr1_tmp, stage_addr2_tmp, stage_addr3_tmp;
+    reg signed [15:0] stage_lane0_tmp, stage_lane1_tmp;
+    reg signed [15:0] stage_lane2_tmp, stage_lane3_tmp;
+
+    // The sparse input stream has one write transaction per cycle.  Keeping
+    // the decoded bank/address as wires makes the four bank write ports
+    // statically visible to synthesis, while preserving the frozen address
+    // mapping: bank=row[1:0] XOR col[1:0], addr=row*16+(col>>2).
+    wire sparse_input_fire = it_data_in_vld && it_data_in_req;
+    wire [1:0] sparse_input_bank = it_data_addr[7:6] ^ it_data_addr[1:0];
+    wire [9:0] sparse_input_addr = {it_data_addr[11:6], it_data_addr[5:2]};
+
+    // Vertical result writes are decoded once into one write per physical
+    // intermediate bank.  There is at most one lane per bank for a result
+    // group, so each bank has a single write enable/address/data in a cycle.
+    reg inter_wr_en0, inter_wr_en1, inter_wr_en2, inter_wr_en3;
+    reg [9:0] inter_wr_addr0, inter_wr_addr1, inter_wr_addr2, inter_wr_addr3;
+    reg signed [15:0] inter_wr_data0, inter_wr_data1, inter_wr_data2, inter_wr_data3;
+    integer inter_comb_i;
+    integer inter_comb_row;
+    integer inter_comb_vec;
+    integer inter_comb_bank;
+    integer inter_comb_addr;
+    always @* begin
+        inter_wr_en0 = 1'b0;
+        inter_wr_en1 = 1'b0;
+        inter_wr_en2 = 1'b0;
+        inter_wr_en3 = 1'b0;
+        inter_wr_addr0 = 10'd0;
+        inter_wr_addr1 = 10'd0;
+        inter_wr_addr2 = 10'd0;
+        inter_wr_addr3 = 10'd0;
+        inter_wr_data0 = 16'sd0;
+        inter_wr_data1 = 16'sd0;
+        inter_wr_data2 = 16'sd0;
+        inter_wr_data3 = 16'sd0;
+        inter_comb_vec = r4c_result_vector_id - phase_vector_base;
+        if (r4c_result_valid && phase == PH_VERTICAL &&
+            inter_comb_vec >= 0 && inter_comb_vec < 64) begin
+            for (inter_comb_i = 0; inter_comb_i < 4; inter_comb_i = inter_comb_i + 1) begin
+                inter_comb_row = r4c_result_group * 4 + inter_comb_i;
+                inter_comb_bank = coord_bank(inter_comb_row, inter_comb_vec);
+                inter_comb_addr = coord_addr(inter_comb_row, inter_comb_vec);
+                case (inter_comb_bank)
+                    0: begin
+                        inter_wr_en0 = 1'b1;
+                        inter_wr_addr0 = inter_comb_addr;
+                        inter_wr_data0 = $signed(r4c_result_stage16[inter_comb_i*16 +: 16]);
+                    end
+                    1: begin
+                        inter_wr_en1 = 1'b1;
+                        inter_wr_addr1 = inter_comb_addr;
+                        inter_wr_data1 = $signed(r4c_result_stage16[inter_comb_i*16 +: 16]);
+                    end
+                    2: begin
+                        inter_wr_en2 = 1'b1;
+                        inter_wr_addr2 = inter_comb_addr;
+                        inter_wr_data2 = $signed(r4c_result_stage16[inter_comb_i*16 +: 16]);
+                    end
+                    default: begin
+                        inter_wr_en3 = 1'b1;
+                        inter_wr_addr3 = inter_comb_addr;
+                        inter_wr_data3 = $signed(r4c_result_stage16[inter_comb_i*16 +: 16]);
+                    end
+                endcase
+            end
+        end
+    end
 
     // Step12B functional scope is exactly 64x64 DCT2xDCT2 with LFNST off.
     // lfnst_tr_set_idx is retained losslessly but is don't-care when idx=0.
@@ -195,6 +298,72 @@ module step12b_dct2_64_wrapper #(
     wire desc_push_ok = it_info_vld && (desc_count < 2) && descriptor_supported;
     wire input_end_fire = (desc_count != 0) && it_data_end && it_data_in_req;
 
+    // Explicit one-write-port bank processes.  The tag arrays are invalidated
+    // by the existing per-cache scrub controller; data words do not need to
+    // be cleared because a tag mismatch makes the corresponding value zero.
+    always @(posedge clk) begin
+        if (cache_scrubbing[0]) input_tag_a0[scrub_index[0]] <= 0;
+        else if (sparse_input_fire && desc_slot_q[0] == 0 && sparse_input_bank == 2'd0) begin
+            input_cache_a0[sparse_input_addr] <= it_data_in;
+            input_tag_a0[sparse_input_addr] <= cache_epoch[0];
+        end
+    end
+    always @(posedge clk) begin
+        if (cache_scrubbing[0]) input_tag_a1[scrub_index[0]] <= 0;
+        else if (sparse_input_fire && desc_slot_q[0] == 0 && sparse_input_bank == 2'd1) begin
+            input_cache_a1[sparse_input_addr] <= it_data_in;
+            input_tag_a1[sparse_input_addr] <= cache_epoch[0];
+        end
+    end
+    always @(posedge clk) begin
+        if (cache_scrubbing[0]) input_tag_a2[scrub_index[0]] <= 0;
+        else if (sparse_input_fire && desc_slot_q[0] == 0 && sparse_input_bank == 2'd2) begin
+            input_cache_a2[sparse_input_addr] <= it_data_in;
+            input_tag_a2[sparse_input_addr] <= cache_epoch[0];
+        end
+    end
+    always @(posedge clk) begin
+        if (cache_scrubbing[0]) input_tag_a3[scrub_index[0]] <= 0;
+        else if (sparse_input_fire && desc_slot_q[0] == 0 && sparse_input_bank == 2'd3) begin
+            input_cache_a3[sparse_input_addr] <= it_data_in;
+            input_tag_a3[sparse_input_addr] <= cache_epoch[0];
+        end
+    end
+    always @(posedge clk) begin
+        if (cache_scrubbing[1]) input_tag_b0[scrub_index[1]] <= 0;
+        else if (sparse_input_fire && desc_slot_q[0] == 1 && sparse_input_bank == 2'd0) begin
+            input_cache_b0[sparse_input_addr] <= it_data_in;
+            input_tag_b0[sparse_input_addr] <= cache_epoch[1];
+        end
+    end
+    always @(posedge clk) begin
+        if (cache_scrubbing[1]) input_tag_b1[scrub_index[1]] <= 0;
+        else if (sparse_input_fire && desc_slot_q[0] == 1 && sparse_input_bank == 2'd1) begin
+            input_cache_b1[sparse_input_addr] <= it_data_in;
+            input_tag_b1[sparse_input_addr] <= cache_epoch[1];
+        end
+    end
+    always @(posedge clk) begin
+        if (cache_scrubbing[1]) input_tag_b2[scrub_index[1]] <= 0;
+        else if (sparse_input_fire && desc_slot_q[0] == 1 && sparse_input_bank == 2'd2) begin
+            input_cache_b2[sparse_input_addr] <= it_data_in;
+            input_tag_b2[sparse_input_addr] <= cache_epoch[1];
+        end
+    end
+    always @(posedge clk) begin
+        if (cache_scrubbing[1]) input_tag_b3[scrub_index[1]] <= 0;
+        else if (sparse_input_fire && desc_slot_q[0] == 1 && sparse_input_bank == 2'd3) begin
+            input_cache_b3[sparse_input_addr] <= it_data_in;
+            input_tag_b3[sparse_input_addr] <= cache_epoch[1];
+        end
+    end
+
+    // Intermediate storage has one statically decoded write port per bank.
+    always @(posedge clk) if (inter_wr_en0) intermediate_mem0[inter_wr_addr0] <= inter_wr_data0;
+    always @(posedge clk) if (inter_wr_en1) intermediate_mem1[inter_wr_addr1] <= inter_wr_data1;
+    always @(posedge clk) if (inter_wr_en2) intermediate_mem2[inter_wr_addr2] <= inter_wr_data2;
+    always @(posedge clk) if (inter_wr_en3) intermediate_mem3[inter_wr_addr3] <= inter_wr_data3;
+
     always @(posedge clk) begin
         if (!rst_n) begin
             desc_count <= 0;
@@ -202,12 +371,14 @@ module step12b_dct2_64_wrapper #(
             next_tu_serial <= 0;
             cache_epoch[0] <= 0;
             cache_epoch[1] <= 0;
-            cache_scrubbing[0] <= 0;
-            cache_scrubbing[1] <= 0;
+            // Memory arrays are not reset.  Both tag banks start in a real
+            // startup scrub and remain unavailable until it completes.
+            cache_scrubbing[0] <= 1'b1;
+            cache_scrubbing[1] <= 1'b1;
             scrub_index[0] <= 0;
             scrub_index[1] <= 0;
-            cache_state[0] <= CACHE_FREE;
-            cache_state[1] <= CACHE_FREE;
+            cache_state[0] <= CACHE_SCRUB;
+            cache_state[1] <= CACHE_SCRUB;
             cache_tu_id[0] <= 0;
             cache_tu_id[1] <= 0;
             last_input_addr[0] <= 0;
@@ -227,6 +398,13 @@ module step12b_dct2_64_wrapper #(
             launch_count <= 0;
             launch_bank <= 0;
             cycles_since_launch <= 6'd16;
+            stage_read_pending <= 1'b0;
+            stage_read_phase <= 1'b0;
+            stage_read_vector <= 0;
+            stage_read_group <= 0;
+            stage_read_cache <= 1'b0;
+            stage_read_bank <= 1'b0;
+            stage_read_epoch <= 0;
             result_occupied <= 0;
             result_reserved <= 0;
             result_produced <= 0;
@@ -249,33 +427,7 @@ module step12b_dct2_64_wrapper #(
             debug_stage16_row <= 0;
             debug_stage16_col <= 0;
             debug_stage16_data <= 0;
-            for (i = 0; i < 4096; i = i + 1) begin
-            result_stage16_mem[i] <= 0;
-            end
             for (i = 0; i < 1024; i = i + 1) begin
-                input_tag_a[0][i] <= 0;
-                input_tag_a[1][i] <= 0;
-                input_tag_a[2][i] <= 0;
-                input_tag_a[3][i] <= 0;
-                input_tag_b[0][i] <= 0;
-                input_tag_b[1][i] <= 0;
-                input_tag_b[2][i] <= 0;
-                input_tag_b[3][i] <= 0;
-                input_cache_a[0][i] <= 0;
-                input_cache_a[1][i] <= 0;
-                input_cache_a[2][i] <= 0;
-                input_cache_a[3][i] <= 0;
-                input_cache_b[0][i] <= 0;
-                input_cache_b[1][i] <= 0;
-                input_cache_b[2][i] <= 0;
-                input_cache_b[3][i] <= 0;
-                intermediate_mem[0][i] <= 0;
-                intermediate_mem[1][i] <= 0;
-                intermediate_mem[2][i] <= 0;
-                intermediate_mem[3][i] <= 0;
-            end
-            for (i = 0; i < 1024; i = i + 1) begin
-                result_mem[i] <= 0;
                 result_present[i] <= 0;
             end
             for (i = 0; i < 64; i = i + 1) begin
@@ -387,31 +539,24 @@ module step12b_dct2_64_wrapper #(
                 end
             end
 
-            // Four tag banks are scrubbed in parallel.  The cache under scrub
-            // is unavailable, while the other A/B cache may continue filling.
+            // The four tag-bank scrub and sparse writes are in the explicit
+            // bank processes above.  The cache under scrub is unavailable,
+            // while the other A/B cache may continue filling.
             if (cache_scrubbing[0]) begin
-                input_tag_a[0][scrub_index[0]] <= 0;
-                input_tag_a[1][scrub_index[0]] <= 0;
-                input_tag_a[2][scrub_index[0]] <= 0;
-                input_tag_a[3][scrub_index[0]] <= 0;
                 if (scrub_index[0] == 1023) begin
                     cache_scrubbing[0] <= 0;
                     cache_state[0] <= CACHE_FREE;
-                    cache_epoch[0] <= 0;
+                    cache_epoch[0] <= {{(EPOCH_BITS-1){1'b0}},1'b1};
                     scrub_index[0] <= 0;
                 end else begin
                     scrub_index[0] <= scrub_index[0] + 1'b1;
                 end
             end
             if (cache_scrubbing[1]) begin
-                input_tag_b[0][scrub_index[1]] <= 0;
-                input_tag_b[1][scrub_index[1]] <= 0;
-                input_tag_b[2][scrub_index[1]] <= 0;
-                input_tag_b[3][scrub_index[1]] <= 0;
                 if (scrub_index[1] == 1023) begin
                     cache_scrubbing[1] <= 0;
                     cache_state[1] <= CACHE_FREE;
-                    cache_epoch[1] <= 0;
+                    cache_epoch[1] <= {{(EPOCH_BITS-1){1'b0}},1'b1};
                     scrub_index[1] <= 0;
                 end else begin
                     scrub_index[1] <= scrub_index[1] + 1'b1;
@@ -421,23 +566,12 @@ module step12b_dct2_64_wrapper #(
             // Sparse input fire.  The stream is accepted only while the
             // bound cache is filling; data/end in the bind cycle is rejected
             // by it_data_in_req=0.  Addresses are raster-monotonic.
-            if (it_data_in_vld && it_data_in_req) begin
+            if (sparse_input_fire) begin
                 if (last_input_valid[desc_slot_q[0]] &&
                     it_data_addr <= last_input_addr[desc_slot_q[0]])
                     protocol_error <= 1'b1;
                 last_input_addr[desc_slot_q[0]] <= it_data_addr;
                 last_input_valid[desc_slot_q[0]] <= 1'b1;
-                cache_row_tmp = it_data_addr / 64;
-                cache_col_tmp = it_data_addr % 64;
-                bank_tmp = coord_bank(cache_row_tmp, cache_col_tmp);
-                mem_addr_tmp = coord_addr(cache_row_tmp, cache_col_tmp);
-                if (desc_slot_q[0] == 0) begin
-                    input_cache_a[bank_tmp][mem_addr_tmp] <= it_data_in;
-                    input_tag_a[bank_tmp][mem_addr_tmp] <= cache_epoch[0];
-                end else begin
-                    input_cache_b[bank_tmp][mem_addr_tmp] <= it_data_in;
-                    input_tag_b[bank_tmp][mem_addr_tmp] <= cache_epoch[1];
-                end
                 if (it_data_end) begin
                     cache_state[desc_slot_q[0]] <= CACHE_READY;
                     // Pop the descriptor only after the final data has been
@@ -546,8 +680,10 @@ module step12b_dct2_64_wrapper #(
                 cycles_since_launch <= 6'd16;
             end
 
-            // Four-point-per-cycle staging.  The registered array read is the
-            // prototype's explicit synchronous-read boundary.
+            // Four-point-per-cycle staging.  A request is registered here;
+            // the response block below consumes the saved metadata one edge
+            // later.  The physical bank is selected by a case so each bank
+            // has one statically visible read port.
             can_load_tmp = 1'b0;
             if ((phase == PH_VERTICAL || phase == PH_HORIZONTAL) && load_vector < 64) begin
                 if ((load_bank == 0 && !stage_ready_a) ||
@@ -556,35 +692,141 @@ module step12b_dct2_64_wrapper #(
                 if (r4c_start && (load_bank == launch_bank))
                     can_load_tmp = 1'b0;
             end
-            if (can_load_tmp) begin
-                for (i = 0; i < 4; i = i + 1) begin
-                    row_tmp = load_group * 4 + i;
-                    col_tmp = load_vector;
-                    if (phase == PH_VERTICAL) begin
-                        bank_tmp = coord_bank(row_tmp, col_tmp);
-                        mem_addr_tmp = coord_addr(row_tmp, col_tmp);
-                        if (active_cache == 0)
-                            read_value_tmp = (input_tag_a[bank_tmp][mem_addr_tmp] == cache_epoch[0]) ? input_cache_a[bank_tmp][mem_addr_tmp] : 16'sd0;
-                        else
-                            read_value_tmp = (input_tag_b[bank_tmp][mem_addr_tmp] == cache_epoch[1]) ? input_cache_b[bank_tmp][mem_addr_tmp] : 16'sd0;
+
+            // Synchronous bank response for the previous request.
+            if (stage_read_pending) begin
+                if (stage_read_phase == 1'b0) begin
+                    stage_addr0_tmp = ((stage_read_group * 4 + 0) * 16) +
+                                      (stage_read_vector >> 2);
+                    stage_addr1_tmp = ((stage_read_group * 4 + 1) * 16) +
+                                      (stage_read_vector >> 2);
+                    stage_addr2_tmp = ((stage_read_group * 4 + 2) * 16) +
+                                      (stage_read_vector >> 2);
+                    stage_addr3_tmp = ((stage_read_group * 4 + 3) * 16) +
+                                      (stage_read_vector >> 2);
+                    if (stage_read_cache == 1'b0) begin
+                        case (stage_read_vector[1:0])
+                            2'd0: begin
+                                stage_lane0_tmp = (input_tag_a0[stage_addr0_tmp] == stage_read_epoch) ? input_cache_a0[stage_addr0_tmp] : 16'sd0;
+                                stage_lane1_tmp = (input_tag_a1[stage_addr1_tmp] == stage_read_epoch) ? input_cache_a1[stage_addr1_tmp] : 16'sd0;
+                                stage_lane2_tmp = (input_tag_a2[stage_addr2_tmp] == stage_read_epoch) ? input_cache_a2[stage_addr2_tmp] : 16'sd0;
+                                stage_lane3_tmp = (input_tag_a3[stage_addr3_tmp] == stage_read_epoch) ? input_cache_a3[stage_addr3_tmp] : 16'sd0;
+                            end
+                            2'd1: begin
+                                stage_lane0_tmp = (input_tag_a1[stage_addr0_tmp] == stage_read_epoch) ? input_cache_a1[stage_addr0_tmp] : 16'sd0;
+                                stage_lane1_tmp = (input_tag_a0[stage_addr1_tmp] == stage_read_epoch) ? input_cache_a0[stage_addr1_tmp] : 16'sd0;
+                                stage_lane2_tmp = (input_tag_a3[stage_addr2_tmp] == stage_read_epoch) ? input_cache_a3[stage_addr2_tmp] : 16'sd0;
+                                stage_lane3_tmp = (input_tag_a2[stage_addr3_tmp] == stage_read_epoch) ? input_cache_a2[stage_addr3_tmp] : 16'sd0;
+                            end
+                            2'd2: begin
+                                stage_lane0_tmp = (input_tag_a2[stage_addr0_tmp] == stage_read_epoch) ? input_cache_a2[stage_addr0_tmp] : 16'sd0;
+                                stage_lane1_tmp = (input_tag_a3[stage_addr1_tmp] == stage_read_epoch) ? input_cache_a3[stage_addr1_tmp] : 16'sd0;
+                                stage_lane2_tmp = (input_tag_a0[stage_addr2_tmp] == stage_read_epoch) ? input_cache_a0[stage_addr2_tmp] : 16'sd0;
+                                stage_lane3_tmp = (input_tag_a1[stage_addr3_tmp] == stage_read_epoch) ? input_cache_a1[stage_addr3_tmp] : 16'sd0;
+                            end
+                            default: begin
+                                stage_lane0_tmp = (input_tag_a3[stage_addr0_tmp] == stage_read_epoch) ? input_cache_a3[stage_addr0_tmp] : 16'sd0;
+                                stage_lane1_tmp = (input_tag_a2[stage_addr1_tmp] == stage_read_epoch) ? input_cache_a2[stage_addr1_tmp] : 16'sd0;
+                                stage_lane2_tmp = (input_tag_a1[stage_addr2_tmp] == stage_read_epoch) ? input_cache_a1[stage_addr2_tmp] : 16'sd0;
+                                stage_lane3_tmp = (input_tag_a0[stage_addr3_tmp] == stage_read_epoch) ? input_cache_a0[stage_addr3_tmp] : 16'sd0;
+                            end
+                        endcase
                     end else begin
-                        // Horizontal vectors read one row from intermediate.
-                        bank_tmp = coord_bank(col_tmp, row_tmp);
-                        mem_addr_tmp = coord_addr(col_tmp, row_tmp);
-                        read_value_tmp = intermediate_mem[bank_tmp][mem_addr_tmp];
+                        case (stage_read_vector[1:0])
+                            2'd0: begin
+                                stage_lane0_tmp = (input_tag_b0[stage_addr0_tmp] == stage_read_epoch) ? input_cache_b0[stage_addr0_tmp] : 16'sd0;
+                                stage_lane1_tmp = (input_tag_b1[stage_addr1_tmp] == stage_read_epoch) ? input_cache_b1[stage_addr1_tmp] : 16'sd0;
+                                stage_lane2_tmp = (input_tag_b2[stage_addr2_tmp] == stage_read_epoch) ? input_cache_b2[stage_addr2_tmp] : 16'sd0;
+                                stage_lane3_tmp = (input_tag_b3[stage_addr3_tmp] == stage_read_epoch) ? input_cache_b3[stage_addr3_tmp] : 16'sd0;
+                            end
+                            2'd1: begin
+                                stage_lane0_tmp = (input_tag_b1[stage_addr0_tmp] == stage_read_epoch) ? input_cache_b1[stage_addr0_tmp] : 16'sd0;
+                                stage_lane1_tmp = (input_tag_b0[stage_addr1_tmp] == stage_read_epoch) ? input_cache_b0[stage_addr1_tmp] : 16'sd0;
+                                stage_lane2_tmp = (input_tag_b3[stage_addr2_tmp] == stage_read_epoch) ? input_cache_b3[stage_addr2_tmp] : 16'sd0;
+                                stage_lane3_tmp = (input_tag_b2[stage_addr3_tmp] == stage_read_epoch) ? input_cache_b2[stage_addr3_tmp] : 16'sd0;
+                            end
+                            2'd2: begin
+                                stage_lane0_tmp = (input_tag_b2[stage_addr0_tmp] == stage_read_epoch) ? input_cache_b2[stage_addr0_tmp] : 16'sd0;
+                                stage_lane1_tmp = (input_tag_b3[stage_addr1_tmp] == stage_read_epoch) ? input_cache_b3[stage_addr1_tmp] : 16'sd0;
+                                stage_lane2_tmp = (input_tag_b0[stage_addr2_tmp] == stage_read_epoch) ? input_cache_b0[stage_addr2_tmp] : 16'sd0;
+                                stage_lane3_tmp = (input_tag_b1[stage_addr3_tmp] == stage_read_epoch) ? input_cache_b1[stage_addr3_tmp] : 16'sd0;
+                            end
+                            default: begin
+                                stage_lane0_tmp = (input_tag_b3[stage_addr0_tmp] == stage_read_epoch) ? input_cache_b3[stage_addr0_tmp] : 16'sd0;
+                                stage_lane1_tmp = (input_tag_b2[stage_addr1_tmp] == stage_read_epoch) ? input_cache_b2[stage_addr1_tmp] : 16'sd0;
+                                stage_lane2_tmp = (input_tag_b1[stage_addr2_tmp] == stage_read_epoch) ? input_cache_b1[stage_addr2_tmp] : 16'sd0;
+                                stage_lane3_tmp = (input_tag_b0[stage_addr3_tmp] == stage_read_epoch) ? input_cache_b0[stage_addr3_tmp] : 16'sd0;
+                            end
+                        endcase
                     end
-                    if (load_bank == 0) stage_a[row_tmp] <= read_value_tmp;
-                    else stage_b[row_tmp] <= read_value_tmp;
+                end else begin
+                    stage_addr0_tmp = stage_read_vector * 16 + stage_read_group;
+                    stage_addr1_tmp = stage_addr0_tmp;
+                    stage_addr2_tmp = stage_addr0_tmp;
+                    stage_addr3_tmp = stage_addr0_tmp;
+                    case (stage_read_vector[1:0])
+                        2'd0: begin
+                            stage_lane0_tmp = intermediate_mem0[stage_addr0_tmp];
+                            stage_lane1_tmp = intermediate_mem1[stage_addr1_tmp];
+                            stage_lane2_tmp = intermediate_mem2[stage_addr2_tmp];
+                            stage_lane3_tmp = intermediate_mem3[stage_addr3_tmp];
+                        end
+                        2'd1: begin
+                            stage_lane0_tmp = intermediate_mem1[stage_addr0_tmp];
+                            stage_lane1_tmp = intermediate_mem0[stage_addr1_tmp];
+                            stage_lane2_tmp = intermediate_mem3[stage_addr2_tmp];
+                            stage_lane3_tmp = intermediate_mem2[stage_addr3_tmp];
+                        end
+                        2'd2: begin
+                            stage_lane0_tmp = intermediate_mem2[stage_addr0_tmp];
+                            stage_lane1_tmp = intermediate_mem3[stage_addr1_tmp];
+                            stage_lane2_tmp = intermediate_mem0[stage_addr2_tmp];
+                            stage_lane3_tmp = intermediate_mem1[stage_addr3_tmp];
+                        end
+                        default: begin
+                            stage_lane0_tmp = intermediate_mem3[stage_addr0_tmp];
+                            stage_lane1_tmp = intermediate_mem2[stage_addr1_tmp];
+                            stage_lane2_tmp = intermediate_mem1[stage_addr2_tmp];
+                            stage_lane3_tmp = intermediate_mem0[stage_addr3_tmp];
+                        end
+                    endcase
                 end
-                if (load_group == 15) begin
-                    if (load_bank == 0) stage_ready_a <= 1'b1;
+                if (stage_read_bank == 1'b0) begin
+                    stage_a[stage_read_group*4+0] <= stage_lane0_tmp;
+                    stage_a[stage_read_group*4+1] <= stage_lane1_tmp;
+                    stage_a[stage_read_group*4+2] <= stage_lane2_tmp;
+                    stage_a[stage_read_group*4+3] <= stage_lane3_tmp;
+                end else begin
+                    stage_b[stage_read_group*4+0] <= stage_lane0_tmp;
+                    stage_b[stage_read_group*4+1] <= stage_lane1_tmp;
+                    stage_b[stage_read_group*4+2] <= stage_lane2_tmp;
+                    stage_b[stage_read_group*4+3] <= stage_lane3_tmp;
+                end
+                if (stage_read_group == 15) begin
+                    if (stage_read_bank == 1'b0) stage_ready_a <= 1'b1;
                     else stage_ready_b <= 1'b1;
+                end
+            end
+
+            // Issue the next banked read.  The response will be captured on
+            // the next edge, while the load counters advance at issue time.
+            if (can_load_tmp) begin
+                stage_read_pending <= 1'b1;
+                stage_read_phase <= (phase == PH_HORIZONTAL);
+                stage_read_vector <= load_vector;
+                stage_read_group <= load_group;
+                stage_read_cache <= active_cache;
+                stage_read_bank <= load_bank;
+                stage_read_epoch <= (active_cache == 1'b0) ? cache_epoch[0] : cache_epoch[1];
+                if (load_group == 15) begin
                     load_group <= 0;
                     load_vector <= load_vector + 1'b1;
                     load_bank <= ~load_bank;
                 end else begin
                     load_group <= load_group + 1'b1;
                 end
+            end else begin
+                stage_read_pending <= 1'b0;
             end
 
             if ((phase == PH_VERTICAL || phase == PH_HORIZONTAL) && cycles_since_launch < 63)
@@ -607,16 +849,15 @@ module step12b_dct2_64_wrapper #(
                 for (i = 0; i < 4; i = i + 1) begin
                     row_tmp = r4c_result_group * 4 + i;
                     if (phase == PH_VERTICAL) begin
-                        bank_tmp = coord_bank(row_tmp, vec_tmp);
-                        mem_addr_tmp = coord_addr(row_tmp, vec_tmp);
-                        intermediate_mem[bank_tmp][mem_addr_tmp] <= $signed(r4c_result_stage16[i*16 +: 16]);
                         debug_stage16_valid <= 1'b1;
                         debug_stage16_row <= row_tmp[5:0];
                         debug_stage16_col <= vec_tmp[5:0];
                         debug_stage16_data <= $signed(r4c_result_stage16[i*16 +: 16]);
                     end else if (phase == PH_HORIZONTAL) begin
                         result_idx_tmp = vec_tmp * 16 + r4c_result_group;
+`ifndef SYNTHESIS
                         result_stage16_mem[vec_tmp * 64 + row_tmp] <= $signed(r4c_result_stage16[i*16 +: 16]);
+`endif
                         if (i == 0)
                             result_mem[result_idx_tmp] <= r4c_result_final10;
                         result_present[result_idx_tmp] <= 1'b1;

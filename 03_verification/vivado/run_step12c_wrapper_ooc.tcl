@@ -23,7 +23,10 @@ if {[info exists ::env(STEP12C_RUN_DIR)] && $::env(STEP12C_RUN_DIR) ne ""} {
 
 file mkdir $report_dir
 file mkdir $run_dir
-set_param general.maxThreads 8
+# Keep synthesis resource use bounded on the local workstation while the
+# memory-inference structure is being audited.  This is a run-time limit, not
+# a timing/architecture change.
+set_param general.maxThreads 4
 
 puts "STEP12C_START"
 puts "ROOT=$root_dir"

@@ -1,0 +1,21 @@
+Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+Start time: 01:54:18 on Sep 13,2026
+vlog -sv -work work "+incdir+02_rtl/rtl" 02_rtl/rtl/p2f_dct2_64_b1_step102.sv 02_rtl/rtl/step12b_dct2_64_wrapper.sv 03_verification/tb/step12b_dct2_64_wrapper_tb.sv 03_verification/tb/step12b_dct2_64_wrapper_two_tu_tb.sv 03_verification/tb/step12b_dct2_64_wrapper_descriptor_tb.sv 03_verification/tb/step12b_dct2_64_wrapper_epoch_tb.sv 03_verification/tb/step12b_dct2_64_wrapper_random_tb.sv 03_verification/tb/r4c_latency_contract_tb.sv 
+-- Compiling module p2f_dct2_64_b1_step102
+-- Compiling module step12b_dct2_64_wrapper
+-- Compiling module step12b_dct2_64_wrapper_tb
+-- Compiling module step12b_dct2_64_wrapper_two_tu_tb
+-- Compiling module step12b_dct2_64_wrapper_descriptor_tb
+-- Compiling module step12b_dct2_64_wrapper_epoch_tb
+-- Compiling module step12b_dct2_64_wrapper_random_tb
+-- Compiling module r4c_latency_contract_tb
+
+Top level modules:
+	step12b_dct2_64_wrapper_tb
+	step12b_dct2_64_wrapper_two_tu_tb
+	step12b_dct2_64_wrapper_descriptor_tb
+	step12b_dct2_64_wrapper_epoch_tb
+	step12b_dct2_64_wrapper_random_tb
+	r4c_latency_contract_tb
+End time: 01:54:18 on Sep 13,2026, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0

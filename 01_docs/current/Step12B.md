@@ -25,7 +25,7 @@
 - A/B input cache：每个 4 bank、每 bank 1 写口/1 读口；`bank=(row[1:0] XOR col[1:0])`，`addr=row*16+(col>>2)` 作为候选并由周期检查器逐访问验证；4 点读/写必须无同 bank 冲突。当前冻结 RTL 在 staging load 时直接完成数组读和 lane capture，因此 input-cache 的 `read_request → lane_capture` 为同一事务边沿（delta=0），不是人为补出的 `+1` response。
 - staging A/B：两个 `64×16 bit` vector buffer。每 16 个周期从 cache/intermediate 组装一个 64 点向量；首个 request/capture 到 `stage_full` 的 delta=15，最后一次写入后下一周期才允许 `vector_start`。V/H 不并行，故同一对 staging 可按 ownership 复用。
 - 单一 intermediate memory 只服务一个 TU：`FREE → V_RUNNING → WAITING_FOR_H → H_RUNNING → FREE`。V 输出以 16 bit stage16 写回；V 未完成不得启动 H。TU0 的 H 若因结果容量阻塞，后续 TU 只能缓存，不能让另一个 TU 覆盖 intermediate。
-- intermediate：4 bank、每 bank 1 写口/1 读口；当前冻结 RTL 的 staging read 同样采用 request/capture same-edge 事务语义，结构上禁止同一 physical bank/address 同拍 read-during-write。
+- intermediate：4 个物理 bank、每 bank 1 写口/1 读口；Step12C-M1 将 staging read 固定为 inference-friendly synchronous RAM：request 在 C，lane capture 在 C+1，结构上禁止同一 physical bank/address 同拍 read-during-write。
 - ResultMemory：1024 个 40-bit beat，1 写口+1 读口，读请求 C、响应 C+1；内部响应进入两级 elastic output（hold+skid）。官方接口规定 `it_data_out_req=0` 时外部 `it_data_out_vld=0`，但内部 hold/skid 数据和 valid 状态必须保持稳定；只有 `output_fire = result_hold_valid && it_data_out_req` 才推进读指针并减少占用。结果写入必须在 H kernel group 到达的同一全局周期完成：stage16 shadow 与 low10 result 同拍写入；禁止事后 replay。
 
 ### ResultMemory 状态不变量
@@ -63,13 +63,13 @@ R4C `result_accept` 永远绑定 1。每个完整向量必须在 `vector_start` 
 
 ### v3.5-17.2 memory timing decision record
 
-`v3.5-17.2` 是 verification-only closure，不修改 `02_rtl/rtl/`。独立 timing probe 已确认当前 wrapper 的 V/H staging 读取在同一 accepting edge 完成：`read_request == lane_capture`，首个 request/capture 到 `stage_full` 为 15 个 edge。Python 模型因此使用独立的 `STAGING_CAPTURE_EDGE_DELTA=0`；ResultMemory 仍保持真实 `request C → response C+1`，由 `RESULT_READ_LATENCY=1` 建模。不得用 per-event offset 迎合；若重新实测与该决定不一致，必须 STOP 并保留差异证据。
+`v3.5-17.2` 保留为上一版冻结证据。Step12C-M1 将 input-cache/intermediate 的物理合同改为 `read_request C → lane_capture C+1`，ResultMemory 仍保持 `request C → response C+1`。phase admission 后首个 request 仍最早在下一 edge，最后一次 capture 后下一 edge 才允许 `vector_start`；不得用 per-event offset 迎合。
 
 内部 memory trace 事件必须记录真实 transaction/fire，至少包含 TU/phase、memory owner、bank、address、lane 或 index、request_id（适用时）和 episode（scrub 时）。`stage_lane_capture` 为每个 lane 事件，`stage_full` 仅在 64 个 lane 均已捕获后产生。每个 epoch scrub episode 为 1024 个 cycle、4 bank/cycle（4096 个 tag-clear transactions）；scrub cache 不得普通读写，另一 cache 必须有真实 descriptor bind 或 data_fire 进展。
 
 ### v3.5-17.2 closure
 
-Python phase admission 已补齐与冻结 RTL 一致的边沿语义：phase 被 admission 的 accepting edge 不发首个 staging read，首读最早在下一 edge；staging request/capture 仍为 same-edge，`stage_full → vector_start` 至少一拍，ResultMemory 仍为 request C → response C+1。该修正只修改 verification model/checker，`02_rtl/rtl/` 零改动。
+Step12C-M1 的周期合同：phase 被 admission 的 accepting edge 不发首个 staging read，首读最早在下一 edge；staging request/capture 为 request C → capture C+1，`stage_full → vector_start` 至少一拍，ResultMemory 仍为 request C → response C+1。input data/tag/intermediate/result data array 不做 bulk reset；复位后 tag bank 先逐地址 startup scrub，完成后 cache 才可绑定 TU。
 
 normal 与 `SYNTHESIS` 的 memory timing、公共事件、内部事件 comparator，以及 7 项 RTL trace mutation 均通过；R4C latency 合同仍为 23 个 transaction edges。旧的 STOP 记录保留在 `05_audit/current/17_2/`，仅作为历史证据，已由本节及最终 closure report supersede。
 
