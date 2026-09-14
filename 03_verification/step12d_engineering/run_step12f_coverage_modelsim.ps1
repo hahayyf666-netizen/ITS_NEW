@@ -28,6 +28,8 @@ if ($EvidenceDir) {
 }
 
 $Kernel = Join-Path $RepoRoot "02_rtl\rtl\unified_p4_kernel.sv"
+$SimpleRam = Join-Path $RepoRoot "02_rtl\rtl\its_simple_ram.sv"
+$InputBank = Join-Path $RepoRoot "02_rtl\rtl\its_input_cache_bank.sv"
 $LfnstEngine = Join-Path $RepoRoot "02_rtl\rtl\bounded_lfnst_engine.sv"
 $Wrapper = Join-Path $RepoRoot "02_rtl\rtl\unified_its_wrapper.sv"
 $KernelTb = Join-Path $RepoRoot "03_verification\tb\unified_p4_kernel_numeric_tb.sv"
@@ -110,7 +112,7 @@ foreach ($mode in @("normal", "synthesis")) {
         $define = @()
         if ($mode -eq "synthesis") { $define = @("+define+SYNTHESIS") }
         $compileLog = Join-Path $dir "compile.log"
-        & $Vlog -sv @define $Kernel $LfnstEngine $Wrapper $KernelTb $ThroughputTb $ThroughputFullTb $SmokeTb $NumericTb $LfnstTb -l $compileLog
+        & $Vlog -sv @define $SimpleRam $InputBank $Kernel $LfnstEngine $Wrapper $KernelTb $ThroughputTb $ThroughputFullTb $SmokeTb $NumericTb $LfnstTb -l $compileLog
         if ($LASTEXITCODE -ne 0) { throw "vlog failed for $mode" }
 
         $kernelLog = Join-Path $dir "gate_b_kernel_numeric.log"
@@ -179,6 +181,8 @@ $summary = [ordered]@{
     license_path = $License
     work_root = $WorkRoot
     source_hashes = [ordered]@{
+        its_simple_ram = (Get-FileHash -Algorithm SHA256 -LiteralPath $SimpleRam).Hash
+        its_input_cache_bank = (Get-FileHash -Algorithm SHA256 -LiteralPath $InputBank).Hash
         unified_p4_kernel = (Get-FileHash -Algorithm SHA256 -LiteralPath $Kernel).Hash
         bounded_lfnst_engine = (Get-FileHash -Algorithm SHA256 -LiteralPath $LfnstEngine).Hash
         bounded_lfnst_engine_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $LfnstTb).Hash

@@ -1,0 +1,323 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Mon Sep 14 23:15:59 2026
+# Process ID         : 31936
+# Current directory  : C:/Users/Fine/AppData/Local/Temp
+# Command line       : vivado.exe -mode batch -log C:\Users\Fine\AppData\Local\Temp\step12f_p1_synth_vivado.log -journal C:\Users\Fine\AppData\Local\Temp\step12f_p1_synth_vivado.jou -source C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\vivado\run_step12f_unified_wrapper.tcl -notrace
+# Log file           : C:/Users/Fine/AppData/Local/Temp/step12f_p1_synth_vivado.log
+# Journal file       : C:\Users\Fine\AppData\Local\Temp\step12f_p1_synth_vivado.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 49328 MB
+# Total Virtual      : 65692 MB
+# Available Virtual  : 43976 MB
+#-----------------------------------------------------------
+INFO: [Common 17-1239] XILINX_LOCAL_USER_DATA is set to 'C:\Users\Fine\AppData\Local\Temp\step12f_vivado_user'.
+source {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\vivado\run_step12f_unified_wrapper.tcl} -notrace
+STEP12F_START
+ROOT=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/../..
+PART=xcku5p-ffvb676-2-e
+TOP=unified_its_wrapper
+WRAPPER=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/../../02_rtl/rtl/unified_its_wrapper.sv
+KERNEL=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/../../02_rtl/rtl/unified_p4_kernel.sv
+SIMPLE_RAM=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/../../02_rtl/rtl/its_simple_ram.sv
+INPUT_BANK=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/../../02_rtl/rtl/its_input_cache_bank.sv
+LFNST_ENGINE=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/../../02_rtl/rtl/bounded_lfnst_engine.sv
+XDC=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/step12f_unified_wrapper_2ns.xdc
+PERIOD_NS=2.000
+BOUNDARY_CONTRACT=registered-neighbor-zero-delay
+MAX_THREADS=4
+IMPLEMENTATION_FLOW=opt_Explore_place_Explore_physopt_Explore_route_Explore
+create_project: Time (s): cpu = 00:00:11 ; elapsed = 00:00:09 . Memory (MB): peak = 564.391 ; gain = 229.715
+WARNING: [filemgmt 56-128] File 'C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/step12f_unified_wrapper_2ns.xdc' is already in the project and will not be added again
+Command: synth_design -top unified_its_wrapper -part xcku5p-ffvb676-2-e -mode out_of_context -flatten_hierarchy none -directive Default
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xcku5p'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xcku5p'
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 30580
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1952.480 ; gain = 254.094
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'unified_its_wrapper' [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_its_wrapper.sv:13]
+INFO: [Synth 8-6157] synthesizing module 'its_input_cache_bank' [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/its_input_cache_bank.sv:4]
+	Parameter DATA_W bound to: 16 - type: integer 
+	Parameter DEPTH bound to: 1024 - type: integer 
+	Parameter ADDR_W bound to: 10 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'its_input_cache_bank' (0#1) [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/its_input_cache_bank.sv:4]
+INFO: [Synth 8-6157] synthesizing module 'its_simple_ram' [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/its_simple_ram.sv:6]
+	Parameter DATA_W bound to: 10 - type: integer 
+	Parameter DEPTH bound to: 1024 - type: integer 
+	Parameter ADDR_W bound to: 10 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'its_simple_ram' (0#1) [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/its_simple_ram.sv:6]
+INFO: [Synth 8-6157] synthesizing module 'its_simple_ram__parameterized0' [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/its_simple_ram.sv:6]
+	Parameter DATA_W bound to: 16 - type: integer 
+	Parameter DEPTH bound to: 1024 - type: integer 
+	Parameter ADDR_W bound to: 10 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'its_simple_ram__parameterized0' (0#1) [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/its_simple_ram.sv:6]
+INFO: [Synth 8-6157] synthesizing module 'unified_p4_kernel' [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:10]
+	Parameter DATA_W bound to: 16 - type: integer 
+	Parameter COEFF_W bound to: 16 - type: integer 
+	Parameter ACC_W bound to: 40 - type: integer 
+	Parameter MAX_N bound to: 64 - type: integer 
+	Parameter COEFF_DEPTH bound to: 8176 - type: integer 
+	Parameter COEFF_FILE bound to: 03_verification/sim/rom_coeffs.hex - type: string 
+INFO: [Synth 8-3876] $readmem data file '03_verification/sim/rom_coeffs.hex' is read successfully [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:85]
+INFO: [Synth 8-6155] done synthesizing module 'unified_p4_kernel' (0#1) [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:10]
+INFO: [Synth 8-6157] synthesizing module 'bounded_lfnst_engine' [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/bounded_lfnst_engine.sv:8]
+	Parameter DATA_W bound to: 16 - type: integer 
+	Parameter COEFF_W bound to: 16 - type: integer 
+	Parameter ACC_W bound to: 40 - type: integer 
+	Parameter COEFF_FILE bound to: 03_verification/sim/lfnst_packed_coeffs.hex - type: string 
+INFO: [Synth 8-3876] $readmem data file '03_verification/sim/lfnst_packed_coeffs.hex' is read successfully [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/bounded_lfnst_engine.sv:64]
+INFO: [Synth 8-6155] done synthesizing module 'bounded_lfnst_engine' (0#1) [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/bounded_lfnst_engine.sv:8]
+INFO: [Synth 8-6155] done synthesizing module 'unified_its_wrapper' (0#1) [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_its_wrapper.sv:13]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][0] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][1] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][2] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][3] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][4] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][5] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][6] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][7] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][8] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][9] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][10] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][11] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][12] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][13] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][14] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][15] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][16] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][17] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][18] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][19] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][20] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][21] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][22] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][23] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][24] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][25] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][26] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][27] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][28] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][29] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][30] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][31] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][32] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][33] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][34] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][35] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][36] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][37] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][38] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][39] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][40] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][41] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][42] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][43] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][44] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][45] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][46] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][47] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][48] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][49] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][50] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][51] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][52] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][53] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][54] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][55] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][56] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][57] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][58] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][59] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][60] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][61] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][62] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[0][63] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][0] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][1] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][2] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][3] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][4] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][5] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][6] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][7] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][8] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][9] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][10] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][11] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][12] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][13] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][14] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][15] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][16] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][17] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][18] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][19] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][20] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][21] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][22] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][23] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][24] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][25] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][26] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][27] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][28] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][29] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][30] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][31] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][32] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][33] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][34] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+WARNING: [Synth 8-7137] Register input_mem_reg[1][35] in module unified_p4_kernel has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:272]
+INFO: [Common 17-14] Message 'Synth 8-7137' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+WARNING: [Synth 8-6014] Unused sequential element lfnst_slot_q_reg was removed.  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_its_wrapper.sv:792]
+WARNING: [Synth 8-6014] Unused sequential element lfnst_write_addr_reg was removed.  [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_its_wrapper.sv:842]
+WARNING: [Synth 8-4767] Trying to implement RAM 'desc_mem_reg' in registers. Block RAM or DRAM implementation is not possible; see log for reasons. [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_its_wrapper.sv:868]
+Reason is one or more of the following :
+	1: RAM is sensitive to asynchronous reset signal. this RTL style is not supported. 
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:23 ; elapsed = 00:00:28 . Memory (MB): peak = 4013.723 ; gain = 2315.336
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:24 ; elapsed = 00:00:28 . Memory (MB): peak = 4013.723 ; gain = 2315.336
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:24 ; elapsed = 00:00:28 . Memory (MB): peak = 4013.723 ; gain = 2315.336
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.557 . Memory (MB): peak = 4013.723 ; gain = 0.000
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/step12f_unified_wrapper_2ns.xdc]
+create_clock: Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 4013.723 ; gain = 0.000
+Finished Parsing XDC File [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/step12f_unified_wrapper_2ns.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.014 . Memory (MB): peak = 4013.723 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 4013.723 ; gain = 0.000
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:01:03 ; elapsed = 00:01:10 . Memory (MB): peak = 4013.723 ; gain = 2315.336
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xcku5p-ffvb676-2-e
+INFO: [Synth 8-6742] Reading net delay rules and data
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:01:03 ; elapsed = 00:01:10 . Memory (MB): peak = 4013.723 ; gain = 2315.336
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:01:03 ; elapsed = 00:01:10 . Memory (MB): peak = 4013.723 ; gain = 2315.336
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:02:54 ; elapsed = 00:03:16 . Memory (MB): peak = 5164.590 ; gain = 3466.203
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input   40 Bit       Adders := 4     
+	  63 Input   40 Bit       Adders := 4     
+	  17 Input   40 Bit       Adders := 4     
+	   2 Input   32 Bit       Adders := 28    
+	   4 Input   32 Bit       Adders := 12    
+	   3 Input   32 Bit       Adders := 12    
+	   7 Input   32 Bit       Adders := 1     
+	   9 Input   32 Bit       Adders := 1     
+	   5 Input   32 Bit       Adders := 1     
+	   2 Input   13 Bit       Adders := 252   
+	   2 Input   12 Bit       Adders := 73    
+	   3 Input   12 Bit       Adders := 39    
+	   4 Input   12 Bit       Adders := 20    
+	   2 Input   11 Bit       Adders := 14    
+	   2 Input    9 Bit       Adders := 3     
+	   2 Input    7 Bit       Adders := 7     
+	   2 Input    5 Bit       Adders := 7     
+	   2 Input    4 Bit       Adders := 2     
+	   2 Input    2 Bit       Adders := 5     
++---XORs : 
+	   2 Input     32 Bit         XORs := 6     
+	   2 Input      2 Bit         XORs := 5     
++---Registers : 
+	              256 Bit    Registers := 2     
+	               64 Bit    Registers := 1     
+	               40 Bit    Registers := 64    
+	               22 Bit    Registers := 2     
+	               16 Bit    Registers := 320   
+	               12 Bit    Registers := 2     
+	                7 Bit    Registers := 21    
+	                5 Bit    Registers := 5     
+	                4 Bit    Registers := 3     
+	                3 Bit    Registers := 3     
+	                2 Bit    Registers := 24    
+	                1 Bit    Registers := 97    
++---Muxes : 
+	   2 Input  256 Bit        Muxes := 5     
+	   2 Input   64 Bit        Muxes := 7     
+	   2 Input   40 Bit        Muxes := 13    
+	   2 Input   32 Bit        Muxes := 322   
+	   2 Input   22 Bit        Muxes := 1     
+	   4 Input   16 Bit        Muxes := 73    
+	   2 Input   16 Bit        Muxes := 732   
+	   2 Input   12 Bit        Muxes := 133   
+	   7 Input   12 Bit        Muxes := 1     
+	   2 Input   10 Bit        Muxes := 206   
+	   4 Input    7 Bit        Muxes := 4     
+	   2 Input    7 Bit        Muxes := 23    
+	   7 Input    7 Bit        Muxes := 1     
+	   2 Input    5 Bit        Muxes := 21    
+	   2 Input    4 Bit        Muxes := 4     
+	   2 Input    3 Bit        Muxes := 21    
+	   3 Input    3 Bit        Muxes := 3     
+	   2 Input    2 Bit        Muxes := 55    
+	   5 Input    2 Bit        Muxes := 3     
+	   4 Input    2 Bit        Muxes := 1     
+	   7 Input    2 Bit        Muxes := 1     
+	   3 Input    2 Bit        Muxes := 2     
+	   2 Input    1 Bit        Muxes := 2546  
+	   4 Input    1 Bit        Muxes := 6     
+	   5 Input    1 Bit        Muxes := 2     
+	   7 Input    1 Bit        Muxes := 9     
+	   3 Input    1 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 1824 (col length:96)
+BRAMs: 960 (col length: RAMB18 96 RAMB36 48)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+
+

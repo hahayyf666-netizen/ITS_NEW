@@ -1,0 +1,85 @@
+{
+  "schema": "step12f_p1.repair_run.v1",
+  "status": "STOP_SYNTHESIS_TIMEOUT_BOUNDED_OBSERVATION",
+  "base_commit": "2ed394021c580677ec4ca9c102bdd7cc8c4db9fc",
+  "stage": "Step12F-P1 bounded synthesizable datapath replacement",
+  "execution": {
+    "coverage_run": "PASS",
+    "physical_run": "STOP",
+    "observation_limit_sec": 2700,
+    "termination": "controlled stop after approximately 45 minutes in Vivado cross-boundary optimization"
+  },
+  "frozen_boundaries": {
+    "v35_18": "UNCHANGED",
+    "frozen_r4c": "UNCHANGED",
+    "historical_step12b_wrapper": "UNCHANGED",
+    "xdc": "UNCHANGED",
+    "external_interface": "UNCHANGED",
+    "new_tag_created": false
+  },
+  "coverage_lane": {
+    "status": "PASS",
+    "simulator": "ModelSim SE-64 2020.4",
+    "modes": ["normal", "SYNTHESIS"],
+    "gate_b_numeric_cases_per_mode": 156,
+    "gate_f_vector_ii_modes_per_mode": 13,
+    "gate_c_tuple_cases_per_mode": 369,
+    "gate_c_beats_per_mode": 45636,
+    "lfnst_engine_specialty_cases_per_mode": 1088,
+    "lfnst_wrapper_specialty_cases_per_mode": 258,
+    "evidence": "step12f_p1_coverage/STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "evidence_sha256": "49F23A509A5EF440846387012EF04CFBDAAE3DEA6413E655CB230C8EDD36A6EA"
+  },
+  "physical_lane": {
+    "status": "STOP",
+    "tool": "Vivado 2025.2",
+    "top": "unified_its_wrapper",
+    "part": "xcku5p-ffvb676-2-e",
+    "period_ns": 2.0,
+    "max_threads": 4,
+    "synth_design": "NO_COMPLETION_WITHIN_BOUNDED_OBSERVATION",
+    "implementation": "NOT_RUN",
+    "checkpoint": "NOT_GENERATED",
+    "reports": "NOT_GENERATED",
+    "last_logged_phase": "Cross Boundary and Area Optimization",
+    "peak_logged_memory_mb": 5164.590,
+    "vivado_log": "step12f_p1_physical/step12f_p1_synth_vivado.log",
+    "vivado_log_sha256": "3706511FC1877F93F8B83889116EE6A334E87C0743FDBB286A08D2DA9A785F79",
+    "vivado_journal": "step12f_p1_physical/step12f_p1_synth_vivado.jou",
+    "vivado_journal_sha256": "563E03CAAF4843A8F5D890C215EE6AADB69F5B3B10E3E895363494E5E79EA8BE",
+    "timing_claim": "NOT_AVAILABLE",
+    "ppa_claim": "NOT_AVAILABLE"
+  },
+  "refactor_scope": {
+    "added": [
+      "02_rtl/rtl/its_simple_ram.sv",
+      "02_rtl/rtl/its_input_cache_bank.sv"
+    ],
+    "modified": [
+      "02_rtl/rtl/unified_its_wrapper.sv",
+      "03_verification/step12d_engineering/run_gate_b_c_modelsim.ps1",
+      "03_verification/step12d_engineering/run_step12f_coverage_modelsim.ps1",
+      "03_verification/vivado/run_step12f_unified_wrapper.tcl"
+    ],
+    "source_hashes_sha256": {
+      "unified_its_wrapper": "EF1FE1A1B5C9E9FEC5514023AF5F9B0AE68BDE943BE23DF3DC4CF9B66227AA28",
+      "its_simple_ram": "664B417C4CD0873A1E6C66D7B0FE5A221B84AB65ED49782DBE05676713DC826E",
+      "its_input_cache_bank": "32B3B561A809B65BC9F321B0D716C8D049AE98FE6F38CED2A2CC34C25CED771B",
+      "bounded_lfnst_engine": "19FDBD89A728924B2E3009CDED5B35D0234B9960DA40CD10616016CD8A94473F",
+      "coverage_runner": "5713F7197DFBB8400916DE03DEFFEAE733264CF6837AA00BBEFC4D798D5F421A",
+      "vivado_script": "1A463E36BC756819EF536744A5C760B99AD6A604362FA82ACD604A46A3A684C4"
+    }
+  },
+  "root_blocker": {
+    "severity": "P1",
+    "id": "UNIFIED_WRAPPER_SYNTHESIS_TIMEOUT_AFTER_BOUNDED_STORAGE_REFACTOR",
+    "finding": "The bounded wrapper elaborated and produced component statistics without the previous unbounded 42-GB expansion, but synth_design did not reach a checkpoint or report within the bounded observation. The run stopped in Cross Boundary and Area Optimization.",
+    "not_claimed": [
+      "500 MHz closure",
+      "RAM inference success",
+      "post-route timing",
+      "PPA"
+    ]
+  },
+  "next_action": "Preserve this STOP evidence; review storage/write-port topology or use a separately controlled synthesis experiment. Do not create a performance tag or infer a timing result."
+}

@@ -6,6 +6,8 @@ set root_dir   [file join $script_dir .. ..]
 set rtl_dir    [file join $root_dir 02_rtl rtl]
 set wrapper    [file join $rtl_dir unified_its_wrapper.sv]
 set kernel     [file join $rtl_dir unified_p4_kernel.sv]
+set simple_ram [file join $rtl_dir its_simple_ram.sv]
+set input_bank [file join $rtl_dir its_input_cache_bank.sv]
 set lfnst_engine [file join $rtl_dir bounded_lfnst_engine.sv]
 set xdc        [file join $script_dir step12f_unified_wrapper_2ns.xdc]
 set part       xcku5p-ffvb676-2-e
@@ -36,6 +38,8 @@ puts "PART=$part"
 puts "TOP=unified_its_wrapper"
 puts "WRAPPER=$wrapper"
 puts "KERNEL=$kernel"
+puts "SIMPLE_RAM=$simple_ram"
+puts "INPUT_BANK=$input_bank"
 puts "LFNST_ENGINE=$lfnst_engine"
 puts "XDC=$xdc"
 puts "PERIOD_NS=2.000"
@@ -45,7 +49,9 @@ puts "IMPLEMENTATION_FLOW=opt_Explore_place_Explore_physopt_Explore_route_Explor
 
 create_project -in_memory -part $part -force
 set_property include_dirs [list $rtl_dir] [current_fileset]
-add_files -norecurse -fileset sources_1 [list $kernel $lfnst_engine $wrapper]
+add_files -norecurse -fileset sources_1 [list $simple_ram $input_bank $kernel $lfnst_engine $wrapper]
+set_property file_type {SystemVerilog} [get_files $simple_ram]
+set_property file_type {SystemVerilog} [get_files $input_bank]
 set_property file_type {SystemVerilog} [get_files $kernel]
 set_property file_type {SystemVerilog} [get_files $lfnst_engine]
 set_property file_type {SystemVerilog} [get_files $wrapper]
