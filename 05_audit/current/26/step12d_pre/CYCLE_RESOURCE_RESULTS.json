@@ -1,6 +1,6 @@
 {
   "schema": "step12d_pre.cycle_resource_results.v1",
-  "status": "initial_geometry_only",
+  "status": "reference_candidate_geometry_and_resource_model_pass_physical_pending",
   "throughput_definitions": {
     "one_d_kernel": "4 complete transform outputs per accepted cycle",
     "output_interface": "4 final coefficients per output_fire when req permits",
@@ -13,6 +13,7 @@
     "N32": "128 products per cycle",
     "N64": "256 direct products per cycle; factorized R4C candidate uses the frozen 128-lane reference schedule"
   },
-  "architecture_quantification": "pending_candidate_evaluation",
+  "architecture_quantification": "analytic_candidate_model_recorded; reduction/mux/mode-switch evaluation pending",
+  "model_file": "CYCLE_RESOURCE_MODEL.json",
   "vivado_status": "not_run_by_contract"
 }
