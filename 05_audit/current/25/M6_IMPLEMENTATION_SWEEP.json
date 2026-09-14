@@ -1,6 +1,6 @@
 {
   "record": "Step12C M6 implementation-only strategy sweep",
-  "status": "FIRST_PASS_FOUND_AND_INDEPENDENT_RERUN_PASS",
+  "status": "PASS_CLOSED",
   "date": "2026-09-14",
   "scope": "implementation-only; no RTL, R4C, XDC, functional contract, or M8 changes",
   "source": {
@@ -107,11 +107,11 @@
     "result": "PASS"
   },
   "decision": {
-    "implementation_only_closure_candidate": true,
-    "m6_strategy_sweep": "PASS",
-    "rtl_changed": false,
-    "v3_5_18_created": false,
-    "tag_created": false,
-    "next_action": "remote audit of committed sweep evidence before any freeze tag"
+    "implementation_only_closure_candidate": false,
+    "m6_strategy_sweep": "PASS_CLOSED",
+    "step12c_status": "PASS / CLOSED",
+    "release_tag": "v3.5-18",
+    "release_tag_policy": "annotated tag points to the exact freeze commit after remote verification",
+    "rtl_changed": false
   }
 }

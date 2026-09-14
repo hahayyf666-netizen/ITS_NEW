@@ -1,6 +1,6 @@
 # V3.5 Step 12B：64×64 DCT2×DCT2 wrapper 功能合同
 
-状态：v3.5-17 historical functional closure；v3.5-17.2 verification-only timing/trace closure 已 PASS/冻结。Step12C-M5-Setup 已完成 RTL 功能回归和 synthesis-only；distributed-RAM 结构生成成功，setup 已通过，hold 仍等待独立 Boundary-PRE，当前不进入新的 place/route，也未创建 v3.5-18。R4C、数学和官方接口不变。
+状态：v3.5-17 historical functional closure；v3.5-17.2 verification-only timing/trace closure 已 PASS/冻结。Step12C-M6 implementation-only sweep 已 PASS/CLOSED：在同一 M6 postsynth DCP 上，`Performance_NetDelay_high` 首次运行与独立复跑均满足 2.000 ns post-route setup/hold 门禁。当前 v3.5-18 范围仅为 64×64 DCT2×DCT2、LFNST OFF、single-R4C wrapper 的 registered-neighbor OOC 性能基线；R4C、数学和官方接口不变。
 
 ## 范围
 
@@ -95,11 +95,17 @@ M4 功能/周期回归：PASS。Python model、normal/SYNTHESIS ModelSim、zero/
 
 M4 Step12C-1 synthesis-only：Vivado 2025.2、xcku5p-ffvb676-2-e、2.000 ns clock；综合网表识别 input cache/tag/intermediate/result 为 distributed RAM，资源为 22,921 LUT（7,168 LUTRAM）、21,315 FF、128 DSP、0 BRAM/URAM，synthesis errors/critical warnings 为 0，`check_timing` 的 unconstrained internal endpoint 为 0。Setup WNS=`+0.087 ns`、TNS=`0 ns`、setup failing endpoints=0；独立 hold summary 为 WHS=`-0.076 ns`、THS=`-17.454 ns`、293 个 hold failing endpoints。当前按 Step12C-1 门禁 STOP，不进入 place/route；完整证据位于 `05_audit/current/20/m4_synth/`。
 
-### Step12C-M5-Setup synthesis closure（当前，Boundary-PRE pending）
+### Step12C-M5-Setup synthesis closure（历史）
 
 M5-Setup 只统一 input-tag 的 scrub/normal bank-local write command，并把 input-cache raw tag 先寄存、epoch compare 后移；R4C、数学、官方接口、M3 staging、V→intermediate write pipeline、ResultMemory reader 和 XDC 均未修改。功能/周期回归（normal/SYNTHESIS、random/extreme、two-TU、descriptor、epoch、trace/mutation、R4C latency）全部 PASS，R4C SHA-256 仍为 `15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1`。
 
 M5 synthesis-only：Vivado 2025.2、xcku5p-ffvb676-2-e、2.000 ns clock；综合网表仍识别 input cache/tag/intermediate/result 为 distributed RAM，资源为 21,313 LUT（5,888 LUTRAM）、21,336 FF、128 DSP、0 BRAM/URAM，synthesis errors/critical warnings 为 0，`check_timing` 的 unconstrained internal endpoint 为 0。Setup WNS=`+0.075 ns`、TNS=`0 ns`、setup failing endpoints=0；独立 hold summary 为 WHS=`-0.076 ns`、THS=`-17.135 ns`、251 个 hold failing endpoints。setup/structure gate PASS；hold 数值等待 Boundary-PRE 的 OOC clock/interface physical context 评审，不把缺少 `HD.CLK_SRC`/partition-pin 直接写成 hold 数值的唯一因果，也不通过 RTL delay、false path 或随意 input-delay 修复。完整证据位于 `05_audit/current/21/m5_synth/`。
+
+### Step12C-M6 implementation-only closure（当前，v3.5-18）
+
+M6 RTL、R4C、XDC 和 M6 postsynth DCP 均保持冻结。四个固定 Vivado 2025.2 implementation flow 均从同一个 postsynth DCP 独立起跑；`Performance_NetDelay_high`（`Default → ExtraNetDelay_high → AggressiveExplore → NoTimingRelaxation`）首次运行和从原始 DCP 的独立复跑均 fully routed，并满足 setup WNS=`+0.011 ns`、TNS=`0 ns`、0 个 failing endpoint，hold WHS=`+0.011 ns`、THS=`0 ns`、0 个 failing endpoint。`check_timing` 为 0 unconstrained internal endpoint、0 missing input/output delay、0 loop；`report_exceptions` 无 valid timing exception。四组 flow 中两组通过、两组未通过，完整摘要与文本报告位于 `05_audit/current/25/`。
+
+该结论只闭合 Step12C 的 64×64 DCT2×DCT2 single-R4C wrapper/OOC performance baseline，不外推为完整 ITS Core、其他 TU 尺寸、DST7/DCT8 或 LFNST 的 500 MHz 证明。
 
 ## 测试门禁
 
@@ -108,6 +114,6 @@ M5 synthesis-only：Vivado 2025.2、xcku5p-ffvb676-2-e、2.000 ns clock；综合
 退出条件分两级：
 
 1. `v3.5-17`：RTL 功能、协议、stage16/final10、事件/标签逐周期对拍通过；不代表 500 MHz。
-2. `v3.5-18`：wrapper 在真实 RAM 推断和 2.000 ns post-route 下 WNS/TNS/WHS/THS 全通过后再冻结。
+2. `v3.5-18`：该范围 wrapper 在固定 implementation flow、真实 2.000 ns post-route 下 WNS/TNS/WHS/THS 全通过，并由独立复跑确认。
 
 报告必须分别给出 `1D kernel=4 points/cycle`、`output burst=4 final points/cycle`、以及单 R4C 二维等效吞吐；不把 output 宽度替代计算吞吐。
