@@ -66,8 +66,13 @@ def build_proof(legal: dict) -> dict:
         for row in range(height):
             for group in range(width // 4):
                 for lane in range(4):
-                    result_index = row * width + group * 4 + lane
-                    assert result_index == row * width + (group * 4 + lane)
+                    col = group * 4 + lane
+                    result_index = row * width + col
+                    result_beat = result_index // 4
+                    result_lane = result_index % 4
+                    decoded_row = result_beat // (width // 4)
+                    decoded_col = (result_beat % (width // 4)) * 4 + result_lane
+                    assert (decoded_row, decoded_col) == (row, col)
 
         records.append({
             "width": width,
@@ -103,6 +108,7 @@ def build_proof(legal: dict) -> dict:
             "all_four_lane_banks_distinct": True,
             "all_addresses_in_range": True,
             "result_raster_order": True,
+            "result_beat_lane_round_trip": True,
         },
         "records": records,
         "physical_proof": False,

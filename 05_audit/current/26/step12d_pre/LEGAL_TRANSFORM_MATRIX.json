@@ -1,6 +1,6 @@
 {
   "schema": "step12d_pre.official_shape_support.v1",
-  "status": "partial_source_extracted_complete_tuple_expansion_pending",
+  "status": "partial_source_extracted_reference_tuple_expansion_complete_official_mapping_pending",
   "source_id": "HUAWEI_ATTACHMENT_EXTERNAL",
   "it_info_contract": {
     "width_bits": 22,
@@ -32,7 +32,7 @@
   "complete_descriptor_tuples": {
     "status": "reference_candidate_rules_available_official_context_mapping_pending",
     "reference_candidate_file": "REFERENCE_TRANSFORM_TUPLES.json",
-    "reference_candidate_tuple_count_lfnst_off": 89,
+    "reference_candidate_tuple_count_lfnst_off": 95,
     "reference_candidate_is_not_official_legal": true,
     "forbidden_inference": "Do not form all width x height x hor_type x ver_type products by default.",
     "reference_pair_rules": [
@@ -65,6 +65,18 @@
         "shape_source": "DCT8_DST7_intersection",
         "source_id": "VTM_TRQUANT_GETTRTYPES",
         "context": "explicit/implicit MTS reference path"
+      },
+      {
+        "pair": "DST7_DCT2",
+        "shape_source": "DCT2_DST7_intersection_with_width_le_16_height_gt_16",
+        "source_id": "VTM_TRQUANT_GETTRTYPES",
+        "context": "implicit MTS/ISP width predicate"
+      },
+      {
+        "pair": "DCT2_DST7",
+        "shape_source": "DCT2_DST7_intersection_with_width_gt_16_height_le_16",
+        "source_id": "VTM_TRQUANT_GETTRTYPES",
+        "context": "implicit MTS/ISP height predicate"
       }
     ],
     "lfnst_pair_coupling": {

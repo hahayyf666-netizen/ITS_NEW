@@ -25,21 +25,34 @@ def main() -> int:
     legal = json.loads((EVIDENCE / "LEGAL_TRANSFORM_MATRIX.json").read_text(encoding="utf-8"))
     shape = legal["official_shape_support"]
     pairs = [
-        ("DCT2", "DCT2", "DCT2", "default and non-MTS path"),
-        ("DST7", "DST7", "DCT8_DST7_intersection", "explicit/implicit MTS reference path"),
-        ("DCT8", "DST7", "DCT8_DST7_intersection", "explicit/implicit MTS reference path"),
-        ("DST7", "DCT8", "DCT8_DST7_intersection", "explicit/implicit MTS reference path"),
-        ("DCT8", "DCT8", "DCT8_DST7_intersection", "explicit/implicit MTS reference path"),
+        ("DCT2", "DCT2", "DCT2", "default/non-MTS and implicit fallback"),
+        ("DST7", "DST7", "DCT8_DST7_intersection", "explicit MTS and implicit/ISP both axes <=16"),
+        ("DCT8", "DST7", "DCT8_DST7_intersection", "explicit MTS pair"),
+        ("DST7", "DCT8", "DCT8_DST7_intersection", "explicit MTS pair"),
+        ("DCT8", "DCT8", "DCT8_DST7_intersection", "explicit MTS pair"),
+        ("DST7", "DCT2", "DCT2_DST7_intersection", "implicit/ISP width <=16, height >16"),
+        ("DCT2", "DST7", "DCT2_DST7_intersection", "implicit/ISP width >16, height <=16"),
     ]
     intersection = sorted(set(shape["DCT8"]) & set(shape["DST7"]))
     assert len(intersection) == 16
 
-    tuples: list[dict[str, object]] = []
+    tuple_map: dict[tuple[int, int, str, str, int], dict[str, object]] = {}
     for hor, ver, shape_rule, context in pairs:
-        support = shape["DCT2"] if shape_rule == "DCT2" else intersection
+        if shape_rule == "DCT2":
+            support = shape["DCT2"]
+        elif shape_rule == "DCT2_DST7_intersection":
+            support = sorted(set(shape["DCT2"]) & set(shape["DST7"]))
+        else:
+            support = intersection
         for block in support:
             width, height = (int(x) for x in block.split("x"))
-            tuples.append({
+            if shape_rule == "DCT2_DST7_intersection":
+                if hor == "DST7" and not (width <= 16 and height > 16):
+                    continue
+                if hor == "DCT2" and not (width > 16 and height <= 16):
+                    continue
+            key = (width, height, hor, ver, 0)
+            entry = tuple_map.setdefault(key, {
                 "width": width,
                 "height": height,
                 "hor_type": hor,
@@ -47,12 +60,14 @@ def main() -> int:
                 "lfnst_idx": 0,
                 "status": "reference_candidate_not_official_legal",
                 "source_id": "VTM_TRQUANT_GETTRTYPES",
-                "source_context": context,
+                "source_contexts": [],
             })
+            entry["source_contexts"].append(context)
 
+    tuples = list(tuple_map.values())
     keys = [(t["width"], t["height"], t["hor_type"], t["ver_type"], t["lfnst_idx"]) for t in tuples]
     assert len(keys) == len(set(keys))
-    assert len(tuples) == 25 + 4 * 16
+    assert len(tuples) == 25 + 4 * 16 + 2 * 3
 
     out = {
         "schema": "step12d_pre.reference_transform_tuples.v1",
@@ -62,7 +77,8 @@ def main() -> int:
         "source_locator": "04_reference/VTM/source/Lib/CommonLib/TrQuant.cpp:getTrTypes around lines 651-755",
         "derivation": {
             "DCT2_DCT2": "official DCT2 shape rows",
-            "non_DCT2_pairs": "intersection(official DCT8 shape rows, official DST7 shape rows)",
+            "explicit_MTS_pairs": "intersection(official DCT8 shape rows, official DST7 shape rows)",
+            "implicit_MTS_pairs": "dimension-specific DST7/DCT2 and DCT2/DST7 subsets from VTM width/height predicates",
             "forbidden": "No default width x height x hor_type x ver_type Cartesian product",
         },
         "tuple_count_lfnst_off": len(tuples),
@@ -83,7 +99,7 @@ def main() -> int:
         "status": out["status"],
         "tuple_count_lfnst_off": len(tuples),
         "dct2_dct2_count": 25,
-        "non_dct2_pair_count": 4,
+        "non_dct2_pair_count": 6,
         "non_dct2_shape_intersection_count": len(intersection),
         "official_legal": False,
     }, ensure_ascii=False, indent=2))

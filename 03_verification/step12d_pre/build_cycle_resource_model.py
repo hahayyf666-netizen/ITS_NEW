@@ -53,7 +53,7 @@ def build_model() -> dict:
     return {
         "schema": "step12d_pre.cycle_resource_model.v1",
         "status": "PASS_REFERENCE_CANDIDATE_GEOMETRY_RESOURCE_LOWER_BOUND_NOT_PHYSICAL_PROOF",
-        "tuple_scope": "89 VTM reference candidates with lfnst_idx=0; not official legal matrix",
+        "tuple_scope": "95 VTM reference candidates with lfnst_idx=0; not official legal matrix",
         "throughput_contract": {
             "one_d_group": "4 complete outputs",
             "group_ii": 1,
@@ -64,20 +64,20 @@ def build_model() -> dict:
         "candidate_resource_summary": {
             "A": {
                 "description": "fully shared multiplier and reduction fabric",
-                "direct_p4_multiplier_lower_bound_N_le_32": 128,
+                "direct_p4_same_cycle_no_reuse_reference_count_N_le_32": 128,
                 "dct2_64": "factorized 128-lane reference required; direct matrix form is 256 products/cycle",
                 "physical_selection": "pending reduction/mux/bandwidth analysis",
             },
             "B": {
                 "description": "shared multipliers with family-specific reductions",
-                "direct_p4_multiplier_lower_bound_N_le_32": 128,
+                "direct_p4_same_cycle_no_reuse_reference_count_N_le_32": 128,
                 "dct2_64": "factorized 128-lane reference required; direct matrix form is 256 products/cycle",
                 "physical_selection": "pending reduction/mux/bandwidth analysis",
             },
             "C": {
                 "description": "frozen R4C-64 plus new <=32/LFNST kernel",
-                "parallel_lower_bound": 256,
-                "time_shared_lower_bound": 128,
+                "parallel_reference_instance_count": 256,
+                "conditional_time_shared_instance_count": 128,
                 "physical_selection": "pending overlap/mode-switch analysis",
             },
         },

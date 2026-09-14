@@ -15,11 +15,11 @@ def main() -> int:
     assert model["status"] == "PASS_REFERENCE_CANDIDATE_GEOMETRY_RESOURCE_LOWER_BOUND_NOT_PHYSICAL_PROOF"
     assert model["physical_proof"] is False
     assert model["vivado_run"] is False
-    assert len(model["records"]) == 89
+    assert len(model["records"]) == 95
     assert model["throughput_contract"]["group_ii"] == 1
-    assert model["candidate_resource_summary"]["A"]["direct_p4_multiplier_lower_bound_N_le_32"] == 128
-    assert model["candidate_resource_summary"]["B"]["direct_p4_multiplier_lower_bound_N_le_32"] == 128
-    assert model["candidate_resource_summary"]["C"]["parallel_lower_bound"] == 256
+    assert model["candidate_resource_summary"]["A"]["direct_p4_same_cycle_no_reuse_reference_count_N_le_32"] == 128
+    assert model["candidate_resource_summary"]["B"]["direct_p4_same_cycle_no_reuse_reference_count_N_le_32"] == 128
+    assert model["candidate_resource_summary"]["C"]["parallel_reference_instance_count"] == 256
     for row in model["records"]:
         area = row["width"] * row["height"]
         assert row["single_shared_fabric_compute_cycles"] == area // 2

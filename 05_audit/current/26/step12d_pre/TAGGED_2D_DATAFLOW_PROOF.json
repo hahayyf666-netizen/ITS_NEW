@@ -1,0 +1,2972 @@
+{
+  "schema": "step12d_pre.tagged_2d_dataflow.v1",
+  "status": "PASS_TAGGED_2D_DATAFLOW_REFERENCE_NOT_OFFICIAL_OR_PHYSICAL_PROOF",
+  "tuple_scope": "95 VTM reference candidates, lfnst_idx=0; official legality pending",
+  "event_tag": [
+    "serial",
+    "cache_slot",
+    "stage",
+    "vector",
+    "group/lane",
+    "bank",
+    "address"
+  ],
+  "checks": {
+    "coordinate_uniqueness": true,
+    "intermediate_ownership": true,
+    "result_reservation_capacity": true,
+    "raster_output_order": true,
+    "hold_stability_when_req_low": true,
+    "one_done_pulse_per_tu": true
+  },
+  "records": [
+    {
+      "width": 4,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 32,
+      "intermediate_write_events": 32,
+      "intermediate_read_events": 32,
+      "result_output_events": 32,
+      "intermediate_capacity_entries": 16,
+      "result_capacity_beats": 4,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 6,
+          "fires": 4,
+          "hold_stability_checks": 2,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 6,
+          "fires": 4,
+          "hold_stability_checks": 2,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 64,
+      "intermediate_write_events": 64,
+      "intermediate_read_events": 64,
+      "result_output_events": 64,
+      "intermediate_capacity_entries": 32,
+      "result_capacity_beats": 8,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 64,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 64,
+      "intermediate_write_events": 64,
+      "intermediate_read_events": 64,
+      "result_output_events": 64,
+      "intermediate_capacity_entries": 32,
+      "result_capacity_beats": 8,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 64,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 64,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 64,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 64,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 2048,
+      "intermediate_write_events": 2048,
+      "intermediate_read_events": 2048,
+      "result_output_events": 2048,
+      "intermediate_capacity_entries": 1024,
+      "result_capacity_beats": 256,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 2048,
+      "intermediate_write_events": 2048,
+      "intermediate_read_events": 2048,
+      "result_output_events": 2048,
+      "intermediate_capacity_entries": 1024,
+      "result_capacity_beats": 256,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 64,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 4096,
+      "intermediate_write_events": 4096,
+      "intermediate_read_events": 4096,
+      "result_output_events": 4096,
+      "intermediate_capacity_entries": 2048,
+      "result_capacity_beats": 512,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 716,
+          "fires": 512,
+          "hold_stability_checks": 204,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 716,
+          "fires": 512,
+          "hold_stability_checks": 204,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 64,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 2048,
+      "intermediate_write_events": 2048,
+      "intermediate_read_events": 2048,
+      "result_output_events": 2048,
+      "intermediate_capacity_entries": 1024,
+      "result_capacity_beats": 256,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 64,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 4096,
+      "intermediate_write_events": 4096,
+      "intermediate_read_events": 4096,
+      "result_output_events": 4096,
+      "intermediate_capacity_entries": 2048,
+      "result_capacity_beats": 512,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 716,
+          "fires": 512,
+          "hold_stability_checks": 204,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 716,
+          "fires": 512,
+          "hold_stability_checks": 204,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 64,
+      "height": 64,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 8192,
+      "intermediate_write_events": 8192,
+      "intermediate_read_events": 8192,
+      "result_output_events": 8192,
+      "intermediate_capacity_entries": 4096,
+      "result_capacity_beats": 1024,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 1434,
+          "fires": 1024,
+          "hold_stability_checks": 410,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 1434,
+          "fires": 1024,
+          "hold_stability_checks": 410,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 2048,
+      "intermediate_write_events": 2048,
+      "intermediate_read_events": 2048,
+      "result_output_events": 2048,
+      "intermediate_capacity_entries": 1024,
+      "result_capacity_beats": 256,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 32,
+      "intermediate_write_events": 32,
+      "intermediate_read_events": 32,
+      "result_output_events": 32,
+      "intermediate_capacity_entries": 16,
+      "result_capacity_beats": 4,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 6,
+          "fires": 4,
+          "hold_stability_checks": 2,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 6,
+          "fires": 4,
+          "hold_stability_checks": 2,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 64,
+      "intermediate_write_events": 64,
+      "intermediate_read_events": 64,
+      "result_output_events": 64,
+      "intermediate_capacity_entries": 32,
+      "result_capacity_beats": 8,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 64,
+      "intermediate_write_events": 64,
+      "intermediate_read_events": 64,
+      "result_output_events": 64,
+      "intermediate_capacity_entries": 32,
+      "result_capacity_beats": 8,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 2048,
+      "intermediate_write_events": 2048,
+      "intermediate_read_events": 2048,
+      "result_output_events": 2048,
+      "intermediate_capacity_entries": 1024,
+      "result_capacity_beats": 256,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 32,
+      "intermediate_write_events": 32,
+      "intermediate_read_events": 32,
+      "result_output_events": 32,
+      "intermediate_capacity_entries": 16,
+      "result_capacity_beats": 4,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 6,
+          "fires": 4,
+          "hold_stability_checks": 2,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 6,
+          "fires": 4,
+          "hold_stability_checks": 2,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 64,
+      "intermediate_write_events": 64,
+      "intermediate_read_events": 64,
+      "result_output_events": 64,
+      "intermediate_capacity_entries": 32,
+      "result_capacity_beats": 8,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 64,
+      "intermediate_write_events": 64,
+      "intermediate_read_events": 64,
+      "result_output_events": 64,
+      "intermediate_capacity_entries": 32,
+      "result_capacity_beats": 8,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 2048,
+      "intermediate_write_events": 2048,
+      "intermediate_read_events": 2048,
+      "result_output_events": 2048,
+      "intermediate_capacity_entries": 1024,
+      "result_capacity_beats": 256,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 32,
+      "intermediate_write_events": 32,
+      "intermediate_read_events": 32,
+      "result_output_events": 32,
+      "intermediate_capacity_entries": 16,
+      "result_capacity_beats": 4,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 6,
+          "fires": 4,
+          "hold_stability_checks": 2,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 6,
+          "fires": 4,
+          "hold_stability_checks": 2,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 64,
+      "intermediate_write_events": 64,
+      "intermediate_read_events": 64,
+      "result_output_events": 64,
+      "intermediate_capacity_entries": 32,
+      "result_capacity_beats": 8,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 64,
+      "intermediate_write_events": 64,
+      "intermediate_read_events": 64,
+      "result_output_events": 64,
+      "intermediate_capacity_entries": 32,
+      "result_capacity_beats": 8,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 2048,
+      "intermediate_write_events": 2048,
+      "intermediate_read_events": 2048,
+      "result_output_events": 2048,
+      "intermediate_capacity_entries": 1024,
+      "result_capacity_beats": 256,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 358,
+          "fires": 256,
+          "hold_stability_checks": 102,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 32,
+      "intermediate_write_events": 32,
+      "intermediate_read_events": 32,
+      "result_output_events": 32,
+      "intermediate_capacity_entries": 16,
+      "result_capacity_beats": 4,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 6,
+          "fires": 4,
+          "hold_stability_checks": 2,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 6,
+          "fires": 4,
+          "hold_stability_checks": 2,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 64,
+      "intermediate_write_events": 64,
+      "intermediate_read_events": 64,
+      "result_output_events": 64,
+      "intermediate_capacity_entries": 32,
+      "result_capacity_beats": 8,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 64,
+      "intermediate_write_events": 64,
+      "intermediate_read_events": 64,
+      "result_output_events": 64,
+      "intermediate_capacity_entries": 32,
+      "result_capacity_beats": 8,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 12,
+          "fires": 8,
+          "hold_stability_checks": 4,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 128,
+      "intermediate_write_events": 128,
+      "intermediate_read_events": 128,
+      "result_output_events": 128,
+      "intermediate_capacity_entries": 64,
+      "result_capacity_beats": 16,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 22,
+          "fires": 16,
+          "hold_stability_checks": 6,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 16,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 4,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 8,
+      "height": 32,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 16,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 1024,
+      "intermediate_write_events": 1024,
+      "intermediate_read_events": 1024,
+      "result_output_events": 1024,
+      "intermediate_capacity_entries": 512,
+      "result_capacity_beats": 128,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 180,
+          "fires": 128,
+          "hold_stability_checks": 52,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 4,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 256,
+      "intermediate_write_events": 256,
+      "intermediate_read_events": 256,
+      "result_output_events": 256,
+      "intermediate_capacity_entries": 128,
+      "result_capacity_beats": 32,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 44,
+          "fires": 32,
+          "hold_stability_checks": 12,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    },
+    {
+      "width": 32,
+      "height": 8,
+      "tuple_status": "reference_candidate_not_official_legal",
+      "tu_owner_count": 2,
+      "input_tagged_events": 512,
+      "intermediate_write_events": 512,
+      "intermediate_read_events": 512,
+      "result_output_events": 512,
+      "intermediate_capacity_entries": 256,
+      "result_capacity_beats": 64,
+      "raster_order": true,
+      "single_intermediate_owner_serialized": true,
+      "backpressure": [
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        },
+        {
+          "cycles": 90,
+          "fires": 64,
+          "hold_stability_checks": 26,
+          "done_pulses": 1,
+          "ready_high_intrinsic_not_claimed": true
+        }
+      ],
+      "status": "PASS_REFERENCE_TAGGED_2D_DATAFLOW"
+    }
+  ],
+  "lfnst": "pending official pair mapping and LFNST dataflow integration",
+  "physical_proof": false,
+  "vivado_run": false
+}

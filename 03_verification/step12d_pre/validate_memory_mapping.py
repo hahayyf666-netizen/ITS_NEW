@@ -19,6 +19,7 @@ def main() -> int:
     assert proof["conflict_checks"]["all_four_lane_banks_distinct"] is True
     assert proof["conflict_checks"]["all_addresses_in_range"] is True
     assert proof["conflict_checks"]["result_raster_order"] is True
+    assert proof["conflict_checks"]["result_beat_lane_round_trip"] is True
     for record in proof["records"]:
         assert record["result_beats"] == record["width"] * record["height"] // 4
         assert record["status"] == "PASS_LOGICAL_NO_4_LANE_BANK_CONFLICT"

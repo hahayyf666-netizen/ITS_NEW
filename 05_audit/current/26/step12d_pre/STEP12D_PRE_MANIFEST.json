@@ -1,7 +1,7 @@
 {
   "schema": "step12d_pre.manifest.v1",
   "status": "IN_PROGRESS",
-  "phase": "source_extraction_reference_fixed_point_lower_bound_and_tuple_candidates",
+  "phase": "reference_tuple_execution_and_tagged_dataflow_in_progress",
   "base_tag": "v3.5-18",
   "base_commit": "7415b0acb33481af1845f63e16b93ce7c33b977b",
   "rtl_tree_changed": false,
@@ -18,16 +18,18 @@
     "65-vector independent fixed-point cross-check",
     "13-case P4 output-lane geometry check",
     "analytic A/B/C multiplier lower-bound check",
-    "89 explicit VTM reference transform-pair candidates (official mapping pending)",
+    "95 explicit VTM reference transform-pair candidates including implicit-MTS mixed pairs (official mapping pending)",
     "57 shape/type-row logical bank and raster mapping checks (physical proof pending)",
-    "89-candidate ready-high V/H cycle and analytic resource lower-bound model",
-    "VTM LFNST/MTS context evidence recorded without promoting official tuple legality"
+    "95-candidate ready-high V/H cycle and analytic resource model",
+    "VTM LFNST/MTS context evidence recorded without promoting official tuple legality",
+    "13-case executable P4 schedule arithmetic proof with independent Oracle",
+    "95-candidate tagged 2-D ownership/capacity/raster/backpressure reference model"
   ],
   "next_actions": [
-    "resolve or explicitly classify horizontal/vertical type coupling",
-    "complete per-case fixed-point contracts",
-    "implement independent oracle/schedule checks",
-    "quantify A/B/C architecture candidates",
-    "freeze rectangular mapping and cycle/resource model"
+    "resolve and source the official horizontal/vertical and LFNST coupling rules; keep unresolved combinations reference-only",
+    "promote per-case fixed-point and rounding contracts from reference checks to source-backed closure",
+    "complete structured A/B/C multiplier, reduction, bandwidth, mode-switch, and pipeline comparison",
+    "decide LFNST ownership and close rectangular capacity, ownership, result, raster, and backpressure checks",
+    "only after all P1 items close, decide PRE PASS; do not authorize unified RTL before then"
   ]
 }

@@ -1,0 +1,172 @@
+{
+  "schema": "step12d_pre.p4_execution_proof.v1",
+  "status": "PASS_EXECUTABLE_P4_SCHEDULE_NOT_PHYSICAL_PROOF",
+  "cases": [
+    {
+      "transform_type": 0,
+      "N": 4,
+      "groups": 1,
+      "group_ii": 1,
+      "vector_ii_candidate": 1,
+      "vectors_checked": 5,
+      "products_per_group": 16,
+      "schedule_class": "direct_p4_executed",
+      "bit_exact_against_frozen_oracle": true,
+      "physical_proof": false
+    },
+    {
+      "transform_type": 0,
+      "N": 8,
+      "groups": 2,
+      "group_ii": 1,
+      "vector_ii_candidate": 2,
+      "vectors_checked": 5,
+      "products_per_group": 32,
+      "schedule_class": "direct_p4_executed",
+      "bit_exact_against_frozen_oracle": true,
+      "physical_proof": false
+    },
+    {
+      "transform_type": 0,
+      "N": 16,
+      "groups": 4,
+      "group_ii": 1,
+      "vector_ii_candidate": 4,
+      "vectors_checked": 5,
+      "products_per_group": 64,
+      "schedule_class": "direct_p4_executed",
+      "bit_exact_against_frozen_oracle": true,
+      "physical_proof": false
+    },
+    {
+      "transform_type": 0,
+      "N": 32,
+      "groups": 8,
+      "group_ii": 1,
+      "vector_ii_candidate": 8,
+      "vectors_checked": 5,
+      "products_per_group": 128,
+      "schedule_class": "direct_p4_executed",
+      "bit_exact_against_frozen_oracle": true,
+      "physical_proof": false
+    },
+    {
+      "transform_type": 0,
+      "N": 64,
+      "groups": 16,
+      "group_ii": 1,
+      "vector_ii_candidate": 16,
+      "vectors_checked": 5,
+      "products_per_group": 256,
+      "schedule_class": "factorized_64_reference_required",
+      "bit_exact_against_frozen_oracle": true,
+      "physical_proof": false
+    },
+    {
+      "transform_type": 1,
+      "N": 4,
+      "groups": 1,
+      "group_ii": 1,
+      "vector_ii_candidate": 1,
+      "vectors_checked": 5,
+      "products_per_group": 16,
+      "schedule_class": "direct_p4_executed",
+      "bit_exact_against_frozen_oracle": true,
+      "physical_proof": false
+    },
+    {
+      "transform_type": 1,
+      "N": 8,
+      "groups": 2,
+      "group_ii": 1,
+      "vector_ii_candidate": 2,
+      "vectors_checked": 5,
+      "products_per_group": 32,
+      "schedule_class": "direct_p4_executed",
+      "bit_exact_against_frozen_oracle": true,
+      "physical_proof": false
+    },
+    {
+      "transform_type": 1,
+      "N": 16,
+      "groups": 4,
+      "group_ii": 1,
+      "vector_ii_candidate": 4,
+      "vectors_checked": 5,
+      "products_per_group": 64,
+      "schedule_class": "direct_p4_executed",
+      "bit_exact_against_frozen_oracle": true,
+      "physical_proof": false
+    },
+    {
+      "transform_type": 1,
+      "N": 32,
+      "groups": 8,
+      "group_ii": 1,
+      "vector_ii_candidate": 8,
+      "vectors_checked": 5,
+      "products_per_group": 128,
+      "schedule_class": "direct_p4_executed",
+      "bit_exact_against_frozen_oracle": true,
+      "physical_proof": false
+    },
+    {
+      "transform_type": 2,
+      "N": 4,
+      "groups": 1,
+      "group_ii": 1,
+      "vector_ii_candidate": 1,
+      "vectors_checked": 5,
+      "products_per_group": 16,
+      "schedule_class": "direct_p4_executed",
+      "bit_exact_against_frozen_oracle": true,
+      "physical_proof": false
+    },
+    {
+      "transform_type": 2,
+      "N": 8,
+      "groups": 2,
+      "group_ii": 1,
+      "vector_ii_candidate": 2,
+      "vectors_checked": 5,
+      "products_per_group": 32,
+      "schedule_class": "direct_p4_executed",
+      "bit_exact_against_frozen_oracle": true,
+      "physical_proof": false
+    },
+    {
+      "transform_type": 2,
+      "N": 16,
+      "groups": 4,
+      "group_ii": 1,
+      "vector_ii_candidate": 4,
+      "vectors_checked": 5,
+      "products_per_group": 64,
+      "schedule_class": "direct_p4_executed",
+      "bit_exact_against_frozen_oracle": true,
+      "physical_proof": false
+    },
+    {
+      "transform_type": 2,
+      "N": 32,
+      "groups": 8,
+      "group_ii": 1,
+      "vector_ii_candidate": 8,
+      "vectors_checked": 5,
+      "products_per_group": 128,
+      "schedule_class": "direct_p4_executed",
+      "bit_exact_against_frozen_oracle": true,
+      "physical_proof": false
+    }
+  ],
+  "schedule_semantics": {
+    "cycle": "group index within one accepted N-point vector",
+    "lane": "four consecutive complete output indices",
+    "coefficient_mapping": "lane output index selects one matrix row; all N input coefficients are consumed",
+    "group_ii": 1,
+    "vector_ii": "N/4 candidate"
+  },
+  "dct2_64_boundary": "Direct schedule is arithmetic reference only; factorized 128-lane R4C schedule remains separately required.",
+  "physical_proof": false,
+  "vivado_run": false
+}

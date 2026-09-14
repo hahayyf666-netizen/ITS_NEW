@@ -8,10 +8,11 @@
     "ready_high_latency": "configuration- and input-sequence-specific intrinsic latency",
     "backpressure_latency": "state-model result with stall-dependent completion; no fixed upper bound claimed"
   },
-  "resource_lower_bound": {
-    "direct_p4": "4*N products per cycle for an N-point direct matrix group",
-    "N32": "128 products per cycle",
-    "N64": "256 direct products per cycle; factorized R4C candidate uses the frozen 128-lane reference schedule"
+  "product_and_reference_instance_summary": {
+    "direct_p4_product_requirement": "4*N products per cycle for an N-point direct matrix group; this is a mathematical product requirement, not a generic DSP lower bound",
+    "N32": "128 direct products per cycle in the reference schedule",
+    "N64": "256 direct products per cycle in direct form; factorized DCT2-64 uses the frozen 128-lane R4C reference schedule",
+    "physical_multiplier_instance_count": "Not selected in PRE; depends on the A/B/C architecture and any proven time sharing"
   },
   "architecture_quantification": "analytic_candidate_model_recorded; reduction/mux/mode-switch evaluation pending",
   "model_file": "CYCLE_RESOURCE_MODEL.json",
