@@ -1,0 +1,18 @@
+{
+  "schema": "step12d_pre.cycle_resource_results.v1",
+  "status": "initial_geometry_only",
+  "throughput_definitions": {
+    "one_d_kernel": "4 complete transform outputs per accepted cycle",
+    "output_interface": "4 final coefficients per output_fire when req permits",
+    "single_fabric_2d": "steady-state final-equivalent throughput must be calculated from V/H work and resource sharing; do not label it as 4/cycle",
+    "ready_high_latency": "configuration- and input-sequence-specific intrinsic latency",
+    "backpressure_latency": "state-model result with stall-dependent completion; no fixed upper bound claimed"
+  },
+  "resource_lower_bound": {
+    "direct_p4": "4*N products per cycle for an N-point direct matrix group",
+    "N32": "128 products per cycle",
+    "N64": "256 direct products per cycle; factorized R4C candidate uses the frozen 128-lane reference schedule"
+  },
+  "architecture_quantification": "pending_candidate_evaluation",
+  "vivado_status": "not_run_by_contract"
+}

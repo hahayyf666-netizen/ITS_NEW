@@ -1,0 +1,22 @@
+{
+  "schema": "step12d_pre.manifest.v1",
+  "status": "IN_PROGRESS",
+  "phase": "source_extraction_and_contract_freeze",
+  "base_tag": "v3.5-18",
+  "base_commit": "7415b0acb33481af1845f63e16b93ce7c33b977b",
+  "rtl_tree_changed": false,
+  "vivado_run": false,
+  "new_unified_rtl_authorized": false,
+  "source_issue_count": 3,
+  "complete_descriptor_tuple_matrix": "REFERENCE_PAIR_RULES_AVAILABLE_LFNST_COUPLING_PENDING",
+  "architecture_candidate": "NOT_SELECTED",
+  "lfnst_ownership": "NOT_SELECTED",
+  "pre_gate": "NOT_YET_PASS",
+  "next_actions": [
+    "resolve or explicitly classify horizontal/vertical type coupling",
+    "complete per-case fixed-point contracts",
+    "implement independent oracle/schedule checks",
+    "quantify A/B/C architecture candidates",
+    "freeze rectangular mapping and cycle/resource model"
+  ]
+}

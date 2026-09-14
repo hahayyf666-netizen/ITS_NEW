@@ -1,0 +1,73 @@
+{
+  "schema": "step12d_pre.official_shape_support.v1",
+  "status": "partial_source_extracted_complete_tuple_expansion_pending",
+  "source_id": "HUAWEI_ATTACHMENT_EXTERNAL",
+  "it_info_contract": {
+    "width_bits": 22,
+    "fields": {
+      "tu_width": "[6:0]",
+      "tu_height": "[13:7]",
+      "tr_type_hor": "[15:14]",
+      "tr_type_ver": "[17:16]",
+      "lfnst_tr_set_idx": "[19:18]",
+      "lfnst_idx": "[21:20]"
+    },
+    "width_source_note": "Attachment width cell says 20 but listed bit ranges require 22; frozen repository contract remains 22."
+  },
+  "transform_type_encoding": {
+    "0": "DCT2",
+    "1": "DST7",
+    "2": "DCT8",
+    "source_status": "requires_final_source_cross_check_before_unified_rtl"
+  },
+  "official_shape_support": {
+    "DCT2": ["4x4", "4x8", "4x16", "4x32", "4x64", "8x4", "16x4", "32x4", "64x4", "8x8", "8x16", "8x32", "8x64", "16x8", "32x8", "64x8", "16x16", "16x32", "16x64", "32x16", "32x32", "32x64", "64x16", "64x32", "64x64"],
+    "DCT8": ["4x4", "4x8", "4x16", "4x32", "8x4", "16x4", "32x4", "8x8", "8x16", "8x32", "16x8", "32x8", "16x16", "16x32", "32x16", "32x32"],
+    "DST7": ["4x4", "4x8", "4x16", "4x32", "8x4", "16x4", "32x4", "8x8", "8x16", "8x32", "16x8", "32x8", "16x16", "16x32", "32x16", "32x32"]
+  },
+  "lfnst_shape_support": {
+    "nTrs16": ["4x4", "4x8", "4x16", "4x32", "4x64", "8x4", "16x4", "32x4", "64x4"],
+    "nTrs48": ["8x8", "8x16", "8x32", "8x64", "16x8", "32x8", "64x8", "16x16", "16x32", "16x64", "32x16", "32x32", "32x64", "64x16", "64x32", "64x64"]
+  },
+  "complete_descriptor_tuples": {
+    "status": "reference_candidate_rules_available_official_context_mapping_pending",
+    "forbidden_inference": "Do not form all width x height x hor_type x ver_type products by default.",
+    "reference_pair_rules": [
+      {
+        "pair": "DCT2_DCT2",
+        "shape_source": "DCT2",
+        "source_id": "VTM_TRQUANT_GETTRTYPES",
+        "context": "default and non-MTS path"
+      },
+      {
+        "pair": "DST7_DST7",
+        "shape_source": "DCT8_DST7_intersection",
+        "source_id": "VTM_TRQUANT_GETTRTYPES",
+        "context": "explicit/implicit MTS reference path"
+      },
+      {
+        "pair": "DCT8_DST7",
+        "shape_source": "DCT8_DST7_intersection",
+        "source_id": "VTM_TRQUANT_GETTRTYPES",
+        "context": "explicit/implicit MTS reference path"
+      },
+      {
+        "pair": "DST7_DCT8",
+        "shape_source": "DCT8_DST7_intersection",
+        "source_id": "VTM_TRQUANT_GETTRTYPES",
+        "context": "explicit/implicit MTS reference path"
+      },
+      {
+        "pair": "DCT8_DCT8",
+        "shape_source": "DCT8_DST7_intersection",
+        "source_id": "VTM_TRQUANT_GETTRTYPES",
+        "context": "explicit/implicit MTS reference path"
+      }
+    ],
+    "lfnst_pair_coupling": {
+      "status": "pending",
+      "reason": "The attachment gives LFNST shape rows and transform formulas but does not explicitly state the complete horizontal/vertical pair restriction."
+    },
+    "reference_pair_source_locator": "04_reference/VTM/source/Lib/CommonLib/TrQuant.cpp:getTrTypes around lines 651-755"
+  }
+}

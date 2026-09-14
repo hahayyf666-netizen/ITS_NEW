@@ -1,0 +1,27 @@
+{
+  "schema": "step12d_pre.p4_schedule_geometry.v1",
+  "status": "geometry_checked_candidate_schedule_not_yet_architecture_closed",
+  "group_contract": {
+    "complete_outputs_per_group": 4,
+    "group_ii": 1,
+    "vector_ii_candidate": "N/4",
+    "output_lane_order": "output_index = group*4 + lane"
+  },
+  "cases": [
+    {"transform": "DCT2", "N": 4, "groups": 1, "vector_ii": 1, "direct_products_per_cycle": 16, "schedule_class": "direct_p4_candidate"},
+    {"transform": "DCT2", "N": 8, "groups": 2, "vector_ii": 2, "direct_products_per_cycle": 32, "schedule_class": "direct_p4_candidate"},
+    {"transform": "DCT2", "N": 16, "groups": 4, "vector_ii": 4, "direct_products_per_cycle": 64, "schedule_class": "direct_p4_candidate"},
+    {"transform": "DCT2", "N": 32, "groups": 8, "vector_ii": 8, "direct_products_per_cycle": 128, "schedule_class": "direct_p4_candidate"},
+    {"transform": "DCT2", "N": 64, "groups": 16, "vector_ii": 16, "direct_products_per_cycle": 256, "schedule_class": "factorized_64_candidate", "frozen_reference": "R4C_128_lane"},
+    {"transform": "DST7", "N": 4, "groups": 1, "vector_ii": 1, "direct_products_per_cycle": 16, "schedule_class": "direct_p4_candidate"},
+    {"transform": "DST7", "N": 8, "groups": 2, "vector_ii": 2, "direct_products_per_cycle": 32, "schedule_class": "direct_p4_candidate"},
+    {"transform": "DST7", "N": 16, "groups": 4, "vector_ii": 4, "direct_products_per_cycle": 64, "schedule_class": "direct_p4_candidate"},
+    {"transform": "DST7", "N": 32, "groups": 8, "vector_ii": 8, "direct_products_per_cycle": 128, "schedule_class": "direct_p4_candidate"},
+    {"transform": "DCT8", "N": 4, "groups": 1, "vector_ii": 1, "direct_products_per_cycle": 16, "schedule_class": "direct_p4_candidate"},
+    {"transform": "DCT8", "N": 8, "groups": 2, "vector_ii": 2, "direct_products_per_cycle": 32, "schedule_class": "direct_p4_candidate"},
+    {"transform": "DCT8", "N": 16, "groups": 4, "vector_ii": 4, "direct_products_per_cycle": 64, "schedule_class": "direct_p4_candidate"},
+    {"transform": "DCT8", "N": 32, "groups": 8, "vector_ii": 8, "direct_products_per_cycle": 128, "schedule_class": "direct_p4_candidate"}
+  ],
+  "important_boundary": "These are executable schedule geometries and resource lower bounds, not yet a proof that one physical architecture meets timing or coefficient bandwidth.",
+  "coverage_status": "candidate_geometry_only"
+}

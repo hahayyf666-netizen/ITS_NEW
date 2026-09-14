@@ -1,0 +1,37 @@
+{
+  "schema": "step12d_pre.memory_mapping.v1",
+  "status": "contract_skeleton_pending_tuple_expansion",
+  "raster_order": "row_major_TU_order",
+  "dimension_contract": {
+    "vertical": "vector_count=W, vector_length=H, transform=tr_type_ver",
+    "horizontal": "vector_count=H, vector_length=W, transform=tr_type_hor",
+    "result": "four accepted output points map to four consecutive TU-raster coefficients"
+  },
+  "required_mapping_fields": [
+    "input_raster_index",
+    "cache_slot",
+    "cache_bank",
+    "cache_address",
+    "vertical_vector",
+    "vertical_group",
+    "intermediate_bank",
+    "intermediate_address",
+    "horizontal_vector",
+    "horizontal_group",
+    "result_beat",
+    "result_lane",
+    "raster_output_index"
+  ],
+  "forbidden": [
+    "hard-coded_64_vectors_for_all_sizes",
+    "hard-coded_1024_result_beats_for_all_sizes",
+    "unproven_default_cartesian_descriptor_product"
+  ],
+  "conflict_checks_pending": [
+    "bank_conflict",
+    "staging_capacity",
+    "intermediate_ownership",
+    "result_capacity",
+    "rectangle_output_order"
+  ]
+}

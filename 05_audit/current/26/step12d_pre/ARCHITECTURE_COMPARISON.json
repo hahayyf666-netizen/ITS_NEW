@@ -1,0 +1,38 @@
+{
+  "schema": "step12d_pre.architecture_comparison.v1",
+  "status": "candidates_frozen_evaluation_pending",
+  "candidates": {
+    "A": {
+      "name": "fully_shared_multiplier_and_reduction",
+      "scope": ["DCT2", "DST7", "DCT8", "potentially_LFNST"],
+      "status": "not_evaluated"
+    },
+    "B": {
+      "name": "shared_multiplier_family_specific_reduction",
+      "scope": ["DCT2", "DST7", "DCT8", "potentially_LFNST"],
+      "status": "not_evaluated"
+    },
+    "C": {
+      "name": "frozen_R4C_64_plus_new_le32_lfnst_kernel",
+      "scope": ["DCT2_64_reference", "DCT2_le32", "DST7_le32", "DCT8_le32", "LFNST"],
+      "status": "not_evaluated"
+    }
+  },
+  "comparison_dimensions": [
+    "DSP",
+    "LUT",
+    "FF",
+    "RAM",
+    "coefficient_bandwidth",
+    "reduction_depth",
+    "pipeline_latency",
+    "group_ii",
+    "vector_ii",
+    "mode_switch_cost",
+    "mux_fanout_risk",
+    "memory_port_demand",
+    "500MHz_risk"
+  ],
+  "selection_rule": "Select only after every official legal case is covered by at least one allowed candidate and the quantitative comparison is complete.",
+  "not_a_timing_proof": true
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "step12d_pre.fixed_point_contract.v1",
+  "status": "baseline_recorded_per_case_audit_pending",
+  "canonical_coeff_sha256": "D4C497CFBAE64096C69D640BAD154E4E3BAE1F5834F82149623A83028B81E9F6",
+  "case_policy": "Each transform_type x N x stage is independently sourced and checked; no DCT2-64 rule is silently generalized.",
+  "reference_baselines": {
+    "main_dct2_64_step12b": {
+      "status": "frozen_reference_only",
+      "stage1": "raw_dot -> (+32) >> 6 -> signed16_wrap",
+      "stage2": "raw_dot -> (+32) >> 6 -> signed16_wrap -> final low10",
+      "source": "v3.5-18 Step12B/R4C evidence"
+    },
+    "lfnst": {
+      "status": "frozen_reference_only",
+      "raw": "sum(matrix[i][j] * input[j])",
+      "post": "(+64) >> 7 -> Clip3(-32768, 32767)",
+      "ntrs": [16, 48],
+      "source": "04_reference/oracle/v34_rtl_bitexact.py and canonical matrices"
+    }
+  },
+  "required_per_case_fields": [
+    "coefficient_source",
+    "matrix_orientation",
+    "input_width",
+    "product_width",
+    "accumulator_width",
+    "rounding_constant",
+    "shift",
+    "wrap_or_saturate",
+    "stage_output_width",
+    "final_output_mapping"
+  ],
+  "unresolved_cases_must_not_be_promoted_to_rtl": true
+}

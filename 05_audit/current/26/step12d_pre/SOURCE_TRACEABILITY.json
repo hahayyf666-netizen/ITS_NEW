@@ -1,0 +1,73 @@
+{
+  "schema": "step12d_pre.source_traceability.v1",
+  "status": "phase_0_1_source_extraction_in_progress",
+  "sources": [
+    {
+      "id": "HUAWEI_ATTACHMENT_EXTERNAL",
+      "kind": "official_contest_attachment",
+      "path": "D:/HWWORK/its_vvc-7.1/第九届中国研究生创芯大赛-华为赛题1.docx",
+      "sha256": "8B151B20D0708A8E88F0DBCAA6F097AD21608CA0C131A789E2EE08E9C62D3248",
+      "used_for": ["transform_shape_rows", "interface_text", "performance_text"]
+    },
+    {
+      "id": "HUAWEI_ATTACHMENT_VENDORED",
+      "kind": "repository_copy",
+      "path": "04_reference/huawei/华为附件.docx",
+      "sha256": "37306990FC8F885C5F9579552FF503CB13FAEFDA7CB8A2BA39878A180D7986A9",
+      "used_for": ["repository_reproducibility_reference"]
+    },
+    {
+      "id": "FROZEN_CANONICAL_MATRICES",
+      "kind": "repository_reference",
+      "path": "03_verification/output/canonical_matrices.json",
+      "sha256": "D4C497CFBAE64096C69D640BAD154E4E3BAE1F5834F82149623A83028B81E9F6",
+      "used_for": ["canonical_coefficients_pending_per_case_audit"]
+    },
+    {
+      "id": "FROZEN_R4C_64",
+      "kind": "frozen_rtl_baseline",
+      "path": "02_rtl/rtl/p2f_dct2_64_b1_step102.sv",
+      "sha256": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1",
+      "used_for": ["DCT2_64_reference_only"]
+    },
+    {
+      "id": "FROZEN_STEP12B_WRAPPER",
+      "kind": "frozen_wrapper_baseline",
+      "path": "02_rtl/rtl/step12b_dct2_64_wrapper.sv",
+      "sha256": "45E581A5CC542EE31ADAD49171076F804854B85D675B0CC37E2E8B0064D12A5C",
+      "used_for": ["scope_boundary_only"]
+    },
+    {
+      "id": "VTM_TRQUANT_GETTRTYPES",
+      "kind": "designated_reference_source",
+      "path": "04_reference/VTM/source/Lib/CommonLib/TrQuant.cpp",
+      "sha256": "22B3F0D1D2DD25384D6449BA49592366F24F35AB5567DAD896194209B741D7DE",
+      "source_commit": "69f5112bae8c0f91f3cbc5ba0f44b58986080f16",
+      "source_locator": "TrQuant.cpp:getTrTypes around lines 651-755",
+      "used_for": ["contextual_transform_pair_reference"]
+    }
+  ],
+  "source_findings": [
+    {
+      "id": "SRC-ITINFO-WIDTH-01",
+      "severity": "P1",
+      "status": "recorded_not_interface_blocking",
+      "finding": "Attachment table width cell says 20, while the same field description uses [19:18] and [21:20].",
+      "resolution": "Keep the frozen 22-bit interface; record the attachment cell as an inconsistency and do not narrow or reinterpret it."
+    },
+    {
+      "id": "SRC-DESC-COUPLING-01",
+      "severity": "P1",
+      "status": "unresolved",
+      "finding": "The extracted shape rows do not by themselves state the complete coupling rule for tr_type_hor and tr_type_ver.",
+      "resolution": "Do not create a default Cartesian product. Resolve from an authoritative source or mark the tuple unresolved."
+    },
+    {
+      "id": "SRC-DESC-COUPLING-02",
+      "severity": "P1",
+      "status": "reference_found_context_still_required",
+      "finding": "VTM TrQuant::getTrTypes contains context-dependent pairs DCT2_DCT2, DST7_DST7, DCT8_DST7, DST7_DCT8, and DCT8_DCT8.",
+      "resolution": "Use this as a designated reference for pair semantics, but do not claim it alone defines every contest descriptor tuple without mapping the contest interface context."
+    }
+  ]
+}
