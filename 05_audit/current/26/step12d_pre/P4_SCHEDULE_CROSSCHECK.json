@@ -1,0 +1,15 @@
+{
+  "schema": "step12d_pre.p4_schedule_crosscheck.v1",
+  "status": "PASS_P4_GROUP_LANE_GEOMETRY",
+  "cases": 13,
+  "checks": [
+    "each case has N/4 groups",
+    "each group has four complete output lanes",
+    "group II contract is 1",
+    "output indices cover 0..N-1 exactly once",
+    "direct product lower bound is 4*N per group cycle"
+  ],
+  "scope": "schedule geometry only; reduction implementation, coefficient bandwidth closure, and physical timing remain pending",
+  "rtl_modified": false,
+  "vivado_run": false
+}

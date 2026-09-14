@@ -1,0 +1,11 @@
+{
+  "schema": "step12d_pre.fixed_point_crosscheck.v1",
+  "status": "PASS_REFERENCE_FIXED_POINT_CROSSCHECK",
+  "cases": 13,
+  "vectors_per_case": 5,
+  "checks": 65,
+  "implementation": "Independent dot-product and signed16 post-processing compared with frozen v3.4 oracle.",
+  "rule_scope": "Reference cross-check only; official per-case promotion remains pending source audit.",
+  "rtl_modified": false,
+  "vivado_run": false
+}

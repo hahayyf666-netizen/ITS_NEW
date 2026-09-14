@@ -1,7 +1,7 @@
 {
   "schema": "step12d_pre.manifest.v1",
   "status": "IN_PROGRESS",
-  "phase": "source_extraction_and_contract_freeze",
+  "phase": "source_extraction_reference_fixed_point_lower_bound_and_tuple_candidates",
   "base_tag": "v3.5-18",
   "base_commit": "7415b0acb33481af1845f63e16b93ce7c33b977b",
   "rtl_tree_changed": false,
@@ -12,6 +12,14 @@
   "architecture_candidate": "NOT_SELECTED",
   "lfnst_ownership": "NOT_SELECTED",
   "pre_gate": "NOT_YET_PASS",
+  "completed_evidence": [
+    "official table extraction: DCT2=25, DCT8=16, DST7=16, LFNST=9+16",
+    "13-case canonical matrix presence check",
+    "65-vector independent fixed-point cross-check",
+    "13-case P4 output-lane geometry check",
+    "analytic A/B/C multiplier lower-bound check",
+    "89 explicit VTM reference transform-pair candidates (official mapping pending)"
+  ],
   "next_actions": [
     "resolve or explicitly classify horizontal/vertical type coupling",
     "complete per-case fixed-point contracts",

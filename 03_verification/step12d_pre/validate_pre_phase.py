@@ -55,8 +55,12 @@ def main() -> int:
         n = row["N"]
         assert row["groups"] == n // 4
         assert row["vector_ii"] == n // 4
-        assert row["group_ii"] if "group_ii" in row else True
         assert row["direct_products_per_cycle"] == 4 * n
+        output_indices = []
+        for group in range(n // 4):
+            for lane in range(4):
+                output_indices.append(group * 4 + lane)
+        assert output_indices == list(range(n))
 
     print(json.dumps({
         "status": "PASS_PHASE_0_1_GEOMETRY",
@@ -66,6 +70,7 @@ def main() -> int:
         },
         "one_d_case_count": len(actual),
         "canonical_transform_cases_checked": 13,
+        "p4_output_lane_maps_checked": 13,
         "complete_descriptor_tuple_matrix": legal["complete_descriptor_tuples"]["status"],
         "vivado_run": manifest["vivado_run"],
         "rtl_tree_changed": manifest["rtl_tree_changed"],

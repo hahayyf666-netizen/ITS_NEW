@@ -1,0 +1,41 @@
+{
+  "schema": "step12d_pre.architecture_lower_bound.v1",
+  "status": "PASS_ANALYTIC_LOWER_BOUND_NOT_PHYSICAL_PROOF",
+  "direct_p4": {
+    "max_main_transform_N_le_32": 32,
+    "max_products_per_cycle": 128,
+    "formula": "4*N",
+    "lfnst_ntrs16_or_48_products_per_cycle_at_p4": 64,
+    "note": "This is a multiplier/product lower bound, not a DSP mapping result."
+  },
+  "dct2_64_reference": {
+    "schedule_class": "factorized",
+    "frozen_r4c_dsp_reference": 128,
+    "direct_matrix_product_count_per_cycle": 256,
+    "factorized_reference_is_not_generic_proof": true
+  },
+  "candidates": {
+    "A": {
+      "multiplier_lower_bound": 128,
+      "reduction_networks": "one shared configurable fabric",
+      "main_risk": "mode-dependent mux/fanout and reduction timing",
+      "status": "analytic_candidate"
+    },
+    "B": {
+      "multiplier_lower_bound": 128,
+      "reduction_networks": "family-specific configurable reductions",
+      "main_risk": "additional reduction area and mode boundary state",
+      "status": "analytic_candidate"
+    },
+    "C": {
+      "frozen_r4c_dsp": 128,
+      "new_le32_engine_dsp_lower_bound_if_parallel": 128,
+      "total_parallel_lower_bound": 256,
+      "time_shared_total_lower_bound": 128,
+      "main_risk": "resource duplication if V3.5-18 R4C and new engine overlap",
+      "status": "analytic_candidate"
+    }
+  },
+  "selection": "PENDING_CYCLE_BANDWIDTH_REDUCTION_AND_MODE_SWITCH_ANALYSIS",
+  "vivado_run": false
+}

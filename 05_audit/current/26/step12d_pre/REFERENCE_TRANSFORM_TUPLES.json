@@ -1,0 +1,910 @@
+{
+  "schema": "step12d_pre.reference_transform_tuples.v1",
+  "status": "REFERENCE_CANDIDATES_ONLY_OFFICIAL_MAPPING_PENDING",
+  "official_legal": false,
+  "source_id": "VTM_TRQUANT_GETTRTYPES",
+  "source_locator": "04_reference/VTM/source/Lib/CommonLib/TrQuant.cpp:getTrTypes around lines 651-755",
+  "derivation": {
+    "DCT2_DCT2": "official DCT2 shape rows",
+    "non_DCT2_pairs": "intersection(official DCT8 shape rows, official DST7 shape rows)",
+    "forbidden": "No default width x height x hor_type x ver_type Cartesian product"
+  },
+  "tuple_count_lfnst_off": 89,
+  "tuples": [
+    {
+      "width": 4,
+      "height": 4,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 4,
+      "height": 8,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 4,
+      "height": 16,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 4,
+      "height": 32,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 4,
+      "height": 64,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 8,
+      "height": 4,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 16,
+      "height": 4,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 32,
+      "height": 4,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 64,
+      "height": 4,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 8,
+      "height": 8,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 8,
+      "height": 16,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 8,
+      "height": 32,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 8,
+      "height": 64,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 16,
+      "height": 8,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 32,
+      "height": 8,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 64,
+      "height": 8,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 16,
+      "height": 16,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 16,
+      "height": 32,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 16,
+      "height": 64,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 32,
+      "height": 16,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 32,
+      "height": 32,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 32,
+      "height": 64,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 64,
+      "height": 16,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 64,
+      "height": 32,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 64,
+      "height": 64,
+      "hor_type": "DCT2",
+      "ver_type": "DCT2",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "default and non-MTS path"
+    },
+    {
+      "width": 16,
+      "height": 16,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 32,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 4,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 8,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 16,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 32,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 4,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 8,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 16,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 32,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 4,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 8,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 16,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 32,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 4,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 8,
+      "hor_type": "DST7",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 16,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 32,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 4,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 8,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 16,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 32,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 4,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 8,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 16,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 32,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 4,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 8,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 16,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 32,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 4,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 8,
+      "hor_type": "DCT8",
+      "ver_type": "DST7",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 16,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 32,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 4,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 8,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 16,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 32,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 4,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 8,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 16,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 32,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 4,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 8,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 16,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 32,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 4,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 8,
+      "hor_type": "DST7",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 16,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 32,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 4,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 16,
+      "height": 8,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 16,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 32,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 4,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 32,
+      "height": 8,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 16,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 32,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 4,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 4,
+      "height": 8,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 16,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 32,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 4,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    },
+    {
+      "width": 8,
+      "height": 8,
+      "hor_type": "DCT8",
+      "ver_type": "DCT8",
+      "lfnst_idx": 0,
+      "status": "reference_candidate_not_official_legal",
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "source_context": "explicit/implicit MTS reference path"
+    }
+  ],
+  "lfnst": {
+    "status": "PENDING_OFFICIAL_OR_CONTEXT_MAPPING",
+    "shape_rows_are_not_pair_rules": true,
+    "reason": "Neither the attachment rows nor getTrTypes alone establish the complete lfnst/type-pair descriptor coupling."
+  }
+}

@@ -68,6 +68,13 @@
       "status": "reference_found_context_still_required",
       "finding": "VTM TrQuant::getTrTypes contains context-dependent pairs DCT2_DCT2, DST7_DST7, DCT8_DST7, DST7_DCT8, and DCT8_DCT8.",
       "resolution": "Use this as a designated reference for pair semantics, but do not claim it alone defines every contest descriptor tuple without mapping the contest interface context."
+    },
+    {
+      "id": "SRC-DESC-COUPLING-03",
+      "severity": "P1",
+      "status": "reference_candidate_derivation_recorded_not_official",
+      "finding": "The VTM pair rules can be mechanically expanded against the official shape-row intersections into 89 LFNST-off reference candidates.",
+      "resolution": "Store the explicit candidates with provenance, but keep official_legal=false until the contest descriptor/context mapping is independently resolved."
     }
   ]
 }
