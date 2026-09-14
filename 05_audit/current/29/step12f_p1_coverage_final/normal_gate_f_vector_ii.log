@@ -1,0 +1,37 @@
+# vsim -c work.unified_p4_kernel_throughput_full_tb -l C:\Users\Fine\AppData\Local\Temp\step12f_coverage_20260914_201924\normal\gate_f_vector_ii.log -do "run -all; quit -f" 
+# Start time: 20:19:32 on Sep 14,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_p4_kernel_throughput_full_tb(fast)
+# run -all
+# GATE_F_VECTOR_II_PASS type=0 size=4 ii=1 vectors=8
+# GATE_F_VECTOR_II_PASS type=0 size=8 ii=2 vectors=8
+# GATE_F_VECTOR_II_PASS type=0 size=16 ii=4 vectors=8
+# GATE_F_VECTOR_II_PASS type=0 size=32 ii=8 vectors=8
+# GATE_F_VECTOR_II_PASS type=0 size=64 ii=16 vectors=8
+# GATE_F_VECTOR_II_PASS type=1 size=4 ii=1 vectors=8
+# GATE_F_VECTOR_II_PASS type=1 size=8 ii=2 vectors=8
+# GATE_F_VECTOR_II_PASS type=1 size=16 ii=4 vectors=8
+# GATE_F_VECTOR_II_PASS type=1 size=32 ii=8 vectors=8
+# GATE_F_VECTOR_II_PASS type=2 size=4 ii=1 vectors=8
+# GATE_F_VECTOR_II_PASS type=2 size=8 ii=2 vectors=8
+# GATE_F_VECTOR_II_PASS type=2 size=16 ii=4 vectors=8
+# GATE_F_VECTOR_II_PASS type=2 size=32 ii=8 vectors=8
+# GATE_F_VECTOR_II_TB_PASS modes=13
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/tb/unified_p4_kernel_throughput_full_tb.sv(155)
+#    Time: 1277001 ps  Iteration: 0  Instance: /unified_p4_kernel_throughput_full_tb
+# End time: 20:19:33 on Sep 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0

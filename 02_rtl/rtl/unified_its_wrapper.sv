@@ -2,8 +2,8 @@
 //
 // This is a new functional engineering implementation.  It deliberately
 // lives beside, rather than inside, the frozen v3.5-18 wrapper/R4C.  LFNST
-// cases retain an independent direct reference path, while LFNST-off primary
-// cases use the integrated four-slot P4 kernel for both transform passes.  The
+// cases use the bounded LFNST engine followed by the integrated four-slot P4
+// kernel, while LFNST-off primary cases use the P4 kernel directly.  The
 // wrapper still exposes the descriptor, sparse-raster, ownership and output
 // protocol contracts needed by Gate C before physical implementation.
 //
@@ -18,7 +18,8 @@ module unified_its_wrapper #(
     parameter integer LFNST_DEPTH = 8192,
     parameter integer FINAL_SATURATE = 0,
     parameter string COEFF_FILE = "03_verification/sim/rom_coeffs.hex",
-    parameter string LFNST_FILE = "03_verification/sim/lfnst_coeffs.hex"
+    parameter string LFNST_FILE = "03_verification/sim/lfnst_coeffs.hex",
+    parameter string LFNST_PACKED_FILE = "03_verification/sim/lfnst_packed_coeffs.hex"
 ) (
     input  logic                         clk,
     input  logic                         rst_n,
@@ -36,24 +37,21 @@ module unified_its_wrapper #(
     output logic                         protocol_error
 );
 
-    localparam logic [1:0] SLOT_FREE  = 2'd0;
-    localparam logic [1:0] SLOT_FILL  = 2'd1;
-    localparam logic [1:0] SLOT_READY = 2'd2;
-    localparam logic [1:0] SLOT_OUT   = 2'd3;
+    localparam logic [2:0] SLOT_FREE  = 3'd0;
+    localparam logic [2:0] SLOT_FILL  = 3'd1;
+    localparam logic [2:0] SLOT_READY = 3'd2;
+    localparam logic [2:0] SLOT_OUT   = 3'd3;
+    localparam logic [2:0] SLOT_SCRUB = 3'd4;
+    localparam integer INPUT_VALID_WORDS = MAX_POINTS / 4;
 
-    logic signed [15:0] coeff_mem [0:COEFF_DEPTH-1];
-    logic signed [15:0] lfnst_mem [0:LFNST_DEPTH-1];
-    initial begin
-        $readmemh(COEFF_FILE, coeff_mem);
-        $readmemh(LFNST_FILE, lfnst_mem);
-    end
-
-    // Two independent ownership slots.  Input memory is cleared when a slot
-    // is bound, not by asynchronous reset; this preserves the RAM-friendly
-    // reset contract and makes omitted sparse addresses deterministic zero.
+    // Two independent ownership slots.  Data is never bulk-cleared.  A
+    // per-address valid tag is scrubbed four entries per cycle before a slot
+    // can accept data, preserving sparse-input zero semantics without a
+    // single-cycle 4096-write operation.
     logic signed [DATA_W-1:0] input_mem [0:1][0:MAX_POINTS-1];
     logic signed [OUT_W-1:0]  result_mem[0:1][0:MAX_POINTS-1];
-    logic [1:0] slot_state [0:1];
+    logic                      input_valid [0:1][0:MAX_POINTS-1];
+    logic [2:0] slot_state [0:1];
     logic [6:0] slot_width [0:1];
     logic [6:0] slot_height[0:1];
     logic [1:0] slot_hor   [0:1];
@@ -68,14 +66,17 @@ module unified_its_wrapper #(
     logic [1:0]  desc_count;
     logic        fill_active;
     logic        fill_slot;
+    logic        scrub_active;
+    logic        scrub_slot;
+    logic [11:0] scrub_index;
 
     logic        output_active;
     logic        output_slot;
     logic [11:0] output_index;
 
-    // Gate-B unified P4 kernel integration.  LFNST-enabled cases retain the
-    // independent profile reference path below; all LFNST-off primary
-    // transforms use this kernel for both vertical and horizontal passes.
+    // Gate-B unified P4 kernel integration.  LFNST-enabled cases first use the
+    // bounded engine above and then reuse this kernel for the DCT2 passes;
+    // LFNST-off primary transforms use this kernel directly.
     logic        compute_slot_q;
     logic        kernel_run_q;
     typedef enum logic [2:0] {K_IDLE, K_V_START, K_V_FEED, K_V_DRAIN,
@@ -97,6 +98,22 @@ module unified_its_wrapper #(
     logic       kernel_busy;
     logic       kernel_error;
 
+    logic       lfnst_run_q;
+    logic       lfnst_start_q;
+    logic       lfnst_slot_q;
+    logic       lfnst_ntrs48_q;
+    logic       lfnst_nonzero8_q;
+    logic [1:0] lfnst_set_q;
+    logic [1:0] lfnst_idx_q;
+    logic signed [255:0] lfnst_input_terms;
+    logic       lfnst_busy;
+    logic       lfnst_out_valid;
+    logic signed [63:0] lfnst_out_data;
+    logic [3:0] lfnst_out_group;
+    logic       lfnst_out_last;
+    logic       lfnst_done;
+    logic       lfnst_error;
+
     unified_p4_kernel #(
         .DATA_W(16), .COEFF_W(16), .ACC_W(40), .MAX_N(64),
         .COEFF_DEPTH(COEFF_DEPTH), .COEFF_FILE(COEFF_FILE)
@@ -111,6 +128,19 @@ module unified_its_wrapper #(
         .out_valid(kernel_out_valid), .out_req(kernel_out_req),
         .out_data(kernel_out_data), .done(kernel_done),
         .busy(kernel_busy), .error(kernel_error)
+    );
+
+    bounded_lfnst_engine #(
+        .DATA_W(16), .COEFF_W(16), .ACC_W(40),
+        .COEFF_FILE(LFNST_PACKED_FILE)
+    ) u_bounded_lfnst_engine (
+        .clk(clk), .rst_n(rst_n), .start(lfnst_start_q),
+        .set_idx(lfnst_set_q), .lfnst_idx(lfnst_idx_q),
+        .ntrs48(lfnst_ntrs48_q), .nonzero8(lfnst_nonzero8_q),
+        .input_terms(lfnst_input_terms), .busy(lfnst_busy),
+        .out_valid(lfnst_out_valid), .out_data(lfnst_out_data),
+        .out_group(lfnst_out_group), .out_last(lfnst_out_last),
+        .done(lfnst_done), .error(lfnst_error)
     );
 
     logic        descriptor_shape_ok;
@@ -164,6 +194,19 @@ module unified_its_wrapper #(
         end
     endfunction
 
+    function automatic logic [6:0] lfnst_cut_dim(input logic [6:0] n,
+                                                  input logic [6:0] other_n);
+        begin
+            // LFNST operates on a 4x4 or 8x8 low-frequency support region.
+            // The shape contract guarantees both dimensions are powers of two
+            // in the supported 4..64 range.
+            if ((n == 7'd4) || (other_n == 7'd4))
+                lfnst_cut_dim = 7'd4;
+            else
+                lfnst_cut_dim = 7'd8;
+        end
+    endfunction
+
     function automatic logic lfnst_shape_supported(input logic [6:0] w,
                                                     input logic [6:0] h);
         begin
@@ -206,7 +249,7 @@ module unified_its_wrapper #(
     always_comb begin
         bind_event = 1'b0;
         bind_slot = 1'b0;
-        if (!fill_active && (desc_count != 2'd0)) begin
+        if (!fill_active && !scrub_active && (desc_count != 2'd0)) begin
             if (slot_state[0] == SLOT_FREE) begin
                 bind_event = 1'b1;
                 bind_slot = 1'b0;
@@ -244,21 +287,6 @@ module unified_its_wrapper #(
                 {2'd2,7'd32}: coeff_base = 7152;
                 default:      coeff_base = 0;
             endcase
-        end
-    endfunction
-
-    function automatic integer lfnst_base(input integer ntrs,
-                                           input logic [1:0] set_i,
-                                           input logic [1:0] idx_i);
-        integer idx_m1;
-        begin
-            idx_m1 = idx_i - 1;
-            if (ntrs == 16)
-                lfnst_base = set_i * 512 + (idx_m1 & 1) * 256;
-            else
-                // The 48-output tables are stored as eight complete
-                // set/index scenarios of 48x16 = 768 coefficients each.
-                lfnst_base = 2048 + set_i * 1536 + (idx_m1 & 1) * 768;
         end
     endfunction
 
@@ -319,23 +347,6 @@ module unified_its_wrapper #(
         end
     endfunction
 
-    function automatic signed [15:0] vtm_round_clip(
-        input longint signed raw_i,
-        input integer shift_i,
-        input integer lo_i,
-        input integer hi_i);
-        longint signed value_i;
-        begin
-            value_i = (raw_i + (64'sd1 <<< (shift_i - 1))) >>> shift_i;
-            if (value_i > hi_i)
-                vtm_round_clip = 16'sh7fff;
-            else if (value_i < lo_i)
-                vtm_round_clip = 16'sh8000;
-            else
-                vtm_round_clip = value_i[15:0];
-        end
-    endfunction
-
     function automatic signed [9:0] final_adapter(input signed [15:0] wide_i);
         integer signed value_i;
         begin
@@ -353,118 +364,25 @@ module unified_its_wrapper #(
         end
     endfunction
 
-    // Direct profile-compliant 2-D reference calculation.  This is purposely
-    // a verification baseline; the Gate-B P4 kernel is the later replacement
-    // point for a physically scheduled implementation.
-    logic signed [15:0] work_calc [0:MAX_POINTS-1];
-    logic signed [15:0] tmp_calc  [0:MAX_POINTS-1];
-    // The unified kernel's vertical results are state, not part of the
-    // combinational reference calculation above.  Keep a separate array so
-    // the kernel pipeline has a single sequential writer and the reference
-    // model remains single-driver under ModelSim/vopt.
+    // The unified kernel's vertical results are state.  Keep a separate array
+    // so the kernel pipeline has a single sequential writer.
     logic signed [15:0] kernel_tmp_calc [0:MAX_POINTS-1];
-    logic signed [15:0] wide_calc [0:MAX_POINTS-1];
-    logic signed [9:0]  output_calc[0:MAX_POINTS-1];
-    logic signed [15:0] lfnst_calc[0:47];
-    integer calc_i, calc_j, calc_k;
-    integer calc_w, calc_h, calc_cut_w, calc_cut_h, calc_side, calc_ntrs;
-    integer calc_nonzero;
-    integer calc_skip_w, calc_skip_h, calc_base, calc_raw;
-    integer calc_row, calc_col, calc_out, calc_scan_r, calc_scan_c;
+    integer gather_i, gather_row, gather_col, gather_addr, lfnst_write_addr;
 
+    // The gather is bounded at 16 terms.  Valid tags convert omitted sparse
+    // input addresses to deterministic zero without clearing input_mem.
     always_comb begin
-        for (calc_i = 0; calc_i < MAX_POINTS; calc_i = calc_i + 1) begin
-            work_calc[calc_i] = 16'sd0;
-            tmp_calc[calc_i] = 16'sd0;
-            wide_calc[calc_i] = 16'sd0;
-            output_calc[calc_i] = 10'sd0;
+        lfnst_input_terms = '0;
+        for (gather_i = 0; gather_i < 16; gather_i = gather_i + 1) begin
+            gather_row = scan_row(gather_i, lfnst_ntrs48_q ? 8 : 4);
+            gather_col = scan_col(gather_i, lfnst_ntrs48_q ? 8 : 4);
+            gather_addr = gather_row * slot_width[compute_slot_q] + gather_col;
+            if ((gather_row < slot_height[compute_slot_q]) &&
+                (gather_col < slot_width[compute_slot_q]) &&
+                input_valid[compute_slot_q][gather_addr])
+                lfnst_input_terms[gather_i*16 +: 16] =
+                    input_mem[compute_slot_q][gather_addr];
         end
-        for (calc_i = 0; calc_i < 48; calc_i = calc_i + 1)
-            lfnst_calc[calc_i] = 16'sd0;
-
-        calc_w = slot_width[compute_slot];
-        calc_h = slot_height[compute_slot];
-        for (calc_i = 0; calc_i < MAX_POINTS; calc_i = calc_i + 1)
-            if (calc_i < calc_w * calc_h)
-                work_calc[calc_i] = input_mem[compute_slot][calc_i];
-
-        calc_ntrs = 0;
-        calc_nonzero = 16;
-        calc_side = 4;
-        if (slot_lfnst[compute_slot] != 2'd0) begin
-            calc_ntrs = ((calc_w == 4) || (calc_h == 4)) ? 16 : 48;
-            calc_nonzero = (((calc_w == 4) && (calc_h == 4)) ||
-                            ((calc_w == 8) && (calc_h == 8))) ? 8 : 16;
-            calc_side = (calc_ntrs == 16) ? 4 : 8;
-            for (calc_out = 0; calc_out < calc_ntrs; calc_out = calc_out + 1) begin
-                calc_raw = 0;
-                for (calc_j = 0; calc_j < calc_nonzero; calc_j = calc_j + 1) begin
-                    calc_scan_r = scan_row(calc_j, calc_side);
-                    calc_scan_c = scan_col(calc_j, calc_side);
-                    if ((calc_scan_r < calc_h) && (calc_scan_c < calc_w))
-                        calc_raw = calc_raw +
-                                   $signed(lfnst_mem[lfnst_base(calc_ntrs,
-                                                       slot_set[compute_slot],
-                                                       slot_lfnst[compute_slot]) +
-                                                       calc_out*16 + calc_j]) *
-                                   $signed(work_calc[calc_scan_r*calc_w + calc_scan_c]);
-                end
-                lfnst_calc[calc_out] = vtm_round_clip(calc_raw, 7, -32768, 32767);
-            end
-            for (calc_out = 0; calc_out < calc_ntrs; calc_out = calc_out + 1) begin
-                calc_scan_r = scan_row(calc_out, calc_side);
-                calc_scan_c = scan_col(calc_out, calc_side);
-                if ((calc_scan_r < calc_h) && (calc_scan_c < calc_w))
-                    work_calc[calc_scan_r*calc_w + calc_scan_c] = lfnst_calc[calc_out];
-            end
-        end
-
-        if (slot_hor[compute_slot] != 2'd0 && calc_w == 32)
-            calc_skip_w = 16;
-        else
-            calc_skip_w = (calc_w > 32) ? calc_w - 32 : 0;
-        if (slot_ver[compute_slot] != 2'd0 && calc_h == 32)
-            calc_skip_h = 16;
-        else
-            calc_skip_h = (calc_h > 32) ? calc_h - 32 : 0;
-        if (slot_lfnst[compute_slot] != 2'd0) begin
-            if (((calc_w == 4) && (calc_h > 4)) ||
-                ((calc_h == 4) && (calc_w > 4))) begin
-                calc_skip_w = calc_w - 4;
-                calc_skip_h = calc_h - 4;
-            end else if ((calc_w >= 8) && (calc_h >= 8)) begin
-                calc_skip_w = calc_w - 8;
-                calc_skip_h = calc_h - 8;
-            end
-        end
-        calc_cut_w = calc_w - calc_skip_w;
-        calc_cut_h = calc_h - calc_skip_h;
-
-        calc_base = coeff_base(slot_ver[compute_slot], calc_h);
-        for (calc_col = 0; calc_col < calc_cut_w; calc_col = calc_col + 1)
-            for (calc_row = 0; calc_row < calc_cut_h; calc_row = calc_row + 1) begin
-                calc_raw = 0;
-                for (calc_k = 0; calc_k < calc_cut_h; calc_k = calc_k + 1)
-                    calc_raw = calc_raw +
-                               $signed(coeff_mem[calc_base + calc_row*calc_h + calc_k]) *
-                               $signed(work_calc[calc_k*calc_w + calc_col]);
-                tmp_calc[calc_row*calc_w + calc_col] =
-                    vtm_round_clip(calc_raw, 7, -32768, 32767);
-            end
-
-        calc_base = coeff_base(slot_hor[compute_slot], calc_w);
-        for (calc_row = 0; calc_row < calc_h; calc_row = calc_row + 1)
-            for (calc_col = 0; calc_col < calc_w; calc_col = calc_col + 1) begin
-                calc_raw = 0;
-                for (calc_k = 0; calc_k < calc_cut_w; calc_k = calc_k + 1)
-                    calc_raw = calc_raw +
-                               $signed(coeff_mem[calc_base + calc_col*calc_w + calc_k]) *
-                               $signed(tmp_calc[calc_row*calc_w + calc_k]);
-                wide_calc[calc_row*calc_w + calc_col] =
-                    vtm_round_clip(calc_raw, 10, -32768, 32767);
-                output_calc[calc_row*calc_w + calc_col] =
-                    final_adapter(wide_calc[calc_row*calc_w + calc_col]);
-            end
     end
 
     always_comb begin
@@ -474,7 +392,7 @@ module unified_its_wrapper #(
         // horizontal pass has completed.  Do not admit another ready slot
         // while that run is active; otherwise a queued TU would overwrite the
         // in-flight kernel's owner and dimensions.
-        if (!output_active && !kernel_run_q) begin
+        if (!output_active && !kernel_run_q && !lfnst_run_q && !scrub_active) begin
             if (slot_state[0] == SLOT_READY) begin
                 compute_valid = 1'b1;
                 compute_slot = 1'b0;
@@ -503,14 +421,17 @@ module unified_its_wrapper #(
             kernel_sample_index_i = kernel_group_q * 4 + kernel_lane_i;
             if (kernel_in_valid && !kernel_stage_q) begin
                 if (kernel_sample_index_i < kernel_cut_h_q)
-                    kernel_in_data[kernel_lane_i*16 +: 16] =
-                        input_mem[compute_slot_q][kernel_sample_index_i *
-                                                  kernel_w_q + kernel_vector_q];
+                    if (input_valid[compute_slot_q][kernel_sample_index_i *
+                                                    kernel_w_q + kernel_vector_q])
+                        kernel_in_data[kernel_lane_i*16 +: 16] =
+                            input_mem[compute_slot_q][kernel_sample_index_i *
+                                                      kernel_w_q + kernel_vector_q];
             end else if (kernel_in_valid) begin
-                if (kernel_sample_index_i < kernel_cut_w_q)
+                if ((kernel_sample_index_i < kernel_cut_w_q) &&
+                    (kernel_vector_q < kernel_cut_h_q))
                     kernel_in_data[kernel_lane_i*16 +: 16] =
-                    kernel_tmp_calc[kernel_vector_q * kernel_w_q +
-                                    kernel_sample_index_i];
+                        kernel_tmp_calc[kernel_vector_q * kernel_w_q +
+                                        kernel_sample_index_i];
             end
         end
     end
@@ -545,7 +466,7 @@ module unified_its_wrapper #(
         it_done = output_last_fire;
     end
 
-    integer reset_i, clear_i, result_i;
+    integer reset_i, scrub_lane_i;
     integer kernel_capture_lane_i;
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -554,6 +475,9 @@ module unified_its_wrapper #(
             desc_count    <= 2'd0;
             fill_active   <= 1'b0;
             fill_slot     <= 1'b0;
+            scrub_active  <= 1'b0;
+            scrub_slot    <= 1'b0;
+            scrub_index   <= 12'd0;
             output_active <= 1'b0;
             output_slot   <= 1'b0;
             output_index  <= 12'd0;
@@ -568,6 +492,13 @@ module unified_its_wrapper #(
             kernel_group_q <= 5'd0;
             kernel_type_q <= 2'd0;
             kernel_stage_q <= 1'b0;
+            lfnst_run_q <= 1'b0;
+            lfnst_start_q <= 1'b0;
+            lfnst_slot_q <= 1'b0;
+            lfnst_ntrs48_q <= 1'b0;
+            lfnst_nonzero8_q <= 1'b0;
+            lfnst_set_q <= 2'd0;
+            lfnst_idx_q <= 2'd0;
             protocol_error <= 1'b0;
             for (reset_i = 0; reset_i < 2; reset_i = reset_i + 1) begin
                 slot_state[reset_i]  <= SLOT_FREE;
@@ -579,6 +510,10 @@ module unified_its_wrapper #(
                 slot_lfnst[reset_i]  <= 2'd0;
             end
         end else begin
+            // A one-cycle pulse starts the bounded LFNST engine on the next
+            // edge, after compute_slot_q and its descriptor metadata settle.
+            lfnst_start_q <= 1'b0;
+
             if (it_info_vld && !descriptor_legal)
                 protocol_error <= 1'b1;
             if (it_info_vld && (desc_count == 2'd2) && !bind_event)
@@ -593,7 +528,7 @@ module unified_its_wrapper #(
                 desc_wr_ptr <= ~desc_wr_ptr;
             end
             if (bind_event) begin
-                slot_state[bind_slot]  <= SLOT_FILL;
+                slot_state[bind_slot]  <= SLOT_SCRUB;
                 slot_width[bind_slot]  <= desc_mem[desc_rd_ptr][6:0];
                 slot_height[bind_slot] <= desc_mem[desc_rd_ptr][13:7];
                 slot_hor[bind_slot]    <= desc_mem[desc_rd_ptr][15:14];
@@ -601,12 +536,28 @@ module unified_its_wrapper #(
                 slot_set[bind_slot]    <= desc_mem[desc_rd_ptr][19:18];
                 slot_lfnst[bind_slot]  <= desc_mem[desc_rd_ptr][21:20];
                 desc_rd_ptr <= ~desc_rd_ptr;
-                fill_active <= 1'b1;
-                fill_slot   <= bind_slot;
-                // Startup slot clear is a simulation-safe sparse-memory
-                // initialisation boundary, not an asynchronous RAM reset.
-                for (clear_i = 0; clear_i < MAX_POINTS; clear_i = clear_i + 1)
-                    input_mem[bind_slot][clear_i] <= '0;
+                // Four valid tags are scrubbed per cycle before the slot is
+                // exposed through it_data_in_req.  input_mem itself is never
+                // bulk-cleared.
+                scrub_active <= 1'b1;
+                scrub_slot   <= bind_slot;
+                scrub_index  <= 12'd0;
+            end
+
+            if (scrub_active) begin
+                for (scrub_lane_i = 0; scrub_lane_i < 4;
+                     scrub_lane_i = scrub_lane_i + 1)
+                    if ((scrub_index * 4 + scrub_lane_i) < MAX_POINTS)
+                        input_valid[scrub_slot][scrub_index * 4 + scrub_lane_i] <= 1'b0;
+                if (scrub_index == (INPUT_VALID_WORDS - 1)) begin
+                    scrub_active <= 1'b0;
+                    slot_state[scrub_slot] <= SLOT_FILL;
+                    fill_active <= 1'b1;
+                    fill_slot <= scrub_slot;
+                    scrub_index <= 12'd0;
+                end else begin
+                    scrub_index <= scrub_index + 1'b1;
+                end
             end
 
             case ({desc_push, bind_event})
@@ -617,6 +568,7 @@ module unified_its_wrapper #(
 
             if (input_fire) begin
                 input_mem[fill_slot][it_data_addr] <= it_data_in;
+                input_valid[fill_slot][it_data_addr] <= 1'b1;
             end
             if (input_end_fire) begin
                 slot_state[fill_slot] <= SLOT_READY;
@@ -644,23 +596,32 @@ module unified_its_wrapper #(
                     kernel_type_q <= slot_ver[compute_slot];
                     kernel_stage_q <= 1'b0;
                     output_active <= 1'b0;
-                    for (result_i = 0; result_i < MAX_POINTS;
-                         result_i = result_i + 1)
-                        if (result_i < tu_points(slot_width[compute_slot],
-                                                 slot_height[compute_slot]))
-                            result_mem[compute_slot][result_i] <= '0;
                 end else begin
-                    // Active LFNST remains on the independent profile
-                    // reference path until a dedicated LFNST kernel is chosen.
+                    // Active LFNST first writes its bounded output groups back
+                    // into the owned input slot, then reuses the DCT2 P4
+                    // vertical/horizontal path below.
                     kernel_run_q <= 1'b0;
                     kernel_phase_q <= K_IDLE;
-                    output_active <= 1'b1;
-                    output_slot   <= compute_slot;
-                    for (result_i = 0; result_i < MAX_POINTS;
-                         result_i = result_i + 1)
-                        if (result_i < tu_points(slot_width[compute_slot],
-                                                 slot_height[compute_slot]))
-                            result_mem[compute_slot][result_i] <= output_calc[result_i];
+                    output_active <= 1'b0;
+                    lfnst_run_q <= 1'b1;
+                    lfnst_start_q <= 1'b1;
+                    lfnst_slot_q <= compute_slot;
+                    lfnst_set_q <= slot_set[compute_slot];
+                    lfnst_idx_q <= slot_lfnst[compute_slot];
+                    lfnst_ntrs48_q <= !((slot_width[compute_slot] == 7'd4) ||
+                                        (slot_height[compute_slot] == 7'd4));
+                    lfnst_nonzero8_q <= ((slot_width[compute_slot] == 7'd4) &&
+                                         (slot_height[compute_slot] == 7'd4)) ||
+                                        ((slot_width[compute_slot] == 7'd8) &&
+                                         (slot_height[compute_slot] == 7'd8));
+                    kernel_w_q <= slot_width[compute_slot];
+                    kernel_h_q <= slot_height[compute_slot];
+                    kernel_cut_w_q <= lfnst_cut_dim(slot_width[compute_slot],
+                                                    slot_height[compute_slot]);
+                    kernel_cut_h_q <= lfnst_cut_dim(slot_height[compute_slot],
+                                                    slot_width[compute_slot]);
+                    kernel_vector_q <= 7'd0;
+                    kernel_group_q <= 5'd0;
                 end
             end else if (output_fire) begin
                 if (output_last_fire) begin
@@ -674,6 +635,46 @@ module unified_its_wrapper #(
 
             if (kernel_error)
                 protocol_error <= 1'b1;
+            if (lfnst_error)
+                protocol_error <= 1'b1;
+
+            if (lfnst_run_q) begin
+                if (lfnst_out_valid) begin
+                    for (kernel_capture_lane_i = 0;
+                         kernel_capture_lane_i < 4;
+                         kernel_capture_lane_i = kernel_capture_lane_i + 1) begin
+                        if ((lfnst_out_group * 4 + kernel_capture_lane_i) <
+                            (lfnst_ntrs48_q ? 48 : 16)) begin
+                            lfnst_write_addr =
+                                scan_row(lfnst_out_group * 4 + kernel_capture_lane_i,
+                                         lfnst_ntrs48_q ? 8 : 4) *
+                                slot_width[lfnst_slot_q] +
+                                scan_col(lfnst_out_group * 4 + kernel_capture_lane_i,
+                                         lfnst_ntrs48_q ? 8 : 4);
+                            if ((lfnst_write_addr < MAX_POINTS) &&
+                                (scan_row(lfnst_out_group * 4 + kernel_capture_lane_i,
+                                          lfnst_ntrs48_q ? 8 : 4) <
+                                 slot_height[lfnst_slot_q]) &&
+                                (scan_col(lfnst_out_group * 4 + kernel_capture_lane_i,
+                                          lfnst_ntrs48_q ? 8 : 4) <
+                                 slot_width[lfnst_slot_q])) begin
+                                input_mem[lfnst_slot_q][lfnst_write_addr] <=
+                                    $signed(lfnst_out_data[kernel_capture_lane_i*16 +: 16]);
+                                input_valid[lfnst_slot_q][lfnst_write_addr] <= 1'b1;
+                            end
+                        end
+                    end
+                end
+                if (lfnst_done) begin
+                    lfnst_run_q <= 1'b0;
+                    kernel_run_q <= 1'b1;
+                    kernel_phase_q <= K_V_START;
+                    kernel_type_q <= 2'd0;
+                    kernel_stage_q <= 1'b0;
+                    kernel_vector_q <= 7'd0;
+                    kernel_group_q <= 5'd0;
+                end
+            end
 
             if (kernel_run_q) begin
                 case (kernel_phase_q)
@@ -750,11 +751,12 @@ module unified_its_wrapper #(
                                  kernel_capture_lane_i < 4;
                                  kernel_capture_lane_i = kernel_capture_lane_i + 1)
                                 if ((kernel_group_q * 4 + kernel_capture_lane_i) < kernel_w_q)
-                                    result_mem[compute_slot_q][kernel_vector_q *
-                                                                kernel_w_q +
-                                                                kernel_group_q * 4 +
-                                                                kernel_capture_lane_i] <=
-                                        $signed(kernel_out_data[kernel_capture_lane_i*16 +: 16]);
+                                result_mem[compute_slot_q][kernel_vector_q *
+                                                            kernel_w_q +
+                                                            kernel_group_q * 4 +
+                                                            kernel_capture_lane_i] <=
+                                    final_adapter($signed(kernel_out_data[
+                                        kernel_capture_lane_i*16 +: 16]));
                             kernel_group_q <= kernel_group_q + 1'b1;
                         end
                         if (kernel_done) begin
@@ -763,7 +765,7 @@ module unified_its_wrapper #(
                             // cadence while advancing to the next row; only
                             // the final row hands ownership to the output
                             // protocol.
-                            if (kernel_vector_q + 1'b1 < kernel_cut_h_q) begin
+                            if (kernel_vector_q + 1'b1 < kernel_h_q) begin
                                 kernel_vector_q <= kernel_vector_q + 1'b1;
                                 kernel_group_q <= 5'd0;
                                 kernel_phase_q <= K_H_START;

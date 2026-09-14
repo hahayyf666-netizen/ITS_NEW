@@ -1,0 +1,78 @@
+{
+  "schema": "step12f_p1.manifest.v1",
+  "status": "STOP_SYNTHESIS_TIMEOUT_RESOURCE",
+  "stage": "Step12F-P1 bounded synthesizable datapath replacement",
+  "baseline_commit": "f0c3dbeb41727263d4ac8a289baff4e138e1d567",
+  "v35_18_tag_unchanged": true,
+  "frozen_boundaries": {
+    "v35_18": "UNCHANGED",
+    "frozen_r4c": "UNCHANGED",
+    "old_step12b_wrapper": "UNCHANGED",
+    "xdc": "UNCHANGED",
+    "new_unified_wrapper": "modified_only_for_bounded_datapath",
+    "vivado_run": true,
+    "route_run": false,
+    "new_tag_created": false
+  },
+  "coverage_lane": {
+    "status": "PASS",
+    "simulator": "ModelSim SE-64 2020.4",
+    "modes": ["normal", "SYNTHESIS"],
+    "gate_b_numeric_cases_per_mode": 156,
+    "gate_f_vector_ii_modes_per_mode": 13,
+    "gate_c_tuple_cases_per_mode": 369,
+    "gate_c_beats_per_mode": 45636,
+    "lfnst_engine_specialty_cases_per_mode": 1088,
+    "lfnst_wrapper_specialty_cases_per_mode": 258,
+    "evidence": "step12f_p1_coverage_final/STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "evidence_sha256": "CBCC56975A5F7160450AC6D469D2D4DD76456E4D319E4EC29E28A257E8576159"
+  },
+  "physical_lane": {
+    "status": "STOP",
+    "tool": "Vivado 2025.2",
+    "top": "unified_its_wrapper",
+    "part": "xcku5p-ffvb676-2-e",
+    "period_ns": 2.0,
+    "max_threads": 1,
+    "started": "2026-09-14T20:02:25+08:00",
+    "terminated": "2026-09-14T22:04:38+08:00",
+    "observed_elapsed_sec": 7333,
+    "timeout_limit_sec": 7200,
+    "termination_reason": "manual_stop_after_bounded_observation_limit",
+    "synth_design": "NO_COMPLETION_WITHIN_LIMIT",
+    "implementation": "NOT_RUN",
+    "reports": "NOT_GENERATED",
+    "checkpoint": "NOT_GENERATED",
+    "log": "step12f_p1_physical/step12f_p1_vivado.log",
+    "journal": "step12f_p1_physical/step12f_p1_vivado.jou",
+    "log_sha256": "94918077012B4F3DA2017A0D95E1F941867EB5D4A81E66B676B39FD63A7D5DA9",
+    "journal_sha256": "0F51BB2AC40DF76B726FCA27B74DE0338A5949374AE06546C0D23F318CE216E5",
+    "timing_claim": "NOT_AVAILABLE",
+    "ppa_claim": "NOT_AVAILABLE"
+  },
+  "inference_diagnostics": {
+    "status": "STRUCTURAL_WARNINGS_OBSERVED",
+    "findings": [
+      "kernel_tmp_calc is dissolved into registers because the wrapper writes it from multiple dynamic locations",
+      "wrapper input/result memories and descriptor storage have unsupported reset/multi-write patterns for RAM inference",
+      "Vivado reported Synth 8-4767/8-13159 and potential runtime issues before the bounded run was stopped"
+    ],
+    "resource_viability": "NOT_DETERMINED"
+  },
+  "source_hashes_sha256": {
+    "unified_its_wrapper": "B6BFA179A9FA0128EF4CDB1D3F1305C8D89F640A1C9364303A4285D2E145FC2E",
+    "bounded_lfnst_engine": "19FDBD89A728924B2E3009CDED5B35D0234B9960DA40CD10616016CD8A94473F",
+    "lfnst_packed_coeffs_rtl": "25ADE6EFFD2E51709C3C9BFE3EB92B341BBCE00826390516AB98CF59865E63B5",
+    "lfnst_packed_coeffs_sim": "25ADE6EFFD2E51709C3C9BFE3EB92B341BBCE00826390516AB98CF59865E63B5",
+    "bounded_lfnst_engine_tb": "449E74F3B4FC1D930E266C4696D564BC0432EB5C2E3AFDD5CD9FED9113DD3D7B",
+    "coverage_runner": "8374F5821EB8118102D6E7DE7B214C592E7617C9EA62EB33C0CC771BE63AEB3A",
+    "vivado_script": "F9B73C5F43829067D7DE86D7DEE0A3E1061D1AD6AD60C92B048094E2BCB69450"
+  },
+  "root_blocker": {
+    "severity": "P1",
+    "id": "UNIFIED_WRAPPER_SYNTHESIS_TIMEOUT_RESOURCE_02",
+    "finding": "After replacing the unbounded direct reference calculator with bounded LFNST transactions, fresh Vivado synth_design still did not complete within 7200 seconds and produced no checkpoint or reports; inference warnings show remaining dynamic multi-write storage structures.",
+    "not_claimed": ["500 MHz", "RAM inference success", "post-route timing", "PPA"]
+  },
+  "next_action": "STOP physical closure; preserve this evidence and define a separately reviewed storage/write-port architecture before another fresh synthesis. Do not modify frozen R4C or create a tag."
+}
