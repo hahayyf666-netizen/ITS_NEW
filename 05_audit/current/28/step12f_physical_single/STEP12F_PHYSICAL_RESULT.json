@@ -1,0 +1,54 @@
+{
+  "schema": "step12f.physical_result.v1",
+  "status": "STOP_SYNTHESIS_ELABORATION_RESOURCE",
+  "stage": "Step12F physical lane",
+  "top": "unified_its_wrapper",
+  "device": "xcku5p-ffvb676-2-e",
+  "vivado": "2025.2",
+  "clock_period_ns": 2.0,
+  "boundary_contract": "registered-neighbor-zero-delay",
+  "rtl_tree_changed_for_step12f": true,
+  "frozen_v35_18_r4c_modified": false,
+  "implementation_started": false,
+  "synthesis_completed": false,
+  "timing_available": false,
+  "result": {
+    "setup": "NOT_AVAILABLE",
+    "hold": "NOT_AVAILABLE",
+    "utilization": "NOT_AVAILABLE",
+    "route": "NOT_RUN",
+    "power": "NOT_AVAILABLE"
+  },
+  "decisive_attempt": {
+    "run": "run_step12f_unified_single",
+    "max_threads": 1,
+    "elapsed_seconds": 2464,
+    "peak_memory_mb": 42097.105,
+    "vivado_message": "RTL Elaboration failed; synth_design failed",
+    "log": "step12f_vivado.log",
+    "log_sha256": "0EF2BF529F048282E7428313A28F9F128403F54CA9C5E163AF6080AC2ED06D34"
+  },
+  "preceding_diagnostic": {
+    "run": "run_step12f_unified",
+    "finding": "variable-bound scan_row/scan_col loop did not converge after 2000 iterations",
+    "log": "attempt1_pre_static_loop_vivado.log",
+    "run_after_static_bound": "run_step12f_unified2",
+    "run_after_static_bound_log": "attempt2_static_loop_vivado.log"
+  },
+  "coverage_dependency": {
+    "status": "PASS",
+    "normal_synthesis_modes": 2,
+    "gate_b_numeric_cases": 156,
+    "gate_f_vector_ii_modes": 13,
+    "gate_c_numeric_cases": 369,
+    "gate_c_beats": 45636,
+    "evidence": "../step12f_coverage/STEP12F_COVERAGE_MODELSIM_RUN.json"
+  },
+  "source_hashes": {
+    "unified_its_wrapper": "50551312F7E0272940C2B93DAB3A24C59CC3EB7E030F0339D972EFF44C817523",
+    "unified_p4_kernel": "068A13208C0C6F7952263AA889BC4915780703BAFD27443AFC64D8A1E1AED8A2",
+    "step12f_xdc": "DDD2E18D4C530AAC3B53BB0A084745AF6E26565B640453BF9ADBFEFB8B2987A3",
+    "step12f_tcl": "18C023245D1006DD20CD085C5E1D0C4D38CBC8AA58D1617AB22195FEA95557D7"
+  },
+  "decision": "STOP: the new unified wrapper cannot complete Vivado RTL elaboration within the available implementation environment; no timing or v3.5-18 performance claim is made."
+}

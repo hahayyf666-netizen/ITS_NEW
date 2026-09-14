@@ -1,0 +1,44 @@
+{
+  "schema": "step12f.manifest.v1",
+  "status": "STOP_PHYSICAL_SYNTHESIS",
+  "stage": "Step12F Unified Coverage Completion + 500 MHz Physical Closure",
+  "baseline_commit": "be5510692b5e55217d7aaad00879134ba15ac983",
+  "v35_18_tag_unchanged": true,
+  "coverage_lane": {
+    "status": "PASS",
+    "simulator": "ModelSim SE-64 2020.4",
+    "modes": ["normal", "SYNTHESIS"],
+    "gate_b_numeric_cases": 156,
+    "gate_f_vector_ii_modes": 13,
+    "gate_c_tuple_cases": 369,
+    "gate_c_beats": 45636,
+    "evidence": "step12f_coverage/STEP12F_COVERAGE_MODELSIM_RUN.json"
+  },
+  "physical_lane": {
+    "status": "STOP",
+    "top": "unified_its_wrapper",
+    "device": "xcku5p-ffvb676-2-e",
+    "vivado": "2025.2",
+    "period_ns": 2.0,
+    "synthesis": "RTL elaboration failed",
+    "implementation": "NOT_RUN",
+    "timing": "NOT_AVAILABLE",
+    "decisive_evidence": "step12f_physical_single/STEP12F_PHYSICAL_RESULT.json"
+  },
+  "frozen_boundaries": {
+    "v35_18": "UNCHANGED",
+    "frozen_r4c": "UNCHANGED",
+    "old_step12b_wrapper": "UNCHANGED",
+    "step12f_wrapper_is_new_rtl": true,
+    "step12f_xdc_is_new": true,
+    "new_vivado_timing_claim": false,
+    "v35_18_tag_creation_or_move": false
+  },
+  "root_blocker": {
+    "severity": "P1",
+    "id": "UNIFIED_WRAPPER_SYNTHESIS_ELABORATION_RESOURCE_01",
+    "finding": "The unified wrapper's synthesizable direct reference arithmetic expands during Vivado RTL elaboration; a single-thread fresh run peaked at 42097.105 MB and failed before synthesis reports/checkpoints.",
+    "not_claimed": ["500 MHz", "RAM inference", "post-route timing", "PPA"]
+  },
+  "next_action": "STOP physical closure; define a bounded synthesizable arithmetic implementation for the reference-style LFNST/2-D path without changing the Gate-A Oracle or frozen v3.5-18 baseline, then rerun the existing Step12F gates."
+}

@@ -1,0 +1,64 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Mon Sep 14 17:26:41 2026
+# Process ID         : 13424
+# Current directory  : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910
+# Command line       : vivado.exe -mode batch -source C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\vivado\run_step12f_unified_wrapper.tcl -notrace -log C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\vivado\run_step12f_unified\step12f_vivado.log -journal C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\vivado\run_step12f_unified\step12f_vivado.jou
+# Log file           : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/run_step12f_unified/step12f_vivado.log
+# Journal file       : C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\vivado\run_step12f_unified\step12f_vivado.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 23622 MB
+# Total Virtual      : 39986 MB
+# Available Virtual  : 17605 MB
+#-----------------------------------------------------------
+source {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\vivado\run_step12f_unified_wrapper.tcl} -notrace
+STEP12F_START
+ROOT=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/../..
+PART=xcku5p-ffvb676-2-e
+TOP=unified_its_wrapper
+WRAPPER=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/../../02_rtl/rtl/unified_its_wrapper.sv
+KERNEL=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/../../02_rtl/rtl/unified_p4_kernel.sv
+XDC=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/step12f_unified_wrapper_2ns.xdc
+PERIOD_NS=2.000
+BOUNDARY_CONTRACT=registered-neighbor-zero-delay
+IMPLEMENTATION_FLOW=opt_Explore_place_Explore_physopt_Explore_route_Explore
+create_project: Time (s): cpu = 00:00:10 ; elapsed = 00:00:05 . Memory (MB): peak = 562.906 ; gain = 229.750
+WARNING: [filemgmt 56-128] File 'C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/03_verification/vivado/step12f_unified_wrapper_2ns.xdc' is already in the project and will not be added again
+Command: synth_design -top unified_its_wrapper -part xcku5p-ffvb676-2-e -mode out_of_context -flatten_hierarchy none -directive Default
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xcku5p'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xcku5p'
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 15296
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1952.578 ; gain = 254.852
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'unified_its_wrapper' [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_its_wrapper.sv:13]
+INFO: [Synth 8-3876] $readmem data file '03_verification/sim/rom_coeffs.hex' is read successfully [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_its_wrapper.sv:47]
+INFO: [Synth 8-3876] $readmem data file '03_verification/sim/lfnst_coeffs.hex' is read successfully [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_its_wrapper.sv:48]
+INFO: [Synth 8-6157] synthesizing module 'unified_p4_kernel' [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:10]
+	Parameter DATA_W bound to: 16 - type: integer 
+	Parameter COEFF_W bound to: 16 - type: integer 
+	Parameter ACC_W bound to: 40 - type: integer 
+	Parameter MAX_N bound to: 64 - type: integer 
+	Parameter COEFF_DEPTH bound to: 8176 - type: integer 
+	Parameter COEFF_FILE bound to: 03_verification/sim/rom_coeffs.hex - type: string 
+INFO: [Synth 8-3876] $readmem data file '03_verification/sim/rom_coeffs.hex' is read successfully [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:85]
+INFO: [Synth 8-6155] done synthesizing module 'unified_p4_kernel' (0#1) [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_p4_kernel.sv:10]
+ERROR: [Synth 8-3380] loop condition does not converge after 2000 iterations [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_its_wrapper.sv:272]
+ERROR: [Synth 8-6156] failed synthesizing module 'unified_its_wrapper' [C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/02_rtl/rtl/unified_its_wrapper.sv:13]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:01:55 ; elapsed = 00:04:32 . Memory (MB): peak = 25768.496 ; gain = 24070.770
+---------------------------------------------------------------------------------

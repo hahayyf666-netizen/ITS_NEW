@@ -269,18 +269,23 @@ module unified_its_wrapper #(
         begin
             scan_row = 0;
             count_i = 0;
-            for (diagonal = 0; diagonal < 2*side_i-1;
+            // side_i is restricted to 4 or 8 by the LFNST contract.  Keep
+            // the loop statically bounded for synthesis; the runtime guard
+            // preserves the original 2*side_i-1 diagonal traversal.
+            for (diagonal = 0; diagonal < 15;
                  diagonal = diagonal + 1) begin
-                row_lo = (diagonal < side_i) ? 0 : diagonal - side_i + 1;
-                row_hi = (diagonal < side_i) ? diagonal : side_i - 1;
-                diagonal_count = row_hi - row_lo + 1;
-                if ((index_i >= count_i) &&
-                    (index_i < count_i + diagonal_count)) begin
-                    offset_i = index_i - count_i;
-                    scan_row = ((diagonal & 1) != 0) ?
-                               (row_hi - offset_i) : (row_lo + offset_i);
+                if (diagonal < 2*side_i-1) begin
+                    row_lo = (diagonal < side_i) ? 0 : diagonal - side_i + 1;
+                    row_hi = (diagonal < side_i) ? diagonal : side_i - 1;
+                    diagonal_count = row_hi - row_lo + 1;
+                    if ((index_i >= count_i) &&
+                        (index_i < count_i + diagonal_count)) begin
+                        offset_i = index_i - count_i;
+                        scan_row = ((diagonal & 1) != 0) ?
+                                   (row_hi - offset_i) : (row_lo + offset_i);
+                    end
+                    count_i = count_i + diagonal_count;
                 end
-                count_i = count_i + diagonal_count;
             end
         end
     endfunction
@@ -292,19 +297,24 @@ module unified_its_wrapper #(
         begin
             scan_col = 0;
             count_i = 0;
-            for (diagonal = 0; diagonal < 2*side_i-1;
+            // See scan_row above: a static 15-iteration bound avoids a
+            // variable loop termination condition in Vivado while retaining
+            // the exact diagonal scan for side_i=4 or 8.
+            for (diagonal = 0; diagonal < 15;
                  diagonal = diagonal + 1) begin
-                row_lo = (diagonal < side_i) ? 0 : diagonal - side_i + 1;
-                row_hi = (diagonal < side_i) ? diagonal : side_i - 1;
-                diagonal_count = row_hi - row_lo + 1;
-                if ((index_i >= count_i) &&
-                    (index_i < count_i + diagonal_count)) begin
-                    offset_i = index_i - count_i;
-                    selected_row = ((diagonal & 1) != 0) ?
-                                   (row_hi - offset_i) : (row_lo + offset_i);
-                    scan_col = diagonal - selected_row;
+                if (diagonal < 2*side_i-1) begin
+                    row_lo = (diagonal < side_i) ? 0 : diagonal - side_i + 1;
+                    row_hi = (diagonal < side_i) ? diagonal : side_i - 1;
+                    diagonal_count = row_hi - row_lo + 1;
+                    if ((index_i >= count_i) &&
+                        (index_i < count_i + diagonal_count)) begin
+                        offset_i = index_i - count_i;
+                        selected_row = ((diagonal & 1) != 0) ?
+                                       (row_hi - offset_i) : (row_lo + offset_i);
+                        scan_col = diagonal - selected_row;
+                    end
+                    count_i = count_i + diagonal_count;
                 end
-                count_i = count_i + diagonal_count;
             end
         end
     endfunction

@@ -40,6 +40,34 @@ CASES = [
 ]
 
 
+def full_engineering_cases() -> list[Descriptor]:
+    """Load the complete Gate-A engineering tuple universe.
+
+    The matrix deliberately contains an explicitly labelled engineering
+    superset for LFNST-off and the source-backed active-LFNST set.  This
+    generator consumes that machine-readable source instead of reconstructing
+    a Cartesian product locally, so the Step12F HDL campaign cannot silently
+    drift from Gate A.
+    """
+    evidence = (Path(__file__).resolve().parents[2] / "05_audit" /
+                "current" / "27" / "step12d_engineering" /
+                "LEGAL_TRANSFORM_MATRIX.json")
+    matrix = json.loads(evidence.read_text(encoding="utf-8"))
+    type_code = {"DCT2": 0, "DST7": 1, "DCT8": 2}
+    cases: list[Descriptor] = []
+    for row in matrix["lfnst_off"]["tuples"]:
+        cases.append(Descriptor(
+            row["width"], row["height"],
+            type_code[row["tr_type_hor"]], type_code[row["tr_type_ver"]],
+            row.get("lfnst_tr_set_idx", 0), row["lfnst_idx"]))
+    for row in matrix["lfnst_on"]["tuples"]:
+        cases.append(Descriptor(
+            row["width"], row["height"],
+            type_code[row["tr_type_hor"]], type_code[row["tr_type_ver"]],
+            row["lfnst_tr_set_idx"], row["lfnst_idx"]))
+    return cases
+
+
 def sparse_entries(desc: Descriptor, seed: int) -> list[tuple[int, int]]:
     points = desc.width * desc.height
     candidates = [
@@ -66,13 +94,18 @@ def pack_beat(values: tuple[int, int, int, int]) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("output", type=Path)
+    parser.add_argument(
+        "--full", action="store_true",
+        help="emit all Gate-A engineering tuples instead of the 19-case smoke set",
+    )
     args = parser.parse_args()
 
     canonical = load_json(CANONICAL)
-    lines = [str(len(CASES))]
+    cases = full_engineering_cases() if args.full else CASES
+    lines = [str(len(cases))]
     manifest_cases = []
     total_beats = 0
-    for case_index, desc in enumerate(CASES):
+    for case_index, desc in enumerate(cases):
         entries = sparse_entries(desc, 0x520 + case_index)
         coeff = [[0 for _ in range(desc.width)] for _ in range(desc.height)]
         for address, value in entries:
@@ -104,6 +137,7 @@ def main() -> int:
                 "lfnst_idx": desc.lfnst_idx,
                 "inputs": len(entries),
                 "beats": len(beats),
+                "campaign": "full_engineering_tuple_universe" if args.full else "directed_smoke",
             }
         )
 
@@ -115,8 +149,9 @@ def main() -> int:
         json.dumps(
             {
                 "status": "PASS_VECTOR_GENERATION",
-                "cases": len(CASES),
+                "cases": len(cases),
                 "beats": total_beats,
+                "campaign": "full_engineering_tuple_universe" if args.full else "directed_smoke",
                 "sha256": hashlib.sha256(encoded).hexdigest().upper(),
                 "case_manifest": manifest_cases,
             },
