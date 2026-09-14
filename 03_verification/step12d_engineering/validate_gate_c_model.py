@@ -462,7 +462,7 @@ def main() -> int:
             "latency_semantics": "ready-high intrinsic output beats; completion is stall-dependent",
         },
         "not_proven": [
-            "HDL simulation (normal and SYNTHESIS compile modes)",
+            "full 369-tuple HDL simulation (HDL suite covers 19 directed cases / 2368 beats)",
             "physical DSP/LUT/RAM mapping",
             "500 MHz timing",
             "official hidden-golden equivalence",

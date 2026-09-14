@@ -1,38 +1,94 @@
-{
-  "schema": "step12d_engineering.modelsim_gate_bc_run.v1",
-  "status": "PASS",
-  "simulator": "ModelSim SE-64 2020.4",
-  "simulator_path": "D:/software/Modelsim/win64/vsim.exe",
-  "license_path": "D:/software/Modelsim/LICENSE.TXT",
-  "vector_sets": {
-    "gate_b": {"cases": 156, "one_d_modes": 13, "stages": 2, "patterns_per_stage": 6},
-    "gate_c": {"cases": 19, "beats": 2368, "sha256": "81700E33C1EC4F29B0F6F39CD230A7960F8E8C240B43B89B562475F2A2F86A51"}
-  },
-  "source_hashes": {
-    "unified_p4_kernel": "1C63333C6B530E89552FF3447F944A05AEEB09BABEE3989BB35DFF35C0DBAA07",
-    "unified_its_wrapper": "B238F7F467B269F3AE51ADBDF4255C1558F3EF44EACC88731315FADD4FE67374",
-    "gate_b_tb": "B7C5DA7FF0517A8BB6734E37C21B8106F542045660B4868D75CA155D36DCCA18",
-    "gate_c_smoke_tb": "FDC818768B3567D27A01DD2FD12942E0AEA3188D180DFF5F08E8D3CCE0877D4A",
-    "gate_c_numeric_tb": "E5F3EADAD9E52C823987364BBEBE25F5E109C951BBFA47122AB82623570D60B5"
-  },
-  "runs": {
-    "normal": {
-      "compile": "PASS_0_ERRORS_0_WARNINGS",
-      "gate_b_kernel_numeric": "PASS_156_CASES",
-      "gate_c_wrapper_smoke": "PASS_BEATS_16_16_DONE_1_1",
-      "gate_c_wrapper_numeric": "PASS_19_CASES"
-    },
-    "synthesis_define": {
-      "compile": "PASS_0_ERRORS_0_WARNINGS",
-      "gate_b_kernel_numeric": "PASS_156_CASES",
-      "gate_c_wrapper_smoke": "PASS_BEATS_16_16_DONE_1_1",
-      "gate_c_wrapper_numeric": "PASS_19_CASES"
-    }
-  },
-  "interpretation": {
-    "hdl_arithmetic_and_protocol_regression": "PASS",
-    "gate_b_vector_ii_contract": "FAILS_SEPARATE_STATIC_RTL_AUDIT",
-    "gate_c_kernel_integration": "NOT_PRESENT_CURRENT_WRAPPER_IS_DIRECT_MATRIX_REFERENCE",
-    "physical_timing_proof": false
-  }
+﻿{
+    "schema":  "step12d_engineering.modelsim_gate_bc_run.v1",
+    "status":  "PASS",
+    "simulator":  "ModelSim SE-64 2020.4",
+    "simulator_path":  "D:\\software\\Modelsim\\win64\\vsim.exe",
+    "license_path":  "D:\\software\\Modelsim\\LICENSE.TXT",
+    "work_root":  "C:\\Users\\Fine\\AppData\\Local\\Temp\\step12d_gate_bc_20260914_165310",
+    "source_hashes":  {
+                          "unified_p4_kernel":  "068A13208C0C6F7952263AA889BC4915780703BAFD27443AFC64D8A1E1AED8A2",
+                          "unified_its_wrapper":  "9C7597F30AD98787964DE64B0738CE49907106F61B0BED01C5495CE4CFFC5806",
+                          "gate_b_tb":  "3CBD10281938F132527A51CC6F027847E98DC0DBB92FFB4D09D6DABB2A640B0C",
+                          "gate_b_throughput_tb":  "C6EBE76656B34B8872CE364828E6AF8831A785C4F9DC2C702594930DE8131C17",
+                          "gate_c_smoke_tb":  "FDC818768B3567D27A01DD2FD12942E0AEA3188D180DFF5F08E8D3CCE0877D4A",
+                          "gate_c_numeric_tb":  "E5F3EADAD9E52C823987364BBEBE25F5E109C951BBFA47122AB82623570D60B5"
+                      },
+    "vector_sets":  {
+                        "gate_b":  {
+                                       "cases":  156,
+                                       "one_d_modes":  13,
+                                       "stages":  2,
+                                       "patterns_per_stage":  6,
+                                       "throughput_modes":  7
+                                   },
+                        "gate_c":  {
+                                       "cases":  19,
+                                       "beats":  2368,
+                                       "includes_lfnst":  true,
+                                       "includes_rectangles":  true,
+                                       "includes_backpressure":  true
+                                   }
+                    },
+    "runs":  [
+                 {
+                     "mode":  "normal",
+                     "compile":  "PASS",
+                     "gate_b_kernel_numeric":  "PASS_156_CASES",
+                     "gate_b_vector_ii":  "PASS_7_MODES",
+                     "gate_c_wrapper_smoke":  "PASS",
+                     "gate_c_wrapper_numeric":  "PASS_19_CASES",
+                     "logs":  [
+                                  {
+                                      "name":  "compile.log",
+                                      "sha256":  "AAC19339F5656A1F94AF2F0A9F2C73EFDB3F9BFFBAF11E5DA01609F91ACF0D4D"
+                                  },
+                                  {
+                                      "name":  "gate_b_kernel_numeric.log",
+                                      "sha256":  "BB3F7B97D01DE94DF95B974FF6146FB6B41943B1AFE75FE7017634271DA96107"
+                                  },
+                                  {
+                                      "name":  "gate_b_vector_ii.log",
+                                      "sha256":  "7E0FB09697910F79EE917FD9D3AF32E13EA4B55F95C79BEA2FCCAF4716990535"
+                                  },
+                                  {
+                                      "name":  "gate_c_wrapper_smoke.log",
+                                      "sha256":  "E8FF5B6439DBFF280D7350CDFF3BE2818F4BBBFB95DBB7AB96150065EFDF1497"
+                                  },
+                                  {
+                                      "name":  "gate_c_wrapper_numeric.log",
+                                      "sha256":  "D2B738D2D7BB57863A84AF2B5DC5F9B3B61601617EAC0A3CE8D9E156EEDE639F"
+                                  }
+                              ]
+                 },
+                 {
+                     "mode":  "synthesis",
+                     "compile":  "PASS",
+                     "gate_b_kernel_numeric":  "PASS_156_CASES",
+                     "gate_b_vector_ii":  "PASS_7_MODES",
+                     "gate_c_wrapper_smoke":  "PASS",
+                     "gate_c_wrapper_numeric":  "PASS_19_CASES",
+                     "logs":  [
+                                  {
+                                      "name":  "compile.log",
+                                      "sha256":  "AD0145FED4E8239017DBC16D5E7762E4FCC88984A036A47A1F61F4FE43A9C5E2"
+                                  },
+                                  {
+                                      "name":  "gate_b_kernel_numeric.log",
+                                      "sha256":  "DA004D88CD859DC5289D2FC9F166A398A320381D8FFFD06EBA72485A82FB0DB6"
+                                  },
+                                  {
+                                      "name":  "gate_b_vector_ii.log",
+                                      "sha256":  "4496DFF6D032AC732E1F672DB1E9AE96B5589478DF0DFABEBA4E0917BC48CBBE"
+                                  },
+                                  {
+                                      "name":  "gate_c_wrapper_smoke.log",
+                                      "sha256":  "EEEF6693674D0DFF42997F41A0F07112C64B30941C57EF670AD0104A939DBFF9"
+                                  },
+                                  {
+                                      "name":  "gate_c_wrapper_numeric.log",
+                                      "sha256":  "926BFE9C192ABF74550A535B8B0F1753C0673F35181E7D5421E5B60DB63F8F25"
+                                  }
+                              ]
+                 }
+             ]
 }

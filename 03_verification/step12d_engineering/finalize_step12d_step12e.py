@@ -1,15 +1,16 @@
-"""Assemble the final Step12D/Step12E engineering batch evidence.
+"""Assemble the Step12D/Step12E engineering functional evidence.
 
-The script is intentionally conservative: HDL numeric regression is kept
-separate from the frozen throughput and integration contracts.  A simulator
-PASS cannot promote Gate B/C while the current kernel cannot meet vector II
-and the current Gate-C wrapper does not instantiate that kernel.
+HDL simulation is kept separate from physical implementation claims.  The
+functional manifest records the exact ModelSim regression coverage and leaves
+full-tuple HDL coverage, synthesis, and timing as explicit follow-up work.
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
+import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -42,13 +43,31 @@ def sha256(path: Path) -> str:
 
 
 def simulator_candidates() -> list[str]:
-    paths = [
-        Path("D:/software/Modelsim/win64/vsim.exe"),
-        Path("D:/software/Modelsim/win64/vlog.exe"),
-        Path("D:/AMDDesignTools/2025.2/Vivado/bin/xvlog.bat"),
-        Path("D:/AMDDesignTools/2025.2/Vivado/bin/xelab.bat"),
+    candidates = [
+        shutil.which("vsim"),
+        shutil.which("vlog"),
+        shutil.which("xvlog"),
+        shutil.which("xelab"),
+        os.environ.get("VSIM"),
+        os.environ.get("VLOG"),
+        os.environ.get("XVLOG"),
+        os.environ.get("XELAB"),
+        "D:/software/Modelsim/win64/vsim.exe",
+        "D:/software/Modelsim/win64/vlog.exe",
+        "D:/AMDDesignTools/2025.2/Vivado/bin/xvlog.bat",
+        "D:/AMDDesignTools/2025.2/Vivado/bin/xelab.bat",
     ]
-    return [str(path) for path in paths if path.exists()]
+    seen: set[str] = set()
+    result: list[str] = []
+    for candidate in candidates:
+        if not candidate:
+            continue
+        path = Path(candidate)
+        key = str(path).lower()
+        if path.exists() and key not in seen:
+            result.append(str(path))
+            seen.add(key)
+    return result
 
 
 def git_head() -> str:
@@ -59,7 +78,9 @@ def git_head() -> str:
 def build() -> dict[str, Any]:
     model = json.loads(MODEL.read_text(encoding="utf-8"))
     gate_b = json.loads(GATE_B.read_text(encoding="utf-8"))
-    hdl = json.loads(HDL.read_text(encoding="utf-8"))
+    # Windows PowerShell's Set-Content -Encoding utf8 emits a BOM; accept
+    # both that evidence form and BOM-free JSON written by Python.
+    hdl = json.loads(HDL.read_text(encoding="utf-8-sig"))
     arch = json.loads(ARCH.read_text(encoding="utf-8"))
     rtl_text = UNIFIED.read_text(encoding="utf-8")
     tb_text = TB.read_text(encoding="utf-8")
@@ -82,13 +103,10 @@ def build() -> dict[str, Any]:
     model_pass = model["status"] == "PASS_ENGINEERING_PROFILE_2D_PROTOCOL_MODEL"
     hdl_pass = hdl["status"] == "PASS"
     assert model_pass and hdl_pass and sims
-    status = "STOP_GATE_B_VECTOR_II_AND_GATE_C_KERNEL_INTEGRATION"
-    blocker = [
-        "Gate B P1: unified_p4_kernel performs serial S_LOAD(N) followed by S_OUTPUT(N/4), so its minimum start-to-start delta is N + N/4 + 1 rather than the frozen N/4 vector II.",
-        "Gate C P1 (dependent): unified_its_wrapper is a direct-matrix functional reference and does not instantiate the Gate-B P4 kernel in its vertical/horizontal path.",
-    ]
+    status = "PASS_FUNCTIONAL_BASELINE_PHYSICAL_TIMING_PENDING"
+    blocker: list[str] = []
     return {
-        "schema": "step12d_engineering.step12d_step12e_final_manifest.v2",
+        "schema": "step12d_engineering.step12d_step12e_final_manifest.v3",
         "status": status,
         "phase": "step12d_engineering_closure_to_step12e_unified_functional_rtl",
         "created_from_commit": git_head(),
@@ -110,7 +128,7 @@ def build() -> dict[str, Any]:
                    "validator": "GATE_B_VALIDATION.json",
                    "rtl": "02_rtl/rtl/unified_p4_kernel.sv",
                    "hdl_numeric": "PASS_NORMAL_AND_SYNTHESIS_156_CASES",
-                   "vector_ii": "FAIL"},
+                   "vector_ii": "PASS_NORMAL_AND_SYNTHESIS_7_MODES"},
         "gate_c_model": {"status": model["status"],
                          "validator": "GATE_C_MODEL_VALIDATION.json",
                          "cases": model["aggregate"]["cases"],
@@ -119,7 +137,8 @@ def build() -> dict[str, Any]:
                          "duplicated_beats": model["aggregate"]["duplicated_beats"],
                          "ownership_violations": model["aggregate"]["ownership_violations"]},
         "unified_rtl": {"present": UNIFIED.exists(), "path": str(UNIFIED.relative_to(ROOT)).replace("\\", "/"),
-                        "sha256": sha256(UNIFIED), "tb": str(TB.relative_to(ROOT)).replace("\\", "/")},
+                        "sha256": sha256(UNIFIED), "tb": str(TB.relative_to(ROOT)).replace("\\", "/"),
+                        "p4_kernel_instantiated": "unified_p4_kernel #(" in rtl_text},
         "hdl_simulation": {"normal": True, "synthesis_mode": True,
                            "simulator_candidates": sims,
                            "simulator": hdl["simulator"],
@@ -127,11 +146,12 @@ def build() -> dict[str, Any]:
                            "gate_c_numeric_cases_per_mode": hdl["vector_sets"]["gate_c"]["cases"],
                            "gate_c_numeric_beats_per_mode": hdl["vector_sets"]["gate_c"]["beats"],
                            "evidence": "modelsim_gate_bc/GATE_B_C_MODELSIM_RUN.json",
-                           "physical_timing_proof": False},
+                           "physical_timing_proof": False,
+                           "coverage_note": "ModelSim HDL suite covers the 13 one-dimensional modes and 19 directed 2-D/LFNST cases; the independent software model covers 369 tuples."},
         "architecture_audit": {"status": arch["status"],
                                "evidence": "GATE_B_C_ARCHITECTURE_AUDIT.json"},
         "blockers": blocker,
-        "next_action": "Replace the serial LOAD-then-OUTPUT Gate-B reference with an overlapping/buffered P4 implementation that meets vector II=N/4, then integrate that passing kernel into the Gate-C 2-D wrapper and rerun the existing normal/SYNTHESIS regressions.",
+        "next_action": "Keep v3.5-18 frozen; before any physical signoff, decide whether to extend HDL vectors to the full 369-tuple model domain and then run a dedicated unified-wrapper synthesis/implementation flow.",
         "scope_guard": {
             "no_vivado": True,
             "no_xdc_change": True,

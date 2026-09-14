@@ -1,6 +1,6 @@
 # Step12D PRE
 
-Status: HISTORICAL SOURCE REVIEW STOP; ENGINEERING PROFILE GATE A PASS; GATE B/C ARCHITECTURE STOP
+Status: HISTORICAL SOURCE REVIEW CLOSED WITH RESIDUAL AMBIGUITY; ENGINEERING PROFILE GATE A/B/C FUNCTIONAL BASELINE PASS; PHYSICAL TIMING PENDING
 
 ## 1. Scope and frozen boundary
 
@@ -109,30 +109,32 @@ dynamic range 15, VTM inverse shifts 7/10, and a LOW10 two's-complement final
 adapter (SAT10 remains an alternate differential adapter). This binding is
 reproducible but does not claim official or hidden-golden equivalence.
 
-Gate A is closed for this engineering profile. Gate B has a new arithmetic
-RTL reference covering DCT2/DST7/DCT8 at 4/8/16/32 and DCT2 at 64; its
-normal and `SYNTHESIS`-define ModelSim regressions are bit-exact for 156
-cases. Its transaction architecture is not yet a Gate-B PASS: it serializes
-`S_LOAD(N)` and `S_OUTPUT(N/4)`, so it cannot meet the frozen vector-start
-II of `N/4` even though its ready-high output group II is one.
+Gate A is closed for this engineering profile. Gate B now has an overlapping
+four-slot P4 RTL kernel covering DCT2/DST7/DCT8 at 4/8/16/32 and DCT2 at 64;
+its normal and `SYNTHESIS`-define ModelSim regressions are bit-exact for 156
+cases. A separate ready-high throughput test passes seven modes and records
+vector II=N/4 with group II=1. The kernel holds output data while its request
+is low and the wrapper qualifies output consumption in its drain phases.
 
 Gate C's independent software model covers the 169 LFNST-off
 per-axis tuples and 200 active-LFNST tuples, including rectangles, mixed
 H/V, sparse raster input, two-slot ownership, backpressure, and exactly-once
 completion. ModelSim SE-64 2020.4 is installed under `D:/software/Modelsim`;
-the earlier PATH-only detector missed it. The current Gate-C reference
-wrapper passes normal and `SYNTHESIS`-define smoke plus 19-case/2,368-beat
-numeric regression, including all transform families/sizes, rectangles,
-mixed H/V, active LFNST and output backpressure. However, this wrapper uses
-direct canonical-matrix loops and does not instantiate the Gate-B P4 kernel.
-It is therefore a verified functional reference, not the required integrated
-unified P4 path.
+the earlier PATH-only detector missed it. The integrated Gate-C wrapper now
+instantiates the P4 kernel for LFNST-off vertical and horizontal passes and
+retains the independent VTM-profile path for active LFNST. Normal and
+`SYNTHESIS`-define compilation both pass with zero errors/warnings; the HDL
+suite covers 19 directed 2-D/LFNST cases (2,368 beats) plus the two-TU smoke
+test. The software model remains the exhaustive 369-tuple evidence source;
+full 369-tuple HDL simulation and physical timing are not claimed here.
 
 The corrected batch state is
-`STOP_GATE_B_VECTOR_II_AND_GATE_C_KERNEL_INTEGRATION`. The simulator
-availability blocker is closed; the remaining blockers are two dependent P1
-architecture items: implement an overlapping/buffered P4 transaction path
-with vector II `N/4`, then integrate it into the vertical/horizontal wrapper.
+`PASS_FUNCTIONAL_BASELINE_PHYSICAL_TIMING_PENDING`. The simulator
+availability blocker and the two dependent functional architecture blockers
+are closed for the recorded engineering-profile coverage. The remaining
+follow-up is to decide whether to extend the HDL vectors to all 369 model
+tuples and then perform a dedicated unified-wrapper synthesis/implementation
+run; no 500 MHz claim is made by this functional batch.
 
 The machine-readable final status is recorded in
 `05_audit/current/27/step12d_engineering/STEP12D_STEP12E_FINAL_MANIFEST.json`.

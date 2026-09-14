@@ -44,7 +44,9 @@ def main() -> int:
     lines = [str(len(records))]
     for tr_type, n, stage_sel, samples, expected in records:
         lines.append(f"{tr_type} {n} {stage_sel}")
-        lines.append(" ".join(str(value) for value in samples))
+        for group in range(n // 4):
+            base = group * 4
+            lines.append(" ".join(str(value) for value in samples[base:base + 4]))
         for group in range(n // 4):
             base = group * 4
             lines.append(" ".join(str(value) for value in expected[base:base + 4]))

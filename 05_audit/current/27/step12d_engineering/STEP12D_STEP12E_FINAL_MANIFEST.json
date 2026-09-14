@@ -1,8 +1,8 @@
 {
-  "schema": "step12d_engineering.step12d_step12e_final_manifest.v2",
-  "status": "STOP_GATE_B_VECTOR_II_AND_GATE_C_KERNEL_INTEGRATION",
+  "schema": "step12d_engineering.step12d_step12e_final_manifest.v3",
+  "status": "PASS_FUNCTIONAL_BASELINE_PHYSICAL_TIMING_PENDING",
   "phase": "step12d_engineering_closure_to_step12e_unified_functional_rtl",
-  "created_from_commit": "aca59739175484c22382b972907d3dce6b963950",
+  "created_from_commit": "3e607e61e531c471beb391ed3c251b15577f5c5a",
   "base_tag": "v3.5-18",
   "base_tag_target": "7415b0acb33481af1845f63e16b93ce7c33b977b",
   "frozen_boundary": {
@@ -11,45 +11,81 @@
     "old_step12b_wrapper_unchanged": true,
     "xdc_unchanged": true,
     "hashes": {
-      "r4c": {"expected": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1", "actual": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1", "match": true},
-      "wrapper": {"expected": "45E581A5CC542EE31ADAD49171076F804854B85D675B0CC37E2E8B0064D12A5C", "actual": "45E581A5CC542EE31ADAD49171076F804854B85D675B0CC37E2E8B0064D12A5C", "match": true},
-      "xdc": {"expected": "5FC2465A7E852A99BE1B7C6B484C9EDF85FB96DDAF256F277D4A2E3DB467F2F3", "actual": "5FC2465A7E852A99BE1B7C6B484C9EDF85FB96DDAF256F277D4A2E3DB467F2F3", "match": true}
+      "r4c": {
+        "expected": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1",
+        "actual": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1",
+        "match": true
+      },
+      "wrapper": {
+        "expected": "45E581A5CC542EE31ADAD49171076F804854B85D675B0CC37E2E8B0064D12A5C",
+        "actual": "45E581A5CC542EE31ADAD49171076F804854B85D675B0CC37E2E8B0064D12A5C",
+        "match": true
+      },
+      "xdc": {
+        "expected": "5FC2465A7E852A99BE1B7C6B484C9EDF85FB96DDAF256F277D4A2E3DB467F2F3",
+        "actual": "5FC2465A7E852A99BE1B7C6B484C9EDF85FB96DDAF256F277D4A2E3DB467F2F3",
+        "match": true
+      }
     }
   },
   "engineering_profile": "contest_engineering_vtm10_v1",
   "official_equivalence": "NOT_PROVEN",
   "historical_hidden_golden_equivalence": "UNKNOWN",
-  "gate_a": {"status": "PASS_GATE_A_ENGINEERING_PROFILE", "validator": "GATE_A_VALIDATION.json"},
+  "gate_a": {
+    "status": "PASS_GATE_A_ENGINEERING_PROFILE",
+    "validator": "GATE_A_VALIDATION.json"
+  },
   "gate_b": {
-    "status": "STOP_GATE_B_VECTOR_II_CONTRACT_NOT_MET",
+    "status": "PASS_UNIFIED_P4_FUNCTIONAL_SCHEDULE_CONTRACT",
     "validator": "GATE_B_VALIDATION.json",
     "rtl": "02_rtl/rtl/unified_p4_kernel.sv",
     "hdl_numeric": "PASS_NORMAL_AND_SYNTHESIS_156_CASES",
-    "vector_ii": "FAIL"
+    "vector_ii": "PASS_NORMAL_AND_SYNTHESIS_7_MODES"
   },
-  "gate_c_model": {"status": "PASS_ENGINEERING_PROFILE_2D_PROTOCOL_MODEL", "validator": "GATE_C_MODEL_VALIDATION.json", "cases": 369, "beats": 45636, "dropped_beats": 0, "duplicated_beats": 0, "ownership_violations": 0},
-  "unified_rtl": {"present": true, "path": "02_rtl/rtl/unified_its_wrapper.sv", "sha256": "B238F7F467B269F3AE51ADBDF4255C1558F3EF44EACC88731315FADD4FE67374", "tb": "03_verification/tb/unified_its_wrapper_tb.sv"},
+  "gate_c_model": {
+    "status": "PASS_ENGINEERING_PROFILE_2D_PROTOCOL_MODEL",
+    "validator": "GATE_C_MODEL_VALIDATION.json",
+    "cases": 369,
+    "beats": 45636,
+    "dropped_beats": 0,
+    "duplicated_beats": 0,
+    "ownership_violations": 0
+  },
+  "unified_rtl": {
+    "present": true,
+    "path": "02_rtl/rtl/unified_its_wrapper.sv",
+    "sha256": "9C7597F30AD98787964DE64B0738CE49907106F61B0BED01C5495CE4CFFC5806",
+    "tb": "03_verification/tb/unified_its_wrapper_tb.sv",
+    "p4_kernel_instantiated": true
+  },
   "hdl_simulation": {
     "normal": true,
     "synthesis_mode": true,
-    "simulator": "ModelSim SE-64 2020.4",
     "simulator_candidates": [
-      "D:/software/Modelsim/win64/vsim.exe",
-      "D:/software/Modelsim/win64/vlog.exe",
-      "D:/AMDDesignTools/2025.2/Vivado/bin/xvlog.bat",
-      "D:/AMDDesignTools/2025.2/Vivado/bin/xelab.bat"
+      "D:\\software\\Modelsim\\win64\\vsim.exe",
+      "D:\\software\\Modelsim\\win64\\vlog.exe",
+      "D:\\AMDDesignTools\\2025.2\\Vivado\\bin\\xvlog.bat",
+      "D:\\AMDDesignTools\\2025.2\\Vivado\\bin\\xelab.bat"
     ],
+    "simulator": "ModelSim SE-64 2020.4",
     "gate_b_numeric_cases_per_mode": 156,
     "gate_c_numeric_cases_per_mode": 19,
     "gate_c_numeric_beats_per_mode": 2368,
     "evidence": "modelsim_gate_bc/GATE_B_C_MODELSIM_RUN.json",
-    "physical_timing_proof": false
+    "physical_timing_proof": false,
+    "coverage_note": "ModelSim HDL suite covers the 13 one-dimensional modes and 19 directed 2-D/LFNST cases; the independent software model covers 369 tuples."
   },
-  "architecture_audit": {"status": "STOP_TWO_DEPENDENT_P1_BLOCKERS", "evidence": "GATE_B_C_ARCHITECTURE_AUDIT.json"},
-  "blockers": [
-    "Gate B P1: unified_p4_kernel performs serial S_LOAD(N) followed by S_OUTPUT(N/4), so its minimum start-to-start delta is N + N/4 + 1 rather than the frozen N/4 vector II.",
-    "Gate C P1 (dependent): unified_its_wrapper is a direct-matrix functional reference and does not instantiate the Gate-B P4 kernel in its vertical/horizontal path."
-  ],
-  "next_action": "Replace the serial LOAD-then-OUTPUT Gate-B reference with an overlapping/buffered P4 implementation that meets vector II=N/4, then integrate that passing kernel into the Gate-C 2-D wrapper and rerun the existing normal/SYNTHESIS regressions.",
-  "scope_guard": {"no_vivado": true, "no_xdc_change": true, "no_frozen_r4c_change": true, "no_old_wrapper_change": true, "p2_p3_enhancements_nonblocking": true}
+  "architecture_audit": {
+    "status": "PASS_FUNCTIONAL_UNIFIED_P4_INTEGRATION",
+    "evidence": "GATE_B_C_ARCHITECTURE_AUDIT.json"
+  },
+  "blockers": [],
+  "next_action": "Keep v3.5-18 frozen; before any physical signoff, decide whether to extend HDL vectors to the full 369-tuple model domain and then run a dedicated unified-wrapper synthesis/implementation flow.",
+  "scope_guard": {
+    "no_vivado": true,
+    "no_xdc_change": true,
+    "no_frozen_r4c_change": true,
+    "no_old_wrapper_change": true,
+    "p2_p3_enhancements_nonblocking": true
+  }
 }

@@ -20,11 +20,11 @@ equivalence and historical hidden-golden equivalence remain unproven.
   tuple set is an explicitly labelled per-axis implementation superset, not
   an official Cartesian-product claim.  LFNST active cases are DCT2×DCT2
   with the source-backed set/index matrix.
-- Gate B arithmetic: PASS in both normal and `SYNTHESIS`-define ModelSim for
-  156 cases spanning 13 modes, two stages and six input classes. Four outputs
-  per group and ready-high group II=1 are verified. Gate B overall remains
-  STOP because the RTL serializes `S_LOAD(N)` and `S_OUTPUT(N/4)` and cannot
-  meet the frozen vector-start II of `N/4`.
+- Gate B arithmetic and transaction contract: PASS in both normal and
+  `SYNTHESIS`-define ModelSim for 156 cases spanning 13 modes, two stages and
+  six input classes. Four outputs per group, ready-high group II=1, and a
+  seven-mode vector-II regression are verified. The four-slot kernel overlaps
+  loading and draining and meets vector II=N/4 in the tested modes.
 - Gate C model: PASS for 369 tuples (169 LFNST-off plus 200 active cases),
   45,636 output beats, sparse full-raster input, rectangles/mixed H/V,
   LFNST, two-slot ownership, backpressure and exactly-once completion.  The
@@ -45,17 +45,21 @@ error, a 64x64 point-count truncation, LFNST diagonal scan/nonzero handling,
 and the 48-output LFNST ROM scenario base. The corrected HDL is numerically
 and procedurally verified by the recorded regression.
 
-The remaining STOP is architectural, not environmental. The Gate-B kernel
-cannot overlap vector loading and output, so its vector II is not `N/4`.
-The Gate-C wrapper is intentionally a direct-matrix functional reference and
-does not instantiate the Gate-B kernel in the two-dimensional path.
+The simulator availability issue was environmental and is closed. The
+integrated Gate-C wrapper instantiates the P4 kernel for LFNST-off vertical and
+horizontal passes; active LFNST continues to use the independently checked
+VTM-profile reference path. The recorded HDL suite covers all 13 one-dimensional
+modes, 19 directed 2-D/LFNST cases (2,368 beats), and the two-TU smoke test in
+both compile modes. The independent software model remains the exhaustive
+369-tuple source; full 369-tuple HDL simulation and physical timing are not
+claimed by this batch.
 
 The final state is therefore:
 
-`STOP_GATE_B_VECTOR_II_AND_GATE_C_KERNEL_INTEGRATION`
+`PASS_FUNCTIONAL_BASELINE_PHYSICAL_TIMING_PENDING`
 
-These are two dependent P1 architecture blockers. The next action is to
-replace the serial reference kernel with a buffered/overlapping P4 path that
-meets vector II `N/4`, then instantiate that passing kernel in the Gate-C
-vertical/horizontal datapath and rerun the existing tests. No source-contract,
-physical timing, or optional audit gate is added by this correction.
+The functional P4 integration blockers are closed for the recorded coverage.
+The next action is a separate coverage/physical-implementation decision: if
+required, extend HDL vectors to all 369 model tuples and then run a dedicated
+synthesis/implementation flow. No source-contract, 500 MHz, or physical PPA
+claim is implied by this functional result.

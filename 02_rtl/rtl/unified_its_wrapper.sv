@@ -1,14 +1,14 @@
 // Step12E unified engineering-profile functional wrapper.
 //
-// This is a new functional reference implementation.  It deliberately lives
-// beside, rather than inside, the frozen v3.5-18 wrapper/R4C.  The arithmetic
-// is expressed directly from the hash-fixed coefficient ROM so that Gate C
-// can exercise all supported rectangles, transform families, sparse raster
-// input, LFNST, two-slot ownership, and output backpressure before a physical
-// P4 implementation is selected.
+// This is a new functional engineering implementation.  It deliberately
+// lives beside, rather than inside, the frozen v3.5-18 wrapper/R4C.  LFNST
+// cases retain an independent direct reference path, while LFNST-off primary
+// cases use the integrated four-slot P4 kernel for both transform passes.  The
+// wrapper still exposes the descriptor, sparse-raster, ownership and output
+// protocol contracts needed by Gate C before physical implementation.
 //
-// It is not a 500 MHz implementation claim.  The direct matrix loops are a
-// verification baseline; synthesis/physical optimisation is a later step.
+// It is not a 500 MHz implementation claim.  Synthesis/physical optimisation
+// is a later step for this new unified path.
 
 module unified_its_wrapper #(
     parameter integer DATA_W = 16,
@@ -73,6 +73,46 @@ module unified_its_wrapper #(
     logic        output_slot;
     logic [11:0] output_index;
 
+    // Gate-B unified P4 kernel integration.  LFNST-enabled cases retain the
+    // independent profile reference path below; all LFNST-off primary
+    // transforms use this kernel for both vertical and horizontal passes.
+    logic        compute_slot_q;
+    logic        kernel_run_q;
+    typedef enum logic [2:0] {K_IDLE, K_V_START, K_V_FEED, K_V_DRAIN,
+                              K_H_START, K_H_FEED, K_H_DRAIN} kernel_phase_t;
+    kernel_phase_t kernel_phase_q;
+    logic [6:0] kernel_w_q, kernel_h_q, kernel_cut_w_q, kernel_cut_h_q;
+    logic [6:0] kernel_vector_q;
+    logic [4:0] kernel_group_q;
+    logic [1:0] kernel_type_q;
+    logic       kernel_stage_q;
+    logic       kernel_start;
+    logic       kernel_in_valid;
+    logic       kernel_in_req;
+    logic signed [63:0] kernel_in_data;
+    logic       kernel_out_valid;
+    logic       kernel_out_req;
+    logic signed [63:0] kernel_out_data;
+    logic       kernel_done;
+    logic       kernel_busy;
+    logic       kernel_error;
+
+    unified_p4_kernel #(
+        .DATA_W(16), .COEFF_W(16), .ACC_W(40), .MAX_N(64),
+        .COEFF_DEPTH(COEFF_DEPTH), .COEFF_FILE(COEFF_FILE)
+    ) u_unified_p4_kernel (
+        .clk(clk), .rst_n(rst_n), .start(kernel_start),
+        .tr_type(kernel_type_q),
+        .transform_size(kernel_stage_q ? kernel_w_q : kernel_h_q),
+        .active_size(kernel_stage_q ? kernel_cut_w_q : kernel_cut_h_q),
+        .output_size(kernel_stage_q ? kernel_w_q : kernel_cut_h_q),
+        .stage_sel(kernel_stage_q), .in_valid(kernel_in_valid),
+        .in_req(kernel_in_req), .in_data(kernel_in_data),
+        .out_valid(kernel_out_valid), .out_req(kernel_out_req),
+        .out_data(kernel_out_data), .done(kernel_done),
+        .busy(kernel_busy), .error(kernel_error)
+    );
+
     logic        descriptor_shape_ok;
     logic        descriptor_legal;
     logic        desc_push;
@@ -109,6 +149,18 @@ module unified_its_wrapper #(
                               ((n == 7'd4) || (n == 7'd8) ||
                                (n == 7'd16) || (n == 7'd32) ||
                                ((n == 7'd64) && (t == 2'd0))));
+        end
+    endfunction
+
+    function automatic logic [6:0] kernel_cut_dim(input logic [1:0] t,
+                                                  input logic [6:0] n);
+        begin
+            if ((t != 2'd0) && (n == 7'd32))
+                kernel_cut_dim = 7'd16;
+            else if (n > 7'd32)
+                kernel_cut_dim = 7'd32;
+            else
+                kernel_cut_dim = n;
         end
     endfunction
 
@@ -296,6 +348,11 @@ module unified_its_wrapper #(
     // point for a physically scheduled implementation.
     logic signed [15:0] work_calc [0:MAX_POINTS-1];
     logic signed [15:0] tmp_calc  [0:MAX_POINTS-1];
+    // The unified kernel's vertical results are state, not part of the
+    // combinational reference calculation above.  Keep a separate array so
+    // the kernel pipeline has a single sequential writer and the reference
+    // model remains single-driver under ModelSim/vopt.
+    logic signed [15:0] kernel_tmp_calc [0:MAX_POINTS-1];
     logic signed [15:0] wide_calc [0:MAX_POINTS-1];
     logic signed [9:0]  output_calc[0:MAX_POINTS-1];
     logic signed [15:0] lfnst_calc[0:47];
@@ -403,7 +460,11 @@ module unified_its_wrapper #(
     always_comb begin
         compute_valid = 1'b0;
         compute_slot = 1'b0;
-        if (!output_active) begin
+        // A kernel run owns compute_slot_q and its phase metadata until the
+        // horizontal pass has completed.  Do not admit another ready slot
+        // while that run is active; otherwise a queued TU would overwrite the
+        // in-flight kernel's owner and dimensions.
+        if (!output_active && !kernel_run_q) begin
             if (slot_state[0] == SLOT_READY) begin
                 compute_valid = 1'b1;
                 compute_slot = 1'b0;
@@ -412,6 +473,47 @@ module unified_its_wrapper #(
                 compute_slot = 1'b1;
             end
         end
+    end
+
+    // The wrapper presents one vector as four packed samples per kernel input
+    // group.  Metadata and group counters are registered by the kernel; this
+    // combinational adapter only selects the current column/row from the
+    // already-owned intermediate arrays.
+    integer kernel_lane_i;
+    integer kernel_sample_index_i;
+    always_comb begin
+        kernel_start     = (kernel_phase_q == K_V_START) ||
+                           (kernel_phase_q == K_H_START);
+        kernel_in_valid  = kernel_start ||
+                           (kernel_phase_q == K_V_FEED) ||
+                           (kernel_phase_q == K_H_FEED);
+        kernel_in_data = '0;
+        for (kernel_lane_i = 0; kernel_lane_i < 4;
+             kernel_lane_i = kernel_lane_i + 1) begin
+            kernel_sample_index_i = kernel_group_q * 4 + kernel_lane_i;
+            if (kernel_in_valid && !kernel_stage_q) begin
+                if (kernel_sample_index_i < kernel_cut_h_q)
+                    kernel_in_data[kernel_lane_i*16 +: 16] =
+                        input_mem[compute_slot_q][kernel_sample_index_i *
+                                                  kernel_w_q + kernel_vector_q];
+            end else if (kernel_in_valid) begin
+                if (kernel_sample_index_i < kernel_cut_w_q)
+                    kernel_in_data[kernel_lane_i*16 +: 16] =
+                    kernel_tmp_calc[kernel_vector_q * kernel_w_q +
+                                    kernel_sample_index_i];
+            end
+        end
+    end
+
+    // The overlapping kernel can become output-active on the same edge that
+    // accepts its final input group.  Keep its output held while the wrapper
+    // is still in a feed phase; otherwise group 0 would be consumed before
+    // the wrapper enters its drain state.  The kernel output remains stable
+    // until this drain-qualified request is asserted.
+    always_comb begin
+        kernel_out_req = kernel_run_q &&
+                         ((kernel_phase_q == K_V_DRAIN) ||
+                          (kernel_phase_q == K_H_DRAIN));
     end
 
     always_comb begin
@@ -434,6 +536,7 @@ module unified_its_wrapper #(
     end
 
     integer reset_i, clear_i, result_i;
+    integer kernel_capture_lane_i;
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             desc_rd_ptr   <= 1'b0;
@@ -444,6 +547,17 @@ module unified_its_wrapper #(
             output_active <= 1'b0;
             output_slot   <= 1'b0;
             output_index  <= 12'd0;
+            compute_slot_q <= 1'b0;
+            kernel_run_q <= 1'b0;
+            kernel_phase_q <= K_IDLE;
+            kernel_w_q <= 7'd0;
+            kernel_h_q <= 7'd0;
+            kernel_cut_w_q <= 7'd0;
+            kernel_cut_h_q <= 7'd0;
+            kernel_vector_q <= 7'd0;
+            kernel_group_q <= 5'd0;
+            kernel_type_q <= 2'd0;
+            kernel_stage_q <= 1'b0;
             protocol_error <= 1'b0;
             for (reset_i = 0; reset_i < 2; reset_i = reset_i + 1) begin
                 slot_state[reset_i]  <= SLOT_FREE;
@@ -501,13 +615,43 @@ module unified_its_wrapper #(
 
             if (compute_valid) begin
                 slot_state[compute_slot] <= SLOT_OUT;
-                output_active <= 1'b1;
-                output_slot   <= compute_slot;
+                compute_slot_q <= compute_slot;
                 output_index  <= 12'd0;
-                for (result_i = 0; result_i < MAX_POINTS; result_i = result_i + 1)
-                    if (result_i < tu_points(slot_width[compute_slot],
-                                             slot_height[compute_slot]))
-                        result_mem[compute_slot][result_i] <= output_calc[result_i];
+                if (slot_lfnst[compute_slot] == 2'd0) begin
+                    // Primary-transform cases run through the real Gate-B
+                    // P4 kernel.  The kernel works on the transform-support
+                    // cut; coefficients outside the cut are explicitly zero.
+                    kernel_run_q <= 1'b1;
+                    kernel_phase_q <= K_V_START;
+                    kernel_w_q <= slot_width[compute_slot];
+                    kernel_h_q <= slot_height[compute_slot];
+                    kernel_cut_w_q <= kernel_cut_dim(slot_hor[compute_slot],
+                                                     slot_width[compute_slot]);
+                    kernel_cut_h_q <= kernel_cut_dim(slot_ver[compute_slot],
+                                                     slot_height[compute_slot]);
+                    kernel_vector_q <= 7'd0;
+                    kernel_group_q <= 5'd0;
+                    kernel_type_q <= slot_ver[compute_slot];
+                    kernel_stage_q <= 1'b0;
+                    output_active <= 1'b0;
+                    for (result_i = 0; result_i < MAX_POINTS;
+                         result_i = result_i + 1)
+                        if (result_i < tu_points(slot_width[compute_slot],
+                                                 slot_height[compute_slot]))
+                            result_mem[compute_slot][result_i] <= '0;
+                end else begin
+                    // Active LFNST remains on the independent profile
+                    // reference path until a dedicated LFNST kernel is chosen.
+                    kernel_run_q <= 1'b0;
+                    kernel_phase_q <= K_IDLE;
+                    output_active <= 1'b1;
+                    output_slot   <= compute_slot;
+                    for (result_i = 0; result_i < MAX_POINTS;
+                         result_i = result_i + 1)
+                        if (result_i < tu_points(slot_width[compute_slot],
+                                                 slot_height[compute_slot]))
+                            result_mem[compute_slot][result_i] <= output_calc[result_i];
+                end
             end else if (output_fire) begin
                 if (output_last_fire) begin
                     slot_state[output_slot] <= SLOT_FREE;
@@ -516,6 +660,114 @@ module unified_its_wrapper #(
                 end else begin
                     output_index <= output_index + 12'd1;
                 end
+            end
+
+            if (kernel_error)
+                protocol_error <= 1'b1;
+
+            if (kernel_run_q) begin
+                case (kernel_phase_q)
+                    K_V_START: begin
+                        if (kernel_in_req) begin
+                            if (kernel_cut_h_q <= 7'd4) begin
+                                kernel_group_q <= 5'd0;
+                                kernel_phase_q <= K_V_DRAIN;
+                            end else begin
+                                kernel_group_q <= 5'd1;
+                                kernel_phase_q <= K_V_FEED;
+                            end
+                        end
+                    end
+                    K_V_FEED: begin
+                        if (kernel_in_req) begin
+                            if (kernel_group_q == ((kernel_cut_h_q >> 2) - 1'b1)) begin
+                                kernel_group_q <= 5'd0;
+                                kernel_phase_q <= K_V_DRAIN;
+                            end else begin
+                                kernel_group_q <= kernel_group_q + 1'b1;
+                            end
+                        end
+                    end
+                    K_V_DRAIN: begin
+                        if (kernel_out_valid) begin
+                            for (kernel_capture_lane_i = 0;
+                                 kernel_capture_lane_i < 4;
+                                 kernel_capture_lane_i = kernel_capture_lane_i + 1)
+                                if ((kernel_group_q * 4 + kernel_capture_lane_i) < kernel_cut_h_q)
+                                    kernel_tmp_calc[(kernel_group_q * 4 + kernel_capture_lane_i) *
+                                                    kernel_w_q + kernel_vector_q] <=
+                                        $signed(kernel_out_data[kernel_capture_lane_i*16 +: 16]);
+                            kernel_group_q <= kernel_group_q + 1'b1;
+                        end
+                        if (kernel_done) begin
+                            kernel_group_q <= 5'd0;
+                            if (kernel_vector_q + 1'b1 < kernel_cut_w_q) begin
+                                kernel_vector_q <= kernel_vector_q + 1'b1;
+                                kernel_phase_q <= K_V_START;
+                            end else begin
+                                kernel_vector_q <= 7'd0;
+                                kernel_group_q <= 5'd0;
+                                kernel_type_q <= slot_hor[compute_slot_q];
+                                kernel_stage_q <= 1'b1;
+                                kernel_phase_q <= K_H_START;
+                            end
+                        end
+                    end
+                    K_H_START: begin
+                        if (kernel_in_req) begin
+                            if (kernel_w_q <= 7'd4) begin
+                                kernel_group_q <= 5'd0;
+                                kernel_phase_q <= K_H_DRAIN;
+                            end else begin
+                                kernel_group_q <= 5'd1;
+                                kernel_phase_q <= K_H_FEED;
+                            end
+                        end
+                    end
+                    K_H_FEED: begin
+                        if (kernel_in_req) begin
+                            if (kernel_group_q == ((kernel_w_q >> 2) - 1'b1)) begin
+                                kernel_group_q <= 5'd0;
+                                kernel_phase_q <= K_H_DRAIN;
+                            end else begin
+                                kernel_group_q <= kernel_group_q + 1'b1;
+                            end
+                        end
+                    end
+                    K_H_DRAIN: begin
+                        if (kernel_out_valid) begin
+                            for (kernel_capture_lane_i = 0;
+                                 kernel_capture_lane_i < 4;
+                                 kernel_capture_lane_i = kernel_capture_lane_i + 1)
+                                if ((kernel_group_q * 4 + kernel_capture_lane_i) < kernel_w_q)
+                                    result_mem[compute_slot_q][kernel_vector_q *
+                                                                kernel_w_q +
+                                                                kernel_group_q * 4 +
+                                                                kernel_capture_lane_i] <=
+                                        $signed(kernel_out_data[kernel_capture_lane_i*16 +: 16]);
+                            kernel_group_q <= kernel_group_q + 1'b1;
+                        end
+                        if (kernel_done) begin
+                            // Horizontal transform is run once for every
+                            // vertical output row.  Keep the same P4 group
+                            // cadence while advancing to the next row; only
+                            // the final row hands ownership to the output
+                            // protocol.
+                            if (kernel_vector_q + 1'b1 < kernel_cut_h_q) begin
+                                kernel_vector_q <= kernel_vector_q + 1'b1;
+                                kernel_group_q <= 5'd0;
+                                kernel_phase_q <= K_H_START;
+                            end else begin
+                                kernel_run_q <= 1'b0;
+                                kernel_phase_q <= K_IDLE;
+                                output_active <= 1'b1;
+                                output_slot <= compute_slot_q;
+                                output_index <= 12'd0;
+                            end
+                        end
+                    end
+                    default: kernel_phase_q <= K_IDLE;
+                endcase
             end
         end
     end
