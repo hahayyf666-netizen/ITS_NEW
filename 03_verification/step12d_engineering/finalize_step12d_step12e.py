@@ -1,16 +1,15 @@
 """Assemble the final Step12D/Step12E engineering batch evidence.
 
-The script is intentionally conservative: a passing software model and a
-present RTL file do not become an HDL functional PASS without an actual
-normal- and SYNTHESIS-mode simulator run.  In environments without ModelSim
-or another HDL simulator it emits a finite Gate-C P1 STOP instead.
+The script is intentionally conservative: HDL numeric regression is kept
+separate from the frozen throughput and integration contracts.  A simulator
+PASS cannot promote Gate B/C while the current kernel cannot meet vector II
+and the current Gate-C wrapper does not instantiate that kernel.
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -30,6 +29,9 @@ FROZEN = {
 UNIFIED = ROOT / "02_rtl/rtl/unified_its_wrapper.sv"
 TB = ROOT / "03_verification/tb/unified_its_wrapper_tb.sv"
 MODEL = EVIDENCE / "GATE_C_MODEL_VALIDATION.json"
+GATE_B = EVIDENCE / "GATE_B_VALIDATION.json"
+HDL = EVIDENCE / "modelsim_gate_bc" / "GATE_B_C_MODELSIM_RUN.json"
+ARCH = EVIDENCE / "GATE_B_C_ARCHITECTURE_AUDIT.json"
 EMIT = "--emit" in sys.argv
 
 
@@ -40,8 +42,13 @@ def sha256(path: Path) -> str:
 
 
 def simulator_candidates() -> list[str]:
-    names = ["vsim", "vlog", "iverilog", "verilator", "xvlog"]
-    return [name for name in names if shutil.which(name)]
+    paths = [
+        Path("D:/software/Modelsim/win64/vsim.exe"),
+        Path("D:/software/Modelsim/win64/vlog.exe"),
+        Path("D:/AMDDesignTools/2025.2/Vivado/bin/xvlog.bat"),
+        Path("D:/AMDDesignTools/2025.2/Vivado/bin/xelab.bat"),
+    ]
+    return [str(path) for path in paths if path.exists()]
 
 
 def git_head() -> str:
@@ -51,6 +58,9 @@ def git_head() -> str:
 
 def build() -> dict[str, Any]:
     model = json.loads(MODEL.read_text(encoding="utf-8"))
+    gate_b = json.loads(GATE_B.read_text(encoding="utf-8"))
+    hdl = json.loads(HDL.read_text(encoding="utf-8"))
+    arch = json.loads(ARCH.read_text(encoding="utf-8"))
     rtl_text = UNIFIED.read_text(encoding="utf-8")
     tb_text = TB.read_text(encoding="utf-8")
     required_rtl_markers = [
@@ -70,16 +80,15 @@ def build() -> dict[str, Any]:
     assert all(row["match"] for row in frozen_checks.values())
     sims = simulator_candidates()
     model_pass = model["status"] == "PASS_ENGINEERING_PROFILE_2D_PROTOCOL_MODEL"
-    if model_pass and sims:
-        status = "GATE_C_HDL_SIMULATION_PENDING_COMMAND_EXECUTION"
-        blocker: list[str] = []
-    else:
-        status = "STOP_GATE_C_HDL_SIMULATOR_UNAVAILABLE"
-        blocker = [
-            "No HDL simulator executable (vsim/vlog/iverilog/verilator/xvlog) is available in the current environment; normal and SYNTHESIS-mode wrapper simulation cannot be claimed.",
-        ]
+    hdl_pass = hdl["status"] == "PASS"
+    assert model_pass and hdl_pass and sims
+    status = "STOP_GATE_B_VECTOR_II_AND_GATE_C_KERNEL_INTEGRATION"
+    blocker = [
+        "Gate B P1: unified_p4_kernel performs serial S_LOAD(N) followed by S_OUTPUT(N/4), so its minimum start-to-start delta is N + N/4 + 1 rather than the frozen N/4 vector II.",
+        "Gate C P1 (dependent): unified_its_wrapper is a direct-matrix functional reference and does not instantiate the Gate-B P4 kernel in its vertical/horizontal path.",
+    ]
     return {
-        "schema": "step12d_engineering.step12d_step12e_final_manifest.v1",
+        "schema": "step12d_engineering.step12d_step12e_final_manifest.v2",
         "status": status,
         "phase": "step12d_engineering_closure_to_step12e_unified_functional_rtl",
         "created_from_commit": git_head(),
@@ -97,9 +106,11 @@ def build() -> dict[str, Any]:
         "historical_hidden_golden_equivalence": "UNKNOWN",
         "gate_a": {"status": "PASS_GATE_A_ENGINEERING_PROFILE",
                    "validator": "GATE_A_VALIDATION.json"},
-        "gate_b": {"status": "PASS_UNIFIED_P4_FUNCTIONAL_SCHEDULE_CONTRACT",
+        "gate_b": {"status": gate_b["status"],
                    "validator": "GATE_B_VALIDATION.json",
-                   "rtl": "02_rtl/rtl/unified_p4_kernel.sv"},
+                   "rtl": "02_rtl/rtl/unified_p4_kernel.sv",
+                   "hdl_numeric": "PASS_NORMAL_AND_SYNTHESIS_156_CASES",
+                   "vector_ii": "FAIL"},
         "gate_c_model": {"status": model["status"],
                          "validator": "GATE_C_MODEL_VALIDATION.json",
                          "cases": model["aggregate"]["cases"],
@@ -109,11 +120,18 @@ def build() -> dict[str, Any]:
                          "ownership_violations": model["aggregate"]["ownership_violations"]},
         "unified_rtl": {"present": UNIFIED.exists(), "path": str(UNIFIED.relative_to(ROOT)).replace("\\", "/"),
                         "sha256": sha256(UNIFIED), "tb": str(TB.relative_to(ROOT)).replace("\\", "/")},
-        "hdl_simulation": {"normal": False, "synthesis_mode": False,
+        "hdl_simulation": {"normal": True, "synthesis_mode": True,
                            "simulator_candidates": sims,
+                           "simulator": hdl["simulator"],
+                           "gate_b_numeric_cases_per_mode": hdl["vector_sets"]["gate_b"]["cases"],
+                           "gate_c_numeric_cases_per_mode": hdl["vector_sets"]["gate_c"]["cases"],
+                           "gate_c_numeric_beats_per_mode": hdl["vector_sets"]["gate_c"]["beats"],
+                           "evidence": "modelsim_gate_bc/GATE_B_C_MODELSIM_RUN.json",
                            "physical_timing_proof": False},
+        "architecture_audit": {"status": arch["status"],
+                               "evidence": "GATE_B_C_ARCHITECTURE_AUDIT.json"},
         "blockers": blocker,
-        "next_action": "Run unified_its_wrapper_tb.sv in normal and SYNTHESIS compile modes with an available HDL simulator; only then reevaluate Gate C PASS." if blocker else "Execute the available HDL simulator in both modes and record logs before declaring Gate C.",
+        "next_action": "Replace the serial LOAD-then-OUTPUT Gate-B reference with an overlapping/buffered P4 implementation that meets vector II=N/4, then integrate that passing kernel into the Gate-C 2-D wrapper and rerun the existing normal/SYNTHESIS regressions.",
         "scope_guard": {
             "no_vivado": True,
             "no_xdc_change": True,

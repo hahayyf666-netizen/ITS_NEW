@@ -1,0 +1,38 @@
+{
+  "schema": "step12d_engineering.modelsim_gate_bc_run.v1",
+  "status": "PASS",
+  "simulator": "ModelSim SE-64 2020.4",
+  "simulator_path": "D:/software/Modelsim/win64/vsim.exe",
+  "license_path": "D:/software/Modelsim/LICENSE.TXT",
+  "vector_sets": {
+    "gate_b": {"cases": 156, "one_d_modes": 13, "stages": 2, "patterns_per_stage": 6},
+    "gate_c": {"cases": 19, "beats": 2368, "sha256": "81700E33C1EC4F29B0F6F39CD230A7960F8E8C240B43B89B562475F2A2F86A51"}
+  },
+  "source_hashes": {
+    "unified_p4_kernel": "1C63333C6B530E89552FF3447F944A05AEEB09BABEE3989BB35DFF35C0DBAA07",
+    "unified_its_wrapper": "B238F7F467B269F3AE51ADBDF4255C1558F3EF44EACC88731315FADD4FE67374",
+    "gate_b_tb": "B7C5DA7FF0517A8BB6734E37C21B8106F542045660B4868D75CA155D36DCCA18",
+    "gate_c_smoke_tb": "FDC818768B3567D27A01DD2FD12942E0AEA3188D180DFF5F08E8D3CCE0877D4A",
+    "gate_c_numeric_tb": "E5F3EADAD9E52C823987364BBEBE25F5E109C951BBFA47122AB82623570D60B5"
+  },
+  "runs": {
+    "normal": {
+      "compile": "PASS_0_ERRORS_0_WARNINGS",
+      "gate_b_kernel_numeric": "PASS_156_CASES",
+      "gate_c_wrapper_smoke": "PASS_BEATS_16_16_DONE_1_1",
+      "gate_c_wrapper_numeric": "PASS_19_CASES"
+    },
+    "synthesis_define": {
+      "compile": "PASS_0_ERRORS_0_WARNINGS",
+      "gate_b_kernel_numeric": "PASS_156_CASES",
+      "gate_c_wrapper_smoke": "PASS_BEATS_16_16_DONE_1_1",
+      "gate_c_wrapper_numeric": "PASS_19_CASES"
+    }
+  },
+  "interpretation": {
+    "hdl_arithmetic_and_protocol_regression": "PASS",
+    "gate_b_vector_ii_contract": "FAILS_SEPARATE_STATIC_RTL_AUDIT",
+    "gate_c_kernel_integration": "NOT_PRESENT_CURRENT_WRAPPER_IS_DIRECT_MATRIX_REFERENCE",
+    "physical_timing_proof": false
+  }
+}

@@ -2,7 +2,7 @@
 
 本目录是 ITS 工程的唯一持续工作目录。版本历史通过 GitHub commit/tag 保存，不再为每个版本复制整套本地工程。`v3.5-17` 保留为不可移动的 Step12B 功能冻结点；当前工作版本为 Step12C / v3.5-18 performance baseline，冻结 tag 按发布顺序指向本次状态提交。
 
-## 当前状态（v3.5-18 冻结，Step12D-PRE 进行中）
+## 当前状态（v3.5-18 冻结，Step12D Gate A 已闭合，Step12E Gate B/C 架构 STOP）
 
 - V3.4 功能与数学基线保持冻结。
 - 主变换使用 `A = C^T`，RTL 直接计算 `A·x`，禁止再次转置。
@@ -11,7 +11,7 @@
 - Step 12A-R2.1 与 R2.2 为历史证据；V3.5-15 即 Step 12A-R2.3（Output & Reproducibility Closure）。V3.5-16 在不改数学与调度的前提下，统一文档命名并将 validator 内部身份改为永久 `invocation_serial`。
 - R4C standalone 一维核保持冻结；Step12B 已新增 64×64 DCT2×DCT2 单 R4C wrapper。`v3.5-17` 已冻结功能结果；`v3.5-17.1` 补充事务边沿周期合同、永久 R4C latency=23 gate、`it_done` post-NBA 断言、内部事务事件审计和 comparator fail-closed mutation；`v3.5-17.2` 修正 Python phase-admission 一拍语义并完成 normal/SYNTHESIS memory、公共/内部事件及 RTL trace mutation closure。Step12C-M3 增加 bank-response/staging 两级流水并将 R4C vector-ID sanity check 移为 verification-only；Step12C-M4 仅增加 input-cache bank-local write-command pipeline；Step12C-M5-Setup 仅统一 input-tag bank 写命令并将 raw-tag compare 后移，R4C、数学、官方接口和 XDC 不变。
 - Step12C-M6 implementation-only sweep 已闭合：四组固定 Vivado 2025.2 flow 均从同一 M6 postsynth DCP 独立起跑；`Performance_NetDelay_high` 首次通过并独立复跑通过，最终 setup/hold 均为 WNS/WHS `+0.011 ns`、TNS/THS `0`，route fully routed，约束检查无 unconstrained endpoint、无 timing exception。该结果仅代表本 64×64 DCT2×DCT2 wrapper 的 registered-neighbor OOC 性能基线，不代表完整 ITS Core 或其他变换已闭合。
-- Step12D-PRE 已开始：当前只进行官方合法配置提取、逐 case 定点合同、独立 Oracle/P4 schedule、A/B/C 架构比较和通用二维映射建模；不修改 v3.5-18、R4C、现有 wrapper/XDC，不写 unified RTL，不运行 Vivado。
+- Step12D 的 `contest_engineering_vtm10_v1` 工程 profile Gate A 已闭合（官方/历史 hidden-golden 等价性仍未证明）。ModelSim SE-64 2020.4 已完成 Gate B/C normal 与 `SYNTHESIS`-define 数值回归；此前“无仿真器”是 PATH-only 探测误判。当前真正的 P1 STOP 是：Gate-B reference kernel 串行执行 LOAD/OUTPUT，尚不满足 vector II=`N/4`，且 Gate-C direct-matrix reference wrapper 尚未集成该 P4 kernel。`v3.5-18`、frozen R4C、旧 wrapper/XDC 均未改变，也未运行新 unified RTL 的 Vivado 实现。
 
 ## 目录导航
 

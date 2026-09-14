@@ -1,10 +1,25 @@
 {
-  "schema": "step12d_engineering.hdl_simulator_check.v1",
-  "status": "STOP_NO_SUPPORTED_HDL_SIMULATOR_ON_PATH",
-  "checked_commands": ["vsim", "vlog", "iverilog", "verilator", "xvlog"],
-  "available": [],
-  "normal_simulation_run": false,
-  "synthesis_mode_simulation_run": false,
-  "reason": "The environment exposes no supported HDL simulator executable; a software model pass and RTL source presence cannot be promoted to HDL simulation PASS.",
-  "required_followup": "Run 03_verification/tb/unified_its_wrapper_tb.sv with normal and SYNTHESIS compile modes, then update STEP12D_STEP12E_FINAL_MANIFEST.json."
+  "schema": "step12d_engineering.hdl_simulator_check.v2",
+  "status": "PASS_SUPPORTED_MODELSIM_FOUND_AND_EXECUTED",
+  "previous_result": "FALSE_NEGATIVE_PATH_ONLY_DETECTION",
+  "available": [
+    {
+      "tool": "ModelSim SE-64 2020.4",
+      "vsim": "D:/software/Modelsim/win64/vsim.exe",
+      "vlog": "D:/software/Modelsim/win64/vlog.exe",
+      "license": "D:/software/Modelsim/LICENSE.TXT",
+      "executed": true
+    },
+    {
+      "tool": "Vivado Simulator 2025.2",
+      "xvlog": "D:/AMDDesignTools/2025.2/Vivado/bin/xvlog.bat",
+      "xelab": "D:/AMDDesignTools/2025.2/Vivado/bin/xelab.bat",
+      "compile_available": true,
+      "elaboration_blocked": "ORGANIZATION_DEVICE_GUARD_POLICY"
+    }
+  ],
+  "normal_simulation_run": true,
+  "synthesis_mode_simulation_run": true,
+  "evidence": "modelsim_gate_bc/GATE_B_C_MODELSIM_RUN.json",
+  "reason_for_old_error": "The old detector only called shutil.which() and did not search the installed D:/software/Modelsim or D:/AMDDesignTools paths."
 }

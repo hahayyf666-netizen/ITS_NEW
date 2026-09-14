@@ -1,8 +1,8 @@
 {
-  "schema": "step12d_engineering.step12d_step12e_final_manifest.v1",
-  "status": "STOP_GATE_C_HDL_SIMULATOR_UNAVAILABLE",
+  "schema": "step12d_engineering.step12d_step12e_final_manifest.v2",
+  "status": "STOP_GATE_B_VECTOR_II_AND_GATE_C_KERNEL_INTEGRATION",
   "phase": "step12d_engineering_closure_to_step12e_unified_functional_rtl",
-  "created_from_commit": "6fcf12f4212cede21d74f51e230a8c7ab2cb4575",
+  "created_from_commit": "aca59739175484c22382b972907d3dce6b963950",
   "base_tag": "v3.5-18",
   "base_tag_target": "7415b0acb33481af1845f63e16b93ce7c33b977b",
   "frozen_boundary": {
@@ -20,11 +20,36 @@
   "official_equivalence": "NOT_PROVEN",
   "historical_hidden_golden_equivalence": "UNKNOWN",
   "gate_a": {"status": "PASS_GATE_A_ENGINEERING_PROFILE", "validator": "GATE_A_VALIDATION.json"},
-  "gate_b": {"status": "PASS_UNIFIED_P4_FUNCTIONAL_SCHEDULE_CONTRACT", "validator": "GATE_B_VALIDATION.json", "rtl": "02_rtl/rtl/unified_p4_kernel.sv"},
+  "gate_b": {
+    "status": "STOP_GATE_B_VECTOR_II_CONTRACT_NOT_MET",
+    "validator": "GATE_B_VALIDATION.json",
+    "rtl": "02_rtl/rtl/unified_p4_kernel.sv",
+    "hdl_numeric": "PASS_NORMAL_AND_SYNTHESIS_156_CASES",
+    "vector_ii": "FAIL"
+  },
   "gate_c_model": {"status": "PASS_ENGINEERING_PROFILE_2D_PROTOCOL_MODEL", "validator": "GATE_C_MODEL_VALIDATION.json", "cases": 369, "beats": 45636, "dropped_beats": 0, "duplicated_beats": 0, "ownership_violations": 0},
-  "unified_rtl": {"present": true, "path": "02_rtl/rtl/unified_its_wrapper.sv", "sha256": "C9C224E29EFF5D8C290F2684E40639786DFFE8223970B62E5C761EF4313C6566", "tb": "03_verification/tb/unified_its_wrapper_tb.sv"},
-  "hdl_simulation": {"normal": false, "synthesis_mode": false, "simulator_candidates": [], "physical_timing_proof": false},
-  "blockers": ["No HDL simulator executable (vsim/vlog/iverilog/verilator/xvlog) is available in the current environment; normal and SYNTHESIS-mode wrapper simulation cannot be claimed."],
-  "next_action": "Run unified_its_wrapper_tb.sv in normal and SYNTHESIS compile modes with an available HDL simulator; only then reevaluate Gate C PASS.",
+  "unified_rtl": {"present": true, "path": "02_rtl/rtl/unified_its_wrapper.sv", "sha256": "B238F7F467B269F3AE51ADBDF4255C1558F3EF44EACC88731315FADD4FE67374", "tb": "03_verification/tb/unified_its_wrapper_tb.sv"},
+  "hdl_simulation": {
+    "normal": true,
+    "synthesis_mode": true,
+    "simulator": "ModelSim SE-64 2020.4",
+    "simulator_candidates": [
+      "D:/software/Modelsim/win64/vsim.exe",
+      "D:/software/Modelsim/win64/vlog.exe",
+      "D:/AMDDesignTools/2025.2/Vivado/bin/xvlog.bat",
+      "D:/AMDDesignTools/2025.2/Vivado/bin/xelab.bat"
+    ],
+    "gate_b_numeric_cases_per_mode": 156,
+    "gate_c_numeric_cases_per_mode": 19,
+    "gate_c_numeric_beats_per_mode": 2368,
+    "evidence": "modelsim_gate_bc/GATE_B_C_MODELSIM_RUN.json",
+    "physical_timing_proof": false
+  },
+  "architecture_audit": {"status": "STOP_TWO_DEPENDENT_P1_BLOCKERS", "evidence": "GATE_B_C_ARCHITECTURE_AUDIT.json"},
+  "blockers": [
+    "Gate B P1: unified_p4_kernel performs serial S_LOAD(N) followed by S_OUTPUT(N/4), so its minimum start-to-start delta is N + N/4 + 1 rather than the frozen N/4 vector II.",
+    "Gate C P1 (dependent): unified_its_wrapper is a direct-matrix functional reference and does not instantiate the Gate-B P4 kernel in its vertical/horizontal path."
+  ],
+  "next_action": "Replace the serial LOAD-then-OUTPUT Gate-B reference with an overlapping/buffered P4 implementation that meets vector II=N/4, then integrate that passing kernel into the Gate-C 2-D wrapper and rerun the existing normal/SYNTHESIS regressions.",
   "scope_guard": {"no_vivado": true, "no_xdc_change": true, "no_frozen_r4c_change": true, "no_old_wrapper_change": true, "p2_p3_enhancements_nonblocking": true}
 }

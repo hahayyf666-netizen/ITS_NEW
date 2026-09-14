@@ -1,0 +1,30 @@
+{
+  "schema": "step12d_engineering.gate_b_c_architecture_audit.v1",
+  "status": "STOP_TWO_DEPENDENT_P1_BLOCKERS",
+  "simulator_availability_blocker": "CLOSED_FALSE_NEGATIVE_DETECTOR",
+  "gate_b": {
+    "arithmetic_hdl_regression": "PASS_NORMAL_AND_SYNTHESIS_156_CASES",
+    "outputs_per_group": 4,
+    "group_ii_ready_high": 1,
+    "required_vector_start_ii": "N/4",
+    "current_state_sequence": "S_IDLE -> S_LOAD(N accepting edges) -> S_OUTPUT(N/4 accepting edges) -> S_IDLE",
+    "minimum_start_to_start_delta": "N + N/4 + 1 accepting edges",
+    "vector_ii_status": "FAIL",
+    "severity": "P1"
+  },
+  "gate_c": {
+    "reference_wrapper_hdl_regression": "PASS_NORMAL_AND_SYNTHESIS_19_CASES_PLUS_SMOKE",
+    "unified_p4_kernel_instantiated": false,
+    "current_arithmetic": "direct combinational canonical-matrix loops inside unified_its_wrapper",
+    "required_integration": "Gate-B-passing P4 kernel in the vertical/horizontal 2-D path",
+    "integration_status": "FAIL_DEPENDS_ON_GATE_B",
+    "severity": "P1"
+  },
+  "scope": {
+    "gate_a_profile": "UNCHANGED",
+    "v3.5-18": "UNCHANGED",
+    "frozen_r4c": "UNCHANGED",
+    "old_wrapper": "UNCHANGED",
+    "vivado_run": false
+  }
+}

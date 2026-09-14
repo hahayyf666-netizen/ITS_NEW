@@ -1,6 +1,6 @@
 # Step12D PRE
 
-Status: HISTORICAL SOURCE REVIEW STOP; ENGINEERING PROFILE GATE A/B PASS; GATE C STOP
+Status: HISTORICAL SOURCE REVIEW STOP; ENGINEERING PROFILE GATE A PASS; GATE B/C ARCHITECTURE STOP
 
 ## 1. Scope and frozen boundary
 
@@ -109,15 +109,30 @@ dynamic range 15, VTM inverse shifts 7/10, and a LOW10 two's-complement final
 adapter (SAT10 remains an alternate differential adapter). This binding is
 reproducible but does not claim official or hidden-golden equivalence.
 
-Gate A is closed for this engineering profile and Gate B has a new unified
-P4 one-dimensional RTL reference covering DCT2/DST7/DCT8 at 4/8/16/32 and
-DCT2 at 64. Gate C's independent software model covers the 169 LFNST-off
+Gate A is closed for this engineering profile. Gate B has a new arithmetic
+RTL reference covering DCT2/DST7/DCT8 at 4/8/16/32 and DCT2 at 64; its
+normal and `SYNTHESIS`-define ModelSim regressions are bit-exact for 156
+cases. Its transaction architecture is not yet a Gate-B PASS: it serializes
+`S_LOAD(N)` and `S_OUTPUT(N/4)`, so it cannot meet the frozen vector-start
+II of `N/4` even though its ready-high output group II is one.
+
+Gate C's independent software model covers the 169 LFNST-off
 per-axis tuples and 200 active-LFNST tuples, including rectangles, mixed
 H/V, sparse raster input, two-slot ownership, backpressure, and exactly-once
-completion. The new `unified_its_wrapper.sv` and its testbench are present,
-but this environment has no `vsim`, `vlog`, `iverilog`, `verilator`, or
-`xvlog`; therefore normal and `SYNTHESIS`-mode HDL simulation are not claimed
-and the final engineering batch is `STOP_GATE_C_HDL_SIMULATOR_UNAVAILABLE`.
+completion. ModelSim SE-64 2020.4 is installed under `D:/software/Modelsim`;
+the earlier PATH-only detector missed it. The current Gate-C reference
+wrapper passes normal and `SYNTHESIS`-define smoke plus 19-case/2,368-beat
+numeric regression, including all transform families/sizes, rectangles,
+mixed H/V, active LFNST and output backpressure. However, this wrapper uses
+direct canonical-matrix loops and does not instantiate the Gate-B P4 kernel.
+It is therefore a verified functional reference, not the required integrated
+unified P4 path.
+
+The corrected batch state is
+`STOP_GATE_B_VECTOR_II_AND_GATE_C_KERNEL_INTEGRATION`. The simulator
+availability blocker is closed; the remaining blockers are two dependent P1
+architecture items: implement an overlapping/buffered P4 transaction path
+with vector II `N/4`, then integrate it into the vertical/horizontal wrapper.
 
 The machine-readable final status is recorded in
 `05_audit/current/27/step12d_engineering/STEP12D_STEP12E_FINAL_MANIFEST.json`.

@@ -56,6 +56,7 @@ module unified_p4_kernel #(
     logic signed [COEFF_W-1:0] coeff_mem [0:COEFF_DEPTH-1];
 
     integer lane_i;
+    integer output_lane_i;
     integer input_i;
     integer coeff_index_i;
     logic signed [ACC_W-1:0] accum_c [0:3];
@@ -147,8 +148,10 @@ module unified_p4_kernel #(
         // high.  The held output data itself is independent of out_req.
         out_valid = (state_q == S_OUTPUT) && out_req;
         out_data  = '0;
-        for (lane_i = 0; lane_i < 4; lane_i = lane_i + 1)
-            out_data[lane_i*DATA_W +: DATA_W] = scaled_c[lane_i];
+        for (output_lane_i = 0; output_lane_i < 4;
+             output_lane_i = output_lane_i + 1)
+            out_data[output_lane_i*DATA_W +: DATA_W] =
+                scaled_c[output_lane_i];
     end
 
     always_ff @(posedge clk or negedge rst_n) begin

@@ -1,9 +1,10 @@
-"""Gate B proof for the new unified P4 1-D kernel.
+"""Gate B arithmetic proof and RTL throughput audit.
 
 This is a software schedule/reference harness, not a synthesis or timing
-claim.  It independently evaluates canonical matrices and checks the RTL
-contract: four complete outputs per group, group II=1, vector II=N/4,
-profile rounding/clipping, mode isolation, and output backpressure holding.
+claim.  It independently evaluates canonical matrices and checks arithmetic
+and group behavior.  The RTL transaction state machine is audited separately:
+the current serial LOAD-then-OUTPUT implementation does not meet the frozen
+vector-II contract.
 """
 
 from __future__ import annotations
@@ -136,6 +137,7 @@ def main() -> int:
         assert len(schedule) == n
         assert [r["output_index"] for r in schedule] == list(range(n))
         assert [r["cycle"] for r in schedule] == [g for g in range(n // 4) for _ in range(4)]
+        rtl_start_ii_min = n + (n // 4) + 1
         records.append({
             "transform": name,
             "N": n,
@@ -144,7 +146,10 @@ def main() -> int:
             "outputs_per_group": 4,
             "products_per_group": 4 * n,
             "group_ii": 1,
-            "vector_ii": n // 4,
+            "scheduled_output_burst_cycles": n // 4,
+            "required_vector_start_ii": n // 4,
+            "rtl_vector_start_ii_min": rtl_start_ii_min,
+            "rtl_vector_ii_pass": False,
             "post_shifts": shifts,
             "bit_exact": True,
             "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
@@ -167,7 +172,7 @@ def main() -> int:
 
     result = {
         "schema": "step12d_engineering.gate_b_validation.v1",
-        "status": "PASS_UNIFIED_P4_FUNCTIONAL_SCHEDULE_CONTRACT",
+        "status": "STOP_GATE_B_VECTOR_II_CONTRACT_NOT_MET",
         "rtl": "02_rtl/rtl/unified_p4_kernel.sv",
         "rtl_sha256": sha256(RTL),
         "cases": records,
@@ -175,7 +180,10 @@ def main() -> int:
         "contracts": {
             "complete_outputs_per_group": 4,
             "group_ii": 1,
-            "vector_ii": "N/4 under ready-high",
+            "scheduled_group_burst": "N/4 cycles under ready-high",
+            "required_vector_start_ii": "N/4",
+            "current_rtl_vector_start_ii_min": "N + N/4 + 1 accepting edges because S_LOAD and S_OUTPUT cannot overlap",
+            "vector_ii_pass": False,
             "mode_switch_isolation": True,
             "input_acceptance_ii": 1,
             "input_acceptance_cycles": "0..N-1 when in_req is high",
@@ -184,6 +192,10 @@ def main() -> int:
             "async_active_low_reset": True,
             "dct2_64_profile_path": "new direct matrix path; frozen R4C not imported",
         },
+        "finite_blockers": [
+            "The current RTL accepts a new start only in S_IDLE, loads N inputs serially in S_LOAD, then emits N/4 groups in S_OUTPUT. It cannot accept/start successive vectors every N/4 cycles.",
+            "A buffered or pipelined P4 implementation with overlapping vector admission/output is required before Gate B can pass.",
+        ],
         "not_proven": ["physical DSP/LUT/RAM mapping", "500 MHz timing", "2-D wrapper/LFNST integration"],
     }
     if EMIT:

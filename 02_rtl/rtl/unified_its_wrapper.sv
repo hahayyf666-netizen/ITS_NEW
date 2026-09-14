@@ -64,7 +64,7 @@ module unified_its_wrapper #(
     // Descriptor FIFO.  It may queue two descriptors, while fill_slot is the
     // only active data owner because the data interface has no TU identifier.
     logic [21:0] desc_mem [0:1];
-    logic [1:0]  desc_rd_ptr, desc_wr_ptr;
+    logic        desc_rd_ptr, desc_wr_ptr;
     logic [1:0]  desc_count;
     logic        fill_active;
     logic        fill_slot;
@@ -119,6 +119,17 @@ module unified_its_wrapper #(
                                      (w == 7'd16) || (w == 7'd32) || (w == 7'd64)) &&
                                     ((h == 7'd4) || (h == 7'd8) ||
                                      (h == 7'd16) || (h == 7'd32) || (h == 7'd64));
+        end
+    endfunction
+
+    function automatic logic [13:0] tu_points(input logic [6:0] w,
+                                              input logic [6:0] h);
+        logic [13:0] w_ext;
+        logic [13:0] h_ext;
+        begin
+            w_ext = {7'd0, w};
+            h_ext = {7'd0, h};
+            tu_points = w_ext * h_ext;
         end
     endfunction
 
@@ -193,45 +204,56 @@ module unified_its_wrapper #(
             if (ntrs == 16)
                 lfnst_base = set_i * 512 + (idx_m1 & 1) * 256;
             else
-                lfnst_base = 2048 + set_i * 768 + (idx_m1 & 1) * 384;
+                // The 48-output tables are stored as eight complete
+                // set/index scenarios of 48x16 = 768 coefficients each.
+                lfnst_base = 2048 + set_i * 1536 + (idx_m1 & 1) * 768;
         end
     endfunction
 
     function automatic integer scan_row(input integer index_i,
                                         input integer side_i);
-        integer diagonal, row_i, col_i, count_i;
+        integer diagonal, row_lo, row_hi, diagonal_count;
+        integer offset_i, count_i;
         begin
             scan_row = 0;
             count_i = 0;
-            for (diagonal = 0; diagonal < 2*side_i-1; diagonal = diagonal + 1)
-                for (row_i = 0; row_i < side_i; row_i = row_i + 1) begin
-                    col_i = diagonal - row_i;
-                    if ((col_i >= 0) && (col_i < side_i)) begin
-                        if (count_i == index_i)
-                            scan_row = ((diagonal & 1) != 0) ?
-                                       (diagonal - col_i) : row_i;
-                        count_i = count_i + 1;
-                    end
+            for (diagonal = 0; diagonal < 2*side_i-1;
+                 diagonal = diagonal + 1) begin
+                row_lo = (diagonal < side_i) ? 0 : diagonal - side_i + 1;
+                row_hi = (diagonal < side_i) ? diagonal : side_i - 1;
+                diagonal_count = row_hi - row_lo + 1;
+                if ((index_i >= count_i) &&
+                    (index_i < count_i + diagonal_count)) begin
+                    offset_i = index_i - count_i;
+                    scan_row = ((diagonal & 1) != 0) ?
+                               (row_hi - offset_i) : (row_lo + offset_i);
                 end
+                count_i = count_i + diagonal_count;
+            end
         end
     endfunction
 
     function automatic integer scan_col(input integer index_i,
                                         input integer side_i);
-        integer diagonal, row_i, col_i, count_i;
+        integer diagonal, row_lo, row_hi, diagonal_count;
+        integer offset_i, selected_row, count_i;
         begin
             scan_col = 0;
             count_i = 0;
-            for (diagonal = 0; diagonal < 2*side_i-1; diagonal = diagonal + 1)
-                for (row_i = 0; row_i < side_i; row_i = row_i + 1) begin
-                    col_i = diagonal - row_i;
-                    if ((col_i >= 0) && (col_i < side_i)) begin
-                        if (count_i == index_i)
-                            scan_col = ((diagonal & 1) != 0) ?
-                                       (diagonal - scan_row(index_i, side_i)) : col_i;
-                        count_i = count_i + 1;
-                    end
+            for (diagonal = 0; diagonal < 2*side_i-1;
+                 diagonal = diagonal + 1) begin
+                row_lo = (diagonal < side_i) ? 0 : diagonal - side_i + 1;
+                row_hi = (diagonal < side_i) ? diagonal : side_i - 1;
+                diagonal_count = row_hi - row_lo + 1;
+                if ((index_i >= count_i) &&
+                    (index_i < count_i + diagonal_count)) begin
+                    offset_i = index_i - count_i;
+                    selected_row = ((diagonal & 1) != 0) ?
+                                   (row_hi - offset_i) : (row_lo + offset_i);
+                    scan_col = diagonal - selected_row;
                 end
+                count_i = count_i + diagonal_count;
+            end
         end
     endfunction
 
@@ -279,6 +301,7 @@ module unified_its_wrapper #(
     logic signed [15:0] lfnst_calc[0:47];
     integer calc_i, calc_j, calc_k;
     integer calc_w, calc_h, calc_cut_w, calc_cut_h, calc_side, calc_ntrs;
+    integer calc_nonzero;
     integer calc_skip_w, calc_skip_h, calc_base, calc_raw;
     integer calc_row, calc_col, calc_out, calc_scan_r, calc_scan_c;
 
@@ -299,13 +322,16 @@ module unified_its_wrapper #(
                 work_calc[calc_i] = input_mem[compute_slot][calc_i];
 
         calc_ntrs = 0;
+        calc_nonzero = 16;
         calc_side = 4;
         if (slot_lfnst[compute_slot] != 2'd0) begin
             calc_ntrs = ((calc_w == 4) || (calc_h == 4)) ? 16 : 48;
+            calc_nonzero = (((calc_w == 4) && (calc_h == 4)) ||
+                            ((calc_w == 8) && (calc_h == 8))) ? 8 : 16;
             calc_side = (calc_ntrs == 16) ? 4 : 8;
             for (calc_out = 0; calc_out < calc_ntrs; calc_out = calc_out + 1) begin
                 calc_raw = 0;
-                for (calc_j = 0; calc_j < 16; calc_j = calc_j + 1) begin
+                for (calc_j = 0; calc_j < calc_nonzero; calc_j = calc_j + 1) begin
                     calc_scan_r = scan_row(calc_j, calc_side);
                     calc_scan_c = scan_col(calc_j, calc_side);
                     if ((calc_scan_r < calc_h) && (calc_scan_c < calc_w))
@@ -401,16 +427,17 @@ module unified_its_wrapper #(
         it_data_out_vld = output_active && it_data_out_req;
         output_fire = output_active && it_data_out_req;
         output_last_fire = output_fire &&
-                           (output_index == ((slot_width[output_slot] *
-                                              slot_height[output_slot]) / 4 - 1));
+                           (output_index ==
+                            ((tu_points(slot_width[output_slot],
+                                        slot_height[output_slot]) >> 2) - 1));
         it_done = output_last_fire;
     end
 
     integer reset_i, clear_i, result_i;
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            desc_rd_ptr   <= 2'd0;
-            desc_wr_ptr   <= 2'd0;
+            desc_rd_ptr   <= 1'b0;
+            desc_wr_ptr   <= 1'b0;
             desc_count    <= 2'd0;
             fill_active   <= 1'b0;
             fill_slot     <= 1'b0;
@@ -432,8 +459,9 @@ module unified_its_wrapper #(
                 protocol_error <= 1'b1;
             if (it_info_vld && (desc_count == 2'd2) && !bind_event)
                 protocol_error <= 1'b1;
-            if (input_fire && (it_data_addr >=
-                               (slot_width[fill_slot] * slot_height[fill_slot])))
+            if (input_fire &&
+                ({2'd0, it_data_addr} >=
+                 tu_points(slot_width[fill_slot], slot_height[fill_slot])))
                 protocol_error <= 1'b1;
 
             if (desc_push) begin
@@ -477,7 +505,8 @@ module unified_its_wrapper #(
                 output_slot   <= compute_slot;
                 output_index  <= 12'd0;
                 for (result_i = 0; result_i < MAX_POINTS; result_i = result_i + 1)
-                    if (result_i < slot_width[compute_slot] * slot_height[compute_slot])
+                    if (result_i < tu_points(slot_width[compute_slot],
+                                             slot_height[compute_slot]))
                         result_mem[compute_slot][result_i] <= output_calc[result_i];
             end else if (output_fire) begin
                 if (output_last_fire) begin

@@ -20,27 +20,42 @@ equivalence and historical hidden-golden equivalence remain unproven.
   tuple set is an explicitly labelled per-axis implementation superset, not
   an official Cartesian-product claim.  LFNST active cases are DCT2×DCT2
   with the source-backed set/index matrix.
-- Gate B: PASS for the independent 13-case P4 schedule contract (156 vectors,
-  2,928 scalar values, zero mismatches).  It is a functional schedule proof,
-  not a physical resource/timing proof.
+- Gate B arithmetic: PASS in both normal and `SYNTHESIS`-define ModelSim for
+  156 cases spanning 13 modes, two stages and six input classes. Four outputs
+  per group and ready-high group II=1 are verified. Gate B overall remains
+  STOP because the RTL serializes `S_LOAD(N)` and `S_OUTPUT(N/4)` and cannot
+  meet the frozen vector-start II of `N/4`.
 - Gate C model: PASS for 369 tuples (169 LFNST-off plus 200 active cases),
   45,636 output beats, sparse full-raster input, rectangles/mixed H/V,
   LFNST, two-slot ownership, backpressure and exactly-once completion.  The
   model reports zero dropped/duplicated beats and zero ownership violations.
 
-## Gate C HDL boundary
+## Gate B/C HDL evidence and architecture boundary
 
-`unified_its_wrapper.sv` and `unified_its_wrapper_tb.sv` are present and
-contain the complete protocol/ownership reference structure.  The current
-environment has no `vsim`, `vlog`, `iverilog`, `verilator`, or `xvlog` on PATH.
-Consequently normal and `SYNTHESIS`-mode HDL simulation were not run and are
-not represented as PASS.
+The earlier PATH-only simulator detector was wrong. ModelSim SE-64 2020.4 is
+installed at `D:/software/Modelsim/win64` and was executed successfully.
+Normal and `SYNTHESIS`-define compilation each complete with zero errors and
+zero warnings. In both modes the Gate-B numeric test passes 156 cases, the
+Gate-C two-TU smoke test passes 16/16 beats and exactly one done per TU, and
+the Gate-C numeric test passes 19 cases / 2,368 beats against independently
+generated Oracle vectors.
+
+Those runs exposed and corrected real HDL defects: a descriptor pointer-width
+error, a 64x64 point-count truncation, LFNST diagonal scan/nonzero handling,
+and the 48-output LFNST ROM scenario base. The corrected HDL is numerically
+and procedurally verified by the recorded regression.
+
+The remaining STOP is architectural, not environmental. The Gate-B kernel
+cannot overlap vector loading and output, so its vector II is not `N/4`.
+The Gate-C wrapper is intentionally a direct-matrix functional reference and
+does not instantiate the Gate-B kernel in the two-dimensional path.
 
 The final state is therefore:
 
-`STOP_GATE_C_HDL_SIMULATOR_UNAVAILABLE`
+`STOP_GATE_B_VECTOR_II_AND_GATE_C_KERNEL_INTEGRATION`
 
-This is one finite P1 evidence blocker.  The next action is to run the new
-testbench in both compile modes with an available HDL simulator, then update
-the final manifest.  No new RTL, timing, source, or optional audit gates are
-introduced by this STOP.
+These are two dependent P1 architecture blockers. The next action is to
+replace the serial reference kernel with a buffered/overlapping P4 path that
+meets vector II `N/4`, then instantiate that passing kernel in the Gate-C
+vertical/horizontal datapath and rerun the existing tests. No source-contract,
+physical timing, or optional audit gate is added by this correction.

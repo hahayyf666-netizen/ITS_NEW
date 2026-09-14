@@ -99,16 +99,28 @@ module unified_its_wrapper_tb;
             @(negedge clk);
             // Alternate request stalls.  External valid must be low during
             // every stall, while data remains unchanged.
-            it_data_out_req <= (($time / 2) % 5 != 1);
+            it_data_out_req = (($time / 2) % 5 != 1);
+            #0;
             if (!it_data_out_req) begin
                 if (it_data_out_vld)
                     $fatal(1, "out_valid asserted while req=0");
-                if (holding && it_data_out !== held_data)
-                    $fatal(1, "output data changed during stall");
-                holding = 1'b1;
-            end else if (it_data_out_vld) begin
-                held_data = it_data_out;
+                if (dut.output_active) begin
+                    if (holding && it_data_out !== held_data)
+                        $fatal(1, "output data changed during stall");
+                    held_data = it_data_out;
+                    holding = 1'b1;
+                end else begin
+                    holding = 1'b0;
+                end
+            end else begin
                 holding = 1'b0;
+            end
+
+            // Transaction accounting is anchored to the accepting rising
+            // edge, not to the negedge at which request was driven.
+            @(posedge clk);
+            if (it_data_out_vld && it_data_out_req) begin
+                held_data = it_data_out;
                 if (first_beats < 16)
                     first_beats = first_beats + 1;
                 else
@@ -130,7 +142,15 @@ module unified_its_wrapper_tb;
             $fatal(1, "unexpected protocol_error");
         if (first_beats != 16 || second_beats != 16 ||
             first_done != 1 || second_done != 1)
-            $fatal(1, "two-TU output contract failed");
+            $fatal(1,
+                   "two-TU output contract failed beats=%0d/%0d done=%0d/%0d output_active=%0b output_slot=%0d output_index=%0d slot_state=%0d/%0d slot_size=%0dx%0d/%0dx%0d desc_count=%0d fill_active=%0b",
+                   first_beats, second_beats, first_done, second_done,
+                   dut.output_active, dut.output_slot, dut.output_index,
+                   dut.slot_state[0], dut.slot_state[1],
+                   dut.slot_width[0], dut.slot_height[0],
+                   dut.slot_width[1], dut.slot_height[1],
+                   dut.desc_count,
+                   dut.fill_active);
         $display("GATE_C_WRAPPER_TB_PASS beats=%0d/%0d done=%0d/%0d",
                  first_beats, second_beats, first_done, second_done);
         $finish;
