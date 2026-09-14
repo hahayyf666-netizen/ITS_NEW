@@ -24,5 +24,32 @@
     "source": "04_reference/oracle/v34_rtl_bitexact.py:lfnst_details",
     "status": "reference_only_pending_case_audit"
   },
-  "main_transform_pair_coupling": "PENDING"
+  "main_transform_pair_coupling": {
+    "status": "REFERENCE_VTM_DEFAULT_DCT2_DCT2_ONLY_OFFICIAL_MAPPING_PENDING",
+    "reference_rule": "VTM gates MTS signalling on lfnstIdx == 0; with the default DCT2_DCT2 mts value, the non-DCT2 getTrTypes branch is not selected.",
+    "source_evidence": [
+      {
+        "source_id": "VTM_CABAC_WRITER_MTS_GATE",
+        "path": "04_reference/VTM/source/Lib/EncoderLib/CABACWriter.cpp",
+        "sha256": "74477BE5CA74CA5C05F62D30BA3C132629C7A40C72CACA9226EE18F7C247DC1D",
+        "locator": "mts_idx around lines 2696-2702",
+        "predicate": "cu.lfnstIdx == 0"
+      },
+      {
+        "source_id": "VTM_CABAC_READER_MTS_GATE",
+        "path": "04_reference/VTM/source/Lib/DecoderLib/CABACReader.cpp",
+        "sha256": "2B7948EBB03B6BE4173F1A8CB0CDBB00B54D2AFB53B0AFF7322B5DB86912E0B9",
+        "locator": "mts_idx around lines 3025-3031",
+        "predicate": "cu.lfnstIdx == 0"
+      },
+      {
+        "source_id": "VTM_MTS_ENUM_ORDER",
+        "path": "04_reference/VTM/source/Lib/CommonLib/TypeDef.h",
+        "sha256": "75D6007A3259BBB730FD50629C1AA8917AADE504C01AD2DFDE87A332FE432F06",
+        "locator": "MtsType around lines 341-349",
+        "detail": "DCT2_DCT2=0, SKIP=1, non-DCT2 MTS pairs=2..5"
+      }
+    ],
+    "scope": "reference context only; not yet promoted to official contest tuple legality"
+  }
 }

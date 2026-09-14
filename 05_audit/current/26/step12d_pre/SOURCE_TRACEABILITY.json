@@ -75,6 +75,13 @@
       "status": "reference_candidate_derivation_recorded_not_official",
       "finding": "The VTM pair rules can be mechanically expanded against the official shape-row intersections into 89 LFNST-off reference candidates.",
       "resolution": "Store the explicit candidates with provenance, but keep official_legal=false until the contest descriptor/context mapping is independently resolved."
+    },
+    {
+      "id": "SRC-LFNST-COUPLING-01",
+      "severity": "P1",
+      "status": "reference_context_found_official_mapping_pending",
+      "finding": "The designated VTM reference gates MTS signalling on lfnstIdx == 0; its transform-pair enum places DCT2_DCT2 at 0 and non-DCT2 pairs above SKIP.",
+      "resolution": "Record default DCT2_DCT2 as a VTM reference context for LFNST, but do not promote it to official contest legality without an attachment/interface mapping."
     }
   ]
 }
