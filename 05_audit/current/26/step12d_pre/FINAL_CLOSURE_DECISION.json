@@ -17,7 +17,10 @@
     "13-case independent arithmetic P4 execution validated",
     "65-vector fixed-point reference cross-check validated",
     "57-row logical memory mapping and 95-candidate tagged 2-D reference dataflow validated",
-    "A/B/C analytic structural comparison recorded without physical claims"
+    "A/B/C analytic structural comparison recorded without physical claims",
+    "current official contest page and updated attachment independently rechecked",
+    "official LFNST set/index, nTrs, rounding/clipping and DCT2 main-transform coupling closed",
+    "ITU H.266 fixed-point cross-check recorded without overriding the contest contract"
   ],
   "blockers": [
     {
@@ -26,21 +29,23 @@
       "description": "Official attachment does not define complete horizontal/vertical transform-type coupling for the 22-bit descriptor."
     },
     {
-      "id": "SRC-LFNST-COUPLING-01",
-      "severity": "P1",
-      "description": "Official attachment does not map LFNST set/index to complete main-transform coupling and VTM context predicates."
-    },
-    {
       "id": "FIXED-POINT-SOURCE-01",
       "severity": "P1",
-      "description": "Per-case source-backed fixed-point promotion is not complete; existing checks remain reference/baseline evidence."
-    },
-    {
-      "id": "ARCH-SELECT-01",
-      "severity": "P1",
-      "description": "A/B/C and LFNST ownership cannot be finally selected before the official case universe and source-backed contracts close; physical feasibility is also not proven in PRE."
+      "description": "Contest sources do not define complete per-stage main-transform rounding/shift/wrap-or-clip and final 10-bit mapping; H.266's BitDepth-dependent normative process cannot silently replace the contest contract."
     }
   ],
+  "resolved_in_source_batch": [
+    {
+      "id": "SRC-LFNST-COUPLING-01",
+      "status": "RESOLVED",
+      "description": "Active LFNST uses the official set/index matrices and is followed by a DCT2xDCT2 main transform."
+    }
+  ],
+  "downstream_not_root_blocker": {
+    "id": "ARCH-SELECT-01",
+    "status": "WAITING_ON_TWO_ROOT_SOURCE_BLOCKERS"
+  },
   "official_vs_reference_rule": "VTM-derived tuples remain reference_only; engineering assumptions cannot close an unresolved official requirement.",
-  "next_action": "Obtain authoritative H/V and LFNST coupling clarification, then rerun the final matrix-dependent evidence batch."
+  "source_resolution_evidence": "SOURCE_CONTRACT_RESOLUTION.json",
+  "next_action": "Obtain authoritative LFNST-off H/V pair legality and main-transform fixed-point/output clarification; then rerun the final matrix-dependent evidence batch."
 }

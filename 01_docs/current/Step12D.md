@@ -87,3 +87,14 @@ Evidence is written under `05_audit/current/26/step12d_pre/` after confirming th
 Step12D-PRE passes only when every official legal case has traceable source, an independent fixed-point Oracle, and coverage by at least one allowed executable P4 schedule; A/B/C and LFNST decisions are explicit; all rectangular mappings are conflict-free; and the machine-readable manifest is complete. Otherwise the state remains STOP in PRE and no unified RTL is authorized.
 
 P0 stops immediately for a source/specification contradiction affecting correctness, an impossible legal case, or a mathematical/fixed-point contradiction. P1 must close before PRE ends. P2/P3 observations are recorded without expanding the gate.
+
+## 9. Source-contract resolution status
+
+The 2026-09-14 source-resolution batch rechecked the current official contest page, its updated attachment, and ITU-T H.266 clause 8.7.4. It closed the active-LFNST source contract: set indices 0..3 and active kernel indices 1..2 select the supplied matrices, the official nTrs/nonZeroSize and `(+64)>>7 + Clip3` rules apply, and the following two-dimensional main transform is DCT2 x DCT2.
+
+Step12D-PRE remains STOP on exactly two root P1 source contracts:
+
+- for `lfnst_idx == 0`, the official material does not enumerate the complete legal horizontal/vertical transform-type pairs;
+- the official contest material does not define the complete main-transform intermediate scaling and final signed-10 output mapping for every case.
+
+H.266/VTM remain reference evidence. In particular, H.266's normative two-dimensional process uses an intermediate `(+64)>>7 + Clip3` and a final shift dependent on BitDepth and Log2TransformRange, so it cannot silently replace the contest contract or prove the frozen Step12B `(+32)>>6`, wrap16, low10 engineering baseline. Architecture selection is a downstream dependency, not a third independent source blocker. See `SOURCE_CONTRACT_RESOLUTION.json` and `SOURCE_CONTRACT_CLARIFICATION_REQUEST.md`.

@@ -1,0 +1,83 @@
+{
+  "schema": "step12d_pre.source_contract_resolution.v1",
+  "status": "STOP_TWO_ROOT_SOURCE_BLOCKERS_REMAIN",
+  "review_date": "2026-09-14",
+  "scope": {
+    "rtl_tree_changed": false,
+    "vivado_run": false,
+    "unified_rtl_authorized": false,
+    "base_tag_unchanged": "v3.5-18"
+  },
+  "primary_sources": [
+    {
+      "id": "CONTEST_PAGE_CURRENT",
+      "kind": "official_contest_page",
+      "url": "https://cpipc.acge.org.cn/cw/contestNews/detail/10/2c9080189bd54d54019c07ea1f561497?page=2",
+      "finding": "The current page states the three main-transform families, the size rows, the 22-bit descriptor fields, the LFNST formula, and that inverse LFNST is followed by DCT2. It does not enumerate the complete legal tr_type_hor/tr_type_ver pairs when LFNST is off."
+    },
+    {
+      "id": "CONTEST_ATTACHMENT_CURRENT",
+      "kind": "official_contest_attachment",
+      "url": "https://cpipc.acge.org.cn/sysFile/downFile.do?fileId=e45f3cabe73841c1848eabbf58b95eff",
+      "sha256": "475A8382142AF1AA11DD228D6BE27C0FE64EC4961D39F39003D498024C1D902A",
+      "size_bytes": 197185,
+      "finding": "The updated attachment supplies the 16 LFNST matrices for nTrs 16/48, set indices 0..3 and lfnst_idx 1..2, plus the main-transform coefficient matrices and the 22-bit field map."
+    },
+    {
+      "id": "ITU_H266_V3_202309",
+      "kind": "normative_standard_reference_not_contest_override",
+      "url": "https://www.itu.int/rec/T-REC-H.266-202309-S/en",
+      "pdf_sha256": "C82EB9DFA0DEAFF24E0321ED4A8F5EBA230AEB3EC714091B41436E76C80E7249",
+      "locators": [
+        "8.7.4.1 equations 1151-1169 and Tables 39-40",
+        "8.7.4.2 equation 1170",
+        "8.7.4.4 equations 1171-1172",
+        "8.7.4.5 transform matrices"
+      ],
+      "finding": "The standard is useful as reference semantics, but its two-dimensional fixed-point process depends on BitDepth and Log2TransformRange and therefore cannot silently replace the contest contract."
+    }
+  ],
+  "resolved_contracts": [
+    {
+      "id": "SRC-LFNST-COUPLING-01",
+      "status": "RESOLVED_FROM_OFFICIAL_CONTEST_SOURCE",
+      "contract": {
+        "active_lfnst_idx": [1, 2],
+        "lfnst_tr_set_idx": [0, 1, 2, 3],
+        "nTrs_rule": "48 when width>=8 and height>=8, otherwise 16 for the listed official LFNST shapes",
+        "nonZeroSize_rule": "8 for exactly 4x4 or 8x8, otherwise 16",
+        "post_process": "Clip3(-32768,32767,(sum+64)>>7)",
+        "main_transform_after_lfnst": "DCT2xDCT2",
+        "lfnst_tr_set_idx_when_lfnst_idx_zero": "not used for legality; preserve the complete 22-bit descriptor value"
+      },
+      "basis": "The official contest requirement says inverse LFNST is followed by DCT2, while the interface exposes both horizontal and vertical transform types for the two-dimensional main transform. The official attachment enumerates every active set/index matrix."
+    }
+  ],
+  "remaining_root_blockers": [
+    {
+      "id": "SRC-DESC-COUPLING-01",
+      "severity": "P1",
+      "status": "UNRESOLVED",
+      "description": "For lfnst_idx=0, the official contest material lists shape support by transform family and exposes independent horizontal and vertical type fields, but does not state whether legal pairs are same-family only, a Cartesian product subject to per-axis size support, the five explicit MTS pairs, or another subset.",
+      "why_reference_is_insufficient": "H.266/VTM pair rules require coding-context predicates absent from the contest descriptor and therefore remain reference_only."
+    },
+    {
+      "id": "FIXED-POINT-SOURCE-01",
+      "severity": "P1",
+      "status": "UNRESOLVED",
+      "description": "The contest sources define coefficient matrices and one-dimensional dot products, and explicitly define LFNST rounding/clipping, but do not define the complete main-transform intermediate rounding, clipping/wrapping, accumulator width, or final 10-bit mapping for every case.",
+      "standard_cross_check": "H.266 8.7.4.1 uses Clip3(CoeffMin,CoeffMax,(e+64)>>7) between two dimensions and a final shift dependent on BitDepth and Log2TransformRange. Those parameters are absent from it_info, and this differs from the frozen Step12B (+32)>>6, signed16 wrap, final low10 engineering baseline.",
+      "consequence": "Neither the H.266 rule nor the Step12B baseline may be promoted to every contest case without an authoritative contest clarification."
+    }
+  ],
+  "downstream_dependency": {
+    "id": "ARCH-SELECT-01",
+    "status": "BLOCKED_BY_ROOT_SOURCE_CONTRACTS_NOT_AN_INDEPENDENT_BLOCKER",
+    "description": "A/B/C and LFNST arithmetic ownership are selected only after the final legal tuple universe and main-transform fixed-point contract are frozen."
+  },
+  "clarification_required": [
+    "For lfnst_idx=0, what complete tr_type_hor/tr_type_ver pairs are legal for each width and height?",
+    "For each main-transform stage and final 10-bit output, what exact rounding, shift, clipping/wrapping, accumulator-width and bit-selection rules define functional correctness?"
+  ],
+  "decision": "Keep Step12D-PRE STOP. Do not rerun matrix-dependent final evidence and do not authorize unified RTL until both root blockers are resolved."
+}

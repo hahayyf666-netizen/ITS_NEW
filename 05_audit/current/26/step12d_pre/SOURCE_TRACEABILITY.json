@@ -23,6 +23,39 @@
       ]
     },
     {
+      "id": "HUAWEI_CONTEST_PAGE_CURRENT",
+      "kind": "official_contest_page",
+      "url": "https://cpipc.acge.org.cn/cw/contestNews/detail/10/2c9080189bd54d54019c07ea1f561497?page=2",
+      "used_for": [
+        "current_22_bit_interface",
+        "lfnst_formula_and_shape_rows",
+        "lfnst_followed_by_dct2_requirement",
+        "main_transform_formula_scope"
+      ]
+    },
+    {
+      "id": "HUAWEI_ATTACHMENT_CURRENT",
+      "kind": "official_contest_attachment",
+      "url": "https://cpipc.acge.org.cn/sysFile/downFile.do?fileId=e45f3cabe73841c1848eabbf58b95eff",
+      "sha256": "475A8382142AF1AA11DD228D6BE27C0FE64EC4961D39F39003D498024C1D902A",
+      "used_for": [
+        "current_lfnst_16_matrix_scenarios",
+        "current_main_transform_coefficients",
+        "current_22_bit_field_map"
+      ]
+    },
+    {
+      "id": "ITU_H266_V3_202309",
+      "kind": "normative_standard_reference_not_contest_override",
+      "url": "https://www.itu.int/rec/T-REC-H.266-202309-S/en",
+      "pdf_sha256": "C82EB9DFA0DEAFF24E0321ED4A8F5EBA230AEB3EC714091B41436E76C80E7249",
+      "source_locator": "8.7.4.1-8.7.4.5",
+      "used_for": [
+        "fixed_point_difference_analysis",
+        "reference_transform_pair_semantics"
+      ]
+    },
+    {
       "id": "FROZEN_CANONICAL_MATRICES",
       "kind": "repository_reference",
       "path": "03_verification/output/canonical_matrices.json",
@@ -93,15 +126,30 @@
     {
       "id": "SRC-LFNST-COUPLING-01",
       "severity": "P1",
-      "status": "reference_context_found_official_mapping_pending",
-      "finding": "The designated VTM reference gates MTS signalling on lfnstIdx == 0; its transform-pair enum places DCT2_DCT2 at 0 and non-DCT2 pairs above SKIP.",
-      "resolution": "Record default DCT2_DCT2 as a VTM reference context for LFNST, but do not promote it to official contest legality without an attachment/interface mapping."
+      "status": "resolved_from_official_contest_source",
+      "finding": "The current contest requirement explicitly states that inverse LFNST is followed by DCT2; the updated attachment enumerates active set indices 0..3, lfnst_idx 1..2 and the 16 coefficient matrices.",
+      "resolution": "For active LFNST, freeze the main transform as DCT2xDCT2 and use the official attachment's set/index matrix mapping. VTM remains corroborating reference context only."
+    },
+    {
+      "id": "FIXED-POINT-SOURCE-01",
+      "severity": "P1",
+      "status": "unresolved_after_official_and_standard_cross_check",
+      "finding": "The contest gives transform dot products and matrices but not the complete two-dimensional main-transform stage scaling or final signed-10 mapping. H.266 uses (+64)>>7 with Clip3 between dimensions and a BitDepth/Log2TransformRange-dependent final shift, which differs from the frozen Step12B engineering baseline.",
+      "resolution": "Do not generalize either rule. Obtain authoritative contest fixed-point/output clarification."
     }
   ],
   "final_closure": {
     "reference_context_evidence": "VTM_CONTEXT_CLOSURE.json",
     "official_tuple_mapping": "unresolved",
     "official_legal_promotion": false,
-    "stop_reason": "official descriptor H/V and LFNST coupling are not stated by the attachment"
+    "resolved_source_contracts": [
+      "active LFNST set/index/matrix and DCT2xDCT2 main-transform coupling"
+    ],
+    "remaining_root_blockers": [
+      "official LFNST-off descriptor H/V coupling",
+      "official main-transform fixed-point/final-output contract"
+    ],
+    "resolution_evidence": "SOURCE_CONTRACT_RESOLUTION.json",
+    "stop_reason": "two authoritative source contracts remain unresolved"
   }
 }

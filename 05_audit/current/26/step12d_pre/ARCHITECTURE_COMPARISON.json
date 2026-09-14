@@ -93,8 +93,9 @@
   "recommended_candidate": "NONE_SOURCE_CONTRACT_BLOCKED",
   "conditional_preference": "C is a provisional implementation preference only if official scope permits retaining frozen R4C-64; it is not a PRE selection.",
   "selection_blockers": [
-    "official H/V tuple coupling is unresolved",
-    "official LFNST coupling and set/index mapping are unresolved",
-    "physical multiplier/reduction implementation is not proven without RTL/synthesis"
-  ]
+    "official LFNST-off H/V tuple coupling is unresolved",
+    "official main-transform fixed-point and final-output contract is unresolved"
+  ],
+  "resolved_source_input": "Active LFNST set/index/matrix and DCT2xDCT2 main-transform coupling are source-backed; LFNST arithmetic ownership remains a downstream architecture choice.",
+  "physical_note": "PRE selection will remain an analytic risk decision; RTL/synthesis timing proof belongs to a later stage and is not an additional source blocker."
 }

@@ -42,6 +42,16 @@ def line(path: Path, needle: str) -> int:
 
 
 def main() -> int:
+    resolution = EVIDENCE / "SOURCE_CONTRACT_RESOLUTION.json"
+    if resolution.exists():
+        state = json.loads(resolution.read_text(encoding="utf-8"))
+        print(json.dumps({
+            "status": "NO_REWRITE_SOURCE_RESOLUTION_SUPERSEDES_FINAL_BATCH",
+            "source_resolution_status": state["status"],
+            "validator": "validate_source_contract_resolution.py",
+        }, ensure_ascii=False, indent=2))
+        return 0
+
     legal = read_json("LEGAL_TRANSFORM_MATRIX.json")
     source = read_json("SOURCE_TRACEABILITY.json")
     lfnst = read_json("LFNST_CASE_MATRIX.json")

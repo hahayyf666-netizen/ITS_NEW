@@ -1,0 +1,19 @@
+{
+  "schema": "step12d_pre.source_contract_validation.v1",
+  "status": "PASS_EXPECTED_STOP_STATE",
+  "pre_status": "STOP",
+  "remaining_root_blockers": 2,
+  "remaining_root_blocker_ids": [
+    "SRC-DESC-COUPLING-01",
+    "FIXED-POINT-SOURCE-01"
+  ],
+  "resolved_source_contract": "active_LFNST",
+  "phase_geometry_validator": "PASS_PHASE_0_1_GEOMETRY",
+  "reference_tuple_provenance_validator": "PASS_REFERENCE_TUPLE_PROVENANCE",
+  "finalize_script_guard": "NO_REWRITE_SOURCE_RESOLUTION_SUPERSEDES_FINAL_BATCH",
+  "r4c_sha_unchanged": true,
+  "wrapper_sha_unchanged": true,
+  "rtl_tree_changed": false,
+  "vivado_run": false,
+  "unified_rtl_authorized": false
+}

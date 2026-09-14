@@ -1,6 +1,6 @@
 {
   "schema": "step12d_pre.official_shape_support.v1",
-  "status": "OFFICIAL_SHAPE_ROWS_COMPLETE_REFERENCE_CONTEXT_COMPLETE_OFFICIAL_TUPLE_MAPPING_UNRESOLVED",
+  "status": "OFFICIAL_SHAPE_ROWS_AND_ACTIVE_LFNST_COMPLETE_LFNST_OFF_HV_MAPPING_UNRESOLVED",
   "source_id": "HUAWEI_ATTACHMENT_EXTERNAL",
   "it_info_contract": {
     "width_bits": 22,
@@ -117,7 +117,7 @@
     ]
   },
   "complete_descriptor_tuples": {
-    "status": "REFERENCE_CANDIDATES_AVAILABLE_OFFICIAL_HV_LFNST_MAPPING_UNRESOLVED",
+    "status": "REFERENCE_CANDIDATES_AVAILABLE_OFFICIAL_LFNST_OFF_HV_MAPPING_UNRESOLVED",
     "reference_candidate_file": "REFERENCE_TRANSFORM_TUPLES.json",
     "reference_candidate_tuple_count_lfnst_off": 95,
     "reference_candidate_is_not_official_legal": true,
@@ -167,8 +167,9 @@
       }
     ],
     "lfnst_pair_coupling": {
-      "status": "pending",
-      "reason": "The attachment gives LFNST shape rows and transform formulas but does not explicitly state the complete horizontal/vertical pair restriction."
+      "status": "official_dct2_x_dct2",
+      "rule": "When lfnst_idx is active, the official requirement says inverse LFNST is followed by DCT2; both axes of the two-dimensional main transform are DCT2.",
+      "source_evidence": "SOURCE_CONTRACT_RESOLUTION.json"
     },
     "reference_pair_source_locator": "04_reference/VTM/source/Lib/CommonLib/TrQuant.cpp:getTrTypes around lines 651-755",
     "reference_context_evidence": "VTM_CONTEXT_CLOSURE.json",

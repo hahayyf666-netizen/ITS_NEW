@@ -1,6 +1,6 @@
 {
   "schema": "step12d_pre.lfnst_case_matrix.v1",
-  "status": "REFERENCE_CONTEXT_COMPLETE_OFFICIAL_CONTEST_MAPPING_UNRESOLVED",
+  "status": "OFFICIAL_SOURCE_CONTRACT_CLOSED_ARCHITECTURE_OWNERSHIP_PENDING_DOWNSTREAM",
   "official_shape_rows": {
     "nTrs16": [
       "4x4",
@@ -35,8 +35,8 @@
   "reference_input_rule": {
     "exact_4x4_or_8x8": 8,
     "other_supported_shapes": 16,
-    "source": "04_reference/oracle/v34_rtl_bitexact.py:lfnst_nonzero_size",
-    "status": "reference_only_pending_source_promotion"
+    "source": "official contest page LFNST formula section",
+    "status": "official_source_backed"
   },
   "reference_index_ranges": {
     "lfnst_idx_active": [
@@ -49,8 +49,8 @@
       2,
       3
     ],
-    "source": "official bit fields plus existing reference/RTL behavior",
-    "status": "reference_only_pending_case_audit"
+    "source": "updated official attachment's 16 set/index matrix scenarios",
+    "status": "official_source_backed"
   },
   "post_process_reference": {
     "round_constant": 64,
@@ -59,12 +59,13 @@
       -32768,
       32767
     ],
-    "source": "04_reference/oracle/v34_rtl_bitexact.py:lfnst_details",
-    "status": "reference_only_pending_case_audit"
+    "source": "official contest page LFNST equation",
+    "status": "official_source_backed"
   },
   "main_transform_pair_coupling": {
-    "status": "REFERENCE_VTM_DEFAULT_DCT2_DCT2_ONLY_OFFICIAL_MAPPING_PENDING",
-    "reference_rule": "VTM gates MTS signalling on lfnstIdx == 0; with the default DCT2_DCT2 mts value, the non-DCT2 getTrTypes branch is not selected.",
+    "status": "OFFICIAL_DCT2_X_DCT2",
+    "official_rule": "The contest requirement states that inverse LFNST is followed by DCT2; for the two-dimensional main transform this freezes both horizontal and vertical kernels to DCT2.",
+    "reference_rule": "VTM independently corroborates that nonzero lfnstIdx excludes explicit non-DCT2 MTS signalling.",
     "source_evidence": [
       {
         "source_id": "VTM_CABAC_WRITER_MTS_GATE",
@@ -88,20 +89,22 @@
         "detail": "DCT2_DCT2=0, SKIP=1, non-DCT2 MTS pairs=2..5"
       }
     ],
-    "scope": "reference context only; not yet promoted to official contest tuple legality"
+    "scope": "official contest source closes active-LFNST main-transform family; VTM predicates are not imported into the contest interface"
   },
   "reference_context_evidence": "VTM_CONTEXT_CLOSURE.json",
   "contest_mapping_gap": {
-    "status": "P1_STOP",
+    "status": "CLOSED_FOR_ACTIVE_LFNST",
     "official_fields": [
       "lfnst_tr_set_idx",
       "lfnst_idx"
     ],
-    "unresolved": [
-      "set-index to matrix/lut identity mapping in the contest interface",
-      "complete H/V main-transform coupling while lfnst_idx is nonzero",
-      "whether the VTM intra/ISP/MIP/component predicates are part of the contest legal environment"
-    ]
+    "closed": [
+      "set-index and active-kernel index select one of the 16 supplied official matrices",
+      "active LFNST main transform is DCT2xDCT2",
+      "nTrs and nonZeroSize rules are source-backed"
+    ],
+    "not_imported": "VTM intra/ISP/MIP/component predicates are not part of this contest descriptor contract unless separately clarified"
   },
-  "source_backed_closure": false
+  "source_backed_closure": true,
+  "source_resolution_evidence": "SOURCE_CONTRACT_RESOLUTION.json"
 }

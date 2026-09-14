@@ -1,6 +1,6 @@
 {
   "schema": "step12d_pre.fixed_point_contract.v1",
-  "status": "baseline_recorded_per_case_audit_pending",
+  "status": "STOP_MAIN_TRANSFORM_SOURCE_CONTRACT_UNRESOLVED",
   "canonical_coeff_sha256": "D4C497CFBAE64096C69D640BAD154E4E3BAE1F5834F82149623A83028B81E9F6",
   "case_policy": "Each transform_type x N x stage is independently sourced and checked; no DCT2-64 rule is silently generalized.",
   "reference_baselines": {
@@ -11,12 +11,20 @@
       "source": "v3.5-18 Step12B/R4C evidence"
     },
     "lfnst": {
-      "status": "frozen_reference_only",
+      "status": "official_source_backed",
       "raw": "sum(matrix[i][j] * input[j])",
       "post": "(+64) >> 7 -> Clip3(-32768, 32767)",
       "ntrs": [16, 48],
-      "source": "04_reference/oracle/v34_rtl_bitexact.py and canonical matrices"
+      "source": "current official contest page and updated official attachment"
     }
+  },
+  "source_resolution": {
+    "main_transform_dot_product_and_coefficients": "official_source_backed",
+    "lfnst_round_shift_clip": "official_source_backed",
+    "main_transform_stage1_round_shift_wrap_or_clip": "unresolved",
+    "main_transform_final_signed10_mapping": "unresolved",
+    "h266_cross_check": "H.266 8.7.4.1 uses (+64)>>7 plus Clip3 between dimensions and a final shift derived from BitDepth and Log2TransformRange; those parameters are absent from the contest descriptor, so this rule cannot silently replace the contest contract.",
+    "step12b_cross_check": "The frozen DCT2-64 (+32)>>6, signed16 wrap and final low10 mapping remains a proven engineering baseline only and is not promoted to other cases."
   },
   "required_per_case_fields": [
     "coefficient_source",
@@ -30,5 +38,6 @@
     "stage_output_width",
     "final_output_mapping"
   ],
-  "unresolved_cases_must_not_be_promoted_to_rtl": true
+  "unresolved_cases_must_not_be_promoted_to_rtl": true,
+  "source_resolution_evidence": "SOURCE_CONTRACT_RESOLUTION.json"
 }
