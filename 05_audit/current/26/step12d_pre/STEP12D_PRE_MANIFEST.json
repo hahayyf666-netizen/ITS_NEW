@@ -1,17 +1,17 @@
 {
   "schema": "step12d_pre.manifest.v1",
-  "status": "IN_PROGRESS",
-  "phase": "reference_tuple_execution_and_tagged_dataflow_in_progress",
+  "status": "STOP",
+  "phase": "final_closure_batch_complete_stop_unresolved_source_contract",
   "base_tag": "v3.5-18",
   "base_commit": "7415b0acb33481af1845f63e16b93ce7c33b977b",
   "rtl_tree_changed": false,
   "vivado_run": false,
   "new_unified_rtl_authorized": false,
-  "source_issue_count": 4,
-  "complete_descriptor_tuple_matrix": "REFERENCE_PAIR_RULES_AVAILABLE_LFNST_COUPLING_PENDING",
-  "architecture_candidate": "NOT_SELECTED",
-  "lfnst_ownership": "NOT_SELECTED",
-  "pre_gate": "NOT_YET_PASS",
+  "source_issue_count": 3,
+  "complete_descriptor_tuple_matrix": "REFERENCE_95_ONLY_OFFICIAL_HV_LFNST_MAPPING_UNRESOLVED",
+  "architecture_candidate": "NOT_SELECTED_SOURCE_CONTRACT_BLOCKED",
+  "lfnst_ownership": "NOT_SELECTED_SOURCE_CONTRACT_BLOCKED",
+  "pre_gate": "STOP_UNRESOLVED_SOURCE_CONTRACT",
   "completed_evidence": [
     "official table extraction: DCT2=25, DCT8=16, DST7=16, LFNST=9+16",
     "13-case canonical matrix presence check",
@@ -23,13 +23,40 @@
     "95-candidate ready-high V/H cycle and analytic resource model",
     "VTM LFNST/MTS context evidence recorded without promoting official tuple legality",
     "13-case executable P4 schedule arithmetic proof with independent Oracle",
-    "95-candidate tagged 2-D ownership/capacity/raster/backpressure reference model"
+    "95-candidate tagged 2-D ownership/capacity/raster/backpressure reference model",
+    "VTM_CONTEXT_CLOSURE.json: complete reference branch and LFNST context with source hashes",
+    "final 95-candidate matrix reclassified as reference_only pending official mapping",
+    "analytic A/B/C comparison recorded with exact structural counts separated from estimates",
+    "FINAL_CLOSURE_DECISION.json: final batch STOP with finite P1 blockers"
   ],
   "next_actions": [
-    "resolve and source the official horizontal/vertical and LFNST coupling rules; keep unresolved combinations reference-only",
-    "promote per-case fixed-point and rounding contracts from reference checks to source-backed closure",
-    "complete structured A/B/C multiplier, reduction, bandwidth, mode-switch, and pipeline comparison",
-    "decide LFNST ownership and close rectangular capacity, ownership, result, raster, and backpressure checks",
-    "only after all P1 items close, decide PRE PASS; do not authorize unified RTL before then"
+    "obtain authoritative official H/V transform-type coupling for the 22-bit descriptor",
+    "obtain authoritative official LFNST set/index and main-transform coupling rules",
+    "after source closure, promote per-case fixed-point contracts and rerun all matrix-dependent evidence",
+    "after the final case universe closes, select one A/B/C candidate and LFNST ownership; no unified RTL before then"
+  ],
+  "resolved_source_issue_count": 1,
+  "final_closure_decision": "FINAL_CLOSURE_DECISION.json",
+  "blockers": [
+    {
+      "id": "SRC-DESC-COUPLING-01",
+      "severity": "P1",
+      "description": "Official attachment does not define complete horizontal/vertical transform-type coupling for the 22-bit descriptor."
+    },
+    {
+      "id": "SRC-LFNST-COUPLING-01",
+      "severity": "P1",
+      "description": "Official attachment does not map LFNST set/index to complete main-transform coupling and VTM context predicates."
+    },
+    {
+      "id": "FIXED-POINT-SOURCE-01",
+      "severity": "P1",
+      "description": "Per-case source-backed fixed-point promotion is not complete; existing checks remain reference/baseline evidence."
+    },
+    {
+      "id": "ARCH-SELECT-01",
+      "severity": "P1",
+      "description": "A/B/C and LFNST ownership cannot be finally selected before the official case universe and source-backed contracts close; physical feasibility is also not proven in PRE."
+    }
   ]
 }

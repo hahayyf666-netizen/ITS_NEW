@@ -1,0 +1,92 @@
+{
+  "schema": "step12d_pre.vtm_context_closure.v1",
+  "status": "REFERENCE_CONTEXT_COMPLETE_OFFICIAL_CONTEST_MAPPING_UNRESOLVED",
+  "official_legal": false,
+  "source_files": [
+    {
+      "source_id": "VTM_TRQUANT_GETTRTYPES",
+      "path": "04_reference/VTM/source/Lib/CommonLib/TrQuant.cpp",
+      "sha256": "22B3F0D1D2DD25384D6449BA49592366F24F35AB5567DAD896194209B741D7DE",
+      "locators": {
+        "getTrTypes": [
+          651,
+          743
+        ],
+        "implicit_predicates": [
+          656,
+          678
+        ],
+        "lfnst_inverse": [
+          294,
+          345
+        ]
+      }
+    },
+    {
+      "source_id": "VTM_CABAC_MTS_LFNST_GATES",
+      "path": "04_reference/VTM/source/Lib/EncoderLib/CABACWriter.cpp",
+      "sha256": "74477BE5CA74CA5C05F62D30BA3C132629C7A40C72CACA9226EE18F7C247DC1D",
+      "locators": {
+        "mts_gate": [
+          2696,
+          2702
+        ],
+        "lfnst_index": [
+          2798,
+          2799
+        ]
+      }
+    },
+    {
+      "source_id": "VTM_CABAC_READER_MTS_LFNST_GATES",
+      "path": "04_reference/VTM/source/Lib/DecoderLib/CABACReader.cpp",
+      "sha256": "2B7948EBB03B6BE4173F1A8CB0CDBB00B54D2AFB53B0AFF7322B5DB86912E0B9",
+      "locators": {
+        "mts_gate": [
+          3025,
+          3030
+        ],
+        "lfnst_index": [
+          3083,
+          3137
+        ]
+      }
+    },
+    {
+      "source_id": "VTM_MTS_ENUM",
+      "path": "04_reference/VTM/source/Lib/CommonLib/TypeDef.h",
+      "sha256": "75D6007A3259BBB730FD50629C1AA8917AADE504C01AD2DFDE87A332FE432F06",
+      "locators": {
+        "mts_type": [
+          341,
+          349
+        ]
+      }
+    },
+    {
+      "source_id": "VTM_LFNST_ISP_MIP_GATES",
+      "path": "04_reference/VTM/source/Lib/CommonLib/UnitTools.cpp",
+      "sha256": "64B834CE080DE1BC758342239C1FE9133530113EED35A37C40E50C396134A783",
+      "locators": {
+        "isp_gate": [
+          497
+        ],
+        "mip_gate": [
+          4841
+        ]
+      }
+    }
+  ],
+  "reference_rules": [
+    "getTrTypes defaults to DCT2_DCT2 when MTS is disabled or not selected.",
+    "implicit MTS/ISP changes horizontal and/or vertical type to DST7 only when the corresponding dimension is 4..16.",
+    "explicit MTS enumerates DST7_DST7, DCT8_DST7, DST7_DCT8, and DCT8_DCT8, and is gated by lfnstIdx == 0.",
+    "SBT has additional context-dependent mixed-pair branches and DCT2 fallback branches.",
+    "LFNST uses 4x4 or 8x8 low-frequency gathering, nTrs 16 or 48, lfnst index 1..2, scan-dependent scatter, and Clip3 post-processing."
+  ],
+  "contest_mapping_gaps": [
+    "The attachment lists axis shape rows but does not state the complete horizontal/vertical pair coupling.",
+    "The attachment does not map lfnst_tr_set_idx to VTM intra-mode/lut selection or state the complete main-transform coupling when LFNST is enabled.",
+    "VTM context predicates (intra/inter, ISP, SBT, MIP, component and scan constraints) are not fields of the frozen 22-bit contest descriptor."
+  ]
+}

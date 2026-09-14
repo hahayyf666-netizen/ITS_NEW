@@ -1,6 +1,6 @@
 {
   "schema": "step12d_pre.official_shape_support.v1",
-  "status": "partial_source_extracted_reference_tuple_expansion_complete_official_mapping_pending",
+  "status": "OFFICIAL_SHAPE_ROWS_COMPLETE_REFERENCE_CONTEXT_COMPLETE_OFFICIAL_TUPLE_MAPPING_UNRESOLVED",
   "source_id": "HUAWEI_ATTACHMENT_EXTERNAL",
   "it_info_contract": {
     "width_bits": 22,
@@ -21,16 +21,103 @@
     "source_status": "requires_final_source_cross_check_before_unified_rtl"
   },
   "official_shape_support": {
-    "DCT2": ["4x4", "4x8", "4x16", "4x32", "4x64", "8x4", "16x4", "32x4", "64x4", "8x8", "8x16", "8x32", "8x64", "16x8", "32x8", "64x8", "16x16", "16x32", "16x64", "32x16", "32x32", "32x64", "64x16", "64x32", "64x64"],
-    "DCT8": ["4x4", "4x8", "4x16", "4x32", "8x4", "16x4", "32x4", "8x8", "8x16", "8x32", "16x8", "32x8", "16x16", "16x32", "32x16", "32x32"],
-    "DST7": ["4x4", "4x8", "4x16", "4x32", "8x4", "16x4", "32x4", "8x8", "8x16", "8x32", "16x8", "32x8", "16x16", "16x32", "32x16", "32x32"]
+    "DCT2": [
+      "4x4",
+      "4x8",
+      "4x16",
+      "4x32",
+      "4x64",
+      "8x4",
+      "16x4",
+      "32x4",
+      "64x4",
+      "8x8",
+      "8x16",
+      "8x32",
+      "8x64",
+      "16x8",
+      "32x8",
+      "64x8",
+      "16x16",
+      "16x32",
+      "16x64",
+      "32x16",
+      "32x32",
+      "32x64",
+      "64x16",
+      "64x32",
+      "64x64"
+    ],
+    "DCT8": [
+      "4x4",
+      "4x8",
+      "4x16",
+      "4x32",
+      "8x4",
+      "16x4",
+      "32x4",
+      "8x8",
+      "8x16",
+      "8x32",
+      "16x8",
+      "32x8",
+      "16x16",
+      "16x32",
+      "32x16",
+      "32x32"
+    ],
+    "DST7": [
+      "4x4",
+      "4x8",
+      "4x16",
+      "4x32",
+      "8x4",
+      "16x4",
+      "32x4",
+      "8x8",
+      "8x16",
+      "8x32",
+      "16x8",
+      "32x8",
+      "16x16",
+      "16x32",
+      "32x16",
+      "32x32"
+    ]
   },
   "lfnst_shape_support": {
-    "nTrs16": ["4x4", "4x8", "4x16", "4x32", "4x64", "8x4", "16x4", "32x4", "64x4"],
-    "nTrs48": ["8x8", "8x16", "8x32", "8x64", "16x8", "32x8", "64x8", "16x16", "16x32", "16x64", "32x16", "32x32", "32x64", "64x16", "64x32", "64x64"]
+    "nTrs16": [
+      "4x4",
+      "4x8",
+      "4x16",
+      "4x32",
+      "4x64",
+      "8x4",
+      "16x4",
+      "32x4",
+      "64x4"
+    ],
+    "nTrs48": [
+      "8x8",
+      "8x16",
+      "8x32",
+      "8x64",
+      "16x8",
+      "32x8",
+      "64x8",
+      "16x16",
+      "16x32",
+      "16x64",
+      "32x16",
+      "32x32",
+      "32x64",
+      "64x16",
+      "64x32",
+      "64x64"
+    ]
   },
   "complete_descriptor_tuples": {
-    "status": "reference_candidate_rules_available_official_context_mapping_pending",
+    "status": "REFERENCE_CANDIDATES_AVAILABLE_OFFICIAL_HV_LFNST_MAPPING_UNRESOLVED",
     "reference_candidate_file": "REFERENCE_TRANSFORM_TUPLES.json",
     "reference_candidate_tuple_count_lfnst_off": 95,
     "reference_candidate_is_not_official_legal": true,
@@ -83,6 +170,8 @@
       "status": "pending",
       "reason": "The attachment gives LFNST shape rows and transform formulas but does not explicitly state the complete horizontal/vertical pair restriction."
     },
-    "reference_pair_source_locator": "04_reference/VTM/source/Lib/CommonLib/TrQuant.cpp:getTrTypes around lines 651-755"
+    "reference_pair_source_locator": "04_reference/VTM/source/Lib/CommonLib/TrQuant.cpp:getTrTypes around lines 651-755",
+    "reference_context_evidence": "VTM_CONTEXT_CLOSURE.json",
+    "official_legal_rule": "Only attachment-backed complete tuples may be official_required; VTM-derived tuples remain reference_only."
   }
 }

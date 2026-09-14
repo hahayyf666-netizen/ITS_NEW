@@ -1,0 +1,46 @@
+{
+  "schema": "step12d_pre.final_closure_decision.v1",
+  "status": "STOP",
+  "decision": "STOP_UNRESOLVED_SOURCE_CONTRACT",
+  "base_tag": "v3.5-18",
+  "base_commit": "7415b0acb33481af1845f63e16b93ce7c33b977b",
+  "scope_preserved": {
+    "rtl_tree_changed": false,
+    "vivado_run": false,
+    "unified_rtl_authorized": false,
+    "frozen_r4c_or_wrapper_or_xdc_modified": false
+  },
+  "completed_evidence": [
+    "official shape/interface extraction recorded",
+    "VTM transform-pair and LFNST reference context extracted with hashes and locators",
+    "95 reference tuple derivation and provenance validated",
+    "13-case independent arithmetic P4 execution validated",
+    "65-vector fixed-point reference cross-check validated",
+    "57-row logical memory mapping and 95-candidate tagged 2-D reference dataflow validated",
+    "A/B/C analytic structural comparison recorded without physical claims"
+  ],
+  "blockers": [
+    {
+      "id": "SRC-DESC-COUPLING-01",
+      "severity": "P1",
+      "description": "Official attachment does not define complete horizontal/vertical transform-type coupling for the 22-bit descriptor."
+    },
+    {
+      "id": "SRC-LFNST-COUPLING-01",
+      "severity": "P1",
+      "description": "Official attachment does not map LFNST set/index to complete main-transform coupling and VTM context predicates."
+    },
+    {
+      "id": "FIXED-POINT-SOURCE-01",
+      "severity": "P1",
+      "description": "Per-case source-backed fixed-point promotion is not complete; existing checks remain reference/baseline evidence."
+    },
+    {
+      "id": "ARCH-SELECT-01",
+      "severity": "P1",
+      "description": "A/B/C and LFNST ownership cannot be finally selected before the official case universe and source-backed contracts close; physical feasibility is also not proven in PRE."
+    }
+  ],
+  "official_vs_reference_rule": "VTM-derived tuples remain reference_only; engineering assumptions cannot close an unresolved official requirement.",
+  "next_action": "Obtain authoritative H/V and LFNST coupling clarification, then rerun the final matrix-dependent evidence batch."
+}

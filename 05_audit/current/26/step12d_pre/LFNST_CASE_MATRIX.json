@@ -1,9 +1,36 @@
 {
   "schema": "step12d_pre.lfnst_case_matrix.v1",
-  "status": "shape_rows_extracted_reference_rules_pending_official_pair_mapping",
+  "status": "REFERENCE_CONTEXT_COMPLETE_OFFICIAL_CONTEST_MAPPING_UNRESOLVED",
   "official_shape_rows": {
-    "nTrs16": ["4x4", "4x8", "4x16", "4x32", "4x64", "8x4", "16x4", "32x4", "64x4"],
-    "nTrs48": ["8x8", "8x16", "8x32", "8x64", "16x8", "32x8", "64x8", "16x16", "16x32", "16x64", "32x16", "32x32", "32x64", "64x16", "64x32", "64x64"]
+    "nTrs16": [
+      "4x4",
+      "4x8",
+      "4x16",
+      "4x32",
+      "4x64",
+      "8x4",
+      "16x4",
+      "32x4",
+      "64x4"
+    ],
+    "nTrs48": [
+      "8x8",
+      "8x16",
+      "8x32",
+      "8x64",
+      "16x8",
+      "32x8",
+      "64x8",
+      "16x16",
+      "16x32",
+      "16x64",
+      "32x16",
+      "32x32",
+      "32x64",
+      "64x16",
+      "64x32",
+      "64x64"
+    ]
   },
   "reference_input_rule": {
     "exact_4x4_or_8x8": 8,
@@ -12,15 +39,26 @@
     "status": "reference_only_pending_source_promotion"
   },
   "reference_index_ranges": {
-    "lfnst_idx_active": [1, 2],
-    "lfnst_tr_set_idx": [0, 1, 2, 3],
+    "lfnst_idx_active": [
+      1,
+      2
+    ],
+    "lfnst_tr_set_idx": [
+      0,
+      1,
+      2,
+      3
+    ],
     "source": "official bit fields plus existing reference/RTL behavior",
     "status": "reference_only_pending_case_audit"
   },
   "post_process_reference": {
     "round_constant": 64,
     "shift": 7,
-    "clip": [-32768, 32767],
+    "clip": [
+      -32768,
+      32767
+    ],
     "source": "04_reference/oracle/v34_rtl_bitexact.py:lfnst_details",
     "status": "reference_only_pending_case_audit"
   },
@@ -51,5 +89,19 @@
       }
     ],
     "scope": "reference context only; not yet promoted to official contest tuple legality"
-  }
+  },
+  "reference_context_evidence": "VTM_CONTEXT_CLOSURE.json",
+  "contest_mapping_gap": {
+    "status": "P1_STOP",
+    "official_fields": [
+      "lfnst_tr_set_idx",
+      "lfnst_idx"
+    ],
+    "unresolved": [
+      "set-index to matrix/lut identity mapping in the contest interface",
+      "complete H/V main-transform coupling while lfnst_idx is nonzero",
+      "whether the VTM intra/ISP/MIP/component predicates are part of the contest legal environment"
+    ]
+  },
+  "source_backed_closure": false
 }

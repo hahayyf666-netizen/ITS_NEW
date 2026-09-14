@@ -1,22 +1,70 @@
 {
   "schema": "step12d_pre.architecture_comparison.v1",
-  "status": "candidates_frozen_evaluation_pending",
+  "status": "STOP_SOURCE_MATRIX_UNRESOLVED_ANALYTIC_COMPARISON_ONLY",
   "analytic_lower_bound_evidence": "ARCHITECTURE_LOWER_BOUND.json",
   "candidates": {
     "A": {
       "name": "fully_shared_multiplier_and_reduction",
-      "scope": ["DCT2", "DST7", "DCT8", "potentially_LFNST"],
-      "status": "not_evaluated"
+      "coverage": "reference DCT2/DST7/DCT8 <=32; DCT2-64 factorized schedule not proven",
+      "exact_structural_counts": {
+        "direct_products_per_group_max": 128,
+        "max_reduction_nodes_for_four_N32_outputs": 124,
+        "group_ii_target": 1
+      },
+      "pre_synthesis_estimates": {
+        "multiplier_instances": "128 if no same-cycle reuse",
+        "lut_ff_ram_dsp": "unknown until RTL/synthesis",
+        "coefficient_bandwidth": "up to 128 coefficients per direct N=32 group cycle",
+        "pipeline_stages": "architecture-dependent"
+      },
+      "risks": [
+        "configurable coefficient mux/fanout",
+        "shared reduction timing",
+        "mode-switch isolation"
+      ],
+      "status": "not_selectable_before_source_closure"
     },
     "B": {
       "name": "shared_multiplier_family_specific_reduction",
-      "scope": ["DCT2", "DST7", "DCT8", "potentially_LFNST"],
-      "status": "not_evaluated"
+      "coverage": "reference DCT2/DST7/DCT8 <=32; DCT2-64 factorized schedule not proven",
+      "exact_structural_counts": {
+        "direct_products_per_group_max": 128,
+        "max_reduction_nodes_for_four_N32_outputs": 124,
+        "group_ii_target": 1
+      },
+      "pre_synthesis_estimates": {
+        "multiplier_instances": "128 if no same-cycle reuse",
+        "lut_ff_ram_dsp": "unknown until RTL/synthesis",
+        "coefficient_bandwidth": "up to 128 coefficients per direct N=32 group cycle",
+        "pipeline_stages": "family-specific and architecture-dependent"
+      },
+      "risks": [
+        "duplicated reduction networks",
+        "mode boundary state",
+        "coefficient routing"
+      ],
+      "status": "not_selectable_before_source_closure"
     },
     "C": {
       "name": "frozen_R4C_64_plus_new_le32_lfnst_kernel",
-      "scope": ["DCT2_64_reference", "DCT2_le32", "DST7_le32", "DCT8_le32", "LFNST"],
-      "status": "not_evaluated"
+      "coverage": "frozen DCT2-64 reference plus new <=32/LFNST kernel if legal scope confirms it",
+      "exact_structural_counts": {
+        "frozen_r4c_dsp": 128,
+        "direct_le32_product_requirement_max": 128,
+        "lfnst_p4_product_requirement": 64
+      },
+      "pre_synthesis_estimates": {
+        "parallel_multiplier_instances": 256,
+        "time_shared_multiplier_instances": "128 only with proven non-overlap schedule",
+        "lut_ff_ram": "unknown until RTL/synthesis",
+        "pipeline_stages": "new kernel architecture-dependent"
+      },
+      "risks": [
+        "resource duplication",
+        "cross-kernel mode/ownership scheduling",
+        "new kernel timing"
+      ],
+      "status": "conditional_candidate_not_finally_selected"
     }
   },
   "comparison_dimensions": [
@@ -35,5 +83,18 @@
     "500MHz_risk"
   ],
   "selection_rule": "Select only after every official legal case is covered by at least one allowed candidate and the quantitative comparison is complete.",
-  "not_a_timing_proof": true
+  "not_a_timing_proof": true,
+  "comparison_scope": {
+    "tuple_scope": "95 VTM reference candidates only; official tuple set unresolved",
+    "evidence_class": "pre_synthesis_structural_and_analytic_estimate",
+    "physical_proof": false,
+    "vivado_run": false
+  },
+  "recommended_candidate": "NONE_SOURCE_CONTRACT_BLOCKED",
+  "conditional_preference": "C is a provisional implementation preference only if official scope permits retaining frozen R4C-64; it is not a PRE selection.",
+  "selection_blockers": [
+    "official H/V tuple coupling is unresolved",
+    "official LFNST coupling and set/index mapping are unresolved",
+    "physical multiplier/reduction implementation is not proven without RTL/synthesis"
+  ]
 }
