@@ -1,11 +1,18 @@
 {
   "schema": "step12d_pre.memory_mapping.v1",
-  "status": "contract_skeleton_pending_tuple_expansion",
+  "status": "logical_formula_and_conflict_proof_pass_tuple_ownership_pending",
   "raster_order": "row_major_TU_order",
   "dimension_contract": {
     "vertical": "vector_count=W, vector_length=H, transform=tr_type_ver",
     "horizontal": "vector_count=H, vector_length=W, transform=tr_type_hor",
     "result": "four accepted output points map to four consecutive TU-raster coefficients"
+  },
+  "logical_mapping_formula": {
+    "bank": "(row[1:0] XOR col[1:0])",
+    "address": "row * (width / 4) + floor(col / 4)",
+    "result_beat": "row * (width / 4) + floor(horizontal_output / 4)",
+    "raster_index": "row * width + horizontal_output",
+    "proof_file": "MEMORY_MAPPING_PROOF.json"
   },
   "required_mapping_fields": [
     "input_raster_index",
@@ -28,10 +35,15 @@
     "unproven_default_cartesian_descriptor_product"
   ],
   "conflict_checks_pending": [
-    "bank_conflict",
     "staging_capacity",
     "intermediate_ownership",
     "result_capacity",
     "rectangle_output_order"
-  ]
+  ],
+  "logical_conflict_checks": {
+    "status": "PASS",
+    "proof_scope": "official shape/type rows; no descriptor Cartesian-product inference",
+    "physical_ram_inference": "not_proven",
+    "proof_file": "MEMORY_MAPPING_PROOF.json"
+  }
 }

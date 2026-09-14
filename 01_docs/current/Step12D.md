@@ -70,6 +70,16 @@ Latency is reported in separate forms:
 - ready-high intrinsic compute/drain latency, anchored explicitly at `end_fire` and `last_output_fire`;
 - backpressure-dependent completion behaviour, calculated by the state model without claiming a fixed upper bound.
 
+The current logical mapping proof covers every extracted shape/type row (57
+rows, 25 unique shapes) with the following candidate four-bank formula:
+`bank = (row[1:0] XOR col[1:0])` and
+`address = row * (width / 4) + floor(col / 4)`.  It checks vertical input
+reads, horizontal intermediate reads, vertical intermediate writes, address
+range, four-lane bank distinctness, and raster beat order.  This is a logical
+conflict proof only; it is not a physical RAM-inference, placement, timing,
+ownership, or complete official descriptor-tuple proof.  The machine-readable
+result is `MEMORY_MAPPING_PROOF.json`.
+
 ## 8. PRE evidence and exit gate
 
 Evidence is written under `05_audit/current/26/step12d_pre/` after confirming that the directory is unused. Expected outputs include the descriptor field map, official shape matrix, source traceability, fixed-point contracts, independent P4 schedules, A/B/C comparison, LFNST decision, general memory mapping, and cycle/resource results.
