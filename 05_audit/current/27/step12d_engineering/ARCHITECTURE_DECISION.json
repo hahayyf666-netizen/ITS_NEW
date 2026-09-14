@@ -1,0 +1,46 @@
+{
+  "schema": "step12d_engineering.architecture_decision.v1",
+  "status": "RECOMMENDED_CANDIDATE_SELECTED_FOR_ENGINEERING_PROFILE_NOT_PHYSICAL_PROOF",
+  "selection_basis": "analytic structural counts, bandwidth and mode ownership; no RTL/Vivado claim",
+  "candidates": {
+    "A": {
+      "name": "fully_shared_multiplier_and_reduction",
+      "max_direct_products_per_group": 128,
+      "risk": [
+        "shared reduction depth",
+        "coefficient mux/fanout",
+        "DCT2-64 factorization not shown"
+      ],
+      "status": "rejected_for_first_RTL_candidate"
+    },
+    "B": {
+      "name": "shared_multiplier_family_specific_reduction",
+      "max_direct_products_per_group": 128,
+      "risk": [
+        "duplicated reductions",
+        "mode switching",
+        "bandwidth"
+      ],
+      "status": "fallback_candidate"
+    },
+    "C_PRIME": {
+      "name": "frozen_R4C_reference_plus_new_profile_unified_le32_and_dct2_64",
+      "frozen_r4c_dsp": 128,
+      "le32_direct_products_per_group_max": 128,
+      "lfnst_products_per_p4_group": 64,
+      "status": "recommended"
+    }
+  },
+  "recommended_candidate": "C_PRIME",
+  "dct2_64_ownership": {
+    "frozen_r4c": "immutable historical schedule/timing/math baseline",
+    "new_profile_path": "required for VTM10 profile postprocess; implementation in Gate B/C"
+  },
+  "lfnst_ownership": "share multiplier front-end; dedicated 16/48-term reduction/control and gather/scatter",
+  "estimates_not_proof": {
+    "dsp": "128 shared product lanes in the <=32 direct candidate; DCT2-64 implementation-dependent",
+    "lut_ff_ram": "not estimated until RTL structure exists",
+    "timing": "unknown until synthesis/implementation"
+  }
+}
+

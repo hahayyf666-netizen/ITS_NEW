@@ -1,6 +1,6 @@
 # Step12D PRE
 
-Status: IN PROGRESS
+Status: HISTORICAL SOURCE REVIEW STOP; ENGINEERING PROFILE GATE A/B PASS; GATE C STOP
 
 ## 1. Scope and frozen boundary
 
@@ -98,3 +98,28 @@ Step12D-PRE remains STOP on exactly two root P1 source contracts:
 - the official contest material does not define the complete main-transform intermediate scaling and final signed-10 output mapping for every case.
 
 H.266/VTM remain reference evidence. In particular, H.266's normative two-dimensional process uses an intermediate `(+64)>>7 + Clip3` and a final shift dependent on BitDepth and Log2TransformRange, so it cannot silently replace the contest contract or prove the frozen Step12B `(+32)>>6`, wrap16, low10 engineering baseline. Architecture selection is a downstream dependency, not a third independent source blocker. See `SOURCE_CONTRACT_RESOLUTION.json` and `SOURCE_CONTRACT_CLARIFICATION_REQUEST.md`.
+
+## 10. Engineering-profile continuation (2026-09-14)
+
+The historical source-review result in Section 9 is preserved. Because the
+contest has ended and no further normative clarification is available, the
+engineering continuation uses the explicitly labelled
+`contest_engineering_vtm10_v1` profile: bit depth 10, extended precision off,
+dynamic range 15, VTM inverse shifts 7/10, and a LOW10 two's-complement final
+adapter (SAT10 remains an alternate differential adapter). This binding is
+reproducible but does not claim official or hidden-golden equivalence.
+
+Gate A is closed for this engineering profile and Gate B has a new unified
+P4 one-dimensional RTL reference covering DCT2/DST7/DCT8 at 4/8/16/32 and
+DCT2 at 64. Gate C's independent software model covers the 169 LFNST-off
+per-axis tuples and 200 active-LFNST tuples, including rectangles, mixed
+H/V, sparse raster input, two-slot ownership, backpressure, and exactly-once
+completion. The new `unified_its_wrapper.sv` and its testbench are present,
+but this environment has no `vsim`, `vlog`, `iverilog`, `verilator`, or
+`xvlog`; therefore normal and `SYNTHESIS`-mode HDL simulation are not claimed
+and the final engineering batch is `STOP_GATE_C_HDL_SIMULATOR_UNAVAILABLE`.
+
+The machine-readable final status is recorded in
+`05_audit/current/27/step12d_engineering/STEP12D_STEP12E_FINAL_MANIFEST.json`.
+No frozen R4C, historical wrapper, or XDC file was modified, and no physical
+timing or Vivado result is implied by the Gate A/B/model results.

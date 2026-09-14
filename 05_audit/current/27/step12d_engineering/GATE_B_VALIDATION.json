@@ -1,0 +1,562 @@
+{
+  "schema": "step12d_engineering.gate_b_validation.v1",
+  "status": "PASS_UNIFIED_P4_FUNCTIONAL_SCHEDULE_CONTRACT",
+  "rtl": "02_rtl/rtl/unified_p4_kernel.sv",
+  "rtl_sha256": "DEF1A7504F1E17177C6EE5D9DCFF67057748B4EAAC70A122E733E0CA54861451",
+  "cases": [
+    {
+      "transform": "DCT2",
+      "N": 4,
+      "vectors_checked": 12,
+      "groups": 1,
+      "outputs_per_group": 4,
+      "products_per_group": 16,
+      "group_ii": 1,
+      "vector_ii": 1,
+      "post_shifts": {
+        "vertical": 7,
+        "horizontal": 10
+      },
+      "bit_exact": true,
+      "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
+      "schedule_rows": {
+        "row_count": 4,
+        "cycle_sequence": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "physical_timing_proof": false
+    },
+    {
+      "transform": "DCT2",
+      "N": 8,
+      "vectors_checked": 12,
+      "groups": 2,
+      "outputs_per_group": 4,
+      "products_per_group": 32,
+      "group_ii": 1,
+      "vector_ii": 2,
+      "post_shifts": {
+        "vertical": 7,
+        "horizontal": 10
+      },
+      "bit_exact": true,
+      "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
+      "schedule_rows": {
+        "row_count": 8,
+        "cycle_sequence": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "physical_timing_proof": false
+    },
+    {
+      "transform": "DCT2",
+      "N": 16,
+      "vectors_checked": 12,
+      "groups": 4,
+      "outputs_per_group": 4,
+      "products_per_group": 64,
+      "group_ii": 1,
+      "vector_ii": 4,
+      "post_shifts": {
+        "vertical": 7,
+        "horizontal": 10
+      },
+      "bit_exact": true,
+      "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
+      "schedule_rows": {
+        "row_count": 16,
+        "cycle_sequence": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3
+        ]
+      },
+      "physical_timing_proof": false
+    },
+    {
+      "transform": "DCT2",
+      "N": 32,
+      "vectors_checked": 12,
+      "groups": 8,
+      "outputs_per_group": 4,
+      "products_per_group": 128,
+      "group_ii": 1,
+      "vector_ii": 8,
+      "post_shifts": {
+        "vertical": 7,
+        "horizontal": 10
+      },
+      "bit_exact": true,
+      "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
+      "schedule_rows": {
+        "row_count": 32,
+        "cycle_sequence": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          6,
+          6,
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      "physical_timing_proof": false
+    },
+    {
+      "transform": "DCT2",
+      "N": 64,
+      "vectors_checked": 12,
+      "groups": 16,
+      "outputs_per_group": 4,
+      "products_per_group": 256,
+      "group_ii": 1,
+      "vector_ii": 16,
+      "post_shifts": {
+        "vertical": 7,
+        "horizontal": 10
+      },
+      "bit_exact": true,
+      "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
+      "schedule_rows": {
+        "row_count": 64,
+        "cycle_sequence": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          6,
+          6,
+          7,
+          7,
+          7,
+          7,
+          8,
+          8,
+          8,
+          8,
+          9,
+          9,
+          9,
+          9,
+          10,
+          10,
+          10,
+          10,
+          11,
+          11,
+          11,
+          11,
+          12,
+          12,
+          12,
+          12,
+          13,
+          13,
+          13,
+          13,
+          14,
+          14,
+          14,
+          14,
+          15,
+          15,
+          15,
+          15
+        ]
+      },
+      "physical_timing_proof": false
+    },
+    {
+      "transform": "DST7",
+      "N": 4,
+      "vectors_checked": 12,
+      "groups": 1,
+      "outputs_per_group": 4,
+      "products_per_group": 16,
+      "group_ii": 1,
+      "vector_ii": 1,
+      "post_shifts": {
+        "vertical": 7,
+        "horizontal": 10
+      },
+      "bit_exact": true,
+      "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
+      "schedule_rows": {
+        "row_count": 4,
+        "cycle_sequence": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "physical_timing_proof": false
+    },
+    {
+      "transform": "DST7",
+      "N": 8,
+      "vectors_checked": 12,
+      "groups": 2,
+      "outputs_per_group": 4,
+      "products_per_group": 32,
+      "group_ii": 1,
+      "vector_ii": 2,
+      "post_shifts": {
+        "vertical": 7,
+        "horizontal": 10
+      },
+      "bit_exact": true,
+      "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
+      "schedule_rows": {
+        "row_count": 8,
+        "cycle_sequence": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "physical_timing_proof": false
+    },
+    {
+      "transform": "DST7",
+      "N": 16,
+      "vectors_checked": 12,
+      "groups": 4,
+      "outputs_per_group": 4,
+      "products_per_group": 64,
+      "group_ii": 1,
+      "vector_ii": 4,
+      "post_shifts": {
+        "vertical": 7,
+        "horizontal": 10
+      },
+      "bit_exact": true,
+      "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
+      "schedule_rows": {
+        "row_count": 16,
+        "cycle_sequence": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3
+        ]
+      },
+      "physical_timing_proof": false
+    },
+    {
+      "transform": "DST7",
+      "N": 32,
+      "vectors_checked": 12,
+      "groups": 8,
+      "outputs_per_group": 4,
+      "products_per_group": 128,
+      "group_ii": 1,
+      "vector_ii": 8,
+      "post_shifts": {
+        "vertical": 7,
+        "horizontal": 10
+      },
+      "bit_exact": true,
+      "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
+      "schedule_rows": {
+        "row_count": 32,
+        "cycle_sequence": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          6,
+          6,
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      "physical_timing_proof": false
+    },
+    {
+      "transform": "DCT8",
+      "N": 4,
+      "vectors_checked": 12,
+      "groups": 1,
+      "outputs_per_group": 4,
+      "products_per_group": 16,
+      "group_ii": 1,
+      "vector_ii": 1,
+      "post_shifts": {
+        "vertical": 7,
+        "horizontal": 10
+      },
+      "bit_exact": true,
+      "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
+      "schedule_rows": {
+        "row_count": 4,
+        "cycle_sequence": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "physical_timing_proof": false
+    },
+    {
+      "transform": "DCT8",
+      "N": 8,
+      "vectors_checked": 12,
+      "groups": 2,
+      "outputs_per_group": 4,
+      "products_per_group": 32,
+      "group_ii": 1,
+      "vector_ii": 2,
+      "post_shifts": {
+        "vertical": 7,
+        "horizontal": 10
+      },
+      "bit_exact": true,
+      "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
+      "schedule_rows": {
+        "row_count": 8,
+        "cycle_sequence": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "physical_timing_proof": false
+    },
+    {
+      "transform": "DCT8",
+      "N": 16,
+      "vectors_checked": 12,
+      "groups": 4,
+      "outputs_per_group": 4,
+      "products_per_group": 64,
+      "group_ii": 1,
+      "vector_ii": 4,
+      "post_shifts": {
+        "vertical": 7,
+        "horizontal": 10
+      },
+      "bit_exact": true,
+      "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
+      "schedule_rows": {
+        "row_count": 16,
+        "cycle_sequence": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3
+        ]
+      },
+      "physical_timing_proof": false
+    },
+    {
+      "transform": "DCT8",
+      "N": 32,
+      "vectors_checked": 12,
+      "groups": 8,
+      "outputs_per_group": 4,
+      "products_per_group": 128,
+      "group_ii": 1,
+      "vector_ii": 8,
+      "post_shifts": {
+        "vertical": 7,
+        "horizontal": 10
+      },
+      "bit_exact": true,
+      "lane_mapping": "group g at cycle g; lane l selects coefficient row 4*g+l and consumes input indices 0..N-1",
+      "schedule_rows": {
+        "row_count": 32,
+        "cycle_sequence": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          3,
+          3,
+          3,
+          3,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          5,
+          5,
+          6,
+          6,
+          6,
+          6,
+          7,
+          7,
+          7,
+          7
+        ]
+      },
+      "physical_timing_proof": false
+    }
+  ],
+  "aggregate": {
+    "one_d_case_count": 13,
+    "vectors_checked": 156,
+    "scalar_values_checked": 2928,
+    "mismatches": 0
+  },
+  "contracts": {
+    "complete_outputs_per_group": 4,
+    "group_ii": 1,
+    "vector_ii": "N/4 under ready-high",
+    "mode_switch_isolation": true,
+    "input_acceptance_ii": 1,
+    "input_acceptance_cycles": "0..N-1 when in_req is high",
+    "output_hold_when_req_low": true,
+    "output_vld_gated_by_req": true,
+    "async_active_low_reset": true,
+    "dct2_64_profile_path": "new direct matrix path; frozen R4C not imported"
+  },
+  "not_proven": [
+    "physical DSP/LUT/RAM mapping",
+    "500 MHz timing",
+    "2-D wrapper/LFNST integration"
+  ]
+}
+

@@ -1,0 +1,70 @@
+{
+  "schema": "step12d_engineering.source_traceability.v1",
+  "status": "ENGINEERING_PROFILE_BOUNDING_WITH_RESIDUAL_OFFICIAL_EQUIVALENCE_UNKNOWN",
+  "sources": [
+    {
+      "id": "OFFICIAL_EXPERT_QA_USER_PROVIDED_TRANSCRIPT",
+      "sha256": "CE40EF05793ADCBBF2FD5271E9E6C2515F570470C981A2C05BC51B37CB6B5A77",
+      "class": "official_answer_as_supplied"
+    },
+    {
+      "id": "CANONICAL_COEFFICIENTS",
+      "path": "03_verification/output/canonical_matrices.json",
+      "sha256": "D4C497CFBAE64096C69D640BAD154E4E3BAE1F5834F82149623A83028B81E9F6",
+      "class": "immutable_canonical_data"
+    },
+    {
+      "id": "VTM_TRQUANT_XIT",
+      "path": "04_reference/VTM/source/Lib/CommonLib/TrQuant.cpp",
+      "sha256": "22B3F0D1D2DD25384D6449BA49592366F24F35AB5567DAD896194209B741D7DE",
+      "locators": {
+        "xIT": [
+          832,
+          871
+        ]
+      },
+      "class": "designated_reference"
+    },
+    {
+      "id": "VTM_INVERSE_MATRIX_MULT",
+      "path": "04_reference/VTM/source/Lib/CommonLib/TrQuant_EMT.cpp",
+      "sha256": "3A4DFD0E091C62964B83B881C0BCA0FD4AA6D0FD2EE25D4AAFAB6F0A37B03F13",
+      "locators": {
+        "primitive": [
+          197,
+          101
+        ]
+      },
+      "class": "designated_reference"
+    },
+    {
+      "id": "VTM_TYPEDEF",
+      "path": "04_reference/VTM/source/Lib/CommonLib/TypeDef.h",
+      "sha256": "75D6007A3259BBB730FD50629C1AA8917AADE504C01AD2DFDE87A332FE432F06",
+      "locators": {
+        "high_bit_depth": [
+          191,
+          269
+        ]
+      },
+      "class": "designated_reference"
+    },
+    {
+      "id": "FROZEN_R4C_64",
+      "path": "02_rtl/rtl/p2f_dct2_64_b1_step102.sv",
+      "sha256": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1",
+      "class": "immutable_historical_reference"
+    },
+    {
+      "id": "FROZEN_STEP12B_WRAPPER",
+      "path": "02_rtl/rtl/step12b_dct2_64_wrapper.sv",
+      "sha256": "45E581A5CC542EE31ADAD49171076F804854B85D675B0CC37E2E8B0064D12A5C",
+      "class": "immutable_historical_reference"
+    }
+  ],
+  "classification_rules": {
+    "official_required": "directly stated by contest answer/attachment",
+    "reference_only": "VTM semantics without a contest binding",
+    "engineering_assumption": "explicit profile choice required to proceed; never described as official"
+  }
+}

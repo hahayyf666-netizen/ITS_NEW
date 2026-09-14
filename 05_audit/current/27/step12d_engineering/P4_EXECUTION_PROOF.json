@@ -1,0 +1,155 @@
+{
+  "schema": "step12d_engineering.p4_execution_contract.v2",
+  "status": "SUPERSEDED_BY_GATE_B_EXECUTION_PROOF",
+  "superseded_by": "P4_EXECUTION_PROOF_GATE_B.json",
+  "cases": [
+    {
+      "transform": "DCT2",
+      "N": 4,
+      "group_outputs": 4,
+      "groups": 1,
+      "group_ii": 1,
+      "vector_ii": 1,
+      "products_per_group": 16,
+      "lane_mapping": "output_index=group*4+lane; coefficient row=output_index; all N inputs",
+      "execution_proof_status": "scheduled_in_gate_b"
+    },
+    {
+      "transform": "DCT2",
+      "N": 8,
+      "group_outputs": 4,
+      "groups": 2,
+      "group_ii": 1,
+      "vector_ii": 2,
+      "products_per_group": 32,
+      "lane_mapping": "output_index=group*4+lane; coefficient row=output_index; all N inputs",
+      "execution_proof_status": "scheduled_in_gate_b"
+    },
+    {
+      "transform": "DCT2",
+      "N": 16,
+      "group_outputs": 4,
+      "groups": 4,
+      "group_ii": 1,
+      "vector_ii": 4,
+      "products_per_group": 64,
+      "lane_mapping": "output_index=group*4+lane; coefficient row=output_index; all N inputs",
+      "execution_proof_status": "scheduled_in_gate_b"
+    },
+    {
+      "transform": "DCT2",
+      "N": 32,
+      "group_outputs": 4,
+      "groups": 8,
+      "group_ii": 1,
+      "vector_ii": 8,
+      "products_per_group": 128,
+      "lane_mapping": "output_index=group*4+lane; coefficient row=output_index; all N inputs",
+      "execution_proof_status": "scheduled_in_gate_b"
+    },
+    {
+      "transform": "DCT2",
+      "N": 64,
+      "group_outputs": 4,
+      "groups": 16,
+      "group_ii": 1,
+      "vector_ii": 16,
+      "products_per_group": 256,
+      "lane_mapping": "output_index=group*4+lane; coefficient row=output_index; all N inputs",
+      "execution_proof_status": "scheduled_in_gate_b"
+    },
+    {
+      "transform": "DST7",
+      "N": 4,
+      "group_outputs": 4,
+      "groups": 1,
+      "group_ii": 1,
+      "vector_ii": 1,
+      "products_per_group": 16,
+      "lane_mapping": "output_index=group*4+lane; coefficient row=output_index; all N inputs",
+      "execution_proof_status": "scheduled_in_gate_b"
+    },
+    {
+      "transform": "DST7",
+      "N": 8,
+      "group_outputs": 4,
+      "groups": 2,
+      "group_ii": 1,
+      "vector_ii": 2,
+      "products_per_group": 32,
+      "lane_mapping": "output_index=group*4+lane; coefficient row=output_index; all N inputs",
+      "execution_proof_status": "scheduled_in_gate_b"
+    },
+    {
+      "transform": "DST7",
+      "N": 16,
+      "group_outputs": 4,
+      "groups": 4,
+      "group_ii": 1,
+      "vector_ii": 4,
+      "products_per_group": 64,
+      "lane_mapping": "output_index=group*4+lane; coefficient row=output_index; all N inputs",
+      "execution_proof_status": "scheduled_in_gate_b"
+    },
+    {
+      "transform": "DST7",
+      "N": 32,
+      "group_outputs": 4,
+      "groups": 8,
+      "group_ii": 1,
+      "vector_ii": 8,
+      "products_per_group": 128,
+      "lane_mapping": "output_index=group*4+lane; coefficient row=output_index; all N inputs",
+      "execution_proof_status": "scheduled_in_gate_b"
+    },
+    {
+      "transform": "DCT8",
+      "N": 4,
+      "group_outputs": 4,
+      "groups": 1,
+      "group_ii": 1,
+      "vector_ii": 1,
+      "products_per_group": 16,
+      "lane_mapping": "output_index=group*4+lane; coefficient row=output_index; all N inputs",
+      "execution_proof_status": "scheduled_in_gate_b"
+    },
+    {
+      "transform": "DCT8",
+      "N": 8,
+      "group_outputs": 4,
+      "groups": 2,
+      "group_ii": 1,
+      "vector_ii": 2,
+      "products_per_group": 32,
+      "lane_mapping": "output_index=group*4+lane; coefficient row=output_index; all N inputs",
+      "execution_proof_status": "scheduled_in_gate_b"
+    },
+    {
+      "transform": "DCT8",
+      "N": 16,
+      "group_outputs": 4,
+      "groups": 4,
+      "group_ii": 1,
+      "vector_ii": 4,
+      "products_per_group": 64,
+      "lane_mapping": "output_index=group*4+lane; coefficient row=output_index; all N inputs",
+      "execution_proof_status": "scheduled_in_gate_b"
+    },
+    {
+      "transform": "DCT8",
+      "N": 32,
+      "group_outputs": 4,
+      "groups": 8,
+      "group_ii": 1,
+      "vector_ii": 8,
+      "products_per_group": 128,
+      "lane_mapping": "output_index=group*4+lane; coefficient row=output_index; all N inputs",
+      "execution_proof_status": "scheduled_in_gate_b"
+    }
+  ],
+  "dct2_64": {
+    "ownership": "new_profile_compliant_path_required",
+    "frozen_r4c": "schedule/timing/reference only; arithmetic not silently reused"
+  },
+  "physical_boundary": "Gate A proves geometry only; Gate B must emit coefficient/lane/reduction execution rows"
+}

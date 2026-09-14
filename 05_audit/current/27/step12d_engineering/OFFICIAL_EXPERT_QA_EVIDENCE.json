@@ -1,0 +1,29 @@
+{
+  "schema": "step12d_engineering.official_expert_qa.v1",
+  "source_id": "OFFICIAL_EXPERT_QA_USER_PROVIDED_TRANSCRIPT",
+  "evidence_class": "official_answer_as_supplied_by_user",
+  "provenance_note": "The transcript is recorded as supplied; it is not silently promoted to a normative standard clause.",
+  "sha256_normalized_answer": "CE40EF05793ADCBBF2FD5271E9E6C2515F570470C981A2C05BC51B37CB6B5A77",
+  "confirmed_contracts": {
+    "inverse_only": true,
+    "input_address_semantics": "full_TU_raster_index; sparse nonzero data only",
+    "fill_order_precedence": [
+      "contest_attachment",
+      "designated_VTM_reference"
+    ],
+    "axis_order": "vertical_then_horizontal",
+    "axis_selector_semantics": {
+      "tr_type_hor": "horizontal_transform_type",
+      "tr_type_ver": "vertical_transform_type"
+    },
+    "output_encoding": "signed_10_bit_twos_complement",
+    "tu_admission": "back_to_back_if_it_data_in_req_is_high",
+    "clock_reset": "clk_required; rst_n active_low_async"
+  },
+  "not_confirmed_by_answer": [
+    "complete legal H/V pair subset for every lfnst_idx=0 descriptor",
+    "contest-specific VTM bitDepth/SPS profile binding",
+    "wide residual to signed-10 saturation-versus-low10 rule"
+  ]
+}
+

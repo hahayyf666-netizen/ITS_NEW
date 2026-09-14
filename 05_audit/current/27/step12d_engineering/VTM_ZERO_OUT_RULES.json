@@ -1,0 +1,31 @@
+{
+  "schema": "step12d_engineering.vtm_zero_out_rules.v1",
+  "status": "REFERENCE_RULES_BOUND_TO_ENGINEERING_PROFILE",
+  "rules": {
+    "lfnst_off": {
+      "skip_width": "(tr_type_hor != DCT2 and width == 32) ? 16 : max(width - 32, 0)",
+      "skip_height": "(tr_type_ver != DCT2 and height == 32) ? 16 : max(height - 32, 0)"
+    },
+    "lfnst_on": {
+      "4_by_other": "skip_width=width-4; skip_height=height-4",
+      "8_or_larger": "skip_width=width-8; skip_height=height-8"
+    },
+    "execution": "inverse primitive consumes cutoff=transform_size-skip_in_lines and explicitly zeroes skipped output lines"
+  },
+  "source_locators": {
+    "TrQuant.cpp": {
+      "xIT": [
+        768,
+        771
+      ]
+    },
+    "TrQuant_EMT.cpp": {
+      "inverseMatrixMult": [
+        204,
+        221
+      ]
+    }
+  },
+  "scope_note": "This is VTM reference behavior; any contest simplification remains an engineering-profile choice unless explicitly stated by the contest source."
+}
+

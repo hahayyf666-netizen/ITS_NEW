@@ -1,0 +1,10 @@
+{
+  "schema": "step12d_engineering.hdl_simulator_check.v1",
+  "status": "STOP_NO_SUPPORTED_HDL_SIMULATOR_ON_PATH",
+  "checked_commands": ["vsim", "vlog", "iverilog", "verilator", "xvlog"],
+  "available": [],
+  "normal_simulation_run": false,
+  "synthesis_mode_simulation_run": false,
+  "reason": "The environment exposes no supported HDL simulator executable; a software model pass and RTL source presence cannot be promoted to HDL simulation PASS.",
+  "required_followup": "Run 03_verification/tb/unified_its_wrapper_tb.sv with normal and SYNTHESIS compile modes, then update STEP12D_STEP12E_FINAL_MANIFEST.json."
+}

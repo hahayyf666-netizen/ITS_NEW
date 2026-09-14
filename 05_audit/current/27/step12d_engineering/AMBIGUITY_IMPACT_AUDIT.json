@@ -1,0 +1,60 @@
+{
+  "schema": "step12d_engineering.ambiguity_impact_audit.v1",
+  "status": "PASS_IMPACT_AUDIT_WITH_OFFICIAL_VECTOR_BUCKET_EMPTY",
+  "profile_binding": "contest_engineering_vtm10_v1",
+  "official_equivalence": "NOT_PROVEN",
+  "buckets": [
+    {
+      "bucket": "official_vectors",
+      "sample_kind": "zero",
+      "case_count": 0,
+      "scalar_values": 0,
+      "profile_ambiguity_differences": 0,
+      "adapter_low10_vs_sat10_differences": 0,
+      "signed10_out_of_range": 0,
+      "legacy_baseline_low10_differences": 0
+    },
+    {
+      "bucket": "VTM_reference_vectors",
+      "sample_kind": "random",
+      "case_count": 25,
+      "scalar_values": 12064,
+      "profile_ambiguity_differences": 7156,
+      "adapter_low10_vs_sat10_differences": 199,
+      "signed10_out_of_range": 199,
+      "legacy_baseline_low10_differences": 12048
+    },
+    {
+      "bucket": "directed_boundary_vectors",
+      "sample_kind": "boundary",
+      "case_count": 5,
+      "scalar_values": 5456,
+      "profile_ambiguity_differences": 2889,
+      "adapter_low10_vs_sat10_differences": 2255,
+      "signed10_out_of_range": 2257,
+      "legacy_baseline_low10_differences": 5445
+    },
+    {
+      "bucket": "seeded_random_vectors",
+      "sample_kind": "random",
+      "case_count": 48,
+      "scalar_values": 3216,
+      "profile_ambiguity_differences": 2412,
+      "adapter_low10_vs_sat10_differences": 0,
+      "signed10_out_of_range": 0,
+      "legacy_baseline_low10_differences": 3214
+    },
+    {
+      "bucket": "extreme_vectors",
+      "sample_kind": "extreme",
+      "case_count": 5,
+      "scalar_values": 5776,
+      "profile_ambiguity_differences": 2417,
+      "adapter_low10_vs_sat10_differences": 1910,
+      "signed10_out_of_range": 1916,
+      "legacy_baseline_low10_differences": 5745
+    }
+  ],
+  "conclusion": "engineering profile and adapters are reproducible; sample-domain differences are measured, not a claim about historical hidden golden"
+}
+

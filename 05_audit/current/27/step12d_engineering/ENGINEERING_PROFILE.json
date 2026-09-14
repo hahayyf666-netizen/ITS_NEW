@@ -1,0 +1,67 @@
+{
+  "schema": "step12d_engineering.vtm_profile.v1",
+  "profile_name": "contest_engineering_vtm10_v1",
+  "evidence_class": "documented_engineering_binding",
+  "official_equivalence": "NOT_PROVEN",
+  "historical_hidden_golden_equivalence": "UNKNOWN",
+  "algorithm_binding": {
+    "bit_depth": 10,
+    "extended_precision_processing": false,
+    "max_log2_transform_dynamic_range": 15,
+    "derivation": "VTM SPS getMaxLog2TrDynamicRange: extended=false => 15"
+  },
+  "vtm_reference_build": {
+    "RExt__HIGH_BIT_DEPTH_SUPPORT": 0,
+    "Pel": "int16_t",
+    "Intermediate_Int": "int"
+  },
+  "inverse_2d": {
+    "vertical": {
+      "shift": 7,
+      "rounding_add": 64,
+      "clip": [
+        -32768,
+        32767
+      ]
+    },
+    "horizontal": {
+      "shift": 10,
+      "rounding_add": 512,
+      "clip": [
+        -32768,
+        32767
+      ]
+    },
+    "formula": "Clip3(min,max,(sum + 2^(shift-1)) >> shift)",
+    "order": "vertical_then_horizontal"
+  },
+  "lfnst": {
+    "shift": 7,
+    "rounding_add": 64,
+    "clip": [
+      -32768,
+      32767
+    ],
+    "main_transform_after_lfnst": "DCT2_DCT2"
+  },
+  "final10": {
+    "default": "LOW10_TWOS_COMPLEMENT",
+    "low10_formula": "bits = wide_value & 0x3ff; signed10 = bits if bits < 512 else bits - 1024",
+    "alternate": {
+      "mode": "SAT10",
+      "range": [
+        -512,
+        511
+      ],
+      "formula": "Clip3(-512,511,wide_value)"
+    },
+    "reason": "interface specifies signed 10-bit two's-complement but no additional saturation rule"
+  },
+  "source_ids": [
+    "VTM_TRQUANT_XIT",
+    "VTM_INVERSE_MATRIX_MULT",
+    "VTM_TYPEDEF",
+    "OFFICIAL_EXPERT_QA_USER_PROVIDED_TRANSCRIPT"
+  ]
+}
+

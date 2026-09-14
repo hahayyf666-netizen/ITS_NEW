@@ -1,0 +1,51 @@
+{
+  "schema": "step12d_engineering.gate_c_model_validation.v1",
+  "status": "PASS_ENGINEERING_PROFILE_2D_PROTOCOL_MODEL",
+  "model": "independent VTM-profile 2-D inverse + two-slot transaction model",
+  "canonical_sha256": "D4C497CFBAE64096C69D640BAD154E4E3BAE1F5834F82149623A83028B81E9F6",
+  "profile": "contest_engineering_vtm10_v1",
+  "adapter_default": "LOW10_TWOS_COMPLEMENT",
+  "adapter_alternate": "SAT10",
+  "scope": {
+    "official_source_equivalence": "NOT_PROVEN",
+    "lfnst_off_implementation_superset": 169,
+    "lfnst_on_active_cases": 200,
+    "rectangle_shapes": 25,
+    "mixed_hv": true,
+    "sparse_full_raster_input": true,
+    "two_slot_back_to_back": true,
+    "output_backpressure": true,
+    "output_raster_order": true,
+    "async_active_low_reset_contract": true
+  },
+  "aggregate": {
+    "cases": 369,
+    "scalar_values": 182544,
+    "beats": 45636,
+    "out_of_signed10": 0,
+    "low10_sat10_difference_beats": 0,
+    "done_events": 371,
+    "dropped_beats": 0,
+    "duplicated_beats": 0,
+    "ownership_violations": 0
+  },
+  "scenario": {
+    "two_tu": {
+      "descriptor_1": 1032,
+      "descriptor_2": 98832,
+      "tu1_done": 1,
+      "tu2_done": 1,
+      "tu1_output_fires": 16,
+      "tu2_output_fires": 16,
+      "tu2_fill_during_tu1_output_stall": true
+    },
+    "stall_semantics": "out_valid=req&&hold_valid; hold data/index is unchanged while req=0",
+    "latency_semantics": "ready-high intrinsic output beats; completion is stall-dependent"
+  },
+  "not_proven": [
+    "HDL simulation (normal and SYNTHESIS compile modes)",
+    "physical DSP/LUT/RAM mapping",
+    "500 MHz timing",
+    "official hidden-golden equivalence"
+  ]
+}

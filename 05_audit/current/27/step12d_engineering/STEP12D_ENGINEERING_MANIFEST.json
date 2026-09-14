@@ -1,0 +1,37 @@
+{
+  "schema": "step12d_engineering.manifest.v1",
+  "status": "GATE_A_PASS_ENGINEERING_PROFILE_RESIDUAL_OFFICIAL_EQUIVALENCE_UNKNOWN",
+  "phase": "step12d_engineering_closure_gate_a_complete",
+  "base_tag": "v3.5-18",
+  "base_commit": "7415b0acb33481af1845f63e16b93ce7c33b977b",
+  "current_commit": "6fcf12f4212cede21d74f51e230a8c7ab2cb4575",
+  "scope": {
+    "frozen_r4c_unchanged": true,
+    "frozen_wrapper_unchanged": true,
+    "xdc_unchanged": true,
+    "vivado_run": false,
+    "unified_rtl_authorized": true
+  },
+  "engineering_profile": "ENGINEERING_PROFILE.json",
+  "legal_matrix": "LEGAL_TRANSFORM_MATRIX.json",
+  "lfnst_matrix": "LFNST_CASE_MATRIX.json",
+  "architecture": "ARCHITECTURE_DECISION.json",
+  "gate_a_outputs": [
+    "OFFICIAL_EXPERT_QA_EVIDENCE.json",
+    "ENGINEERING_PROFILE.json",
+    "VTM_ZERO_OUT_RULES.json",
+    "ENGINEERING_SOURCE_TRACEABILITY.json",
+    "LEGAL_TRANSFORM_MATRIX.json",
+    "LFNST_CASE_MATRIX.json",
+    "P4_EXECUTION_PROOF.json",
+    "ARCHITECTURE_DECISION.json",
+    "CYCLE_RESOURCE_CONTRACT.json",
+    "GATE_A_CHECKPOINT.json"
+  ],
+  "residual_risk": [
+    "exact lfnst_idx=0 official pair subset not stated; implementation uses explicitly labeled per-axis superset",
+    "engineering VTM profile and LOW10 adapter are not proven equivalent to hidden historical golden"
+  ],
+  "next_gate": "Gate B unified P4 1-D RTL and independent Oracle regression"
+}
+
