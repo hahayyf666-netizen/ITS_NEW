@@ -1,0 +1,158 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Sep 15 23:26:30 2026
+# Process ID         : 23788
+# Current directory  : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/39/step12f_p8_1_synth_20260915_2330/targeted
+# Command line       : vivado.exe -mode batch -source C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\vivado\report_p8_1_targeted.tcl -tclargs C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\05_audit\current\39\step12f_p8_1_synth_20260915_2330\step12f_unified_wrapper_postsynth.dcp C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\05_audit\current\39\step12f_p8_1_synth_20260915_2330\targeted -log vivado_targeted.log -journal vivado_targeted.jou
+# Log file           : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/39/step12f_p8_1_synth_20260915_2330/targeted/vivado.log
+# Journal file       : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/39/step12f_p8_1_synth_20260915_2330/targeted\vivado.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 49328 MB
+# Total Virtual      : 65692 MB
+# Available Virtual  : 41741 MB
+#-----------------------------------------------------------
+INFO: [Common 17-1239] XILINX_LOCAL_USER_DATA is set to 'C:\Users\Fine\AppData\Local\Temp\step12f_vivado_user'.
+source {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\vivado\report_p8_1_targeted.tcl}
+# if {$argc < 2} {
+#     puts "Usage: vivado -mode batch -source report_p8_1_targeted.tcl -- <dcp> <out_dir>"
+#     exit 2
+# }
+# set dcp [lindex $argv 0]
+# set out_dir [lindex $argv 1]
+# file mkdir $out_dir
+# open_checkpoint $dcp
+Command: open_checkpoint {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\05_audit\current\39\step12f_p8_1_synth_20260915_2330\step12f_unified_wrapper_postsynth.dcp}
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.038 . Memory (MB): peak = 350.484 ; gain = 4.809
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.210 . Memory (MB): peak = 1699.527 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 4830 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 4 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2025.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Read ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.102 . Memory (MB): peak = 1747.914 ; gain = 9.609
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Constraints 18-5170] The checkpoint was created with non-default parameter values which do not match the current Vivado settings.  Mismatching parameters are:
+  general.maxThreads
+INFO: [Project 1-853] Binary constraint restore complete.
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.019 . Memory (MB): peak = 2628.105 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1184 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 320 instances
+  RAM256X1D => RAM256X1D (MUXF7(x4), MUXF8(x2), RAMD64E(x8)): 32 instances
+  RAM64M => RAM64M (RAMD64E(x4)): 320 instances
+  RAM64M8 => RAM64M8 (RAMD64E(x8)): 512 instances
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2025.2 (64-bit) build 6299465
+open_checkpoint: Time (s): cpu = 00:00:38 ; elapsed = 00:00:38 . Memory (MB): peak = 2628.105 ; gain = 2290.945
+# proc names_or_none {objs} {
+#     if {[llength $objs] == 0} { return "<none>" }
+#     return [join [get_property NAME $objs] "\n"]
+# }
+# proc report_family {path title from_objs to_objs} {
+#     set f [open $path a]
+#     puts $f "\n=== $title ==="
+#     puts $f "FROM_COUNT=[llength $from_objs] TO_COUNT=[llength $to_objs]"
+#     if {[llength $from_objs] == 0 || [llength $to_objs] == 0} {
+#         puts $f "STATUS=NO_SOURCE_OR_DEST_OBJECT"
+#     } else {
+#         set rc [catch {
+#             report_timing -from $from_objs -to $to_objs -delay_type max \
+#                 -max_paths 20 -path_type full -file $path -append
+#         } msg]
+#         puts $f "REPORT_RC=$rc"
+#         if {$rc} { puts $f "REPORT_MSG=$msg" }
+#     }
+#     close $f
+# }
+# set phase_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_phase_q_reg*}]
+# set phase_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *kernel_phase_q_reg*}]
+# set feed_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_feed_group_q_reg*}]
+# set feed_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *kernel_feed_group_q_reg*}]
+# set drain_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_drain_group_q_reg*}]
+# set drain_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *kernel_drain_group_q_reg*}]
+# set old_group_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_group_q_reg*}]
+# set issue_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *issue_desc_*_q_reg*}]
+# set issue_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *issue_desc_*_q_reg*}]
+# set wrapper_state_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *state_q_reg*}]
+# set wrapper_phase_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *phase_q_reg*}]
+# set wrapper_group_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *group_q_reg*}]
+# set input_fire_nets [get_nets -hier -quiet *kernel_input_group_fire*]
+# set input_fire_pins [get_pins -hier -quiet -filter {NAME =~ *kernel_input_group_fire*}]
+# set result_we [get_pins -hier -quiet -filter {REF_PIN_NAME == WE && NAME =~ *u_result_bank*}]
+# set q [open [file join $out_dir P8_1_TARGETED_OBJECTS.txt] w]
+# foreach {name objs} [list \
+#     PHASE_Q $phase_q PHASE_D $phase_d FEED_Q $feed_q FEED_D $feed_d \
+#     DRAIN_Q $drain_q DRAIN_D $drain_d OLD_GROUP_Q $old_group_q \
+#     ISSUE_D $issue_d ISSUE_Q $issue_q WRAPPER_STATE_D $wrapper_state_d \
+#     WRAPPER_PHASE_D $wrapper_phase_d WRAPPER_GROUP_D $wrapper_group_d \
+#     INPUT_FIRE_NETS $input_fire_nets INPUT_FIRE_PINS $input_fire_pins \
+#     RESULT_WE $result_we] {
+#     puts $q "-- $name --"
+#     puts $q "COUNT=[llength $objs]"
+#     puts $q [names_or_none $objs]
+# }
+# close $q
+# set r [file join $out_dir P8_1_TARGETED_TIMING.rpt]
+# set f [open $r w]
+# puts $f "Step12F-P8.1 targeted timing checks"
+# puts $f "DCP=$dcp"
+# puts $f "phase_q=[llength $phase_q] phase_d=[llength $phase_d]"
+# puts $f "feed_q=[llength $feed_q] feed_d=[llength $feed_d]"
+# puts $f "drain_q=[llength $drain_q] drain_d=[llength $drain_d]"
+# puts $f "old_group_q=[llength $old_group_q]"
+# puts $f "issue_d=[llength $issue_d] issue_q=[llength $issue_q]"
+# puts $f "wrapper_state_d=[llength $wrapper_state_d] wrapper_phase_d=[llength $wrapper_phase_d] wrapper_group_d=[llength $wrapper_group_d]"
+# puts $f "input_fire_nets=[llength $input_fire_nets] input_fire_pins=[llength $input_fire_pins]"
+# puts $f "result_we=[llength $result_we]"
+# close $f
+# report_family $r "phase_to_issue_descriptor" $phase_q $issue_d
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+WARNING: [Timing 38-242] The property HD.CLK_SRC of clock port "clk" is not set. In out-of-context mode, this prevents timing estimation for clock delay/skew
+Resolution: Set the HD.CLK_SRC property of the out-of-context port to the location of the clock buffer instance in the top-level design
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+INFO: [Timing 38-72] No paths found.
+report_timing: Time (s): cpu = 00:00:25 ; elapsed = 00:00:20 . Memory (MB): peak = 3842.180 ; gain = 1211.867
+# report_family $r "phase_to_phase_next_state" $phase_q $phase_d
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+# report_family $r "input_fire_to_phase" $input_fire_pins $phase_d
+# report_family $r "input_fire_to_wrapper_state" $input_fire_pins $wrapper_state_d
+# report_family $r "input_fire_to_wrapper_phase" $input_fire_pins $wrapper_phase_d
+# report_family $r "input_fire_to_wrapper_group" $input_fire_pins $wrapper_group_d
+# report_family $r "feed_q_to_descriptor" $feed_q $issue_d
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+INFO: [Timing 38-72] No paths found.
+# report_family $r "drain_q_to_result_we" $drain_q $result_we
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+INFO: [Timing 38-72] No paths found.
+# report_family $r "phase_q_to_result_we" $phase_q $result_we
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+INFO: [Timing 38-72] No paths found.
+# close_design
+# puts "P8_1_TARGETED_DONE"
+P8_1_TARGETED_DONE
+# exit
+INFO: [Common 17-206] Exiting Vivado at Tue Sep 15 23:27:50 2026...

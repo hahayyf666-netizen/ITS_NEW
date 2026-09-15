@@ -1,0 +1,324 @@
+Step12F-P8.1 targeted timing checks
+DCP=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\05_audit\current\39\step12f_p8_1_synth_20260915_2330\step12f_unified_wrapper_postsynth.dcp
+phase_q=4 phase_d=4
+feed_q=5 feed_d=5
+drain_q=5 drain_d=5
+old_group_q=0
+issue_d=153 issue_q=153
+wrapper_state_d=9 wrapper_phase_d=6 wrapper_group_d=71
+input_fire_nets=1 input_fire_pins=0
+result_we=1792
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Tue Sep 15 23:27:48 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_phase_q_reg*}] -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *issue_desc_*_q_reg*}] -delay_type max -max_paths 20 -path_type full -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/39/step12f_p8_1_synth_20260915_2330/targeted/P8_1_TARGETED_TIMING.rpt -append
+| Design            : unified_its_wrapper
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Synthesized
+| Temperature Grade : E
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+No timing paths found.
+
+
+
+=== phase_to_issue_descriptor ===
+FROM_COUNT=4 TO_COUNT=153
+REPORT_RC=0
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Tue Sep 15 23:27:48 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_phase_q_reg*}] -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *kernel_phase_q_reg*}] -delay_type max -max_paths 20 -path_type full -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/39/step12f_p8_1_synth_20260915_2330/targeted/P8_1_TARGETED_TIMING.rpt -append
+| Design            : unified_its_wrapper
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Synthesized
+| Temperature Grade : E
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             1.093ns  (required time - arrival time)
+  Source:                 kernel_phase_q_reg[3]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_phase_q_reg[0]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.888ns  (logic 0.243ns (27.365%)  route 0.645ns (72.635%))
+  Logic Levels:           3  (LUT2=1 LUT6=2)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  kernel_phase_q_reg[3]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 f  kernel_phase_q_reg[3]/Q
+                         net (fo=29, unplaced)        0.194     0.301    kernel_phase_q_reg_n_0_[3]
+                         LUT2 (Prop_LUT2_I1_O)        0.038     0.339 r  kernel_phase_q[2]_i_3/O
+                         net (fo=7, unplaced)         0.211     0.550    kernel_phase_q[2]_i_3_n_0
+                         LUT6 (Prop_LUT6_I4_O)        0.038     0.588 r  kernel_stage_q_i_1/O
+                         net (fo=23, unplaced)        0.192     0.780    kernel_stage_q
+                         LUT6 (Prop_LUT6_I5_O)        0.090     0.870 r  kernel_phase_q[0]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.918    kernel_phase_q[0]_i_1_n_0
+                         FDCE                                         r  kernel_phase_q_reg[0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDCE (Setup_FDCE_C_D)        0.025     2.011    kernel_phase_q_reg[0]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.918    
+  -------------------------------------------------------------------
+                         slack                                  1.093    
+
+Slack (MET) :             1.358ns  (required time - arrival time)
+  Source:                 kernel_phase_q_reg[3]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_phase_q_reg[2]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.623ns  (logic 0.215ns (34.510%)  route 0.408ns (65.490%))
+  Logic Levels:           2  (LUT2=1 LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  kernel_phase_q_reg[3]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 f  kernel_phase_q_reg[3]/Q
+                         net (fo=29, unplaced)        0.194     0.301    kernel_phase_q_reg_n_0_[3]
+                         LUT2 (Prop_LUT2_I1_O)        0.038     0.339 r  kernel_phase_q[2]_i_3/O
+                         net (fo=7, unplaced)         0.166     0.505    kernel_phase_q[2]_i_3_n_0
+                         LUT6 (Prop_LUT6_I3_O)        0.100     0.605 r  kernel_phase_q[2]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.653    kernel_phase_q[2]_i_1_n_0
+                         FDCE                                         r  kernel_phase_q_reg[2]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDCE (Setup_FDCE_C_D)        0.025     2.011    kernel_phase_q_reg[2]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.653    
+  -------------------------------------------------------------------
+                         slack                                  1.358    
+
+Slack (MET) :             1.435ns  (required time - arrival time)
+  Source:                 kernel_phase_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_phase_q_reg[3]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.546ns  (logic 0.168ns (30.769%)  route 0.378ns (69.231%))
+  Logic Levels:           2  (LUT2=1 LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  kernel_phase_q_reg[2]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  kernel_phase_q_reg[2]/Q
+                         net (fo=27, unplaced)        0.193     0.300    kernel_phase_q_reg_n_0_[2]
+                         LUT2 (Prop_LUT2_I1_O)        0.038     0.338 f  kernel_phase_q[3]_i_8/O
+                         net (fo=1, unplaced)         0.137     0.475    kernel_phase_q[3]_i_8_n_0
+                         LUT6 (Prop_LUT6_I4_O)        0.053     0.528 r  kernel_phase_q[3]_i_2/O
+                         net (fo=1, unplaced)         0.048     0.576    kernel_phase_q[3]_i_2_n_0
+                         FDCE                                         r  kernel_phase_q_reg[3]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDCE (Setup_FDCE_C_D)        0.025     2.011    kernel_phase_q_reg[3]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.576    
+  -------------------------------------------------------------------
+                         slack                                  1.435    
+
+Slack (MET) :             1.495ns  (required time - arrival time)
+  Source:                 kernel_phase_q_reg[3]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_phase_q_reg[1]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.486ns  (logic 0.227ns (46.708%)  route 0.259ns (53.292%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  kernel_phase_q_reg[3]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 f  kernel_phase_q_reg[3]/Q
+                         net (fo=29, unplaced)        0.211     0.318    kernel_phase_q_reg_n_0_[3]
+                         LUT6 (Prop_LUT6_I0_O)        0.150     0.468 r  kernel_phase_q[1]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.516    kernel_phase_q[1]_i_1_n_0
+                         FDCE                                         r  kernel_phase_q_reg[1]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDCE (Setup_FDCE_C_D)        0.025     2.011    kernel_phase_q_reg[1]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.516    
+  -------------------------------------------------------------------
+                         slack                                  1.495    
+
+
+
+
+
+=== phase_to_phase_next_state ===
+FROM_COUNT=4 TO_COUNT=4
+REPORT_RC=0
+
+=== input_fire_to_phase ===
+FROM_COUNT=0 TO_COUNT=4
+STATUS=NO_SOURCE_OR_DEST_OBJECT
+
+=== input_fire_to_wrapper_state ===
+FROM_COUNT=0 TO_COUNT=9
+STATUS=NO_SOURCE_OR_DEST_OBJECT
+
+=== input_fire_to_wrapper_phase ===
+FROM_COUNT=0 TO_COUNT=6
+STATUS=NO_SOURCE_OR_DEST_OBJECT
+
+=== input_fire_to_wrapper_group ===
+FROM_COUNT=0 TO_COUNT=71
+STATUS=NO_SOURCE_OR_DEST_OBJECT
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Tue Sep 15 23:27:48 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_feed_group_q_reg*}] -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *issue_desc_*_q_reg*}] -delay_type max -max_paths 20 -path_type full -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/39/step12f_p8_1_synth_20260915_2330/targeted/P8_1_TARGETED_TIMING.rpt -append
+| Design            : unified_its_wrapper
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Synthesized
+| Temperature Grade : E
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+No timing paths found.
+
+
+
+=== feed_q_to_descriptor ===
+FROM_COUNT=5 TO_COUNT=153
+REPORT_RC=0
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Tue Sep 15 23:27:48 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_drain_group_q_reg*}] -to [get_pins -hier -quiet -filter {REF_PIN_NAME == WE && NAME =~ *u_result_bank*}] -delay_type max -max_paths 20 -path_type full -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/39/step12f_p8_1_synth_20260915_2330/targeted/P8_1_TARGETED_TIMING.rpt -append
+| Design            : unified_its_wrapper
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Synthesized
+| Temperature Grade : E
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+No timing paths found.
+
+
+
+=== drain_q_to_result_we ===
+FROM_COUNT=5 TO_COUNT=1792
+REPORT_RC=0
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Tue Sep 15 23:27:48 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_phase_q_reg*}] -to [get_pins -hier -quiet -filter {REF_PIN_NAME == WE && NAME =~ *u_result_bank*}] -delay_type max -max_paths 20 -path_type full -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_remote_audit_20260910/05_audit/current/39/step12f_p8_1_synth_20260915_2330/targeted/P8_1_TARGETED_TIMING.rpt -append
+| Design            : unified_its_wrapper
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Synthesized
+| Temperature Grade : E
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+No timing paths found.
+
+
+
+=== phase_q_to_result_we ===
+FROM_COUNT=4 TO_COUNT=1792
+REPORT_RC=0

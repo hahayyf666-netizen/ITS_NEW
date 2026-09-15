@@ -1,0 +1,234 @@
+{
+  "schema": "step12f.p8_1.manifest.v1",
+  "phase": "Step12F-P8.1 Same-Edge Input Fire Control-Cone Isolation",
+  "status": "P8_1_FUNCTIONAL_PASS_SYNTHESIS_PASS_ROUTE_TIMING_STOP",
+  "base_commit": "29dd5df64bb4c6980325db31f2d8a1e7f177c6cc",
+  "provenance": {
+    "published_p8_parent": "29dd5df64bb4c6980325db31f2d8a1e7f177c6cc",
+    "local_full_evidence_p8_parent": "c6ec4f2ee5ab17b41a7fb26faa9f0ea83cd3e21a",
+    "common_p7_parent": "48e55acb2e5b53772ee9be1633815ba94c60edf7",
+    "p8_rtl_semantically_equivalent": true,
+    "p8_rtl_byte_identity": false,
+    "difference_note": "The published P8 mirror and local full-evidence P8 tree have identical RTL when terminal blank-line normalization is ignored; their evidence subsets and commit SHAs differ. P8.1 reports were generated from the local full-evidence P8 parent and then cherry-picked onto the published P8 parent without RTL conflict."
+  },
+  "objective": "Separate feed-side input bookkeeping from drain-side output bookkeeping and isolate input_group_fire from the wide phase/drain/read-control cone without changing arithmetic, protocol, ordering, or throughput.",
+  "functional": {
+    "status": "PASS",
+    "simulator": "ModelSim SE-64 2020.4",
+    "simulator_path": "D:\\software\\Modelsim\\win64\\vsim.exe",
+    "normal": "PASS",
+    "SYNTHESIS": "PASS",
+    "gate_b_numeric_cases": 156,
+    "gate_c_tuples": 369,
+    "gate_c_beats_per_mode": 45636,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 258,
+    "p4_n4_stream_vectors": 16,
+    "vector_ii_modes": 13,
+    "group_ii": 1,
+    "p3_vwrite_contract": "PASS",
+    "all_gates": "PASS_IN_NORMAL_AND_SYNTHESIS",
+    "coverage_evidence": "05_audit/current/39/step12f_p8_1_coverage_20260915/STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "coverage_evidence_sha256": "65337AECE7E0E0E9EEC80C230D31C156BDA0EC7BE5A6999B2B7E38ADF16EF7E6"
+  },
+  "changes": {
+    "feed_counter": "kernel_feed_group_q advances only on kernel_input_group_fire and drives input sample selection",
+    "drain_counter": "kernel_drain_group_q advances only on accepted output and drives V-write/result bookkeeping",
+    "phase_completion": "registered kernel_input_vector_done exclusively drives FEED-to-DRAIN completion",
+    "start_transition": "wrapper-local kernel_start_sent_q drives START-to-FEED; it denotes start issued, not kernel start accepted",
+    "local_fire_use": "same-edge input fire remains legal for response consume and local feed bookkeeping",
+    "wide_control_isolation": "input fire is not used as the direct wide phase/drain/read-scheduler next-state source",
+    "external_protocol_changed": false,
+    "arithmetic_changed": false,
+    "postprocess_changed": false
+  },
+  "fresh_synthesis": {
+    "status": "PASS_COMPLETED",
+    "tool": "Vivado 2025.2",
+    "device": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0,
+    "frequency_target_mhz": 500,
+    "elapsed_sec_approx": 228,
+    "peak_memory_mb_approx": 3400,
+    "timing_gate": "FAIL",
+    "setup": {
+      "wns_ns": -0.223,
+      "tns_ns": -568.870,
+      "failing_endpoints": 3861
+    },
+    "hold": {
+      "whs_ns": -0.076,
+      "ths_ns": -3.372,
+      "failing_endpoints": 46
+    },
+    "resources": {
+      "clb_luts": 30387,
+      "logic_lut": 24748,
+      "lutram": 5639,
+      "distributed_ram_lut": 5632,
+      "shift_register_lut": 7,
+      "ff": 25231,
+      "carry8": 1637,
+      "f7": 1735,
+      "f8": 466,
+      "dsp48e2": 320,
+      "bram36": 0,
+      "bram18": 0,
+      "uram": 0
+    },
+    "design_state": "Synthesized",
+    "checkpoint": "05_audit/current/39/step12f_p8_1_synth_20260915_2330/step12f_unified_wrapper_postsynth.dcp"
+  },
+  "implementation": {
+    "status": "COMPLETED",
+    "flow": "opt_design Explore; place_design Explore; phys_opt_design Explore; route_design Explore",
+    "route_status": "FULLY_ROUTED",
+    "unrouted_nets": 0,
+    "partially_routed_nets": 0,
+    "node_overlaps": 0,
+    "timing_gate": "FAIL",
+    "setup": {
+      "wns_ns": -1.034,
+      "tns_ns": -19931.496,
+      "failing_endpoints": 49916,
+      "total_endpoints": 157423
+    },
+    "hold": {
+      "whs_ns": -0.080,
+      "ths_ns": -3.438,
+      "failing_endpoints": 46,
+      "total_endpoints": 157423
+    },
+    "resources": {
+      "clb_luts": 30641,
+      "logic_lut": 25002,
+      "lutram": 5639,
+      "distributed_ram_lut": 5632,
+      "shift_register_lut": 7,
+      "clb_registers": 25954,
+      "carry8": 1637,
+      "f7": 1735,
+      "f8": 466,
+      "dsp48e2": 320,
+      "bram36": 0,
+      "bram18": 0,
+      "uram": 0
+    },
+    "power_w": 2.035,
+    "dynamic_power_w": 1.572,
+    "static_power_w": 0.463,
+    "checkpoint": "05_audit/current/39/step12f_p8_1_impl_20260915_2335/step12f_unified_wrapper_postroute.dcp",
+    "checkpoint_sha256": "05751FE3F7CF341463A3D1A1FC42328D92F699C0788DB326770209004AFB92DE"
+  },
+  "timing": {
+    "postroute_worst_setup": {
+      "slack_ns": -1.034,
+      "source": "kernel_rd_req_pending_q_reg_replica/C",
+      "destination": "lfnst_mem_resp_data_q_reg[4]/D",
+      "data_path_delay_ns": 3.016,
+      "logic_delay_ns": 0.792,
+      "routing_delay_ns": 2.224,
+      "routing_fraction": 0.73736,
+      "logic_levels": 8,
+      "family": "kernel read request/control -> input-cache distributed RAM read -> LFNST response register",
+      "interpretation": "P8.1 route re-exposed a severe LFNST gather/read physical cone; this is a routed timing failure, not a functional failure of the feed/drain contract."
+    },
+    "postroute_second_setup_family": {
+      "source": "kernel_stage_q_reg_replica/C",
+      "destination": "lfnst_mem_resp_data_q_reg[14]/D",
+      "slack_ns": -1.015,
+      "family": "same input-cache distributed-RAM read and LFNST response path family"
+    },
+    "postsynth_worst_setup": {
+      "slack_ns": -0.223,
+      "source": "input_terms_q_reg",
+      "destination": "products_q_reg",
+      "family": "bounded LFNST product path",
+      "interpretation": "The named P8.1 feed/drain control family was no longer the synthesis top path; the local LFNST product path was the postsynthesis leader."
+    },
+    "postroute_worst_hold": {
+      "slack_ns": -0.080,
+      "family": "known zero-min OOC boundary-style port/first-register hold path",
+      "interpretation": "No RTL delay hack, false path, multicycle, or XDC change was used. Final physical signoff remains failed until routed hold is non-negative."
+    }
+  },
+  "constraints_and_drc": {
+    "check_timing": {
+      "no_clock": 0,
+      "constant_clock": 0,
+      "unconstrained_internal_endpoints": 0,
+      "no_input_delay": 0,
+      "no_output_delay": 0,
+      "multiple_clock": 0,
+      "generated_clocks": 0,
+      "loops": 0,
+      "partial_input_delay": 0,
+      "partial_output_delay": 0,
+      "latch_loops": 0
+    },
+    "timing_exceptions": "No valid timing exceptions found",
+    "drc_design_state": "Fully Routed",
+    "drc_errors": 0,
+    "drc_known_warnings": [
+      "DPIP-2/ DPOP-3/ DPOP-4 DSP pipelining advisories",
+      "RTSTAT-10 No routable loads",
+      "OOC context warnings for missing HD.CLK_SRC and interface partition-pin context",
+      "router reported some fixed/dedicated hold pins could not be repaired"
+    ],
+    "context_note": "OOC clock/interface physical context warnings are recorded as context limitations; they are not asserted as the unique cause of the -0.080 ns hold result."
+  },
+  "scope": {
+    "rtl_changed": [
+      "02_rtl/rtl/unified_its_wrapper.sv"
+    ],
+    "diagnostic_script_added": "03_verification/vivado/report_p8_1_targeted.tcl",
+    "r4c_changed": false,
+    "xdc_changed": false,
+    "oracle_changed": false,
+    "profile_changed": false,
+    "unified_p4_arithmetic_changed": false,
+    "lfnst_arithmetic_changed": false,
+    "v3_5_18_moved": false,
+    "new_tag": false
+  },
+  "source_hashes": {
+    "unified_its_wrapper_sha256": "0294565B619B2663814E01311160EE7A046754277F59A9F0A8C570F44FE3DCE8",
+    "unified_p4_kernel_sha256": "731D77B70047D5BFBBB2194750E93D671E3DD85D9CAE57BAD5E8B0D1C235B1F7",
+    "xdc_sha256": "DDD2E18D4C530AAC3B53BB0A084745AF6E26565B640453BF9ADBFEFB8B2987A3",
+    "targeted_tcl_sha256": "203602C032A0542EE8D03046F7E39288065BB0FA6619AA24EEA86098390E5EE2",
+    "synth_vivado_log_sha256": "1D46044464EA6E44B9E7D7CBD9989D81922F4C2A50777B7EA0C87AD5CDC0D35B",
+    "impl_vivado_log_sha256": "CC2E3012A9667B8AF11DE6ED028C33A9FD1D9CAF3A105A2B3C2E0F64570BF040",
+    "impl_run_script_sha256": "CDB6C7964F0D3000E738F54CEB6542CE188833DB2519AAA6F7628A6F7126BE54",
+    "postsynth_dcp_sha256": "463FB3D16341429CAAAB4649A442CACE1F17ED964632F10D1EC935A6054A04B5",
+    "coverage_json_sha256": "65337AECE7E0E0E9EEC80C230D31C156BDA0EC7BE5A6999B2B7E38ADF16EF7"
+  },
+  "evidence": {
+    "coverage_dir": "05_audit/current/39/step12f_p8_1_coverage_20260915",
+    "synthesis_dir": "05_audit/current/39/step12f_p8_1_synth_20260915_2330",
+    "implementation_dir": "05_audit/current/39/step12f_p8_1_impl_20260915_2335",
+    "postroute_reports": {
+      "timing_summary_sha256": "261AC6DDFB90DF665E30AD7027CBA5D4125CF32D3D7FC0C93B12A3CCE06422D2",
+      "hold_summary_sha256": "2B30F32764136A239E95E4B92D0B9DCB27B8F2DA9E4E10C73CD104DD4F46B8D8",
+      "worst100_setup_sha256": "97817FF9B385DCD259AA1AAF13DAF345A687B5EA69A000217625AAAB4A71DA39",
+      "worst100_hold_sha256": "FC0A6BDA805AE5B87B24129BED86F2104921BE5C2516A4163BDF28A541573F7F",
+      "utilization_sha256": "49BAE5FCA91A8D7E2FF09D32E100493FD0CED397C9496F9EEC3F4AE60933EED3",
+      "check_timing_sha256": "F022F570986F40D7AB8C9CA90F11271F2135C5E32FF2319C962EC71EB58E5183",
+      "exceptions_sha256": "547729F9941E71F4A5F4CF1DBF867B393808285FE3D2D3DFDD32FACBEA39EF6",
+      "drc_sha256": "DDA0948B4A45AD74C5265E1FAF43AF5F4F90ADC0680C4AE611C47DB1035426F3",
+      "power_sha256": "AEB6FB85F420E60C579C64626AA7473B556AF62BB1579F8F979E89A4EF9C6979",
+      "vivado_log_sha256": "CC2E3012A9667B8AF11DE6ED028C33A9FD1D9CAF3A105A2B3C2E0F64570BF040"
+    },
+    "targeted_dir": "05_audit/current/39/step12f_p8_1_synth_20260915_2330/targeted",
+    "targeted_objects_sha256": "FEBB5CF54FC793A3B30F95E716B7CBAA53DDFB39BB59179B5E14F6DEF5DCC1F7",
+    "targeted_timing_sha256": "A2567628F1CF5E66E071957973B0A95339BA70E8F3C58CE9FFC1729D63FE3B4E"
+  },
+  "decision": {
+    "functional": "PASS",
+    "synthesis": "PASS_COMPLETED_BUT_TIMING_FAIL",
+    "implementation": "COMPLETED_FULLY_ROUTED",
+    "physical_timing": "P1_STOP",
+    "route_signoff": "FAIL",
+    "tag": "NOT_CREATED",
+    "next": "Do not claim 500 MHz closure. Analyze the routed LFNST gather/read physical family and compare against the P8/P8.1 baseline before authorizing another RTL change; keep R4C, Oracle/profile, XDC, and v3.5-18 frozen until new evidence selects a narrow repair."
+  }
+}

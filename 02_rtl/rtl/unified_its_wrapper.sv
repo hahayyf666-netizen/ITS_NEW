@@ -170,7 +170,11 @@ module unified_its_wrapper #(
     kernel_phase_t kernel_phase_q;
     logic [6:0] kernel_w_q, kernel_h_q, kernel_cut_w_q, kernel_cut_h_q;
     logic [6:0] kernel_vector_q;
-    logic [4:0] kernel_group_q;
+    // P8.1: keep feed-side input bookkeeping separate from drain-side output
+    // bookkeeping.  The same-edge kernel fire may advance feed_group_q and
+    // consume a response, but it must not drive the wide phase/drain mux.
+    logic [4:0] kernel_feed_group_q;
+    logic [4:0] kernel_drain_group_q;
     logic [1:0] kernel_type_q;
     logic       kernel_stage_q;
     logic       kernel_start;
@@ -988,7 +992,7 @@ module unified_its_wrapper #(
                 kernel_sample_index_i = kernel_h_rd_raw_group_q * 4 +
                                         kernel_lane_i;
             else
-                kernel_sample_index_i = kernel_group_q * 4 + kernel_lane_i;
+                kernel_sample_index_i = kernel_feed_group_q * 4 + kernel_lane_i;
             if (kernel_in_valid && !kernel_stage_q) begin
                 if (kernel_sample_index_i < kernel_cut_h_q) begin
                     if (lfnst_case_q) begin
@@ -1048,17 +1052,17 @@ module unified_its_wrapper #(
 
         if (vertical_result_fire) begin
             vwrite_cmd_addr_c = tmp_local_for_vwrite(
-                kernel_group_q, kernel_w_q, kernel_vector_q);
+                kernel_drain_group_q, kernel_w_q, kernel_vector_q);
             vwrite_cmd_last_c =
                 (kernel_vector_q == (kernel_cut_w_q - 1'b1)) &&
-                (kernel_group_q == ((kernel_cut_h_q >> 2) - 1'b1));
+                (kernel_drain_group_q == ((kernel_cut_h_q >> 2) - 1'b1));
             for (vwrite_gen_bank_i = 0; vwrite_gen_bank_i < 4;
                  vwrite_gen_bank_i = vwrite_gen_bank_i + 1) begin
                 // Inverse of bank=(row+column)&3 for row=4*group+lane.
                 // The subtraction is only two-bit modulo-4 permutation.
                 vwrite_gen_lane_i =
                     (vwrite_gen_bank_i - (kernel_vector_q & 3)) & 3;
-                if ((kernel_group_q * 4 + vwrite_gen_lane_i) <
+                if ((kernel_drain_group_q * 4 + vwrite_gen_lane_i) <
                     kernel_cut_h_q) begin
                     vwrite_cmd_bank_mask_c[vwrite_gen_bank_i] = 1'b1;
                     vwrite_cmd_data_c[vwrite_gen_bank_i] =
@@ -1086,7 +1090,7 @@ module unified_its_wrapper #(
                 else $error("P3 V-write bank collision/missing bank: mask=%b",
                             vwrite_cmd_bank_mask_c);
             assert (vwrite_cmd_addr_c ==
-                    tmp_local_for(kernel_group_q * 4,
+                    tmp_local_for(kernel_drain_group_q * 4,
                                   kernel_vector_q,
                                   kernel_w_q))
                 else $error("P3 V-write local address mismatch");
@@ -1112,7 +1116,7 @@ module unified_its_wrapper #(
             // Equivalence-only check: the old two-dimensional expression is
             // retained here under simulation, but never drives a RAM port.
             assert (result_cmd_addr_c ==
-                    (kernel_vector_q * (kernel_w_q >> 2) + kernel_group_q))
+                    (kernel_vector_q * (kernel_w_q >> 2) + kernel_drain_group_q))
                 else $error("P6 result beat address mismatch");
         end
         if (result_cmd_commit)
@@ -1282,7 +1286,8 @@ module unified_its_wrapper #(
             kernel_cut_w_q <= 7'd0;
             kernel_cut_h_q <= 7'd0;
             kernel_vector_q <= 7'd0;
-            kernel_group_q <= 5'd0;
+            kernel_feed_group_q <= 5'd0;
+            kernel_drain_group_q <= 5'd0;
             kernel_type_q <= 2'd0;
             kernel_stage_q <= 1'b0;
             kernel_ctx_stage_q <= 1'b0;
@@ -1818,7 +1823,8 @@ module unified_its_wrapper #(
                         kernel_cut_dim(slot_ver[compute_slot],
                                        slot_height[compute_slot]) >> 2;
                     kernel_vector_q <= 7'd0;
-                    kernel_group_q <= 5'd0;
+                    kernel_feed_group_q <= 5'd0;
+                    kernel_drain_group_q <= 5'd0;
                     kernel_type_q <= slot_ver[compute_slot];
                     kernel_stage_q <= 1'b0;
                     kernel_rd_req_pending_q <= 1'b1;
@@ -1860,7 +1866,8 @@ module unified_its_wrapper #(
                     kernel_cut_h_q <= lfnst_cut_dim(slot_height[compute_slot],
                                                     slot_width[compute_slot]);
                     kernel_vector_q <= 7'd0;
-                    kernel_group_q <= 5'd0;
+                    kernel_feed_group_q <= 5'd0;
+                    kernel_drain_group_q <= 5'd0;
                     kernel_rd_req_pending_q <= 1'b0;
                     kernel_rd_resp_valid_q <= 1'b0;
                     kernel_rd_raw_pending_q <= 1'b0;
@@ -1931,7 +1938,8 @@ module unified_its_wrapper #(
                     kernel_h_groups_per_row_q <= kernel_cut_w_q >> 2;
                     kernel_h_groups_left_q <= kernel_cut_w_q >> 2;
                     kernel_vector_q <= 7'd0;
-                    kernel_group_q <= 5'd0;
+                    kernel_feed_group_q <= 5'd0;
+                    kernel_drain_group_q <= 5'd0;
                     kernel_rd_req_pending_q <= 1'b0;
                     kernel_rd_resp_valid_q <= 1'b0;
                     kernel_rd_raw_pending_q <= 1'b0;
@@ -1942,39 +1950,50 @@ module unified_its_wrapper #(
             if (kernel_run_q) begin
                 case (kernel_phase_q)
                     K_V_START: begin
-                        // The same-edge fire advances only the local group
-                        // counter.  Phase changes consume the registered
-                        // input_vector_done token on the following edge.
+                        // The same-edge fire is retained as a local feed
+                        // transaction event, but it no longer drives the wide
+                        // phase mux.  START->FEED is driven by the registered
+                        // wrapper-local start-issued state; FEED->DRAIN is
+                        // driven only by the registered input_vector_done
+                        // token.
                         if (kernel_input_vector_done) begin
-                            kernel_group_q <= 5'd0;
+                            kernel_feed_group_q <= 5'd0;
+                            kernel_drain_group_q <= 5'd0;
                             kernel_phase_q <= K_V_DRAIN;
-                        end else if (kernel_group_accept) begin
-                            if (kernel_group_q + 1'b1 < kernel_ctx_group_count_q) begin
-                                kernel_group_q <= kernel_group_q + 1'b1;
-                                kernel_phase_q <= K_V_FEED;
-                            end else begin
-                                kernel_group_q <= 5'd0;
+                        end else begin
+                            if (kernel_input_group_fire) begin
+                                if (kernel_feed_group_q + 1'b1 <
+                                    kernel_ctx_group_count_q)
+                                    kernel_feed_group_q <=
+                                        kernel_feed_group_q + 1'b1;
+                                else
+                                    kernel_feed_group_q <= 5'd0;
                             end
+                            if (kernel_start_sent_q)
+                                kernel_phase_q <= K_V_FEED;
                         end
                     end
                     K_V_FEED: begin
                         if (kernel_input_vector_done) begin
-                            kernel_group_q <= 5'd0;
+                            kernel_feed_group_q <= 5'd0;
+                            kernel_drain_group_q <= 5'd0;
                             kernel_phase_q <= K_V_DRAIN;
-                        end else if (kernel_group_accept) begin
-                            if (kernel_group_q + 1'b1 < kernel_ctx_group_count_q) begin
-                                kernel_group_q <= kernel_group_q + 1'b1;
-                            end else begin
-                                kernel_group_q <= 5'd0;
-                            end
+                        end else if (kernel_input_group_fire) begin
+                            if (kernel_feed_group_q + 1'b1 <
+                                kernel_ctx_group_count_q)
+                                kernel_feed_group_q <=
+                                    kernel_feed_group_q + 1'b1;
+                            else
+                                kernel_feed_group_q <= 5'd0;
                         end
                     end
                     K_V_DRAIN: begin
-                        if (kernel_out_valid) begin
-                            kernel_group_q <= kernel_group_q + 1'b1;
-                        end
+                        if (kernel_out_valid)
+                            kernel_drain_group_q <=
+                                kernel_drain_group_q + 1'b1;
                         if (kernel_done) begin
-                            kernel_group_q <= 5'd0;
+                            kernel_feed_group_q <= 5'd0;
+                            kernel_drain_group_q <= 5'd0;
                             if (kernel_vector_q + 1'b1 < kernel_cut_w_q) begin
                                 kernel_vector_q <= kernel_vector_q + 1'b1;
                                 kernel_rd_req_pending_q <= 1'b1;
@@ -1986,7 +2005,6 @@ module unified_its_wrapper #(
                                 kernel_phase_q <= K_V_START;
                             end else begin
                                 kernel_vector_q <= 7'd0;
-                                kernel_group_q <= 5'd0;
                                 kernel_rd_req_pending_q <= 1'b0;
                                 kernel_rd_resp_valid_q <= 1'b0;
                                 kernel_rd_raw_pending_q <= 1'b0;
@@ -2030,34 +2048,43 @@ module unified_its_wrapper #(
                     end
                     K_H_START: begin
                         if (kernel_input_vector_done) begin
-                            kernel_group_q <= 5'd0;
+                            kernel_feed_group_q <= 5'd0;
+                            kernel_drain_group_q <= 5'd0;
                             kernel_phase_q <= K_H_DRAIN;
-                        end else if (kernel_group_accept) begin
-                            if (kernel_group_q + 1'b1 < kernel_ctx_group_count_q) begin
-                                kernel_group_q <= kernel_group_q + 1'b1;
-                                kernel_phase_q <= K_H_FEED;
-                            end else begin
-                                kernel_group_q <= 5'd0;
+                        end else begin
+                            if (kernel_input_group_fire) begin
+                                if (kernel_feed_group_q + 1'b1 <
+                                    kernel_ctx_group_count_q)
+                                    kernel_feed_group_q <=
+                                        kernel_feed_group_q + 1'b1;
+                                else
+                                    kernel_feed_group_q <= 5'd0;
                             end
+                            if (kernel_start_sent_q)
+                                kernel_phase_q <= K_H_FEED;
                         end
                     end
                     K_H_FEED: begin
                         if (kernel_input_vector_done) begin
-                            kernel_group_q <= 5'd0;
+                            kernel_feed_group_q <= 5'd0;
+                            kernel_drain_group_q <= 5'd0;
                             kernel_phase_q <= K_H_DRAIN;
-                        end else if (kernel_group_accept) begin
-                            if (kernel_group_q + 1'b1 < kernel_ctx_group_count_q) begin
-                                kernel_group_q <= kernel_group_q + 1'b1;
-                            end else begin
-                                kernel_group_q <= 5'd0;
-                            end
+                        end else if (kernel_input_group_fire) begin
+                            if (kernel_feed_group_q + 1'b1 <
+                                kernel_ctx_group_count_q)
+                                kernel_feed_group_q <=
+                                    kernel_feed_group_q + 1'b1;
+                            else
+                                kernel_feed_group_q <= 5'd0;
                         end
                     end
                     K_H_DRAIN: begin
-                        if (kernel_out_valid) begin
-                            kernel_group_q <= kernel_group_q + 1'b1;
-                        end
+                        if (kernel_out_valid)
+                            kernel_drain_group_q <=
+                                kernel_drain_group_q + 1'b1;
                         if (kernel_done) begin
+                            kernel_feed_group_q <= 5'd0;
+                            kernel_drain_group_q <= 5'd0;
                             // Horizontal transform is run once for every
                             // vertical output row.  Keep the same P4 group
                             // cadence while advancing to the next row; only
@@ -2065,7 +2092,6 @@ module unified_its_wrapper #(
                             // protocol.
                             if (kernel_vector_q + 1'b1 < kernel_h_q) begin
                                 kernel_vector_q <= kernel_vector_q + 1'b1;
-                                kernel_group_q <= 5'd0;
                                 kernel_start_sent_q <= 1'b0;
                                 kernel_phase_q <= K_H_START;
                             end else begin

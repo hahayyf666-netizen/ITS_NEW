@@ -1,0 +1,28 @@
+Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+Start time: 23:16:48 on Sep 15,2026
+vlog -sv "+define+SYNTHESIS" C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\02_rtl\rtl\its_simple_ram.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\02_rtl\rtl\its_input_cache_bank.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\02_rtl\rtl\unified_p4_kernel.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\02_rtl\rtl\bounded_lfnst_engine.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\02_rtl\rtl\unified_its_wrapper.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\tb\unified_p4_kernel_numeric_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\tb\unified_p4_kernel_throughput_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\tb\unified_p4_kernel_throughput_full_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\tb\unified_its_wrapper_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\tb\unified_its_wrapper_p3_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\tb\unified_p4_kernel_p4_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\tb\unified_its_wrapper_numeric_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_remote_audit_20260910\03_verification\tb\bounded_lfnst_engine_tb.sv -l C:\Users\Fine\AppData\Local\Temp\step12f_coverage_20260915_231623\synthesis\compile.log 
+-- Compiling module its_simple_ram
+-- Compiling module its_input_cache_bank
+-- Compiling module unified_p4_kernel
+-- Compiling module bounded_lfnst_engine
+-- Compiling module unified_its_wrapper
+-- Compiling module unified_p4_kernel_numeric_tb
+-- Compiling module unified_p4_kernel_throughput_tb
+-- Compiling module unified_p4_kernel_throughput_full_tb
+-- Compiling module unified_its_wrapper_tb
+-- Compiling module unified_its_wrapper_p3_tb
+-- Compiling module unified_p4_kernel_p4_tb
+-- Compiling module unified_its_wrapper_numeric_tb
+-- Compiling module bounded_lfnst_engine_tb
+
+Top level modules:
+	unified_p4_kernel_numeric_tb
+	unified_p4_kernel_throughput_tb
+	unified_p4_kernel_throughput_full_tb
+	unified_its_wrapper_tb
+	unified_its_wrapper_p3_tb
+	unified_p4_kernel_p4_tb
+	unified_its_wrapper_numeric_tb
+	bounded_lfnst_engine_tb
+End time: 23:16:48 on Sep 15,2026, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
