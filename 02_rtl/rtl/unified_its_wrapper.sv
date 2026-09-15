@@ -181,6 +181,10 @@ module unified_its_wrapper #(
     logic       kernel_out_req;
     logic signed [63:0] kernel_out_data;
     logic       kernel_done;
+    // P8 handshake boundary: same-edge input fire is used for response
+    // consumption/group advance; the registered token drives phase changes.
+    logic       kernel_input_group_fire;
+    logic       kernel_input_vector_done;
     logic       kernel_busy;
     logic       kernel_error;
 
@@ -349,6 +353,8 @@ module unified_its_wrapper #(
         .in_req(kernel_in_req), .in_data(kernel_in_data),
         .out_valid(kernel_out_valid), .out_req(kernel_out_req),
         .out_data(kernel_out_data), .done(kernel_done),
+        .input_group_fire(kernel_input_group_fire),
+        .input_vector_done(kernel_input_vector_done),
         .busy(kernel_busy), .error(kernel_error)
     );
 
@@ -902,7 +908,7 @@ module unified_its_wrapper #(
                               kernel_stage_q &&
                               ((kernel_phase_q == K_H_START) ||
                                (kernel_phase_q == K_H_FEED)) &&
-                              kernel_in_req;
+                              kernel_input_group_fire;
         kernel_h_rd_capture = kernel_h_rd_pending_q &&
                               !kernel_h_rd_raw_tail_pending_q;
         kernel_h_rd_next_group = kernel_h_rd_group_q + 1'b1;
@@ -964,14 +970,17 @@ module unified_its_wrapper #(
         if (!kernel_stage_q && !lfnst_case_q)
             kernel_in_valid = ((kernel_phase_q == K_V_START) ||
                                (kernel_phase_q == K_V_FEED)) &&
-                              kernel_rd_resp_valid_q;
+                              kernel_rd_resp_valid_q &&
+                              !kernel_input_vector_done;
         else if (kernel_stage_q)
             kernel_in_valid = ((kernel_phase_q == K_H_START) ||
                                (kernel_phase_q == K_H_FEED)) &&
-                              kernel_h_rd_raw_pending_q;
+                              kernel_h_rd_raw_pending_q &&
+                              !kernel_input_vector_done;
         else
-            kernel_in_valid = kernel_start ||
-                              (kernel_phase_q == K_V_FEED);
+            kernel_in_valid = (kernel_start ||
+                              (kernel_phase_q == K_V_FEED)) &&
+                              !kernel_input_vector_done;
         kernel_in_data = '0;
         for (kernel_lane_i = 0; kernel_lane_i < 4;
              kernel_lane_i = kernel_lane_i + 1) begin
@@ -1112,12 +1121,13 @@ module unified_its_wrapper #(
     end
 `endif
 
-    // A kernel request is only a real group transaction when the wrapper has
-    // a registered response available.  In particular, the vertical START
-    // phase may last one cycle while the first cache read is in flight; using
-    // in_req alone here would advance the phase before any data was captured.
+    // A kernel request is only a real group transaction when the kernel's own
+    // ownership/admission condition is true.  In particular, the vertical
+    // START phase may last one cycle while the first cache read is in flight;
+    // using the wrapper-visible ready signal alone would advance the phase
+    // before any data was actually accepted.
     always_comb begin
-        kernel_group_accept = kernel_in_valid && kernel_in_req;
+        kernel_group_accept = kernel_input_group_fire;
     end
 
     always_comb begin
@@ -1762,8 +1772,18 @@ module unified_its_wrapper #(
                 // recurrence, so kernel_w_q never reaches a RAM-address D
                 // endpoint during steady-state H reads.
                 kernel_h_width_q <= slot_width[compute_slot];
-                kernel_h_groups_per_row_q <= slot_width[compute_slot] >> 2;
-                kernel_h_groups_left_q <= slot_width[compute_slot] >> 2;
+                // Horizontal reads cover the transform-support input cut,
+                // not the full output width.  For DST7/DCT8 (for example a
+                // 32-point transform with a 16-point support cut), the
+                // kernel accepts only cut_w/4 input groups while it still
+                // emits width/4 output groups.  Keeping these two counts
+                // distinct is required by the P8 real-fire contract.
+                kernel_h_groups_per_row_q <=
+                    kernel_cut_dim(slot_hor[compute_slot],
+                                   slot_width[compute_slot]) >> 2;
+                kernel_h_groups_left_q <=
+                    kernel_cut_dim(slot_hor[compute_slot],
+                                   slot_width[compute_slot]) >> 2;
                 kernel_h_rows_left_q <= slot_height[compute_slot];
                 kernel_h_row_phase_q <= 2'd0;
                 for (kernel_h_seq_addr_i = 0;
@@ -1903,6 +1923,13 @@ module unified_its_wrapper #(
                     kernel_ctx_active_size_q <= kernel_cut_h_q;
                     kernel_ctx_output_size_q <= kernel_cut_h_q;
                     kernel_ctx_group_count_q <= kernel_cut_h_q >> 2;
+                    // After LFNST, the horizontal input domain is the
+                    // LFNST support cut (4 or 8 columns), even when the
+                    // output transform width is larger.  Re-seed the
+                    // bank-local H-read group count from that cut; the
+                    // kernel still emits the full output-width group count.
+                    kernel_h_groups_per_row_q <= kernel_cut_w_q >> 2;
+                    kernel_h_groups_left_q <= kernel_cut_w_q >> 2;
                     kernel_vector_q <= 7'd0;
                     kernel_group_q <= 5'd0;
                     kernel_rd_req_pending_q <= 1'b0;
@@ -1915,23 +1942,30 @@ module unified_its_wrapper #(
             if (kernel_run_q) begin
                 case (kernel_phase_q)
                     K_V_START: begin
-                        if (kernel_group_accept) begin
-                            if (kernel_cut_h_q <= 7'd4) begin
-                                kernel_group_q <= 5'd0;
-                                kernel_phase_q <= K_V_DRAIN;
-                            end else begin
-                                kernel_group_q <= 5'd1;
+                        // The same-edge fire advances only the local group
+                        // counter.  Phase changes consume the registered
+                        // input_vector_done token on the following edge.
+                        if (kernel_input_vector_done) begin
+                            kernel_group_q <= 5'd0;
+                            kernel_phase_q <= K_V_DRAIN;
+                        end else if (kernel_group_accept) begin
+                            if (kernel_group_q + 1'b1 < kernel_ctx_group_count_q) begin
+                                kernel_group_q <= kernel_group_q + 1'b1;
                                 kernel_phase_q <= K_V_FEED;
+                            end else begin
+                                kernel_group_q <= 5'd0;
                             end
                         end
                     end
                     K_V_FEED: begin
-                        if (kernel_group_accept) begin
-                            if (kernel_group_q == ((kernel_cut_h_q >> 2) - 1'b1)) begin
-                                kernel_group_q <= 5'd0;
-                                kernel_phase_q <= K_V_DRAIN;
-                            end else begin
+                        if (kernel_input_vector_done) begin
+                            kernel_group_q <= 5'd0;
+                            kernel_phase_q <= K_V_DRAIN;
+                        end else if (kernel_group_accept) begin
+                            if (kernel_group_q + 1'b1 < kernel_ctx_group_count_q) begin
                                 kernel_group_q <= kernel_group_q + 1'b1;
+                            end else begin
+                                kernel_group_q <= 5'd0;
                             end
                         end
                     end
@@ -1995,23 +2029,27 @@ module unified_its_wrapper #(
                         end
                     end
                     K_H_START: begin
-                        if (kernel_group_accept) begin
-                            if (kernel_w_q <= 7'd4) begin
-                                kernel_group_q <= 5'd0;
-                                kernel_phase_q <= K_H_DRAIN;
-                            end else begin
-                                kernel_group_q <= 5'd1;
+                        if (kernel_input_vector_done) begin
+                            kernel_group_q <= 5'd0;
+                            kernel_phase_q <= K_H_DRAIN;
+                        end else if (kernel_group_accept) begin
+                            if (kernel_group_q + 1'b1 < kernel_ctx_group_count_q) begin
+                                kernel_group_q <= kernel_group_q + 1'b1;
                                 kernel_phase_q <= K_H_FEED;
+                            end else begin
+                                kernel_group_q <= 5'd0;
                             end
                         end
                     end
                     K_H_FEED: begin
-                        if (kernel_group_accept) begin
-                            if (kernel_group_q == ((kernel_w_q >> 2) - 1'b1)) begin
-                                kernel_group_q <= 5'd0;
-                                kernel_phase_q <= K_H_DRAIN;
-                            end else begin
+                        if (kernel_input_vector_done) begin
+                            kernel_group_q <= 5'd0;
+                            kernel_phase_q <= K_H_DRAIN;
+                        end else if (kernel_group_accept) begin
+                            if (kernel_group_q + 1'b1 < kernel_ctx_group_count_q) begin
                                 kernel_group_q <= kernel_group_q + 1'b1;
+                            end else begin
+                                kernel_group_q <= 5'd0;
                             end
                         end
                     end
@@ -2062,3 +2100,4 @@ module unified_its_wrapper #(
     end
 
 endmodule
+

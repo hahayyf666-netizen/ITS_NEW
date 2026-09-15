@@ -1,0 +1,172 @@
+{
+  "schema": "step12f.p8.manifest.v1",
+  "phase": "Step12F-P8 Input/Output Completion Isolation + Final Signed16 Postprocess Pipeline Closure",
+  "status": "P8_FUNCTIONAL_PASS_SYNTHESIS_TIMING_STOP",
+  "base_commit": "48e55acb2e5b53772ee9be1633815ba94c60edf7",
+  "objective": "Separate same-edge input transaction fire from registered completion, and split constant V/H postprocess at a wide register without changing the external protocol, ordering, or throughput contract.",
+  "functional": {
+    "status": "PASS",
+    "simulator": "ModelSim SE-64 2020.4",
+    "normal": "PASS",
+    "SYNTHESIS": "PASS",
+    "gate_b_numeric_cases": 156,
+    "gate_c_tuples": 369,
+    "gate_c_beats_per_mode": 45636,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 258,
+    "p4_stage0_n4_vectors": 16,
+    "vector_ii_modes": 13,
+    "group_ii": 1,
+    "p3_vwrite_contract": "PASS",
+    "all_gates": "PASS_IN_NORMAL_AND_SYNTHESIS",
+    "coverage_evidence": "05_audit/current/38/step12f_p8_coverage_20260915/STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "warning_note": "Legacy standalone kernel testbenches omit the two newly added output ports; ModelSim reports three missing-port warnings per such testbench, with zero errors and all tests passing. Wrapper tests have zero warnings."
+  },
+  "p8_changes": {
+    "handshake": {
+      "input_group_fire": "same-edge kernel-owned input_group_accept event; used for response consume and group advance",
+      "input_vector_done": "registered one-cycle completion token from input_group_accept && pending_load_last; used for phase transition",
+      "wrapper_valid_guard": "kernel input valid is suppressed while input_vector_done is asserted to avoid re-presenting the final group",
+      "external_protocol_changed": false
+    },
+    "postprocess": {
+      "vertical": "(raw + 64) >>> 7",
+      "horizontal": "(raw + 512) >>> 10",
+      "wide_register": "ACC_W signed shifted_wide_q with valid/last/group metadata",
+      "clip_register": "signed 16-bit Clip3 after the wide register",
+      "low10_location": "unchanged in wrapper final adapter"
+    },
+    "preserved_contract": {
+      "group_ii": 1,
+      "vector_ii": "N/4",
+      "ordering": "unchanged",
+      "backpressure": "unchanged",
+      "oracle_profile": "unchanged",
+      "r4c": "unchanged",
+      "v3_5_18": "unchanged"
+    }
+  },
+  "fresh_synthesis": {
+    "status": "PASS_COMPLETED",
+    "tool": "Vivado 2025.2",
+    "device": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0,
+    "frequency_target_mhz": 500,
+    "synth_elapsed_sec": 291,
+    "peak_memory_mb": 4100,
+    "timing_gate": "FAIL",
+    "setup": {
+      "wns_ns": -0.476,
+      "tns_ns": -620.104,
+      "failing_endpoints": 4990
+    },
+    "hold": {
+      "whs_ns": -0.076,
+      "ths_ns": -3.469,
+      "failing_endpoints": 51
+    },
+    "resources": {
+      "clb_luts": 29883,
+      "logic_lut": 24244,
+      "lutram": 5639,
+      "distributed_ram_lut": 5632,
+      "shift_register_lut": 7,
+      "ff": 25229,
+      "carry8": 1637,
+      "f7": 1735,
+      "f8": 466,
+      "dsp48e2": 320,
+      "bram36": 0,
+      "bram18": 0,
+      "uram": 0
+    },
+    "design_state": "Synthesized",
+    "route_run": false,
+    "checkpoint": "05_audit/current/38/step12f_p8_fresh_synth_20260915/step12f_unified_wrapper_postsynth.dcp"
+  },
+  "timing": {
+    "worst_setup": {
+      "slack_ns": -0.476,
+      "source": "kernel_phase_q_reg[1]/C",
+      "destination": "kernel_group_q_reg[0]/D",
+      "data_path_delay_ns": 2.457,
+      "logic_delay_ns": 0.531,
+      "routing_delay_ns": 1.926,
+      "routing_fraction": 0.78388,
+      "logic_levels": 9,
+      "family": "P8 same-edge input_group_fire crossing into wrapper phase/group control",
+      "interpretation": "P8-specific handshake/control cone remains structurally too long for 2 ns; this is not a signoff result and must be addressed before route."
+    },
+    "worst_hold": {
+      "slack_ns": -0.076,
+      "source": "it_info[0]",
+      "destination": "desc_mem_reg[0][0]/D",
+      "data_path_delay_ns": 0.014,
+      "logic_levels": 0,
+      "interpretation": "Known zero-min registered-neighbor OOC boundary-style hold path; no RTL hold hack or timing exception was added."
+    }
+  },
+  "constraints": {
+    "check_timing": "PASS_INTERNAL_COVERAGE",
+    "no_clock": 0,
+    "constant_clock": 0,
+    "unconstrained_internal_endpoints": 0,
+    "no_input_delay": 0,
+    "no_output_delay": 0,
+    "loops": 0,
+    "partial_input_delay": 0,
+    "partial_output_delay": 0,
+    "latch_loops": 0,
+    "timing_exceptions": "No valid timing exceptions found"
+  },
+  "scope": {
+    "rtl_changed": [
+      "02_rtl/rtl/unified_its_wrapper.sv",
+      "02_rtl/rtl/unified_p4_kernel.sv"
+    ],
+    "r4c_changed": false,
+    "xdc_changed": false,
+    "oracle_changed": false,
+    "profile_changed": false,
+    "v3_5_18_moved": false,
+    "route_run": false,
+    "new_tag": false
+  },
+  "decision": {
+    "functional": "PASS",
+    "fresh_synthesis": "PASS_COMPLETED",
+    "physical_timing": "P1_STOP",
+    "route": "NOT_AUTHORIZED",
+    "tag": "NOT_CREATED",
+    "next": "Analyze and isolate the P8 input_group_fire-to-phase/group control cone; do not modify arithmetic, memories, R4C, XDC, Oracle/profile, or v3.5-18 without new evidence."
+  },
+  "evidence": {
+    "coverage_dir": "05_audit/current/38/step12f_p8_coverage_20260915",
+    "synthesis_dir": "05_audit/current/38/step12f_p8_fresh_synth_20260915",
+    "reports": [
+      "report_timing_summary_postsynth.rpt",
+      "report_timing_hold_summary_postsynth.rpt",
+      "report_timing_worst100_postsynth.rpt",
+      "report_hold_worst100_postsynth.rpt",
+      "report_utilization_postsynth.rpt",
+      "report_hierarchy_utilization_postsynth.rpt",
+      "report_high_fanout_postsynth.rpt",
+      "report_check_timing_postsynth.rpt",
+      "report_exceptions_postsynth.rpt",
+      "report_drc_postsynth.rpt",
+      "report_methodology_postsynth.rpt",
+      "vivado.log",
+      "vivado.jou"
+    ]
+  },
+  "source_hashes": {
+    "unified_its_wrapper_sha256": "174B5BD92BE335F656B4100C2362849DD75E9260F275FDF5AA6B4AD492F78484",
+    "unified_p4_kernel_sha256": "731D77B70047D5BFBBB2194750E93D671E3DD85D9CAE57BAD5E8B0D1C235B1F7",
+    "xdc_sha256": "DDD2E18D4C530AAC3B53BB0A084745AF6E26565B640453BF9ADBFEFB8B2987A3",
+    "coverage_json_sha256": "307086EBCAB49E5D06E044487BC5517DF8EA32B6404B1CF7E50909274B55125D",
+    "postsynth_dcp_sha256": "6F92FBF1169D23303242CB238D386EBEBFB551002FDFEE83698D2AC57BDEF60C",
+    "vivado_log_sha256": "C04551A63D190A2CC14FA4C0FD8B0D1AD0DBFEEA233C287C09E8F9F11E8CED6F",
+    "fresh_synth_script_sha256": "66E00AF8172AC97AB9A2D09B79EEDF4B875A94BA5A2D40E758F67913A541A892"
+  }
+}
+

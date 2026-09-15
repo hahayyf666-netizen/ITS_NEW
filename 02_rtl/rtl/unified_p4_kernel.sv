@@ -35,6 +35,12 @@ module unified_p4_kernel #(
     input  logic                         out_req,
     output logic signed [(4*DATA_W)-1:0] out_data,
     output logic                         done,
+    // Same-edge transaction event and registered end-of-vector token.  The
+    // wrapper uses the former for response consumption/group advance and the
+    // latter for phase changes, keeping capacity/ready logic out of the phase
+    // FSM timing cone.
+    output logic                         input_group_fire,
+    output logic                         input_vector_done,
     output logic                         busy,
     output logic                         error
 );
@@ -196,21 +202,33 @@ module unified_p4_kernel #(
         end
     endfunction
 
-    function automatic logic signed [DATA_W-1:0] post_process(
+    // P8 postprocess is split at a wide register.  The legal shifts are only
+    // 7 (vertical) and 10 (horizontal), so use constant arithmetic cases
+    // instead of a runtime barrel-shift expression.
+    function automatic logic signed [ACC_W-1:0] round_shift_const(
         input logic signed [ACC_W-1:0] raw_i,
-        input logic [3:0]              shift_i
-    );
+        input logic                     horizontal_i);
         logic signed [ACC_W-1:0] biased;
-        logic signed [ACC_W-1:0] shifted;
         begin
-            biased = raw_i + (1 <<< (shift_i - 1));
-            shifted = biased >>> shift_i;
-            if (shifted > 32767)
-                post_process = 16'sh7fff;
-            else if (shifted < -32768)
-                post_process = 16'sh8000;
+            if (horizontal_i) begin
+                biased = raw_i + 512;
+                round_shift_const = biased >>> 10;
+            end else begin
+                biased = raw_i + 64;
+                round_shift_const = biased >>> 7;
+            end
+        end
+    endfunction
+
+    function automatic logic signed [DATA_W-1:0] clip_signed16(
+        input logic signed [ACC_W-1:0] value_i);
+        begin
+            if (value_i > 32767)
+                clip_signed16 = 16'sh7fff;
+            else if (value_i < -32768)
+                clip_signed16 = 16'sh8000;
             else
-                post_process = shifted[DATA_W-1:0];
+                clip_signed16 = value_i[DATA_W-1:0];
         end
     endfunction
 
@@ -270,6 +288,12 @@ module unified_p4_kernel #(
                     (load_group_q == ((slot_size_q[load_slot_q] >> 2) - 1'b1));
         end
     end
+
+    // Same-edge handshake event.  This is intentionally not registered: the
+    // wrapper must consume the corresponding cache response and advance its
+    // group state on the acceptance edge.  The registered completion token is
+    // generated in the control pipeline below.
+    assign input_group_fire = input_group_accept;
 
     always_comb begin
         ready_head_c = ready_fifo_mem[ready_rd_ptr_q];
@@ -340,6 +364,7 @@ module unified_p4_kernel #(
     logic signed [ACC_W-1:0]      reduce_l3_q [0:3][0:7];
     logic signed [ACC_W-1:0]      reduce_l4_q [0:3][0:3];
     logic signed [ACC_W-1:0]      reduce_l5_q [0:3];
+    logic signed [ACC_W-1:0]      shifted_wide_q [0:3];
 
     logic signed [PROD_W-1:0]     mul_product_c [0:3][0:MAX_N-1];
     logic signed [ACC_W-1:0]      reduce_l1_c [0:3][0:31];
@@ -347,7 +372,8 @@ module unified_p4_kernel #(
     logic signed [ACC_W-1:0]      reduce_l3_c [0:3][0:7];
     logic signed [ACC_W-1:0]      reduce_l4_c [0:3][0:3];
     logic signed [ACC_W-1:0]      reduce_l5_c [0:3];
-    logic signed [DATA_W-1:0]     rounded_c [0:3];
+    logic signed [ACC_W-1:0]      shifted_wide_c [0:3];
+    logic signed [DATA_W-1:0]     clipped_c [0:3];
 
     logic       mul_in_valid_q, mul_m_valid_q;
     logic       mul_in_last_q, mul_m_last_q;
@@ -355,6 +381,9 @@ module unified_p4_kernel #(
     logic [3:0] mul_in_shift_q, mul_m_shift_q;
     logic [3:0] s1_shift_q, s2_shift_q, s3_shift_q;
     logic [3:0] s4_shift_q, s5_shift_q, s6_shift_q;
+    logic                         shifted_valid_q;
+    logic                         shifted_last_q;
+    logic [4:0]                   shifted_group_q;
     logic                         pipe_out_valid_q;
     logic                         pipe_out_last_q;
     logic [4:0]                   pipe_out_group_q;
@@ -393,8 +422,10 @@ module unified_p4_kernel #(
             reduce_l5_c[comb_lane_i] =
                 reduce_l4_q[comb_lane_i][0] + reduce_l4_q[comb_lane_i][1] +
                 reduce_l4_q[comb_lane_i][2] + reduce_l4_q[comb_lane_i][3];
-            rounded_c[comb_lane_i] = post_process(
-                reduce_l5_q[comb_lane_i], s6_shift_q);
+            shifted_wide_c[comb_lane_i] = round_shift_const(
+                reduce_l5_q[comb_lane_i], (s6_shift_q == 4'd10));
+            clipped_c[comb_lane_i] = clip_signed16(
+                shifted_wide_q[comb_lane_i]);
         end
     end
 
@@ -434,10 +465,21 @@ module unified_p4_kernel #(
             s4_group_q <= '0; s5_group_q <= '0; s6_group_q <= '0;
             s1_shift_q <= 4'd7; s2_shift_q <= 4'd7; s3_shift_q <= 4'd7;
             s4_shift_q <= 4'd7; s5_shift_q <= 4'd7; s6_shift_q <= 4'd7;
+            input_vector_done <= 1'b0;
+            shifted_valid_q <= 1'b0;
+            shifted_last_q <= 1'b0;
+            shifted_group_q <= '0;
             pipe_out_valid_q <= 1'b0;
             pipe_out_last_q <= 1'b0;
             pipe_out_group_q <= '0;
         end else begin
+            // One-cycle registered completion token for the vector load.  It
+            // is deliberately separate from input_group_fire so same-edge
+            // response consumption remains cycle-accurate.
+            input_vector_done <= 1'b0;
+            if (input_group_accept && pending_load_last)
+                input_vector_done <= 1'b1;
+
             // Descriptor register: issue remains one group per cycle.
             issue_desc_valid_q <= issue_emit_c;
             if (issue_emit_c) begin
@@ -502,10 +544,14 @@ module unified_p4_kernel #(
             s6_last_q <= s5_last_q;
             s6_group_q <= s5_group_q;
             s6_shift_q <= s5_shift_q;
-            // Final round/clip register.
-            pipe_out_valid_q <= s6_valid_q;
-            pipe_out_last_q <= s6_last_q;
-            pipe_out_group_q <= s6_group_q;
+            // Round/shift is captured at full accumulator width.  Clip3 and
+            // signed16 packing consume this register on the following edge.
+            shifted_valid_q <= s6_valid_q;
+            shifted_last_q <= s6_last_q;
+            shifted_group_q <= s6_group_q;
+            pipe_out_valid_q <= shifted_valid_q;
+            pipe_out_last_q <= shifted_last_q;
+            pipe_out_group_q <= shifted_group_q;
         end
     end
 
@@ -576,8 +622,11 @@ module unified_p4_kernel #(
                 reduce_l5_q[pipe_lane_i] <= reduce_l5_c[pipe_lane_i];
         if (s6_valid_q)
             for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
+                shifted_wide_q[pipe_lane_i] <= shifted_wide_c[pipe_lane_i];
+        if (shifted_valid_q)
+            for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
                 pipe_out_data_q[pipe_lane_i*DATA_W +: DATA_W] <=
-                    rounded_c[pipe_lane_i];
+                    clipped_c[pipe_lane_i];
     end
 
     // Result FIFO. The FIFO is sized for multiple complete 64-point vectors
@@ -774,3 +823,4 @@ module unified_p4_kernel #(
                 busy = 1'b1;
     end
 endmodule
+
