@@ -1,0 +1,65 @@
+{
+  "schema": "step12f.p3.manifest.v1",
+  "status": "STOP_P1_POSTSYNTH_TIMING",
+  "phase": "Step12F-P3 Intermediate Bank-Local Write Pipeline",
+  "base_commit": "44efacc",
+  "p2_checkpoint_push": "PASS",
+  "p2_remote_main_after_push": "44efacc34add676097204995157519e2785e1e71",
+  "functional": {
+    "status": "PASS",
+    "normal": "PASS",
+    "SYNTHESIS": "PASS",
+    "mapping": "PASS",
+    "commit_barrier": "PASS",
+    "gate_c_tuples": 369,
+    "gate_c_beats_per_mode": 45636,
+    "one_d_vector_ii_modes": 13,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 258
+  },
+  "structural_target": {
+    "status": "PASS",
+    "old_kernel_group_to_tmp_write_path": "NOT_FOUND",
+    "kernel_to_command_capture": "PASS",
+    "command_to_tmp_ram_write": "PASS"
+  },
+  "fresh_synthesis": {
+    "status": "PASS_COMPLETED",
+    "timing_gate": "FAIL",
+    "wns_ns": -1.036,
+    "tns_ns": -8214.760,
+    "setup_failing_endpoints": 41175,
+    "whs_ns": -0.076,
+    "ths_ns": -3.391,
+    "hold_failing_endpoints": 47,
+    "route_run": false
+  },
+  "scope": {
+    "rtl_changed": [
+      "02_rtl/rtl/unified_its_wrapper.sv",
+      "03_verification/tb/unified_its_wrapper_p3_tb.sv",
+      "03_verification/step12d_engineering/run_step12f_coverage_modelsim.ps1",
+      "03_verification/step12d_engineering/verify_p3_intermediate_mapping.py",
+      "03_verification/vivado/report_p3_targeted.tcl"
+    ],
+    "r4c_changed": false,
+    "xdc_changed": false,
+    "v3_5_18_moved": false,
+    "new_tag": false
+  },
+  "source_hashes": {
+    "unified_its_wrapper.sv": "9EE901FD18DC4F2721322694BEB952D55700C63AF3D2FCE91F04674016E2497B",
+    "unified_p4_kernel.sv": "4EDF2EFEAE670E5C7B47F52B9D842EECBB3F3B002A9BA13FE4274FF10BD2AD86",
+    "bounded_lfnst_engine.sv": "81CA1BEC7D4AC6D2B761ACA8A835CDA02CECB14F95C8F2E0EB07E5086D9EBB1D",
+    "frozen_r4c.sv": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1",
+    "step12f_unified_wrapper_2ns.xdc": "DDD2E18D4C530AAC3B53BB0A084745AF6E26565B640453BF9ADBFEFB8B2987A3",
+    "p3_tb.sv": "B89A1414EEE908FF40F49B59734122A6CCC089511495D1E12E47523E53E68770"
+  },
+  "decision": {
+    "step12f_p3": "FUNCTIONAL_AND_STRUCTURAL_TARGET_PASS",
+    "physical_timing": "P1_STOP",
+    "reason": "fresh synthesis completes but 2 ns setup/hold are not met; top path is unified P4 coefficient-select/control, not the removed intermediate-write cone",
+    "implementation": "NOT_RUN",
+    "next": "retain P3 evidence; do not claim 500 MHz closure; next timing work must address the newly evidenced unified-P4 coefficient-select path"
+  }
+}

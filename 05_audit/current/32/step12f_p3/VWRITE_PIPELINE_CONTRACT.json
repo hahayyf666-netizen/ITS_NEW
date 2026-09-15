@@ -1,0 +1,33 @@
+{
+  "schema": "step12f.p3.vwrite_pipeline_contract.v1",
+  "status": "PASS",
+  "scope": "vertical result to intermediate RAM registered write boundary",
+  "frozen_mapping": {
+    "bank": "(row+col)&3",
+    "local": "(row>>2)*width+col",
+    "vertical_group_equivalent": {
+      "bank": "(lane+col[1:0])&3",
+      "local": "group*width+col"
+    }
+  },
+  "acceptance": "vertical_result_fire = kernel_run && phase==K_V_DRAIN && kernel_out_valid && kernel_out_req",
+  "capture_edge": "C",
+  "commit_edge": "C+1",
+  "command_issue_ii": 1,
+  "ram_commit_ii": 1,
+  "command_fields": [
+    "vwrite_cmd_valid_q",
+    "vwrite_cmd_bank_mask_q",
+    "vwrite_cmd_addr_q",
+    "vwrite_cmd_data_q[0:3]",
+    "vwrite_cmd_last_q"
+  ],
+  "address_policy": "one shared registered local address; bank-local valid/data fields",
+  "ram_write_source": "registered vwrite_cmd_*_q only",
+  "direct_kernel_to_ram_write": false,
+  "evidence": {
+    "mapping_proof": "INTERMEDIATE_MAPPING_PROOF.json",
+    "normal_p3_tb_marker": "P3_VWRITE_TB_PASS commands=16 commits=16 last_commit_cycle=128 outputs=16",
+    "synthesis_p3_tb_marker": "P3_VWRITE_TB_PASS commands=16 commits=16 last_commit_cycle=128 outputs=16"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "step12f.p3.fresh_synthesis_result.v1",
+  "status": "SYNTHESIS_PASS_TIMING_STOP",
+  "tool": "Vivado 2025.2",
+  "part": "xcku5p-ffvb676-2-e",
+  "clock_period_ns": 2.0,
+  "elapsed_seconds": 364,
+  "peak_memory_mb_synthesis": 3472.969,
+  "peak_memory_mb_reporting": 4151.820,
+  "resource": {
+    "lut": 38650,
+    "lut_logic": 33011,
+    "lutram": 5632,
+    "ff": 33518,
+    "dsp": 316,
+    "bram": 0,
+    "uram": 0,
+    "carry8": 1642
+  },
+  "setup": {
+    "wns_ns": -1.036,
+    "tns_ns": -8214.760,
+    "failing_endpoints": 41175
+  },
+  "hold": {
+    "whs_ns": -0.076,
+    "ths_ns": -3.391,
+    "failing_endpoints": 47
+  },
+  "constraints": {
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "clock_mhz": 500.0
+  },
+  "top_setup_path": {
+    "source": "u_unified_p4_kernel/slot_state_q_reg[1][0]/C",
+    "destination": "u_unified_p4_kernel/s0_coeff_q_reg[2177]/D",
+    "data_path_delay_ns": 3.017,
+    "logic_delay_ns": 0.750,
+    "route_delay_ns": 2.267,
+    "logic_levels": 10,
+    "family": "unified P4 coefficient-select/control"
+  },
+  "route_run": false,
+  "evidence_dir": "05_audit/current/32/step12f_p3_synth_20260915_1340",
+  "artifacts": {
+    "postsynth_dcp_sha256": "533A59CD624A75D947BBCE06DC5726B3A62BC27D7552D78CA3C77643509A5D3D",
+    "timing_summary_sha256": "00BB36B76A87572E73FA46D74AE3DB83744FB6561C64884D536FA8EB3A616AE9",
+    "hold_summary_sha256": "4FDBDB041EAE1CAAFCCC852A2802FD877EF60091E3C8F53F84CC1F1A83CEA301",
+    "check_timing_sha256": "4801A099081F7DD5EC41DE19D8A86646480EAA586AEA1F342078393C405DB7B9",
+    "exceptions_sha256": "8CB5ADA512DDCC861546F0ED3AE197F2CEC7C25683F63FF492985BB2780388CF",
+    "utilization_sha256": "C49726B0CA23EDF9E45D232F2B725389344AA703897F679A4FBCE64B1EE6EE04",
+    "high_fanout_sha256": "4646C9FA6DBD76E18D116113FC9421610092FE6692D9A67D4452CC0526DD8C3A"
+  }
+}

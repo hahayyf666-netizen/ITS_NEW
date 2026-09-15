@@ -1,0 +1,26 @@
+{
+  "collisions": 0,
+  "coordinate_checks": 15376,
+  "frozen_mapping": "bank=(row+col)&3; local=(row>>2)*width+col",
+  "group_bank_collision_checks": 155,
+  "heights": [
+    4,
+    8,
+    16,
+    32,
+    64
+  ],
+  "mismatch_count": 0,
+  "mismatches": [],
+  "p3_mapping": "bank=(lane+col[1:0])&3; local=group*width+col",
+  "schema": "step12f.p3.intermediate_mapping_proof.v1",
+  "sha256": "72907f752a6e01a6826022db1aae680e5d6a8be4b089df99da912be5b1d33551",
+  "status": "PASS",
+  "widths": [
+    4,
+    8,
+    16,
+    32,
+    64
+  ]
+}

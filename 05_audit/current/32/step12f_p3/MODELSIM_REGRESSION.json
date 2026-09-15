@@ -1,0 +1,19 @@
+{
+  "schema": "step12f.p3.modelsim_regression.v1",
+  "status": "PASS",
+  "simulator": "ModelSim SE-64 2020.4",
+  "modes": {
+    "normal": "PASS",
+    "SYNTHESIS": "PASS"
+  },
+  "gate_b_numeric_cases": 156,
+  "gate_c_tuples": 369,
+  "gate_c_beats_per_mode": 45636,
+  "one_d_vector_ii_modes": 13,
+  "lfnst_engine_cases": 1088,
+  "lfnst_wrapper_cases": 258,
+  "p3_vwrite_contract": "PASS in both modes",
+  "two_tu_backpressure_ownership_ordering": "PASS",
+  "source_coverage_manifest": "STEP12F_COVERAGE_MODELSIM_RUN.json",
+  "source_coverage_manifest_sha256": "BA82F9259F89B42C2CA781785F256F127829E4C5D46F078209FDCAF96DE859B2"
+}

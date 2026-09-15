@@ -158,8 +158,9 @@ module unified_its_wrapper #(
     // LFNST-off primary transforms use this kernel directly.
     logic        compute_slot_q;
     logic        kernel_run_q;
-    typedef enum logic [2:0] {K_IDLE, K_V_START, K_V_FEED, K_V_DRAIN,
-                              K_H_START, K_H_FEED, K_H_DRAIN} kernel_phase_t;
+    typedef enum logic [3:0] {K_IDLE, K_V_START, K_V_FEED, K_V_DRAIN,
+                              K_V_WAIT_COMMIT, K_H_START, K_H_FEED,
+                              K_H_DRAIN} kernel_phase_t;
     kernel_phase_t kernel_phase_q;
     logic [6:0] kernel_w_q, kernel_h_q, kernel_cut_w_q, kernel_cut_h_q;
     logic [6:0] kernel_vector_q;
@@ -176,6 +177,24 @@ module unified_its_wrapper #(
     logic       kernel_done;
     logic       kernel_busy;
     logic       kernel_error;
+
+    // Vertical result to intermediate-memory write boundary.  A command is
+    // captured when a kernel result group is accepted and is committed by the
+    // RAMs on the following edge.  The RAM write ports are driven only by
+    // these registered fields, so kernel/group/address decode cannot reach a
+    // distributed-RAM write endpoint in the same timing interval.
+    logic                             vwrite_cmd_valid_q;
+    logic [3:0]                       vwrite_cmd_bank_mask_q;
+    logic [BANK_ADDR_W-1:0]           vwrite_cmd_addr_q;
+    logic signed [15:0]               vwrite_cmd_data_q [0:3];
+    logic                             vwrite_cmd_last_q;
+    logic                             vwrite_last_commit_seen_q;
+    logic                             vertical_result_fire;
+    logic                             vwrite_cmd_commit;
+    logic [3:0]                       vwrite_cmd_bank_mask_c;
+    logic [BANK_ADDR_W-1:0]           vwrite_cmd_addr_c;
+    logic signed [15:0]               vwrite_cmd_data_c [0:3];
+    logic                             vwrite_cmd_last_c;
     // Primary-transform cache reads are prefetched through a registered
     // response boundary before entering the unified kernel.  The request
     // group advances independently from the group currently being consumed,
@@ -423,6 +442,32 @@ module unified_its_wrapper #(
                                               input integer width_i);
         begin
             tmp_local_for = (row_i >> 2) * width_i + col_i;
+        end
+    endfunction
+
+    // Static-width form used by the vertical write-command boundary.  The
+    // intermediate mapping is local = group * width + column; spelling out
+    // the five supported powers of two prevents a runtime multiplier from
+    // being inferred in the command-generation path.
+    function automatic logic [BANK_ADDR_W-1:0] tmp_local_for_vwrite(
+        input logic [4:0] group_i,
+        input logic [6:0] width_i,
+        input logic [6:0] col_i);
+        logic [BANK_ADDR_W-1:0] group_ext;
+        logic [BANK_ADDR_W-1:0] col_ext;
+        begin
+            group_ext = '0;
+            group_ext[4:0] = group_i;
+            col_ext = '0;
+            col_ext[6:0] = col_i;
+            case (width_i)
+                7'd4:  tmp_local_for_vwrite = (group_ext << 2) + col_ext;
+                7'd8:  tmp_local_for_vwrite = (group_ext << 3) + col_ext;
+                7'd16: tmp_local_for_vwrite = (group_ext << 4) + col_ext;
+                7'd32: tmp_local_for_vwrite = (group_ext << 5) + col_ext;
+                7'd64: tmp_local_for_vwrite = (group_ext << 6) + col_ext;
+                default: tmp_local_for_vwrite = '0;
+            endcase
         end
     endfunction
 
@@ -937,6 +982,86 @@ module unified_its_wrapper #(
                           (kernel_phase_q == K_H_DRAIN));
     end
 
+    // A vertical output group is a real write transaction only when the
+    // kernel output is being accepted by the wrapper.  The command fields are
+    // generated from the current group metadata and then captured into the
+    // registered boundary below.  The intermediate RAMs never see these live
+    // kernel signals directly.
+    integer vwrite_gen_bank_i;
+    integer vwrite_gen_lane_i;
+    always_comb begin : vwrite_command_generate
+        vertical_result_fire = kernel_run_q &&
+                               (kernel_phase_q == K_V_DRAIN) &&
+                               kernel_out_valid && kernel_out_req;
+        vwrite_cmd_bank_mask_c = 4'b0000;
+        vwrite_cmd_addr_c = '0;
+        vwrite_cmd_last_c = 1'b0;
+        for (vwrite_gen_bank_i = 0; vwrite_gen_bank_i < 4;
+             vwrite_gen_bank_i = vwrite_gen_bank_i + 1)
+            vwrite_cmd_data_c[vwrite_gen_bank_i] = '0;
+
+        if (vertical_result_fire) begin
+            vwrite_cmd_addr_c = tmp_local_for_vwrite(
+                kernel_group_q, kernel_w_q, kernel_vector_q);
+            vwrite_cmd_last_c =
+                (kernel_vector_q == (kernel_cut_w_q - 1'b1)) &&
+                (kernel_group_q == ((kernel_cut_h_q >> 2) - 1'b1));
+            for (vwrite_gen_bank_i = 0; vwrite_gen_bank_i < 4;
+                 vwrite_gen_bank_i = vwrite_gen_bank_i + 1) begin
+                // Inverse of bank=(row+column)&3 for row=4*group+lane.
+                // The subtraction is only two-bit modulo-4 permutation.
+                vwrite_gen_lane_i =
+                    (vwrite_gen_bank_i - (kernel_vector_q & 3)) & 3;
+                if ((kernel_group_q * 4 + vwrite_gen_lane_i) <
+                    kernel_cut_h_q) begin
+                    vwrite_cmd_bank_mask_c[vwrite_gen_bank_i] = 1'b1;
+                    vwrite_cmd_data_c[vwrite_gen_bank_i] =
+                        $signed(kernel_out_data[vwrite_gen_lane_i*16 +: 16]);
+                end
+            end
+        end
+    end
+
+    // A valid registered command is committed by the simple RAMs on this
+    // edge.  Capture and commit may occur on the same edge for consecutive
+    // groups, preserving write-command II=1.
+    assign vwrite_cmd_commit = vwrite_cmd_valid_q;
+
+`ifndef SYNTHESIS
+    // The simplified V-write map is checked against the original generic
+    // coordinate formula in simulation.  Since a supported vertical group
+    // has four valid lanes, the explicit permutation must cover every bank
+    // exactly once and all bank commands must share one local address.
+    integer vwrite_assert_lane_i;
+    integer vwrite_assert_lane_j;
+    always @(posedge clk) begin
+        if (vertical_result_fire) begin
+            assert (vwrite_cmd_bank_mask_c == 4'b1111)
+                else $error("P3 V-write bank collision/missing bank: mask=%b",
+                            vwrite_cmd_bank_mask_c);
+            assert (vwrite_cmd_addr_c ==
+                    tmp_local_for(kernel_group_q * 4,
+                                  kernel_vector_q,
+                                  kernel_w_q))
+                else $error("P3 V-write local address mismatch");
+            for (vwrite_assert_lane_i = 0;
+                 vwrite_assert_lane_i < 4;
+                 vwrite_assert_lane_i = vwrite_assert_lane_i + 1)
+                for (vwrite_assert_lane_j = vwrite_assert_lane_i + 1;
+                     vwrite_assert_lane_j < 4;
+                     vwrite_assert_lane_j = vwrite_assert_lane_j + 1)
+                    assert ((((vwrite_assert_lane_i +
+                               (kernel_vector_q & 3)) & 3) !=
+                              ((vwrite_assert_lane_j +
+                               (kernel_vector_q & 3)) & 3)))
+                        else $error("P3 V-write lane bank collision");
+        end
+        if (vwrite_cmd_commit)
+            assert (vwrite_cmd_bank_mask_q != 4'b0000)
+                else $error("P3 empty V-write command committed");
+    end
+`endif
+
     // A kernel request is only a real group transaction when the wrapper has
     // a registered response available.  In particular, the vertical START
     // phase may last one cycle while the first cache read is in flight; using
@@ -984,9 +1109,13 @@ module unified_its_wrapper #(
             end
         end
         for (cmd_bank_i = 0; cmd_bank_i < 4; cmd_bank_i = cmd_bank_i + 1) begin
-            tmp_wr_en[cmd_bank_i] = 1'b0;
-            tmp_wr_addr[cmd_bank_i] = '0;
-            tmp_wr_data[cmd_bank_i] = '0;
+            // Intermediate writes are driven exclusively by the registered
+            // V-write command.  This is the physical timing cut: no live
+            // kernel_group/vector/address decode reaches the RAM port.
+            tmp_wr_en[cmd_bank_i] = vwrite_cmd_valid_q &&
+                                    vwrite_cmd_bank_mask_q[cmd_bank_i];
+            tmp_wr_addr[cmd_bank_i] = vwrite_cmd_addr_q;
+            tmp_wr_data[cmd_bank_i] = vwrite_cmd_data_q[cmd_bank_i];
             tmp_rd_addr[cmd_bank_i] = '0;
         end
 
@@ -1015,24 +1144,7 @@ module unified_its_wrapper #(
             input_valid_wr_data[fill_slot][input_cmd_bank_i] = 1'b1;
         end
 
-        // Vertical results are lane-bank-local: one write per bank and cycle.
-        if (kernel_run_q && (kernel_phase_q == K_V_DRAIN)) begin
-            for (cmd_bank_i = 0; cmd_bank_i < 4; cmd_bank_i = cmd_bank_i + 1) begin
-                if (kernel_out_valid &&
-                    (kernel_group_q * 4 + cmd_bank_i < kernel_cut_h_q)) begin
-                    input_cmd_row_i = kernel_group_q * 4 + cmd_bank_i;
-                    input_cmd_col_i = kernel_vector_q;
-                    input_cmd_bank_i = tmp_bank_for(input_cmd_row_i, input_cmd_col_i);
-                    input_cmd_local_i = tmp_local_for(input_cmd_row_i,
-                                                      input_cmd_col_i,
-                                                      kernel_w_q);
-                    tmp_wr_en[input_cmd_bank_i] = 1'b1;
-                    tmp_wr_addr[input_cmd_bank_i] = input_cmd_local_i;
-                    tmp_wr_data[input_cmd_bank_i] =
-                        $signed(kernel_out_data[cmd_bank_i*16 +: 16]);
-                end
-            end
-        end else if (kernel_run_q && kernel_stage_q &&
+        if (kernel_run_q && kernel_stage_q &&
                      kernel_h_rd_pending_q) begin
             // Horizontal input groups use a registered bank-local request.
             // The intermediate RAM address no longer depends combinationally
@@ -1082,6 +1194,14 @@ module unified_its_wrapper #(
             kernel_group_q <= 5'd0;
             kernel_type_q <= 2'd0;
             kernel_stage_q <= 1'b0;
+            vwrite_cmd_valid_q <= 1'b0;
+            vwrite_cmd_bank_mask_q <= 4'b0000;
+            vwrite_cmd_addr_q <= '0;
+            vwrite_cmd_last_q <= 1'b0;
+            vwrite_last_commit_seen_q <= 1'b0;
+            for (kernel_capture_lane_i = 0; kernel_capture_lane_i < 4;
+                 kernel_capture_lane_i = kernel_capture_lane_i + 1)
+                vwrite_cmd_data_q[kernel_capture_lane_i] <= '0;
             kernel_rd_req_pending_q <= 1'b0;
             kernel_rd_req_group_q <= 5'd0;
             kernel_rd_req_vector_q <= 7'd0;
@@ -1150,6 +1270,30 @@ module unified_its_wrapper #(
             // A one-cycle pulse starts the bounded LFNST engine on the next
             // edge, after compute_slot_q and its descriptor metadata settle.
             lfnst_start_q <= 1'b0;
+
+            // P3 vertical write-command pipeline.  The old command is
+            // committed by the intermediate RAMs on this edge; a new result
+            // group may replace it at the same edge, preserving II=1.
+            if (vwrite_cmd_commit && vwrite_cmd_last_q)
+                vwrite_last_commit_seen_q <= 1'b1;
+            if (vertical_result_fire) begin
+                vwrite_cmd_valid_q <= 1'b1;
+                vwrite_cmd_bank_mask_q <= vwrite_cmd_bank_mask_c;
+                vwrite_cmd_addr_q <= vwrite_cmd_addr_c;
+                vwrite_cmd_last_q <= vwrite_cmd_last_c;
+                for (kernel_capture_lane_i = 0;
+                     kernel_capture_lane_i < 4;
+                     kernel_capture_lane_i = kernel_capture_lane_i + 1)
+                    vwrite_cmd_data_q[kernel_capture_lane_i] <=
+                        vwrite_cmd_data_c[kernel_capture_lane_i];
+            end else begin
+                vwrite_cmd_valid_q <= 1'b0;
+                vwrite_cmd_bank_mask_q <= 4'b0000;
+                vwrite_cmd_addr_q <= '0;
+                vwrite_cmd_last_q <= 1'b0;
+            end
+            if (compute_valid)
+                vwrite_last_commit_seen_q <= 1'b0;
 
             // Primary vertical reads use a raw-bank register followed by a
             // packed response register.  The response is held until the
@@ -1557,14 +1701,32 @@ module unified_its_wrapper #(
                             end else begin
                                 kernel_vector_q <= 7'd0;
                                 kernel_group_q <= 5'd0;
-                                kernel_type_q <= slot_hor[compute_slot_q];
-                                kernel_stage_q <= 1'b1;
                                 kernel_rd_req_pending_q <= 1'b0;
                                 kernel_rd_resp_valid_q <= 1'b0;
                                 kernel_rd_raw_pending_q <= 1'b0;
                                 kernel_start_sent_q <= 1'b0;
-                                kernel_phase_q <= K_H_START;
+                                // The final V result may have just filled the
+                                // registered write command.  Wait until that
+                                // command is committed before admitting H.
+                                kernel_phase_q <= K_V_WAIT_COMMIT;
                             end
+                        end
+                    end
+                    K_V_WAIT_COMMIT: begin
+                        // vwrite_last_commit_seen_q is set on the edge that
+                        // writes the old registered command into intermediate
+                        // RAM.  This state therefore cannot observe a stale
+                        // pre-NBA "empty" pending bit and start H early.
+                        if (vwrite_last_commit_seen_q &&
+                            !vwrite_cmd_valid_q) begin
+                            kernel_type_q <= slot_hor[compute_slot_q];
+                            kernel_stage_q <= 1'b1;
+                            kernel_rd_req_pending_q <= 1'b0;
+                            kernel_rd_resp_valid_q <= 1'b0;
+                            kernel_rd_raw_pending_q <= 1'b0;
+                            kernel_start_sent_q <= 1'b0;
+                            vwrite_last_commit_seen_q <= 1'b0;
+                            kernel_phase_q <= K_H_START;
                         end
                     end
                     K_H_START: begin

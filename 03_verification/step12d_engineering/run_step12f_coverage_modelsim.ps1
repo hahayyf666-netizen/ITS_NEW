@@ -38,6 +38,7 @@ $KernelTb = Join-Path $RepoRoot "03_verification\tb\unified_p4_kernel_numeric_tb
 $ThroughputTb = Join-Path $RepoRoot "03_verification\tb\unified_p4_kernel_throughput_tb.sv"
 $ThroughputFullTb = Join-Path $RepoRoot "03_verification\tb\unified_p4_kernel_throughput_full_tb.sv"
 $SmokeTb = Join-Path $RepoRoot "03_verification\tb\unified_its_wrapper_tb.sv"
+$P3Tb = Join-Path $RepoRoot "03_verification\tb\unified_its_wrapper_p3_tb.sv"
 $NumericTb = Join-Path $RepoRoot "03_verification\tb\unified_its_wrapper_numeric_tb.sv"
 $GateBGenerator = Join-Path $RepoRoot "03_verification\step12d_engineering\generate_gate_b_hdl_vectors.py"
 $GateCGenerator = Join-Path $RepoRoot "03_verification\step12d_engineering\generate_gate_c_hdl_vectors.py"
@@ -114,7 +115,7 @@ foreach ($mode in @("normal", "synthesis")) {
         $define = @()
         if ($mode -eq "synthesis") { $define = @("+define+SYNTHESIS") }
         $compileLog = Join-Path $dir "compile.log"
-        & $Vlog -sv @define $SimpleRam $InputBank $Kernel $LfnstEngine $Wrapper $KernelTb $ThroughputTb $ThroughputFullTb $SmokeTb $NumericTb $LfnstTb -l $compileLog
+        & $Vlog -sv @define $SimpleRam $InputBank $Kernel $LfnstEngine $Wrapper $KernelTb $ThroughputTb $ThroughputFullTb $SmokeTb $P3Tb $NumericTb $LfnstTb -l $compileLog
         if ($LASTEXITCODE -ne 0) { throw "vlog failed for $mode" }
 
         $kernelLog = Join-Path $dir "gate_b_kernel_numeric.log"
@@ -133,6 +134,10 @@ foreach ($mode in @("normal", "synthesis")) {
         & $Vsim -c work.unified_its_wrapper_tb -l $smokeLog -do "run -all; quit -f"
         Assert-TranscriptPass $smokeLog "GATE_C_WRAPPER_TB_PASS beats=16/16 done=1/1"
 
+        $p3Log = Join-Path $dir "p3_vwrite_contract.log"
+        & $Vsim -c work.unified_its_wrapper_p3_tb -l $p3Log -do "run -all; quit -f"
+        Assert-TranscriptPass $p3Log "P3_VWRITE_TB_PASS"
+
         $numericLog = Join-Path $dir "gate_c_wrapper_numeric.log"
         & $Vsim -c work.unified_its_wrapper_numeric_tb -l $numericLog -do "run -all; quit -f"
         Assert-TranscriptPass $numericLog "GATE_C_NUMERIC_TB_PASS cases=369"
@@ -146,7 +151,7 @@ foreach ($mode in @("normal", "synthesis")) {
         Assert-TranscriptPass $lfnstWrapperLog "GATE_C_NUMERIC_TB_PASS cases=258"
 
         $modeLogs = @($compileLog, $kernelLog, $throughputLog, $throughputFullLog,
-                      $smokeLog, $numericLog, $lfnstLog, $lfnstWrapperLog)
+                      $smokeLog, $p3Log, $numericLog, $lfnstLog, $lfnstWrapperLog)
         if ($EvidenceDir) {
             foreach ($log in $modeLogs) {
                 Copy-Item -LiteralPath $log -Destination (Join-Path $EvidenceDir ($mode + "_" + (Split-Path $log -Leaf)))
@@ -159,6 +164,7 @@ foreach ($mode in @("normal", "synthesis")) {
             gate_b_vector_ii_legacy = "PASS_7_MODES"
             gate_f_vector_ii = "PASS_13_MODES"
             gate_c_wrapper_smoke = "PASS"
+            p3_vwrite_contract = "PASS"
             gate_c_wrapper_numeric = "PASS_369_CASES"
             lfnst_engine_specialty = "PASS_1088_CASES"
             lfnst_wrapper_specialty = "PASS_258_CASES"
@@ -195,6 +201,7 @@ $summary = [ordered]@{
         gate_b_throughput_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $ThroughputTb).Hash
         gate_f_throughput_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $ThroughputFullTb).Hash
         gate_c_smoke_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $SmokeTb).Hash
+        p3_vwrite_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $P3Tb).Hash
         gate_c_numeric_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $NumericTb).Hash
     }
     vector_sets = [ordered]@{

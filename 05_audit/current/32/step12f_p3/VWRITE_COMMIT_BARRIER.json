@@ -1,0 +1,20 @@
+{
+  "schema": "step12f.p3.vwrite_commit_barrier.v1",
+  "status": "PASS",
+  "state_sequence": [
+    "K_V_DRAIN",
+    "K_V_WAIT_COMMIT",
+    "K_H_START"
+  ],
+  "barrier_condition": "all vertical results observed && vwrite_last_commit_seen_q && !vwrite_cmd_valid_q",
+  "semantic": "K_H_START is admitted only after the final registered V-write command has committed on a prior edge and no command remains pending",
+  "p3_tb": {
+    "normal": "PASS",
+    "synthesis": "PASS",
+    "outputs": 16,
+    "commands": 16,
+    "commits": 16,
+    "final_commit_cycle": 128
+  },
+  "stale_intermediate_read_check": "PASS"
+}

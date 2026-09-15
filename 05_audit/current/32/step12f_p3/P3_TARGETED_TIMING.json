@@ -1,0 +1,42 @@
+{
+  "schema": "step12f.p3.targeted_timing.v1",
+  "status": "PASS_STRUCTURAL_CUT_TIMING_STOP",
+  "old_path_check": {
+    "query": "kernel_group_q -> intermediate RAM write-enable",
+    "old_kernel_group_q_pins": 5,
+    "timing_paths_found": 0,
+    "report": "../step12f_p3_synth_20260915_1340/P3_PATH_OLD_KERNEL_GROUP_TO_TMP_WE.rpt"
+  },
+  "path_a_kernel_to_command_capture": {
+    "status": "PASS",
+    "representative_address": {
+      "source": "u_unified_p4_kernel/fifo_count_q_reg[3]/C",
+      "destination": "vwrite_cmd_addr_q_reg[9]/D",
+      "slack_ns": 0.246,
+      "data_path_delay_ns": 1.735,
+      "logic_levels": 6
+    },
+    "representative_data": {
+      "source": "u_unified_p4_kernel/fifo_count_q_reg[3]/C",
+      "destination": "vwrite_cmd_data_q_reg[1][0]/D",
+      "slack_ns": 0.261,
+      "data_path_delay_ns": 1.720,
+      "logic_levels": 6
+    },
+    "report": "../step12f_p3_synth_20260915_1340/P3_PATH_KERNEL_TO_VWRITE_CAPTURE.rpt"
+  },
+  "path_b_command_to_intermediate_ram": {
+    "status": "PASS",
+    "representative_write_enable": {
+      "source": "vwrite_cmd_valid_q_reg/C",
+      "destination": "gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_0_63_0_6/RAMA/WE",
+      "slack_ns": 0.981,
+      "data_path_delay_ns": 0.817,
+      "logic_levels": 2
+    },
+    "command_q_to_ram_we_pins": 1472,
+    "report": "../step12f_p3_synth_20260915_1340/P3_PATH_KERNEL_OR_VWRITE_TO_TMP_WE.rpt",
+    "address_data_source": "vwrite_cmd_addr_q/vwrite_cmd_data_q registered fields drive tmp_wr_addr/tmp_wr_data; inferred RAM primitive address/data pins are structural endpoints, while WE timing is the explicit timing endpoint"
+  },
+  "conclusion": "kernel/group/address combinational path no longer reaches intermediate RAM write port; fresh synthesis still has a separate unified-P4 coefficient-select setup blocker"
+}
