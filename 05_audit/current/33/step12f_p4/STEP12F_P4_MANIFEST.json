@@ -1,0 +1,82 @@
+{
+  "schema": "step12f.p4.manifest.v1",
+  "phase": "Step12F-P4 Unified P4 Stage-0 Issue Pipeline",
+  "status": "STOP_P1_POSTSYNTH_TIMING",
+  "base_commit": "88d6859654201dc91e55ea9ae10c2e23f997b2a9",
+  "functional": {
+    "status": "PASS",
+    "normal": "PASS",
+    "SYNTHESIS": "PASS",
+    "gate_b_numeric_cases": 156,
+    "gate_c_tuples": 369,
+    "gate_c_beats_per_mode": 45636,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 258,
+    "p4_n4_vectors": 16,
+    "p4_descriptors": 16,
+    "p4_captures": 16,
+    "p4_releases": 16,
+    "vector_ii_modes": 13,
+    "group_ii": 1
+  },
+  "structural_target": {
+    "status": "PARTIAL_PASS",
+    "scheduler_to_descriptor": "FAIL_-0.300_NS",
+    "descriptor_to_coefficient": "PASS_+0.899_NS",
+    "descriptor_to_metadata": "PASS_+1.567_NS",
+    "direct_slot_state_to_coefficient": "NO_PATH_NON_VACUOUS",
+    "direct_ready_to_coefficient": "NO_PATH_NON_VACUOUS",
+    "operand_endpoint_proof": "NOT_CLAIMED_ENDPOINT_OPTIMIZED_AWAY"
+  },
+  "fresh_synthesis": {
+    "status": "PASS_COMPLETED",
+    "timing_gate": "FAIL",
+    "wns_ns": -1.008,
+    "tns_ns": -9235.052,
+    "setup_failing_endpoints": 38503,
+    "whs_ns": -0.076,
+    "ths_ns": -3.358,
+    "hold_failing_endpoints": 45,
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "route_run": false,
+    "resources": {
+      "lut": 38321,
+      "lutram": 5632,
+      "ff": 33642,
+      "dsp": 316,
+      "bram": 0,
+      "uram": 0
+    }
+  },
+  "scope": {
+    "rtl_changed": [
+      "02_rtl/rtl/unified_p4_kernel.sv",
+      "03_verification/tb/unified_p4_kernel_p4_tb.sv",
+      "03_verification/step12d_engineering/run_step12f_coverage_modelsim.ps1",
+      "03_verification/vivado/report_p4_targeted.tcl"
+    ],
+    "wrapper_changed": false,
+    "r4c_changed": false,
+    "xdc_changed": false,
+    "v3_5_18_moved": false,
+    "new_tag": false
+  },
+  "decision": {
+    "p4_functional_contract": "PASS",
+    "p4_stage0_direct_control_cut": "PASS_FOR_COEFFICIENT_CAPTURE",
+    "physical_timing": "P1_STOP",
+    "reason": "fresh synthesis completes, but scheduler-to-descriptor and overall 2 ns setup/hold gates fail; the old live scheduler-to-wide-coefficient direct path is absent",
+    "implementation": "NOT_RUN",
+    "next": "retain P4 checkpoint; do not claim 500 MHz closure; next timing work must address the scheduler-to-descriptor/control cone or other newly evidenced worst paths"
+  },
+  "source_hashes": {
+    "unified_p4_kernel": "F2C24876D5FB63A0DE435062BF30907086FC2AE973D84427B9E8F2FA3BAB5DD2",
+    "p4_stage0_tb": "063E19E4725DD889B3406E3938D593F42503651015196BD580245050304EF1B4",
+    "coverage_script": "E03A7F1F68C73E6A3E523C725D1F57F1459E1916147E18F2209EDCE4FE77FB2C",
+    "targeted_tcl": "F780203FB6E6FE0EAB991CD8E76D61B568733F167691CC465C42D542E1E5DBE8",
+    "wrapper": "9EE901FD18DC4F2721322694BEB952D55700C63AF3D2FCE91F04674016E2497B",
+    "r4c": "15AA962C197C4CE0B9DAF2E5478B64C51F3C6712E582F8950DF6BF1C339C31B1",
+    "xdc": "DDD2E18D4C530AAC3B53BB0A084745AF6E26565B640453BF9ADBFEFB8B2987A3"
+  }
+}

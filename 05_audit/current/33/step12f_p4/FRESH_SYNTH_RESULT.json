@@ -1,0 +1,51 @@
+{
+  "schema": "step12f.p4.fresh_synth_result.v1",
+  "status": "SYNTHESIS_PASS_TIMING_STOP",
+  "tool": "Vivado 2025.2",
+  "device": "xcku5p-ffvb676-2-e",
+  "clock_period_ns": 2.0,
+  "elapsed_seconds": 452,
+  "peak_memory_mb": 3466.324,
+  "synthesis": {
+    "status": "PASS",
+    "errors": 0,
+    "critical_warnings": 0,
+    "warnings": 11,
+    "checkpoint": "05_audit/current/33/step12f_p4_synth_20260915_1500/step12f_unified_wrapper_postsynth.dcp",
+    "checkpoint_sha256": "1860F7828566F7120E9E5F8F0158E54282E62BFD9E98158818E31EFA64A38A33"
+  },
+  "setup": {
+    "wns_ns": -1.008,
+    "tns_ns": -9235.052,
+    "failing_endpoints": 38503
+  },
+  "hold": {
+    "whs_ns": -0.076,
+    "ths_ns": -3.358,
+    "failing_endpoints": 45
+  },
+  "constraints": {
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "timing_exceptions_report": "No valid timing exceptions found"
+  },
+  "resources": {
+    "lut": 38321,
+    "logic_lut": 32682,
+    "lutram": 5632,
+    "ff": 33642,
+    "dsp": 316,
+    "bram36": 0,
+    "bram18": 0,
+    "uram": 0
+  },
+  "route_run": false,
+  "reports": {
+    "timing_summary_sha256": "16342ECD4B8653101CC7F4D556CAD23A79C2C9206DC98377A5576CAA7A8B5B9B",
+    "hold_summary_sha256": "C311CE1CD480D9BD7E4279B36BD4474231C1FB6DC9DC2363DB31D08D5BA5906A",
+    "utilization_sha256": "CC75DC89A854799626C9EFF2CEBFC09226C9CE16F6C331E32FB23B48F29D54FD",
+    "check_timing_sha256": "D75AA356513237813CADD1E8FE73E0D470EC68CDF5CFB2B27CE861C1DF98A4DF",
+    "exceptions_sha256": "4C409E9790045604D27B07EBD639B7F8891DDAE381F883604BE47BEF1097E09D",
+    "high_fanout_sha256": "BE097C874D0CB28A93237E0401E4E495D173E1B5F9E4CD4902C85AD1D293A732"
+  }
+}

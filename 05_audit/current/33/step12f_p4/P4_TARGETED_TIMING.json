@@ -1,0 +1,64 @@
+{
+  "schema": "step12f.p4.targeted_timing.v1",
+  "status": "TARGET_BOUNDARY_PARTIAL_PASS",
+  "checkpoint": "05_audit/current/33/step12f_p4_synth_20260915_1500/step12f_unified_wrapper_postsynth.dcp",
+  "checkpoint_sha256": "1860F7828566F7120E9E5F8F0158E54282E62BFD9E98158818E31EFA64A38A33",
+  "tool": "Vivado 2025.2",
+  "device": "xcku5p-ffvb676-2-e",
+  "clock_period_ns": 2.0,
+  "object_counts": {
+    "scheduler_ready_q": 15,
+    "slot_state_q": 8,
+    "descriptor_q": 120,
+    "descriptor_d": 120,
+    "descriptor_bundle_q": 96,
+    "descriptor_meta_q": 10,
+    "s0_coeff_d": 1730,
+    "s0_input_d": 0,
+    "s0_meta_d": 129
+  },
+  "paths": {
+    "scheduler_to_descriptor": {
+      "status": "FAIL",
+      "worst_slack_ns": -0.300,
+      "data_path_delay_ns": 2.281,
+      "logic_levels": 8,
+      "routing_fraction": 0.71197,
+      "report": "05_audit/current/33/step12f_p4_targeted_20260915_1518/P4_PATH_SCHEDULER_TO_DESCRIPTOR.rpt"
+    },
+    "descriptor_to_coefficient": {
+      "status": "PASS",
+      "worst_slack_ns": 0.899,
+      "data_path_delay_ns": 1.082,
+      "logic_levels": 3,
+      "report": "05_audit/current/33/step12f_p4_targeted_20260915_1518/P4_PATH_DESCRIPTOR_TO_COEFF.rpt"
+    },
+    "descriptor_to_metadata": {
+      "status": "PASS",
+      "worst_slack_ns": 1.567,
+      "data_path_delay_ns": 0.414,
+      "logic_levels": 0,
+      "report": "05_audit/current/33/step12f_p4_targeted_20260915_1518/P4_PATH_DESCRIPTOR_TO_META.rpt"
+    },
+    "slot_state_to_coefficient_direct": {
+      "status": "NO_PATH",
+      "non_vacuous": true,
+      "report": "05_audit/current/33/step12f_p4_targeted_20260915_1518/P4_PATH_NODIRECT_SLOTSTATE_TO_COEFF.rpt"
+    },
+    "ready_control_to_coefficient_direct": {
+      "status": "NO_PATH",
+      "non_vacuous": true,
+      "report": "05_audit/current/33/step12f_p4_targeted_20260915_1518/P4_PATH_NODIRECT_READY_TO_COEFF.rpt"
+    },
+    "descriptor_to_operand": {
+      "status": "ENDPOINT_OPTIMIZED_AWAY",
+      "non_vacuous": false,
+      "note": "s0_input_q D pins were optimized out of the synthesized checkpoint; no operand-capture endpoint timing proof is claimed",
+      "report": "05_audit/current/33/step12f_p4_targeted_20260915_1518/P4_PATH_DESCRIPTOR_TO_INPUT.rpt"
+    }
+  },
+  "scripts": {
+    "targeted_tcl": "03_verification/vivado/report_p4_targeted.tcl",
+    "targeted_tcl_sha256": "F780203FB6E6FE0EAB991CD8E76D61B568733F167691CC465C42D542E1E5DBE8"
+  }
+}

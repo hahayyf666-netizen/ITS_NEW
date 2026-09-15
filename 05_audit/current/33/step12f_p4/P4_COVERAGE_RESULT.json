@@ -1,0 +1,29 @@
+{
+  "schema": "step12f.p4.coverage_result.v1",
+  "status": "PASS",
+  "evidence_dir": "05_audit/current/33/step12f_p4_models4",
+  "simulator": "ModelSim SE-64 2020.4",
+  "modes": ["normal", "SYNTHESIS"],
+  "compile": "PASS",
+  "gate_b_numeric_cases": 156,
+  "gate_b_vector_ii_modes": 7,
+  "gate_f_vector_ii_modes": 13,
+  "gate_c_tuples": 369,
+  "gate_c_beats_per_mode": 45636,
+  "lfnst_engine_cases": 1088,
+  "lfnst_wrapper_cases": 258,
+  "p3_vwrite": "PASS",
+  "p4_stage0": {
+    "vectors": 16,
+    "descriptors": 16,
+    "captures": 16,
+    "releases": 16,
+    "marker": "GATE_F_P4_STAGE0_TB_PASS vectors=16 descriptors=16 captures=16 releases=16"
+  },
+  "source_hashes": {
+    "unified_p4_kernel": "F2C24876D5FB63A0DE435062BF30907086FC2AE973D84427B9E8F2FA3BAB5DD2",
+    "p4_stage0_tb": "063E19E4725DD889B3406E3938D593F42503651015196BD580245050304EF1B4",
+    "coverage_script": "E03A7F1F68C73E6A3E523C725D1F57F1459E1916147E18F2209EDCE4FE77FB2C"
+  },
+  "run_summary_sha256": "745659992108870485098586D057D15242E8C8597FBD9E509770B92D70F7508A"
+}

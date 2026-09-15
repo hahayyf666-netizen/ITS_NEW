@@ -1,0 +1,41 @@
+{
+  "schema": "step12f.p4.stage0_issue_contract.v1",
+  "status": "FUNCTIONAL_PASS_TIMING_STOP",
+  "descriptor": {
+    "issue_edge": "C",
+    "fields": [
+      "slot",
+      "group",
+      "bundle_addr",
+      "active_size",
+      "shift",
+      "last",
+      "valid"
+    ],
+    "capture_edge": "C+1",
+    "source": "registered_issue_desc_*_q"
+  },
+  "stage0": {
+    "capture_uses_live_scheduler": false,
+    "capture_uses_registered_descriptor": true,
+    "coefficient_capture": "coeff_bundle_mem[issue_desc_bundle_addr_q]",
+    "operand_capture": "input_mem[issue_desc_slot_q]"
+  },
+  "slot_lifetime": {
+    "release_event": "issue_desc_valid_q && issue_desc_last_q",
+    "release_after_capture": true,
+    "same_edge_reuse": false
+  },
+  "throughput": {
+    "descriptor_ii": 1,
+    "group_ii": 1,
+    "vector_ii": "N/4",
+    "n4_stream_vectors": 16
+  },
+  "source": {
+    "rtl": "02_rtl/rtl/unified_p4_kernel.sv",
+    "tb": "03_verification/tb/unified_p4_kernel_p4_tb.sv",
+    "rtl_sha256": "F2C24876D5FB63A0DE435062BF30907086FC2AE973D84427B9E8F2FA3BAB5DD2",
+    "tb_sha256": "063E19E4725DD889B3406E3938D593F42503651015196BD580245050304EF1B4"
+  }
+}
