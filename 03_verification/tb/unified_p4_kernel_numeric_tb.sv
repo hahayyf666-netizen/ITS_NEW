@@ -36,6 +36,7 @@ module unified_p4_kernel_numeric_tb;
     integer sample_values [0:63];
     integer expected_values [0:63];
     integer stall_count;
+    integer output_wait;
     integer sample_base;
     integer expected_base;
     logic signed [63:0] group_data;
@@ -130,9 +131,15 @@ module unified_p4_kernel_numeric_tb;
                     stall_count = stall_count + 1;
                 end
                 out_req = 1'b1;
-                @(posedge clk);
-                if (!(out_valid && out_req))
-                    $fatal(1, "missing output fire case=%0d group=%0d", case_i, group_i);
+                output_wait = 0;
+                while (1) begin
+                    @(posedge clk);
+                    output_wait = output_wait + 1;
+                    if (out_valid && out_req)
+                        break;
+                    if (output_wait > 512)
+                        $fatal(1, "missing output fire case=%0d group=%0d", case_i, group_i);
+                end
                 for (lane_i = 0; lane_i < 4; lane_i = lane_i + 1) begin
                     got_lane = $signed(out_data[lane_i*16 +: 16]);
                     if (got_lane != expected_values[group_i*4 + lane_i])

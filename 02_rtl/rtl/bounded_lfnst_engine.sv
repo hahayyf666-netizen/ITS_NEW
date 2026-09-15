@@ -45,12 +45,28 @@ module bounded_lfnst_engine #(
     logic       product_last_q;
     logic signed [ACC_W-1:0] products_q [0:63];
 
+    // Registered reduction tree.  Every level carries the valid/group/last
+    // metadata with its data so the arithmetic pipeline can accept one
+    // coefficient bundle on every issue edge while its tail is draining.
+    logic       red1_valid_q, red2_valid_q, red3_valid_q;
+    logic       red4_valid_q, red5_valid_q;
+    logic       red1_last_q, red2_last_q, red3_last_q;
+    logic       red4_last_q, red5_last_q;
+    logic [3:0] red1_group_q, red2_group_q, red3_group_q;
+    logic [3:0] red4_group_q, red5_group_q;
+    logic signed [ACC_W-1:0] reduce_l1_q [0:31];
+    logic signed [ACC_W-1:0] reduce_l2_q [0:15];
+    logic signed [ACC_W-1:0] reduce_l3_q [0:7];
+    logic signed [ACC_W-1:0] reduce_l4_q [0:3];
+    logic signed [ACC_W-1:0] reduce_l5_q [0:3];
+
     logic [6:0] bundle_addr;
     logic signed [DATA_W+COEFF_W-1:0] products_c [0:63];
     logic signed [ACC_W-1:0] reduce_l1_c [0:31];
     logic signed [ACC_W-1:0] reduce_l2_c [0:15];
     logic signed [ACC_W-1:0] reduce_l3_c [0:7];
     logic signed [ACC_W-1:0] reduce_l4_c [0:3];
+    logic signed [ACC_W-1:0] reduce_l5_c [0:3];
     logic signed [ACC_W-1:0] sum_c [0:3];
     logic signed [DATA_W-1:0] scaled_c [0:3];
     integer bundle_i;
@@ -87,16 +103,18 @@ module bounded_lfnst_engine #(
                 {{(ACC_W-(DATA_W+COEFF_W)){products_q[reduce_i][DATA_W+COEFF_W-1]}},
                  products_q[reduce_i][DATA_W+COEFF_W-1:0]};
         for (reduce_i = 0; reduce_i < 16; reduce_i = reduce_i + 1)
-            reduce_l2_c[reduce_i] = reduce_l1_c[reduce_i*2] +
-                                    reduce_l1_c[reduce_i*2+1];
+            reduce_l2_c[reduce_i] = reduce_l1_q[reduce_i*2] +
+                                    reduce_l1_q[reduce_i*2+1];
         for (reduce_i = 0; reduce_i < 8; reduce_i = reduce_i + 1)
-            reduce_l3_c[reduce_i] = reduce_l2_c[reduce_i*2] +
-                                    reduce_l2_c[reduce_i*2+1];
+            reduce_l3_c[reduce_i] = reduce_l2_q[reduce_i*2] +
+                                    reduce_l2_q[reduce_i*2+1];
         for (reduce_i = 0; reduce_i < 4; reduce_i = reduce_i + 1)
-            reduce_l4_c[reduce_i] = reduce_l3_c[reduce_i*2] +
-                                    reduce_l3_c[reduce_i*2+1];
+            reduce_l4_c[reduce_i] = reduce_l3_q[reduce_i*2] +
+                                    reduce_l3_q[reduce_i*2+1];
+        for (reduce_i = 0; reduce_i < 4; reduce_i = reduce_i + 1)
+            reduce_l5_c[reduce_i] = reduce_l4_q[reduce_i];
         for (sum_lane = 0; sum_lane < 4; sum_lane = sum_lane + 1)
-            sum_c[sum_lane] = reduce_l4_c[sum_lane];
+            sum_c[sum_lane] = reduce_l5_q[sum_lane];
     end
 
     function automatic logic signed [DATA_W-1:0] round_clip(
@@ -119,7 +137,9 @@ module bounded_lfnst_engine #(
     end
 
     always_comb begin
-        busy = (state_q != ST_IDLE) || product_valid_q;
+        busy = (state_q != ST_IDLE) || product_valid_q ||
+               red1_valid_q || red2_valid_q || red3_valid_q ||
+               red4_valid_q || red5_valid_q || out_valid;
     end
 
     always_ff @(posedge clk or negedge rst_n) begin
@@ -134,6 +154,12 @@ module bounded_lfnst_engine #(
             product_group_q <= 4'd0;
             product_valid_q <= 1'b0;
             product_last_q <= 1'b0;
+            red1_valid_q <= 1'b0; red2_valid_q <= 1'b0; red3_valid_q <= 1'b0;
+            red4_valid_q <= 1'b0; red5_valid_q <= 1'b0;
+            red1_last_q <= 1'b0; red2_last_q <= 1'b0; red3_last_q <= 1'b0;
+            red4_last_q <= 1'b0; red5_last_q <= 1'b0;
+            red1_group_q <= 4'd0; red2_group_q <= 4'd0; red3_group_q <= 4'd0;
+            red4_group_q <= 4'd0; red5_group_q <= 4'd0;
             out_valid <= 1'b0;
             out_data <= '0;
             out_group <= 4'd0;
@@ -142,13 +168,77 @@ module bounded_lfnst_engine #(
             error <= 1'b0;
             for (seq_i = 0; seq_i < 64; seq_i = seq_i + 1)
                 products_q[seq_i] <= '0;
+            for (seq_i = 0; seq_i < 32; seq_i = seq_i + 1)
+                reduce_l1_q[seq_i] <= '0;
+            for (seq_i = 0; seq_i < 16; seq_i = seq_i + 1)
+                reduce_l2_q[seq_i] <= '0;
+            for (seq_i = 0; seq_i < 8; seq_i = seq_i + 1)
+                reduce_l3_q[seq_i] <= '0;
+            for (seq_i = 0; seq_i < 4; seq_i = seq_i + 1) begin
+                reduce_l4_q[seq_i] <= '0;
+                reduce_l5_q[seq_i] <= '0;
+            end
         end else begin
             out_valid <= 1'b0;
             out_last <= 1'b0;
             done <= 1'b0;
 
+            // Advance the fixed-progress reduction pipeline.  The valid
+            // bits are shifted every cycle; no output-side request can stall
+            // or alter an already admitted LFNST transaction.
+            red1_valid_q <= product_valid_q;
+            red1_last_q <= product_last_q;
+            red1_group_q <= product_group_q;
+            if (product_valid_q)
+                for (seq_i = 0; seq_i < 32; seq_i = seq_i + 1)
+                    reduce_l1_q[seq_i] <= reduce_l1_c[seq_i];
+
+            red2_valid_q <= red1_valid_q;
+            red2_last_q <= red1_last_q;
+            red2_group_q <= red1_group_q;
+            if (red1_valid_q)
+                for (seq_i = 0; seq_i < 16; seq_i = seq_i + 1)
+                    reduce_l2_q[seq_i] <= reduce_l2_c[seq_i];
+
+            red3_valid_q <= red2_valid_q;
+            red3_last_q <= red2_last_q;
+            red3_group_q <= red2_group_q;
+            if (red2_valid_q)
+                for (seq_i = 0; seq_i < 8; seq_i = seq_i + 1)
+                    reduce_l3_q[seq_i] <= reduce_l3_c[seq_i];
+
+            red4_valid_q <= red3_valid_q;
+            red4_last_q <= red3_last_q;
+            red4_group_q <= red3_group_q;
+            if (red3_valid_q)
+                for (seq_i = 0; seq_i < 4; seq_i = seq_i + 1)
+                    reduce_l4_q[seq_i] <= reduce_l4_c[seq_i];
+
+            red5_valid_q <= red4_valid_q;
+            red5_last_q <= red4_last_q;
+            red5_group_q <= red4_group_q;
+            if (red4_valid_q)
+                for (seq_i = 0; seq_i < 4; seq_i = seq_i + 1)
+                    reduce_l5_q[seq_i] <= reduce_l5_c[seq_i];
+
+            // The final round/clip is registered after the last reduction
+            // level.  This is the only output pulse for a group.
+            if (red5_valid_q) begin
+                out_valid <= 1'b1;
+                out_group <= red5_group_q;
+                out_last <= red5_last_q;
+                for (seq_lane = 0; seq_lane < 4; seq_lane = seq_lane + 1)
+                    out_data[seq_lane*DATA_W +: DATA_W] <= scaled_c[seq_lane];
+                if (red5_last_q)
+                    done <= 1'b1;
+            end
+
+            product_valid_q <= 1'b0;
+
             if (start) begin
-                if ((state_q != ST_IDLE) || (lfnst_idx == 2'd0) ||
+                if ((state_q != ST_IDLE) || product_valid_q || red1_valid_q ||
+                    red2_valid_q || red3_valid_q || red4_valid_q ||
+                    red5_valid_q || out_valid || (lfnst_idx == 2'd0) ||
                     (lfnst_idx > 2'd2)) begin
                     error <= 1'b1;
                 end else begin
@@ -172,20 +262,6 @@ module bounded_lfnst_engine #(
                     product_valid_q <= 1'b1;
                     issue_group_q <= issue_group_q + 1'b1;
                 end else begin
-                    product_valid_q <= 1'b0;
-                    state_q <= ST_IDLE;
-                end
-            end
-
-            if (product_valid_q) begin
-                out_valid <= 1'b1;
-                out_group <= product_group_q;
-                out_last <= product_last_q;
-                for (seq_lane = 0; seq_lane < 4; seq_lane = seq_lane + 1)
-                    out_data[seq_lane*DATA_W +: DATA_W] <= scaled_c[seq_lane];
-                if (product_last_q) begin
-                    done <= 1'b1;
-                    product_valid_q <= 1'b0;
                     state_q <= ST_IDLE;
                 end
             end

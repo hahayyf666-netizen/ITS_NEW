@@ -148,6 +148,10 @@ module unified_its_wrapper #(
     logic        output_active;
     logic        output_slot;
     logic [11:0] output_index;
+    // Latched at compute admission so output-last detection does not
+    // re-evaluate the 7x7 width*height arithmetic in the output/control cone.
+    // The value is stable for the complete output transaction.
+    logic [11:0] output_last_index;
 
     // Gate-B unified P4 kernel integration.  LFNST-enabled cases first use the
     // bounded engine above and then reuse this kernel for the DCT2 passes;
@@ -172,6 +176,19 @@ module unified_its_wrapper #(
     logic       kernel_done;
     logic       kernel_busy;
     logic       kernel_error;
+    // Primary-transform cache reads are prefetched through a registered
+    // response boundary before entering the unified kernel.  The request
+    // group advances independently from the group currently being consumed,
+    // so one read can be captured while the previous response is accepted.
+    logic       kernel_rd_req_pending_q;
+    logic [4:0] kernel_rd_req_group_q;
+    logic [6:0] kernel_rd_req_vector_q;
+    logic signed [63:0] kernel_rd_resp_data_q;
+    logic       kernel_rd_resp_valid_q;
+    logic       kernel_start_sent_q;
+    logic       kernel_group_accept;
+    logic signed [63:0] kernel_rd_data_comb;
+    logic               kernel_rd_valid_comb;
 
     logic       lfnst_run_q;
     logic       lfnst_start_q;
@@ -192,6 +209,27 @@ module unified_its_wrapper #(
     logic [4:0] lfnst_gather_index_q;
     logic       lfnst_tail_q;
     logic [4:0] lfnst_tail_index_q;
+    // LFNST input reads use an explicit request/response boundary.  The
+    // request registers hold the bank-local physical address and its source
+    // metadata; the response registers then isolate the cache read from the
+    // term/grid write.  This keeps the gather path bounded without changing
+    // the external transaction contract.
+    logic       lfnst_mem_req_q;
+    logic       lfnst_mem_req_is_tail_q;
+    logic [4:0] lfnst_mem_req_index_q;
+    logic [5:0] lfnst_mem_req_grid_addr_q;
+    logic [BANK_ADDR_W-1:0] lfnst_mem_req_addr_q;
+    logic       lfnst_mem_req_valid_q;
+    logic       lfnst_mem_req_last_q;
+    logic       lfnst_mem_req_slot_q;
+    logic [1:0] lfnst_mem_req_bank_q;
+    logic       lfnst_mem_resp_pending_q;
+    logic       lfnst_mem_resp_is_tail_q;
+    logic [4:0] lfnst_mem_resp_index_q;
+    logic [5:0] lfnst_mem_resp_grid_addr_q;
+    logic signed [15:0] lfnst_mem_resp_data_q;
+    logic       lfnst_mem_resp_valid_q;
+    logic       lfnst_mem_resp_last_q;
     logic signed [255:0] lfnst_input_terms_q;
     logic signed [15:0] lfnst_grid [0:63];
     logic               lfnst_grid_valid [0:63];
@@ -492,6 +530,119 @@ module unified_its_wrapper #(
         end
     endfunction
 
+    // Static LFNST scan lookup used by synthesis.  Keeping the reference
+    // arithmetic helpers above preserves an independent readable model, while
+    // this bounded coordinate table removes runtime diagonal iteration from
+    // the physical datapath.
+    function automatic integer scan_coord_lut(input integer index_i,
+                                               input integer side_i);
+        begin
+            scan_coord_lut = 0;
+            if (side_i == 4) begin
+                case (index_i)
+                    0: scan_coord_lut = 0;
+                    1: scan_coord_lut = 8;
+                    2: scan_coord_lut = 1;
+                    3: scan_coord_lut = 2;
+                    4: scan_coord_lut = 9;
+                    5: scan_coord_lut = 16;
+                    6: scan_coord_lut = 24;
+                    7: scan_coord_lut = 17;
+                    8: scan_coord_lut = 10;
+                    9: scan_coord_lut = 3;
+                    10: scan_coord_lut = 11;
+                    11: scan_coord_lut = 18;
+                    12: scan_coord_lut = 25;
+                    13: scan_coord_lut = 26;
+                    14: scan_coord_lut = 19;
+                    15: scan_coord_lut = 27;
+                    default: scan_coord_lut = 0;
+                endcase
+            end else begin
+                case (index_i)
+                    0: scan_coord_lut = 0;
+                    1: scan_coord_lut = 8;
+                    2: scan_coord_lut = 1;
+                    3: scan_coord_lut = 2;
+                    4: scan_coord_lut = 9;
+                    5: scan_coord_lut = 16;
+                    6: scan_coord_lut = 24;
+                    7: scan_coord_lut = 17;
+                    8: scan_coord_lut = 10;
+                    9: scan_coord_lut = 3;
+                    10: scan_coord_lut = 4;
+                    11: scan_coord_lut = 11;
+                    12: scan_coord_lut = 18;
+                    13: scan_coord_lut = 25;
+                    14: scan_coord_lut = 32;
+                    15: scan_coord_lut = 40;
+                    16: scan_coord_lut = 33;
+                    17: scan_coord_lut = 26;
+                    18: scan_coord_lut = 19;
+                    19: scan_coord_lut = 12;
+                    20: scan_coord_lut = 5;
+                    21: scan_coord_lut = 6;
+                    22: scan_coord_lut = 13;
+                    23: scan_coord_lut = 20;
+                    24: scan_coord_lut = 27;
+                    25: scan_coord_lut = 34;
+                    26: scan_coord_lut = 41;
+                    27: scan_coord_lut = 48;
+                    28: scan_coord_lut = 56;
+                    29: scan_coord_lut = 49;
+                    30: scan_coord_lut = 42;
+                    31: scan_coord_lut = 35;
+                    32: scan_coord_lut = 28;
+                    33: scan_coord_lut = 21;
+                    34: scan_coord_lut = 14;
+                    35: scan_coord_lut = 7;
+                    36: scan_coord_lut = 15;
+                    37: scan_coord_lut = 22;
+                    38: scan_coord_lut = 29;
+                    39: scan_coord_lut = 36;
+                    40: scan_coord_lut = 43;
+                    41: scan_coord_lut = 50;
+                    42: scan_coord_lut = 57;
+                    43: scan_coord_lut = 58;
+                    44: scan_coord_lut = 51;
+                    45: scan_coord_lut = 44;
+                    46: scan_coord_lut = 37;
+                    47: scan_coord_lut = 30;
+                    48: scan_coord_lut = 23;
+                    49: scan_coord_lut = 31;
+                    50: scan_coord_lut = 38;
+                    51: scan_coord_lut = 45;
+                    52: scan_coord_lut = 52;
+                    53: scan_coord_lut = 59;
+                    54: scan_coord_lut = 60;
+                    55: scan_coord_lut = 53;
+                    56: scan_coord_lut = 46;
+                    57: scan_coord_lut = 39;
+                    58: scan_coord_lut = 47;
+                    59: scan_coord_lut = 54;
+                    60: scan_coord_lut = 61;
+                    61: scan_coord_lut = 62;
+                    62: scan_coord_lut = 55;
+                    63: scan_coord_lut = 63;
+                    default: scan_coord_lut = 0;
+                endcase
+            end
+        end
+    endfunction
+
+    function automatic integer scan_row_lut(input integer index_i,
+                                             input integer side_i);
+        begin
+            scan_row_lut = scan_coord_lut(index_i, side_i) >> 3;
+        end
+    endfunction
+
+    function automatic integer scan_col_lut(input integer index_i,
+                                             input integer side_i);
+        begin
+            scan_col_lut = scan_coord_lut(index_i, side_i) & 7;
+        end
+    endfunction
     function automatic signed [9:0] final_adapter(input signed [15:0] wide_i);
         integer signed value_i;
         begin
@@ -525,23 +676,16 @@ module unified_its_wrapper #(
             for (read_bank_i = 0; read_bank_i < 4; read_bank_i = read_bank_i + 1)
                 input_rd_addr[read_slot_i][read_bank_i] = '0;
 
-        if (lfnst_gather_q || lfnst_tail_q) begin
-            read_row_i = scan_row(lfnst_gather_q ? lfnst_gather_index_q :
-                                  (6'd48 + lfnst_tail_index_q),
-                                  lfnst_ntrs48_q ? 8 : 4);
-            read_col_i = scan_col(lfnst_gather_q ? lfnst_gather_index_q :
-                                  (6'd48 + lfnst_tail_index_q),
-                                  lfnst_ntrs48_q ? 8 : 4);
-            read_local_i = cache_local_for(read_row_i, read_col_i);
-            read_bank_i = cache_bank_for(read_row_i, read_col_i);
-            if ((read_row_i < slot_height[compute_slot_q]) &&
-                (read_col_i < slot_width[compute_slot_q]))
-                input_rd_addr[compute_slot_q][read_bank_i] = read_local_i;
+        if (lfnst_mem_req_q) begin
+            // The address was selected and registered at the request edge.
+            // Only the selected physical bank sees a live read address.
+            input_rd_addr[lfnst_mem_req_slot_q][lfnst_mem_req_bank_q] =
+                lfnst_mem_req_addr_q;
         end else if (kernel_run_q && !kernel_stage_q &&
-                     !lfnst_case_q && kernel_in_valid) begin
+                     !lfnst_case_q && kernel_rd_req_pending_q) begin
             for (read_bank_i = 0; read_bank_i < 4; read_bank_i = read_bank_i + 1) begin
-                read_row_i = kernel_group_q * 4 + read_bank_i;
-                read_col_i = kernel_vector_q;
+                read_row_i = kernel_rd_req_group_q * 4 + read_bank_i;
+                read_col_i = kernel_rd_req_vector_q;
                 if (read_row_i < kernel_cut_h_q)
                     input_rd_addr[compute_slot_q][cache_bank_for(read_row_i, read_col_i)] =
                         cache_local_for(read_row_i, read_col_i);
@@ -549,24 +693,38 @@ module unified_its_wrapper #(
         end
     end
 
+    // The primary vertical transform consumes a registered cache response,
+    // rather than the raw asynchronous cache output.  The request metadata
+    // selects one four-lane group; invalid/sparse lanes are represented as
+    // zero data while the response-valid bit still advances the group so a
+    // completely sparse group is not dropped.
+    integer kernel_rd_lane_i;
+    integer kernel_rd_row_i;
+    integer kernel_rd_bank_i;
+    always_comb begin : kernel_rd_data_comb_block
+        kernel_rd_data_comb = '0;
+        kernel_rd_valid_comb = kernel_rd_req_pending_q;
+        for (kernel_rd_lane_i = 0; kernel_rd_lane_i < 4;
+             kernel_rd_lane_i = kernel_rd_lane_i + 1) begin
+            kernel_rd_row_i = kernel_rd_req_group_q * 4 + kernel_rd_lane_i;
+            if ((kernel_rd_row_i < kernel_cut_h_q) && kernel_rd_req_pending_q) begin
+                kernel_rd_bank_i = cache_bank_for(kernel_rd_row_i,
+                                                  kernel_rd_req_vector_q);
+                if (input_rd_valid[compute_slot_q][kernel_rd_bank_i])
+                    kernel_rd_data_comb[kernel_rd_lane_i*16 +: 16] =
+                        input_rd_data[compute_slot_q][kernel_rd_bank_i];
+            end
+        end
+    end
+
     always_comb begin : lfnst_gather_data_comb
-        integer gather_data_row_i, gather_data_col_i, gather_data_bank_i;
         lfnst_gather_rd_data = '0;
         lfnst_gather_rd_valid = 1'b0;
-        if (lfnst_gather_q || lfnst_tail_q) begin
-            gather_data_row_i = scan_row(lfnst_gather_q ? lfnst_gather_index_q :
-                                         (6'd48 + lfnst_tail_index_q),
-                                         lfnst_ntrs48_q ? 8 : 4);
-            gather_data_col_i = scan_col(lfnst_gather_q ? lfnst_gather_index_q :
-                                         (6'd48 + lfnst_tail_index_q),
-                                         lfnst_ntrs48_q ? 8 : 4);
-            gather_data_bank_i = cache_bank_for(gather_data_row_i,
-                                                gather_data_col_i);
-            if ((gather_data_row_i < slot_height[compute_slot_q]) &&
-                (gather_data_col_i < slot_width[compute_slot_q])) begin
-                lfnst_gather_rd_data = input_rd_data[compute_slot_q][gather_data_bank_i];
-                lfnst_gather_rd_valid = input_rd_valid[compute_slot_q][gather_data_bank_i];
-            end
+        if (lfnst_mem_req_q && lfnst_mem_req_valid_q) begin
+            lfnst_gather_rd_data =
+                input_rd_data[lfnst_mem_req_slot_q][lfnst_mem_req_bank_q];
+            lfnst_gather_rd_valid =
+                input_rd_valid[lfnst_mem_req_slot_q][lfnst_mem_req_bank_q];
         end
     end
 
@@ -595,11 +753,17 @@ module unified_its_wrapper #(
     integer kernel_lane_i;
     integer kernel_sample_index_i;
     always_comb begin
-        kernel_start     = (kernel_phase_q == K_V_START) ||
-                           (kernel_phase_q == K_H_START);
-        kernel_in_valid  = kernel_start ||
-                           (kernel_phase_q == K_V_FEED) ||
-                           (kernel_phase_q == K_H_FEED);
+        kernel_start     = ((kernel_phase_q == K_V_START) ||
+                            (kernel_phase_q == K_H_START)) &&
+                           !kernel_start_sent_q;
+        if (!kernel_stage_q && !lfnst_case_q)
+            kernel_in_valid = ((kernel_phase_q == K_V_START) ||
+                               (kernel_phase_q == K_V_FEED)) &&
+                              kernel_rd_resp_valid_q;
+        else
+            kernel_in_valid = kernel_start ||
+                              (kernel_phase_q == K_V_FEED) ||
+                              (kernel_phase_q == K_H_FEED);
         kernel_in_data = '0;
         for (kernel_lane_i = 0; kernel_lane_i < 4;
              kernel_lane_i = kernel_lane_i + 1) begin
@@ -612,13 +776,9 @@ module unified_its_wrapper #(
                             lfnst_grid_valid[kernel_sample_index_i * 8 + kernel_vector_q])
                             kernel_in_data[kernel_lane_i*16 +: 16] =
                                 lfnst_grid[kernel_sample_index_i * 8 + kernel_vector_q];
-                    end else if (input_rd_valid[compute_slot_q][
-                                      cache_bank_for(kernel_sample_index_i,
-                                                     kernel_vector_q)])
+                    end else if (kernel_rd_resp_valid_q)
                         kernel_in_data[kernel_lane_i*16 +: 16] =
-                            input_rd_data[compute_slot_q][
-                                cache_bank_for(kernel_sample_index_i,
-                                               kernel_vector_q)];
+                            kernel_rd_resp_data_q[kernel_lane_i*16 +: 16];
                 end
             end else if (kernel_in_valid) begin
                 if ((kernel_sample_index_i < kernel_cut_w_q) &&
@@ -641,6 +801,14 @@ module unified_its_wrapper #(
                           (kernel_phase_q == K_H_DRAIN));
     end
 
+    // A kernel request is only a real group transaction when the wrapper has
+    // a registered response available.  In particular, the vertical START
+    // phase may last one cycle while the first cache read is in flight; using
+    // in_req alone here would advance the phase before any data was captured.
+    always_comb begin
+        kernel_group_accept = kernel_in_valid && kernel_in_req;
+    end
+
     always_comb begin
         it_data_out = 40'd0;
         if (output_active) begin
@@ -654,9 +822,7 @@ module unified_its_wrapper #(
         it_data_out_vld = output_active && it_data_out_req;
         output_fire = output_active && it_data_out_req;
         output_last_fire = output_fire &&
-                           (output_index ==
-                            ((tu_points(slot_width[output_slot],
-                                        slot_height[output_slot]) >> 2) - 1));
+                           (output_index == output_last_index);
         it_done = output_last_fire;
     end
 
@@ -770,6 +936,7 @@ module unified_its_wrapper #(
             output_active <= 1'b0;
             output_slot   <= 1'b0;
             output_index  <= 12'd0;
+            output_last_index <= 12'd0;
             compute_slot_q <= 1'b0;
             kernel_run_q <= 1'b0;
             kernel_phase_q <= K_IDLE;
@@ -781,12 +948,34 @@ module unified_its_wrapper #(
             kernel_group_q <= 5'd0;
             kernel_type_q <= 2'd0;
             kernel_stage_q <= 1'b0;
+            kernel_rd_req_pending_q <= 1'b0;
+            kernel_rd_req_group_q <= 5'd0;
+            kernel_rd_req_vector_q <= 7'd0;
+            kernel_rd_resp_data_q <= '0;
+            kernel_rd_resp_valid_q <= 1'b0;
+            kernel_start_sent_q <= 1'b0;
             lfnst_run_q <= 1'b0;
             lfnst_case_q <= 1'b0;
             lfnst_gather_q <= 1'b0;
             lfnst_gather_index_q <= 5'd0;
             lfnst_tail_q <= 1'b0;
             lfnst_tail_index_q <= 5'd0;
+            lfnst_mem_req_q <= 1'b0;
+            lfnst_mem_req_is_tail_q <= 1'b0;
+            lfnst_mem_req_index_q <= 5'd0;
+            lfnst_mem_req_grid_addr_q <= 6'd0;
+            lfnst_mem_req_addr_q <= '0;
+            lfnst_mem_req_valid_q <= 1'b0;
+            lfnst_mem_req_last_q <= 1'b0;
+            lfnst_mem_req_slot_q <= 1'b0;
+            lfnst_mem_req_bank_q <= 2'd0;
+            lfnst_mem_resp_pending_q <= 1'b0;
+            lfnst_mem_resp_is_tail_q <= 1'b0;
+            lfnst_mem_resp_index_q <= 5'd0;
+            lfnst_mem_resp_grid_addr_q <= 6'd0;
+            lfnst_mem_resp_data_q <= '0;
+            lfnst_mem_resp_valid_q <= 1'b0;
+            lfnst_mem_resp_last_q <= 1'b0;
             lfnst_input_terms_q <= '0;
             lfnst_start_q <= 1'b0;
             lfnst_slot_q <= 1'b0;
@@ -813,46 +1002,125 @@ module unified_its_wrapper #(
             // edge, after compute_slot_q and its descriptor metadata settle.
             lfnst_start_q <= 1'b0;
 
-            // One bounded cache read is captured per cycle.  After the
-            // sixteenth term has been captured, the engine starts on the
-            // following edge with a complete, stable term vector.
-            if (lfnst_gather_q) begin
-                if (lfnst_gather_rd_valid)
-                    lfnst_input_terms_q[lfnst_gather_index_q*16 +: 16] <=
-                        lfnst_gather_rd_data;
-                else
-                    lfnst_input_terms_q[lfnst_gather_index_q*16 +: 16] <= '0;
-                if (lfnst_gather_index_q == 5'd15) begin
-                    lfnst_gather_q <= 1'b0;
-                    if (lfnst_ntrs48_q) begin
+            // Primary vertical reads use a one-entry response register.  A
+            // response is held until the kernel accepts it; when acceptance
+            // and the next cache response coincide, the entry is replaced on
+            // the same edge, preserving one group per cycle after the
+            // initial request boundary.
+            if (kernel_start)
+                kernel_start_sent_q <= 1'b1;
+            if (!kernel_run_q || kernel_stage_q || lfnst_case_q) begin
+                kernel_rd_req_pending_q <= 1'b0;
+                kernel_rd_resp_valid_q <= 1'b0;
+            end else begin
+                if (kernel_group_accept)
+                    kernel_rd_resp_valid_q <= 1'b0;
+                if (kernel_rd_req_pending_q &&
+                    (!kernel_rd_resp_valid_q || kernel_group_accept)) begin
+                    kernel_rd_resp_data_q <= kernel_rd_data_comb;
+                    kernel_rd_resp_valid_q <= kernel_rd_valid_comb;
+                    if (kernel_rd_req_group_q ==
+                        ((kernel_cut_h_q >> 2) - 1'b1)) begin
+                        kernel_rd_req_pending_q <= 1'b0;
+                    end else begin
+                        kernel_rd_req_group_q <= kernel_rd_req_group_q + 1'b1;
+                    end
+                end
+            end
+
+            // Default to no response in the next cycle.  A request issued in
+            // the same edge below may replace this default, allowing the
+            // bounded gather stream to run without a bubble between terms.
+            lfnst_mem_resp_pending_q <= 1'b0;
+            lfnst_mem_req_q <= 1'b0;
+
+            // Commit the registered cache response.  This is deliberately a
+            // separate edge from both address generation and cache read, so
+            // the source-index/address network cannot reach the term/grid
+            // write endpoint in one long combinational path.
+            if (lfnst_mem_resp_pending_q) begin
+                if (lfnst_mem_resp_is_tail_q) begin
+                    lfnst_grid[lfnst_mem_resp_grid_addr_q] <=
+                        lfnst_mem_resp_valid_q ? lfnst_mem_resp_data_q : '0;
+                    lfnst_grid_valid[lfnst_mem_resp_grid_addr_q] <=
+                        lfnst_mem_resp_valid_q;
+                end else begin
+                    lfnst_input_terms_q[lfnst_mem_resp_index_q*16 +: 16] <=
+                        lfnst_mem_resp_valid_q ? lfnst_mem_resp_data_q : '0;
+                end
+
+                if (lfnst_mem_resp_last_q) begin
+                    if (lfnst_mem_resp_is_tail_q) begin
+                        lfnst_tail_q <= 1'b0;
+                        lfnst_start_q <= 1'b1;
+                    end else if (lfnst_ntrs48_q) begin
                         // The 48-term LFNST replaces only the first 48
-                        // diagonal coefficients.  Preserve the remaining
-                        // 16 low-frequency-grid coefficients from the input
-                        // TU so a sparse value outside the LFNST output
-                        // domain is not lost.
+                        // diagonal coefficients.  Preserve the remaining 16
+                        // low-frequency-grid coefficients from the input TU.
                         lfnst_tail_q <= 1'b1;
                         lfnst_tail_index_q <= 5'd0;
                     end else begin
                         lfnst_start_q <= 1'b1;
                     end
+                end
+            end
+
+            // Issue one bank-local request per cycle.  The address and all
+            // source metadata are registered here; the response is captured
+            // on the following edge and committed one edge after that.
+            if (lfnst_gather_q || lfnst_tail_q) begin
+                integer issue_index_i, issue_row_i, issue_col_i;
+                integer issue_bank_i, issue_local_i, issue_grid_addr_i;
+                issue_index_i = lfnst_gather_q ? lfnst_gather_index_q :
+                                (48 + lfnst_tail_index_q);
+                issue_row_i = scan_row_lut(issue_index_i,
+                                           lfnst_ntrs48_q ? 8 : 4);
+                issue_col_i = scan_col_lut(issue_index_i,
+                                           lfnst_ntrs48_q ? 8 : 4);
+                issue_bank_i = cache_bank_for(issue_row_i, issue_col_i);
+                issue_local_i = cache_local_for(issue_row_i, issue_col_i);
+                issue_grid_addr_i = issue_row_i * 8 + issue_col_i;
+
+                lfnst_mem_req_q <= 1'b1;
+                lfnst_mem_req_is_tail_q <= lfnst_tail_q;
+                lfnst_mem_req_index_q <= lfnst_gather_q ?
+                                         lfnst_gather_index_q : 5'd0;
+                lfnst_mem_req_grid_addr_q <= issue_grid_addr_i[5:0];
+                lfnst_mem_req_addr_q <= issue_local_i[BANK_ADDR_W-1:0];
+                lfnst_mem_req_valid_q <=
+                    (issue_row_i < slot_height[lfnst_slot_q]) &&
+                    (issue_col_i < slot_width[lfnst_slot_q]);
+                lfnst_mem_req_last_q <= lfnst_gather_q ?
+                                        (lfnst_gather_index_q == 5'd15) :
+                                        (lfnst_tail_index_q == 5'd15);
+                lfnst_mem_req_slot_q <= lfnst_slot_q;
+                lfnst_mem_req_bank_q <= issue_bank_i[1:0];
+
+                if (lfnst_gather_q) begin
+                    if (lfnst_gather_index_q == 5'd15)
+                        lfnst_gather_q <= 1'b0;
+                    else
+                        lfnst_gather_index_q <= lfnst_gather_index_q + 1'b1;
                 end else begin
-                    lfnst_gather_index_q <= lfnst_gather_index_q + 1'b1;
+                    if (lfnst_tail_index_q == 5'd15)
+                        lfnst_tail_q <= 1'b0;
+                    else
+                        lfnst_tail_index_q <= lfnst_tail_index_q + 1'b1;
                 end
-            end else if (lfnst_tail_q) begin
-                lfnst_write_addr =
-                    scan_row(6'd48 + lfnst_tail_index_q, 8) * 8 +
-                    scan_col(6'd48 + lfnst_tail_index_q, 8);
-                if (lfnst_write_addr < 64) begin
-                    lfnst_grid[lfnst_write_addr] <=
-                        lfnst_gather_rd_valid ? lfnst_gather_rd_data : '0;
-                    lfnst_grid_valid[lfnst_write_addr] <= lfnst_gather_rd_valid;
-                end
-                if (lfnst_tail_index_q == 5'd15) begin
-                    lfnst_tail_q <= 1'b0;
-                    lfnst_start_q <= 1'b1;
-                end else begin
-                    lfnst_tail_index_q <= lfnst_tail_index_q + 1'b1;
-                end
+            end
+
+            // Capture the asynchronous cache read addressed by the previous
+            // request.  Metadata is copied alongside data/valid so a tail
+            // write can never be associated with a different gather index.
+            if (lfnst_mem_req_q) begin
+                lfnst_mem_resp_pending_q <= 1'b1;
+                lfnst_mem_resp_is_tail_q <= lfnst_mem_req_is_tail_q;
+                lfnst_mem_resp_index_q <= lfnst_mem_req_index_q;
+                lfnst_mem_resp_grid_addr_q <= lfnst_mem_req_grid_addr_q;
+                lfnst_mem_resp_data_q <= lfnst_gather_rd_data;
+                lfnst_mem_resp_valid_q <= lfnst_mem_req_valid_q &&
+                                          lfnst_gather_rd_valid;
+                lfnst_mem_resp_last_q <= lfnst_mem_req_last_q;
             end
 
             if (it_info_vld && !descriptor_legal)
@@ -912,6 +1180,9 @@ module unified_its_wrapper #(
                 slot_state[compute_slot] <= SLOT_OUT;
                 compute_slot_q <= compute_slot;
                 output_index  <= 12'd0;
+                output_last_index <=
+                    (tu_points(slot_width[compute_slot],
+                               slot_height[compute_slot]) >> 2) - 1'b1;
                 if (slot_lfnst[compute_slot] == 2'd0) begin
                     // Primary-transform cases run through the real Gate-B
                     // P4 kernel.  The kernel works on the transform-support
@@ -928,6 +1199,11 @@ module unified_its_wrapper #(
                     kernel_group_q <= 5'd0;
                     kernel_type_q <= slot_ver[compute_slot];
                     kernel_stage_q <= 1'b0;
+                    kernel_rd_req_pending_q <= 1'b1;
+                    kernel_rd_req_group_q <= 5'd0;
+                    kernel_rd_req_vector_q <= 7'd0;
+                    kernel_rd_resp_valid_q <= 1'b0;
+                    kernel_start_sent_q <= 1'b0;
                     lfnst_case_q <= 1'b0;
                     output_active <= 1'b0;
                 end else begin
@@ -962,6 +1238,9 @@ module unified_its_wrapper #(
                                                     slot_width[compute_slot]);
                     kernel_vector_q <= 7'd0;
                     kernel_group_q <= 5'd0;
+                    kernel_rd_req_pending_q <= 1'b0;
+                    kernel_rd_resp_valid_q <= 1'b0;
+                    kernel_start_sent_q <= 1'b0;
                     for (lfnst_grid_i = 0; lfnst_grid_i < 64;
                          lfnst_grid_i = lfnst_grid_i + 1) begin
                         lfnst_grid[lfnst_grid_i] <= '0;
@@ -991,10 +1270,10 @@ module unified_its_wrapper #(
                         if ((lfnst_out_group * 4 + kernel_capture_lane_i) <
                             (lfnst_ntrs48_q ? 48 : 16)) begin
                             lfnst_write_addr =
-                                scan_row(lfnst_out_group * 4 + kernel_capture_lane_i,
+                                scan_row_lut(lfnst_out_group * 4 + kernel_capture_lane_i,
                                          lfnst_ntrs48_q ? 8 : 4) *
                                 8 +
-                                scan_col(lfnst_out_group * 4 + kernel_capture_lane_i,
+                                scan_col_lut(lfnst_out_group * 4 + kernel_capture_lane_i,
                                          lfnst_ntrs48_q ? 8 : 4);
                             if (lfnst_write_addr < 64) begin
                                 lfnst_grid[lfnst_write_addr] <=
@@ -1012,13 +1291,16 @@ module unified_its_wrapper #(
                     kernel_stage_q <= 1'b0;
                     kernel_vector_q <= 7'd0;
                     kernel_group_q <= 5'd0;
+                    kernel_rd_req_pending_q <= 1'b0;
+                    kernel_rd_resp_valid_q <= 1'b0;
+                    kernel_start_sent_q <= 1'b0;
                 end
             end
 
             if (kernel_run_q) begin
                 case (kernel_phase_q)
                     K_V_START: begin
-                        if (kernel_in_req) begin
+                        if (kernel_group_accept) begin
                             if (kernel_cut_h_q <= 7'd4) begin
                                 kernel_group_q <= 5'd0;
                                 kernel_phase_q <= K_V_DRAIN;
@@ -1029,7 +1311,7 @@ module unified_its_wrapper #(
                         end
                     end
                     K_V_FEED: begin
-                        if (kernel_in_req) begin
+                        if (kernel_group_accept) begin
                             if (kernel_group_q == ((kernel_cut_h_q >> 2) - 1'b1)) begin
                                 kernel_group_q <= 5'd0;
                                 kernel_phase_q <= K_V_DRAIN;
@@ -1046,18 +1328,26 @@ module unified_its_wrapper #(
                             kernel_group_q <= 5'd0;
                             if (kernel_vector_q + 1'b1 < kernel_cut_w_q) begin
                                 kernel_vector_q <= kernel_vector_q + 1'b1;
+                                kernel_rd_req_pending_q <= 1'b1;
+                                kernel_rd_req_group_q <= 5'd0;
+                                kernel_rd_req_vector_q <= kernel_vector_q + 1'b1;
+                                kernel_rd_resp_valid_q <= 1'b0;
+                                kernel_start_sent_q <= 1'b0;
                                 kernel_phase_q <= K_V_START;
                             end else begin
                                 kernel_vector_q <= 7'd0;
                                 kernel_group_q <= 5'd0;
                                 kernel_type_q <= slot_hor[compute_slot_q];
                                 kernel_stage_q <= 1'b1;
+                                kernel_rd_req_pending_q <= 1'b0;
+                                kernel_rd_resp_valid_q <= 1'b0;
+                                kernel_start_sent_q <= 1'b0;
                                 kernel_phase_q <= K_H_START;
                             end
                         end
                     end
                     K_H_START: begin
-                        if (kernel_in_req) begin
+                        if (kernel_group_accept) begin
                             if (kernel_w_q <= 7'd4) begin
                                 kernel_group_q <= 5'd0;
                                 kernel_phase_q <= K_H_DRAIN;
@@ -1068,7 +1358,7 @@ module unified_its_wrapper #(
                         end
                     end
                     K_H_FEED: begin
-                        if (kernel_in_req) begin
+                        if (kernel_group_accept) begin
                             if (kernel_group_q == ((kernel_w_q >> 2) - 1'b1)) begin
                                 kernel_group_q <= 5'd0;
                                 kernel_phase_q <= K_H_DRAIN;
@@ -1090,10 +1380,14 @@ module unified_its_wrapper #(
                             if (kernel_vector_q + 1'b1 < kernel_h_q) begin
                                 kernel_vector_q <= kernel_vector_q + 1'b1;
                                 kernel_group_q <= 5'd0;
+                                kernel_start_sent_q <= 1'b0;
                                 kernel_phase_q <= K_H_START;
                             end else begin
                                 kernel_run_q <= 1'b0;
                                 kernel_phase_q <= K_IDLE;
+                                kernel_rd_req_pending_q <= 1'b0;
+                                kernel_rd_resp_valid_q <= 1'b0;
+                                kernel_start_sent_q <= 1'b0;
                                 output_active <= 1'b1;
                                 output_slot <= compute_slot_q;
                                 output_index <= 12'd0;
