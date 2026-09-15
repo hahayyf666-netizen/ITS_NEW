@@ -1,0 +1,145 @@
+{
+  "schema": "step12f.p5.manifest.v1",
+  "phase": "Step12F-P5 Global Read/Response + Scheduler Timing Closure",
+  "status": "STOP_P1_POSTSYNTH_TIMING",
+  "base_commit": "8e5556ad0490a9f16c857f1e180924cb12beae19",
+  "functional": {
+    "status": "PASS",
+    "normal": "PASS",
+    "SYNTHESIS": "PASS",
+    "gate_b_numeric_cases": 156,
+    "gate_c_tuples": 369,
+    "gate_c_beats_per_mode": 45636,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 258,
+    "p4_n4_vectors": 16,
+    "p4_descriptors": 16,
+    "p4_captures": 16,
+    "p4_releases": 16,
+    "vector_ii_modes": 13,
+    "group_ii": 1
+  },
+  "p5_lanes": {
+    "h_read": {
+      "status": "FUNCTIONAL_PASS_TIMING_IMPROVED_NOT_CLOSED",
+      "changes": [
+        "registered bank-local address recurrence",
+        "two-entry response tail/skid metadata",
+        "capture no longer depends on current kernel consume when tail is free"
+      ],
+      "worst100_presence": "not observed"
+    },
+    "lfnst_response": {
+      "status": "STRUCTURAL_CHANGE_APPLIED_NOT_PHYSICALLY_SIGNED_OFF",
+      "change": "cache read address is independent of live kernel_cut_h; response validity remains masked",
+      "worst100_presence": "not observed"
+    },
+    "p4_scheduler": {
+      "status": "FUNCTIONAL_PASS_STRUCTURAL_CHANGE_APPLIED",
+      "changes": [
+        "admission-time slot metadata predecode",
+        "registered ready-token FIFO",
+        "N=4 bubble-free issue stress retained"
+      ],
+      "worst100_presence": "not observed"
+    }
+  },
+  "fresh_synthesis": {
+    "status": "PASS_COMPLETED",
+    "tool": "Vivado 2025.2",
+    "device": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0,
+    "timing_gate": "FAIL",
+    "wns_ns": -0.769,
+    "tns_ns": -3284.203,
+    "setup_failing_endpoints": 16364,
+    "whs_ns": -0.076,
+    "ths_ns": -3.422,
+    "hold_failing_endpoints": 48,
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "route_run": false,
+    "resources": {
+      "lut": 38164,
+      "logic_lut": 32525,
+      "lutram": 5639,
+      "ff": 33749,
+      "dsp": 316,
+      "bram36": 0,
+      "bram18": 0,
+      "uram": 0
+    },
+    "worst_path_families": {
+      "protocol_error_control": {
+        "worst_slack_ns": -0.769,
+        "representative": "slot_width_q -> protocol_error_reg/D",
+        "top100_endpoints": 1
+      },
+      "lfnst_output_index_control": {
+        "worst_slack_ns": -0.746,
+        "representative": "lfnst_run_q -> output_last_index_reg/D",
+        "top100_endpoints": 2
+      },
+      "result_memory_write": {
+        "worst_slack_ns": -0.674,
+        "representative": "kernel_vector_q -> result-bank RAMD64E/WE",
+        "top100_endpoints": 97
+      }
+    }
+  },
+  "constraints": {
+    "check_timing": "PASS_INTERNAL_COVERAGE",
+    "unconstrained_internal_endpoints": 0,
+    "no_clock": 0,
+    "no_input_delay": 0,
+    "no_output_delay": 0,
+    "loops": 0,
+    "timing_exceptions": "No valid timing exceptions found"
+  },
+  "scope": {
+    "rtl_changed": [
+      "02_rtl/rtl/unified_its_wrapper.sv",
+      "02_rtl/rtl/unified_p4_kernel.sv"
+    ],
+    "r4c_changed": false,
+    "xdc_changed": false,
+    "oracle_or_profile_changed": false,
+    "v3_5_18_moved": false,
+    "new_tag": false
+  },
+  "decision": {
+    "functional_contract": "PASS",
+    "p5_objectives": "EFFECTIVE_PARTIAL",
+    "physical_timing": "P1_STOP",
+    "route": "NOT_AUTHORIZED",
+    "next": "retain P5 checkpoint; do not claim 500 MHz closure; next change must be selected from the newly evidenced protocol/error-control and result-memory write cones"
+  },
+  "evidence": {
+    "coverage": "05_audit/current/34/step12f_p5_h_capture_decoupled_pre/STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "synthesis_dir": "05_audit/current/34/step12f_p5_h_capture_decoupled_synth",
+    "postsynth_checkpoint": "05_audit/current/34/step12f_p5_h_capture_decoupled_synth/step12f_unified_wrapper_postsynth.dcp",
+    "reports": [
+      "report_timing_summary_postsynth.rpt",
+      "report_timing_hold_summary_postsynth.rpt",
+      "report_timing_worst100_postsynth.rpt",
+      "report_utilization_postsynth.rpt",
+      "report_hierarchy_utilization_postsynth.rpt",
+      "report_high_fanout_postsynth.rpt",
+      "report_check_timing_postsynth.rpt",
+      "report_exceptions_postsynth.rpt"
+    ]
+  },
+  "source_hashes": {
+    "unified_its_wrapper_sha256": "59E24FE927211C913F415556144F9EF09353839316C102E01307C3FE239E902B",
+    "unified_p4_kernel_sha256": "3D259C644919E48FD3A14F7B4E11AC477E57019AAFAAD432E16CC9AF9BC1A60D",
+    "coverage_run_sha256": "208E4E38B9259AD4F3F0171F24B2E64D246D02CB80B2B940F7E24BD6D4D95AEA",
+    "postsynth_dcp_sha256": "8FDC58013DB1D3EA59D1FBBA6D8F891A3C67006C6F974F21629A40AA95C4ACD7",
+    "timing_summary_sha256": "F32D653963ABE2031F399C71C5E32332349F305D002ACF9F66C9D86703E147E9",
+    "hold_summary_sha256": "DB6B902C5EB0CED8E57237320B7F6037F62F4420AF89A8C4A9FB6614DED9CD4F",
+    "worst100_sha256": "DFC464F1C4E3A946832C258021CC2F6EDB25DC1A4D77C1D936BDA3D7791FC31F",
+    "utilization_sha256": "7D3C66652D92A3CE2CC0A1D9DA8A4C5E9892D34324EF8AEBB39858256AA83A17",
+    "high_fanout_sha256": "9A3B341D9781F7BF760219E7B7D145723FCC17FD89F4A08C178BC5492854DB62",
+    "check_timing_sha256": "C32B7CF77674CF161BCE104EB74083824F095500092D998F6E69F6B19FBA3274",
+    "exceptions_sha256": "75F58CC47039AF1FFD3B1B9452DFC2CA9609DD69BC8E29AF380A21E5A256362A"
+  }
+}

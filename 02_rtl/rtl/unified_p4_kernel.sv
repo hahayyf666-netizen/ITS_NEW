@@ -75,6 +75,12 @@ module unified_p4_kernel #(
     logic [6:0] slot_matrix_size_q [0:SLOT_COUNT-1];
     logic [6:0] slot_output_size_q [0:SLOT_COUNT-1];
     logic       slot_stage_q [0:SLOT_COUNT-1];
+    // Static issue metadata is decoded once when a slot is admitted.  The
+    // group scheduler then consumes only these registered fields; it does
+    // not re-run the type/size case decode for every group.
+    logic [5:0] slot_bundle_base_q [0:SLOT_COUNT-1];
+    logic [5:0] slot_group_count_q [0:SLOT_COUNT-1];
+    logic [3:0] slot_shift_q [0:SLOT_COUNT-1];
 
     logic       load_active_q;
     logic [1:0] load_slot_q;
@@ -90,12 +96,22 @@ module unified_p4_kernel #(
     logic [1:0] issue_emit_slot_c;
     logic [4:0] issue_emit_group_c;
 
+    // Registered ready-token queue.  A token is enqueued when a slot's last
+    // input group is accepted and dequeued when that slot's first descriptor
+    // is issued.  This removes the live slot-state priority scan from the
+    // descriptor generation cone while preserving admission order.
+    logic [1:0] ready_fifo_mem [0:SLOT_COUNT-1];
+    logic [1:0] ready_rd_ptr_q;
+    logic [1:0] ready_wr_ptr_q;
+    logic [2:0] ready_count_q;
+    logic       ready_enqueue_c;
+    logic [1:0] ready_enqueue_slot_c;
+    logic       ready_dequeue_c;
+    logic [1:0] ready_head_c;
+
     logic       free_found_c;
     logic [1:0] free_slot_c;
-    logic       ready_found_c;
-    logic [1:0] ready_slot_c;
     logic       capacity_ok_c;
-    logic       issue_last_c;
     logic       start_accept;
     logic       input_group_accept;
     logic       pending_load_last;
@@ -107,7 +123,6 @@ module unified_p4_kernel #(
     logic [8:0] reserved_groups_q;
 
     integer free_scan_i;
-    integer ready_scan_i;
     integer busy_scan_i;
     integer lane_i;
     integer input_i;
@@ -233,14 +248,6 @@ module unified_p4_kernel #(
                 free_slot_c = free_scan_i[1:0];
             end
         end
-        // A slot is not reusable merely because its final descriptor is being
-        // issued. Stage 0 consumes the descriptor and reads the slot's
-        // operands on the following edge, so the slot remains occupied until
-        // that capture has completed. This intentionally removes the old
-        // same-edge reuse shortcut.
-        issue_last_c = issue_active_q &&
-                       (issue_group_q ==
-                        (group_count_for(slot_output_size_q[issue_slot_q]) - 1'b1));
         new_group_count_c = group_count_for(output_size);
         capacity_ok_c = ((reserved_groups_q + new_group_count_c) <= FIFO_DEPTH);
         in_req = load_active_q || (free_found_c && capacity_ok_c);
@@ -261,15 +268,10 @@ module unified_p4_kernel #(
     end
 
     always_comb begin
-        ready_found_c = 1'b0;
-        ready_slot_c  = 2'd0;
-        for (ready_scan_i = 0; ready_scan_i < SLOT_COUNT;
-             ready_scan_i = ready_scan_i + 1) begin
-            if (!ready_found_c && (slot_state_q[ready_scan_i] == SLOT_READY)) begin
-                ready_found_c = 1'b1;
-                ready_slot_c = ready_scan_i[1:0];
-            end
-        end
+        ready_head_c = ready_fifo_mem[ready_rd_ptr_q];
+        ready_dequeue_c = (ready_count_q != 3'd0) && !issue_active_q;
+        ready_enqueue_c = input_group_accept && pending_load_last;
+        ready_enqueue_slot_c = start_accept ? free_slot_c : load_slot_q;
     end
 
     // When the issue engine is idle, a ready slot can enter stage 0 on this
@@ -277,11 +279,11 @@ module unified_p4_kernel #(
     // ready state and the first group, which is required for vector II=1 in
     // the N=4 mode.  For an active issue, the current group remains selected.
     always_comb begin
-        issue_emit_c = issue_active_q || ((!issue_active_q) && ready_found_c);
+        issue_emit_c = issue_active_q || ready_dequeue_c;
         issue_emit_slot_c = issue_slot_q;
         issue_emit_group_c = issue_group_q;
-        if (!issue_active_q && ready_found_c) begin
-            issue_emit_slot_c = ready_slot_c;
+        if (!issue_active_q && ready_dequeue_c) begin
+            issue_emit_slot_c = ready_head_c;
             issue_emit_group_c = 5'd0;
         end
     end
@@ -296,12 +298,11 @@ module unified_p4_kernel #(
         issue_desc_last_c        = 1'b0;
         if (issue_emit_c) begin
             issue_desc_bundle_addr_c =
-                bundle_base(slot_type_q[issue_emit_slot_c],
-                            slot_matrix_size_q[issue_emit_slot_c]) + issue_emit_group_c;
+                slot_bundle_base_q[issue_emit_slot_c] + issue_emit_group_c;
             issue_desc_active_size_c = slot_size_q[issue_emit_slot_c];
-            issue_desc_shift_c = slot_stage_q[issue_emit_slot_c] ? 4'd10 : 4'd7;
+            issue_desc_shift_c = slot_shift_q[issue_emit_slot_c];
             issue_desc_last_c = (issue_emit_group_c ==
-                                 (group_count_for(slot_output_size_q[issue_emit_slot_c]) - 1'b1));
+                                 (slot_group_count_q[issue_emit_slot_c] - 1'b1));
         end
     end
 
@@ -594,6 +595,9 @@ module unified_p4_kernel #(
             issue_slot_q <= '0;
             issue_group_q <= '0;
             reserved_groups_q <= '0;
+            ready_rd_ptr_q <= '0;
+            ready_wr_ptr_q <= '0;
+            ready_count_q <= '0;
             error <= 1'b0;
             done <= 1'b0;
             for (reset_i = 0; reset_i < SLOT_COUNT; reset_i = reset_i + 1) begin
@@ -603,6 +607,10 @@ module unified_p4_kernel #(
                 slot_matrix_size_q[reset_i] <= '0;
                 slot_output_size_q[reset_i] <= '0;
                 slot_stage_q[reset_i] <= 1'b0;
+                slot_bundle_base_q[reset_i] <= '0;
+                slot_group_count_q[reset_i] <= '0;
+                slot_shift_q[reset_i] <= 4'd7;
+                ready_fifo_mem[reset_i] <= '0;
             end
         end else begin
             done <= 1'b0;
@@ -618,6 +626,11 @@ module unified_p4_kernel #(
                 slot_matrix_size_q[free_slot_c] <= transform_size;
                 slot_output_size_q[free_slot_c] <= output_size;
                 slot_stage_q[free_slot_c] <= stage_sel;
+                slot_bundle_base_q[free_slot_c] <=
+                    bundle_base(tr_type, transform_size);
+                slot_group_count_q[free_slot_c] <=
+                    group_count_for(output_size);
+                slot_shift_q[free_slot_c] <= stage_sel ? 4'd10 : 4'd7;
                 load_slot_q <= free_slot_c;
                 load_group_q <= 5'd0;
                 load_active_q <= 1'b1;
@@ -648,23 +661,23 @@ module unified_p4_kernel #(
                 end
             end
 
-            if (!issue_active_q && ready_found_c) begin
-                if (group_count_for(slot_output_size_q[ready_slot_c]) <= 6'd1) begin
+            if (ready_dequeue_c) begin
+                if (slot_group_count_q[ready_head_c] <= 6'd1) begin
                     // The descriptor is emitted directly, but the slot stays
                     // OUT until the following edge captures its operands.
                     issue_active_q <= 1'b0;
-                    issue_slot_q <= ready_slot_c;
+                    issue_slot_q <= ready_head_c;
                     issue_group_q <= '0;
-                    slot_state_q[ready_slot_c] <= SLOT_OUT;
+                    slot_state_q[ready_head_c] <= SLOT_OUT;
                 end else begin
                     issue_active_q <= 1'b1;
-                    issue_slot_q <= ready_slot_c;
+                    issue_slot_q <= ready_head_c;
                     issue_group_q <= 5'd1;
-                    slot_state_q[ready_slot_c] <= SLOT_OUT;
+                    slot_state_q[ready_head_c] <= SLOT_OUT;
                 end
             end else if (issue_active_q) begin
                 if (issue_group_q ==
-                    (group_count_for(slot_output_size_q[issue_slot_q]) - 1'b1)) begin
+                    (slot_group_count_q[issue_slot_q] - 1'b1)) begin
                     issue_active_q <= 1'b0;
                     issue_group_q <= '0;
                 end else begin
@@ -677,6 +690,21 @@ module unified_p4_kernel #(
             // overwriting input_mem before its final operand capture.
             if (issue_desc_valid_q && issue_desc_last_q)
                 slot_state_q[issue_desc_slot_q] <= SLOT_FREE;
+
+            // Push completed loads and pop the token consumed for a new issue
+            // independently.  The four-entry queue supports a simultaneous
+            // N=4 completion/issue handoff without a descriptor bubble.
+            if (ready_enqueue_c) begin
+                ready_fifo_mem[ready_wr_ptr_q] <= ready_enqueue_slot_c;
+                ready_wr_ptr_q <= ready_wr_ptr_q + 1'b1;
+            end
+            if (ready_dequeue_c)
+                ready_rd_ptr_q <= ready_rd_ptr_q + 1'b1;
+            case ({ready_enqueue_c, ready_dequeue_c})
+                2'b10: ready_count_q <= ready_count_q + 1'b1;
+                2'b01: ready_count_q <= ready_count_q - 1'b1;
+                default: ready_count_q <= ready_count_q;
+            endcase
 
             if (out_last_fire)
                 done <= 1'b1;
@@ -693,7 +721,8 @@ module unified_p4_kernel #(
     always_comb begin
             busy = load_active_q || issue_active_q || issue_desc_valid_q ||
                    (fifo_count_q != 0) ||
-               (reserved_groups_q != 0) || s0_valid_q || s1_valid_q ||
+                   (reserved_groups_q != 0) || (ready_count_q != 0) ||
+                   s0_valid_q || s1_valid_q ||
                s2_valid_q || s3_valid_q || s4_valid_q || s5_valid_q ||
                s6_valid_q || pipe_out_valid_q;
         for (busy_scan_i = 0; busy_scan_i < SLOT_COUNT;

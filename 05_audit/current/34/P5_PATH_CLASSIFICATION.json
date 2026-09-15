@@ -1,0 +1,31 @@
+{
+  "schema": "step12f.p5.path_classification.v1",
+  "source_report": "step12f_p5_h_capture_decoupled_synth/report_timing_worst100_postsynth.rpt",
+  "status": "CLASSIFIED_AFTER_FRESH_SYNTHESIS",
+  "top100": {
+    "protocol_error_control": {
+      "count": 1,
+      "worst_slack_ns": -0.769,
+      "representative_source": "slot_width_reg[1][3]/C",
+      "representative_destination": "protocol_error_reg/D"
+    },
+    "lfnst_output_index_control": {
+      "count": 2,
+      "worst_slack_ns": -0.746,
+      "representative_source": "lfnst_run_q_reg/C",
+      "representative_destination": "output_last_index_reg[11]/D"
+    },
+    "result_memory_write": {
+      "count": 97,
+      "worst_slack_ns": -0.674,
+      "representative_source": "kernel_vector_q_reg[3]/C",
+      "representative_destination": "gen_result_slots[0].gen_result_banks[0].u_result_bank/mem_reg_0_63_0_6/RAMA/WE"
+    }
+  },
+  "not_observed_in_top100": [
+    "H-read request/response control",
+    "LFNST cache-response timing family",
+    "P4 scheduler-to-descriptor family"
+  ],
+  "interpretation": "P5 target cones are no longer leading in the reported top-100, but absence from top-100 is not a proof of all-path closure. The next RTL decision must be based on the newly evidenced protocol/error-control and result-memory write cones."
+}
