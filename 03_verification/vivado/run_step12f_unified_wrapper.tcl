@@ -69,6 +69,8 @@ synth_design -top unified_its_wrapper \
 set synth_elapsed [expr {[clock seconds] - $synth_start}]
 puts "STEP12F_SYNTH_ELAPSED_SEC=$synth_elapsed"
 
+# Preserve the completed netlist before potentially expensive timing reports.
+write_checkpoint -force [file join $report_dir step12f_unified_wrapper_postsynth.dcp]
 report_utilization -file [file join $report_dir report_utilization_postsynth.rpt]
 report_utilization -hierarchical -file [file join $report_dir report_hierarchy_utilization_postsynth.rpt]
 report_timing_summary -delay_type max -max_paths 100 \
@@ -85,8 +87,6 @@ check_timing -verbose -file [file join $report_dir report_check_timing_postsynth
 report_exceptions -file [file join $report_dir report_exceptions_postsynth.rpt]
 report_methodology -file [file join $report_dir report_methodology_postsynth.rpt]
 report_drc -file [file join $report_dir report_drc_postsynth.rpt]
-write_checkpoint -force [file join $report_dir step12f_unified_wrapper_postsynth.dcp]
-
 if {![info exists ::env(STEP12F_RUN_IMPL)] || $::env(STEP12F_RUN_IMPL) ne "1"} {
     puts "STEP12F_POSTSYNTH_ONLY"
     close_project

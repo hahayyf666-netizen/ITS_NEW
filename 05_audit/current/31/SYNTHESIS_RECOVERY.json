@@ -1,0 +1,142 @@
+{
+  "schema": "step12f.synthesis_recovery.v1",
+  "baseline_commit": "b7c0a3f",
+  "status": "SYNTHESIS_COMPLETED_TIMING_NOT_CLOSED",
+  "repair": {
+    "scope": "coefficient_memory_layout_only",
+    "description": "Transpose the canonical coefficient matrix at elaboration into 61 packed four-output bundles; runtime selection uses one 6-bit bundle address and constant slices.",
+    "changed_production_rtl_paths": [
+      "02_rtl/rtl/unified_p4_kernel.sv"
+    ],
+    "arithmetic_changed": false,
+    "pipeline_latency_changed": false,
+    "handshake_changed": false,
+    "oracle_changed": false,
+    "frozen_r4c_changed": false,
+    "historical_wrapper_changed": false,
+    "xdc_changed": false
+  },
+  "coefficient_layout": {
+    "canonical_coefficients": 8176,
+    "zero_padding_positions": 7440,
+    "bundles": 61,
+    "bundle_width_bits": 4096,
+    "normal": "PASS",
+    "synthesis_mode": "PASS"
+  },
+  "coverage": {
+    "status": "PASS",
+    "tested_source_matches_production_sha256": true,
+    "modes": ["normal", "SYNTHESIS"],
+    "tuples_per_mode": 369,
+    "beats_per_mode": 45636,
+    "vector_ii_modes": 13,
+    "kernel_numeric_cases_per_mode": 156,
+    "lfnst_engine_cases_per_mode": 1088,
+    "lfnst_wrapper_cases_per_mode": 258,
+    "evidence": "05_audit/current/31/packed_coverage/STEP12F_COVERAGE_MODELSIM_RUN.json"
+  },
+  "full_wrapper_fresh_synthesis": {
+    "status": "COMPLETED",
+    "vivado": "2025.2",
+    "part": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0,
+    "directive": "Default",
+    "old_checkpoint_reused": false,
+    "elapsed_seconds": 486,
+    "peak_memory_mb": 4545.117,
+    "infos": 232,
+    "warnings": 112,
+    "critical_warnings": 0,
+    "errors": 0,
+    "checkpoint": "05_audit/current/31/wrapper_packed_default/step12f_unified_wrapper_postsynth.dcp",
+    "checkpoint_sha256": "1dfc72727e06450f9e1ac1368d5508e287b7c573825847d617f8701994cf91de",
+    "log_sha256": "56a0daa65f9b9073299a9d7672b54edbe3ee93e02ca910b77a855d76c238809e",
+    "utilization": {
+      "lut": 38269,
+      "lutram": 5632,
+      "ff": 7125,
+      "dsp": 316,
+      "bram_tiles": 0,
+      "uram": 0,
+      "latches": 0
+    },
+    "timing_estimate": {
+      "status": "FAIL",
+      "wns_ns": -9.061,
+      "tns_ns": -87983.219,
+      "setup_failing_endpoints": 44270,
+      "whs_ns": 0.468,
+      "ths_ns": 0.0,
+      "hold_failing_endpoints": 0,
+      "kind": "POST_SYNTHESIS_ESTIMATE_NOT_POST_ROUTE_SIGNOFF"
+    },
+    "constraint_coverage": {
+      "unconstrained_internal_endpoints": 0,
+      "no_input_delay": 0,
+      "no_output_delay": 0,
+      "loops": 0,
+      "valid_timing_exceptions": 0
+    },
+    "drc": {
+      "errors": 0,
+      "critical_warnings": 0,
+      "warnings": {
+        "DPIP-2": 636,
+        "DPOP-3": 284,
+        "DPOP-4": 316
+      }
+    }
+  },
+  "timing_diagnosis": {
+    "wrapper_worst100": {
+      "source_family": "lfnst_ntrs48_q_reg/C",
+      "source_count": 100,
+      "destination_families": {
+        "lfnst_input_terms_q_reg": 91,
+        "lfnst_grid_reg": 9
+      },
+      "worst_data_path_ns": 11.042,
+      "worst_logic_levels": 41,
+      "worst_route_share_percent": 71.255,
+      "root_cause": "Runtime diagonal-scan/address/validity selection remains a deep combinational wrapper cone before LFNST gather registers."
+    },
+    "kernel_isolation": {
+      "status": "SYNTHESIS_COMPLETED_TIMING_FAIL",
+      "elapsed_seconds": 503,
+      "lut": 16059,
+      "ff": 4218,
+      "dsp": 256,
+      "wns_ns": -7.549,
+      "tns_ns": -474.589,
+      "setup_failing_endpoints": 93,
+      "worst_data_path_ns": 9.484,
+      "worst_logic_levels": 39,
+      "root_cause": "Multiplier, reduction and postprocess are not separated by arithmetic pipeline registers."
+    },
+    "lfnst_engine_isolation": {
+      "status": "SYNTHESIS_COMPLETED_TIMING_FAIL",
+      "elapsed_seconds": 73,
+      "lut": 4641,
+      "ff": 1424,
+      "dsp": 64,
+      "wns_ns": -1.891,
+      "tns_ns": -2273.194,
+      "setup_failing_endpoints": 2624
+    }
+  },
+  "source_hashes": {
+    "02_rtl/rtl/unified_p4_kernel.sv": "d0462619915806b77013272d4519bb522b4850dbc62157fe1d5f21e408af2af8",
+    "02_rtl/rtl/unified_its_wrapper.sv": "ef1fe1a1b5c9e9fec5514023af5f9b0ae68bde943be23df3dc4cf9b66227aa28",
+    "02_rtl/rtl/bounded_lfnst_engine.sv": "19fdbd89a728924b2e3009cded5b35d0234b9960da40cd10616016cd8a94473f",
+    "02_rtl/rtl/rom_coeffs.hex": "0063e92d212c6cd6116295928f1902d8c80b3335b36250d5ee18c13c0bde9d53",
+    "03_verification/vivado/step12f_unified_wrapper_2ns.xdc": "ddd2e18d4c530aac3b53bb0a084745af6e26565b640453bf9adbfefb8b2987a3"
+  },
+  "next_p1": [
+    "Replace runtime LFNST diagonal scan/address selection with bounded table-driven and registered request/response metadata.",
+    "Add a measured multiplier/reduction/postprocess pipeline to unified_p4_kernel while preserving ready-high group II=1 and vector II=N/4.",
+    "Pipeline bounded_lfnst_engine arithmetic using the frozen Oracle and handshake contract."
+  ],
+  "implementation_run": false,
+  "new_tag_created": false
+}

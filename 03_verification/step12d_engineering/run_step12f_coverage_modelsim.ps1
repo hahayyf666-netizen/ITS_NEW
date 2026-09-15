@@ -1,6 +1,7 @@
 param(
     [string]$WorkRoot = (Join-Path $env:TEMP ("step12f_coverage_" + (Get-Date -Format "yyyyMMdd_HHmmss"))),
-    [string]$EvidenceDir = ""
+    [string]$EvidenceDir = "",
+    [string]$KernelSource = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -28,6 +29,7 @@ if ($EvidenceDir) {
 }
 
 $Kernel = Join-Path $RepoRoot "02_rtl\rtl\unified_p4_kernel.sv"
+if ($KernelSource) { $Kernel = (Resolve-Path -LiteralPath $KernelSource).Path }
 $SimpleRam = Join-Path $RepoRoot "02_rtl\rtl\its_simple_ram.sv"
 $InputBank = Join-Path $RepoRoot "02_rtl\rtl\its_input_cache_bank.sv"
 $LfnstEngine = Join-Path $RepoRoot "02_rtl\rtl\bounded_lfnst_engine.sv"
