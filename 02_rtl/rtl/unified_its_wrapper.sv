@@ -133,6 +133,12 @@ module unified_its_wrapper #(
     logic [1:0] slot_ver   [0:1];
     logic [1:0] slot_set   [0:1];
     logic [1:0] slot_lfnst [0:1];
+    // Descriptor geometry is decoded once at bind time.  The live protocol
+    // and result-control paths use these registered values instead of a
+    // synthesized width*height multiplier.
+    logic [12:0] slot_point_count [0:1];
+    logic [11:0] slot_last_input_addr [0:1];
+    logic [11:0] slot_output_last_index [0:1];
 
     // Descriptor FIFO.  It may queue two descriptors, while fill_slot is the
     // only active data owner because the data interface has no TU identifier.
@@ -160,7 +166,7 @@ module unified_its_wrapper #(
     logic        kernel_run_q;
     typedef enum logic [3:0] {K_IDLE, K_V_START, K_V_FEED, K_V_DRAIN,
                               K_V_WAIT_COMMIT, K_H_START, K_H_FEED,
-                              K_H_DRAIN} kernel_phase_t;
+                              K_H_DRAIN, K_H_WAIT_COMMIT} kernel_phase_t;
     kernel_phase_t kernel_phase_q;
     logic [6:0] kernel_w_q, kernel_h_q, kernel_cut_w_q, kernel_cut_h_q;
     logic [6:0] kernel_vector_q;
@@ -195,6 +201,24 @@ module unified_its_wrapper #(
     logic [BANK_ADDR_W-1:0]           vwrite_cmd_addr_c;
     logic signed [15:0]               vwrite_cmd_data_c [0:3];
     logic                             vwrite_cmd_last_c;
+
+    // Horizontal result write boundary.  A result group is captured into a
+    // registered bank-local command and committed by ResultMemory on the
+    // following edge.  No live kernel counter reaches a RAM write port.
+    logic                             result_cmd_valid_q;
+    logic                             result_cmd_slot_q;
+    logic [3:0]                       result_cmd_bank_mask_q;
+    logic [BANK_ADDR_W-1:0]           result_cmd_addr_q;
+    logic signed [OUT_W-1:0]          result_cmd_data_q [0:3];
+    logic                             result_cmd_last_q;
+    logic                             result_last_commit_seen_q;
+    logic                             horizontal_result_fire;
+    logic                             result_cmd_commit;
+    logic [3:0]                       result_cmd_bank_mask_c;
+    logic [BANK_ADDR_W-1:0]           result_cmd_addr_c;
+    logic signed [OUT_W-1:0]          result_cmd_data_c [0:3];
+    logic                             result_cmd_last_c;
+    logic [BANK_ADDR_W-1:0]           result_write_beat_q;
     // Primary-transform cache reads are prefetched through a registered
     // response boundary before entering the unified kernel.  The request
     // group advances independently from the group currently being consumed,
@@ -342,6 +366,13 @@ module unified_its_wrapper #(
     logic        output_last_fire;
     wire         input_fire;
     wire         input_end_fire;
+    logic [12:0] bind_point_count_c;
+
+    // desc_rd_ptr selects only the descriptor being bound.  The expression is
+    // a table decode, not a multiply, and is registered into the slot below.
+    assign bind_point_count_c =
+        static_tu_point_count(desc_mem[desc_rd_ptr][6:0],
+                              desc_mem[desc_rd_ptr][13:7]);
 
     function automatic logic shape_supported(input logic [6:0] w,
                                              input logic [6:0] h);
@@ -405,14 +436,25 @@ module unified_its_wrapper #(
         end
     endfunction
 
-    function automatic logic [13:0] tu_points(input logic [6:0] w,
-                                              input logic [6:0] h);
-        logic [13:0] w_ext;
-        logic [13:0] h_ext;
+    // All supported dimensions are powers of two.  Keep the geometry as a
+    // constant decode table rather than a generic multiplier.  The 13-bit
+    // count is intentional: 64x64 is 4096, which does not fit in 12 bits.
+    function automatic logic [12:0] static_tu_point_count(input logic [6:0] w,
+                                                           input logic [6:0] h);
         begin
-            w_ext = {7'd0, w};
-            h_ext = {7'd0, h};
-            tu_points = w_ext * h_ext;
+            static_tu_point_count = 13'd0;
+            case ({w, h})
+                {7'd4,7'd4}:   static_tu_point_count = 13'd16;
+                {7'd4,7'd8}, {7'd8,7'd4}: static_tu_point_count = 13'd32;
+                {7'd4,7'd16}, {7'd8,7'd8}, {7'd16,7'd4}: static_tu_point_count = 13'd64;
+                {7'd4,7'd32}, {7'd8,7'd16}, {7'd16,7'd8}, {7'd32,7'd4}: static_tu_point_count = 13'd128;
+                {7'd4,7'd64}, {7'd8,7'd32}, {7'd16,7'd16}, {7'd32,7'd8}, {7'd64,7'd4}: static_tu_point_count = 13'd256;
+                {7'd8,7'd64}, {7'd16,7'd32}, {7'd32,7'd16}, {7'd64,7'd8}: static_tu_point_count = 13'd512;
+                {7'd16,7'd64}, {7'd32,7'd32}, {7'd64,7'd16}: static_tu_point_count = 13'd1024;
+                {7'd32,7'd64}, {7'd64,7'd32}: static_tu_point_count = 13'd2048;
+                {7'd64,7'd64}: static_tu_point_count = 13'd4096;
+                default: static_tu_point_count = 13'd0;
+            endcase
         end
     endfunction
 
@@ -1044,6 +1086,19 @@ module unified_its_wrapper #(
         if (vwrite_cmd_commit)
             assert (vwrite_cmd_bank_mask_q != 4'b0000)
                 else $error("P3 empty V-write command committed");
+        if (horizontal_result_fire) begin
+            assert (result_cmd_bank_mask_c == 4'b1111)
+                else $error("P6 result write missing bank: mask=%b",
+                            result_cmd_bank_mask_c);
+            // Equivalence-only check: the old two-dimensional expression is
+            // retained here under simulation, but never drives a RAM port.
+            assert (result_cmd_addr_c ==
+                    (kernel_vector_q * (kernel_w_q >> 2) + kernel_group_q))
+                else $error("P6 result beat address mismatch");
+        end
+        if (result_cmd_commit)
+            assert (result_cmd_bank_mask_q != 4'b0000)
+                else $error("P6 empty result write command committed");
     end
 `endif
 
@@ -1138,18 +1193,49 @@ module unified_its_wrapper #(
                 tmp_rd_addr[cmd_bank_i] = kernel_h_rd_addr_q[cmd_bank_i];
         end
 
-        if (kernel_run_q && (kernel_phase_q == K_H_DRAIN) && kernel_out_valid) begin
+        // ResultMemory writes are driven only by the registered command below.
+        // The live horizontal counters therefore cannot reach a distributed
+        // RAM write-enable/address endpoint in this timing interval.
+        if (result_cmd_valid_q) begin
+            result_wr_en[result_cmd_slot_q][0] = result_cmd_bank_mask_q[0];
+            result_wr_en[result_cmd_slot_q][1] = result_cmd_bank_mask_q[1];
+            result_wr_en[result_cmd_slot_q][2] = result_cmd_bank_mask_q[2];
+            result_wr_en[result_cmd_slot_q][3] = result_cmd_bank_mask_q[3];
             for (cmd_bank_i = 0; cmd_bank_i < 4; cmd_bank_i = cmd_bank_i + 1) begin
-                if (kernel_group_q * 4 + cmd_bank_i < kernel_w_q) begin
-                    result_wr_en[compute_slot_q][cmd_bank_i] = 1'b1;
-                    result_wr_addr[compute_slot_q][cmd_bank_i] =
-                        kernel_vector_q * (kernel_w_q >> 2) + kernel_group_q;
-                    result_wr_data[compute_slot_q][cmd_bank_i] =
-                        final_adapter($signed(kernel_out_data[cmd_bank_i*16 +: 16]));
-                end
+                result_wr_addr[result_cmd_slot_q][cmd_bank_i] = result_cmd_addr_q;
+                result_wr_data[result_cmd_slot_q][cmd_bank_i] = result_cmd_data_q[cmd_bank_i];
             end
         end
     end
+
+    // Capture one horizontal result group per cycle.  Legal widths are
+    // multiples of four, so each accepted group writes exactly one word in
+    // every physical bank.  The monotonically increasing beat counter is the
+    // raster-order local address; it replaces the live vector*groups+group
+    // expression on the physical RAM path.
+    integer result_gen_bank_i;
+    always_comb begin : result_command_generate
+        horizontal_result_fire = kernel_run_q &&
+                                 (kernel_phase_q == K_H_DRAIN) &&
+                                 kernel_out_valid && kernel_out_req;
+        result_cmd_bank_mask_c = 4'b0000;
+        result_cmd_addr_c = result_write_beat_q;
+        result_cmd_last_c = horizontal_result_fire &&
+                            (result_write_beat_q ==
+                             slot_output_last_index[compute_slot_q]);
+        for (result_gen_bank_i = 0; result_gen_bank_i < 4;
+             result_gen_bank_i = result_gen_bank_i + 1)
+            result_cmd_data_c[result_gen_bank_i] = '0;
+        if (horizontal_result_fire) begin
+            result_cmd_bank_mask_c = 4'b1111;
+            for (result_gen_bank_i = 0; result_gen_bank_i < 4;
+                 result_gen_bank_i = result_gen_bank_i + 1)
+                result_cmd_data_c[result_gen_bank_i] =
+                    final_adapter($signed(kernel_out_data[result_gen_bank_i*16 +: 16]));
+        end
+    end
+
+    assign result_cmd_commit = result_cmd_valid_q;
 
     integer reset_i, lfnst_grid_i;
     integer kernel_capture_lane_i;
@@ -1187,6 +1273,16 @@ module unified_its_wrapper #(
             for (kernel_capture_lane_i = 0; kernel_capture_lane_i < 4;
                  kernel_capture_lane_i = kernel_capture_lane_i + 1)
                 vwrite_cmd_data_q[kernel_capture_lane_i] <= '0;
+            result_cmd_valid_q <= 1'b0;
+            result_cmd_slot_q <= 1'b0;
+            result_cmd_bank_mask_q <= 4'b0000;
+            result_cmd_addr_q <= '0;
+            result_cmd_last_q <= 1'b0;
+            result_last_commit_seen_q <= 1'b0;
+            result_write_beat_q <= '0;
+            for (kernel_capture_lane_i = 0; kernel_capture_lane_i < 4;
+                 kernel_capture_lane_i = kernel_capture_lane_i + 1)
+                result_cmd_data_q[kernel_capture_lane_i] <= '0;
             kernel_rd_req_pending_q <= 1'b0;
             kernel_rd_req_group_q <= 5'd0;
             kernel_rd_req_vector_q <= 7'd0;
@@ -1258,6 +1354,9 @@ module unified_its_wrapper #(
                 slot_ver[reset_i]    <= 2'd0;
                 slot_set[reset_i]    <= 2'd0;
                 slot_lfnst[reset_i]  <= 2'd0;
+                slot_point_count[reset_i] <= 13'd0;
+                slot_last_input_addr[reset_i] <= 12'd0;
+                slot_output_last_index[reset_i] <= 12'd0;
             end
             for (lfnst_grid_i = 0; lfnst_grid_i < 64; lfnst_grid_i = lfnst_grid_i + 1) begin
                 lfnst_grid[lfnst_grid_i] <= '0;
@@ -1291,6 +1390,35 @@ module unified_its_wrapper #(
             end
             if (compute_valid)
                 vwrite_last_commit_seen_q <= 1'b0;
+
+            // P6 horizontal result-write command pipeline.  The registered
+            // command is committed by ResultMemory on this edge while a new
+            // horizontal result may be captured for the next edge, preserving
+            // one accepted result group per cycle.
+            if (result_cmd_commit && result_cmd_last_q)
+                result_last_commit_seen_q <= 1'b1;
+            if (horizontal_result_fire) begin
+                result_cmd_valid_q <= 1'b1;
+                result_cmd_slot_q <= compute_slot_q;
+                result_cmd_bank_mask_q <= result_cmd_bank_mask_c;
+                result_cmd_addr_q <= result_cmd_addr_c;
+                result_cmd_last_q <= result_cmd_last_c;
+                for (kernel_capture_lane_i = 0;
+                     kernel_capture_lane_i < 4;
+                     kernel_capture_lane_i = kernel_capture_lane_i + 1)
+                    result_cmd_data_q[kernel_capture_lane_i] <=
+                        result_cmd_data_c[kernel_capture_lane_i];
+                result_write_beat_q <= result_write_beat_q + 1'b1;
+            end else begin
+                result_cmd_valid_q <= 1'b0;
+                result_cmd_bank_mask_q <= 4'b0000;
+                result_cmd_addr_q <= '0;
+                result_cmd_last_q <= 1'b0;
+            end
+            if (compute_valid) begin
+                result_last_commit_seen_q <= 1'b0;
+                result_write_beat_q <= '0;
+            end
 
             // Primary vertical reads use a raw-bank register followed by a
             // packed response register.  The response is held until the
@@ -1557,8 +1685,7 @@ module unified_its_wrapper #(
             if (it_info_vld && (desc_count == 2'd2) && !bind_event)
                 protocol_error <= 1'b1;
             if (input_fire &&
-                ({2'd0, it_data_addr} >=
-                 tu_points(slot_width[fill_slot], slot_height[fill_slot])))
+                (it_data_addr > slot_last_input_addr[fill_slot]))
                 protocol_error <= 1'b1;
 
             if (desc_push) begin
@@ -1573,6 +1700,10 @@ module unified_its_wrapper #(
                 slot_ver[bind_slot]    <= desc_mem[desc_rd_ptr][17:16];
                 slot_set[bind_slot]    <= desc_mem[desc_rd_ptr][19:18];
                 slot_lfnst[bind_slot]  <= desc_mem[desc_rd_ptr][21:20];
+                slot_point_count[bind_slot] <= bind_point_count_c;
+                slot_last_input_addr[bind_slot] <= bind_point_count_c[11:0] - 1'b1;
+                slot_output_last_index[bind_slot] <=
+                    (bind_point_count_c >> 2) - 1'b1;
                 desc_rd_ptr <= ~desc_rd_ptr;
                 // Four valid tags per bank are scrubbed per cycle before the
                 // slot is exposed through it_data_in_req.  Data memories are
@@ -1609,9 +1740,7 @@ module unified_its_wrapper #(
                 slot_state[compute_slot] <= SLOT_OUT;
                 compute_slot_q <= compute_slot;
                 output_index  <= 12'd0;
-                output_last_index <=
-                    (tu_points(slot_width[compute_slot],
-                               slot_height[compute_slot]) >> 2) - 1'b1;
+                output_last_index <= slot_output_last_index[compute_slot];
                 // Seed the horizontal bank-local address sequencer once per
                 // admitted TU.  Row zero maps columns 0..3 to banks 0..3;
                 // subsequent rows are generated by the registered rotation
@@ -1850,16 +1979,28 @@ module unified_its_wrapper #(
                                 kernel_start_sent_q <= 1'b0;
                                 kernel_phase_q <= K_H_START;
                             end else begin
-                                kernel_run_q <= 1'b0;
-                                kernel_phase_q <= K_IDLE;
+                                // The final horizontal group may have just
+                                // filled result_cmd_q.  Keep the kernel
+                                // context alive until that command has really
+                                // committed to ResultMemory; output_active
+                                // must never expose a partially written TU.
+                                kernel_phase_q <= K_H_WAIT_COMMIT;
                                 kernel_rd_req_pending_q <= 1'b0;
                                 kernel_rd_resp_valid_q <= 1'b0;
                                 kernel_rd_raw_pending_q <= 1'b0;
                                 kernel_start_sent_q <= 1'b0;
-                                output_active <= 1'b1;
-                                output_slot <= compute_slot_q;
-                                output_index <= 12'd0;
                             end
+                        end
+                    end
+                    K_H_WAIT_COMMIT: begin
+                        if (result_last_commit_seen_q &&
+                            !result_cmd_valid_q) begin
+                            kernel_run_q <= 1'b0;
+                            kernel_phase_q <= K_IDLE;
+                            result_last_commit_seen_q <= 1'b0;
+                            output_active <= 1'b1;
+                            output_slot <= compute_slot_q;
+                            output_index <= 12'd0;
                         end
                     end
                     default: kernel_phase_q <= K_IDLE;

@@ -1,0 +1,54 @@
+{
+  "schema": "step12f.p6.path_classification.v1",
+  "source_report": "step12f_p6_synth/report_timing_worst100_postsynth.rpt",
+  "status": "P6_STRUCTURAL_TARGET_EFFECTIVE_TIMING_STOP",
+  "top100_count": 100,
+  "families": [
+    {
+      "id": "kernel_stage_to_phase_control",
+      "top100_endpoints": 4,
+      "worst_slack_ns": -0.507,
+      "slack_bucket": "<=-0.30",
+      "representative": "kernel_stage_q_reg/C -> kernel_phase_q_reg[*]/CE",
+      "data_delay_ns": 2.402,
+      "routing_fraction": 0.77186,
+      "logic_levels": 9
+    },
+    {
+      "id": "kernel_stage_to_read_request_control",
+      "top100_endpoints": 5,
+      "worst_slack_ns": -0.369,
+      "slack_bucket": "<=-0.30",
+      "representative": "kernel_stage_q_reg/C -> kernel_rd_req_group_q_reg[*]/CE"
+    },
+    {
+      "id": "coefficient_register_to_product_register",
+      "top100_endpoints": 91,
+      "worst_slack_ns": -0.447,
+      "slack_bucket": "<=-0.30",
+      "representative": "s0_coeff_q_reg[*]/C -> product_q_reg[*]/D",
+      "data_delay_ns": 2.428,
+      "logic_delay_ns": 1.719,
+      "routing_delay_ns": 0.709,
+      "logic_levels": 8,
+      "note": "DSP multiply/output path remains unregistered within the cycle"
+    }
+  ],
+  "result_memory_target": {
+    "worst100_presence": 0,
+    "kernel_vector_to_result_we": "NO_TIMING_PATHS_FOUND",
+    "kernel_group_to_result_we": "NO_TIMING_PATHS_FOUND",
+    "kernel_phase_to_result_we": "NO_TIMING_PATHS_FOUND",
+    "registered_result_command_to_result_we_slack_ns": 0.883
+  },
+  "global": {
+    "setup_wns_ns": -0.507,
+    "setup_tns_ns": -1828.651,
+    "setup_failing_endpoints": 12319,
+    "hold_whs_ns": -0.076,
+    "hold_ths_ns": -3.372,
+    "hold_failing_endpoints": 46,
+    "route_run": false,
+    "next_scope": "P4 arithmetic/product pipeline and kernel control only; no ResultMemory rework"
+  }
+}
