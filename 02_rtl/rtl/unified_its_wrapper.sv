@@ -185,10 +185,53 @@ module unified_its_wrapper #(
     logic [6:0] kernel_rd_req_vector_q;
     logic signed [63:0] kernel_rd_resp_data_q;
     logic       kernel_rd_resp_valid_q;
+    // The cache bank outputs are sampled before the lane packing/validity
+    // mux.  This keeps the physical RAM read path separate from the small
+    // four-lane reorder and also prevents the active-height compare from
+    // reaching the RAM response register.
+    logic signed [63:0] kernel_rd_raw_data_q;
+    logic [3:0]         kernel_rd_raw_valid_q;
+    logic               kernel_rd_raw_pending_q;
+    logic [4:0]         kernel_rd_raw_group_q;
+    logic [6:0]         kernel_rd_raw_vector_q;
     logic       kernel_start_sent_q;
     logic       kernel_group_accept;
     logic signed [63:0] kernel_rd_data_comb;
     logic               kernel_rd_valid_comb;
+    logic               kernel_rd_resp_slot_ready;
+    logic               kernel_rd_raw_to_resp;
+    logic               kernel_rd_raw_capture;
+
+    // Horizontal intermediate reads use a bank-local address register and a
+    // response register as well.  The request address is generated from the
+    // current row/group metadata and held for one cycle before the RAM output
+    // is sampled, keeping kernel_w_q and the dynamic bank mux out of the RAM
+    // to kernel input timing path.
+    logic [BANK_ADDR_W-1:0] kernel_h_rd_addr_q [0:3];
+    logic [BANK_ADDR_W-1:0] kernel_h_rd_addr_next_c [0:3];
+    logic [BANK_ADDR_W-1:0] kernel_h_rd_addr_advance_c [0:3];
+    logic                   kernel_h_rd_pending_q;
+    logic [4:0]             kernel_h_rd_group_q;
+    logic [6:0]             kernel_h_rd_vector_q;
+    logic signed [63:0]     kernel_h_rd_data_q;
+    logic                   kernel_h_rd_raw_pending_q;
+    logic [4:0]             kernel_h_rd_raw_group_q;
+    logic [6:0]             kernel_h_rd_raw_vector_q;
+    logic                   kernel_h_rd_capture;
+    logic                   kernel_h_rd_consume;
+    logic [4:0]             kernel_h_rd_next_group;
+    integer                 kernel_h_addr_i;
+    integer                 kernel_h_addr_row_i;
+    integer                 kernel_h_addr_col_i;
+    integer                 kernel_h_addr_bank_i;
+    integer                 kernel_h_addr_local_i;
+    integer                 kernel_h_addr_group_i;
+    integer                 kernel_h_addr_advance_col_i;
+    integer                 kernel_h_addr_advance_bank_i;
+    integer                 kernel_h_addr_advance_local_i;
+    integer                 kernel_h_capture_bank_i;
+    integer                 kernel_h_seq_addr_i;
+    integer                 kernel_h_seq_capture_bank_i;
 
     logic       lfnst_run_q;
     logic       lfnst_start_q;
@@ -693,28 +736,106 @@ module unified_its_wrapper #(
         end
     end
 
-    // The primary vertical transform consumes a registered cache response,
-    // rather than the raw asynchronous cache output.  The request metadata
-    // selects one four-lane group; invalid/sparse lanes are represented as
-    // zero data while the response-valid bit still advances the group so a
-    // completely sparse group is not dropped.
+    // The primary vertical transform consumes a two-stage cache response.
+    // First, all four physical bank outputs are sampled without a dynamic
+    // lane mux.  The following stage performs only the bounded 4x4 lane
+    // reorder and active-height masking.  Thus the cache RAM output is not
+    // combined with the row-range/arithmetic cone in one timing interval.
     integer kernel_rd_lane_i;
     integer kernel_rd_row_i;
     integer kernel_rd_bank_i;
     always_comb begin : kernel_rd_data_comb_block
         kernel_rd_data_comb = '0;
-        kernel_rd_valid_comb = kernel_rd_req_pending_q;
+        kernel_rd_valid_comb = kernel_rd_raw_pending_q;
         for (kernel_rd_lane_i = 0; kernel_rd_lane_i < 4;
              kernel_rd_lane_i = kernel_rd_lane_i + 1) begin
-            kernel_rd_row_i = kernel_rd_req_group_q * 4 + kernel_rd_lane_i;
-            if ((kernel_rd_row_i < kernel_cut_h_q) && kernel_rd_req_pending_q) begin
+            kernel_rd_row_i = kernel_rd_raw_group_q * 4 + kernel_rd_lane_i;
+            if (kernel_rd_raw_pending_q && (kernel_rd_row_i < kernel_cut_h_q)) begin
                 kernel_rd_bank_i = cache_bank_for(kernel_rd_row_i,
-                                                  kernel_rd_req_vector_q);
-                if (input_rd_valid[compute_slot_q][kernel_rd_bank_i])
+                                                  kernel_rd_raw_vector_q);
+                if (kernel_rd_raw_valid_q[kernel_rd_bank_i])
                     kernel_rd_data_comb[kernel_rd_lane_i*16 +: 16] =
-                        input_rd_data[compute_slot_q][kernel_rd_bank_i];
+                        kernel_rd_raw_data_q[kernel_rd_bank_i*16 +: 16];
             end
         end
+    end
+
+    // Generate horizontal intermediate read addresses from the request
+    // metadata.  These values are captured into kernel_h_rd_addr_q at the
+    // request edge; tmp RAM outputs therefore cannot see kernel_w_q directly
+    // in the same timing interval.
+    always_comb begin : kernel_h_rd_addr_comb
+        for (kernel_h_addr_i = 0; kernel_h_addr_i < 4;
+             kernel_h_addr_i = kernel_h_addr_i + 1)
+            kernel_h_rd_addr_next_c[kernel_h_addr_i] = '0;
+        for (kernel_h_addr_i = 0; kernel_h_addr_i < 4;
+             kernel_h_addr_i = kernel_h_addr_i + 1)
+            kernel_h_rd_addr_advance_c[kernel_h_addr_i] = '0;
+        if (kernel_run_q && kernel_stage_q) begin
+            for (kernel_h_addr_i = 0; kernel_h_addr_i < 4;
+                 kernel_h_addr_i = kernel_h_addr_i + 1) begin
+                // At the start of a new horizontal row, the registered
+                // request metadata still belongs to the previous row.  Use
+                // the live row and group-zero only for this initial address
+                // bundle; subsequent bundles use the registered request
+                // metadata captured at the preceding edge.
+                if ((kernel_phase_q == K_H_START) &&
+                    !kernel_h_rd_pending_q &&
+                    !kernel_h_rd_raw_pending_q) begin
+                    kernel_h_addr_row_i = kernel_vector_q;
+                    kernel_h_addr_group_i = 0;
+                end else begin
+                    kernel_h_addr_row_i = kernel_h_rd_vector_q;
+                    kernel_h_addr_group_i = kernel_h_rd_group_q;
+                end
+                kernel_h_addr_col_i = kernel_h_addr_group_i * 4 +
+                                      kernel_h_addr_i;
+                kernel_h_addr_bank_i = tmp_bank_for(kernel_h_addr_row_i,
+                                                     kernel_h_addr_col_i);
+                kernel_h_addr_local_i = tmp_local_for(kernel_h_addr_row_i,
+                                                       kernel_h_addr_col_i,
+                                                       kernel_w_q);
+                kernel_h_rd_addr_next_c[kernel_h_addr_bank_i] =
+                    kernel_h_addr_local_i[BANK_ADDR_W-1:0];
+
+                kernel_h_addr_advance_col_i =
+                    (kernel_h_rd_group_q + 1'b1) * 4 + kernel_h_addr_i;
+                kernel_h_addr_advance_bank_i = tmp_bank_for(
+                    kernel_h_addr_row_i, kernel_h_addr_advance_col_i);
+                kernel_h_addr_advance_local_i = tmp_local_for(
+                    kernel_h_addr_row_i, kernel_h_addr_advance_col_i,
+                    kernel_w_q);
+                kernel_h_rd_addr_advance_c[kernel_h_addr_advance_bank_i] =
+                    kernel_h_addr_advance_local_i[BANK_ADDR_W-1:0];
+            end
+        end
+    end
+
+    // The horizontal response slot is replaced on the same edge on which the
+    // kernel consumes it.  This is an elastic one-entry response boundary:
+    // after the initial request/read fill it sustains one group per cycle.
+    always_comb begin
+        kernel_h_rd_consume = kernel_h_rd_raw_pending_q &&
+                              kernel_stage_q &&
+                              ((kernel_phase_q == K_H_START) ||
+                               (kernel_phase_q == K_H_FEED)) &&
+                              kernel_in_req;
+        kernel_h_rd_capture = kernel_h_rd_pending_q &&
+                              (!kernel_h_rd_raw_pending_q ||
+                               kernel_h_rd_consume);
+        kernel_h_rd_next_group = kernel_h_rd_group_q + 1'b1;
+    end
+
+    // A response entry can be replaced on the same edge on which the kernel
+    // accepts it.  The raw bank-response stage follows the same elastic rule,
+    // allowing one request and one response to advance every cycle after the
+    // initial two-edge fill.
+    always_comb begin
+        kernel_rd_resp_slot_ready = !kernel_rd_resp_valid_q || kernel_group_accept;
+        kernel_rd_raw_to_resp = kernel_rd_raw_pending_q && kernel_rd_resp_slot_ready;
+        kernel_rd_raw_capture = kernel_run_q && !kernel_stage_q && !lfnst_case_q &&
+                                kernel_rd_req_pending_q &&
+                                (!kernel_rd_raw_pending_q || kernel_rd_resp_slot_ready);
     end
 
     always_comb begin : lfnst_gather_data_comb
@@ -753,21 +874,30 @@ module unified_its_wrapper #(
     integer kernel_lane_i;
     integer kernel_sample_index_i;
     always_comb begin
-        kernel_start     = ((kernel_phase_q == K_V_START) ||
-                            (kernel_phase_q == K_H_START)) &&
-                           !kernel_start_sent_q;
+        kernel_start     = ((kernel_phase_q == K_V_START) &&
+                            !kernel_start_sent_q) ||
+                           ((kernel_phase_q == K_H_START) &&
+                            !kernel_start_sent_q &&
+                            kernel_h_rd_raw_pending_q);
         if (!kernel_stage_q && !lfnst_case_q)
             kernel_in_valid = ((kernel_phase_q == K_V_START) ||
                                (kernel_phase_q == K_V_FEED)) &&
                               kernel_rd_resp_valid_q;
+        else if (kernel_stage_q)
+            kernel_in_valid = ((kernel_phase_q == K_H_START) ||
+                               (kernel_phase_q == K_H_FEED)) &&
+                              kernel_h_rd_raw_pending_q;
         else
             kernel_in_valid = kernel_start ||
-                              (kernel_phase_q == K_V_FEED) ||
-                              (kernel_phase_q == K_H_FEED);
+                              (kernel_phase_q == K_V_FEED);
         kernel_in_data = '0;
         for (kernel_lane_i = 0; kernel_lane_i < 4;
              kernel_lane_i = kernel_lane_i + 1) begin
-            kernel_sample_index_i = kernel_group_q * 4 + kernel_lane_i;
+            if (kernel_stage_q)
+                kernel_sample_index_i = kernel_h_rd_raw_group_q * 4 +
+                                        kernel_lane_i;
+            else
+                kernel_sample_index_i = kernel_group_q * 4 + kernel_lane_i;
             if (kernel_in_valid && !kernel_stage_q) begin
                 if (kernel_sample_index_i < kernel_cut_h_q) begin
                     if (lfnst_case_q) begin
@@ -780,12 +910,18 @@ module unified_its_wrapper #(
                         kernel_in_data[kernel_lane_i*16 +: 16] =
                             kernel_rd_resp_data_q[kernel_lane_i*16 +: 16];
                 end
-            end else if (kernel_in_valid) begin
+            end else if (kernel_in_valid && kernel_stage_q) begin
+                // The vertical transform writes only its transform-support
+                // cut.  Horizontal reads outside that cut must be treated as
+                // zero rather than exposing stale words left in the
+                // generation-tagged intermediate RAM.  This is especially
+                // important for DST7/DCT8-32, whose support is 16.
                 if ((kernel_sample_index_i < kernel_cut_w_q) &&
-                    (kernel_vector_q < kernel_cut_h_q))
+                    (kernel_h_rd_raw_vector_q < kernel_cut_h_q))
                     kernel_in_data[kernel_lane_i*16 +: 16] =
-                        tmp_rd_data[tmp_bank_for(kernel_vector_q,
-                                                 kernel_sample_index_i)];
+                        kernel_h_rd_data_q[
+                            tmp_bank_for(kernel_h_rd_raw_vector_q,
+                                         kernel_sample_index_i)*16 +: 16];
             end
         end
     end
@@ -896,15 +1032,13 @@ module unified_its_wrapper #(
                         $signed(kernel_out_data[cmd_bank_i*16 +: 16]);
                 end
             end
-        end else if (kernel_run_q && kernel_stage_q && kernel_in_valid) begin
-            // Horizontal input group reads the four words written by the
-            // corresponding vertical group.
-            for (cmd_bank_i = 0; cmd_bank_i < 4; cmd_bank_i = cmd_bank_i + 1) begin
-                input_cmd_row_i = kernel_vector_q;
-                input_cmd_col_i = kernel_group_q * 4 + cmd_bank_i;
-                tmp_rd_addr[tmp_bank_for(input_cmd_row_i, input_cmd_col_i)] =
-                    tmp_local_for(input_cmd_row_i, input_cmd_col_i, kernel_w_q);
-            end
+        end else if (kernel_run_q && kernel_stage_q &&
+                     kernel_h_rd_pending_q) begin
+            // Horizontal input groups use a registered bank-local request.
+            // The intermediate RAM address no longer depends combinationally
+            // on kernel_w_q or the live group counter.
+            for (cmd_bank_i = 0; cmd_bank_i < 4; cmd_bank_i = cmd_bank_i + 1)
+                tmp_rd_addr[cmd_bank_i] = kernel_h_rd_addr_q[cmd_bank_i];
         end
 
         if (kernel_run_q && (kernel_phase_q == K_H_DRAIN) && kernel_out_valid) begin
@@ -953,6 +1087,21 @@ module unified_its_wrapper #(
             kernel_rd_req_vector_q <= 7'd0;
             kernel_rd_resp_data_q <= '0;
             kernel_rd_resp_valid_q <= 1'b0;
+            kernel_rd_raw_data_q <= '0;
+            kernel_rd_raw_valid_q <= '0;
+            kernel_rd_raw_pending_q <= 1'b0;
+            kernel_rd_raw_group_q <= 5'd0;
+            kernel_rd_raw_vector_q <= 7'd0;
+            kernel_h_rd_pending_q <= 1'b0;
+            kernel_h_rd_group_q <= 5'd0;
+            kernel_h_rd_vector_q <= 7'd0;
+            kernel_h_rd_data_q <= '0;
+            kernel_h_rd_raw_pending_q <= 1'b0;
+            kernel_h_rd_raw_group_q <= 5'd0;
+            kernel_h_rd_raw_vector_q <= 7'd0;
+            for (kernel_h_seq_addr_i = 0; kernel_h_seq_addr_i < 4;
+                 kernel_h_seq_addr_i = kernel_h_seq_addr_i + 1)
+                kernel_h_rd_addr_q[kernel_h_seq_addr_i] <= '0;
             kernel_start_sent_q <= 1'b0;
             lfnst_run_q <= 1'b0;
             lfnst_case_q <= 1'b0;
@@ -1002,29 +1151,96 @@ module unified_its_wrapper #(
             // edge, after compute_slot_q and its descriptor metadata settle.
             lfnst_start_q <= 1'b0;
 
-            // Primary vertical reads use a one-entry response register.  A
-            // response is held until the kernel accepts it; when acceptance
-            // and the next cache response coincide, the entry is replaced on
-            // the same edge, preserving one group per cycle after the
-            // initial request boundary.
+            // Primary vertical reads use a raw-bank register followed by a
+            // packed response register.  The response is held until the
+            // kernel accepts it; both stages can advance on the same edge, so
+            // the steady-state group cadence remains one group per cycle.
             if (kernel_start)
                 kernel_start_sent_q <= 1'b1;
             if (!kernel_run_q || kernel_stage_q || lfnst_case_q) begin
                 kernel_rd_req_pending_q <= 1'b0;
                 kernel_rd_resp_valid_q <= 1'b0;
+                kernel_rd_raw_pending_q <= 1'b0;
             end else begin
-                if (kernel_group_accept)
-                    kernel_rd_resp_valid_q <= 1'b0;
-                if (kernel_rd_req_pending_q &&
-                    (!kernel_rd_resp_valid_q || kernel_group_accept)) begin
+                if (kernel_rd_raw_to_resp) begin
                     kernel_rd_resp_data_q <= kernel_rd_data_comb;
                     kernel_rd_resp_valid_q <= kernel_rd_valid_comb;
+                end else if (kernel_group_accept) begin
+                    kernel_rd_resp_valid_q <= 1'b0;
+                end
+
+                if (kernel_rd_raw_capture) begin
+                    for (kernel_capture_lane_i = 0;
+                         kernel_capture_lane_i < 4;
+                         kernel_capture_lane_i = kernel_capture_lane_i + 1) begin
+                        kernel_rd_raw_data_q[kernel_capture_lane_i*16 +: 16] <=
+                            input_rd_data[compute_slot_q][kernel_capture_lane_i];
+                        kernel_rd_raw_valid_q[kernel_capture_lane_i] <=
+                            input_rd_valid[compute_slot_q][kernel_capture_lane_i];
+                    end
+                    kernel_rd_raw_pending_q <= 1'b1;
+                    kernel_rd_raw_group_q <= kernel_rd_req_group_q;
+                    kernel_rd_raw_vector_q <= kernel_rd_req_vector_q;
                     if (kernel_rd_req_group_q ==
                         ((kernel_cut_h_q >> 2) - 1'b1)) begin
                         kernel_rd_req_pending_q <= 1'b0;
                     end else begin
                         kernel_rd_req_group_q <= kernel_rd_req_group_q + 1'b1;
                     end
+                end else if (kernel_rd_raw_to_resp) begin
+                    kernel_rd_raw_pending_q <= 1'b0;
+                end
+            end
+
+            // Horizontal intermediate reads have a registered request
+            // address followed by a bank-response register.  A response can
+            // be replaced on the same edge on which the kernel accepts the
+            // previous group, so the steady-state group cadence remains one.
+            if (!kernel_run_q || !kernel_stage_q ||
+                ((kernel_phase_q != K_H_START) &&
+                 (kernel_phase_q != K_H_FEED))) begin
+                kernel_h_rd_pending_q <= 1'b0;
+                kernel_h_rd_raw_pending_q <= 1'b0;
+            end else begin
+                // Start a new horizontal row by issuing group zero.  The
+                // address is captured here; tmp RAM is read during the next
+                // cycle and sampled into the response register afterwards.
+                if ((kernel_phase_q == K_H_START) &&
+                    !kernel_h_rd_pending_q &&
+                    !kernel_h_rd_raw_pending_q) begin
+                    kernel_h_rd_group_q <= 5'd0;
+                    kernel_h_rd_vector_q <= kernel_vector_q;
+                    for (kernel_h_seq_addr_i = 0; kernel_h_seq_addr_i < 4;
+                         kernel_h_seq_addr_i = kernel_h_seq_addr_i + 1)
+                        kernel_h_rd_addr_q[kernel_h_seq_addr_i] <=
+                            kernel_h_rd_addr_next_c[kernel_h_seq_addr_i];
+                    kernel_h_rd_pending_q <= 1'b1;
+                end
+
+                if (kernel_h_rd_capture) begin
+                    for (kernel_h_seq_capture_bank_i = 0;
+                         kernel_h_seq_capture_bank_i < 4;
+                         kernel_h_seq_capture_bank_i =
+                             kernel_h_seq_capture_bank_i + 1)
+                        kernel_h_rd_data_q[kernel_h_seq_capture_bank_i*16 +: 16] <=
+                            tmp_rd_data[kernel_h_seq_capture_bank_i];
+                    kernel_h_rd_raw_group_q <= kernel_h_rd_group_q;
+                    kernel_h_rd_raw_vector_q <= kernel_h_rd_vector_q;
+                    kernel_h_rd_raw_pending_q <= 1'b1;
+
+                    if (kernel_h_rd_next_group < (kernel_w_q >> 2)) begin
+                        kernel_h_rd_group_q <= kernel_h_rd_next_group;
+                        kernel_h_rd_vector_q <= kernel_vector_q;
+                        for (kernel_h_seq_addr_i = 0; kernel_h_seq_addr_i < 4;
+                             kernel_h_seq_addr_i = kernel_h_seq_addr_i + 1)
+                            kernel_h_rd_addr_q[kernel_h_seq_addr_i] <=
+                                kernel_h_rd_addr_advance_c[kernel_h_seq_addr_i];
+                        kernel_h_rd_pending_q <= 1'b1;
+                    end else begin
+                        kernel_h_rd_pending_q <= 1'b0;
+                    end
+                end else if (kernel_h_rd_consume) begin
+                    kernel_h_rd_raw_pending_q <= 1'b0;
                 end
             end
 
@@ -1203,6 +1419,7 @@ module unified_its_wrapper #(
                     kernel_rd_req_group_q <= 5'd0;
                     kernel_rd_req_vector_q <= 7'd0;
                     kernel_rd_resp_valid_q <= 1'b0;
+                    kernel_rd_raw_pending_q <= 1'b0;
                     kernel_start_sent_q <= 1'b0;
                     lfnst_case_q <= 1'b0;
                     output_active <= 1'b0;
@@ -1240,6 +1457,7 @@ module unified_its_wrapper #(
                     kernel_group_q <= 5'd0;
                     kernel_rd_req_pending_q <= 1'b0;
                     kernel_rd_resp_valid_q <= 1'b0;
+                    kernel_rd_raw_pending_q <= 1'b0;
                     kernel_start_sent_q <= 1'b0;
                     for (lfnst_grid_i = 0; lfnst_grid_i < 64;
                          lfnst_grid_i = lfnst_grid_i + 1) begin
@@ -1293,6 +1511,7 @@ module unified_its_wrapper #(
                     kernel_group_q <= 5'd0;
                     kernel_rd_req_pending_q <= 1'b0;
                     kernel_rd_resp_valid_q <= 1'b0;
+                    kernel_rd_raw_pending_q <= 1'b0;
                     kernel_start_sent_q <= 1'b0;
                 end
             end
@@ -1332,6 +1551,7 @@ module unified_its_wrapper #(
                                 kernel_rd_req_group_q <= 5'd0;
                                 kernel_rd_req_vector_q <= kernel_vector_q + 1'b1;
                                 kernel_rd_resp_valid_q <= 1'b0;
+                                kernel_rd_raw_pending_q <= 1'b0;
                                 kernel_start_sent_q <= 1'b0;
                                 kernel_phase_q <= K_V_START;
                             end else begin
@@ -1341,6 +1561,7 @@ module unified_its_wrapper #(
                                 kernel_stage_q <= 1'b1;
                                 kernel_rd_req_pending_q <= 1'b0;
                                 kernel_rd_resp_valid_q <= 1'b0;
+                                kernel_rd_raw_pending_q <= 1'b0;
                                 kernel_start_sent_q <= 1'b0;
                                 kernel_phase_q <= K_H_START;
                             end
@@ -1387,6 +1608,7 @@ module unified_its_wrapper #(
                                 kernel_phase_q <= K_IDLE;
                                 kernel_rd_req_pending_q <= 1'b0;
                                 kernel_rd_resp_valid_q <= 1'b0;
+                                kernel_rd_raw_pending_q <= 1'b0;
                                 kernel_start_sent_q <= 1'b0;
                                 output_active <= 1'b1;
                                 output_slot <= compute_slot_q;

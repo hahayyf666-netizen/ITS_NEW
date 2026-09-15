@@ -1,0 +1,57 @@
+{
+  "schema": "step12f.p2_h_response_pipeline.v1",
+  "status": "FUNCTIONAL_PASS_SYNTHESIS_TIMING_FAIL",
+  "base_commit": "4e0df36",
+  "scope": "H intermediate read response pipeline plus coefficient-bundle prefetch; no R4C or XDC changes",
+  "functional": {
+    "normal": "PASS",
+    "synthesis": "PASS",
+    "gate_b_numeric_cases": 156,
+    "gate_f_vector_ii_modes": 13,
+    "gate_c_numeric_cases": 369,
+    "gate_c_beats": 45636,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 258,
+    "evidence_dir": "p2_h_response_coverage_20260915_1220",
+    "coverage_manifest_sha256": "71E728245DC3503822BD041AF1B1CF56944E3D2EA755DFB563C27C3CC1CC7C8D"
+  },
+  "synthesis": {
+    "tool": "Vivado 2025.2",
+    "part": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0,
+    "elapsed_seconds": 283,
+    "peak_memory_mb": 3479.191,
+    "dsp": 316,
+    "lut": 38945,
+    "lut_logic": 33306,
+    "lutram": 5632,
+    "ff": 33443,
+    "bram": 0,
+    "uram": 0,
+    "setup_wns_ns": -1.232,
+    "setup_tns_ns": -9363.587,
+    "setup_failing_endpoints": 30045,
+    "hold_whs_ns": -0.076,
+    "hold_ths_ns": -3.402,
+    "hold_failing_endpoints": 49,
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "top_setup_family": "kernel_group_q -> intermediate RAM write-enable/address decode",
+    "evidence_dir": "p2_h_response_synth_20260915_1225",
+    "postsynth_dcp_sha256": "CC97011E00ED727089BE00B12810D91692085D98FFB0B1810A35A54234B176CE",
+    "timing_summary_sha256": "7D242B2E26356662A84AFA11B13E3F1F1E55EC64E5F9ACE7EE291BD16822516E",
+    "hold_summary_sha256": "0622E2DFD7611C689715532AB91AEA842A6550E1B890CD2C5D18FC8B4A85FA90"
+  },
+  "source_hashes": {
+    "unified_its_wrapper.sv": "DE7615A3E638618C3365912D96B142E1B7CCF95FFF52BEF5B154FFEBDAFE0F22",
+    "bounded_lfnst_engine.sv": "81CA1BEC7D4AC6D2B761ACA8A835CDA02CECB14F95C8F2E0EB07E5086D9EBB1D",
+    "unified_p4_kernel.sv": "4EDF2EFEAE670E5C7B47F52B9D842EECBB3F3B002A9BA13FE4274FF10BD2AD86"
+  },
+  "decision": {
+    "coverage_gate": "PASS",
+    "synthesis_gate": "PASS_COMPLETED",
+    "timing_gate": "FAIL",
+    "route_run": false,
+    "next": "retain evidence; do not enter route or claim Step12F physical closure"
+  }
+}

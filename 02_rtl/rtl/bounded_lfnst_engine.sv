@@ -60,7 +60,12 @@ module bounded_lfnst_engine #(
     logic signed [ACC_W-1:0] reduce_l4_q [0:3];
     logic signed [ACC_W-1:0] reduce_l5_q [0:3];
 
-    logic [6:0] bundle_addr;
+    // The coefficient ROM is read into a register before the product stage.
+    // Keeping the ROM select and the 64 DSP products in different cycles
+    // prevents issue_group_q from driving the full ROM+multiplication cone.
+    logic [1023:0] coeff_bundle_q;
+    logic [6:0]    coeff_fetch_addr_q;
+    logic          coeff_bundle_valid_q;
     logic signed [DATA_W+COEFF_W-1:0] products_c [0:63];
     logic signed [ACC_W-1:0] reduce_l1_c [0:31];
     logic signed [ACC_W-1:0] reduce_l2_c [0:15];
@@ -77,20 +82,30 @@ module bounded_lfnst_engine #(
     integer seq_i;
     integer seq_lane;
 
+    function automatic logic [6:0] bundle_base_for(
+        input logic       ntrs48_i,
+        input logic [1:0] set_i,
+        input logic [1:0] idx_i);
+        begin
+            if (!ntrs48_i)
+                bundle_base_for = (set_i * 7'd8) + ((idx_i - 1'b1) * 7'd4);
+            else
+                bundle_base_for = 7'd32 + (set_i * 7'd24) +
+                                  ((idx_i - 1'b1) * 7'd12);
+        end
+    endfunction
+
     initial $readmemh(COEFF_FILE, coeff_bundle_mem);
 
     always_comb begin
-        if (!ntrs48_q)
-            bundle_addr = (set_q * 7'd8) + ((idx_q - 1'b1) * 7'd4) + issue_group_q;
-        else
-            bundle_addr = 7'd32 + (set_q * 7'd24) +
-                          ((idx_q - 1'b1) * 7'd12) + issue_group_q;
         for (product_i = 0; product_i < 64; product_i = product_i + 1) begin
-            if (!ntrs48_q && nonzero8_q && ((product_i % 16) >= 8))
+            if (!coeff_bundle_valid_q)
+                products_c[product_i] = '0;
+            else if (!ntrs48_q && nonzero8_q && ((product_i % 16) >= 8))
                 products_c[product_i] = '0;
             else
                 products_c[product_i] =
-                    $signed(coeff_bundle_mem[bundle_addr][product_i*16 +: 16]) *
+                    $signed(coeff_bundle_q[product_i*16 +: 16]) *
                     $signed(input_terms_q[(product_i % 16)*DATA_W +: DATA_W]);
         end
     end
@@ -150,6 +165,9 @@ module bounded_lfnst_engine #(
             ntrs48_q <= 1'b0;
             nonzero8_q <= 1'b0;
             input_terms_q <= '0;
+            coeff_bundle_q <= '0;
+            coeff_fetch_addr_q <= 7'd0;
+            coeff_bundle_valid_q <= 1'b0;
             issue_group_q <= 4'd0;
             product_group_q <= 4'd0;
             product_valid_q <= 1'b0;
@@ -248,21 +266,35 @@ module bounded_lfnst_engine #(
                     ntrs48_q <= ntrs48;
                     nonzero8_q <= nonzero8;
                     input_terms_q <= input_terms;
+                    coeff_fetch_addr_q <= bundle_base_for(ntrs48, set_idx, lfnst_idx);
+                    coeff_bundle_valid_q <= 1'b0;
                     issue_group_q <= 4'd0;
                     product_valid_q <= 1'b0;
                 end
             end
 
             if (state_q == ST_RUN) begin
-                if (issue_group_q < (ntrs48_q ? 4'd12 : 4'd4)) begin
+                // Fill the registered coefficient bundle first.  Subsequent
+                // issue cycles prefetch the next sequential bundle while the
+                // current one is being multiplied, preserving issue II=1.
+                if (!coeff_bundle_valid_q) begin
+                    coeff_bundle_q <= coeff_bundle_mem[coeff_fetch_addr_q];
+                    coeff_fetch_addr_q <= coeff_fetch_addr_q + 1'b1;
+                    coeff_bundle_valid_q <= 1'b1;
+                end else if (issue_group_q < (ntrs48_q ? 4'd12 : 4'd4)) begin
                     for (seq_i = 0; seq_i < 64; seq_i = seq_i + 1)
                         products_q[seq_i] <= products_c[seq_i];
                     product_group_q <= issue_group_q;
                     product_last_q <= (issue_group_q == (ntrs48_q ? 4'd11 : 4'd3));
                     product_valid_q <= 1'b1;
+                    if (issue_group_q + 1'b1 < (ntrs48_q ? 4'd12 : 4'd4)) begin
+                        coeff_bundle_q <= coeff_bundle_mem[coeff_fetch_addr_q];
+                        coeff_fetch_addr_q <= coeff_fetch_addr_q + 1'b1;
+                    end
                     issue_group_q <= issue_group_q + 1'b1;
                 end else begin
                     state_q <= ST_IDLE;
+                    coeff_bundle_valid_q <= 1'b0;
                 end
             end
         end
