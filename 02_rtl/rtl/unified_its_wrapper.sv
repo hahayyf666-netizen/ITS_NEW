@@ -184,6 +184,15 @@ module unified_its_wrapper #(
     logic       kernel_busy;
     logic       kernel_error;
 
+    // P7: phase-entry context is registered once for each V/H pass.  The
+    // kernel no longer sees a live stage mux on transform/active/output size;
+    // its capacity and ready logic consume these stable fields instead.
+    logic       kernel_ctx_stage_q;
+    logic [6:0] kernel_ctx_transform_size_q;
+    logic [6:0] kernel_ctx_active_size_q;
+    logic [6:0] kernel_ctx_output_size_q;
+    logic [5:0] kernel_ctx_group_count_q;
+
     // Vertical result to intermediate-memory write boundary.  A command is
     // captured when a kernel result group is accepted and is committed by the
     // RAMs on the following edge.  The RAM write ports are driven only by
@@ -332,10 +341,11 @@ module unified_its_wrapper #(
     ) u_unified_p4_kernel (
         .clk(clk), .rst_n(rst_n), .start(kernel_start),
         .tr_type(kernel_type_q),
-        .transform_size(kernel_stage_q ? kernel_w_q : kernel_h_q),
-        .active_size(kernel_stage_q ? kernel_cut_w_q : kernel_cut_h_q),
-        .output_size(kernel_stage_q ? kernel_w_q : kernel_cut_h_q),
-        .stage_sel(kernel_stage_q), .in_valid(kernel_in_valid),
+        .transform_size(kernel_ctx_transform_size_q),
+        .active_size(kernel_ctx_active_size_q),
+        .output_size(kernel_ctx_output_size_q),
+        .output_group_count(kernel_ctx_group_count_q),
+        .stage_sel(kernel_ctx_stage_q), .in_valid(kernel_in_valid),
         .in_req(kernel_in_req), .in_data(kernel_in_data),
         .out_valid(kernel_out_valid), .out_req(kernel_out_req),
         .out_data(kernel_out_data), .done(kernel_done),
@@ -1265,6 +1275,11 @@ module unified_its_wrapper #(
             kernel_group_q <= 5'd0;
             kernel_type_q <= 2'd0;
             kernel_stage_q <= 1'b0;
+            kernel_ctx_stage_q <= 1'b0;
+            kernel_ctx_transform_size_q <= 7'd0;
+            kernel_ctx_active_size_q <= 7'd0;
+            kernel_ctx_output_size_q <= 7'd0;
+            kernel_ctx_group_count_q <= 6'd0;
             vwrite_cmd_valid_q <= 1'b0;
             vwrite_cmd_bank_mask_q <= 4'b0000;
             vwrite_cmd_addr_q <= '0;
@@ -1768,6 +1783,20 @@ module unified_its_wrapper #(
                                                      slot_width[compute_slot]);
                     kernel_cut_h_q <= kernel_cut_dim(slot_ver[compute_slot],
                                                      slot_height[compute_slot]);
+                    // Freeze the complete vertical kernel context at TU
+                    // admission.  The P4 ready/capacity path consumes the
+                    // predecoded group count rather than a live stage mux.
+                    kernel_ctx_stage_q <= 1'b0;
+                    kernel_ctx_transform_size_q <= slot_height[compute_slot];
+                    kernel_ctx_active_size_q <=
+                        kernel_cut_dim(slot_ver[compute_slot],
+                                       slot_height[compute_slot]);
+                    kernel_ctx_output_size_q <=
+                        kernel_cut_dim(slot_ver[compute_slot],
+                                       slot_height[compute_slot]);
+                    kernel_ctx_group_count_q <=
+                        kernel_cut_dim(slot_ver[compute_slot],
+                                       slot_height[compute_slot]) >> 2;
                     kernel_vector_q <= 7'd0;
                     kernel_group_q <= 5'd0;
                     kernel_type_q <= slot_ver[compute_slot];
@@ -1864,6 +1893,16 @@ module unified_its_wrapper #(
                     kernel_phase_q <= K_V_START;
                     kernel_type_q <= 2'd0;
                     kernel_stage_q <= 1'b0;
+                    // LFNST writeback is followed by the same DCT2
+                    // vertical pass as an LFNST-off transaction.  The
+                    // phase-entry context must be populated here as well;
+                    // otherwise the P7 context registers retain reset values
+                    // and the kernel sees an invalid zero-size configuration.
+                    kernel_ctx_stage_q <= 1'b0;
+                    kernel_ctx_transform_size_q <= kernel_h_q;
+                    kernel_ctx_active_size_q <= kernel_cut_h_q;
+                    kernel_ctx_output_size_q <= kernel_cut_h_q;
+                    kernel_ctx_group_count_q <= kernel_cut_h_q >> 2;
                     kernel_vector_q <= 7'd0;
                     kernel_group_q <= 5'd0;
                     kernel_rd_req_pending_q <= 1'b0;
@@ -1934,6 +1973,19 @@ module unified_its_wrapper #(
                             !vwrite_cmd_valid_q) begin
                             kernel_type_q <= slot_hor[compute_slot_q];
                             kernel_stage_q <= 1'b1;
+                            // Switch the kernel through a registered
+                            // phase-entry context.  H dimensions and group
+                            // count are stable for the entire H pass; no
+                            // kernel_stage ? V : H mux remains in the
+                            // ready/accept feedback cone.
+                            kernel_ctx_stage_q <= 1'b1;
+                            kernel_ctx_transform_size_q <=
+                                kernel_w_q;
+                            kernel_ctx_active_size_q <=
+                                kernel_cut_w_q;
+                            kernel_ctx_output_size_q <=
+                                kernel_w_q;
+                            kernel_ctx_group_count_q <= kernel_w_q >> 2;
                             kernel_rd_req_pending_q <= 1'b0;
                             kernel_rd_resp_valid_q <= 1'b0;
                             kernel_rd_raw_pending_q <= 1'b0;

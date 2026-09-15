@@ -10,6 +10,7 @@ module unified_p4_kernel_numeric_tb;
     logic [6:0] transform_size = '0;
     logic [6:0] active_size = '0;
     logic [6:0] output_size = '0;
+    logic [5:0] output_group_count;
     logic stage_sel = 1'b0;
     logic in_valid = 1'b0;
     logic in_req;
@@ -46,10 +47,12 @@ module unified_p4_kernel_numeric_tb;
 
     always #1 clk = ~clk;
 
+    assign output_group_count = output_size[6:2];
+
     unified_p4_kernel dut (
         .clk(clk), .rst_n(rst_n), .start(start), .tr_type(tr_type),
         .transform_size(transform_size), .active_size(active_size),
-        .output_size(output_size),
+        .output_size(output_size), .output_group_count(output_group_count),
         .stage_sel(stage_sel),
         .in_valid(in_valid), .in_req(in_req), .in_data(in_data),
         .out_valid(out_valid), .out_req(out_req), .out_data(out_data),

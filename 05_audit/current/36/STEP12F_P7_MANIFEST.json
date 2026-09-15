@@ -1,0 +1,229 @@
+{
+  "schema": "step12f.p7.manifest.v1",
+  "phase": "Step12F-P7 Unified P4 DSP Internal Pipeline + Wrapper/Kernel Control Boundary",
+  "status": "STOP_P1_POSTSYNTH_TIMING",
+  "base_commit": "687223736f0d018ce72fc6b2be16014d48a62a20",
+  "objective": "Shorten the unified P4 product path using DSP-internal pipeline registers and isolate wrapper/kernel phase context at a registered boundary without changing the external throughput or mathematical contract.",
+  "functional": {
+    "status": "PASS",
+    "simulator": "ModelSim SE-64 2020.4",
+    "normal": "PASS",
+    "SYNTHESIS": "PASS",
+    "gate_b_numeric_cases": 156,
+    "gate_c_tuples": 369,
+    "gate_c_beats_per_mode": 45636,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 258,
+    "p4_stage0_n4_vectors": 16,
+    "p4_stage0_descriptors": 16,
+    "p4_stage0_captures": 16,
+    "p4_stage0_releases": 16,
+    "vector_ii_modes": 13,
+    "group_ii": 1,
+    "p3_vwrite_contract": "PASS",
+    "all_gates": "PASS_IN_NORMAL_AND_SYNTHESIS"
+  },
+  "p7_objectives": {
+    "dsp_product_pipeline": {
+      "status": "APPLIED_EFFECTIVE_PARTIAL",
+      "changes": [
+        "data-only mul_a/mul_b/mul_m/product registers without asynchronous reset",
+        "separate resettable valid/metadata pipeline",
+        "zero inactive operands at registered Stage-0 boundary",
+        "balanced reduction and round/clip pipeline retained"
+      ],
+      "vivado_evidence": "DSP48E2 mappings report AREG/BREG/MREG/PREG absorption for the product pipeline",
+      "caveat": "s0_coeff-to-product is absent from top-100, but coefficient-specific targeted query is empty after synthesis trimming; this is not an all-path timing proof"
+    },
+    "wrapper_kernel_context_boundary": {
+      "status": "APPLIED_EFFECTIVE_PARTIAL",
+      "changes": [
+        "registered phase-entry transform/active/output size context",
+        "registered output group count supplied to kernel",
+        "LFNST completion populates the same context before vertical DCT2"
+      ],
+      "targeted_scheduler_to_descriptor_slack_ns": 0.627,
+      "residual_global_path": "kernel_ctx_group_count_q -> output_group_count -> kernel in_req -> kernel_phase_q CE"
+    },
+    "throughput_contract": {
+      "group_ii": 1,
+      "vector_ii": "N/4",
+      "n4_handoff": "PASS_16_CONTIGUOUS_VECTORS",
+      "external_protocol_changed": false
+    }
+  },
+  "fresh_synthesis": {
+    "status": "PASS_COMPLETED",
+    "tool": "Vivado 2025.2",
+    "device": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0,
+    "frequency_target_mhz": 500,
+    "synth_elapsed_sec": 445,
+    "peak_memory_mb": 4120.977,
+    "timing_gate": "FAIL",
+    "setup": {
+      "wns_ns": -0.335,
+      "tns_ns": -521.715,
+      "failing_endpoints": 4231
+    },
+    "hold": {
+      "whs_ns": -0.076,
+      "ths_ns": -3.388,
+      "failing_endpoints": 48
+    },
+    "resources": {
+      "clb_luts": 30173,
+      "logic_lut": 24534,
+      "lutram": 5639,
+      "distributed_ram_lut": 5632,
+      "shift_register_lut": 7,
+      "ff": 25118,
+      "carry8": 1621,
+      "f7": 1735,
+      "f8": 454,
+      "dsp48e2": 320,
+      "bram36": 0,
+      "bram18": 0,
+      "uram": 0
+    },
+    "memory_inference": {
+      "result_memory": "RAM64M8 distributed RAM",
+      "input_cache": "RAM64M8/RAM256X1D distributed RAM",
+      "intermediate": "RAM64M8 distributed RAM",
+      "bram_or_uram": "NONE"
+    },
+    "design_state": "Synthesized",
+    "route_run": false
+  },
+  "timing_path_families": {
+    "kernel_context_group_count_to_phase_control": {
+      "top100_endpoints": 4,
+      "worst_slack_ns": -0.335,
+      "data_delay_ns": 2.230,
+      "logic_delay_ns": 0.545,
+      "routing_delay_ns": 1.685,
+      "routing_fraction": 0.75561,
+      "logic_levels": 8,
+      "representative": "kernel_ctx_group_count_q_reg[1]/C -> kernel_phase_q_reg[0]/CE",
+      "interpretation": "remaining P1 kernel-control/capacity feedback cone"
+    },
+    "s6_shift_to_final_output_pack": {
+      "top100_endpoints": 42,
+      "worst_slack_ns": -0.286,
+      "data_delay_ns": 2.168,
+      "logic_delay_ns": 0.834,
+      "routing_delay_ns": 1.334,
+      "routing_fraction": 0.61531,
+      "logic_levels": 9,
+      "representative": "s6_shift_q_reg[2]/C -> pipe_out_data_q_reg[17]/S",
+      "interpretation": "remaining final round/clip/output packing family"
+    },
+    "dsp_product": {
+      "top100_presence": false,
+      "status": "NO_LONGER_TOP100_AFTER_PIPELINE",
+      "caveat": "absence from top-100 is not equivalent to all product paths meeting timing"
+    }
+  },
+  "hold": {
+    "status": "FAIL_SMALL_OOC_BOUNDARY_STYLE",
+    "representative": "input_port -> first command/data register",
+    "worst_slack_ns": -0.076,
+    "total_violation_ns": -3.388,
+    "failing_endpoints": 48,
+    "logic_levels": 0,
+    "data_path_delay_ns": 0.014,
+    "interpretation": "registered-neighbor OOC input_delay min/max=0 boundary behavior; no P7 RTL hold hack applied"
+  },
+  "constraints": {
+    "check_timing": "PASS_INTERNAL_COVERAGE",
+    "no_clock": 0,
+    "constant_clock": 0,
+    "unconstrained_internal_endpoints": 0,
+    "no_input_delay": 0,
+    "no_output_delay": 0,
+    "multiple_clock": 0,
+    "loops": 0,
+    "partial_input_delay": 0,
+    "partial_output_delay": 0,
+    "latch_loops": 0,
+    "timing_exceptions": "No valid timing exceptions found"
+  },
+  "drc": {
+    "design_state": "Synthesized",
+    "critical_warnings": 0,
+    "errors": 0,
+    "known_methodology_warnings": {
+      "DPIP-2": 128,
+      "DPOP-3": 32,
+      "DPOP-4": 64
+    },
+    "interpretation": "DSP pipelining methodology warnings; no synthesis functional/constraint error"
+  },
+  "scope": {
+    "rtl_changed": [
+      "02_rtl/rtl/unified_its_wrapper.sv",
+      "02_rtl/rtl/unified_p4_kernel.sv"
+    ],
+    "tb_port_updates": [
+      "03_verification/tb/unified_p4_coeff_layout_tb.sv",
+      "03_verification/tb/unified_p4_kernel_numeric_tb.sv",
+      "03_verification/tb/unified_p4_kernel_p4_tb.sv",
+      "03_verification/tb/unified_p4_kernel_throughput_full_tb.sv",
+      "03_verification/tb/unified_p4_kernel_throughput_tb.sv"
+    ],
+    "r4c_changed": false,
+    "xdc_changed": false,
+    "oracle_changed": false,
+    "profile_changed": false,
+    "v3_5_18_moved": false,
+    "route_run": false,
+    "new_tag": false
+  },
+  "decision": {
+    "functional": "PASS",
+    "p7_objective": "EFFECTIVE_PARTIAL",
+    "fresh_synthesis": "PASS_COMPLETED",
+    "physical_timing": "P1_STOP",
+    "route": "NOT_AUTHORIZED",
+    "tag": "NOT_CREATED",
+    "next": "Narrowly analyze the kernel context/capacity feedback and final round/clip output packing paths; do not modify ResultMemory, H-read, LFNST, R4C, XDC, Oracle, or v3.5-18 without new evidence."
+  },
+  "evidence": {
+    "coverage": "05_audit/current/36/step12f_p7_coverage/STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "synthesis_dir": "05_audit/current/36/step12f_p7_synth",
+    "targeted_dir": "05_audit/current/36/step12f_p7_targeted",
+    "targeted_summary": "05_audit/current/36/P7_TARGETED_TIMING.json",
+    "postsynth_checkpoint": "05_audit/current/36/step12f_p7_synth/step12f_unified_wrapper_postsynth.dcp",
+    "reports": [
+      "report_timing_summary_postsynth.rpt",
+      "report_timing_hold_summary_postsynth.rpt",
+      "report_timing_worst100_postsynth.rpt",
+      "report_hold_worst100_postsynth.rpt",
+      "report_utilization_postsynth.rpt",
+      "report_hierarchy_utilization_postsynth.rpt",
+      "report_high_fanout_postsynth.rpt",
+      "report_check_timing_postsynth.rpt",
+      "report_exceptions_postsynth.rpt",
+      "report_drc_postsynth.rpt",
+      "report_methodology_postsynth.rpt",
+      "vivado.log",
+      "vivado.jou"
+    ]
+  },
+  "source_hashes": {
+    "unified_its_wrapper_sha256": "41BBBB02409F91FA7BE4867FD21C9D3E9404A0DB581AA7E806E3E5C0EEDEBD56",
+    "unified_p4_kernel_sha256": "90A786F7DFCD6D88D2D0BCFC7AD23ACD5CCE5B9AB9C0F6AC13EB69391FBF8BC8",
+    "unified_p4_numeric_tb_sha256": "55020E32C5D05FD6A577EDEE9E850135821A38D36E6104A7EADC211DF2115E4B",
+    "unified_p4_p4_tb_sha256": "35DA04758EE8592397DD0B41590B46B8EEEC6FCE38DA186635A8A353DAE66D07",
+    "unified_p4_throughput_tb_sha256": "67624000EB3DAFF5FFDD6304182422C5B806543721C5DC7266CA817D08D2A2D3",
+    "unified_p4_throughput_full_tb_sha256": "403979F0947746BB52CCA04590AC854EDFA57DF1EC8D0AB43116BC2BBC6F5867",
+    "unified_p4_coeff_layout_tb_sha256": "C38B9F250B2C357F2001F2EF97BE55A37693FEC09CF864DCAAC2A2BBD7F96261",
+    "coverage_summary_sha256": "E347CC31B0F738AEFA3EFB73141AB8FEED1268F58F59A44171FBBCE1220D6C20",
+    "postsynth_dcp_sha256": "7208305B8F324EB6483218C6131D4898F625450AF824FD96D10F129019E7A018",
+    "vivado_log_sha256": "52F24FE8BD5429BC848C6A7C6EEDA62306DB0A7D8FE4F0515288BE1CBD83BAC4",
+    "xdc_sha256": "DDD2E18D4C530AAC3B53BB0A084745AF6E26565B640453BF9ADBFEFB8B2987A3",
+    "fresh_synth_script_sha256": "66E00AF8172AC97AB9A2D09B79EEDF4B875A94BA5A2D40E758F67913A541A892",
+    "targeted_report_script_sha256": "25D186BBB8159CFC803F639BCA395C3212584A56418334A437388DF4AD299D92",
+    "base_commit": "687223736f0d018ce72fc6b2be16014d48a62a20"
+  }
+}

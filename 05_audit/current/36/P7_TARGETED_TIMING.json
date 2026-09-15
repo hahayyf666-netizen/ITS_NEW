@@ -1,0 +1,77 @@
+{
+  "schema": "step12f.p7.targeted_timing.v1",
+  "status": "PASS_FOR_TARGETED_BOUNDARY_WITH_RESIDUAL_GLOBAL_SETUP",
+  "tool": "Vivado 2025.2",
+  "device": "xcku5p-ffvb676-2-e",
+  "clock_period_ns": 2.0,
+  "design_state": "Synthesized",
+  "queries": {
+    "descriptor_q": 153,
+    "descriptor_d": 153,
+    "descriptor_slot_q": 16,
+    "descriptor_bundle_q": 99,
+    "descriptor_meta_q": 38,
+    "s0_coeff_d": 0,
+    "s0_input_d": 1008,
+    "s0_meta_d": 57,
+    "s0_all_d": 1065,
+    "slot_state_q": 8,
+    "issue_emit_q": 0,
+    "ready_q": 15
+  },
+  "representative_paths": {
+    "scheduler_to_descriptor": {
+      "slack_ns": 0.627,
+      "data_delay_ns": 1.354,
+      "logic_delay_ns": 0.344,
+      "routing_delay_ns": 1.010,
+      "logic_levels": 5,
+      "source": "u_unified_p4_kernel/issue_active_q_reg/C",
+      "destination": "u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[4]/D"
+    },
+    "descriptor_to_input": {
+      "slack_ns": 1.570,
+      "data_delay_ns": 0.411,
+      "logic_delay_ns": 0.177,
+      "routing_delay_ns": 0.234,
+      "logic_levels": 1,
+      "source": "u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C",
+      "destination": "u_unified_p4_kernel/s0_input_q_reg[50][0]/D"
+    },
+    "descriptor_to_metadata": {
+      "slack_ns": 1.648,
+      "logic_levels": 0,
+      "source": "u_unified_p4_kernel/issue_desc_*_q_reg/C",
+      "destination": "u_unified_p4_kernel/s0_*_q_reg/D"
+    },
+    "descriptor_to_coefficient": {
+      "status": "EMPTY_QUERY_AFTER_SYNTHESIS_TRIMMING",
+      "note": "s0_coeff_d endpoint was trimmed/renamed; absence of a queried path is not a proof that all coefficient paths meet timing"
+    }
+  },
+  "negative_global_path": {
+    "slack_ns": -0.335,
+    "data_delay_ns": 2.230,
+    "logic_delay_ns": 0.545,
+    "routing_delay_ns": 1.685,
+    "routing_fraction": 0.75561,
+    "logic_levels": 8,
+    "source": "kernel_ctx_group_count_q_reg[1]/C",
+    "destination": "kernel_phase_q_reg[0]/CE",
+    "family": "kernel_context_group_count_to_capacity_ready_phase_control",
+    "path_summary": "kernel_ctx_group_count_q -> output_group_count -> unified_p4_kernel in_req -> kernel_in_req -> kernel_phase CE"
+  },
+  "interpretation": {
+    "scheduler_descriptor_boundary": "targeted PASS; old scheduler-to-descriptor critical cone is locally positive",
+    "coefficient_capture": "not a global signoff; coefficient D endpoint was trimmed in the synthesized netlist",
+    "dsp_product_lane": "structural pipeline applied; Vivado absorbed data registers into DSP48E2 AREG/BREG/MREG/PREG mappings; s0_coeff-to-product is not present in top-100",
+    "global_gate": "FAIL; residual kernel context/capacity feedback path remains"
+  },
+  "evidence": {
+    "targeted_dir": "05_audit/current/36/step12f_p7_targeted",
+    "timing_report": "05_audit/current/36/step12f_p7_targeted/P4_PATH_SCHEDULER_TO_DESCRIPTOR.rpt",
+    "descriptor_input_report": "05_audit/current/36/step12f_p7_targeted/P4_PATH_DESCRIPTOR_TO_INPUT.rpt",
+    "descriptor_meta_report": "05_audit/current/36/step12f_p7_targeted/P4_PATH_DESCRIPTOR_TO_META.rpt",
+    "query_log": "05_audit/current/36/step12f_p7_targeted/vivado.log"
+  }
+}

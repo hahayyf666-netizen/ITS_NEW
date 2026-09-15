@@ -1,0 +1,2268 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Tue Sep 15 19:21:17 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *issue_desc_*_q_reg*}] -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *s0_input_q_reg*}] -delay_type max -max_paths 50 -path_type full -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/p7_tmp/targeted/P4_PATH_DESCRIPTOR_TO_INPUT.rpt
+| Design            : unified_its_wrapper
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Synthesized
+| Temperature Grade : E
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][0]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][0]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][0]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][0]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][10]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][10]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][10]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][10]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][10]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][11]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][11]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][11]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][11]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][11]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][12]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][12]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][12]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][12]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][12]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][13]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][13]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][13]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][13]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][13]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][14]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][14]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][14]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][14]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][14]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][15]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][15]_i_2/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][15]_i_2_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][15]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][15]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][1]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][1]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][1]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][1]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][1]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][2]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][2]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][2]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][2]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][2]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][3]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][3]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][3]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][3]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][3]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][4]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][4]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][4]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][4]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][4]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][5]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][5]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][5]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][5]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][5]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][6]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][6]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][6]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][6]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][6]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][7]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][7]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][7]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][7]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][7]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][8]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][8]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][8]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][8]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][8]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[50][9]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[50][9]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[50][9]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[50][9]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[50][9]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][0]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][0]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][0]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][0]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][10]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][10]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][10]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][10]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][10]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][11]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][11]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][11]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][11]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][11]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][12]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][12]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][12]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][12]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][12]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][13]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][13]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][13]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][13]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][13]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][14]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][14]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][14]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][14]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][14]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][15]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][15]_i_2/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][15]_i_2_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][15]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][15]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][1]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][1]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][1]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][1]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][1]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][2]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][2]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][2]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][2]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][2]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][3]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][3]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][3]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][3]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][3]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][4]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][4]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][4]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][4]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][4]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][5]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][5]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][5]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][5]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][5]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][6]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][6]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][6]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][6]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][6]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][7]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][7]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][7]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][7]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][7]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][8]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][8]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][8]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][8]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][8]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[51][9]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[51][9]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[51][9]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[51][9]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[51][9]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][0]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][0]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][0]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][0]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][10]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][10]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][10]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][10]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][10]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][11]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][11]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][11]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][11]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][11]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][12]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][12]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][12]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][12]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][12]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][13]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][13]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][13]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][13]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][13]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][14]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][14]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][14]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][14]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][14]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][15]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][15]_i_2/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][15]_i_2_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][15]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][15]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][1]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][1]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][1]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][1]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][1]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][2]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][2]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][2]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][2]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][2]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][3]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][3]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][3]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][3]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][3]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][4]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][4]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][4]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][4]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][4]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][5]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][5]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][5]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][5]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][5]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][6]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][6]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][6]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][6]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][6]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][7]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][7]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][7]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][7]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][7]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][8]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][8]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][8]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][8]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][8]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[56][9]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[56][9]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[56][9]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[56][9]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[56][9]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[57][0]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[57][0]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[57][0]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[57][0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[57][0]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+Slack (MET) :             1.570ns  (required time - arrival time)
+  Source:                 u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_unified_p4_kernel/s0_input_q_reg[57][10]/D
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.411ns  (logic 0.177ns (43.066%)  route 0.234ns (56.934%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.021ns = ( 2.021 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+                         FDCE                         0.000     0.030 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/C
+                         FDCE (Prop_FDCE_C_Q)         0.077     0.107 r  u_unified_p4_kernel/issue_desc_slot_q_reg[1]/Q
+                         net (fo=144, unplaced)       0.186     0.293    u_unified_p4_kernel/issue_desc_slot_q[1]
+                         LUT6 (Prop_LUT6_I2_O)        0.100     0.393 r  u_unified_p4_kernel/s0_input_q[57][10]_i_1/O
+                         net (fo=1, unplaced)         0.048     0.441    u_unified_p4_kernel/s0_input_q[57][10]_i_1_n_0
+                         FDRE                                         r  u_unified_p4_kernel/s0_input_q_reg[57][10]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.021     2.021    
+                         clock pessimism              0.000     2.021    
+                         clock uncertainty           -0.035     1.986    
+                         FDRE (Setup_FDRE_C_D)        0.025     2.011    u_unified_p4_kernel/s0_input_q_reg[57][10]
+  -------------------------------------------------------------------
+                         required time                          2.011    
+                         arrival time                          -0.441    
+  -------------------------------------------------------------------
+                         slack                                  1.570    
+
+
+
+

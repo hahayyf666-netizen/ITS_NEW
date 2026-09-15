@@ -23,6 +23,10 @@ module unified_p4_kernel #(
     input  logic [6:0]                   transform_size,
     input  logic [6:0]                   active_size,
     input  logic [6:0]                   output_size,
+    // Predecoded output group count supplied by the wrapper at phase entry.
+    // Keeping this out of the live stage/output-size mux removes a
+    // group-count arithmetic cone from the ready/accept feedback path.
+    input  logic [5:0]                   output_group_count,
     input  logic                         stage_sel,
     input  logic                         in_valid,
     output logic                         in_req,
@@ -248,7 +252,7 @@ module unified_p4_kernel #(
                 free_slot_c = free_scan_i[1:0];
             end
         end
-        new_group_count_c = group_count_for(output_size);
+        new_group_count_c = output_group_count;
         capacity_ok_c = ((reserved_groups_q + new_group_count_c) <= FIFO_DEPTH);
         in_req = load_active_q || (free_found_c && capacity_ok_c);
         start_accept = start && !load_active_q && free_found_c && capacity_ok_c;
@@ -322,6 +326,14 @@ module unified_p4_kernel #(
     logic                         s4_last_q, s5_last_q, s6_last_q;
     logic [4:0]                   s1_group_q, s2_group_q, s3_group_q;
     logic [4:0]                   s4_group_q, s5_group_q, s6_group_q;
+    // The multiply pipeline is deliberately split into an input register,
+    // a post-multiply register and a DSP output register.  The data-only
+    // registers are clocked without an asynchronous reset so Vivado can
+    // absorb the stages into DSP48E2 A/B/M/P registers.  Valid/metadata are
+    // kept in the separately reset control pipeline below.
+    logic signed [COEFF_W-1:0]    mul_a_q [0:3][0:MAX_N-1];
+    logic signed [DATA_W-1:0]     mul_b_q [0:3][0:MAX_N-1];
+    logic signed [PROD_W-1:0]     mul_m_q [0:3][0:MAX_N-1];
     logic signed [PROD_W-1:0]     product_q [0:3][0:MAX_N-1];
     logic signed [ACC_W-1:0]      reduce_l1_q [0:3][0:31];
     logic signed [ACC_W-1:0]      reduce_l2_q [0:3][0:15];
@@ -329,7 +341,7 @@ module unified_p4_kernel #(
     logic signed [ACC_W-1:0]      reduce_l4_q [0:3][0:3];
     logic signed [ACC_W-1:0]      reduce_l5_q [0:3];
 
-    logic signed [PROD_W-1:0]     product_c [0:3][0:MAX_N-1];
+    logic signed [PROD_W-1:0]     mul_product_c [0:3][0:MAX_N-1];
     logic signed [ACC_W-1:0]      reduce_l1_c [0:3][0:31];
     logic signed [ACC_W-1:0]      reduce_l2_c [0:3][0:15];
     logic signed [ACC_W-1:0]      reduce_l3_c [0:3][0:7];
@@ -337,6 +349,10 @@ module unified_p4_kernel #(
     logic signed [ACC_W-1:0]      reduce_l5_c [0:3];
     logic signed [DATA_W-1:0]     rounded_c [0:3];
 
+    logic       mul_in_valid_q, mul_m_valid_q;
+    logic       mul_in_last_q, mul_m_last_q;
+    logic [4:0] mul_in_group_q, mul_m_group_q;
+    logic [3:0] mul_in_shift_q, mul_m_shift_q;
     logic [3:0] s1_shift_q, s2_shift_q, s3_shift_q;
     logic [3:0] s4_shift_q, s5_shift_q, s6_shift_q;
     logic                         pipe_out_valid_q;
@@ -350,12 +366,13 @@ module unified_p4_kernel #(
     always_comb begin
         for (comb_lane_i = 0; comb_lane_i < 4; comb_lane_i = comb_lane_i + 1) begin
             for (comb_term_i = 0; comb_term_i < MAX_N; comb_term_i = comb_term_i + 1) begin
-                if ((comb_term_i < s0_active_size_q) && s0_valid_q)
-                    product_c[comb_lane_i][comb_term_i] =
-                        $signed(s0_coeff_q[(comb_lane_i*MAX_N + comb_term_i)*COEFF_W +: COEFF_W]) *
-                        $signed(s0_input_q[comb_term_i]);
-                else
-                    product_c[comb_lane_i][comb_term_i] = '0;
+                // Inactive terms are zeroed at the registered Stage-0
+                // operand boundary.  The DSP input path therefore has no
+                // live valid/active-size mux and the product output has no
+                // post-DSP zero-select network.
+                mul_product_c[comb_lane_i][comb_term_i] =
+                    $signed(mul_a_q[comb_lane_i][comb_term_i]) *
+                    $signed(mul_b_q[comb_lane_i][comb_term_i]);
             end
             for (comb_reduce_i = 0; comb_reduce_i < 32; comb_reduce_i = comb_reduce_i + 1)
                 reduce_l1_c[comb_lane_i][comb_reduce_i] =
@@ -384,10 +401,9 @@ module unified_p4_kernel #(
     integer pipe_lane_i;
     integer pipe_term_i;
     integer pipe_reduce_i;
-    // The arithmetic pipeline has no ready input: its result capacity is
-    // reserved at admission and the FIFO is deeper than one complete vector.
-    // External output backpressure therefore cannot overwrite an in-flight
-    // group; it only delays FIFO pops and future admissions.
+
+    // Control/metadata pipeline.  This block retains the required
+    // asynchronous reset for all validity and ownership-visible state.
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             issue_desc_valid_q <= 1'b0;
@@ -402,7 +418,14 @@ module unified_p4_kernel #(
             s0_group_q <= '0;
             s0_shift_q <= 4'd7;
             s0_active_size_q <= '0;
-            s0_coeff_q <= '0;
+            mul_in_valid_q <= 1'b0;
+            mul_m_valid_q <= 1'b0;
+            mul_in_last_q <= 1'b0;
+            mul_m_last_q <= 1'b0;
+            mul_in_group_q <= '0;
+            mul_m_group_q <= '0;
+            mul_in_shift_q <= 4'd7;
+            mul_m_shift_q <= 4'd7;
             s1_valid_q <= 1'b0; s2_valid_q <= 1'b0; s3_valid_q <= 1'b0;
             s4_valid_q <= 1'b0; s5_valid_q <= 1'b0; s6_valid_q <= 1'b0;
             s1_last_q <= 1'b0; s2_last_q <= 1'b0; s3_last_q <= 1'b0;
@@ -414,22 +437,6 @@ module unified_p4_kernel #(
             pipe_out_valid_q <= 1'b0;
             pipe_out_last_q <= 1'b0;
             pipe_out_group_q <= '0;
-            pipe_out_data_q <= '0;
-            for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
-                for (pipe_term_i = 0; pipe_term_i < MAX_N;
-                     pipe_term_i = pipe_term_i + 1)
-                    product_q[pipe_lane_i][pipe_term_i] <= '0;
-            for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1) begin
-                for (pipe_reduce_i = 0; pipe_reduce_i < 32; pipe_reduce_i = pipe_reduce_i + 1)
-                    reduce_l1_q[pipe_lane_i][pipe_reduce_i] <= '0;
-                for (pipe_reduce_i = 0; pipe_reduce_i < 16; pipe_reduce_i = pipe_reduce_i + 1)
-                    reduce_l2_q[pipe_lane_i][pipe_reduce_i] <= '0;
-                for (pipe_reduce_i = 0; pipe_reduce_i < 8; pipe_reduce_i = pipe_reduce_i + 1)
-                    reduce_l3_q[pipe_lane_i][pipe_reduce_i] <= '0;
-                for (pipe_reduce_i = 0; pipe_reduce_i < 4; pipe_reduce_i = pipe_reduce_i + 1)
-                    reduce_l4_q[pipe_lane_i][pipe_reduce_i] <= '0;
-                reduce_l5_q[pipe_lane_i] <= '0;
-            end
         end else begin
             // Descriptor register: issue remains one group per cycle.
             issue_desc_valid_q <= issue_emit_c;
@@ -442,98 +449,135 @@ module unified_p4_kernel #(
                 issue_desc_last_q <= issue_desc_last_c;
             end
 
-            // Stage 0: capture from the registered descriptor only.  This is
-            // the timing boundary between scheduler control and the wide
-            // coefficient/operand capture network.
+            // Stage 0 metadata and the two additional multiplier metadata
+            // stages mirror the data-only pipeline below exactly.
             s0_valid_q <= issue_desc_valid_q;
             if (issue_desc_valid_q) begin
                 s0_group_q <= issue_desc_group_q;
                 s0_last_q <= issue_desc_last_q;
                 s0_shift_q <= issue_desc_shift_q;
                 s0_active_size_q <= issue_desc_active_size_q;
-                s0_coeff_q <= coeff_bundle_mem[issue_desc_bundle_addr_q];
-                for (pipe_term_i = 0; pipe_term_i < MAX_N;
-                     pipe_term_i = pipe_term_i + 1)
-                    s0_input_q[pipe_term_i] <= input_mem[issue_desc_slot_q][pipe_term_i];
             end
-
-            // Stage 1: products.
-            s1_valid_q <= s0_valid_q;
-            s1_last_q <= s0_last_q;
-            s1_group_q <= s0_group_q;
-            s1_shift_q <= s0_shift_q;
-            if (s0_valid_q)
-                for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
-                    for (pipe_term_i = 0; pipe_term_i < MAX_N;
-                         pipe_term_i = pipe_term_i + 1)
-                        product_q[pipe_lane_i][pipe_term_i] <=
-                            product_c[pipe_lane_i][pipe_term_i];
+            mul_in_valid_q <= s0_valid_q;
+            if (s0_valid_q) begin
+                mul_in_group_q <= s0_group_q;
+                mul_in_last_q <= s0_last_q;
+                mul_in_shift_q <= s0_shift_q;
+            end
+            mul_m_valid_q <= mul_in_valid_q;
+            if (mul_in_valid_q) begin
+                mul_m_group_q <= mul_in_group_q;
+                mul_m_last_q <= mul_in_last_q;
+                mul_m_shift_q <= mul_in_shift_q;
+            end
+            s1_valid_q <= mul_m_valid_q;
+            if (mul_m_valid_q) begin
+                s1_group_q <= mul_m_group_q;
+                s1_last_q <= mul_m_last_q;
+                s1_shift_q <= mul_m_shift_q;
+            end
 
             // Reduction level 1.
             s2_valid_q <= s1_valid_q;
             s2_last_q <= s1_last_q;
             s2_group_q <= s1_group_q;
             s2_shift_q <= s1_shift_q;
-            if (s1_valid_q)
-                for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
-                    for (pipe_reduce_i = 0; pipe_reduce_i < 32;
-                         pipe_reduce_i = pipe_reduce_i + 1)
-                        reduce_l1_q[pipe_lane_i][pipe_reduce_i] <=
-                            reduce_l1_c[pipe_lane_i][pipe_reduce_i];
-
             // Reduction level 2.
             s3_valid_q <= s2_valid_q;
             s3_last_q <= s2_last_q;
             s3_group_q <= s2_group_q;
             s3_shift_q <= s2_shift_q;
-            if (s2_valid_q)
-                for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
-                    for (pipe_reduce_i = 0; pipe_reduce_i < 16;
-                         pipe_reduce_i = pipe_reduce_i + 1)
-                        reduce_l2_q[pipe_lane_i][pipe_reduce_i] <=
-                            reduce_l2_c[pipe_lane_i][pipe_reduce_i];
-
             // Reduction level 3.
             s4_valid_q <= s3_valid_q;
             s4_last_q <= s3_last_q;
             s4_group_q <= s3_group_q;
             s4_shift_q <= s3_shift_q;
-            if (s3_valid_q)
-                for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
-                    for (pipe_reduce_i = 0; pipe_reduce_i < 8;
-                         pipe_reduce_i = pipe_reduce_i + 1)
-                        reduce_l3_q[pipe_lane_i][pipe_reduce_i] <=
-                            reduce_l3_c[pipe_lane_i][pipe_reduce_i];
-
             // Reduction level 4.
             s5_valid_q <= s4_valid_q;
             s5_last_q <= s4_last_q;
             s5_group_q <= s4_group_q;
             s5_shift_q <= s4_shift_q;
-            if (s4_valid_q)
-                for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
-                    for (pipe_reduce_i = 0; pipe_reduce_i < 4;
-                         pipe_reduce_i = pipe_reduce_i + 1)
-                        reduce_l4_q[pipe_lane_i][pipe_reduce_i] <=
-                            reduce_l4_c[pipe_lane_i][pipe_reduce_i];
-
             // Final reduction.
             s6_valid_q <= s5_valid_q;
             s6_last_q <= s5_last_q;
             s6_group_q <= s5_group_q;
             s6_shift_q <= s5_shift_q;
-            if (s5_valid_q)
-                for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
-                    reduce_l5_q[pipe_lane_i] <= reduce_l5_c[pipe_lane_i];
-
             // Final round/clip register.
             pipe_out_valid_q <= s6_valid_q;
             pipe_out_last_q <= s6_last_q;
             pipe_out_group_q <= s6_group_q;
-            if (s6_valid_q)
-                for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
-                    pipe_out_data_q[pipe_lane_i*DATA_W +: DATA_W] <= rounded_c[pipe_lane_i];
         end
+    end
+
+    // Arithmetic data-only pipeline.  No asynchronous reset is used here;
+    // the control valid pipeline above makes stale/uninitialized values
+    // unobservable and permits DSP48E2 internal register inference.
+    always_ff @(posedge clk) begin
+        if (issue_desc_valid_q) begin
+            s0_coeff_q <= coeff_bundle_mem[issue_desc_bundle_addr_q];
+            for (pipe_term_i = 0; pipe_term_i < MAX_N;
+                 pipe_term_i = pipe_term_i + 1)
+                if (pipe_term_i < issue_desc_active_size_q)
+                    s0_input_q[pipe_term_i] <=
+                        input_mem[issue_desc_slot_q][pipe_term_i];
+                else
+                    s0_input_q[pipe_term_i] <= '0;
+        end
+
+        if (s0_valid_q)
+            for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
+                for (pipe_term_i = 0; pipe_term_i < MAX_N;
+                     pipe_term_i = pipe_term_i + 1) begin
+                    mul_a_q[pipe_lane_i][pipe_term_i] <=
+                        $signed(s0_coeff_q[(pipe_lane_i*MAX_N + pipe_term_i)*COEFF_W +: COEFF_W]);
+                    mul_b_q[pipe_lane_i][pipe_term_i] <= s0_input_q[pipe_term_i];
+                end
+
+        if (mul_in_valid_q)
+            for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
+                for (pipe_term_i = 0; pipe_term_i < MAX_N;
+                     pipe_term_i = pipe_term_i + 1)
+                    mul_m_q[pipe_lane_i][pipe_term_i] <=
+                        mul_product_c[pipe_lane_i][pipe_term_i];
+
+        if (mul_m_valid_q)
+            for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
+                for (pipe_term_i = 0; pipe_term_i < MAX_N;
+                     pipe_term_i = pipe_term_i + 1)
+                    product_q[pipe_lane_i][pipe_term_i] <=
+                        mul_m_q[pipe_lane_i][pipe_term_i];
+
+        if (s1_valid_q)
+            for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
+                for (pipe_reduce_i = 0; pipe_reduce_i < 32;
+                     pipe_reduce_i = pipe_reduce_i + 1)
+                    reduce_l1_q[pipe_lane_i][pipe_reduce_i] <=
+                        reduce_l1_c[pipe_lane_i][pipe_reduce_i];
+        if (s2_valid_q)
+            for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
+                for (pipe_reduce_i = 0; pipe_reduce_i < 16;
+                     pipe_reduce_i = pipe_reduce_i + 1)
+                    reduce_l2_q[pipe_lane_i][pipe_reduce_i] <=
+                        reduce_l2_c[pipe_lane_i][pipe_reduce_i];
+        if (s3_valid_q)
+            for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
+                for (pipe_reduce_i = 0; pipe_reduce_i < 8;
+                     pipe_reduce_i = pipe_reduce_i + 1)
+                    reduce_l3_q[pipe_lane_i][pipe_reduce_i] <=
+                        reduce_l3_c[pipe_lane_i][pipe_reduce_i];
+        if (s4_valid_q)
+            for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
+                for (pipe_reduce_i = 0; pipe_reduce_i < 4;
+                     pipe_reduce_i = pipe_reduce_i + 1)
+                    reduce_l4_q[pipe_lane_i][pipe_reduce_i] <=
+                        reduce_l4_c[pipe_lane_i][pipe_reduce_i];
+        if (s5_valid_q)
+            for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
+                reduce_l5_q[pipe_lane_i] <= reduce_l5_c[pipe_lane_i];
+        if (s6_valid_q)
+            for (pipe_lane_i = 0; pipe_lane_i < 4; pipe_lane_i = pipe_lane_i + 1)
+                pipe_out_data_q[pipe_lane_i*DATA_W +: DATA_W] <=
+                    rounded_c[pipe_lane_i];
     end
 
     // Result FIFO. The FIFO is sized for multiple complete 64-point vectors
@@ -628,8 +672,7 @@ module unified_p4_kernel #(
                 slot_stage_q[free_slot_c] <= stage_sel;
                 slot_bundle_base_q[free_slot_c] <=
                     bundle_base(tr_type, transform_size);
-                slot_group_count_q[free_slot_c] <=
-                    group_count_for(output_size);
+                slot_group_count_q[free_slot_c] <= output_group_count;
                 slot_shift_q[free_slot_c] <= stage_sel ? 4'd10 : 4'd7;
                 load_slot_q <= free_slot_c;
                 load_group_q <= 5'd0;
