@@ -1,0 +1,93 @@
+{
+  "schema": "step12f.p9.round3.fill_write.manifest.v1",
+  "phase": "Step12F-P9 round 3 input-cache fill write accept/commit isolation",
+  "date": "2026-09-16",
+  "base_commit": "c785bccf7b0a7c31f2b2994adfaa9426310ec3f6",
+  "status": "RTL_APPLIED_VALIDATION_PENDING_TOOLCHAIN",
+  "objective": "Move sparse input mapping and physical slot/bank selection behind an atomic registered write command, commit data and validity together, and qualify SLOT_READY only after the final accepted write commits.",
+  "scope": {
+    "rtl_changed": [
+      "02_rtl/rtl/unified_its_wrapper.sv"
+    ],
+    "rtl_unchanged": [
+      "02_rtl/rtl/unified_p4_kernel.sv",
+      "02_rtl/rtl/its_input_cache_bank.sv",
+      "02_rtl/rtl/bounded_lfnst_engine.sv"
+    ],
+    "frozen": [
+      "Gate-A Oracle and contest_engineering_vtm10_v1 profile",
+      "03_verification/vivado/step12f_unified_wrapper_2ns.xdc",
+      "frozen R4C",
+      "v3.5-18"
+    ],
+    "oracle_changed": false,
+    "profile_changed": false,
+    "xdc_changed": false,
+    "r4c_changed": false,
+    "new_tag": false
+  },
+  "write_command_contract": {
+    "lifecycle": "sparse input fire -> mapping/target generation -> registered fill-write command -> same-edge data_mem and valid_mem commit",
+    "atomicity": "one command valid and one one-hot slot/bank target; data and validity are committed together",
+    "elasticity": "fill_wr_cmd_ready = !fill_wr_cmd_valid_q || fill_wr_cmd_commit; commit and refill are allowed on the same edge",
+    "commit": "fill_wr_cmd_commit = fill_wr_cmd_valid_q",
+    "input_fire": "it_data_in_vld && it_data_in_req, with it_data_in_req gated by fill_active and fill_wr_cmd_ready",
+    "end_fire": "it_data_end && it_data_in_req; it_data_end is independent of it_data_in_vld",
+    "address_source": "input-cache write enable/address/data ports are driven from fill_wr_cmd_*_q, not live fill_slot/slot_width/address decode",
+    "validity_pairing": "data_mem write and valid_mem set use the same command target/address and commit edge",
+    "completion": "end with final data records fill_end_pending; SLOT_READY occurs only when that command commits; end-only creates no data command",
+    "scrub": "scrub clears valid_mem only; delayed fill commit must target a different ownership slot"
+  },
+  "static_structural_checks": {
+    "live_input_fire_direct_ram_write_removed": true,
+    "registered_command_drives_data_write_ports": true,
+    "registered_command_drives_valid_write_ports": true,
+    "data_and_valid_same_target_address": true,
+    "end_pending_and_slot_snapshot_present": true,
+    "static_model_checks": "PASS",
+    "static_model_evidence": "P9_R3_STATIC_PROTOCOL_MODEL.json",
+    "git_diff_check": "PASS"
+  },
+  "toolchain_validation": {
+    "simulator": "NOT_AVAILABLE_IN_CURRENT_ENVIRONMENT",
+    "normal_rtl_simulation": "NOT_RUN",
+    "SYNTHESIS_rtl_simulation": "NOT_RUN",
+    "vivado": "NOT_AVAILABLE_IN_CURRENT_ENVIRONMENT",
+    "fresh_synthesis": "NOT_RUN",
+    "place_route": "NOT_RUN",
+    "reason": "vsim/vlog/xsim/xvlog/iverilog/verilator/vivado were not found on PATH or in the checked installation locations"
+  },
+  "required_followup": {
+    "functional": [
+      "final data plus end same cycle",
+      "end-only marker",
+      "continuous sparse input at one point per cycle",
+      "accepted command count equals committed command count",
+      "back-to-back TU and ownership/order/done regression",
+      "normal and SYNTHESIS simulation"
+    ],
+    "physical": [
+      "fresh synthesis at 2.000 ns",
+      "live mapping to data_mem/valid_mem WE and WADDR absent",
+      "command Q to data_mem/valid_mem WE/WADDR/WDATA timing",
+      "fresh fully routed setup/hold and worst-500 classification"
+    ]
+  },
+  "evidence_hashes": {
+    "unified_its_wrapper_sha256": "D90767D6363F4D954D8A4A24DEBA834E7015F5D2FC17A7CA4785A73140886ACB",
+    "unified_p4_kernel_sha256": "D996BC5A2BAE4579766821979719715FC3F405250294EEF7A6FE74832E0B0F02",
+    "input_cache_bank_sha256": "2476D5FBC1D3663515137F8768EC7F16A689B3150E4527D78B5743DF3E7A05D7",
+    "bounded_lfnst_engine_sha256": "6EB52770435E62442DFDA1CF1CB9D1F216707A675965B3AD779184413FDFE1D8",
+    "xdc_sha256": "8249A2643753D347F98F3F1AD775829AB13F277375801B7565C1AC7A347E1B2F"
+  },
+  "decision": {
+    "rtl_scope": "APPLIED",
+    "structural_intent": "PASS_BY_STATIC_REVIEW",
+    "functional": "NOT_YET_VERIFIED",
+    "physical_timing": "NOT_RUN",
+    "route": "NOT_RUN",
+    "tag": "NOT_CREATED",
+    "next": "Run the required RTL regression and fresh synthesis/implementation in an environment with the project simulator and Vivado toolchain."
+  }
+}
+
