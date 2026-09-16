@@ -1458,14 +1458,14 @@ module unified_its_wrapper #(
             end
         end
 
-        if (kernel_run_q && kernel_stage_q &&
-                     kernel_h_rd_pending_q) begin
-            // Horizontal input groups use a registered bank-local request.
-            // The intermediate RAM address no longer depends combinationally
-            // on kernel_w_q or the live group counter.
-            for (cmd_bank_i = 0; cmd_bank_i < 4; cmd_bank_i = cmd_bank_i + 1)
-                tmp_rd_addr[cmd_bank_i] = kernel_h_rd_addr_q[cmd_bank_i];
-        end
+        // P9 round 5: the temporary-bank read address is a registered value.
+        // Keep it driving the asynchronous RAM unconditionally; pending/run/
+        // stage are transaction-valid metadata and must not form an address
+        // mux in front of the RAMD64E address pins.  When no request is
+        // pending, the address simply retains its last value and the response
+        // path ignores the RAM data.
+        for (cmd_bank_i = 0; cmd_bank_i < 4; cmd_bank_i = cmd_bank_i + 1)
+            tmp_rd_addr[cmd_bank_i] = kernel_h_rd_addr_q[cmd_bank_i];
 
         // ResultMemory writes are driven only by the registered command below.
         // The live horizontal counters therefore cannot reach a distributed

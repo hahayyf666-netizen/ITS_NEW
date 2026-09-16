@@ -1,0 +1,889 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Wed Sep 16 22:15:41 2026
+| Host         : Finesse running 64-bit major release  (build 9200)
+| Command      : report_methodology -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/54/p9_round5_hread_addr_validity_20260916/report_methodology_postroute.rpt
+| Design       : unified_its_wrapper
+| Device       : xcku5p-ffvb676-2-e
+| Speed File   : -2
+| Design State : Fully Routed
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Report Methodology
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: unified_its_wrapper
+          Floorplan: design_1
+      Design limits: <entire design considered>
+             Max checks: <unlimited>
+             Checks found: 131
++---------+----------+-----------------------------------------------------------+--------+
+| Rule    | Severity | Description                                               | Checks |
++---------+----------+-----------------------------------------------------------+--------+
+| SYNTH-5 | Warning  | Mapped onto distributed RAM because of timing constraints | 32     |
+| XDCH-2  | Warning  | Same min and max delay values on IO port                  | 99     |
++---------+----------+-----------------------------------------------------------+--------+
+
+2. REPORT DETAILS
+-----------------
+SYNTH-5#1 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[0].u_input_cache_bank/valid_mem_reg_0_255_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#2 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[0].u_input_cache_bank/valid_mem_reg_256_511_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#3 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[0].u_input_cache_bank/valid_mem_reg_512_767_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#4 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[0].u_input_cache_bank/valid_mem_reg_768_1023_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#5 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[1].u_input_cache_bank/valid_mem_reg_0_255_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#6 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[1].u_input_cache_bank/valid_mem_reg_256_511_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#7 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[1].u_input_cache_bank/valid_mem_reg_512_767_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#8 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[1].u_input_cache_bank/valid_mem_reg_768_1023_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#9 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[2].u_input_cache_bank/valid_mem_reg_0_255_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#10 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[2].u_input_cache_bank/valid_mem_reg_256_511_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#11 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[2].u_input_cache_bank/valid_mem_reg_512_767_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#12 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[2].u_input_cache_bank/valid_mem_reg_768_1023_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#13 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[3].u_input_cache_bank/valid_mem_reg_0_255_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#14 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[3].u_input_cache_bank/valid_mem_reg_256_511_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#15 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[3].u_input_cache_bank/valid_mem_reg_512_767_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#16 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[0].gen_input_banks[3].u_input_cache_bank/valid_mem_reg_768_1023_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#17 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[0].u_input_cache_bank/valid_mem_reg_0_255_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#18 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[0].u_input_cache_bank/valid_mem_reg_256_511_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#19 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[0].u_input_cache_bank/valid_mem_reg_512_767_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#20 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[0].u_input_cache_bank/valid_mem_reg_768_1023_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#21 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[1].u_input_cache_bank/valid_mem_reg_0_255_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#22 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[1].u_input_cache_bank/valid_mem_reg_256_511_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#23 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[1].u_input_cache_bank/valid_mem_reg_512_767_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#24 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[1].u_input_cache_bank/valid_mem_reg_768_1023_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#25 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[2].u_input_cache_bank/valid_mem_reg_0_255_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#26 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[2].u_input_cache_bank/valid_mem_reg_256_511_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#27 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[2].u_input_cache_bank/valid_mem_reg_512_767_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#28 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[2].u_input_cache_bank/valid_mem_reg_768_1023_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#29 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[3].u_input_cache_bank/valid_mem_reg_0_255_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#30 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[3].u_input_cache_bank/valid_mem_reg_256_511_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#31 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[3].u_input_cache_bank/valid_mem_reg_512_767_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+SYNTH-5#32 Warning
+Mapped onto distributed RAM because of timing constraints  
+The instance gen_input_slots[1].gen_input_banks[3].u_input_cache_bank/valid_mem_reg_768_1023_0_0 is implemented as distributed LUT RAM for the following reason: The timing constraints suggest that the chosen mapping will yield a better timing.
+Related violations: <none>
+
+XDCH-2#1 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_addr[0]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#2 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_addr[10]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#3 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_addr[11]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#4 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_addr[1]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#5 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_addr[2]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#6 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_addr[3]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#7 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_addr[4]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#8 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_addr[5]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#9 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_addr[6]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#10 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_addr[7]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#11 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_addr[8]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#12 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_addr[9]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#13 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_end' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#14 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[0]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#15 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[10]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#16 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[11]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#17 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[12]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#18 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[13]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#19 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[14]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#20 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[15]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#21 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[1]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#22 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[2]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#23 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[3]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#24 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[4]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#25 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[5]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#26 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[6]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#27 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[7]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#28 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[8]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#29 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in[9]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#30 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_in_vld' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#31 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_data_out_req' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#32 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[0]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#33 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[10]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#34 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[11]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#35 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[12]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#36 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[13]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#37 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[14]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#38 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[15]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#39 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[16]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#40 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[17]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#41 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[18]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#42 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[19]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#43 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[1]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#44 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[20]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#45 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[21]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#46 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[2]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#47 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[3]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#48 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[4]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#49 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[5]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#50 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[6]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#51 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[7]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#52 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[8]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#53 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info[9]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#54 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'it_info_vld' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#55 Warning
+Same min and max delay values on IO port  
+The same input delay of 0.000 ns has been defined on port 'rst_n' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_input_delay -clock clk -min 0.000 [get_ports {rst_n it_info it_info_vld it_data_in it_data_addr it_data_in_vld it_data_end it_data_out_req}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 28)
+Related violations: <none>
+
+XDCH-2#56 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_in_req' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#57 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[0]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#58 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[10]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#59 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[11]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#60 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[12]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#61 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[13]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#62 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[14]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#63 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[15]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#64 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[16]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#65 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[17]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#66 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[18]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#67 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[19]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#68 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[1]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#69 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[20]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#70 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[21]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#71 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[22]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#72 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[23]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#73 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[24]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#74 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[25]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#75 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[26]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#76 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[27]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#77 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[28]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#78 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[29]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#79 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[2]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#80 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[30]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#81 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[31]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#82 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[32]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#83 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[33]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#84 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[34]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#85 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[35]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#86 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[36]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#87 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[37]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#88 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[38]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#89 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[39]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#90 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[3]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#91 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[4]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#92 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[5]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#93 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[6]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#94 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[7]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#95 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[8]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#96 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out[9]' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#97 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_data_out_vld' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#98 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'it_done' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+XDCH-2#99 Warning
+Same min and max delay values on IO port  
+The same output delay of 0.000 ns has been defined on port 'protocol_error' relative to clock clk for both max and min. Make sure this reflects the design intent.
+set_output_delay -clock clk -min 0.000 [get_ports {it_data_in_req it_data_out it_data_out_vld it_done protocol_error}]
+C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/step12f_unified_wrapper_2ns.xdc (Line: 30)
+Related violations: <none>
+
+

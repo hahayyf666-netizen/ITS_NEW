@@ -1,0 +1,1445 @@
+Step12F-P9 Round 5 H-read address-validity routed qualification
+DCP=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\54\p9_round5_hread_addr_validity_20260916\step12f_unified_wrapper_postroute.dcp
+haddr_q=40 hpend_q=1 hrun_q=4 hstage_q=1
+hresp_d=128 lresp_d=16 ram_cells=1280 tmp_rd_addr_nets=0 haddr_nets=98
+-- tmp_rd_addr net drivers/loads --
+-- kernel_h_rd_addr_q net drivers/loads --
+NET=kernel_h_rd_addr_q[0] FANOUT= DRIVERS=kernel_h_rd_addr_q[0][9]_i_1/O LOAD_COUNT=40
+NET=kernel_h_rd_addr_q[0][0]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][0]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[0][1]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][1]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[0][2]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][2]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[0][3]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][3]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[0][4]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][4]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[0][5]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][5]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[0][5]_i_2_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][5]_i_2/O LOAD_COUNT=2
+NET=kernel_h_rd_addr_q[0][6]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][6]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[0][6]_i_2_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][6]_i_2/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[0][7]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][7]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[0][7]_i_2_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][7]_i_2/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[0][8]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][8]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[0][9]_i_2_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][9]_i_2/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[0][9]_i_3_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][9]_i_3/O LOAD_COUNT=36
+NET=kernel_h_rd_addr_q[0][9]_i_4_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][9]_i_4/O LOAD_COUNT=4
+NET=kernel_h_rd_addr_q[0][9]_i_5_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][9]_i_5/O LOAD_COUNT=5
+NET=kernel_h_rd_addr_q[0][9]_i_6_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][9]_i_6/O LOAD_COUNT=2
+NET=kernel_h_rd_addr_q[0][9]_i_7_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[0][9]_i_7/O LOAD_COUNT=14
+NET=kernel_h_rd_addr_q[1][0]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[1][0]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[1][1]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[1][1]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[1][2]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[1][2]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[1][3]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[1][3]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[1][4]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[1][4]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[1][5]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[1][5]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[1][6]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[1][6]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[1][6]_i_2_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[1][6]_i_2/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[1][7]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[1][7]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[1][7]_i_2_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[1][7]_i_2/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[1][8]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[1][8]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[1][9]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[1][9]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[1][9]_i_2_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[1][9]_i_2/O LOAD_COUNT=2
+NET=kernel_h_rd_addr_q[2][0]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[2][0]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[2][1]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[2][1]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[2][2]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[2][2]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[2][3]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[2][3]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[2][4]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[2][4]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[2][5]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[2][5]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[2][6]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[2][6]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[2][6]_i_2_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[2][6]_i_2/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[2][7]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[2][7]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[2][7]_i_2_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[2][7]_i_2/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[2][8]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[2][8]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[2][9]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[2][9]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[2][9]_i_2_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[2][9]_i_2/O LOAD_COUNT=2
+NET=kernel_h_rd_addr_q[3][0]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[3][0]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[3][1]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[3][1]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[3][2]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[3][2]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[3][3]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[3][3]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[3][4]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[3][4]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[3][5]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[3][5]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[3][6]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[3][6]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[3][6]_i_2_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[3][6]_i_2/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[3][7]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[3][7]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[3][7]_i_2_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[3][7]_i_2/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[3][8]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[3][8]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[3][9]_i_1_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[3][9]_i_1/O LOAD_COUNT=1
+NET=kernel_h_rd_addr_q[3][9]_i_2_n_0 FANOUT= DRIVERS=kernel_h_rd_addr_q[3][9]_i_2/O LOAD_COUNT=2
+NET=kernel_h_rd_addr_q_reg_n_0_[0][0] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[0][0]/Q LOAD_COUNT=2
+NET=kernel_h_rd_addr_q_reg_n_0_[0][1] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[0][1]/Q LOAD_COUNT=2
+NET=kernel_h_rd_addr_q_reg_n_0_[0][2] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[0][2]/Q LOAD_COUNT=8
+NET=kernel_h_rd_addr_q_reg_n_0_[0][3] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[0][3]/Q LOAD_COUNT=7
+NET=kernel_h_rd_addr_q_reg_n_0_[0][4] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[0][4]/Q LOAD_COUNT=6
+NET=kernel_h_rd_addr_q_reg_n_0_[0][5] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[0][5]/Q LOAD_COUNT=5
+NET=kernel_h_rd_addr_q_reg_n_0_[0][6] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[0][6]/Q LOAD_COUNT=4
+NET=kernel_h_rd_addr_q_reg_n_0_[0][7] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[0][7]/Q LOAD_COUNT=3
+NET=kernel_h_rd_addr_q_reg_n_0_[0][8] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[0][8]/Q LOAD_COUNT=3
+NET=kernel_h_rd_addr_q_reg_n_0_[0][9] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[0][9]/Q LOAD_COUNT=2
+NET=kernel_h_rd_addr_q_reg_n_0_[1][0] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[1][0]/Q LOAD_COUNT=2
+NET=kernel_h_rd_addr_q_reg_n_0_[1][1] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[1][1]/Q LOAD_COUNT=2
+NET=kernel_h_rd_addr_q_reg_n_0_[1][2] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[1][2]/Q LOAD_COUNT=8
+NET=kernel_h_rd_addr_q_reg_n_0_[1][3] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[1][3]/Q LOAD_COUNT=7
+NET=kernel_h_rd_addr_q_reg_n_0_[1][4] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[1][4]/Q LOAD_COUNT=6
+NET=kernel_h_rd_addr_q_reg_n_0_[1][5] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[1][5]/Q LOAD_COUNT=5
+NET=kernel_h_rd_addr_q_reg_n_0_[1][6] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[1][6]/Q LOAD_COUNT=4
+NET=kernel_h_rd_addr_q_reg_n_0_[1][7] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[1][7]/Q LOAD_COUNT=3
+NET=kernel_h_rd_addr_q_reg_n_0_[1][8] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[1][8]/Q LOAD_COUNT=3
+NET=kernel_h_rd_addr_q_reg_n_0_[1][9] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[1][9]/Q LOAD_COUNT=2
+NET=kernel_h_rd_addr_q_reg_n_0_[2][0] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[2][0]/Q LOAD_COUNT=2
+NET=kernel_h_rd_addr_q_reg_n_0_[2][1] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[2][1]/Q LOAD_COUNT=2
+NET=kernel_h_rd_addr_q_reg_n_0_[2][2] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[2][2]/Q LOAD_COUNT=8
+NET=kernel_h_rd_addr_q_reg_n_0_[2][3] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[2][3]/Q LOAD_COUNT=7
+NET=kernel_h_rd_addr_q_reg_n_0_[2][4] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[2][4]/Q LOAD_COUNT=6
+NET=kernel_h_rd_addr_q_reg_n_0_[2][5] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[2][5]/Q LOAD_COUNT=5
+NET=kernel_h_rd_addr_q_reg_n_0_[2][6] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[2][6]/Q LOAD_COUNT=4
+NET=kernel_h_rd_addr_q_reg_n_0_[2][7] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[2][7]/Q LOAD_COUNT=3
+NET=kernel_h_rd_addr_q_reg_n_0_[2][8] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[2][8]/Q LOAD_COUNT=3
+NET=kernel_h_rd_addr_q_reg_n_0_[2][9] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[2][9]/Q LOAD_COUNT=2
+NET=kernel_h_rd_addr_q_reg_n_0_[3][0] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[3][0]/Q LOAD_COUNT=2
+NET=kernel_h_rd_addr_q_reg_n_0_[3][1] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[3][1]/Q LOAD_COUNT=2
+NET=kernel_h_rd_addr_q_reg_n_0_[3][2] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[3][2]/Q LOAD_COUNT=8
+NET=kernel_h_rd_addr_q_reg_n_0_[3][3] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[3][3]/Q LOAD_COUNT=7
+NET=kernel_h_rd_addr_q_reg_n_0_[3][4] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[3][4]/Q LOAD_COUNT=6
+NET=kernel_h_rd_addr_q_reg_n_0_[3][5] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[3][5]/Q LOAD_COUNT=5
+NET=kernel_h_rd_addr_q_reg_n_0_[3][6] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[3][6]/Q LOAD_COUNT=4
+NET=kernel_h_rd_addr_q_reg_n_0_[3][7] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[3][7]/Q LOAD_COUNT=3
+NET=kernel_h_rd_addr_q_reg_n_0_[3][8] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[3][8]/Q LOAD_COUNT=3
+NET=kernel_h_rd_addr_q_reg_n_0_[3][9] FANOUT= DRIVERS=kernel_h_rd_addr_q_reg[3][9]/Q LOAD_COUNT=2
+
+=== address_q_through_tmp_ram_to_hread_response ===
+FROM_COUNT=40 THROUGH_COUNT=1280 TO_COUNT=128
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Wed Sep 16 22:32:07 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_h_rd_addr_q_reg*}] -through {kernel_h_rd_addr_q_reg_n_0_[3][9]} -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && (NAME =~ *kernel_h_rd_data_q_reg* || NAME =~ *kernel_h_rd_data_tail_q_reg*)}] -delay_type max -max_paths 20 -path_type full -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/54/p9_round5_hread_addr_validity_20260916/p9_r5_hread_address_validity/P9_R5_HREAD_ADDRESS_VALIDITY.rpt -append
+| Design            : unified_its_wrapper
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Routed
+| Temperature Grade : E
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (VIOLATED) :        -0.207ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[0][0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[1]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.187ns  (logic 0.476ns (21.767%)  route 1.711ns (78.233%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+    SLICE_X79Y38         FDCE                         0.000     0.030 r  kernel_h_rd_addr_q_reg[0][0]/C
+    SLICE_X79Y38         FDCE (Prop_AFF_SLICEM_C_Q)
+                                                      0.077     0.107 r  kernel_h_rd_addr_q_reg[0][0]/Q
+                         net (fo=273, routed)         0.636     0.743    gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_960_1023_0_6/ADDRB0
+    SLICE_X81Y26         RAMD64E (Prop_B6LUT_SLICEM_RADR0_O)
+                                                      0.149     0.892 r  gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_960_1023_0_6/RAMB/O
+                         net (fo=1, routed)           0.532     1.424    gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_960_1023_0_6_n_1
+    SLICE_X78Y34         LUT6 (Prop_A6LUT_SLICEL_I0_O)
+                                                      0.124     1.548 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[1]_INST_0_i_6/O
+                         net (fo=1, routed)           0.009     1.557    gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[1]_INST_0_i_6_n_0
+    SLICE_X78Y34         MUXF7 (Prop_F7MUX_AB_SLICEL_I1_O)
+                                                      0.057     1.614 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[1]_INST_0_i_2/O
+                         net (fo=1, routed)           0.000     1.614    gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[1]_INST_0_i_2_n_0
+    SLICE_X78Y34         MUXF8 (Prop_F8MUX_BOT_SLICEL_I1_O)
+                                                      0.033     1.647 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[1]_INST_0/O
+                         net (fo=2, routed)           0.483     2.130    tmp_rd_data[0][1]
+    SLICE_X84Y31         LUT5 (Prop_H6LUT_SLICEL_I4_O)
+                                                      0.036     2.166 r  kernel_h_rd_data_q[1]_i_1/O
+                         net (fo=1, routed)           0.051     2.217    kernel_h_rd_data_q[1]_i_1_n_0
+    SLICE_X84Y31         FDCE                                         r  kernel_h_rd_data_q_reg[1]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X84Y31         FDCE (Setup_HFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[1]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.217    
+  -------------------------------------------------------------------
+                         slack                                 -0.207    
+
+Slack (VIOLATED) :        -0.177ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[1][0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[27]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.157ns  (logic 0.559ns (25.912%)  route 1.598ns (74.088%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.029ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.029     0.029    
+    SLICE_X77Y45         FDCE                         0.000     0.029 r  kernel_h_rd_addr_q_reg[1][0]/C
+    SLICE_X77Y45         FDCE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     0.108 r  kernel_h_rd_addr_q_reg[1][0]/Q
+                         net (fo=273, routed)         0.685     0.793    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_384_447_7_13/ADDRE0
+    SLICE_X81Y65         RAMD64E (Prop_E6LUT_SLICEM_RADR0_O)
+                                                      0.148     0.941 r  gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_384_447_7_13/RAME/O
+                         net (fo=1, routed)           0.461     1.402    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_384_447_7_13_n_4
+    SLICE_X83Y52         LUT6 (Prop_C6LUT_SLICEL_I1_O)
+                                                      0.146     1.548 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[11]_INST_0_i_4/O
+                         net (fo=1, routed)           0.010     1.558    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[11]_INST_0_i_4_n_0
+    SLICE_X83Y52         MUXF7 (Prop_F7MUX_CD_SLICEL_I1_O)
+                                                      0.057     1.615 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[11]_INST_0_i_1/O
+                         net (fo=1, routed)           0.000     1.615    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[11]_INST_0_i_1_n_0
+    SLICE_X83Y52         MUXF8 (Prop_F8MUX_BOT_SLICEL_I0_O)
+                                                      0.033     1.648 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[11]_INST_0/O
+                         net (fo=2, routed)           0.392     2.040    tmp_rd_data[1][11]
+    SLICE_X84Y31         LUT5 (Prop_C6LUT_SLICEL_I4_O)
+                                                      0.096     2.136 r  kernel_h_rd_data_q[27]_i_1/O
+                         net (fo=1, routed)           0.050     2.186    kernel_h_rd_data_q[27]_i_1_n_0
+    SLICE_X84Y31         FDCE                                         r  kernel_h_rd_data_q_reg[27]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X84Y31         FDCE (Setup_CFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[27]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.186    
+  -------------------------------------------------------------------
+                         slack                                 -0.177    
+
+Slack (VIOLATED) :        -0.161ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[1][3]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[19]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.141ns  (logic 0.458ns (21.388%)  route 1.683ns (78.612%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.029ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.029     0.029    
+    SLICE_X84Y47         FDCE                         0.000     0.029 r  kernel_h_rd_addr_q_reg[1][3]/C
+    SLICE_X84Y47         FDCE (Prop_EFF2_SLICEL_C_Q)
+                                                      0.081     0.110 r  kernel_h_rd_addr_q_reg[1][3]/Q
+                         net (fo=278, routed)         0.598     0.708    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_384_447_0_6/ADDRD3
+    SLICE_X75Y62         RAMD64E (Prop_D6LUT_SLICEM_RADR3_O)
+                                                      0.088     0.796 r  gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_384_447_0_6/RAMD/O
+                         net (fo=1, routed)           0.642     1.438    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_384_447_0_6_n_3
+    SLICE_X87Y39         LUT6 (Prop_G6LUT_SLICEL_I1_O)
+                                                      0.149     1.587 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[3]_INST_0_i_4/O
+                         net (fo=1, routed)           0.008     1.595    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[3]_INST_0_i_4_n_0
+    SLICE_X87Y39         MUXF7 (Prop_F7MUX_GH_SLICEL_I1_O)
+                                                      0.056     1.651 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[3]_INST_0_i_1/O
+                         net (fo=1, routed)           0.000     1.651    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[3]_INST_0_i_1_n_0
+    SLICE_X87Y39         MUXF8 (Prop_F8MUX_TOP_SLICEL_I0_O)
+                                                      0.033     1.684 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[3]_INST_0/O
+                         net (fo=2, routed)           0.384     2.068    tmp_rd_data[1][3]
+    SLICE_X80Y45         LUT5 (Prop_H6LUT_SLICEL_I4_O)
+                                                      0.051     2.119 r  kernel_h_rd_data_q[19]_i_1/O
+                         net (fo=1, routed)           0.051     2.170    kernel_h_rd_data_q[19]_i_1_n_0
+    SLICE_X80Y45         FDCE                                         r  kernel_h_rd_data_q_reg[19]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X80Y45         FDCE (Setup_HFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[19]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.170    
+  -------------------------------------------------------------------
+                         slack                                 -0.161    
+
+Slack (VIOLATED) :        -0.154ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[0][0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[14]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.134ns  (logic 0.471ns (22.071%)  route 1.663ns (77.929%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+    SLICE_X79Y38         FDCE                         0.000     0.030 r  kernel_h_rd_addr_q_reg[0][0]/C
+    SLICE_X79Y38         FDCE (Prop_AFF_SLICEM_C_Q)
+                                                      0.077     0.107 r  kernel_h_rd_addr_q_reg[0][0]/Q
+                         net (fo=273, routed)         0.756     0.863    gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_640_703_14_15/ADDRA0
+    SLICE_X82Y63         RAMD64E (Prop_E6LUT_SLICEM_RADR0_O)
+                                                      0.148     1.011 r  gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_640_703_14_15/RAMA/O
+                         net (fo=1, routed)           0.457     1.468    gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_640_703_14_15_n_0
+    SLICE_X86Y43         LUT6 (Prop_B6LUT_SLICEM_I1_O)
+                                                      0.100     1.568 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[14]_INST_0_i_5/O
+                         net (fo=1, routed)           0.017     1.585    gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[14]_INST_0_i_5_n_0
+    SLICE_X86Y43         MUXF7 (Prop_F7MUX_AB_SLICEM_I0_O)
+                                                      0.060     1.645 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[14]_INST_0_i_2/O
+                         net (fo=1, routed)           0.000     1.645    gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[14]_INST_0_i_2_n_0
+    SLICE_X86Y43         MUXF8 (Prop_F8MUX_BOT_SLICEM_I1_O)
+                                                      0.035     1.680 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[14]_INST_0/O
+                         net (fo=2, routed)           0.382     2.062    tmp_rd_data[0][14]
+    SLICE_X80Y40         LUT5 (Prop_H6LUT_SLICEL_I4_O)
+                                                      0.051     2.113 r  kernel_h_rd_data_q[14]_i_1/O
+                         net (fo=1, routed)           0.051     2.164    kernel_h_rd_data_q[14]_i_1_n_0
+    SLICE_X80Y40         FDCE                                         r  kernel_h_rd_data_q_reg[14]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X80Y40         FDCE (Setup_HFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[14]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.164    
+  -------------------------------------------------------------------
+                         slack                                 -0.154    
+
+Slack (VIOLATED) :        -0.149ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[0][0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[15]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.128ns  (logic 0.474ns (22.272%)  route 1.654ns (77.728%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+    SLICE_X79Y38         FDCE                         0.000     0.030 r  kernel_h_rd_addr_q_reg[0][0]/C
+    SLICE_X79Y38         FDCE (Prop_AFF_SLICEM_C_Q)
+                                                      0.077     0.107 r  kernel_h_rd_addr_q_reg[0][0]/Q
+                         net (fo=273, routed)         0.816     0.923    gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_384_447_14_15/ADDRB0
+    SLICE_X82Y61         RAMD64E (Prop_F6LUT_SLICEM_RADR0_O)
+                                                      0.148     1.071 r  gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_384_447_14_15/RAMB/O
+                         net (fo=1, routed)           0.518     1.589    gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_384_447_14_15_n_1
+    SLICE_X77Y44         LUT6 (Prop_C6LUT_SLICEL_I1_O)
+                                                      0.123     1.712 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[15]_INST_0_i_4/O
+                         net (fo=1, routed)           0.010     1.722    gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[15]_INST_0_i_4_n_0
+    SLICE_X77Y44         MUXF7 (Prop_F7MUX_CD_SLICEL_I1_O)
+                                                      0.057     1.779 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[15]_INST_0_i_1/O
+                         net (fo=1, routed)           0.000     1.779    gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[15]_INST_0_i_1_n_0
+    SLICE_X77Y44         MUXF8 (Prop_F8MUX_BOT_SLICEL_I0_O)
+                                                      0.033     1.812 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[15]_INST_0/O
+                         net (fo=2, routed)           0.259     2.071    tmp_rd_data[0][15]
+    SLICE_X78Y36         LUT5 (Prop_H6LUT_SLICEL_I4_O)
+                                                      0.036     2.107 r  kernel_h_rd_data_q[15]_i_1/O
+                         net (fo=1, routed)           0.051     2.158    kernel_h_rd_data_q[15]_i_1_n_0
+    SLICE_X78Y36         FDCE                                         r  kernel_h_rd_data_q_reg[15]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X78Y36         FDCE (Setup_HFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[15]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.158    
+  -------------------------------------------------------------------
+                         slack                                 -0.149    
+
+Slack (VIOLATED) :        -0.125ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[3][0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[55]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.105ns  (logic 0.511ns (24.278%)  route 1.594ns (75.722%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+    SLICE_X79Y31         FDCE                         0.000     0.030 r  kernel_h_rd_addr_q_reg[3][0]/C
+    SLICE_X79Y31         FDCE (Prop_AFF_SLICEM_C_Q)
+                                                      0.077     0.107 r  kernel_h_rd_addr_q_reg[3][0]/Q
+                         net (fo=273, routed)         0.704     0.811    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_640_703_7_13/ADDRA0
+    SLICE_X82Y52         RAMD64E (Prop_A6LUT_SLICEM_RADR0_O)
+                                                      0.150     0.961 r  gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_640_703_7_13/RAMA/O
+                         net (fo=1, routed)           0.336     1.297    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_640_703_7_13_n_0
+    SLICE_X80Y47         LUT6 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.098     1.395 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[7]_INST_0_i_5/O
+                         net (fo=1, routed)           0.009     1.404    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[7]_INST_0_i_5_n_0
+    SLICE_X80Y47         MUXF7 (Prop_F7MUX_AB_SLICEL_I0_O)
+                                                      0.056     1.460 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[7]_INST_0_i_2/O
+                         net (fo=1, routed)           0.000     1.460    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[7]_INST_0_i_2_n_0
+    SLICE_X80Y47         MUXF8 (Prop_F8MUX_BOT_SLICEL_I1_O)
+                                                      0.033     1.493 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[7]_INST_0/O
+                         net (fo=2, routed)           0.494     1.987    tmp_rd_data[3][7]
+    SLICE_X78Y33         LUT5 (Prop_F6LUT_SLICEL_I4_O)
+                                                      0.097     2.084 r  kernel_h_rd_data_q[55]_i_1/O
+                         net (fo=1, routed)           0.051     2.135    kernel_h_rd_data_q[55]_i_1_n_0
+    SLICE_X78Y33         FDCE                                         r  kernel_h_rd_data_q_reg[55]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X78Y33         FDCE (Setup_FFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[55]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.135    
+  -------------------------------------------------------------------
+                         slack                                 -0.125    
+
+Slack (VIOLATED) :        -0.125ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[1][3]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[20]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.106ns  (logic 0.445ns (21.134%)  route 1.661ns (78.866%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.029ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.029     0.029    
+    SLICE_X84Y47         FDCE                         0.000     0.029 r  kernel_h_rd_addr_q_reg[1][3]/C
+    SLICE_X84Y47         FDCE (Prop_EFF2_SLICEL_C_Q)
+                                                      0.081     0.110 r  kernel_h_rd_addr_q_reg[1][3]/Q
+                         net (fo=278, routed)         0.630     0.740    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_704_767_0_6/ADDRE3
+    SLICE_X75Y53         RAMD64E (Prop_E6LUT_SLICEM_RADR3_O)
+                                                      0.091     0.831 r  gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_704_767_0_6/RAME/O
+                         net (fo=1, routed)           0.409     1.240    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_704_767_0_6_n_4
+    SLICE_X78Y44         LUT6 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.148     1.388 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[4]_INST_0_i_5/O
+                         net (fo=1, routed)           0.009     1.397    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[4]_INST_0_i_5_n_0
+    SLICE_X78Y44         MUXF7 (Prop_F7MUX_AB_SLICEL_I0_O)
+                                                      0.056     1.453 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[4]_INST_0_i_2/O
+                         net (fo=1, routed)           0.000     1.453    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[4]_INST_0_i_2_n_0
+    SLICE_X78Y44         MUXF8 (Prop_F8MUX_BOT_SLICEL_I1_O)
+                                                      0.033     1.486 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[4]_INST_0/O
+                         net (fo=2, routed)           0.564     2.050    tmp_rd_data[1][4]
+    SLICE_X84Y39         LUT5 (Prop_D6LUT_SLICEL_I4_O)
+                                                      0.036     2.086 r  kernel_h_rd_data_q[20]_i_1/O
+                         net (fo=1, routed)           0.049     2.135    kernel_h_rd_data_q[20]_i_1_n_0
+    SLICE_X84Y39         FDCE                                         r  kernel_h_rd_data_q_reg[20]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X84Y39         FDCE (Setup_DFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[20]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.135    
+  -------------------------------------------------------------------
+                         slack                                 -0.125    
+
+Slack (VIOLATED) :        -0.123ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[3][4]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[53]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.104ns  (logic 0.434ns (20.629%)  route 1.670ns (79.371%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.029ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.029     0.029    
+    SLICE_X84Y45         FDCE                         0.000     0.029 r  kernel_h_rd_addr_q_reg[3][4]/C
+    SLICE_X84Y45         FDCE (Prop_GFF2_SLICEL_C_Q)
+                                                      0.081     0.110 r  kernel_h_rd_addr_q_reg[3][4]/Q
+                         net (fo=277, routed)         0.722     0.832    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_640_703_0_6/ADDRF4
+    SLICE_X79Y58         RAMD64E (Prop_F6LUT_SLICEM_RADR4_O)
+                                                      0.051     0.883 r  gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_640_703_0_6/RAMF/O
+                         net (fo=1, routed)           0.481     1.364    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_640_703_0_6_n_5
+    SLICE_X78Y35         LUT6 (Prop_B6LUT_SLICEL_I1_O)
+                                                      0.124     1.488 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[5]_INST_0_i_5/O
+                         net (fo=1, routed)           0.009     1.497    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[5]_INST_0_i_5_n_0
+    SLICE_X78Y35         MUXF7 (Prop_F7MUX_AB_SLICEL_I0_O)
+                                                      0.056     1.553 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[5]_INST_0_i_2/O
+                         net (fo=1, routed)           0.000     1.553    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[5]_INST_0_i_2_n_0
+    SLICE_X78Y35         MUXF8 (Prop_F8MUX_BOT_SLICEL_I1_O)
+                                                      0.033     1.586 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[5]_INST_0/O
+                         net (fo=2, routed)           0.407     1.993    tmp_rd_data[3][5]
+    SLICE_X80Y33         LUT5 (Prop_F6LUT_SLICEL_I4_O)
+                                                      0.089     2.082 r  kernel_h_rd_data_q[53]_i_1/O
+                         net (fo=1, routed)           0.051     2.133    kernel_h_rd_data_q[53]_i_1_n_0
+    SLICE_X80Y33         FDCE                                         r  kernel_h_rd_data_q_reg[53]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X80Y33         FDCE (Setup_FFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[53]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.133    
+  -------------------------------------------------------------------
+                         slack                                 -0.123    
+
+Slack (VIOLATED) :        -0.118ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[1][1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[24]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.099ns  (logic 0.379ns (18.060%)  route 1.720ns (81.940%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.029ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.029     0.029    
+    SLICE_X76Y44         FDCE                         0.000     0.029 r  kernel_h_rd_addr_q_reg[1][1]/C
+    SLICE_X76Y44         FDCE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     0.108 r  kernel_h_rd_addr_q_reg[1][1]/Q
+                         net (fo=273, routed)         0.911     1.019    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_768_831_7_13/ADDRB1
+    SLICE_X81Y59         RAMD64E (Prop_B6LUT_SLICEM_RADR1_O)
+                                                      0.125     1.144 r  gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_768_831_7_13/RAMB/O
+                         net (fo=1, routed)           0.364     1.508    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_768_831_7_13_n_1
+    SLICE_X80Y44         LUT6 (Prop_E6LUT_SLICEL_I5_O)
+                                                      0.035     1.543 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[8]_INST_0_i_6/O
+                         net (fo=1, routed)           0.007     1.550    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[8]_INST_0_i_6_n_0
+    SLICE_X80Y44         MUXF7 (Prop_F7MUX_EF_SLICEL_I1_O)
+                                                      0.056     1.606 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[8]_INST_0_i_2/O
+                         net (fo=1, routed)           0.000     1.606    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[8]_INST_0_i_2_n_0
+    SLICE_X80Y44         MUXF8 (Prop_F8MUX_TOP_SLICEL_I1_O)
+                                                      0.033     1.639 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[8]_INST_0/O
+                         net (fo=2, routed)           0.387     2.026    tmp_rd_data[1][8]
+    SLICE_X87Y38         LUT5 (Prop_H6LUT_SLICEL_I4_O)
+                                                      0.051     2.077 r  kernel_h_rd_data_q[24]_i_1/O
+                         net (fo=1, routed)           0.051     2.128    kernel_h_rd_data_q[24]_i_1_n_0
+    SLICE_X87Y38         FDCE                                         r  kernel_h_rd_data_q_reg[24]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X87Y38         FDCE (Setup_HFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[24]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.128    
+  -------------------------------------------------------------------
+                         slack                                 -0.118    
+
+Slack (VIOLATED) :        -0.117ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[1][2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[31]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.097ns  (logic 0.414ns (19.740%)  route 1.683ns (80.260%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.029ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.029     0.029    
+    SLICE_X84Y47         FDCE                         0.000     0.029 r  kernel_h_rd_addr_q_reg[1][2]/C
+    SLICE_X84Y47         FDCE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     0.108 r  kernel_h_rd_addr_q_reg[1][2]/Q
+                         net (fo=279, routed)         0.703     0.811    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_576_639_14_15/ADDRB2
+    SLICE_X79Y70         RAMD64E (Prop_F6LUT_SLICEM_RADR2_O)
+                                                      0.098     0.909 r  gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_576_639_14_15/RAMB/O
+                         net (fo=1, routed)           0.648     1.557    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_576_639_14_15_n_1
+    SLICE_X83Y37         LUT6 (Prop_F6LUT_SLICEL_I3_O)
+                                                      0.097     1.654 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[15]_INST_0_i_5/O
+                         net (fo=1, routed)           0.011     1.665    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[15]_INST_0_i_5_n_0
+    SLICE_X83Y37         MUXF7 (Prop_F7MUX_EF_SLICEL_I0_O)
+                                                      0.057     1.722 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[15]_INST_0_i_2/O
+                         net (fo=1, routed)           0.000     1.722    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[15]_INST_0_i_2_n_0
+    SLICE_X83Y37         MUXF8 (Prop_F8MUX_TOP_SLICEL_I1_O)
+                                                      0.033     1.755 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[15]_INST_0/O
+                         net (fo=2, routed)           0.271     2.026    tmp_rd_data[1][15]
+    SLICE_X80Y42         LUT5 (Prop_C6LUT_SLICEL_I4_O)
+                                                      0.050     2.076 r  kernel_h_rd_data_q[31]_i_1/O
+                         net (fo=1, routed)           0.050     2.126    kernel_h_rd_data_q[31]_i_1_n_0
+    SLICE_X80Y42         FDCE                                         r  kernel_h_rd_data_q_reg[31]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X80Y42         FDCE (Setup_CFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[31]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.126    
+  -------------------------------------------------------------------
+                         slack                                 -0.117    
+
+Slack (VIOLATED) :        -0.115ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[3][5]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[51]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.096ns  (logic 0.346ns (16.511%)  route 1.750ns (83.489%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.029ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.029     0.029    
+    SLICE_X84Y37         FDCE                         0.000     0.029 r  kernel_h_rd_addr_q_reg[3][5]/C
+    SLICE_X84Y37         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     0.109 r  kernel_h_rd_addr_q_reg[3][5]/Q
+                         net (fo=276, routed)         0.759     0.868    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_640_703_0_6/ADDRD5
+    SLICE_X79Y58         RAMD64E (Prop_D6LUT_SLICEM_RADR5_O)
+                                                      0.037     0.905 r  gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_640_703_0_6/RAMD/O
+                         net (fo=1, routed)           0.513     1.418    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_640_703_0_6_n_3
+    SLICE_X78Y35         LUT6 (Prop_F6LUT_SLICEL_I1_O)
+                                                      0.089     1.507 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[3]_INST_0_i_5/O
+                         net (fo=1, routed)           0.011     1.518    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[3]_INST_0_i_5_n_0
+    SLICE_X78Y35         MUXF7 (Prop_F7MUX_EF_SLICEL_I0_O)
+                                                      0.057     1.575 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[3]_INST_0_i_2/O
+                         net (fo=1, routed)           0.000     1.575    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[3]_INST_0_i_2_n_0
+    SLICE_X78Y35         MUXF8 (Prop_F8MUX_TOP_SLICEL_I1_O)
+                                                      0.033     1.608 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[3]_INST_0/O
+                         net (fo=2, routed)           0.418     2.026    tmp_rd_data[3][3]
+    SLICE_X84Y35         LUT5 (Prop_D6LUT_SLICEL_I4_O)
+                                                      0.050     2.076 r  kernel_h_rd_data_q[51]_i_1/O
+                         net (fo=1, routed)           0.049     2.125    kernel_h_rd_data_q[51]_i_1_n_0
+    SLICE_X84Y35         FDCE                                         r  kernel_h_rd_data_q_reg[51]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X84Y35         FDCE (Setup_DFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[51]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.125    
+  -------------------------------------------------------------------
+                         slack                                 -0.115    
+
+Slack (VIOLATED) :        -0.113ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[3][0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[63]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.093ns  (logic 0.487ns (23.270%)  route 1.606ns (76.730%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+    SLICE_X79Y31         FDCE                         0.000     0.030 r  kernel_h_rd_addr_q_reg[3][0]/C
+    SLICE_X79Y31         FDCE (Prop_AFF_SLICEM_C_Q)
+                                                      0.077     0.107 r  kernel_h_rd_addr_q_reg[3][0]/Q
+                         net (fo=273, routed)         0.924     1.031    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_64_127_14_15/ADDRB0
+    SLICE_X86Y43         RAMD64E (Prop_F6LUT_SLICEM_RADR0_O)
+                                                      0.148     1.179 r  gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_64_127_14_15/RAMB/O
+                         net (fo=1, routed)           0.294     1.473    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_64_127_14_15_n_1
+    SLICE_X83Y48         LUT6 (Prop_D6LUT_SLICEL_I3_O)
+                                                      0.122     1.595 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[15]_INST_0_i_3/O
+                         net (fo=1, routed)           0.009     1.604    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[15]_INST_0_i_3_n_0
+    SLICE_X83Y48         MUXF7 (Prop_F7MUX_CD_SLICEL_I0_O)
+                                                      0.056     1.660 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[15]_INST_0_i_1/O
+                         net (fo=1, routed)           0.000     1.660    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[15]_INST_0_i_1_n_0
+    SLICE_X83Y48         MUXF8 (Prop_F8MUX_BOT_SLICEL_I0_O)
+                                                      0.033     1.693 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[15]_INST_0/O
+                         net (fo=2, routed)           0.328     2.021    tmp_rd_data[3][15]
+    SLICE_X83Y48         LUT5 (Prop_H6LUT_SLICEL_I4_O)
+                                                      0.051     2.072 r  kernel_h_rd_data_q[63]_i_1/O
+                         net (fo=1, routed)           0.051     2.123    kernel_h_rd_data_q[63]_i_1_n_0
+    SLICE_X83Y48         FDCE                                         r  kernel_h_rd_data_q_reg[63]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X83Y48         FDCE (Setup_HFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[63]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.123    
+  -------------------------------------------------------------------
+                         slack                                 -0.113    
+
+Slack (VIOLATED) :        -0.112ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[1][4]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_tail_q_reg[21]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.093ns  (logic 0.361ns (17.245%)  route 1.732ns (82.755%))
+  Logic Levels:           4  (LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.008ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.028ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.028     0.028    
+    SLICE_X80Y45         FDCE                         0.000     0.028 r  kernel_h_rd_addr_q_reg[1][4]/C
+    SLICE_X80Y45         FDCE (Prop_AFF_SLICEL_C_Q)
+                                                      0.079     0.107 r  kernel_h_rd_addr_q_reg[1][4]/Q
+                         net (fo=277, routed)         0.739     0.846    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_512_575_0_6/ADDRF4
+    SLICE_X75Y60         RAMD64E (Prop_F6LUT_SLICEM_RADR4_O)
+                                                      0.051     0.897 r  gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_512_575_0_6/RAMF/O
+                         net (fo=1, routed)           0.448     1.345    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_512_575_0_6_n_5
+    SLICE_X77Y41         LUT6 (Prop_F6LUT_SLICEL_I5_O)
+                                                      0.148     1.493 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[5]_INST_0_i_5/O
+                         net (fo=1, routed)           0.011     1.504    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[5]_INST_0_i_5_n_0
+    SLICE_X77Y41         MUXF7 (Prop_F7MUX_EF_SLICEL_I0_O)
+                                                      0.057     1.561 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[5]_INST_0_i_2/O
+                         net (fo=1, routed)           0.000     1.561    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[5]_INST_0_i_2_n_0
+    SLICE_X77Y41         MUXF8 (Prop_F8MUX_TOP_SLICEL_I1_O)
+                                                      0.026     1.587 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[5]_INST_0/O
+                         net (fo=2, routed)           0.534     2.121    tmp_rd_data[1][5]
+    SLICE_X84Y36         FDCE                                         r  kernel_h_rd_data_tail_q_reg[21]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X84Y36         FDCE (Setup_AFF2_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_tail_q_reg[21]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.121    
+  -------------------------------------------------------------------
+                         slack                                 -0.112    
+
+Slack (VIOLATED) :        -0.105ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[3][3]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[50]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.085ns  (logic 0.416ns (19.950%)  route 1.669ns (80.050%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.029ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.029     0.029    
+    SLICE_X84Y45         FDCE                         0.000     0.029 r  kernel_h_rd_addr_q_reg[3][3]/C
+    SLICE_X84Y45         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     0.109 r  kernel_h_rd_addr_q_reg[3][3]/Q
+                         net (fo=278, routed)         0.774     0.883    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_448_511_0_6/ADDRC3
+    SLICE_X79Y33         RAMD64E (Prop_C6LUT_SLICEM_RADR3_O)
+                                                      0.088     0.971 r  gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_448_511_0_6/RAMC/O
+                         net (fo=1, routed)           0.329     1.300    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_448_511_0_6_n_2
+    SLICE_X77Y36         LUT6 (Prop_C6LUT_SLICEL_I0_O)
+                                                      0.123     1.423 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[2]_INST_0_i_4/O
+                         net (fo=1, routed)           0.010     1.433    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[2]_INST_0_i_4_n_0
+    SLICE_X77Y36         MUXF7 (Prop_F7MUX_CD_SLICEL_I1_O)
+                                                      0.057     1.490 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[2]_INST_0_i_1/O
+                         net (fo=1, routed)           0.000     1.490    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[2]_INST_0_i_1_n_0
+    SLICE_X77Y36         MUXF8 (Prop_F8MUX_BOT_SLICEL_I0_O)
+                                                      0.033     1.523 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[2]_INST_0/O
+                         net (fo=2, routed)           0.506     2.029    tmp_rd_data[3][2]
+    SLICE_X80Y29         LUT5 (Prop_C6LUT_SLICEL_I4_O)
+                                                      0.035     2.064 r  kernel_h_rd_data_q[50]_i_1/O
+                         net (fo=1, routed)           0.050     2.114    kernel_h_rd_data_q[50]_i_1_n_0
+    SLICE_X80Y29         FDCE                                         r  kernel_h_rd_data_q_reg[50]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X80Y29         FDCE (Setup_CFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[50]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.114    
+  -------------------------------------------------------------------
+                         slack                                 -0.105    
+
+Slack (VIOLATED) :        -0.097ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[0][0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[0]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.077ns  (logic 0.505ns (24.317%)  route 1.572ns (75.683%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+    SLICE_X79Y38         FDCE                         0.000     0.030 r  kernel_h_rd_addr_q_reg[0][0]/C
+    SLICE_X79Y38         FDCE (Prop_AFF_SLICEM_C_Q)
+                                                      0.077     0.107 r  kernel_h_rd_addr_q_reg[0][0]/Q
+                         net (fo=273, routed)         0.635     0.742    gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_960_1023_0_6/ADDRA0
+    SLICE_X81Y26         RAMD64E (Prop_A6LUT_SLICEM_RADR0_O)
+                                                      0.150     0.892 r  gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_960_1023_0_6/RAMA/O
+                         net (fo=1, routed)           0.550     1.442    gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_960_1023_0_6_n_0
+    SLICE_X77Y35         LUT6 (Prop_E6LUT_SLICEL_I0_O)
+                                                      0.051     1.493 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[0]_INST_0_i_6/O
+                         net (fo=1, routed)           0.007     1.500    gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[0]_INST_0_i_6_n_0
+    SLICE_X77Y35         MUXF7 (Prop_F7MUX_EF_SLICEL_I1_O)
+                                                      0.056     1.556 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[0]_INST_0_i_2/O
+                         net (fo=1, routed)           0.000     1.556    gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[0]_INST_0_i_2_n_0
+    SLICE_X77Y35         MUXF8 (Prop_F8MUX_TOP_SLICEL_I1_O)
+                                                      0.033     1.589 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[0]_INST_0/O
+                         net (fo=2, routed)           0.362     1.951    tmp_rd_data[0][0]
+    SLICE_X80Y33         LUT5 (Prop_E5LUT_SLICEL_I4_O)
+                                                      0.138     2.089 r  kernel_h_rd_data_q[0]_i_1/O
+                         net (fo=1, routed)           0.018     2.107    kernel_h_rd_data_q[0]_i_1_n_0
+    SLICE_X80Y33         FDCE                                         r  kernel_h_rd_data_q_reg[0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X80Y33         FDCE (Setup_EFF2_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[0]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.107    
+  -------------------------------------------------------------------
+                         slack                                 -0.097    
+
+Slack (VIOLATED) :        -0.094ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[3][1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[61]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.073ns  (logic 0.510ns (24.597%)  route 1.563ns (75.403%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+    SLICE_X79Y45         FDCE                         0.000     0.030 r  kernel_h_rd_addr_q_reg[3][1]/C
+    SLICE_X79Y45         FDCE (Prop_AFF_SLICEM_C_Q)
+                                                      0.077     0.107 r  kernel_h_rd_addr_q_reg[3][1]/Q
+                         net (fo=273, routed)         0.782     0.889    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_640_703_7_13/ADDRG1
+    SLICE_X82Y52         RAMD64E (Prop_G6LUT_SLICEM_RADR1_O)
+                                                      0.123     1.012 r  gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_640_703_7_13/RAMG/O
+                         net (fo=1, routed)           0.347     1.359    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_640_703_7_13_n_6
+    SLICE_X86Y44         LUT6 (Prop_B6LUT_SLICEM_I1_O)
+                                                      0.125     1.484 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[13]_INST_0_i_5/O
+                         net (fo=1, routed)           0.017     1.501    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[13]_INST_0_i_5_n_0
+    SLICE_X86Y44         MUXF7 (Prop_F7MUX_AB_SLICEM_I0_O)
+                                                      0.060     1.561 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[13]_INST_0_i_2/O
+                         net (fo=1, routed)           0.000     1.561    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[13]_INST_0_i_2_n_0
+    SLICE_X86Y44         MUXF8 (Prop_F8MUX_BOT_SLICEM_I1_O)
+                                                      0.035     1.596 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[13]_INST_0/O
+                         net (fo=2, routed)           0.369     1.965    tmp_rd_data[3][13]
+    SLICE_X80Y42         LUT5 (Prop_A6LUT_SLICEL_I4_O)
+                                                      0.090     2.055 r  kernel_h_rd_data_q[61]_i_1/O
+                         net (fo=1, routed)           0.048     2.103    kernel_h_rd_data_q[61]_i_1_n_0
+    SLICE_X80Y42         FDCE                                         r  kernel_h_rd_data_q_reg[61]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X80Y42         FDCE (Setup_AFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[61]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.103    
+  -------------------------------------------------------------------
+                         slack                                 -0.094    
+
+Slack (VIOLATED) :        -0.090ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[0][0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[12]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.070ns  (logic 0.562ns (27.149%)  route 1.508ns (72.851%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+    SLICE_X79Y38         FDCE                         0.000     0.030 r  kernel_h_rd_addr_q_reg[0][0]/C
+    SLICE_X79Y38         FDCE (Prop_AFF_SLICEM_C_Q)
+                                                      0.077     0.107 r  kernel_h_rd_addr_q_reg[0][0]/Q
+                         net (fo=273, routed)         0.661     0.768    gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_640_703_7_13/ADDRF0
+    SLICE_X82Y43         RAMD64E (Prop_F6LUT_SLICEM_RADR0_O)
+                                                      0.148     0.916 r  gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_640_703_7_13/RAMF/O
+                         net (fo=1, routed)           0.483     1.399    gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_640_703_7_13_n_5
+    SLICE_X78Y34         LUT6 (Prop_F6LUT_SLICEL_I1_O)
+                                                      0.148     1.547 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[12]_INST_0_i_5/O
+                         net (fo=1, routed)           0.011     1.558    gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[12]_INST_0_i_5_n_0
+    SLICE_X78Y34         MUXF7 (Prop_F7MUX_EF_SLICEL_I0_O)
+                                                      0.057     1.615 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[12]_INST_0_i_2/O
+                         net (fo=1, routed)           0.000     1.615    gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[12]_INST_0_i_2_n_0
+    SLICE_X78Y34         MUXF8 (Prop_F8MUX_TOP_SLICEL_I1_O)
+                                                      0.033     1.648 r  gen_tmp_banks[0].u_kernel_tmp_bank/rd_data[12]_INST_0/O
+                         net (fo=2, routed)           0.302     1.950    tmp_rd_data[0][12]
+    SLICE_X80Y33         LUT5 (Prop_H6LUT_SLICEL_I4_O)
+                                                      0.099     2.049 r  kernel_h_rd_data_q[12]_i_1/O
+                         net (fo=1, routed)           0.051     2.100    kernel_h_rd_data_q[12]_i_1_n_0
+    SLICE_X80Y33         FDCE                                         r  kernel_h_rd_data_q_reg[12]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X80Y33         FDCE (Setup_HFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[12]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.100    
+  -------------------------------------------------------------------
+                         slack                                 -0.090    
+
+Slack (VIOLATED) :        -0.088ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[1][2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[16]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.069ns  (logic 0.537ns (25.956%)  route 1.532ns (74.044%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.029ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.029     0.029    
+    SLICE_X84Y47         FDCE                         0.000     0.029 r  kernel_h_rd_addr_q_reg[1][2]/C
+    SLICE_X84Y47         FDCE (Prop_EFF_SLICEL_C_Q)
+                                                      0.079     0.108 r  kernel_h_rd_addr_q_reg[1][2]/Q
+                         net (fo=279, routed)         0.748     0.856    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_320_383_0_6/ADDRA2
+    SLICE_X75Y63         RAMD64E (Prop_A6LUT_SLICEM_RADR2_O)
+                                                      0.100     0.956 r  gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_320_383_0_6/RAMA/O
+                         net (fo=1, routed)           0.489     1.445    gen_tmp_banks[1].u_kernel_tmp_bank/mem_reg_320_383_0_6_n_0
+    SLICE_X77Y40         LUT6 (Prop_C6LUT_SLICEL_I3_O)
+                                                      0.146     1.591 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[0]_INST_0_i_4/O
+                         net (fo=1, routed)           0.010     1.601    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[0]_INST_0_i_4_n_0
+    SLICE_X77Y40         MUXF7 (Prop_F7MUX_CD_SLICEL_I1_O)
+                                                      0.057     1.658 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[0]_INST_0_i_1/O
+                         net (fo=1, routed)           0.000     1.658    gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[0]_INST_0_i_1_n_0
+    SLICE_X77Y40         MUXF8 (Prop_F8MUX_BOT_SLICEL_I0_O)
+                                                      0.033     1.691 r  gen_tmp_banks[1].u_kernel_tmp_bank/rd_data[0]_INST_0/O
+                         net (fo=2, routed)           0.236     1.927    tmp_rd_data[1][0]
+    SLICE_X77Y35         LUT5 (Prop_D6LUT_SLICEL_I4_O)
+                                                      0.122     2.049 r  kernel_h_rd_data_q[16]_i_1/O
+                         net (fo=1, routed)           0.049     2.098    kernel_h_rd_data_q[16]_i_1_n_0
+    SLICE_X77Y35         FDCE                                         r  kernel_h_rd_data_q_reg[16]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X77Y35         FDCE (Setup_DFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[16]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.098    
+  -------------------------------------------------------------------
+                         slack                                 -0.088    
+
+Slack (VIOLATED) :        -0.082ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[2][0]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[47]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.061ns  (logic 0.453ns (21.976%)  route 1.608ns (78.024%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.010ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.030ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.030     0.030    
+    SLICE_X74Y34         FDCE                         0.000     0.030 r  kernel_h_rd_addr_q_reg[2][0]/C
+    SLICE_X74Y34         FDCE (Prop_EFF_SLICEM_C_Q)
+                                                      0.076     0.106 r  kernel_h_rd_addr_q_reg[2][0]/Q
+                         net (fo=273, routed)         0.507     0.613    gen_tmp_banks[2].u_kernel_tmp_bank/mem_reg_704_767_14_15/ADDRB0
+    SLICE_X74Y60         RAMD64E (Prop_F6LUT_SLICEM_RADR0_O)
+                                                      0.148     0.761 r  gen_tmp_banks[2].u_kernel_tmp_bank/mem_reg_704_767_14_15/RAMB/O
+                         net (fo=1, routed)           0.542     1.303    gen_tmp_banks[2].u_kernel_tmp_bank/mem_reg_704_767_14_15_n_1
+    SLICE_X77Y38         LUT6 (Prop_B6LUT_SLICEL_I0_O)
+                                                      0.090     1.393 r  gen_tmp_banks[2].u_kernel_tmp_bank/rd_data[15]_INST_0_i_5/O
+                         net (fo=1, routed)           0.009     1.402    gen_tmp_banks[2].u_kernel_tmp_bank/rd_data[15]_INST_0_i_5_n_0
+    SLICE_X77Y38         MUXF7 (Prop_F7MUX_AB_SLICEL_I0_O)
+                                                      0.056     1.458 r  gen_tmp_banks[2].u_kernel_tmp_bank/rd_data[15]_INST_0_i_2/O
+                         net (fo=1, routed)           0.000     1.458    gen_tmp_banks[2].u_kernel_tmp_bank/rd_data[15]_INST_0_i_2_n_0
+    SLICE_X77Y38         MUXF8 (Prop_F8MUX_BOT_SLICEL_I1_O)
+                                                      0.033     1.491 r  gen_tmp_banks[2].u_kernel_tmp_bank/rd_data[15]_INST_0/O
+                         net (fo=2, routed)           0.502     1.993    tmp_rd_data[2][15]
+    SLICE_X87Y38         LUT5 (Prop_G6LUT_SLICEL_I4_O)
+                                                      0.050     2.043 r  kernel_h_rd_data_q[47]_i_1/O
+                         net (fo=1, routed)           0.048     2.091    kernel_h_rd_data_q[47]_i_1_n_0
+    SLICE_X87Y38         FDCE                                         r  kernel_h_rd_data_q_reg[47]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X87Y38         FDCE (Setup_GFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[47]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.091    
+  -------------------------------------------------------------------
+                         slack                                 -0.082    
+
+Slack (VIOLATED) :        -0.075ns  (required time - arrival time)
+  Source:                 kernel_h_rd_addr_q_reg[3][3]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            kernel_h_rd_data_q_reg[52]/D
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        2.056ns  (logic 0.436ns (21.208%)  route 1.620ns (78.792%))
+  Logic Levels:           5  (LUT5=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1)
+  Clock Path Skew:        -0.009ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.020ns = ( 2.020 - 2.000 ) 
+    Source Clock Delay      (SCD):    0.029ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+                         propagated clock network latency
+                                                      0.029     0.029    
+    SLICE_X84Y45         FDCE                         0.000     0.029 r  kernel_h_rd_addr_q_reg[3][3]/C
+    SLICE_X84Y45         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     0.109 r  kernel_h_rd_addr_q_reg[3][3]/Q
+                         net (fo=278, routed)         0.741     0.850    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_64_127_0_6/ADDRE3
+    SLICE_X79Y30         RAMD64E (Prop_E6LUT_SLICEM_RADR3_O)
+                                                      0.091     0.941 r  gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_64_127_0_6/RAME/O
+                         net (fo=1, routed)           0.451     1.392    gen_tmp_banks[3].u_kernel_tmp_bank/mem_reg_64_127_0_6_n_4
+    SLICE_X78Y28         LUT6 (Prop_H6LUT_SLICEL_I3_O)
+                                                      0.124     1.516 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[4]_INST_0_i_3/O
+                         net (fo=1, routed)           0.010     1.526    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[4]_INST_0_i_3_n_0
+    SLICE_X78Y28         MUXF7 (Prop_F7MUX_GH_SLICEL_I0_O)
+                                                      0.057     1.583 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[4]_INST_0_i_1/O
+                         net (fo=1, routed)           0.000     1.583    gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[4]_INST_0_i_1_n_0
+    SLICE_X78Y28         MUXF8 (Prop_F8MUX_TOP_SLICEL_I0_O)
+                                                      0.033     1.616 r  gen_tmp_banks[3].u_kernel_tmp_bank/rd_data[4]_INST_0/O
+                         net (fo=2, routed)           0.369     1.985    tmp_rd_data[3][4]
+    SLICE_X80Y29         LUT5 (Prop_B6LUT_SLICEL_I4_O)
+                                                      0.051     2.036 r  kernel_h_rd_data_q[52]_i_1/O
+                         net (fo=1, routed)           0.049     2.085    kernel_h_rd_data_q[52]_i_1_n_0
+    SLICE_X80Y29         FDCE                                         r  kernel_h_rd_data_q_reg[52]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+                         propagated clock network latency
+                                                      0.020     2.020    
+                         clock pessimism              0.000     2.020    
+                         clock uncertainty           -0.035     1.985    
+    SLICE_X80Y29         FDCE (Setup_BFF_SLICEL_C_D)
+                                                      0.025     2.010    kernel_h_rd_data_q_reg[52]
+  -------------------------------------------------------------------
+                         required time                          2.010    
+                         arrival time                          -2.085    
+  -------------------------------------------------------------------
+                         slack                                 -0.075    
+
+
+
+
+PATH_QUERY_RC=0 PATH_COUNT=20
+STATUS=PATHS_FOUND
+REPORT_RC=0
+
+=== pending_q_through_tmp_ram_to_hread_response ===
+FROM_COUNT=1 THROUGH_COUNT=1280 TO_COUNT=128
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Wed Sep 16 22:32:08 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_h_rd_pending_q_reg*}] -through {kernel_h_rd_addr_q_reg_n_0_[3][9]} -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && (NAME =~ *kernel_h_rd_data_q_reg* || NAME =~ *kernel_h_rd_data_tail_q_reg*)}] -delay_type max -max_paths 20 -path_type full -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/54/p9_round5_hread_addr_validity_20260916/p9_r5_hread_address_validity/P9_R5_HREAD_ADDRESS_VALIDITY.rpt -append
+| Design            : unified_its_wrapper
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Routed
+| Temperature Grade : E
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+No timing paths found.
+
+
+PATH_QUERY_RC=0 PATH_COUNT=0
+STATUS=NO_TIMING_PATHS
+REPORT_RC=0
+
+=== run_q_through_tmp_ram_to_hread_response ===
+FROM_COUNT=4 THROUGH_COUNT=1280 TO_COUNT=128
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Wed Sep 16 22:32:08 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_run_q_reg*}] -through {kernel_h_rd_addr_q_reg_n_0_[3][9]} -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && (NAME =~ *kernel_h_rd_data_q_reg* || NAME =~ *kernel_h_rd_data_tail_q_reg*)}] -delay_type max -max_paths 20 -path_type full -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/54/p9_round5_hread_addr_validity_20260916/p9_r5_hread_address_validity/P9_R5_HREAD_ADDRESS_VALIDITY.rpt -append
+| Design            : unified_its_wrapper
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Routed
+| Temperature Grade : E
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+No timing paths found.
+
+
+PATH_QUERY_RC=0 PATH_COUNT=0
+STATUS=NO_TIMING_PATHS
+REPORT_RC=0
+
+=== stage_q_through_tmp_ram_to_hread_response ===
+FROM_COUNT=1 THROUGH_COUNT=1280 TO_COUNT=128
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Wed Sep 16 22:32:08 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_stage_q_reg*}] -through {kernel_h_rd_addr_q_reg_n_0_[3][9]} -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && (NAME =~ *kernel_h_rd_data_q_reg* || NAME =~ *kernel_h_rd_data_tail_q_reg*)}] -delay_type max -max_paths 20 -path_type full -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/54/p9_round5_hread_addr_validity_20260916/p9_r5_hread_address_validity/P9_R5_HREAD_ADDRESS_VALIDITY.rpt -append
+| Design            : unified_its_wrapper
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Routed
+| Temperature Grade : E
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+No timing paths found.
+
+
+PATH_QUERY_RC=0 PATH_COUNT=0
+STATUS=NO_TIMING_PATHS
+REPORT_RC=0
+
+=== address_q_through_ram_to_lfnst_response ===
+FROM_COUNT=40 THROUGH_COUNT=1280 TO_COUNT=16
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Wed Sep 16 22:32:08 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_h_rd_addr_q_reg*}] -through {kernel_h_rd_addr_q_reg_n_0_[3][9]} -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *lfnst_mem_resp_data_q_reg*}] -delay_type max -max_paths 20 -path_type full -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/54/p9_round5_hread_addr_validity_20260916/p9_r5_hread_address_validity/P9_R5_HREAD_ADDRESS_VALIDITY.rpt -append
+| Design            : unified_its_wrapper
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Routed
+| Temperature Grade : E
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+No timing paths found.
+
+
+PATH_QUERY_RC=0 PATH_COUNT=0
+STATUS=NO_TIMING_PATHS
+REPORT_RC=0
+
+=== pending_q_through_ram_to_lfnst_response ===
+FROM_COUNT=1 THROUGH_COUNT=1280 TO_COUNT=16
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Wed Sep 16 22:32:08 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_h_rd_pending_q_reg*}] -through {kernel_h_rd_addr_q_reg_n_0_[3][9]} -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *lfnst_mem_resp_data_q_reg*}] -delay_type max -max_paths 20 -path_type full -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/54/p9_round5_hread_addr_validity_20260916/p9_r5_hread_address_validity/P9_R5_HREAD_ADDRESS_VALIDITY.rpt -append
+| Design            : unified_its_wrapper
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Routed
+| Temperature Grade : E
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+No timing paths found.
+
+
+PATH_QUERY_RC=0 PATH_COUNT=0
+STATUS=NO_TIMING_PATHS
+REPORT_RC=0

@@ -1,0 +1,225 @@
+{
+  "schema": "step12f.p9.round5.hread_address_validity.manifest.v1",
+  "phase": "Step12F-P9 Round 5 H-read temp-bank address-validity isolation",
+  "date": "2026-09-16",
+  "base_commit": "aa454c204a74aaeddb006e9c0ea1a74fb78b24c9",
+  "status": "FUNCTIONAL_PASS_PHYSICAL_TIMING_FAIL_NO_TAG",
+  "objective": "Remove the runtime valid/run/stage address mux in front of the H-read temporary distributed RAM while preserving the registered-address, asynchronous-read and response protocol contracts.",
+  "scope": {
+    "rtl_changed": [
+      "02_rtl/rtl/unified_its_wrapper.sv"
+    ],
+    "rtl_unchanged": [
+      "02_rtl/rtl/unified_p4_kernel.sv",
+      "02_rtl/rtl/its_input_cache_bank.sv",
+      "02_rtl/rtl/bounded_lfnst_engine.sv"
+    ],
+    "oracle_changed": false,
+    "profile_changed": false,
+    "xdc_changed": false,
+    "r4c_changed": false,
+    "v35_18_tag": "v3.5-18",
+    "v35_18_target_commit": "7415b0acb33481af1845f63e16b93ce7c33b977b",
+    "new_tag": false
+  },
+  "implementation_change": {
+    "address_policy": "tmp_rd_addr[bank] is driven unconditionally from kernel_h_rd_addr_q[bank]; invalid/pending/run/stage metadata qualifies response meaning and does not mux the RAM address.",
+    "memory_type": "its_simple_ram asynchronous read and synchronous write unchanged.",
+    "response_architecture": "H-read head/tail elastic response and recurrence unchanged.",
+    "throughput_contract": "H-read request/response steady-state II=1; P4 group II=1; vector II=N/4.",
+    "mathematics": "Transform coefficients, arithmetic, rounding, clipping, output adapter and Oracle unchanged."
+  },
+  "tools": {
+    "modelsim": {
+      "name": "ModelSim SE-64 2020.4",
+      "vsim": "D:\\software\\Modelsim\\win64\\vsim.exe",
+      "run_script": "03_verification/step12d_engineering/run_step12f_coverage_modelsim.ps1",
+      "modes": ["normal", "synthesis"]
+    },
+    "vivado": {
+      "version": "2025.2 Build 6299465",
+      "device": "xcku5p-ffvb676-2-e",
+      "clock_period_ns": 2.0,
+      "clock_frequency_mhz": 500,
+      "fresh_synthesis": true,
+      "fresh_implementation": true,
+      "route_state": "Fully Routed"
+    }
+  },
+  "coverage": {
+    "status": "PASS",
+    "evidence": "STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "normal": {
+      "compile": "PASS",
+      "gate_b_numeric_cases": 156,
+      "gate_b_vector_ii_legacy_modes": 7,
+      "gate_f_vector_ii_modes": 13,
+      "gate_c_cases": 369,
+      "gate_c_beats": 45636,
+      "lfnst_engine_cases": 1088,
+      "lfnst_wrapper_cases": 258,
+      "p4_stage0_n4_vectors": 16,
+      "errors": 0
+    },
+    "synthesis": {
+      "compile": "PASS",
+      "gate_b_numeric_cases": 156,
+      "gate_b_vector_ii_legacy_modes": 7,
+      "gate_f_vector_ii_modes": 13,
+      "gate_c_cases": 369,
+      "gate_c_beats": 45636,
+      "lfnst_engine_cases": 1088,
+      "lfnst_wrapper_cases": 258,
+      "p4_stage0_n4_vectors": 16,
+      "errors": 0
+    },
+    "contracts": {
+      "group_ii": 1,
+      "vector_ii": "N/4",
+      "hread_request_ii": 1,
+      "sparse_input": true,
+      "rectangles": true,
+      "lfnst": true,
+      "backpressure": true,
+      "two_tu": true,
+      "output_adapter": "LOW10_TWOS_COMPLEMENT"
+    }
+  },
+  "physical": {
+    "synthesis": {
+      "status": "PASS_COMPLETED_BUT_TIMING_FAIL",
+      "wns_ns": -0.589,
+      "tns_ns": -65.087,
+      "setup_failing_endpoints": 498,
+      "unconstrained_internal_endpoints": 0,
+      "resources": {
+        "clb_luts": 27692,
+        "logic_luts": 22051,
+        "lutram": 5641,
+        "clb_registers": 25348,
+        "carry8": 1477,
+        "f7_muxes": 1744,
+        "f8_muxes": 592,
+        "dsp48e2": 320,
+        "bram": 0,
+        "uram": 0
+      }
+    },
+    "postroute": {
+      "status": "FULLY_ROUTED_BUT_TIMING_FAIL",
+      "wns_ns": -0.238,
+      "tns_ns": -125.204,
+      "setup_failing_endpoints": 2068,
+      "whs_ns": -0.080,
+      "ths_ns": -4.691,
+      "hold_failing_endpoints": 62,
+      "unconstrained_internal_endpoints": 0,
+      "valid_timing_exceptions": 0,
+      "route_state": "Fully Routed",
+      "total_on_chip_power_w": 1.952,
+      "worst_setup_path": {
+        "source": "u_unified_p4_kernel/slot_state_q_reg[2][0]/C",
+        "destination": "kernel_rd_req_group_q_reg[0]/CE",
+        "wns_ns": -0.238,
+        "data_delay_ns": 2.134,
+        "logic_delay_ns": 0.733,
+        "routing_delay_ns": 1.401,
+        "logic_levels": 8,
+        "family": "kernel slot-state to read-request control"
+      },
+      "hread_representative_path": {
+        "source": "kernel_h_rd_addr_q_reg[0][0]/C",
+        "destination": "kernel_h_rd_data_q_reg[1]/D",
+        "wns_ns": -0.207,
+        "data_delay_ns": 2.187,
+        "logic_delay_ns": 0.476,
+        "routing_delay_ns": 1.711,
+        "logic_levels": 5,
+        "primitives": ["LUT5", "LUT6", "MUXF7", "MUXF8", "RAMD64E"],
+        "address_driver_observation": "The routed path shows kernel_h_rd_addr_q/Q directly feeding a gen_tmp_banks RAMD64E address pin; no valid LUT4 is present in this path."
+      }
+    }
+  },
+  "routed_target_qualification": {
+    "evidence": "p9_r5_hread_address_validity/P9_R5_HREAD_ADDRESS_VALIDITY.json",
+    "haddr_q_objects": 40,
+    "hread_response_d_objects": 128,
+    "tmp_rd_addr_net_objects": 0,
+    "address_q_through_ramd64e_path_count": 20,
+    "pending_q_through_ramd64e_to_hread_response_path_count": 0,
+    "run_q_through_ramd64e_to_hread_response_path_count": 0,
+    "stage_q_through_ramd64e_to_hread_response_path_count": 0,
+    "interpretation": "The target address-valid mux is absent from the routed H-read paths sampled by the DCP; the direct registered-address-to-RAMD64E path exists. The target is structurally effective, but the fresh implementation instance has a global timing regression and does not sign off 500 MHz."
+  },
+  "worst500_sample": {
+    "evidence": "p9_r5_readonly_qualification/P9_A_ROUTED_READ_QUALIFICATION.json",
+    "sample_path_count": 500,
+    "aggregate_label": "sampled_negative_slack_sum_not_full_design_tns",
+    "families": {
+      "A_cache_to_lfnst_response": {"count": 27, "sampled_negative_slack_sum_ns": -4.353, "worst_slack_ns": -0.237},
+      "B_kernel_control_to_p4_input_mem": {"count": 19, "sampled_negative_slack_sum_ns": -2.025, "worst_slack_ns": -0.128},
+      "C_other_cache_read_or_response": {"count": 42, "sampled_negative_slack_sum_ns": -4.188, "worst_slack_ns": -0.106},
+      "C_other_cache_kernel_or_write": {"count": 140, "sampled_negative_slack_sum_ns": -19.878, "worst_slack_ns": -0.238},
+      "D_control_or_r4c": {"count": 118, "sampled_negative_slack_sum_ns": -14.838, "worst_slack_ns": -0.206},
+      "E_other": {"count": 154, "sampled_negative_slack_sum_ns": -19.102, "worst_slack_ns": -0.211}
+    }
+  },
+  "comparison_to_p9_r4": {
+    "reference_manifest": "../53/p9_round4_lfnst_dsp_pipeline_20260916/STEP12F_P9_R4_MANIFEST.json",
+    "postroute_setup": {"r4_wns_ns": -0.113, "r4_tns_ns": -8.032, "r4_failing_endpoints": 259, "r5_wns_ns": -0.238, "r5_tns_ns": -125.204, "r5_failing_endpoints": 2068},
+    "postroute_hold": {"r4_whs_ns": -0.080, "r4_ths_ns": -4.911, "r4_failing_endpoints": 76, "r5_whs_ns": -0.080, "r5_ths_ns": -4.691, "r5_failing_endpoints": 62},
+    "interpretation": "R5 and R4 are separate fresh implementation instances; the comparison is diagnostic, not a controlled same-netlist experiment. R5 does not improve global setup timing in this run, despite removing the address-valid mux structurally."
+  },
+  "constraints": {
+    "clock_period_ns": 2.0,
+    "check_timing": {
+      "no_clock": 0,
+      "unconstrained_internal_endpoints": 0,
+      "no_input_delay": 0,
+      "no_output_delay": 0,
+      "loops": 0,
+      "multiple_clock": 0
+    },
+    "timing_exceptions": "No valid timing exceptions found."
+  },
+  "evidence_hashes": {
+    "unified_its_wrapper_sha256": "C6082176CCDEF6B53114F44B59E7008767EF02AAB4CED0410CAFC07C179F0C25",
+    "coverage_json_sha256": "5716BFC711C07E209BC141835B8568FFBA0036C23654FC1BBF1796F86A407C6F",
+    "postsynth_dcp_sha256": "8156F568B1A22D14542E35186FECC3B1E9A1746B4B138738AB8D96FF42FDCC28",
+    "postroute_dcp_sha256": "0F4A1140EDD353C900629AFA1D0151F497E95F0CFEC0F838A5E9B39AC9AE6E3A",
+    "postroute_timing_sha256": "E28C3FB36108682F985AD6F5329417D042E05A5089D826D9E5C2395C0663934D",
+    "postroute_hold_sha256": "ED1C4CD78C0CDDEBD395343099D742E2F028E87F99B07F9A50367567C9B29184",
+    "postroute_utilization_sha256": "3210AD670D8F606CD7AEC2FE7315061FC1833573AC64BACF0458A6B64D090F14",
+    "postroute_power_sha256": "78F5F32D493D92047E05A4CC845BC7EA99106AE8BCF8C584D2632DED898F78B8",
+    "routed_target_qualification_sha256": "1D7044A96DF89D28737B00949DD7966EA8D41A90511E0B3FC55475482B54115D"
+  },
+  "evidence": {
+    "coverage_json": "STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "postsynth_dcp": "step12f_unified_wrapper_postsynth.dcp",
+    "postroute_dcp": "step12f_unified_wrapper_postroute.dcp",
+    "postsynth_timing": "report_timing_summary_postsynth.rpt",
+    "postroute_timing": "report_timing_summary_postroute.rpt",
+    "postroute_hold": "report_timing_hold_summary_postroute.rpt",
+    "postroute_worst100": "report_timing_worst100_postroute.rpt",
+    "postroute_high_fanout": "report_high_fanout_postroute.rpt",
+    "postroute_check_timing": "report_check_timing_postroute.rpt",
+    "postroute_exceptions": "report_exceptions_postroute.rpt",
+    "postroute_drc": "report_drc_postroute.rpt",
+    "postroute_power": "report_power_postroute.rpt",
+    "postroute_log": "vivado_r5.log",
+    "generic_worst500_qualification": "p9_r5_readonly_qualification/P9_A_ROUTED_READ_QUALIFICATION.json",
+    "hread_address_qualification": "p9_r5_hread_address_validity/P9_R5_HREAD_ADDRESS_VALIDITY.json"
+  },
+  "decision": {
+    "functional": "PASS",
+    "target_structural": "PASS_STRUCTURAL_ADDRESS_VALID_MUX_REMOVED",
+    "global_setup": "FAIL_REGRESSION",
+    "global_hold": "FAIL",
+    "implementation": "FULLY_ROUTED_BUT_TIMING_FAIL",
+    "setup_signoff": "FAIL",
+    "hold_signoff": "FAIL",
+    "p9_round5_effective": "TARGET_STRUCTURAL_EFFECTIVE_GLOBAL_TIMING_NOT_IMPROVED",
+    "tag": "NOT_CREATED",
+    "next": "Do not claim 500 MHz closure. Use the R5 target evidence and worst-500 census to select the next narrow repair; do not infer that a cache output register or LFNST arithmetic change is required until the new global leader is reviewed."
+  }
+}
