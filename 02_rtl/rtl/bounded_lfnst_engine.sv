@@ -41,9 +41,19 @@ module bounded_lfnst_engine #(
     logic signed [(16*DATA_W)-1:0] input_terms_q;
     logic [3:0] issue_group_q;
     logic [3:0] product_group_q;
+    logic [3:0] mul_group_q;
+    logic       mul_valid_q;
+    logic       mul_last_q;
     logic       product_valid_q;
     logic       product_last_q;
-    logic signed [ACC_W-1:0] products_q [0:63];
+    // These are deliberately ordinary synchronous data registers.  Keeping
+    // reset and valid control out of this stage lets Vivado infer DSP48E2
+    // A/B input registers rather than fabric FDCEs.
+    logic signed [COEFF_W-1:0] mul_coeff_q [0:63];
+    logic signed [DATA_W-1:0]  mul_term_q [0:63];
+    // A complete signed DATA_W x COEFF_W product is sufficient here.  The
+    // reduction tree sign-extends it to ACC_W at its input.
+    logic signed [(DATA_W+COEFF_W)-1:0] products_q [0:63];
 
     // Registered reduction tree.  Every level carries the valid/group/last
     // metadata with its data so the arithmetic pipeline can accept one
@@ -61,12 +71,12 @@ module bounded_lfnst_engine #(
     logic signed [ACC_W-1:0] reduce_l5_q [0:3];
 
     // The coefficient ROM is read into a register before the product stage.
-    // Keeping the ROM select and the 64 DSP products in different cycles
-    // prevents issue_group_q from driving the full ROM+multiplication cone.
+    // The issue stage below then captures operands into DSP-localizable
+    // registers; products are formed one cycle later.  This keeps the ROM
+    // select and the 64 DSP products in separate cycles.
     logic [1023:0] coeff_bundle_q;
     logic [6:0]    coeff_fetch_addr_q;
     logic          coeff_bundle_valid_q;
-    logic signed [DATA_W+COEFF_W-1:0] products_c [0:63];
     logic signed [ACC_W-1:0] reduce_l1_c [0:31];
     logic signed [ACC_W-1:0] reduce_l2_c [0:15];
     logic signed [ACC_W-1:0] reduce_l3_c [0:7];
@@ -75,12 +85,12 @@ module bounded_lfnst_engine #(
     logic signed [ACC_W-1:0] sum_c [0:3];
     logic signed [DATA_W-1:0] scaled_c [0:3];
     integer bundle_i;
-    integer product_i;
     integer reduce_i;
     integer sum_lane;
     integer scale_lane;
     integer seq_i;
     integer seq_lane;
+    integer mul_seq_i;
 
     function automatic logic [6:0] bundle_base_for(
         input logic       ntrs48_i,
@@ -96,19 +106,6 @@ module bounded_lfnst_engine #(
     endfunction
 
     initial $readmemh(COEFF_FILE, coeff_bundle_mem);
-
-    always_comb begin
-        for (product_i = 0; product_i < 64; product_i = product_i + 1) begin
-            if (!coeff_bundle_valid_q)
-                products_c[product_i] = '0;
-            else if (!ntrs48_q && nonzero8_q && ((product_i % 16) >= 8))
-                products_c[product_i] = '0;
-            else
-                products_c[product_i] =
-                    $signed(coeff_bundle_q[product_i*16 +: 16]) *
-                    $signed(input_terms_q[(product_i % 16)*DATA_W +: DATA_W]);
-        end
-    end
 
     always_comb begin
         for (reduce_i = 0; reduce_i < 32; reduce_i = reduce_i + 1)
@@ -152,9 +149,42 @@ module bounded_lfnst_engine #(
     end
 
     always_comb begin
-        busy = (state_q != ST_IDLE) || product_valid_q ||
+        busy = (state_q != ST_IDLE) || mul_valid_q || product_valid_q ||
                red1_valid_q || red2_valid_q || red3_valid_q ||
                red4_valid_q || red5_valid_q || out_valid;
+    end
+
+    // A coefficient bundle is issued only when the registered ROM bundle is
+    // valid.  This is the single admission event for the operand stage.
+    logic issue_fire_c;
+    always_comb begin
+        issue_fire_c = (state_q == ST_RUN) && coeff_bundle_valid_q &&
+                       (issue_group_q < (ntrs48_q ? 4'd12 : 4'd4));
+    end
+
+    // Data-only DSP pipeline.  It intentionally has no asynchronous reset:
+    // mul_valid_q/product_valid_q are the architectural validity contract,
+    // so stale data is unobservable while a stage is invalid.  The first
+    // block captures masked operands; the second forms the product from only
+    // registered operands, with no post-DSP zero/select mux.
+    always_ff @(posedge clk) begin
+        if (issue_fire_c) begin
+            for (mul_seq_i = 0; mul_seq_i < 64; mul_seq_i = mul_seq_i + 1) begin
+                mul_term_q[mul_seq_i] <=
+                    input_terms_q[(mul_seq_i % 16)*DATA_W +: DATA_W];
+                if (!ntrs48_q && nonzero8_q && ((mul_seq_i % 16) >= 8))
+                    mul_coeff_q[mul_seq_i] <= '0;
+                else
+                    mul_coeff_q[mul_seq_i] <=
+                        coeff_bundle_q[mul_seq_i*COEFF_W +: COEFF_W];
+            end
+        end
+        if (mul_valid_q) begin
+            for (mul_seq_i = 0; mul_seq_i < 64; mul_seq_i = mul_seq_i + 1)
+                products_q[mul_seq_i] <=
+                    $signed(mul_coeff_q[mul_seq_i]) *
+                    $signed(mul_term_q[mul_seq_i]);
+        end
     end
 
     always_ff @(posedge clk or negedge rst_n) begin
@@ -169,6 +199,9 @@ module bounded_lfnst_engine #(
             coeff_fetch_addr_q <= 7'd0;
             coeff_bundle_valid_q <= 1'b0;
             issue_group_q <= 4'd0;
+            mul_valid_q <= 1'b0;
+            mul_last_q <= 1'b0;
+            mul_group_q <= 4'd0;
             product_group_q <= 4'd0;
             product_valid_q <= 1'b0;
             product_last_q <= 1'b0;
@@ -184,8 +217,6 @@ module bounded_lfnst_engine #(
             out_last <= 1'b0;
             done <= 1'b0;
             error <= 1'b0;
-            for (seq_i = 0; seq_i < 64; seq_i = seq_i + 1)
-                products_q[seq_i] <= '0;
             for (seq_i = 0; seq_i < 32; seq_i = seq_i + 1)
                 reduce_l1_q[seq_i] <= '0;
             for (seq_i = 0; seq_i < 16; seq_i = seq_i + 1)
@@ -204,6 +235,16 @@ module bounded_lfnst_engine #(
             // Advance the fixed-progress reduction pipeline.  The valid
             // bits are shifted every cycle; no output-side request can stall
             // or alter an already admitted LFNST transaction.
+            mul_valid_q <= issue_fire_c;
+            if (issue_fire_c) begin
+                mul_group_q <= issue_group_q;
+                mul_last_q <= (issue_group_q == (ntrs48_q ? 4'd11 : 4'd3));
+            end
+
+            product_valid_q <= mul_valid_q;
+            product_group_q <= mul_group_q;
+            product_last_q <= mul_last_q;
+
             red1_valid_q <= product_valid_q;
             red1_last_q <= product_last_q;
             red1_group_q <= product_group_q;
@@ -251,10 +292,8 @@ module bounded_lfnst_engine #(
                     done <= 1'b1;
             end
 
-            product_valid_q <= 1'b0;
-
             if (start) begin
-                if ((state_q != ST_IDLE) || product_valid_q || red1_valid_q ||
+                if ((state_q != ST_IDLE) || mul_valid_q || product_valid_q || red1_valid_q ||
                     red2_valid_q || red3_valid_q || red4_valid_q ||
                     red5_valid_q || out_valid || (lfnst_idx == 2'd0) ||
                     (lfnst_idx > 2'd2)) begin
@@ -281,12 +320,7 @@ module bounded_lfnst_engine #(
                     coeff_bundle_q <= coeff_bundle_mem[coeff_fetch_addr_q];
                     coeff_fetch_addr_q <= coeff_fetch_addr_q + 1'b1;
                     coeff_bundle_valid_q <= 1'b1;
-                end else if (issue_group_q < (ntrs48_q ? 4'd12 : 4'd4)) begin
-                    for (seq_i = 0; seq_i < 64; seq_i = seq_i + 1)
-                        products_q[seq_i] <= products_c[seq_i];
-                    product_group_q <= issue_group_q;
-                    product_last_q <= (issue_group_q == (ntrs48_q ? 4'd11 : 4'd3));
-                    product_valid_q <= 1'b1;
+                end else if (issue_fire_c) begin
                     if (issue_group_q + 1'b1 < (ntrs48_q ? 4'd12 : 4'd4)) begin
                         coeff_bundle_q <= coeff_bundle_mem[coeff_fetch_addr_q];
                         coeff_fetch_addr_q <= coeff_fetch_addr_q + 1'b1;
@@ -300,3 +334,4 @@ module bounded_lfnst_engine #(
         end
     end
 endmodule
+
