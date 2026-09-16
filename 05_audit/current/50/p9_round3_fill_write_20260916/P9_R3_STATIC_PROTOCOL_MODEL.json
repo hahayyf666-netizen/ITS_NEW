@@ -1,0 +1,47 @@
+{
+  "schema": "step12f.p9.round3.fill_write.static_protocol_model.v1",
+  "purpose": "Deterministic abstract check of the accept/commit and end-marker contract; this is not an HDL simulation.",
+  "command_model": {
+    "ready": "!fill_wr_cmd_valid_q || fill_wr_cmd_commit",
+    "commit": "fill_wr_cmd_valid_q",
+    "fire": "it_data_in_vld && it_data_in_req",
+    "data_valid_pair": true,
+    "onehot_target": true
+  },
+  "scenarios": [
+    {
+      "name": "final_data_plus_end",
+      "result": "PASS",
+      "accepted": 1,
+      "committed": 1,
+      "ready_after_commit": true,
+      "phantom_write": false
+    },
+    {
+      "name": "end_only_with_pending_command",
+      "result": "PASS",
+      "accepted": 1,
+      "committed": 1,
+      "ready_after_commit": true,
+      "phantom_write": false
+    },
+    {
+      "name": "end_only_without_pending_command",
+      "result": "PASS",
+      "accepted": 0,
+      "committed": 0,
+      "ready_after_commit": true,
+      "phantom_write": false
+    },
+    {
+      "name": "continuous_16_sparse_points",
+      "result": "PASS",
+      "accepted": 16,
+      "committed": 16,
+      "ready_after_commit": true,
+      "one_point_per_cycle": true
+    }
+  ],
+  "overall": "PASS",
+  "hdl_simulation_status": "NOT_RUN_TOOLCHAIN_UNAVAILABLE"
+}

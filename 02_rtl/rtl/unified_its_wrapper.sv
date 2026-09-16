@@ -60,6 +60,23 @@ module unified_its_wrapper #(
     logic [BANK_ADDR_W-1:0] input_valid_wr_addr [0:1][0:3];
     logic input_valid_wr_data [0:1][0:3];
 
+    // P9 round 3: sparse-fill writes cross an atomic elastic command
+    // boundary before reaching the distributed input-cache write ports.  A
+    // command represents one accepted nonzero point and owns exactly one
+    // physical slot/bank target; data and validity are committed together.
+    logic        fill_wr_cmd_valid_q;
+    logic [3:0]  fill_wr_cmd_target_q [0:1];
+    logic [BANK_ADDR_W-1:0] fill_wr_cmd_addr_q;
+    logic [DATA_W-1:0]      fill_wr_cmd_data_q;
+    logic        fill_wr_cmd_ready;
+    logic        fill_wr_cmd_commit;
+    logic [3:0]  fill_wr_cmd_target_c [0:1];
+    logic [BANK_ADDR_W-1:0] fill_wr_cmd_addr_c;
+    logic [DATA_W-1:0]      fill_wr_cmd_data_c;
+    logic        fill_end_pending_q;
+    logic        fill_end_slot_q;
+    integer fill_cmd_row_i, fill_cmd_col_i, fill_cmd_bank_i, fill_cmd_local_i;
+
     logic [BANK_ADDR_W-1:0] result_rd_addr [0:1][0:3];
     logic signed [OUT_W-1:0] result_rd_data [0:1][0:3];
     logic result_wr_en [0:1][0:3];
@@ -651,11 +668,40 @@ module unified_its_wrapper #(
                     ((desc_count < 2'd2) || bind_event);
     end
 
-    assign it_data_in_req = fill_active;
-    assign input_fire = fill_active && it_data_in_vld && it_data_in_req;
+    // P9 round 3: acceptance is defined at the command boundary.  The
+    // current write stage is guaranteed to make progress, but retaining the
+    // explicit ready/commit equations prevents a future write-side stall from
+    // creating a fire-without-storage condition.
+    assign fill_wr_cmd_commit = fill_wr_cmd_valid_q;
+    assign fill_wr_cmd_ready  = !fill_wr_cmd_valid_q || fill_wr_cmd_commit;
+    assign it_data_in_req = fill_active && fill_wr_cmd_ready;
+    assign input_fire = it_data_in_vld && it_data_in_req;
     // The end marker is an independent input transaction: it may accompany a
     // final nonzero data word or arrive on its own after the sparse words.
-    assign input_end_fire = fill_active && it_data_in_req && it_data_end;
+    assign input_end_fire = it_data_end && it_data_in_req;
+
+    // Decode one accepted sparse point into a registered physical write
+    // command.  The decode is intentionally before the command register;
+    // RAM write enables/addresses/data below are driven only from *_q.
+    always_comb begin : fill_write_command_generate
+        fill_wr_cmd_addr_c = '0;
+        fill_wr_cmd_data_c = '0;
+        fill_wr_cmd_target_c[0] = 4'b0000;
+        fill_wr_cmd_target_c[1] = 4'b0000;
+        fill_cmd_row_i = 0;
+        fill_cmd_col_i = 0;
+        fill_cmd_bank_i = 0;
+        fill_cmd_local_i = 0;
+        if (input_fire) begin
+            fill_cmd_row_i = raster_row_for(it_data_addr, slot_width[fill_slot]);
+            fill_cmd_col_i = raster_col_for(it_data_addr, slot_width[fill_slot]);
+            fill_cmd_bank_i = cache_bank_for(fill_cmd_row_i, fill_cmd_col_i);
+            fill_cmd_local_i = cache_local_for(fill_cmd_row_i, fill_cmd_col_i);
+            fill_wr_cmd_addr_c = fill_cmd_local_i[BANK_ADDR_W-1:0];
+            fill_wr_cmd_data_c = it_data_in;
+            fill_wr_cmd_target_c[fill_slot][fill_cmd_bank_i] = 1'b1;
+        end
+    end
 
     function automatic integer coeff_base(input logic [1:0] t,
                                           input logic [6:0] n);
@@ -1274,6 +1320,47 @@ module unified_its_wrapper #(
         if (result_cmd_commit)
             assert (result_cmd_bank_mask_q != 4'b0000)
                 else $error("P6 empty result write command committed");
+
+        // P9 round 3 sparse-fill command invariants.  The target is one
+        // physical slot/bank for every valid command, and data/valid writes
+        // must be paired on that same commit edge.
+        if (fill_wr_cmd_valid_q) begin
+            assert ($onehot({fill_wr_cmd_target_q[1],
+                             fill_wr_cmd_target_q[0]}))
+                else $error("P9 fill command target is not onehot");
+            for (vwrite_assert_lane_i = 0;
+                 vwrite_assert_lane_i < 2;
+                 vwrite_assert_lane_i = vwrite_assert_lane_i + 1)
+                for (vwrite_assert_lane_j = 0;
+                     vwrite_assert_lane_j < 4;
+                     vwrite_assert_lane_j = vwrite_assert_lane_j + 1)
+                    if (fill_wr_cmd_target_q[vwrite_assert_lane_i]
+                                                        [vwrite_assert_lane_j]) begin
+                        assert (input_data_wr_en[vwrite_assert_lane_i]
+                                                        [vwrite_assert_lane_j] &&
+                                input_valid_wr_en[vwrite_assert_lane_i]
+                                                        [vwrite_assert_lane_j])
+                            else $error("P9 fill data/valid commit mismatch");
+                        assert (input_data_wr_addr[vwrite_assert_lane_i]
+                                                         [vwrite_assert_lane_j] ==
+                                fill_wr_cmd_addr_q)
+                            else $error("P9 fill data address mismatch");
+                        assert (input_valid_wr_addr[vwrite_assert_lane_i]
+                                                          [vwrite_assert_lane_j] ==
+                                fill_wr_cmd_addr_q)
+                            else $error("P9 fill valid address mismatch");
+                    end
+            if (scrub_active)
+                assert (!fill_wr_cmd_target_q[scrub_slot])
+                    else $error("P9 fill commit conflicts with scrub slot");
+        end
+        if (fill_end_pending_q)
+            assert (slot_state[fill_end_slot_q] != SLOT_READY)
+                else $error("P9 slot became READY with fill write pending");
+        if (input_end_fire && !input_fire)
+            assert ((fill_wr_cmd_target_c[0] == 4'b0000) &&
+                    (fill_wr_cmd_target_c[1] == 4'b0000))
+                else $error("P9 end-only marker generated a data command");
     end
 `endif
 
@@ -1309,7 +1396,6 @@ module unified_its_wrapper #(
     // makes these producers mutually exclusive for a given memory.
     always_comb begin : memory_command_comb
         integer cmd_slot_i, cmd_bank_i;
-        integer input_cmd_row_i, input_cmd_col_i, input_cmd_bank_i, input_cmd_local_i;
         for (cmd_slot_i = 0; cmd_slot_i < 2; cmd_slot_i = cmd_slot_i + 1) begin
             for (cmd_bank_i = 0; cmd_bank_i < 4; cmd_bank_i = cmd_bank_i + 1) begin
                 input_data_wr_en[cmd_slot_i][cmd_bank_i] = 1'b0;
@@ -1345,19 +1431,23 @@ module unified_its_wrapper #(
             end
         end
 
-        // A sparse input word is mapped once, before it reaches the physical
-        // bank.  The command is mutually exclusive with scrub and LFNST.
-        if (input_fire) begin
-            input_cmd_row_i = raster_row_for(it_data_addr, slot_width[fill_slot]);
-            input_cmd_col_i = raster_col_for(it_data_addr, slot_width[fill_slot]);
-            input_cmd_bank_i = cache_bank_for(input_cmd_row_i, input_cmd_col_i);
-            input_cmd_local_i = cache_local_for(input_cmd_row_i, input_cmd_col_i);
-            input_data_wr_en[fill_slot][input_cmd_bank_i] = 1'b1;
-            input_data_wr_addr[fill_slot][input_cmd_bank_i] = input_cmd_local_i;
-            input_data_wr_data[fill_slot][input_cmd_bank_i] = it_data_in;
-            input_valid_wr_en[fill_slot][input_cmd_bank_i] = 1'b1;
-            input_valid_wr_addr[fill_slot][input_cmd_bank_i] = input_cmd_local_i;
-            input_valid_wr_data[fill_slot][input_cmd_bank_i] = 1'b1;
+        // P9 round 3: the sparse-fill command is the only live source allowed
+        // to drive the input-cache write ports.  Address and data are held
+        // from command Q even when valid is low; command validity selects the
+        // single target bank, while the matching valid-memory write is issued
+        // on the same commit edge as the data write.
+        for (cmd_slot_i = 0; cmd_slot_i < 2; cmd_slot_i = cmd_slot_i + 1) begin
+            for (cmd_bank_i = 0; cmd_bank_i < 4; cmd_bank_i = cmd_bank_i + 1) begin
+                input_data_wr_en[cmd_slot_i][cmd_bank_i] =
+                    fill_wr_cmd_valid_q && fill_wr_cmd_target_q[cmd_slot_i][cmd_bank_i];
+                input_data_wr_addr[cmd_slot_i][cmd_bank_i] = fill_wr_cmd_addr_q;
+                input_data_wr_data[cmd_slot_i][cmd_bank_i] = fill_wr_cmd_data_q;
+                input_valid_wr_en[cmd_slot_i][cmd_bank_i] =
+                    fill_wr_cmd_valid_q && fill_wr_cmd_target_q[cmd_slot_i][cmd_bank_i];
+                input_valid_wr_addr[cmd_slot_i][cmd_bank_i] = fill_wr_cmd_addr_q;
+                input_valid_wr_data[cmd_slot_i][cmd_bank_i] =
+                    fill_wr_cmd_valid_q && fill_wr_cmd_target_q[cmd_slot_i][cmd_bank_i];
+            end
         end
 
         if (kernel_run_q && kernel_stage_q &&
@@ -1467,6 +1557,13 @@ module unified_its_wrapper #(
             for (kernel_capture_lane_i = 0; kernel_capture_lane_i < 4;
                  kernel_capture_lane_i = kernel_capture_lane_i + 1)
                 result_cmd_data_q[kernel_capture_lane_i] <= '0;
+            fill_wr_cmd_valid_q <= 1'b0;
+            fill_wr_cmd_addr_q <= '0;
+            fill_wr_cmd_data_q <= '0;
+            fill_end_pending_q <= 1'b0;
+            fill_end_slot_q <= 1'b0;
+            for (reset_i = 0; reset_i < 2; reset_i = reset_i + 1)
+                fill_wr_cmd_target_q[reset_i] <= 4'b0000;
             kernel_rd_req_pending_q <= 1'b0;
             kernel_rd_req_group_q <= 5'd0;
             kernel_rd_req_vector_q <= 7'd0;
@@ -1570,6 +1667,23 @@ module unified_its_wrapper #(
             // A one-cycle pulse starts the bounded LFNST engine on the next
             // edge, after compute_slot_q and its descriptor metadata settle.
             lfnst_start_q <= 1'b0;
+
+            // P9 round 3 sparse-fill write command.  The old command commits
+            // on this edge; a newly accepted point may refill the same entry
+            // without a bubble.  The command Q fields, rather than the live
+            // fill slot/address decode, drive the cache write ports.
+            if (fill_wr_cmd_commit) begin
+                fill_wr_cmd_valid_q <= 1'b0;
+                fill_wr_cmd_target_q[0] <= 4'b0000;
+                fill_wr_cmd_target_q[1] <= 4'b0000;
+            end
+            if (input_fire) begin
+                fill_wr_cmd_valid_q <= 1'b1;
+                fill_wr_cmd_addr_q <= fill_wr_cmd_addr_c;
+                fill_wr_cmd_data_q <= fill_wr_cmd_data_c;
+                fill_wr_cmd_target_q[0] <= fill_wr_cmd_target_c[0];
+                fill_wr_cmd_target_q[1] <= fill_wr_cmd_target_c[1];
+            end
 
             // P9 second round physical-read command boundary.  A command is
             // retired only when its owner response slot can capture the
@@ -1995,9 +2109,29 @@ module unified_its_wrapper #(
                 default: desc_count <= desc_count;
             endcase
 
+            // P9 round 3 completion barrier.  End is an independent protocol
+            // event and may accompany the final sparse word.  In that case
+            // the word has only been captured into the command Q on this
+            // edge, so the slot must remain owned by the fill until the next
+            // edge commits it to both data_mem and valid_mem.
+            if (fill_end_pending_q && fill_wr_cmd_commit) begin
+                slot_state[fill_end_slot_q] <= SLOT_READY;
+                fill_end_pending_q <= 1'b0;
+            end
             if (input_end_fire) begin
-                slot_state[fill_slot] <= SLOT_READY;
                 fill_active <= 1'b0;
+                fill_end_slot_q <= fill_slot;
+                if (input_fire) begin
+                    // The accepted point is the command that still needs a
+                    // commit edge; defer SLOT_READY until that commit.
+                    fill_end_pending_q <= 1'b1;
+                end else begin
+                    // An end-only marker has no new data command.  Any older
+                    // command is committed on this same edge, so the slot is
+                    // complete now; no phantom data write is generated.
+                    slot_state[fill_slot] <= SLOT_READY;
+                    fill_end_pending_q <= 1'b0;
+                end
             end
 
             if (compute_valid) begin
