@@ -1,0 +1,90 @@
+{
+  "schema": "step12f.p9.round3.qualification.manifest.v1",
+  "phase": "Step12F-P9 round 3 input-cache fill write qualification attempt",
+  "date": "2026-09-16",
+  "base_commit": "4f84d42c6d5a1af1fce6daff89026457ab529a47",
+  "remote_ref_verified": "main",
+  "status": "QUALIFICATION_BLOCKED_TOOLCHAIN",
+  "scope": {
+    "rtl_revision": "P9 round 3 fill-write accept/commit isolation",
+    "rtl_changed_in_this_attempt": false,
+    "oracle_changed": false,
+    "profile_changed": false,
+    "xdc_changed": false,
+    "r4c_changed": false,
+    "tag_created": false
+  },
+  "static_and_source_checks": {
+    "run_current_checks_ps1": "PASS",
+    "source_kernel_vtm_checks": "PASS",
+    "p2f_vectors": 1226,
+    "p2f_a2_kernel_regate": "PASS",
+    "v35_16_current_checks": "PASS",
+    "p9_r3_static_protocol_model": "PASS",
+    "json_parse": "PASS",
+    "git_diff_check": "PASS",
+    "model_note": "These checks are source/static or abstract-model checks; they are not HDL simulation."
+  },
+  "toolchain_inventory": {
+    "checked_path_commands": [
+      "vsim",
+      "vlog",
+      "vcom",
+      "xsim",
+      "xvlog",
+      "iverilog",
+      "verilator",
+      "vivado",
+      "yosys",
+      "verible-verilog-syntax",
+      "slang",
+      "surelog",
+      "nvc",
+      "ghdl",
+      "vcs",
+      "questa",
+      "xrun"
+    ],
+    "path_result": "NONE_FOUND",
+    "checked_install_roots": [
+      "C:/Xilinx",
+      "C:/AMD",
+      "C:/MentorGraphics",
+      "C:/Program Files/Xilinx",
+      "C:/Program Files/AMD",
+      "C:/Program Files/Siemens",
+      "C:/Program Files/Mentor Graphics",
+      "C:/intelFPGA_lite",
+      "C:/intelFPGA"
+    ],
+    "recursive_executable_search": "NONE_FOUND",
+    "python_hdl_parser_packages": {
+      "pyverilog": false,
+      "hdlparse": false,
+      "pysv": false
+    }
+  },
+  "qualification_results": {
+    "targeted_functional": "NOT_RUN",
+    "normal_rtl_simulation": "NOT_RUN",
+    "synthesis_mode_rtl_simulation": "NOT_RUN",
+    "fresh_synthesis": "NOT_RUN",
+    "place_route": "NOT_RUN",
+    "timing": "NOT_RUN",
+    "reason": "No simulator, Vivado, or equivalent HDL tool is available in the current environment."
+  },
+  "required_followup": [
+    "Run final-data-plus-end, end-only, continuous sparse, scrub/fill ownership, and back-to-back TU HDL tests.",
+    "Run the complete normal/SYNTHESIS regression and 13-mode throughput checks.",
+    "Run fresh Vivado synthesis and 2.000 ns implementation from the P9 Round 3 RTL checkpoint.",
+    "Check that live fill mapping has no direct path to data_mem or valid_mem write ports, then reclassify routed worst-500 paths."
+  ],
+  "decision": {
+    "rtl_review": "UNCHANGED_FROM_P9_R3_CHECKPOINT",
+    "functional": "PENDING_TOOLCHAIN",
+    "physical": "PENDING_TOOLCHAIN",
+    "p9_round4_authorized": false,
+    "tag": "NOT_CREATED",
+    "next": "Provide a machine with ModelSim/Questa or another supported HDL simulator and Vivado 2025.2 for qualification."
+  }
+}
