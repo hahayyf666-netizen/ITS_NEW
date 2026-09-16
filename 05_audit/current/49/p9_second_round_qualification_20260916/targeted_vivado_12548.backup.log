@@ -1,0 +1,108 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Wed Sep 16 15:55:13 2026
+# Process ID         : 12548
+# Current directory  : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish
+# Command line       : vivado.exe -mode batch -source C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\49\p9_second_round_qualification_20260916\run_read_command_targeted.tcl -log C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\49\p9_second_round_qualification_20260916\targeted_vivado.log -journal C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\49\p9_second_round_qualification_20260916\targeted_vivado.jou -tclargs C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\48\p9_second_round_impl_20260916\step12f_unified_wrapper_postroute.dcp C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\49\p9_second_round_qualification_20260916
+# Log file           : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/49/p9_second_round_qualification_20260916/targeted_vivado.log
+# Journal file       : C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\49\p9_second_round_qualification_20260916\targeted_vivado.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 24696 MB
+# Total Virtual      : 41060 MB
+# Available Virtual  : 22326 MB
+#-----------------------------------------------------------
+INFO: [Common 17-1239] XILINX_LOCAL_USER_DATA is set to 'C:\Users\Fine\AppData\Local\Temp\step12f_vivado_user'.
+source {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\49\p9_second_round_qualification_20260916\run_read_command_targeted.tcl}
+# if {$argc < 2} {
+#     puts stderr "Usage: vivado -mode batch -source run_read_command_targeted.tcl -- <postroute.dcp> <out_dir>"
+#     exit 2
+# }
+# set dcp [lindex $argv 0]
+# set out_dir [lindex $argv 1]
+# file mkdir $out_dir
+# if {![file exists $dcp]} { error "Missing DCP: $dcp" }
+# open_checkpoint $dcp
+Command: open_checkpoint {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\48\p9_second_round_impl_20260916\step12f_unified_wrapper_postroute.dcp}
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.061 . Memory (MB): peak = 351.309 ; gain = 4.809
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.241 . Memory (MB): peak = 1698.469 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 4964 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 7 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2025.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Read ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.109 . Memory (MB): peak = 1742.879 ; gain = 4.391
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Constraints 18-5170] The checkpoint was created with non-default parameter values which do not match the current Vivado settings.  Mismatching parameters are:
+  general.maxThreads
+INFO: [Project 1-853] Binary constraint restore complete.
+INFO: [Designutils 20-5722] Start Reading Physical Databases.
+Reading placement.
+Read Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.093 . Memory (MB): peak = 2325.676 ; gain = 0.000
+Reading placer database...
+Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.026 . Memory (MB): peak = 2325.676 ; gain = 0.000
+Read PlaceDB: Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2404.457 ; gain = 78.781
+Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 2404.457 ; gain = 0.000
+Reading routing.
+Read RouteStorage: Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.895 . Memory (MB): peak = 2436.000 ; gain = 31.543
+Read Physdb Files: Time (s): cpu = 00:00:05 ; elapsed = 00:00:04 . Memory (MB): peak = 2436.000 ; gain = 110.324
+Restored from archive | CPU: 5.000000 secs | Memory: 0.000000 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:05 ; elapsed = 00:00:04 . Memory (MB): peak = 2436.000 ; gain = 110.324
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.019 . Memory (MB): peak = 2778.527 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1184 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 320 instances
+  RAM256X1D => RAM256X1D (MUXF7(x4), MUXF8(x2), RAMD64E(x8)): 32 instances
+  RAM64M => RAM64M (RAMD64E(x4)): 320 instances
+  RAM64M8 => RAM64M8 (RAMD64E(x8)): 512 instances
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2025.2 (64-bit) build 6299465
+open_checkpoint: Time (s): cpu = 00:00:56 ; elapsed = 00:01:02 . Memory (MB): peak = 2778.527 ; gain = 2443.551
+# proc count_obj {objs} { return [llength $objs] }
+# proc report_safe {args} {
+#     set rc [catch {eval report_timing $args} msg]
+#     return [list $rc $msg]
+# }
+# set cmd_addr_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *rd_cmd_addr_q_reg*}]
+# set cmd_addr_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *rd_cmd_addr_q_reg*}]
+# set cmd_valid_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *rd_cmd_valid_q_reg*}]
+# set live_ctrl_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && (NAME =~ *compute_slot_q_reg* || NAME =~ *kernel_stage_q_reg* || NAME =~ *lfnst_case_q_reg* || NAME =~ *kernel_rd_req_pending_q_reg*)}]
+# set live_addr_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *input_rd_addr*}]
+# set lfnst_resp_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *lfnst_mem_resp_data_q_reg*}]
+# set ramd [get_cells -hier -quiet -filter {REF_NAME == RAMD64E}]
+# set ram_addr_pins [get_pins -of_objects $ramd -quiet -filter {REF_PIN_NAME =~ ADDR*}]
+# set out_file [file join $out_dir P9_SECOND_READ_COMMAND_TARGETED.rpt]
+# set f [open $out_file w]
+# puts $f "Step12F-P9 second-round atomic elastic read-command targeted qualification"
+# puts $f "DCP=$dcp"
+# puts $f "command_addr_q_count=[count_obj $cmd_addr_q] command_addr_d_count=[count_obj $cmd_addr_d] command_valid_q_count=[count_obj $cmd_valid_q]"
+# puts $f "live_control_q_count=[count_obj $live_ctrl_q] live_addr_q_count=[count_obj $live_addr_q] lfnst_response_d_count=[count_obj $lfnst_resp_d] ramd64e_count=[count_obj $ramd] ram_addr_pin_count=[count_obj $ram_addr_pins]"
+# puts $f "\n=== live control -> LFNST response (old direct cone) ==="
+# puts $f "[join [report_safe [list -from $live_ctrl_q -to $lfnst_resp_d -delay_type max -max_paths 20 -nworst 1 -path_type full -file $out_file -append]] { }]"
+# puts $f "\n=== live control -> physical command D (allowed pre-boundary cone) ==="
+# puts $f "[join [report_safe [list -from $live_ctrl_q -to $cmd_addr_d -delay_type max -max_paths 20 -nworst 1 -path_type full -file $out_file -append]] { }]"
+# puts $f "\n=== registered command Q -> LFNST response D ==="
+# puts $f "[join [report_safe [list -from $cmd_addr_q -to $lfnst_resp_d -delay_type max -max_paths 20 -nworst 1 -path_type full -file $out_file -append]] { }]"
+# puts $f "\n=== registered command Q -> through RAMD64E -> LFNST response D ==="
+# puts $f "[join [report_safe [list -from $cmd_addr_q -through $ramd -to $lfnst_resp_d -delay_type max -max_paths 20 -nworst 1 -path_type full -file $out_file -append]] { }]"
+# puts $f "\n=== live control -> through RAMD64E -> LFNST response D ==="
+# puts $f "[join [report_safe [list -from $live_ctrl_q -through $ramd -to $lfnst_resp_d -delay_type max -max_paths 20 -nworst 1 -path_type full -file $out_file -append]] { }]"
+# close $f
+# close_design
+# puts "P9_SECOND_READ_COMMAND_TARGETED_DONE"
+P9_SECOND_READ_COMMAND_TARGETED_DONE
+INFO: [Common 17-206] Exiting Vivado at Wed Sep 16 15:57:23 2026...

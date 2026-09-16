@@ -1,0 +1,28 @@
+# vsim -c work.unified_p4_kernel_numeric_tb -l C:\Users\Fine\AppData\Local\Temp\step12f_coverage_20260916_144739\synthesis\gate_b_kernel_numeric.log -do "run -all; quit -f" 
+# Start time: 14:48:04 on Sep 16,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\03_verification\tb\unified_p4_kernel_numeric_tb.sv(52): (vopt-2685) [TFMPC] - Too few port connections for 'dut'.  Expected 20, found 18.
+# ** Warning: C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\03_verification\tb\unified_p4_kernel_numeric_tb.sv(52): (vopt-2718) [TFMPC] - Missing connection for port 'input_vector_done'.
+# ** Warning: C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\03_verification\tb\unified_p4_kernel_numeric_tb.sv(52): (vopt-2718) [TFMPC] - Missing connection for port 'input_group_fire'.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=3.
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_p4_kernel_numeric_tb(fast)
+# run -all
+# GATE_B_NUMERIC_TB_PASS cases=156
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/tb/unified_p4_kernel_numeric_tb.sv(193)
+#    Time: 8766 ns  Iteration: 1  Instance: /unified_p4_kernel_numeric_tb
+# End time: 14:48:05 on Sep 16,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 3

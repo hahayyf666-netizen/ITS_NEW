@@ -1,0 +1,222 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Wed Sep 16 15:46:16 2026
+| Host         : Finesse running 64-bit major release  (build 9200)
+| Command      : report_high_fanout_nets -max_nets 200 -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/49/p9_second_round_qualification_20260916/report_high_fanout_postroute.rpt
+| Design       : unified_its_wrapper
+| Device       : xcku5p
+| Design State : Routed
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+High Fan-out Nets Information
+
+1. Summary
+----------
+
++-------------------------------------------------------------------+--------+-------------+
+| Net Name                                                          | Fanout | Driver Type |
++-------------------------------------------------------------------+--------+-------------+
+| rst_n                                                             |  11615 | PORT        |
+| vwrite_cmd_addr_q[0]                                              |   1472 | FDCE        |
+| vwrite_cmd_addr_q[1]                                              |   1472 | FDCE        |
+| vwrite_cmd_addr_q[2]                                              |   1472 | FDCE        |
+| vwrite_cmd_addr_q[3]                                              |   1472 | FDCE        |
+| vwrite_cmd_addr_q[4]                                              |   1472 | FDCE        |
+| vwrite_cmd_addr_q[5]                                              |   1472 | FDCE        |
+| gen_result_slots[1].gen_result_banks[0].u_result_bank_i_10_n_0    |    896 | LUT3        |
+| gen_result_slots[1].gen_result_banks[0].u_result_bank_i_11_n_0    |    896 | LUT3        |
+| gen_result_slots[1].gen_result_banks[0].u_result_bank_i_6_n_0     |    896 | LUT3        |
+| gen_result_slots[1].gen_result_banks[0].u_result_bank_i_7_n_0     |    896 | LUT3        |
+| gen_result_slots[1].gen_result_banks[0].u_result_bank_i_8_n_0     |    896 | LUT3        |
+| gen_result_slots[1].gen_result_banks[0].u_result_bank_i_9_n_0     |    896 | LUT3        |
+| result_wr_addr[0]                                                 |    896 | LUT3        |
+| result_wr_addr[1]                                                 |    896 | LUT3        |
+| result_wr_addr[2]                                                 |    896 | LUT3        |
+| result_wr_addr[3]                                                 |    896 | LUT3        |
+| result_wr_addr[4]                                                 |    896 | LUT3        |
+| result_wr_addr[5]                                                 |    896 | LUT3        |
+| u_bounded_lfnst_engine/out_group[2]                               |    492 | FDCE        |
+| u_bounded_lfnst_engine/ntrs48_q                                   |    374 | LUT6        |
+| input_data_wr_addr[0][0][2]                                       |    368 | LUT6        |
+| gen_input_slots[1].gen_input_banks[2].u_input_cache_bank_i_9_n_0  |    368 | LUT6        |
+| gen_input_slots[0].gen_input_banks[2].u_input_cache_bank_i_7_n_0  |    368 | LUT6        |
+| gen_input_slots[1].gen_input_banks[1].u_input_cache_bank_i_9_n_0  |    368 | LUT6        |
+| input_data_wr_addr[1][3][5]                                       |    368 | LUT6        |
+| input_data_wr_addr[1][3][4]                                       |    368 | LUT6        |
+| gen_input_slots[0].gen_input_banks[0].u_input_cache_bank_i_9_n_0  |    368 | LUT6        |
+| gen_input_slots[1].gen_input_banks[3].u_input_cache_bank_i_7_n_0  |    368 | LUT6        |
+| input_data_wr_addr[1][3][2]                                       |    368 | LUT6        |
+| gen_input_slots[1].gen_input_banks[3].u_input_cache_bank_i_9_n_0  |    368 | LUT6        |
+| input_data_wr_addr[0][3][0]                                       |    368 | LUT6        |
+| input_data_wr_addr[0][0][0]                                       |    368 | LUT6        |
+| input_data_wr_addr[1][1][2]                                       |    368 | LUT6        |
+| input_data_wr_addr[1][3][0]                                       |    368 | LUT6        |
+| gen_input_slots[0].gen_input_banks[0].u_input_cache_bank_i_7_n_0  |    368 | LUT6        |
+| input_data_wr_addr[0][0][4]                                       |    368 | LUT6        |
+| input_data_wr_addr[0][0][5]                                       |    368 | LUT6        |
+| input_data_wr_addr[1][1][0]                                       |    368 | LUT6        |
+| input_data_wr_addr[0][2][5]                                       |    368 | LUT6        |
+| gen_input_slots[0].gen_input_banks[3].u_input_cache_bank_i_9_n_0  |    368 | LUT6        |
+| input_data_wr_addr[0][3][2]                                       |    368 | LUT6        |
+| gen_input_slots[0].gen_input_banks[3].u_input_cache_bank_i_7_n_0  |    368 | LUT6        |
+| input_data_wr_addr[0][3][4]                                       |    368 | LUT6        |
+| input_data_wr_addr[0][3][5]                                       |    368 | LUT6        |
+| input_data_wr_addr[1][2][2]                                       |    368 | LUT6        |
+| input_data_wr_addr[1][0][0]                                       |    368 | LUT6        |
+| gen_input_slots[1].gen_input_banks[0].u_input_cache_bank_i_9_n_0  |    368 | LUT6        |
+| input_data_wr_addr[1][2][0]                                       |    368 | LUT6        |
+| input_data_wr_addr[1][0][2]                                       |    368 | LUT6        |
+| gen_input_slots[1].gen_input_banks[0].u_input_cache_bank_i_7_n_0  |    368 | LUT6        |
+| input_data_wr_addr[1][0][4]                                       |    368 | LUT6        |
+| input_data_wr_addr[1][0][5]                                       |    368 | LUT6        |
+| gen_input_slots[1].gen_input_banks[2].u_input_cache_bank_i_7_n_0  |    368 | LUT6        |
+| input_data_wr_addr[1][2][4]                                       |    368 | LUT6        |
+| input_data_wr_addr[1][2][5]                                       |    368 | LUT6        |
+| input_data_wr_addr[1][1][5]                                       |    368 | LUT6        |
+| input_data_wr_addr[0][1][5]                                       |    368 | LUT6        |
+| input_data_wr_addr[0][2][4]                                       |    368 | LUT6        |
+| input_data_wr_addr[0][1][4]                                       |    368 | LUT6        |
+| gen_input_slots[0].gen_input_banks[1].u_input_cache_bank_i_7_n_0  |    368 | LUT6        |
+| input_data_wr_addr[0][1][2]                                       |    368 | LUT6        |
+| gen_input_slots[0].gen_input_banks[1].u_input_cache_bank_i_9_n_0  |    368 | LUT6        |
+| input_data_wr_addr[1][1][4]                                       |    368 | LUT6        |
+| input_data_wr_addr[0][1][0]                                       |    368 | LUT6        |
+| gen_input_slots[1].gen_input_banks[1].u_input_cache_bank_i_7_n_0  |    368 | LUT6        |
+| input_data_wr_addr[0][2][0]                                       |    368 | LUT6        |
+| gen_input_slots[0].gen_input_banks[2].u_input_cache_bank_i_9_n_0  |    368 | LUT6        |
+| input_data_wr_addr[0][2][2]                                       |    368 | LUT6        |
+| u_bounded_lfnst_engine/red1_valid_q_repN_1                        |    361 | FDCE        |
+| u_bounded_lfnst_engine/product_valid_q_repN_1                     |    333 | LUT5        |
+| output_index_reg_n_0_[6]                                          |    327 | FDCE        |
+| output_index_reg_n_0_[7]                                          |    326 | FDCE        |
+| u_bounded_lfnst_engine/red2_valid_q                               |    323 | FDCE        |
+| u_unified_p4_kernel/s4_valid_q                                    |    321 | FDCE        |
+| u_unified_p4_kernel/s4_valid_q_repN                               |    320 | FDCE        |
+| u_bounded_lfnst_engine/product_valid_q_repN_2                     |    303 | LUT5        |
+| u_unified_p4_kernel/s1_valid_q                                    |    297 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][0][5]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][3][5]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][0][4]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][3][4]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][1][0]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][0][5]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][1][5]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][1][4]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][1][5]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][2][4]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][0][4]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][0][0]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][3][5]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][3][4]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][2][5]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][3][0]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][2][5]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][2][0]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][3][0]                                   |    288 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][2][4]                                   |    288 | FDCE        |
+| u_bounded_lfnst_engine/red1_valid_q_repN                          |    280 | FDCE        |
+| tmp_rd_addr[2][3]                                                 |    272 | LUT4        |
+| tmp_rd_addr[2][4]                                                 |    272 | LUT4        |
+| tmp_rd_addr[2][5]                                                 |    272 | LUT4        |
+| tmp_rd_addr[3][3]                                                 |    272 | LUT4        |
+| tmp_rd_addr[3][4]                                                 |    272 | LUT4        |
+| tmp_rd_addr[3][5]                                                 |    272 | LUT4        |
+| tmp_rd_addr[0][0]                                                 |    272 | LUT4        |
+| tmp_rd_addr[0][1]                                                 |    272 | LUT4        |
+| tmp_rd_addr[0][5]                                                 |    272 | LUT4        |
+| tmp_rd_addr[0][3]                                                 |    272 | LUT4        |
+| tmp_rd_addr[0][2]                                                 |    272 | LUT4        |
+| tmp_rd_addr[0][4]                                                 |    272 | LUT4        |
+| tmp_rd_addr[3][0]                                                 |    272 | LUT4        |
+| tmp_rd_addr[3][1]                                                 |    272 | LUT4        |
+| tmp_rd_addr[2][0]                                                 |    272 | LUT4        |
+| tmp_rd_addr[3][2]                                                 |    272 | LUT4        |
+| tmp_rd_addr[2][1]                                                 |    272 | LUT4        |
+| tmp_rd_addr[2][2]                                                 |    272 | LUT4        |
+| u_bounded_lfnst_engine/product_valid_q_repN_3                     |    268 | LUT5        |
+| rd_cmd_addr_q_reg_n_0_[0][0][3]_repN_1                            |    267 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][0][1]_repN                              |    267 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][0][2]_repN                              |    267 | FDCE        |
+| u_bounded_lfnst_engine/coeff_bundle_q[0]_repN                     |    264 | LUT3        |
+| rd_cmd_addr_q_reg_n_0_[1][0][3]                                   |    258 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][0][2]                                   |    258 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][0][1]_repN_5                            |    258 | FDCE        |
+| u_unified_p4_kernel/s1_valid_q_repN                               |    247 | FDCE        |
+| u_bounded_lfnst_engine/coeff_bundle_q[0]                          |    244 | LUT3        |
+| u_unified_p4_kernel/s3_valid_q_repN_3                             |    240 | FDCE        |
+| u_unified_p4_kernel/s2_valid_q_repN_4                             |    240 | FDCE        |
+| u_unified_p4_kernel/s2_valid_q_repN                               |    240 | FDCE        |
+| gen_input_slots[1].gen_input_banks[3].u_input_cache_bank_i_41_n_0 |    237 | LUT3        |
+| rd_cmd_addr_q_reg_n_0_[1][0][2]_repN                              |    236 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][0][3]_repN                              |    236 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][0][1]_repN                              |    236 | FDCE        |
+| u_unified_p4_kernel/s1_valid_q_repN_13                            |    231 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[4]_rep__10_n_0   |    231 | FDCE        |
+| u_unified_p4_kernel/s1_valid_q_repN_17                            |    231 | FDCE        |
+| u_unified_p4_kernel/s1_valid_q_repN_3                             |    231 | FDCE        |
+| u_bounded_lfnst_engine/product_valid_q_reg_n_0_repN_2             |    231 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[3]_rep__13_n_0   |    227 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][0][1]_repN_3                            |    225 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][0][3]_repN_4                            |    225 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][0][2]_repN_4                            |    225 | FDCE        |
+| p_180_in                                                          |    211 | LUT5        |
+| u_unified_p4_kernel/s2_valid_q_repN_7                             |    208 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[2]_rep__3_n_0    |    206 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][0][2]_repN_3                            |    205 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][0][3]_repN_3                            |    205 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][0][1]_repN_4                            |    205 | FDCE        |
+| u_unified_p4_kernel/s3_valid_q                                    |    202 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[4]_rep__5_n_0    |    201 | FDCE        |
+| u_bounded_lfnst_engine/product_valid_q_reg_n_0_repN_5             |    201 | FDCE        |
+| u_unified_p4_kernel/s2_valid_q_repN_11                            |    200 | FDCE        |
+| u_unified_p4_kernel/s3_valid_q_repN_4                             |    200 | FDCE        |
+| u_unified_p4_kernel/s3_valid_q_repN_5                             |    200 | FDCE        |
+| u_unified_p4_kernel/s2_valid_q_repN_10                            |    200 | FDCE        |
+| u_unified_p4_kernel/s2_valid_q_repN_8                             |    200 | FDCE        |
+| u_unified_p4_kernel/s2_valid_q_repN_2                             |    200 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[1]_rep__5_n_0    |    199 | FDCE        |
+| u_unified_p4_kernel/s1_valid_q_repN_5                             |    198 | FDCE        |
+| u_unified_p4_kernel/s1_valid_q_repN_23                            |    198 | FDCE        |
+| u_bounded_lfnst_engine/product_valid_q_reg_n_0_repN_4             |    198 | FDCE        |
+| u_unified_p4_kernel/s1_valid_q_repN_1                             |    198 | FDCE        |
+| u_unified_p4_kernel/s1_valid_q_repN_12                            |    198 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][0][1]                                   |    192 | FDCE        |
+| u_unified_p4_kernel/issue_desc_valid_q_reg_rep__7_n_0             |    192 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][0][3]                                   |    192 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][0][2]                                   |    192 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[5]_rep__2_n_0    |    191 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[5]_rep__5_n_0    |    191 | FDCE        |
+| lfnst_grid[4][15]_i_7_n_0                                         |    191 | LUT5        |
+| lfnst_grid[5][1]_i_2_n_0                                          |    190 | LUT5        |
+| u_unified_p4_kernel/issue_desc_valid_q_reg_rep_n_0                |    188 | FDCE        |
+| u_unified_p4_kernel/product_q_reg[3][47]_i_10_n_0                 |    188 | LUT6        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[5]_rep__7_n_0    |    187 | FDCE        |
+| u_bounded_lfnst_engine/out_group[3]                               |    187 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[2]_rep__4_n_0    |    185 | FDCE        |
+| u_unified_p4_kernel/issue_desc_slot_q_reg[1]_rep__0_n_0           |    185 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[2]_rep__6_n_0    |    183 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[0]_rep__5_n_0    |    181 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[3]_rep__0_n_0    |    179 | FDCE        |
+| lfnst_mem_resp_index_q_reg[1]_rep_n_0                             |    178 | FDCE        |
+| lfnst_grid[7][15]_i_5_n_0                                         |    178 | LUT2        |
+| rd_cmd_addr_q_reg_n_0_[1][0][2]_repN_1                            |    175 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][0][3]_repN_1                            |    175 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][0][1]_repN_1                            |    175 | FDCE        |
+| lfnst_mem_resp_valid_q_reg_rep_n_0                                |    174 | FDCE        |
+| u_unified_p4_kernel/issue_desc_valid_q_reg_rep__8_n_0             |    174 | FDCE        |
+| lfnst_mem_resp_index_q_reg[2]_rep_n_0                             |    172 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][0][1]_repN_3                            |    172 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][0][2]_repN_5                            |    172 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[3]_rep__8_n_0    |    172 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[1][0][3]_repN_3                            |    172 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[1]_rep__4_n_0    |    171 | FDCE        |
+| lfnst_grid[30][15]_i_5_n_0                                        |    169 | LUT3        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[5]_rep__9_n_0    |    169 | FDCE        |
+| u_unified_p4_kernel/issue_desc_bundle_addr_q[4]                   |    167 | FDCE        |
+| u_unified_p4_kernel/s1_valid_q_repN_24                            |    165 | FDCE        |
+| rd_cmd_addr_q_reg_n_0_[0][2][0]_repN_4                            |    165 | FDCE        |
+| output_index_reg_n_0_[8]                                          |    165 | FDCE        |
++-------------------------------------------------------------------+--------+-------------+
+
+

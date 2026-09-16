@@ -1,0 +1,18 @@
+{
+  "schema": "step12f.p9_a.routed_qualification.v1",
+  "read_only": true,
+  "dcp": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\48\\p9_second_round_impl_20260916\\step12f_unified_wrapper_postroute.dcp",
+  "worst500_sample_path_count": 500,
+  "aggregate_label": "sampled_negative_slack_sum_not_full_design_tns",
+  "object_counts": {"fire_net": 1, "fire_driver_pins": 1, "fire_load_pins": 11, "phase_d": 4, "feed_d": 5, "drain_d": 5, "lfnst_response_d": 16, "p4_input_mem_d": 4032},
+  "families": {
+    "A_cache_to_lfnst_response": {"sampled_path_count": 0, "sampled_negative_slack_sum_ns": 0.000000, "worst_slack_ns": 0.000000},
+    "B_kernel_control_to_p4_input_mem": {"sampled_path_count": 0, "sampled_negative_slack_sum_ns": 0.000000, "worst_slack_ns": 0.000000},
+    "C_other_cache_read_or_response": {"sampled_path_count": 466, "sampled_negative_slack_sum_ns": -228.080000, "worst_slack_ns": -0.560000, "representative": {"startpoint": "slot_width_reg[1][5]_replica/C", "endpoint": "gen_input_slots[1].gen_input_banks[0].u_input_cache_bank/data_mem_reg_512_575_7_13/RAMA/WE", "start_loc": "SLICE_X68Y90", "end_loc": "SLICE_X50Y102", "datapath_delay_ns": 2.360, "logic_delay_ns": 0.648, "route_delay_ns": 1.712, "logic_levels": "6", "start_fanout": ""}},
+    "C_other_cache_kernel_or_write": {"sampled_path_count": 6, "sampled_negative_slack_sum_ns": -2.821000, "worst_slack_ns": -0.490000, "representative": {"startpoint": "u_unified_p4_kernel/fifo_rd_ptr_q_reg[3]_rep/C", "endpoint": "vwrite_cmd_data_q_reg[2][12]/D", "start_loc": "SLICE_X84Y186", "end_loc": "SLICE_X81Y163", "datapath_delay_ns": 2.471, "logic_delay_ns": 0.572, "route_delay_ns": 1.899, "logic_levels": "5", "start_fanout": ""}},
+    "D_control_or_r4c": {"sampled_path_count": 1, "sampled_negative_slack_sum_ns": -0.477000, "worst_slack_ns": -0.477000, "representative": {"startpoint": "kernel_vector_q_reg[2]/C", "endpoint": "kernel_vector_q_reg[1]_rep__0/D", "start_loc": "SLICE_X79Y113", "end_loc": "SLICE_X81Y121", "datapath_delay_ns": 2.458, "logic_delay_ns": 0.490, "route_delay_ns": 1.968, "logic_levels": "5", "start_fanout": ""}},
+    "E_other": {"sampled_path_count": 27, "sampled_negative_slack_sum_ns": -12.857000, "worst_slack_ns": -0.502000, "representative": {"startpoint": "u_bounded_lfnst_engine/input_terms_q_reg[191]/C", "endpoint": "u_bounded_lfnst_engine/products_q_reg[27][29]/D", "start_loc": "SLICE_X72Y166", "end_loc": "SLICE_X74Y163", "datapath_delay_ns": 2.484, "logic_delay_ns": 1.779, "route_delay_ns": 0.705, "logic_levels": "7", "start_fanout": ""}}
+  },
+  "decision_status": "QUALIFICATION_ONLY_NO_P9_RTL_AUTHORIZATION",
+  "hold_is_separate_signoff": true
+}

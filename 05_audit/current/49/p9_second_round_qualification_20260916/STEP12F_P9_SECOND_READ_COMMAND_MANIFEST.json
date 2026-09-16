@@ -1,0 +1,240 @@
+{
+  "schema": "step12f.p9.second_read_command.manifest.v1",
+  "phase": "Step12F-P9 second round atomic elastic bank-local physical read command boundary",
+  "date": "2026-09-16",
+  "status": "P9_SECOND_READ_COMMAND_EFFECTIVE_PHYSICAL_TIMING_STOP",
+  "base_commit": "829011ccfc8e2bd1a4f0e61f11ba69a62b12fbdb",
+  "objective": "Isolate shared input-cache physical read address selection behind one atomic elastic command bundle while preserving primary-V/LFNST metadata alignment, request II=1, functional behavior, and the frozen external contract.",
+  "scope": {
+    "rtl_changed": [
+      "02_rtl/rtl/unified_its_wrapper.sv"
+    ],
+    "rtl_unchanged": [
+      "02_rtl/rtl/unified_p4_kernel.sv",
+      "02_rtl/rtl/its_input_cache_bank.sv",
+      "02_rtl/rtl/bounded_lfnst_engine.sv"
+    ],
+    "frozen": [
+      "Gate-A Oracle and contest_engineering_vtm10_v1 profile",
+      "03_verification/vivado/step12f_unified_wrapper_2ns.xdc",
+      "frozen R4C",
+      "v3.5-18"
+    ],
+    "oracle_changed": false,
+    "profile_changed": false,
+    "xdc_changed": false,
+    "r4c_changed": false,
+    "new_tag": false
+  },
+  "command_contract": {
+    "lifecycle": "logical request -> atomic elastic physical command -> asynchronous LUTRAM -> owner-qualified response capture",
+    "atomicity": "one command valid/ready/fire and one owner/metadata bundle; primary-V carries four bank lanes, LFNST carries one bank lane",
+    "elasticity": "rd_cmd_ready = !rd_cmd_valid_q || owner_response_ready; same-edge retire and refill is allowed",
+    "address_source": "input_rd_addr[slot][bank] is unconditionally driven by rd_cmd_addr_q[slot][bank]; invalidity is represented by valid metadata, not an address mux",
+    "response_alignment": "primary-V and LFNST response capture consume rd_cmd_slot_q/rd_cmd_* metadata, never live request counters",
+    "counter_rule": "primary and LFNST logical counters advance only on logical request acceptance",
+    "owner_exclusion": "LFNST candidate has priority over primary-V candidate; command ownership is mutually exclusive",
+    "throughput": {
+      "request_ii": 1,
+      "primary_v_steady_state": "one four-bank command per cycle",
+      "lfnst_steady_state": "one one-bank command per cycle"
+    }
+  },
+  "functional": {
+    "status": "PASS",
+    "simulator": "ModelSim SE-64 2020.4",
+    "normal": "PASS",
+    "SYNTHESIS": "PASS",
+    "gate_b_numeric_cases": 156,
+    "gate_c_tuples": 369,
+    "gate_c_beats_per_mode": 45636,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 258,
+    "vector_ii_modes": 13,
+    "group_ii": 1,
+    "p4_n4_stream_vectors": 16,
+    "ownership_ordering_done_backpressure": "PASS",
+    "evidence": "05_audit/current/46/p9_second_round_coverage_20260916/STEP12F_COVERAGE_MODELSIM_RUN.json"
+  },
+  "fresh_synthesis": {
+    "status": "PASS_COMPLETED_BUT_TIMING_FAIL",
+    "tool": "Vivado 2025.2",
+    "device": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0,
+    "setup": {
+      "wns_ns": -0.588,
+      "tns_ns": -558.568,
+      "failing_endpoints": 4135,
+      "total_endpoints": 156107
+    },
+    "worst_path": {
+      "source": "kernel_ctx_output_size_q_reg[3]/C",
+      "destination": "lfnst_tail_index_q_reg[0]/CE",
+      "slack_ns": -0.588,
+      "data_path_delay_ns": 2.483,
+      "logic_delay_ns": 0.531,
+      "route_delay_ns": 1.952,
+      "logic_levels": 9
+    },
+    "resources": {
+      "clb_luts": 30128,
+      "lutram": 5632,
+      "ff": 25405,
+      "dsp48e2": 320,
+      "bram36": 0,
+      "uram": 0
+    },
+    "unconstrained_internal_endpoints": 0,
+    "timing_exceptions": "No valid timing exceptions found",
+    "checkpoint": "05_audit/current/47/p9_second_round_synth_20260916/step12f_unified_wrapper_postsynth.dcp"
+  },
+  "implementation": {
+    "status": "COMPLETED_FULLY_ROUTED_BUT_TIMING_FAIL",
+    "flow": "opt_design Explore; place_design Explore; phys_opt_design Explore; route_design Explore",
+    "setup": {
+      "wns_ns": -0.560,
+      "tns_ns": -3706.888,
+      "failing_endpoints": 22781,
+      "total_endpoints": 160120
+    },
+    "hold": {
+      "whs_ns": -0.080,
+      "ths_ns": -3.426,
+      "failing_endpoints": 46,
+      "total_endpoints": 160120
+    },
+    "route_status": {
+      "design_state": "Fully Routed",
+      "unrouted_nets": 0,
+      "partially_routed_nets": 0,
+      "node_overlaps": 0
+    },
+    "constraints": {
+      "unconstrained_internal_endpoints": 0,
+      "timing_exceptions": "No valid timing exceptions found"
+    },
+    "resource_snapshot": {
+      "clb_luts": 30128,
+      "lutram": 5632,
+      "ff": 26890,
+      "dsp48e2": 320,
+      "bram36": 0,
+      "uram": 0,
+      "total_on_chip_power_w": 1.948
+    },
+    "checkpoint": "05_audit/current/48/p9_second_round_impl_20260916/step12f_unified_wrapper_postroute.dcp"
+  },
+  "read_qualification": {
+    "status": "COMPLETE_READ_ONLY",
+    "tool": "Vivado 2025.2",
+    "input_checkpoint": "05_audit/current/48/p9_second_round_impl_20260916/step12f_unified_wrapper_postroute.dcp",
+    "worst500_sample_path_count": 500,
+    "aggregate_note": "Worst-500 family sums are sampled negative-slack sums, not full-design TNS.",
+    "families": {
+      "A_cache_to_lfnst_response": {
+        "sampled_path_count": 0,
+        "worst_slack_ns": 0.0,
+        "sampled_negative_slack_sum_ns": 0.0,
+        "interpretation": "The prior live-control-to-LFNST-response family is absent from the sampled window; the replacement command-to-RAM/read-mux path is reported separately."
+      },
+      "B_kernel_control_to_p4_input_mem": {
+        "sampled_path_count": 0,
+        "worst_slack_ns": 0.0,
+        "sampled_negative_slack_sum_ns": 0.0,
+        "interpretation": "The prior wrapper/kernel live-select-to-input_mem family is absent from the sampled window."
+      },
+      "C_other_cache_read_or_response": {
+        "sampled_path_count": 466,
+        "worst_slack_ns": -0.560,
+        "sampled_negative_slack_sum_ns": -228.080,
+        "representative": {
+          "source": "slot_width_reg[1][5]_replica/C",
+          "destination": "gen_input_slots[1].gen_input_banks[0].u_input_cache_bank/data_mem_reg_512_575_7_13/RAMA/WE",
+          "data_path_delay_ns": 2.360,
+          "logic_delay_ns": 0.648,
+          "route_delay_ns": 1.712,
+          "logic_levels": 6
+        },
+        "interpretation": "The classifier groups the new input-cache write/control endpoints here; this does not claim that all 466 sampled paths have one identical cone."
+      },
+      "C_other_cache_kernel_or_write": {
+        "sampled_path_count": 6,
+        "worst_slack_ns": -0.490,
+        "sampled_negative_slack_sum_ns": -2.821
+      },
+      "D_control_or_r4c": {
+        "sampled_path_count": 1,
+        "worst_slack_ns": -0.477,
+        "sampled_negative_slack_sum_ns": -0.477
+      },
+      "E_other": {
+        "sampled_path_count": 27,
+        "worst_slack_ns": -0.502,
+        "sampled_negative_slack_sum_ns": -12.857,
+        "representative": {
+          "source": "u_bounded_lfnst_engine/input_terms_q_reg[191]/C",
+          "destination": "u_bounded_lfnst_engine/products_q_reg[27][29]/D",
+          "data_path_delay_ns": 2.484,
+          "logic_delay_ns": 1.779,
+          "route_delay_ns": 0.705,
+          "logic_levels": 7
+        }
+      }
+    },
+    "fire_query": {
+      "fire_nets": 1,
+      "fire_driver_pins": 1,
+      "fire_load_pins": 11,
+      "forbidden_phase_state_group_d_paths": 0,
+      "allowed_feed_bookkeeping_paths": 5,
+      "note": "The query starts from the actual fire net/driver and therefore reports NO_TIMING_PATHS for forbidden destinations, not NO_SOURCE_OBJECT."
+    },
+    "command_path": {
+      "source": "rd_cmd_addr_q_reg[0][0][1]_replica_1/C",
+      "destination": "lfnst_mem_resp_data_q_reg[2]/D",
+      "slack_ns": -0.457,
+      "data_path_delay_ns": 2.437,
+      "logic_delay_ns": 0.548,
+      "route_delay_ns": 1.889,
+      "logic_levels": 6,
+      "ram_and_mux": "RAMD64E + LUT6/MUXF7/MUXF8",
+      "interpretation": "This is the intended registered-command-to-response path; it remains a local setup violation and is no longer the global WNS leader."
+    }
+  },
+  "comparison_to_p9_first_round": {
+    "first_round_postroute_wns_ns": -0.720,
+    "second_round_postroute_wns_ns": -0.560,
+    "wns_improvement_ns": 0.160,
+    "first_round_postroute_tns_ns": -5894.764,
+    "second_round_postroute_tns_ns": -3706.888,
+    "tns_absolute_reduction_ns": 2187.876,
+    "interpretation": "The atomic physical-read boundary is effective as a structural/timing improvement, but the route remains setup- and hold-failing."
+  },
+  "evidence_hashes": {
+    "unified_its_wrapper_sha256": "903628983C0D6CCBB483ED44E2158A46A3755958AC1EE147D8B6C970F422F679",
+    "unified_p4_kernel_sha256": "D996BC5A2BAE4579766821979719715FC3F405250294EEF7A6FE74832E0B0F02",
+    "input_cache_bank_sha256": "2476D5FBC1D3663515137F8768EC7F16A689B3150E4527D78B5743DF3E7A05D7",
+    "bounded_lfnst_engine_sha256": "6EB52770435E62442DFDA1CF1CB9D1F216707A675965B3AD779184413FDFE1D8",
+    "xdc_sha256": "8249A2643753D347F98F3F1AD775829AB13F277375801B7565C1AC7A347E1B2F",
+    "coverage_manifest_sha256": "9D190214AC5580904BA287D29773547B4E09AFA92DBB930E508AC66C005F8143",
+    "postsynth_dcp_sha256": "1C65FDF1EE79FF8E3B652C01B784C8BE64C9ACF6034CDF284A9E0CC30C90AA37",
+    "postroute_dcp_sha256": "00AA6B93BE0BF7D9E235E9CD6214051D0E871C50CCF7149B8455E8C995EAC1A6",
+    "qualification_json_sha256": "8305599F64E7A3382DA06200B9305A400082892FD32BC7E3CC261770603AC952",
+    "worst500_csv_sha256": "98250D9A98736EBFD0F1B979BC98AE420AD091064F9A35E08C54C46A6B933421",
+    "targeted_report_sha256": "66C5F5C2C3F1E96136FC30AC1FC8D91BC77A73030D8572CCF126D38BF35FC4AB",
+    "targeted_script_sha256": "8BD6CCF051E76D5F19C5A5BE4251010D72C07105C8F88D45E025986B839DD11D"
+  },
+  "tag_state": {
+    "v3.5-18_ref": "484b8bd9655d948073473f7a8a6da0b0423b4e8f",
+    "v3.5-18_target_commit": "7415b0acb33481af1845f63e16b93ce7c33b977b",
+    "new_tag": false
+  },
+  "decision": {
+    "functional": "PASS",
+    "target": "EFFECTIVE_STRUCTURALLY_AND_PARTIALLY_PHYSICALLY",
+    "physical_timing": "P1_STOP",
+    "route": "FULLY_ROUTED_BUT_SETUP_HOLD_FAIL",
+    "tag": "NOT_CREATED",
+    "next": "Choose the next narrow repair from the new routed write/control and residual LFNST product families; do not reopen this read-command boundary, Oracle/profile, XDC, R4C, or v3.5-18 without new evidence."
+  }
+}

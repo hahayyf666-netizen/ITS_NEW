@@ -1,0 +1,12 @@
+P9-A routed read-only qualification
+DCP=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\48\p9_second_round_impl_20260916\step12f_unified_wrapper_postroute.dcp
+worst500_sample_path_count=500
+fire_net_count=1 fire_driver_pin_count=1 fire_load_pin_count=11
+A_cache_to_lfnst_response count=0 sampled_negative_slack_sum_ns=0.000000 worst_slack_ns=0.000000
+B_kernel_control_to_p4_input_mem count=0 sampled_negative_slack_sum_ns=0.000000 worst_slack_ns=0.000000
+C_other_cache_read_or_response count=466 sampled_negative_slack_sum_ns=-228.080000 worst_slack_ns=-0.560000
+C_other_cache_kernel_or_write count=6 sampled_negative_slack_sum_ns=-2.821000 worst_slack_ns=-0.490000
+D_control_or_r4c count=1 sampled_negative_slack_sum_ns=-0.477000 worst_slack_ns=-0.477000
+E_other count=27 sampled_negative_slack_sum_ns=-12.857000 worst_slack_ns=-0.502000
+decision=QUALIFICATION_ONLY_NO_P9_RTL_AUTHORIZATION
+note=worst500 aggregates are sampled and are not full-design TNS

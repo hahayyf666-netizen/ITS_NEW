@@ -262,6 +262,47 @@ module unified_its_wrapper #(
     logic               kernel_rd_raw_to_resp;
     logic               kernel_rd_raw_capture;
 
+    // P9 second round: one atomic elastic physical-read command is shared by
+    // primary-V and LFNST logical requests.  The command owns all physical
+    // slot/bank addresses and the metadata needed by response capture.
+    // Address registers are held even when valid is low; validity and owner
+    // metadata, not an address mux, determine whether a RAM output is useful.
+    localparam logic RD_OWNER_PRIMARY_V = 1'b0;
+    localparam logic RD_OWNER_LFNST     = 1'b1;
+    logic                         rd_cmd_valid_q;
+    logic                         rd_cmd_owner_q;
+    logic                         rd_cmd_slot_q;
+    logic [3:0]                   rd_cmd_bank_mask_q;
+    logic [BANK_ADDR_W-1:0]       rd_cmd_addr_q [0:1][0:3];
+    logic [4:0]                   rd_cmd_group_q;
+    logic [6:0]                   rd_cmd_vector_q;
+    logic                         rd_cmd_lfnst_is_tail_q;
+    logic [4:0]                   rd_cmd_lfnst_index_q;
+    logic [5:0]                   rd_cmd_lfnst_grid_addr_q;
+    logic                         rd_cmd_lfnst_valid_q;
+    logic                         rd_cmd_lfnst_last_q;
+    logic [1:0]                   rd_cmd_lfnst_bank_q;
+
+    logic                         rd_cmd_candidate_valid;
+    logic                         rd_cmd_candidate_owner;
+    logic                         rd_cmd_candidate_slot;
+    logic [3:0]                   rd_cmd_candidate_bank_mask;
+    logic [BANK_ADDR_W-1:0]       rd_cmd_candidate_addr_c [0:1][0:3];
+    logic [4:0]                   rd_cmd_candidate_group;
+    logic [6:0]                   rd_cmd_candidate_vector;
+    logic                         rd_cmd_candidate_lfnst_is_tail;
+    logic [4:0]                   rd_cmd_candidate_lfnst_index;
+    logic [5:0]                   rd_cmd_candidate_lfnst_grid_addr;
+    logic                         rd_cmd_candidate_lfnst_valid;
+    logic                         rd_cmd_candidate_lfnst_last;
+    logic [1:0]                   rd_cmd_candidate_lfnst_bank;
+    logic                         rd_cmd_owner_response_ready;
+    logic                         rd_cmd_response_fire;
+    logic                         rd_cmd_ready;
+    logic                         rd_cmd_accept;
+    logic                         primary_logical_req_fire;
+    logic                         lfnst_mem_req_accept;
+
     // Horizontal intermediate reads use a bank-local address register and a
     // response register as well.  The request address is generated from the
     // current row/group metadata and held for one cycle before the RAM output
@@ -832,36 +873,123 @@ module unified_its_wrapper #(
     logic signed [15:0] lfnst_gather_rd_data;
     logic               lfnst_gather_rd_valid;
 
-    // All large-memory reads are issued through fixed bank ports.  LFNST
-    // gather deliberately uses one address at a time; the four physical ports
-    // are still available, but no 16-way dynamic read mux is inferred.
-    always_comb begin : input_read_addr_comb
-        integer read_slot_i, read_bank_i, read_row_i, read_col_i, read_local_i;
-        for (read_slot_i = 0; read_slot_i < 2; read_slot_i = read_slot_i + 1)
-            for (read_bank_i = 0; read_bank_i < 4; read_bank_i = read_bank_i + 1)
-                input_rd_addr[read_slot_i][read_bank_i] = '0;
+    // Build one logical request candidate at a time.  The candidate is
+    // captured only when the atomic command bundle is ready; all physical
+    // addresses are then held in rd_cmd_addr_q until the matching response is
+    // consumed.  LFNST retains priority during its gather/tail phase, while
+    // primary-V owns the cache in the normal transform phase.
+    integer rd_candidate_slot_i, rd_candidate_bank_i;
+    integer rd_candidate_row_i, rd_candidate_col_i;
+    integer rd_candidate_bank_map_i, rd_candidate_local_i;
+    always_comb begin : rd_command_candidate_comb
+        rd_cmd_candidate_valid = 1'b0;
+        rd_cmd_candidate_owner = RD_OWNER_PRIMARY_V;
+        rd_cmd_candidate_slot = 1'b0;
+        rd_cmd_candidate_bank_mask = 4'b0000;
+        rd_cmd_candidate_group = 5'd0;
+        rd_cmd_candidate_vector = 7'd0;
+        rd_cmd_candidate_lfnst_is_tail = 1'b0;
+        rd_cmd_candidate_lfnst_index = 5'd0;
+        rd_cmd_candidate_lfnst_grid_addr = 6'd0;
+        rd_cmd_candidate_lfnst_valid = 1'b0;
+        rd_cmd_candidate_lfnst_last = 1'b0;
+        rd_cmd_candidate_lfnst_bank = 2'd0;
+        for (rd_candidate_slot_i = 0;
+             rd_candidate_slot_i < 2;
+             rd_candidate_slot_i = rd_candidate_slot_i + 1)
+            for (rd_candidate_bank_i = 0;
+                 rd_candidate_bank_i < 4;
+                 rd_candidate_bank_i = rd_candidate_bank_i + 1)
+                rd_cmd_candidate_addr_c[rd_candidate_slot_i][rd_candidate_bank_i] = '0;
 
         if (lfnst_mem_req_q) begin
-            // The address was selected and registered at the request edge.
-            // Only the selected physical bank sees a live read address.
-            input_rd_addr[lfnst_mem_req_slot_q][lfnst_mem_req_bank_q] =
+            rd_cmd_candidate_valid = 1'b1;
+            rd_cmd_candidate_owner = RD_OWNER_LFNST;
+            rd_cmd_candidate_slot = lfnst_mem_req_slot_q;
+            rd_cmd_candidate_bank_mask =
+                (4'b0001 << lfnst_mem_req_bank_q);
+            rd_cmd_candidate_lfnst_is_tail = lfnst_mem_req_is_tail_q;
+            rd_cmd_candidate_lfnst_index = lfnst_mem_req_index_q;
+            rd_cmd_candidate_lfnst_grid_addr = lfnst_mem_req_grid_addr_q;
+            rd_cmd_candidate_lfnst_valid = lfnst_mem_req_valid_q;
+            rd_cmd_candidate_lfnst_last = lfnst_mem_req_last_q;
+            rd_cmd_candidate_lfnst_bank = lfnst_mem_req_bank_q;
+            rd_cmd_candidate_addr_c[lfnst_mem_req_slot_q][lfnst_mem_req_bank_q] =
                 lfnst_mem_req_addr_q;
         end else if (kernel_run_q && !kernel_stage_q &&
                      !lfnst_case_q && kernel_rd_req_pending_q) begin
-            for (read_bank_i = 0; read_bank_i < 4; read_bank_i = read_bank_i + 1) begin
-                read_row_i = kernel_rd_req_group_q * 4 + read_bank_i;
-                read_col_i = kernel_rd_req_vector_q;
-                // Read the bounded four-row request unconditionally.  The
-                // response stage applies the registered/active-height mask
-                // before presenting data to the kernel, so rows outside the
-                // transform support are harmless zero-fill reads.  Keeping
-                // the address port independent of kernel_cut_h_q removes the
-                // live shape signal from the shared cache-address/validity
-                // mux (and therefore from the LFNST response timing cone).
-                input_rd_addr[compute_slot_q][cache_bank_for(read_row_i, read_col_i)] =
-                    cache_local_for(read_row_i, read_col_i);
+            rd_cmd_candidate_valid = 1'b1;
+            rd_cmd_candidate_owner = RD_OWNER_PRIMARY_V;
+            rd_cmd_candidate_slot = compute_slot_q;
+            rd_cmd_candidate_bank_mask = 4'b1111;
+            rd_cmd_candidate_group = kernel_rd_req_group_q;
+            rd_cmd_candidate_vector = kernel_rd_req_vector_q;
+            for (rd_candidate_bank_i = 0;
+                 rd_candidate_bank_i < 4;
+                 rd_candidate_bank_i = rd_candidate_bank_i + 1) begin
+                rd_candidate_row_i = kernel_rd_req_group_q * 4 +
+                                     rd_candidate_bank_i;
+                rd_candidate_col_i = kernel_rd_req_vector_q;
+                rd_candidate_bank_map_i =
+                    cache_bank_for(rd_candidate_row_i, rd_candidate_col_i);
+                rd_candidate_local_i =
+                    cache_local_for(rd_candidate_row_i, rd_candidate_col_i);
+                rd_cmd_candidate_addr_c[compute_slot_q][rd_candidate_bank_map_i] =
+                    rd_candidate_local_i[BANK_ADDR_W-1:0];
             end
         end
+    end
+
+    // A command is an atomic bundle even though it drives four physical bank
+    // ports for primary-V.  The owner-specific response slot controls whether
+    // the bundle may be retired and replaced on the same edge.
+    always_comb begin : rd_command_flow_comb
+        if (rd_cmd_owner_q == RD_OWNER_LFNST)
+            rd_cmd_owner_response_ready = 1'b1;
+        else
+            rd_cmd_owner_response_ready =
+                !kernel_rd_raw_pending_q || kernel_rd_resp_slot_ready;
+        rd_cmd_response_fire = rd_cmd_valid_q && rd_cmd_owner_response_ready;
+        rd_cmd_ready = !rd_cmd_valid_q || rd_cmd_response_fire;
+        rd_cmd_accept = rd_cmd_candidate_valid && rd_cmd_ready;
+        primary_logical_req_fire = rd_cmd_accept &&
+                                    (rd_cmd_candidate_owner == RD_OWNER_PRIMARY_V);
+        lfnst_mem_req_accept = rd_cmd_accept &&
+                               (rd_cmd_candidate_owner == RD_OWNER_LFNST);
+    end
+
+`ifndef SYNTHESIS
+    // The physical command is one transaction bundle: primary-V must carry
+    // all four bank lanes, while LFNST carries exactly one bank lane.  These
+    // checks also guard the owner mutual-exclusion assumption used by the
+    // shared command register.
+    always @(posedge clk) begin
+        if (rst_n && rd_cmd_accept) begin
+            if (rd_cmd_candidate_owner == RD_OWNER_PRIMARY_V)
+                assert (rd_cmd_candidate_bank_mask == 4'b1111)
+                    else $error("P9 primary-V read command is not four-bank atomic");
+            else
+                assert ($onehot(rd_cmd_candidate_bank_mask))
+                    else $error("P9 LFNST read command is not one-bank atomic");
+        end
+        if (rst_n)
+            assert (!(rd_cmd_candidate_valid &&
+                      (rd_cmd_candidate_owner == RD_OWNER_PRIMARY_V) &&
+                      lfnst_mem_req_q))
+                else $error("P9 primary-V and LFNST logical read owners overlap");
+    end
+`endif
+
+    // Physical RAM addresses are unconditional connections from the command
+    // registers.  Invalid commands retain their previous address; valid and
+    // owner metadata give the address meaning to the response stage.  No
+    // valid/owner mux is allowed in front of the RAMD64E ADDR pins.
+    always_comb begin : input_read_addr_comb
+        integer read_slot_i, read_bank_i;
+        for (read_slot_i = 0; read_slot_i < 2; read_slot_i = read_slot_i + 1)
+            for (read_bank_i = 0; read_bank_i < 4; read_bank_i = read_bank_i + 1)
+                input_rd_addr[read_slot_i][read_bank_i] =
+                    rd_cmd_addr_q[read_slot_i][read_bank_i];
     end
 
     // The primary vertical transform consumes a two-stage cache response.
@@ -943,19 +1071,23 @@ module unified_its_wrapper #(
     always_comb begin
         kernel_rd_resp_slot_ready = !kernel_rd_resp_valid_q || kernel_group_accept;
         kernel_rd_raw_to_resp = kernel_rd_raw_pending_q && kernel_rd_resp_slot_ready;
-        kernel_rd_raw_capture = kernel_run_q && !kernel_stage_q && !lfnst_case_q &&
-                                kernel_rd_req_pending_q &&
-                                (!kernel_rd_raw_pending_q || kernel_rd_resp_slot_ready);
+        // A primary raw response is captured only when the atomic physical
+        // command retires.  The command itself, rather than the live request
+        // counters, supplies the slot/group/vector metadata below.
+        kernel_rd_raw_capture = rd_cmd_response_fire &&
+                                (rd_cmd_owner_q == RD_OWNER_PRIMARY_V);
     end
 
     always_comb begin : lfnst_gather_data_comb
         lfnst_gather_rd_data = '0;
         lfnst_gather_rd_valid = 1'b0;
-        if (lfnst_mem_req_q && lfnst_mem_req_valid_q) begin
+        if (rd_cmd_valid_q &&
+            (rd_cmd_owner_q == RD_OWNER_LFNST) &&
+            rd_cmd_lfnst_valid_q) begin
             lfnst_gather_rd_data =
-                input_rd_data[lfnst_mem_req_slot_q][lfnst_mem_req_bank_q];
+                input_rd_data[rd_cmd_slot_q][rd_cmd_lfnst_bank_q];
             lfnst_gather_rd_valid =
-                input_rd_valid[lfnst_mem_req_slot_q][lfnst_mem_req_bank_q];
+                input_rd_valid[rd_cmd_slot_q][rd_cmd_lfnst_bank_q];
         end
     end
 
@@ -1282,6 +1414,8 @@ module unified_its_wrapper #(
     assign result_cmd_commit = result_cmd_valid_q;
 
     integer reset_i, lfnst_grid_i;
+    integer rd_cmd_reset_slot_i, rd_cmd_reset_bank_i;
+    integer rd_cmd_load_slot_i, rd_cmd_load_bank_i;
     integer kernel_capture_lane_i;
     integer lfnst_write_addr;
     always_ff @(posedge clk or negedge rst_n) begin
@@ -1343,6 +1477,25 @@ module unified_its_wrapper #(
             kernel_rd_raw_pending_q <= 1'b0;
             kernel_rd_raw_group_q <= 5'd0;
             kernel_rd_raw_vector_q <= 7'd0;
+            rd_cmd_valid_q <= 1'b0;
+            rd_cmd_owner_q <= RD_OWNER_PRIMARY_V;
+            rd_cmd_slot_q <= 1'b0;
+            rd_cmd_bank_mask_q <= 4'b0000;
+            rd_cmd_group_q <= 5'd0;
+            rd_cmd_vector_q <= 7'd0;
+            rd_cmd_lfnst_is_tail_q <= 1'b0;
+            rd_cmd_lfnst_index_q <= 5'd0;
+            rd_cmd_lfnst_grid_addr_q <= 6'd0;
+            rd_cmd_lfnst_valid_q <= 1'b0;
+            rd_cmd_lfnst_last_q <= 1'b0;
+            rd_cmd_lfnst_bank_q <= 2'd0;
+            for (rd_cmd_reset_slot_i = 0;
+                 rd_cmd_reset_slot_i < 2;
+                 rd_cmd_reset_slot_i = rd_cmd_reset_slot_i + 1)
+                for (rd_cmd_reset_bank_i = 0;
+                     rd_cmd_reset_bank_i < 4;
+                     rd_cmd_reset_bank_i = rd_cmd_reset_bank_i + 1)
+                    rd_cmd_addr_q[rd_cmd_reset_slot_i][rd_cmd_reset_bank_i] <= '0;
             kernel_h_rd_pending_q <= 1'b0;
             kernel_h_rd_group_q <= 5'd0;
             kernel_h_rd_vector_q <= 7'd0;
@@ -1417,6 +1570,47 @@ module unified_its_wrapper #(
             // A one-cycle pulse starts the bounded LFNST engine on the next
             // edge, after compute_slot_q and its descriptor metadata settle.
             lfnst_start_q <= 1'b0;
+
+            // P9 second round physical-read command boundary.  A command is
+            // retired only when its owner response slot can capture the
+            // asynchronous RAM result.  If that retirement and a new logical
+            // request coincide, the bundle is atomically refilled in the same
+            // edge; otherwise the command remains held without advancing any
+            // request counters.
+            if (rd_cmd_ready) begin
+                if (rd_cmd_accept) begin
+                    rd_cmd_valid_q <= 1'b1;
+                    rd_cmd_owner_q <= rd_cmd_candidate_owner;
+                    rd_cmd_slot_q <= rd_cmd_candidate_slot;
+                    rd_cmd_bank_mask_q <= rd_cmd_candidate_bank_mask;
+                    rd_cmd_group_q <= rd_cmd_candidate_group;
+                    rd_cmd_vector_q <= rd_cmd_candidate_vector;
+                    rd_cmd_lfnst_is_tail_q <=
+                        rd_cmd_candidate_lfnst_is_tail;
+                    rd_cmd_lfnst_index_q <=
+                        rd_cmd_candidate_lfnst_index;
+                    rd_cmd_lfnst_grid_addr_q <=
+                        rd_cmd_candidate_lfnst_grid_addr;
+                    rd_cmd_lfnst_valid_q <=
+                        rd_cmd_candidate_lfnst_valid;
+                    rd_cmd_lfnst_last_q <=
+                        rd_cmd_candidate_lfnst_last;
+                    rd_cmd_lfnst_bank_q <=
+                        rd_cmd_candidate_lfnst_bank;
+                    for (rd_cmd_load_slot_i = 0;
+                         rd_cmd_load_slot_i < 2;
+                         rd_cmd_load_slot_i = rd_cmd_load_slot_i + 1)
+                        for (rd_cmd_load_bank_i = 0;
+                             rd_cmd_load_bank_i < 4;
+                             rd_cmd_load_bank_i = rd_cmd_load_bank_i + 1)
+                            rd_cmd_addr_q[rd_cmd_load_slot_i][rd_cmd_load_bank_i] <=
+                                rd_cmd_candidate_addr_c[rd_cmd_load_slot_i]
+                                                                   [rd_cmd_load_bank_i];
+                end else begin
+                    rd_cmd_valid_q <= 1'b0;
+                    rd_cmd_bank_mask_q <= 4'b0000;
+                end
+            end
 
             // P3 vertical write-command pipeline.  The old command is
             // committed by the intermediate RAMs on this edge; a new result
@@ -1494,21 +1688,28 @@ module unified_its_wrapper #(
                          kernel_capture_lane_i < 4;
                          kernel_capture_lane_i = kernel_capture_lane_i + 1) begin
                         kernel_rd_raw_data_q[kernel_capture_lane_i*16 +: 16] <=
-                            input_rd_data[compute_slot_q][kernel_capture_lane_i];
+                            input_rd_data[rd_cmd_slot_q][kernel_capture_lane_i];
                         kernel_rd_raw_valid_q[kernel_capture_lane_i] <=
-                            input_rd_valid[compute_slot_q][kernel_capture_lane_i];
+                            rd_cmd_bank_mask_q[kernel_capture_lane_i] &&
+                            input_rd_valid[rd_cmd_slot_q][kernel_capture_lane_i];
                     end
                     kernel_rd_raw_pending_q <= 1'b1;
-                    kernel_rd_raw_group_q <= kernel_rd_req_group_q;
-                    kernel_rd_raw_vector_q <= kernel_rd_req_vector_q;
+                    kernel_rd_raw_group_q <= rd_cmd_group_q;
+                    kernel_rd_raw_vector_q <= rd_cmd_vector_q;
+                end else if (kernel_rd_raw_to_resp) begin
+                    kernel_rd_raw_pending_q <= 1'b0;
+                end
+
+                // The request counter advances when the logical request is
+                // accepted into the atomic command bundle, not when the
+                // asynchronous RAM response later retires.
+                if (primary_logical_req_fire) begin
                     if (kernel_rd_req_group_q ==
                         ((kernel_cut_h_q >> 2) - 1'b1)) begin
                         kernel_rd_req_pending_q <= 1'b0;
                     end else begin
                         kernel_rd_req_group_q <= kernel_rd_req_group_q + 1'b1;
                     end
-                end else if (kernel_rd_raw_to_resp) begin
-                    kernel_rd_raw_pending_q <= 1'b0;
                 end
             end
 
@@ -1643,11 +1844,13 @@ module unified_its_wrapper #(
                 end
             end
 
-            // Default to no response in the next cycle.  A request issued in
-            // the same edge below may replace this default, allowing the
-            // bounded gather stream to run without a bubble between terms.
+            // A logical LFNST request remains held until the atomic physical
+            // command accepts it.  When it is accepted, the next gather/tail
+            // request may refill this logical-request register on the same
+            // edge, preserving one request per cycle in steady state.
             lfnst_mem_resp_pending_q <= 1'b0;
-            lfnst_mem_req_q <= 1'b0;
+            if (lfnst_mem_req_q && lfnst_mem_req_accept)
+                lfnst_mem_req_q <= 1'b0;
 
             // Commit the registered cache response.  This is deliberately a
             // separate edge from both address generation and cache read, so
@@ -1683,7 +1886,8 @@ module unified_its_wrapper #(
             // Issue one bank-local request per cycle.  The address and all
             // source metadata are registered here; the response is captured
             // on the following edge and committed one edge after that.
-            if (lfnst_gather_q || lfnst_tail_q) begin
+            if ((lfnst_gather_q || lfnst_tail_q) &&
+                (!lfnst_mem_req_q || lfnst_mem_req_accept)) begin
                 integer issue_index_i, issue_row_i, issue_col_i;
                 integer issue_bank_i, issue_local_i, issue_grid_addr_i;
                 issue_index_i = lfnst_gather_q ? lfnst_gather_index_q :
@@ -1724,18 +1928,20 @@ module unified_its_wrapper #(
                 end
             end
 
-            // Capture the asynchronous cache read addressed by the previous
-            // request.  Metadata is copied alongside data/valid so a tail
+            // Capture the asynchronous cache read addressed by the physical
+            // command.  Metadata is copied from that same command so a tail
             // write can never be associated with a different gather index.
-            if (lfnst_mem_req_q) begin
+            if (rd_cmd_response_fire &&
+                (rd_cmd_owner_q == RD_OWNER_LFNST)) begin
                 lfnst_mem_resp_pending_q <= 1'b1;
-                lfnst_mem_resp_is_tail_q <= lfnst_mem_req_is_tail_q;
-                lfnst_mem_resp_index_q <= lfnst_mem_req_index_q;
-                lfnst_mem_resp_grid_addr_q <= lfnst_mem_req_grid_addr_q;
-                lfnst_mem_resp_data_q <= lfnst_gather_rd_data;
-                lfnst_mem_resp_valid_q <= lfnst_mem_req_valid_q &&
-                                          lfnst_gather_rd_valid;
-                lfnst_mem_resp_last_q <= lfnst_mem_req_last_q;
+                lfnst_mem_resp_is_tail_q <= rd_cmd_lfnst_is_tail_q;
+                lfnst_mem_resp_index_q <= rd_cmd_lfnst_index_q;
+                lfnst_mem_resp_grid_addr_q <= rd_cmd_lfnst_grid_addr_q;
+                lfnst_mem_resp_data_q <=
+                    input_rd_data[rd_cmd_slot_q][rd_cmd_lfnst_bank_q];
+                lfnst_mem_resp_valid_q <= rd_cmd_lfnst_valid_q &&
+                    input_rd_valid[rd_cmd_slot_q][rd_cmd_lfnst_bank_q];
+                lfnst_mem_resp_last_q <= rd_cmd_lfnst_last_q;
             end
 
             if (it_info_vld && !descriptor_legal)
