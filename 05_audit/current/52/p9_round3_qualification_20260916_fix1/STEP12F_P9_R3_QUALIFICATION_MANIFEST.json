@@ -1,0 +1,171 @@
+{
+  "schema": "step12f.p9.round3.qualification.manifest.v2",
+  "phase": "Step12F-P9 round 3 input-cache fill write accept/commit qualification",
+  "date": "2026-09-16",
+  "checkpoint_parent": "a2e5f2a3966c9ac0c680349f141422d2aad33181",
+  "p9_r3_rtl_base": "2e0276367986d364cabe68c0ac9d0220d74c357c",
+  "status": "FUNCTIONAL_PASS_PHYSICAL_TIMING_STOP",
+  "objective": "Qualify the registered sparse-fill write command boundary and verify fresh synthesis and full implementation without changing the frozen algorithm, memory type, constraints, R4C, or performance tag.",
+  "qualification_finding": {
+    "initial_issue": "Unconditional fill-loop assignments overwrote scrub valid-memory clear controls, leaving stale valid tags on slot reuse.",
+    "correction": "Valid-memory write controls are overridden only for a valid registered fill command targeting the current slot/bank; scrub clear controls are preserved otherwise.",
+    "rtl_file": "02_rtl/rtl/unified_its_wrapper.sv",
+    "correction_scope": "scrub/fill write-priority only",
+    "source_sha256": "DA82C1AAD3D4C4435CACF15ADCAB06ED9264472C90642A44FB1046EADDD86B22"
+  },
+  "scope": {
+    "rtl_changed": [
+      "02_rtl/rtl/unified_its_wrapper.sv"
+    ],
+    "rtl_unchanged": [
+      "02_rtl/rtl/unified_p4_kernel.sv",
+      "02_rtl/rtl/its_input_cache_bank.sv",
+      "02_rtl/rtl/bounded_lfnst_engine.sv"
+    ],
+    "oracle_changed": false,
+    "profile_changed": false,
+    "xdc_changed": false,
+    "r4c_changed": false,
+    "v35_18_tag": "v3.5-18",
+    "v35_18_target_commit": "7415b0acb33481af1845f63e16b93ce7c33b977b",
+    "new_tag": false
+  },
+  "tools": {
+    "modelsim": {
+      "name": "ModelSim SE-64 2020.4",
+      "vsim": "D:\\software\\Modelsim\\win64\\vsim.exe",
+      "vlog": "D:\\software\\Modelsim\\win64\\vlog.exe",
+      "license": "D:\\software\\Modelsim\\LICENSE.TXT",
+      "modes": [
+        "normal",
+        "synthesis"
+      ],
+      "run_script": "03_verification/step12d_engineering/run_step12f_coverage_modelsim.ps1"
+    },
+    "vivado": {
+      "version": "2025.2 Build 6299465",
+      "executable": "D:\\AMDDesignTools\\2025.2\\Vivado\\bin\\vivado.bat",
+      "device": "xcku5p-ffvb676-2-e",
+      "clock_period_ns": 2.0,
+      "synthesis_elapsed_sec": 242,
+      "implementation_elapsed_sec": 1704,
+      "route_state": "Fully Routed"
+    }
+  },
+  "coverage": {
+    "status": "PASS",
+    "evidence": "STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "normal": {
+      "compile": "PASS",
+      "gate_b_numeric_cases": 156,
+      "gate_b_vector_ii_modes": 7,
+      "gate_f_vector_ii_modes": 13,
+      "gate_c_cases": 369,
+      "gate_c_beats": 45636,
+      "lfnst_engine_cases": 1088,
+      "lfnst_wrapper_cases": 258,
+      "p4_stage0_n4_vectors": 16,
+      "errors": 0
+    },
+    "synthesis": {
+      "compile": "PASS",
+      "gate_b_numeric_cases": 156,
+      "gate_b_vector_ii_modes": 7,
+      "gate_f_vector_ii_modes": 13,
+      "gate_c_cases": 369,
+      "gate_c_beats": 45636,
+      "lfnst_engine_cases": 1088,
+      "lfnst_wrapper_cases": 258,
+      "p4_stage0_n4_vectors": 16,
+      "errors": 0
+    },
+    "contracts": {
+      "group_ii": 1,
+      "vector_ii": "N/4",
+      "sparse_input": true,
+      "rectangles": true,
+      "lfnst": true,
+      "backpressure": true,
+      "two_tu": true,
+      "output_adapter": "LOW10_TWOS_COMPLEMENT"
+    }
+  },
+  "physical": {
+    "synthesis": {
+      "status": "PASS_COMPLETED_BUT_TIMING_FAIL",
+      "wns_ns": -0.565,
+      "tns_ns": -218.875,
+      "setup_failing_endpoints": 1386,
+      "unconstrained_internal_endpoints": 0,
+      "resources": {
+        "clb_luts": 30039,
+        "logic_luts": 24398,
+        "lutram": 5641,
+        "ffs": 27494,
+        "carry8": 1637,
+        "f7_muxes": 1743,
+        "f8_muxes": 592,
+        "dsp48e2": 320,
+        "bram": 0,
+        "uram": 0
+      }
+    },
+    "postroute": {
+      "status": "FULLY_ROUTED_BUT_TIMING_FAIL",
+      "wns_ns": -0.407,
+      "tns_ns": -453.888,
+      "setup_failing_endpoints": 3806,
+      "whs_ns": -0.080,
+      "ths_ns": -5.135,
+      "hold_failing_endpoints": 81,
+      "unconstrained_internal_endpoints": 0,
+      "valid_timing_exceptions": 0,
+      "route_state": "Fully Routed",
+      "total_on_chip_power_w": 1.849,
+      "worst_family": "bounded_lfnst_product_dsp",
+      "worst_path": {
+        "source": "u_bounded_lfnst_engine/coeff_bundle_q_reg[255]/C",
+        "destination": "u_bounded_lfnst_engine/products_q_reg[15][23]/D",
+        "data_delay_ns": 2.388,
+        "logic_delay_ns": 1.631,
+        "routing_delay_ns": 0.757,
+        "logic_levels": 7,
+        "wns_ns": -0.407
+      }
+    }
+  },
+  "evidence": {
+    "coverage_json": "STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "postsynth_dcp": "vivado_synth/step12f_unified_wrapper_postsynth.dcp",
+    "postroute_dcp": "vivado_impl/step12f_unified_wrapper_postroute.dcp",
+    "postsynth_timing": "vivado_synth/report_timing_summary_postsynth.rpt",
+    "postroute_timing": "vivado_impl/report_timing_summary_postroute.rpt",
+    "postroute_hold": "vivado_impl/report_timing_hold_summary_postroute.rpt",
+    "postroute_worst100": "vivado_impl/report_timing_worst100_postroute.rpt",
+    "postroute_utilization": "vivado_impl/report_utilization_postroute.rpt",
+    "postroute_high_fanout": "vivado_impl/report_high_fanout_postroute.rpt",
+    "postroute_check_timing": "vivado_impl/report_check_timing_postroute.rpt",
+    "postroute_exceptions": "vivado_impl/report_exceptions_postroute.rpt",
+    "postroute_drc": "vivado_impl/report_drc_postroute.rpt",
+    "postroute_power": "vivado_impl/report_power_postroute.rpt"
+  },
+  "source_hashes": {
+    "unified_its_wrapper": "DA82C1AAD3D4C4435CACF15ADCAB06ED9264472C90642A44FB1046EADDD86B22",
+    "unified_p4_kernel": "D996BC5A2BAE4579766821979719715FC3F405250294EEF7A6FE74832E0B0F02",
+    "its_input_cache_bank": "2476D5FBC1D3663515137F8768EC7F16A689B3150E4527D78B5743DF3E7A05D7",
+    "bounded_lfnst_engine": "6EB52770435E62442DFDA1CF1CB9D1F216707A675965B3AD779184413FDFE1D8",
+    "xdc": "8249A2643753D347F98F3F1AD775829AB13F277375801B7565C1AC7A347E1B2F"
+  },
+  "decision": {
+    "rtl_review": "PASS",
+    "functional": "PASS",
+    "synthesis": "PASS_COMPLETED_BUT_TIMING_FAIL",
+    "implementation": "FULLY_ROUTED_BUT_TIMING_FAIL",
+    "setup_signoff": "FAIL",
+    "hold_signoff": "FAIL",
+    "p9_round4_authorized": false,
+    "tag": "NOT_CREATED",
+    "next": "Choose the next timing repair from the new routed worst-path census; bounded-LFNST product/DSP is currently the leading family."
+  }
+}
+
