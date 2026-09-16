@@ -1442,11 +1442,19 @@ module unified_its_wrapper #(
                     fill_wr_cmd_valid_q && fill_wr_cmd_target_q[cmd_slot_i][cmd_bank_i];
                 input_data_wr_addr[cmd_slot_i][cmd_bank_i] = fill_wr_cmd_addr_q;
                 input_data_wr_data[cmd_slot_i][cmd_bank_i] = fill_wr_cmd_data_q;
-                input_valid_wr_en[cmd_slot_i][cmd_bank_i] =
-                    fill_wr_cmd_valid_q && fill_wr_cmd_target_q[cmd_slot_i][cmd_bank_i];
-                input_valid_wr_addr[cmd_slot_i][cmd_bank_i] = fill_wr_cmd_addr_q;
-                input_valid_wr_data[cmd_slot_i][cmd_bank_i] =
-                    fill_wr_cmd_valid_q && fill_wr_cmd_target_q[cmd_slot_i][cmd_bank_i];
+                // Preserve a scrub valid-clear command when no fill command
+                // targets this bank.  The previous unconditional assignments
+                // overwrote scrub's write-enable/address/data with zeros on
+                // every scrub cycle, leaving stale valid tags when a slot was
+                // reused by a later TU.  If a fill command is present it owns
+                // the same data/valid commit edge (and wins only for its
+                // one-hot target); a scrub on a different slot remains active.
+                if (fill_wr_cmd_valid_q &&
+                    fill_wr_cmd_target_q[cmd_slot_i][cmd_bank_i]) begin
+                    input_valid_wr_en[cmd_slot_i][cmd_bank_i] = 1'b1;
+                    input_valid_wr_addr[cmd_slot_i][cmd_bank_i] = fill_wr_cmd_addr_q;
+                    input_valid_wr_data[cmd_slot_i][cmd_bank_i] = 1'b1;
+                end
             end
         end
 
