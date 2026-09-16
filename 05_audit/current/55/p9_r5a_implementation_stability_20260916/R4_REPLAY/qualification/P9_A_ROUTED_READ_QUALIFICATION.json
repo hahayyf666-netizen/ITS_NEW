@@ -1,0 +1,19 @@
+{
+  "schema": "step12f.p9_a.routed_qualification.v1",
+  "read_only": true,
+  "dcp": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\55\\p9_r5a_implementation_stability_20260916\\R4_REPLAY\\final.dcp",
+  "worst500_sample_path_count": 209,
+  "aggregate_label": "sampled_negative_slack_sum_not_full_design_tns",
+  "object_counts": {"fire_net": 1, "fire_driver_pins": 1, "fire_load_pins": 11, "phase_d": 4, "feed_d": 5, "drain_d": 5, "lfnst_response_d": 16, "p4_input_mem_d": 4032},
+  "families": {
+    "A_cache_to_lfnst_response": {"sampled_path_count": 16, "sampled_negative_slack_sum_ns": -0.770000, "worst_slack_ns": -0.085000, "representative": {"startpoint": "rd_cmd_addr_q_reg[1][0][3]_replica/C", "endpoint": "lfnst_mem_resp_data_q_reg[15]/D", "start_loc": "SLICE_X63Y32", "end_loc": "SLICE_X72Y40", "datapath_delay_ns": 2.066, "logic_delay_ns": 0.440, "route_delay_ns": 1.626, "logic_levels": "6", "start_fanout": ""}},
+    "B_kernel_control_to_p4_input_mem": {"sampled_path_count": 0, "sampled_negative_slack_sum_ns": 0.000000, "worst_slack_ns": 0.000000},
+    "C_other_cache_read_or_response": {"sampled_path_count": 0, "sampled_negative_slack_sum_ns": 0.000000, "worst_slack_ns": 0.000000},
+    "C_other_cache_kernel_or_write": {"sampled_path_count": 121, "sampled_negative_slack_sum_ns": -4.594000, "worst_slack_ns": -0.099000, "representative": {"startpoint": "kernel_h_rd_addr_q_reg[3][2]/C", "endpoint": "kernel_h_rd_data_tail_q_reg[48]/D", "start_loc": "SLICE_X59Y58", "end_loc": "SLICE_X63Y68", "datapath_delay_ns": 2.080, "logic_delay_ns": 0.482, "route_delay_ns": 1.598, "logic_levels": "5", "start_fanout": ""}},
+    "D_control_or_r4c": {"sampled_path_count": 49, "sampled_negative_slack_sum_ns": -1.006000, "worst_slack_ns": -0.074000, "representative": {"startpoint": "kernel_vector_q_reg[0]_rep__0/C", "endpoint": "u_unified_p4_kernel/ingress_data_q_reg[2]/D", "start_loc": "SLICE_X70Y35", "end_loc": "SLICE_X73Y60", "datapath_delay_ns": 2.054, "logic_delay_ns": 0.610, "route_delay_ns": 1.444, "logic_levels": "5", "start_fanout": ""}},
+    "E_other": {"sampled_path_count": 23, "sampled_negative_slack_sum_ns": -0.248000, "worst_slack_ns": -0.041000, "representative": {"startpoint": "desc_rd_ptr_reg/C", "endpoint": "slot_output_last_index_reg[1][6]/D", "start_loc": "SLICE_X50Y37", "end_loc": "SLICE_X59Y47", "datapath_delay_ns": 2.021, "logic_delay_ns": 0.441, "route_delay_ns": 1.580, "logic_levels": "5", "start_fanout": ""}}
+  },
+  "decision_status": "QUALIFICATION_ONLY_NO_P9_RTL_AUTHORIZATION",
+  "hold_is_separate_signoff": true
+}
+

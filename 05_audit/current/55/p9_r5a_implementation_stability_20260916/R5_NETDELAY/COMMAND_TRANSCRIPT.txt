@@ -1,0 +1,33 @@
+mode=r5_netdelay
+input_dcp=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\54\p9_round5_hread_addr_validity_20260916\step12f_unified_wrapper_postsynth.dcp
+reference_dcp=
+vivado_version=2025.2
+maxThreads=4
+host=finesse
+part=xcku5p-ffvb676-2-e
+top=unified_its_wrapper
+opt_design=-directive Default
+place_design=-directive ExtraNetDelay_high
+phys_opt_design=-directive AggressiveExplore
+route_design=-directive NoTimingRelaxation
+postroute_phys_opt=0
+opt_design -directive Default
+place_design -directive ExtraNetDelay_high
+phys_opt_design -directive AggressiveExplore
+route_design -directive NoTimingRelaxation
+write_checkpoint -force C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/55/p9_r5a_implementation_stability_20260916/R5_NETDELAY/final.dcp
+report_utilization
+report_utilization -hierarchical
+report_timing_summary -delay_type max
+report_timing_summary -delay_type min
+report_timing -delay_type max -max_paths 100
+report_timing -delay_type min -max_paths 100
+report_timing -delay_type max -max_paths 500
+report_high_fanout_nets
+check_timing -verbose
+report_exceptions
+report_drc
+report_methodology
+report_power
+report_route_status
+

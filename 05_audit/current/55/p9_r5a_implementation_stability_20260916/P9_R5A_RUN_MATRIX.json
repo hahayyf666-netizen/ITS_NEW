@@ -1,0 +1,1214 @@
+{
+  "schema": "step12f.p9.r5a.run_matrix.v1",
+  "generated_utc": "2026-09-16T19:04:49.4711165Z",
+  "baseline_commit": "92145aa102f5a41bb7ad0c1ecc644e3c3c2d5b6d",
+  "rtl_changed": false,
+  "xdc_changed": false,
+  "resynthesis": false,
+  "vivado_part": "xcku5p-ffvb676-2-e",
+  "clock_period_ns": 2.0,
+  "max_threads": 4,
+  "input_hashes": {
+    "R4_IMPL_POSTSYNTH": "6D6B1BB94716BC79A7E82314CFDC68F5338389822A6563CC8C7A6C34F3A8ECD6",
+    "R4_POSTROUTE": "9CB1BCF744FB5AFB603DA8D15A3EE28720EDE1A3A83084C6256EC607BB31FB50",
+    "R5_POSTSYNTH": "8156F568B1A22D14542E35186FECC3B1E9A1746B4B138738AB8D96FF42FDCC28"
+  },
+  "runs": [
+    {
+      "run_id": "R4_REPLAY",
+      "mode": "r4_replay",
+      "label": "R4 replay",
+      "input_checkpoint": "R4_IMPL_POSTSYNTH",
+      "reference_checkpoint": "",
+      "directives": "Explore/Explore/Explore/Explore",
+      "command_transcript_sha256": "5C2E4D7759178918D7D247CC919C720D7728A10CF7EF1CE221E4720E71138CA6",
+      "final_dcp_sha256": "347DA6A0D8526A8B42FCADCC21110CDE5D4E75C3C3382536E88291CDC4DA60C2",
+      "route": {
+        "fully_routed_nets": 48046,
+        "routing_errors": 0,
+        "fully_routed": true
+      },
+      "setup": {
+        "failing_endpoints": 209,
+        "worst_slack_ns": -0.099,
+        "total_violation_ns": -6.607
+      },
+      "hold": {
+        "failing_endpoints": 76,
+        "worst_slack_ns": -0.08,
+        "total_violation_ns": -4.911
+      },
+      "vivado_version": "2025.2",
+      "max_threads": "4",
+      "incremental_requested": false,
+      "incremental_message_seen": false,
+      "incremental_flow_confirmed": false,
+      "reuse_reports": [],
+      "reuse_summary": {},
+      "integrity": {
+        "unconstrained_internal_endpoints": 0,
+        "timing_exceptions": "none",
+        "drc_errors": null,
+        "drc_out_of_context_warning": false
+      },
+      "qualification": {
+        "generic_json_sha256": "9229D2FC79D64884AFCE343E4F09A7A7CCD6B22EB94B73BD475C35E39AC1DCBC",
+        "generic": {
+          "schema": "step12f.p9_a.routed_qualification.v1",
+          "read_only": true,
+          "dcp": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\55\\p9_r5a_implementation_stability_20260916\\R4_REPLAY\\final.dcp",
+          "worst500_sample_path_count": 209,
+          "aggregate_label": "sampled_negative_slack_sum_not_full_design_tns",
+          "object_counts": {
+            "fire_net": 1,
+            "fire_driver_pins": 1,
+            "fire_load_pins": 11,
+            "phase_d": 4,
+            "feed_d": 5,
+            "drain_d": 5,
+            "lfnst_response_d": 16,
+            "p4_input_mem_d": 4032
+          },
+          "families": {
+            "A_cache_to_lfnst_response": {
+              "sampled_path_count": 16,
+              "sampled_negative_slack_sum_ns": -0.77,
+              "worst_slack_ns": -0.085,
+              "representative": {
+                "startpoint": "rd_cmd_addr_q_reg[1][0][3]_replica/C",
+                "endpoint": "lfnst_mem_resp_data_q_reg[15]/D",
+                "start_loc": "SLICE_X63Y32",
+                "end_loc": "SLICE_X72Y40",
+                "datapath_delay_ns": 2.066,
+                "logic_delay_ns": 0.44,
+                "route_delay_ns": 1.626,
+                "logic_levels": "6",
+                "start_fanout": ""
+              }
+            },
+            "B_kernel_control_to_p4_input_mem": {
+              "sampled_path_count": 0,
+              "sampled_negative_slack_sum_ns": 0.0,
+              "worst_slack_ns": 0.0
+            },
+            "C_other_cache_read_or_response": {
+              "sampled_path_count": 0,
+              "sampled_negative_slack_sum_ns": 0.0,
+              "worst_slack_ns": 0.0
+            },
+            "C_other_cache_kernel_or_write": {
+              "sampled_path_count": 121,
+              "sampled_negative_slack_sum_ns": -4.594,
+              "worst_slack_ns": -0.099,
+              "representative": {
+                "startpoint": "kernel_h_rd_addr_q_reg[3][2]/C",
+                "endpoint": "kernel_h_rd_data_tail_q_reg[48]/D",
+                "start_loc": "SLICE_X59Y58",
+                "end_loc": "SLICE_X63Y68",
+                "datapath_delay_ns": 2.08,
+                "logic_delay_ns": 0.482,
+                "route_delay_ns": 1.598,
+                "logic_levels": "5",
+                "start_fanout": ""
+              }
+            },
+            "D_control_or_r4c": {
+              "sampled_path_count": 49,
+              "sampled_negative_slack_sum_ns": -1.006,
+              "worst_slack_ns": -0.074,
+              "representative": {
+                "startpoint": "kernel_vector_q_reg[0]_rep__0/C",
+                "endpoint": "u_unified_p4_kernel/ingress_data_q_reg[2]/D",
+                "start_loc": "SLICE_X70Y35",
+                "end_loc": "SLICE_X73Y60",
+                "datapath_delay_ns": 2.054,
+                "logic_delay_ns": 0.61,
+                "route_delay_ns": 1.444,
+                "logic_levels": "5",
+                "start_fanout": ""
+              }
+            },
+            "E_other": {
+              "sampled_path_count": 23,
+              "sampled_negative_slack_sum_ns": -0.248,
+              "worst_slack_ns": -0.041,
+              "representative": {
+                "startpoint": "desc_rd_ptr_reg/C",
+                "endpoint": "slot_output_last_index_reg[1][6]/D",
+                "start_loc": "SLICE_X50Y37",
+                "end_loc": "SLICE_X59Y47",
+                "datapath_delay_ns": 2.021,
+                "logic_delay_ns": 0.441,
+                "route_delay_ns": 1.58,
+                "logic_levels": "5",
+                "start_fanout": ""
+              }
+            }
+          },
+          "decision_status": "QUALIFICATION_ONLY_NO_P9_RTL_AUTHORIZATION",
+          "hold_is_separate_signoff": true
+        },
+        "hread_json_sha256": null,
+        "hread": null
+      },
+      "qualification_expected": true
+    },
+    {
+      "run_id": "R5_REPLAY",
+      "mode": "r5_replay",
+      "label": "R5 replay",
+      "input_checkpoint": "R5_POSTSYNTH",
+      "reference_checkpoint": "",
+      "directives": "Explore/Explore/Explore/Explore",
+      "command_transcript_sha256": "D094FA311A76C63A861036474E24AADB10E85443B0C590AA460D71EBF6BB6CAE",
+      "final_dcp_sha256": "1F689CB88DA986D39A520C13C1455166825BD080F21B02EDA7784ED7E9781C3C",
+      "route": {
+        "fully_routed_nets": 48334,
+        "routing_errors": 0,
+        "fully_routed": true
+      },
+      "setup": {
+        "failing_endpoints": 1951,
+        "worst_slack_ns": -0.247,
+        "total_violation_ns": -110.011
+      },
+      "hold": {
+        "failing_endpoints": 62,
+        "worst_slack_ns": -0.08,
+        "total_violation_ns": -4.691
+      },
+      "vivado_version": "2025.2",
+      "max_threads": "4",
+      "incremental_requested": false,
+      "incremental_message_seen": false,
+      "incremental_flow_confirmed": false,
+      "reuse_reports": [],
+      "reuse_summary": {},
+      "integrity": {
+        "unconstrained_internal_endpoints": 0,
+        "timing_exceptions": "none",
+        "drc_errors": 0,
+        "drc_out_of_context_warning": true
+      },
+      "qualification": {
+        "generic_json_sha256": "9C21DEC3EFFBC21CEA5F3E1F9045F2119C768D87AADE16F5D1E0DD929CB64F30",
+        "generic": {
+          "schema": "step12f.p9_a.routed_qualification.v1",
+          "read_only": true,
+          "dcp": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\55\\p9_r5a_implementation_stability_20260916\\R5_REPLAY\\final.dcp",
+          "worst500_sample_path_count": 500,
+          "aggregate_label": "sampled_negative_slack_sum_not_full_design_tns",
+          "object_counts": {
+            "fire_net": 1,
+            "fire_driver_pins": 1,
+            "fire_load_pins": 14,
+            "phase_d": 4,
+            "feed_d": 5,
+            "drain_d": 5,
+            "lfnst_response_d": 16,
+            "p4_input_mem_d": 4032
+          },
+          "families": {
+            "A_cache_to_lfnst_response": {
+              "sampled_path_count": 23,
+              "sampled_negative_slack_sum_ns": -3.416,
+              "worst_slack_ns": -0.228,
+              "representative": {
+                "startpoint": "rd_cmd_addr_q_reg[0][0][3]/C",
+                "endpoint": "lfnst_mem_resp_data_q_reg[0]/D",
+                "start_loc": "SLICE_X78Y17",
+                "end_loc": "SLICE_X77Y4",
+                "datapath_delay_ns": 2.208,
+                "logic_delay_ns": 0.511,
+                "route_delay_ns": 1.697,
+                "logic_levels": "6",
+                "start_fanout": ""
+              }
+            },
+            "B_kernel_control_to_p4_input_mem": {
+              "sampled_path_count": 32,
+              "sampled_negative_slack_sum_ns": -3.117,
+              "worst_slack_ns": -0.128,
+              "representative": {
+                "startpoint": "u_unified_p4_kernel/ingress_slot_q_reg[0]/C",
+                "endpoint": "u_unified_p4_kernel/input_mem_reg[2][43][2]/CE",
+                "start_loc": "SLICE_X86Y39",
+                "end_loc": "SLICE_X102Y76",
+                "datapath_delay_ns": 2.023,
+                "logic_delay_ns": 0.29,
+                "route_delay_ns": 1.733,
+                "logic_levels": "2",
+                "start_fanout": ""
+              }
+            },
+            "C_other_cache_read_or_response": {
+              "sampled_path_count": 35,
+              "sampled_negative_slack_sum_ns": -3.492,
+              "worst_slack_ns": -0.179,
+              "representative": {
+                "startpoint": "kernel_phase_q_reg[1]/C",
+                "endpoint": "lfnst_gather_index_q_reg[0]/CE",
+                "start_loc": "SLICE_X85Y27",
+                "end_loc": "SLICE_X86Y18",
+                "datapath_delay_ns": 2.076,
+                "logic_delay_ns": 0.602,
+                "route_delay_ns": 1.474,
+                "logic_levels": "6",
+                "start_fanout": ""
+              }
+            },
+            "C_other_cache_kernel_or_write": {
+              "sampled_path_count": 132,
+              "sampled_negative_slack_sum_ns": -17.468,
+              "worst_slack_ns": -0.247,
+              "representative": {
+                "startpoint": "rd_cmd_addr_q_reg[0][0][1]/C",
+                "endpoint": "kernel_rd_raw_data_q_reg[12]/D",
+                "start_loc": "SLICE_X78Y13",
+                "end_loc": "SLICE_X79Y25",
+                "datapath_delay_ns": 2.229,
+                "logic_delay_ns": 0.372,
+                "route_delay_ns": 1.857,
+                "logic_levels": "5",
+                "start_fanout": ""
+              }
+            },
+            "D_control_or_r4c": {
+              "sampled_path_count": 159,
+              "sampled_negative_slack_sum_ns": -18.832,
+              "worst_slack_ns": -0.208,
+              "representative": {
+                "startpoint": "kernel_vector_q_reg[2]_replica_1/C",
+                "endpoint": "u_unified_p4_kernel/ingress_data_q_reg[8]/D",
+                "start_loc": "SLICE_X101Y20",
+                "end_loc": "SLICE_X85Y29",
+                "datapath_delay_ns": 2.188,
+                "logic_delay_ns": 0.421,
+                "route_delay_ns": 1.767,
+                "logic_levels": "4",
+                "start_fanout": ""
+              }
+            },
+            "E_other": {
+              "sampled_path_count": 119,
+              "sampled_negative_slack_sum_ns": -13.515,
+              "worst_slack_ns": -0.185,
+              "representative": {
+                "startpoint": "u_unified_p4_kernel/fifo_count_q_reg[2]/C",
+                "endpoint": "u_unified_p4_kernel/reserved_groups_q_reg[1]/D",
+                "start_loc": "SLICE_X70Y86",
+                "end_loc": "SLICE_X81Y32",
+                "datapath_delay_ns": 2.168,
+                "logic_delay_ns": 0.503,
+                "route_delay_ns": 1.665,
+                "logic_levels": "4",
+                "start_fanout": ""
+              }
+            }
+          },
+          "decision_status": "QUALIFICATION_ONLY_NO_P9_RTL_AUTHORIZATION",
+          "hold_is_separate_signoff": true
+        },
+        "hread_json_sha256": "CFB385B457EC907F610DD1B2DD2191D0EF717605E28756F9B28F99502A173F5F",
+        "hread": {
+          "schema": "step12f.p9.r5.hread_address_validity.v1",
+          "read_only": true,
+          "dcp": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\55\\p9_r5a_implementation_stability_20260916\\R5_REPLAY\\final.dcp",
+          "objects": {
+            "haddr_q": 40,
+            "hpend_q": 1,
+            "hrun_q": 4,
+            "hstage_q": 1,
+            "hresp_d": 128,
+            "lfnst_resp_d": 16,
+            "ramd64e": 1280,
+            "tmp_rd_addr_nets": 0
+          },
+          "paths": {
+            "haddr_to_hresp": {
+              "query_rc": 0,
+              "path_count": 20,
+              "message": "{kernel_h_rd_addr_q_reg[1][3]/C --> kernel_h_rd_data_q_reg[19]/D} {kernel_h_rd_addr_q_reg[0][2]/C --> kernel_h_rd_data_q_reg[14]/D} {kernel_h_rd_addr_q_reg[0][1]/C --> kernel_h_rd_data_q_reg[0]/D} {kernel_h_rd_addr_q_reg[1][1]/C --> kernel_h_rd_data_q_reg[24]/D} {kernel_h_rd_addr_q_reg[0][0]/C --> kernel_h_rd_data_q_reg[15]/D} {kernel_h_rd_addr_q_reg[1][3]/C --> kernel_h_rd_data_q_reg[31]/D} {kernel_h_rd_addr_q_reg[0][2]/C --> kernel_h_rd_data_q_reg[6]/D} {kernel_h_rd_addr_q_reg[1][1]/C --> kernel_h_rd_data_q_reg[30]/D} {kernel_h_rd_addr_q_reg[0][5]/C --> kernel_h_rd_data_q_reg[1]/D} {kernel_h_rd_addr_q_reg[3][2]/C --> kernel_h_rd_data_q_reg[61]/D} {kernel_h_rd_addr_q_reg[0][0]/C --> kernel_h_rd_data_q_reg[12]/D} {kernel_h_rd_addr_q_reg[3][5]/C --> kernel_h_rd_data_q_reg[48]/D} {kernel_h_rd_addr_q_reg[1][1]/C --> kernel_h_rd_data_q_reg[28]/D} {kernel_h_rd_addr_q_reg[3][4]/C --> kernel_h_rd_data_q_reg[54]/D} {kernel_h_rd_addr_q_reg[3][2]/C --> kernel_h_rd_data_q_reg[50]/D} {kernel_h_rd_addr_q_reg[2][1]/C --> kernel_h_rd_data_q_reg[46]/D} {kernel_h_rd_addr_q_reg[1][1]/C --> kernel_h_rd_data_q_reg[27]/D} {kernel_h_rd_addr_q_reg[3][0]/C --> kernel_h_rd_data_q_reg[59]/D} {kernel_h_rd_addr_q_reg[0][0]/C --> kernel_h_rd_data_q_reg[8]/D} {kernel_h_rd_addr_q_reg[3][5]/C --> kernel_h_rd_data_q_reg[51]/D}"
+            },
+            "hpend_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hrun_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hstage_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "haddr_to_lresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hpend_to_lresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            }
+          },
+          "address_policy": "tmp_rd_addr is expected to be driven unconditionally by registered kernel_h_rd_addr_q; valid/pending qualifies transaction meaning",
+          "decision_status": "READ_ONLY_TARGET_QUALIFICATION_NO_RTL_AUTHORIZATION"
+        }
+      },
+      "qualification_expected": true
+    },
+    {
+      "run_id": "R5_NETDELAY",
+      "mode": "r5_netdelay",
+      "label": "R5 NetDelay",
+      "input_checkpoint": "R5_POSTSYNTH",
+      "reference_checkpoint": "",
+      "directives": "Default/ExtraNetDelay_high/AggressiveExplore/NoTimingRelaxation",
+      "command_transcript_sha256": "F6BB727963A8515534A99D1124CD1A4C4FA52AC1E1668DAFC413244195ED580B",
+      "final_dcp_sha256": "6BE317AFB579115AF7451F872CF2D0C107C296E76432E34D741240248C8E236F",
+      "route": {
+        "fully_routed_nets": 48088,
+        "routing_errors": 0,
+        "fully_routed": true
+      },
+      "setup": {
+        "failing_endpoints": 84,
+        "worst_slack_ns": -0.063,
+        "total_violation_ns": -1.776
+      },
+      "hold": {
+        "failing_endpoints": 65,
+        "worst_slack_ns": -0.08,
+        "total_violation_ns": -4.764
+      },
+      "vivado_version": "2025.2",
+      "max_threads": "4",
+      "incremental_requested": false,
+      "incremental_message_seen": false,
+      "incremental_flow_confirmed": false,
+      "reuse_reports": [],
+      "reuse_summary": {},
+      "integrity": {
+        "unconstrained_internal_endpoints": 0,
+        "timing_exceptions": "none",
+        "drc_errors": 0,
+        "drc_out_of_context_warning": true
+      },
+      "qualification": {
+        "generic_json_sha256": "F0994B73BDA0FF11235BC064DCAA571206684095695F6E87B760B8592193EC23",
+        "generic": {
+          "schema": "step12f.p9_a.routed_qualification.v1",
+          "read_only": true,
+          "dcp": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\55\\p9_r5a_implementation_stability_20260916\\R5_NETDELAY\\final.dcp",
+          "worst500_sample_path_count": 84,
+          "aggregate_label": "sampled_negative_slack_sum_not_full_design_tns",
+          "object_counts": {
+            "fire_net": 1,
+            "fire_driver_pins": 1,
+            "fire_load_pins": 11,
+            "phase_d": 4,
+            "feed_d": 5,
+            "drain_d": 5,
+            "lfnst_response_d": 16,
+            "p4_input_mem_d": 4032
+          },
+          "families": {
+            "A_cache_to_lfnst_response": {
+              "sampled_path_count": 13,
+              "sampled_negative_slack_sum_ns": -0.26,
+              "worst_slack_ns": -0.063,
+              "representative": {
+                "startpoint": "rd_cmd_addr_q_reg[1][2][0]/C",
+                "endpoint": "lfnst_mem_resp_data_q_reg[12]/D",
+                "start_loc": "SLICE_X77Y67",
+                "end_loc": "SLICE_X76Y47",
+                "datapath_delay_ns": 2.045,
+                "logic_delay_ns": 0.563,
+                "route_delay_ns": 1.482,
+                "logic_levels": "6",
+                "start_fanout": ""
+              }
+            },
+            "B_kernel_control_to_p4_input_mem": {
+              "sampled_path_count": 0,
+              "sampled_negative_slack_sum_ns": 0.0,
+              "worst_slack_ns": 0.0
+            },
+            "C_other_cache_read_or_response": {
+              "sampled_path_count": 0,
+              "sampled_negative_slack_sum_ns": 0.0,
+              "worst_slack_ns": 0.0
+            },
+            "C_other_cache_kernel_or_write": {
+              "sampled_path_count": 28,
+              "sampled_negative_slack_sum_ns": -0.49,
+              "worst_slack_ns": -0.045,
+              "representative": {
+                "startpoint": "u_unified_p4_kernel/fifo_rd_ptr_q_reg[0]_rep__4/C",
+                "endpoint": "vwrite_cmd_data_q_reg[1][8]/D",
+                "start_loc": "SLICE_X71Y155",
+                "end_loc": "SLICE_X70Y118",
+                "datapath_delay_ns": 2.024,
+                "logic_delay_ns": 0.658,
+                "route_delay_ns": 1.366,
+                "logic_levels": "7",
+                "start_fanout": ""
+              }
+            },
+            "D_control_or_r4c": {
+              "sampled_path_count": 19,
+              "sampled_negative_slack_sum_ns": -0.399,
+              "worst_slack_ns": -0.041,
+              "representative": {
+                "startpoint": "lfnst_ntrs48_q_reg/C",
+                "endpoint": "lfnst_grid_reg[0][12]/CE",
+                "start_loc": "SLICE_X73Y20",
+                "end_loc": "SLICE_X71Y21",
+                "datapath_delay_ns": 1.938,
+                "logic_delay_ns": 0.6,
+                "route_delay_ns": 1.338,
+                "logic_levels": "5",
+                "start_fanout": ""
+              }
+            },
+            "E_other": {
+              "sampled_path_count": 24,
+              "sampled_negative_slack_sum_ns": -0.632,
+              "worst_slack_ns": -0.06,
+              "representative": {
+                "startpoint": "u_unified_p4_kernel/slot_state_q_reg[2][1]/C",
+                "endpoint": "kernel_feed_group_q_reg[0]/CE",
+                "start_loc": "SLICE_X72Y68",
+                "end_loc": "SLICE_X79Y58",
+                "datapath_delay_ns": 1.955,
+                "logic_delay_ns": 0.623,
+                "route_delay_ns": 1.332,
+                "logic_levels": "8",
+                "start_fanout": ""
+              }
+            }
+          },
+          "decision_status": "QUALIFICATION_ONLY_NO_P9_RTL_AUTHORIZATION",
+          "hold_is_separate_signoff": true
+        },
+        "hread_json_sha256": "202DF691C83A65962DB0BF0F713A206D63200B7AD54007FE512676994AA65106",
+        "hread": {
+          "schema": "step12f.p9.r5.hread_address_validity.v1",
+          "read_only": true,
+          "dcp": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\55\\p9_r5a_implementation_stability_20260916\\R5_NETDELAY\\final.dcp",
+          "objects": {
+            "haddr_q": 40,
+            "hpend_q": 1,
+            "hrun_q": 1,
+            "hstage_q": 1,
+            "hresp_d": 128,
+            "lfnst_resp_d": 16,
+            "ramd64e": 1280,
+            "tmp_rd_addr_nets": 0
+          },
+          "paths": {
+            "haddr_to_hresp": {
+              "query_rc": 0,
+              "path_count": 20,
+              "message": "{kernel_h_rd_addr_q_reg[2][0]/C --> kernel_h_rd_data_q_reg[42]/D} {kernel_h_rd_addr_q_reg[1][1]/C --> kernel_h_rd_data_q_reg[21]/D} {kernel_h_rd_addr_q_reg[2][2]/C --> kernel_h_rd_data_q_reg[47]/D} {kernel_h_rd_addr_q_reg[0][1]/C --> kernel_h_rd_data_q_reg[11]/D} {kernel_h_rd_addr_q_reg[3][2]/C --> kernel_h_rd_data_q_reg[58]/D} {kernel_h_rd_addr_q_reg[1][0]/C --> kernel_h_rd_data_q_reg[17]/D} {kernel_h_rd_addr_q_reg[1][3]/C --> kernel_h_rd_data_q_reg[27]/D} {kernel_h_rd_addr_q_reg[3][0]/C --> kernel_h_rd_data_q_reg[56]/D} {kernel_h_rd_addr_q_reg[0][1]/C --> kernel_h_rd_data_q_reg[15]/D} {kernel_h_rd_addr_q_reg[1][2]/C --> kernel_h_rd_data_q_reg[24]/D} {kernel_h_rd_addr_q_reg[2][0]/C --> kernel_h_rd_data_q_reg[33]/D} {kernel_h_rd_addr_q_reg[0][0]/C --> kernel_h_rd_data_q_reg[3]/D} {kernel_h_rd_addr_q_reg[2][1]/C --> kernel_h_rd_data_q_reg[46]/D} {kernel_h_rd_addr_q_reg[2][2]/C --> kernel_h_rd_data_q_reg[44]/D} {kernel_h_rd_addr_q_reg[1][3]/C --> kernel_h_rd_data_q_reg[28]/D} {kernel_h_rd_addr_q_reg[3][1]/C --> kernel_h_rd_data_q_reg[62]/D} {kernel_h_rd_addr_q_reg[1][2]/C --> kernel_h_rd_data_q_reg[20]/D} {kernel_h_rd_addr_q_reg[3][2]/C --> kernel_h_rd_data_q_reg[54]/D} {kernel_h_rd_addr_q_reg[3][5]/C --> kernel_h_rd_data_q_reg[63]/D} {kernel_h_rd_addr_q_reg[1][3]/C --> kernel_h_rd_data_q_reg[30]/D}"
+            },
+            "hpend_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hrun_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hstage_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "haddr_to_lresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hpend_to_lresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            }
+          },
+          "address_policy": "tmp_rd_addr is expected to be driven unconditionally by registered kernel_h_rd_addr_q; valid/pending qualifies transaction meaning",
+          "decision_status": "READ_ONLY_TARGET_QUALIFICATION_NO_RTL_AUTHORIZATION"
+        }
+      },
+      "qualification_expected": true
+    },
+    {
+      "run_id": "R5_EXTRATIMING",
+      "mode": "r5_extratiming",
+      "label": "R5 ExtraTiming",
+      "input_checkpoint": "R5_POSTSYNTH",
+      "reference_checkpoint": "",
+      "directives": "Default/ExtraTimingOpt/Explore/NoTimingRelaxation",
+      "command_transcript_sha256": "3A921624F1E6588630C08E778ACD2779FF599BD8E104C92E54681F7F8B73E1FB",
+      "final_dcp_sha256": "755B12A3F85A5D30D61FE763A0B13F1ED38535856077498F4BA42B197170D43F",
+      "route": {
+        "fully_routed_nets": 48057,
+        "routing_errors": 0,
+        "fully_routed": true
+      },
+      "setup": {
+        "failing_endpoints": 96,
+        "worst_slack_ns": -0.121,
+        "total_violation_ns": -2.548
+      },
+      "hold": {
+        "failing_endpoints": 62,
+        "worst_slack_ns": -0.08,
+        "total_violation_ns": -4.667
+      },
+      "vivado_version": "2025.2",
+      "max_threads": "4",
+      "incremental_requested": false,
+      "incremental_message_seen": false,
+      "incremental_flow_confirmed": false,
+      "reuse_reports": [],
+      "reuse_summary": {},
+      "integrity": {
+        "unconstrained_internal_endpoints": 0,
+        "timing_exceptions": "none",
+        "drc_errors": 0,
+        "drc_out_of_context_warning": true
+      },
+      "qualification": {
+        "generic_json_sha256": "5A38C8D2DC93B0649375E36BC63FDCABB87F7EAC7EB9C51F4781C0DCC4CB396C",
+        "generic": {
+          "schema": "step12f.p9_a.routed_qualification.v1",
+          "read_only": true,
+          "dcp": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\55\\p9_r5a_implementation_stability_20260916\\R5_EXTRATIMING\\final.dcp",
+          "worst500_sample_path_count": 96,
+          "aggregate_label": "sampled_negative_slack_sum_not_full_design_tns",
+          "object_counts": {
+            "fire_net": 1,
+            "fire_driver_pins": 1,
+            "fire_load_pins": 16,
+            "phase_d": 9,
+            "feed_d": 5,
+            "drain_d": 5,
+            "lfnst_response_d": 16,
+            "p4_input_mem_d": 4032
+          },
+          "families": {
+            "A_cache_to_lfnst_response": {
+              "sampled_path_count": 19,
+              "sampled_negative_slack_sum_ns": -0.916,
+              "worst_slack_ns": -0.121,
+              "representative": {
+                "startpoint": "rd_cmd_addr_q_reg[1][0][2]_replica_1/C",
+                "endpoint": "lfnst_mem_resp_data_q_reg[15]/D",
+                "start_loc": "SLICE_X78Y29",
+                "end_loc": "SLICE_X73Y19",
+                "datapath_delay_ns": 2.102,
+                "logic_delay_ns": 0.471,
+                "route_delay_ns": 1.631,
+                "logic_levels": "6",
+                "start_fanout": ""
+              }
+            },
+            "B_kernel_control_to_p4_input_mem": {
+              "sampled_path_count": 0,
+              "sampled_negative_slack_sum_ns": 0.0,
+              "worst_slack_ns": 0.0
+            },
+            "C_other_cache_read_or_response": {
+              "sampled_path_count": 0,
+              "sampled_negative_slack_sum_ns": 0.0,
+              "worst_slack_ns": 0.0
+            },
+            "C_other_cache_kernel_or_write": {
+              "sampled_path_count": 37,
+              "sampled_negative_slack_sum_ns": -0.729,
+              "worst_slack_ns": -0.064,
+              "representative": {
+                "startpoint": "u_unified_p4_kernel/fifo_rd_ptr_q_reg[1]/C",
+                "endpoint": "vwrite_cmd_data_q_reg[1][11]/D",
+                "start_loc": "SLICE_X60Y132",
+                "end_loc": "SLICE_X67Y107",
+                "datapath_delay_ns": 2.045,
+                "logic_delay_ns": 0.505,
+                "route_delay_ns": 1.54,
+                "logic_levels": "7",
+                "start_fanout": ""
+              }
+            },
+            "D_control_or_r4c": {
+              "sampled_path_count": 13,
+              "sampled_negative_slack_sum_ns": -0.243,
+              "worst_slack_ns": -0.053,
+              "representative": {
+                "startpoint": "kernel_vector_q_reg[0]_rep__1/C",
+                "endpoint": "u_unified_p4_kernel/ingress_data_q_reg[58]/D",
+                "start_loc": "SLICE_X44Y42",
+                "end_loc": "SLICE_X63Y44",
+                "datapath_delay_ns": 2.032,
+                "logic_delay_ns": 0.605,
+                "route_delay_ns": 1.427,
+                "logic_levels": "5",
+                "start_fanout": ""
+              }
+            },
+            "E_other": {
+              "sampled_path_count": 27,
+              "sampled_negative_slack_sum_ns": -0.662,
+              "worst_slack_ns": -0.07,
+              "representative": {
+                "startpoint": "u_unified_p4_kernel/reserved_groups_q_reg[0]/C",
+                "endpoint": "u_unified_p4_kernel/slot_bundle_base_q_reg[2][0]/CE",
+                "start_loc": "SLICE_X70Y47",
+                "end_loc": "SLICE_X80Y69",
+                "datapath_delay_ns": 1.967,
+                "logic_delay_ns": 0.512,
+                "route_delay_ns": 1.455,
+                "logic_levels": "6",
+                "start_fanout": ""
+              }
+            }
+          },
+          "decision_status": "QUALIFICATION_ONLY_NO_P9_RTL_AUTHORIZATION",
+          "hold_is_separate_signoff": true
+        },
+        "hread_json_sha256": "22EFCEE53DF76854191685CFE199E5E38F403FF9DBF4DCD657ADD8BF0E0F26FF",
+        "hread": {
+          "schema": "step12f.p9.r5.hread_address_validity.v1",
+          "read_only": true,
+          "dcp": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\55\\p9_r5a_implementation_stability_20260916\\R5_EXTRATIMING\\final.dcp",
+          "objects": {
+            "haddr_q": 40,
+            "hpend_q": 1,
+            "hrun_q": 3,
+            "hstage_q": 1,
+            "hresp_d": 128,
+            "lfnst_resp_d": 16,
+            "ramd64e": 1280,
+            "tmp_rd_addr_nets": 0
+          },
+          "paths": {
+            "haddr_to_hresp": {
+              "query_rc": 0,
+              "path_count": 20,
+              "message": "{kernel_h_rd_addr_q_reg[0][3]/C --> kernel_h_rd_data_q_reg[13]/D} {kernel_h_rd_addr_q_reg[2][0]/C --> kernel_h_rd_data_q_reg[44]/D} {kernel_h_rd_addr_q_reg[3][2]/C --> kernel_h_rd_data_q_reg[60]/D} {kernel_h_rd_addr_q_reg[3][0]/C --> kernel_h_rd_data_q_reg[50]/D} {kernel_h_rd_addr_q_reg[2][0]/C --> kernel_h_rd_data_q_reg[36]/D} {kernel_h_rd_addr_q_reg[0][0]/C --> kernel_h_rd_data_q_reg[2]/D} {kernel_h_rd_addr_q_reg[0][3]/C --> kernel_h_rd_data_q_reg[10]/D} {kernel_h_rd_addr_q_reg[0][0]/C --> kernel_h_rd_data_q_reg[4]/D} {kernel_h_rd_addr_q_reg[3][2]/C --> kernel_h_rd_data_q_reg[58]/D} {kernel_h_rd_addr_q_reg[0][4]/C --> kernel_h_rd_data_q_reg[7]/D} {kernel_h_rd_addr_q_reg[0][3]/C --> kernel_h_rd_data_q_reg[11]/D} {kernel_h_rd_addr_q_reg[0][3]/C --> kernel_h_rd_data_q_reg[12]/D} {kernel_h_rd_addr_q_reg[0][3]/C --> kernel_h_rd_data_q_reg[3]/D} {kernel_h_rd_addr_q_reg[0][4]/C --> kernel_h_rd_data_q_reg[15]/D} {kernel_h_rd_addr_q_reg[2][0]/C --> kernel_h_rd_data_q_reg[47]/D} {kernel_h_rd_addr_q_reg[1][2]/C --> kernel_h_rd_data_q_reg[18]/D} {kernel_h_rd_addr_q_reg[2][1]/C --> kernel_h_rd_data_q_reg[46]/D} {kernel_h_rd_addr_q_reg[2][0]/C --> kernel_h_rd_data_q_reg[45]/D} {kernel_h_rd_addr_q_reg[3][1]/C --> kernel_h_rd_data_q_reg[52]/D} {kernel_h_rd_addr_q_reg[3][0]/C --> kernel_h_rd_data_q_reg[55]/D}"
+            },
+            "hpend_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hrun_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hstage_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "haddr_to_lresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hpend_to_lresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            }
+          },
+          "address_policy": "tmp_rd_addr is expected to be driven unconditionally by registered kernel_h_rd_addr_q; valid/pending qualifies transaction meaning",
+          "decision_status": "READ_ONLY_TARGET_QUALIFICATION_NO_RTL_AUTHORIZATION"
+        }
+      },
+      "qualification_expected": true
+    },
+    {
+      "run_id": "R5_POSTROUTE_PHYSOPT",
+      "mode": "r5_postroute_physopt",
+      "label": "R5 post-route phys_opt",
+      "input_checkpoint": "R5_POSTSYNTH",
+      "reference_checkpoint": "",
+      "directives": "Explore/Explore/Explore/Explore + postroute Explore",
+      "command_transcript_sha256": "D2099EF3510CE757B1871F59ADAAE792F8EFD19CF1DFA2E185F9947B4FFA1821",
+      "final_dcp_sha256": "925C38104559F6741AD222FE0F34B5182B2151D126CD0BBB3E20728E87C2B854",
+      "route": {
+        "fully_routed_nets": 48334,
+        "routing_errors": 0,
+        "fully_routed": true
+      },
+      "setup": {
+        "failing_endpoints": 1951,
+        "worst_slack_ns": -0.247,
+        "total_violation_ns": -110.011
+      },
+      "hold": {
+        "failing_endpoints": 62,
+        "worst_slack_ns": -0.08,
+        "total_violation_ns": -4.691
+      },
+      "vivado_version": "2025.2",
+      "max_threads": "4",
+      "incremental_requested": false,
+      "incremental_message_seen": false,
+      "incremental_flow_confirmed": false,
+      "reuse_reports": [],
+      "reuse_summary": {},
+      "integrity": {
+        "unconstrained_internal_endpoints": 0,
+        "timing_exceptions": "none",
+        "drc_errors": 0,
+        "drc_out_of_context_warning": true
+      },
+      "qualification": {
+        "generic_json_sha256": "268FF4C0702380F061FDB0EB112BD40CD061169A0529BCA63EDD87399CC9F35B",
+        "generic": {
+          "schema": "step12f.p9_a.routed_qualification.v1",
+          "read_only": true,
+          "dcp": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\55\\p9_r5a_implementation_stability_20260916\\R5_POSTROUTE_PHYSOPT\\final.dcp",
+          "worst500_sample_path_count": 500,
+          "aggregate_label": "sampled_negative_slack_sum_not_full_design_tns",
+          "object_counts": {
+            "fire_net": 1,
+            "fire_driver_pins": 1,
+            "fire_load_pins": 14,
+            "phase_d": 4,
+            "feed_d": 5,
+            "drain_d": 5,
+            "lfnst_response_d": 16,
+            "p4_input_mem_d": 4032
+          },
+          "families": {
+            "A_cache_to_lfnst_response": {
+              "sampled_path_count": 23,
+              "sampled_negative_slack_sum_ns": -3.416,
+              "worst_slack_ns": -0.228,
+              "representative": {
+                "startpoint": "rd_cmd_addr_q_reg[0][0][3]/C",
+                "endpoint": "lfnst_mem_resp_data_q_reg[0]/D",
+                "start_loc": "SLICE_X78Y17",
+                "end_loc": "SLICE_X77Y4",
+                "datapath_delay_ns": 2.208,
+                "logic_delay_ns": 0.511,
+                "route_delay_ns": 1.697,
+                "logic_levels": "6",
+                "start_fanout": ""
+              }
+            },
+            "B_kernel_control_to_p4_input_mem": {
+              "sampled_path_count": 32,
+              "sampled_negative_slack_sum_ns": -3.117,
+              "worst_slack_ns": -0.128,
+              "representative": {
+                "startpoint": "u_unified_p4_kernel/ingress_slot_q_reg[0]/C",
+                "endpoint": "u_unified_p4_kernel/input_mem_reg[2][43][2]/CE",
+                "start_loc": "SLICE_X86Y39",
+                "end_loc": "SLICE_X102Y76",
+                "datapath_delay_ns": 2.023,
+                "logic_delay_ns": 0.29,
+                "route_delay_ns": 1.733,
+                "logic_levels": "2",
+                "start_fanout": ""
+              }
+            },
+            "C_other_cache_read_or_response": {
+              "sampled_path_count": 35,
+              "sampled_negative_slack_sum_ns": -3.492,
+              "worst_slack_ns": -0.179,
+              "representative": {
+                "startpoint": "kernel_phase_q_reg[1]/C",
+                "endpoint": "lfnst_gather_index_q_reg[0]/CE",
+                "start_loc": "SLICE_X85Y27",
+                "end_loc": "SLICE_X86Y18",
+                "datapath_delay_ns": 2.076,
+                "logic_delay_ns": 0.602,
+                "route_delay_ns": 1.474,
+                "logic_levels": "6",
+                "start_fanout": ""
+              }
+            },
+            "C_other_cache_kernel_or_write": {
+              "sampled_path_count": 132,
+              "sampled_negative_slack_sum_ns": -17.468,
+              "worst_slack_ns": -0.247,
+              "representative": {
+                "startpoint": "rd_cmd_addr_q_reg[0][0][1]/C",
+                "endpoint": "kernel_rd_raw_data_q_reg[12]/D",
+                "start_loc": "SLICE_X78Y13",
+                "end_loc": "SLICE_X79Y25",
+                "datapath_delay_ns": 2.229,
+                "logic_delay_ns": 0.372,
+                "route_delay_ns": 1.857,
+                "logic_levels": "5",
+                "start_fanout": ""
+              }
+            },
+            "D_control_or_r4c": {
+              "sampled_path_count": 159,
+              "sampled_negative_slack_sum_ns": -18.832,
+              "worst_slack_ns": -0.208,
+              "representative": {
+                "startpoint": "kernel_vector_q_reg[2]_replica_1/C",
+                "endpoint": "u_unified_p4_kernel/ingress_data_q_reg[8]/D",
+                "start_loc": "SLICE_X101Y20",
+                "end_loc": "SLICE_X85Y29",
+                "datapath_delay_ns": 2.188,
+                "logic_delay_ns": 0.421,
+                "route_delay_ns": 1.767,
+                "logic_levels": "4",
+                "start_fanout": ""
+              }
+            },
+            "E_other": {
+              "sampled_path_count": 119,
+              "sampled_negative_slack_sum_ns": -13.515,
+              "worst_slack_ns": -0.185,
+              "representative": {
+                "startpoint": "u_unified_p4_kernel/fifo_count_q_reg[2]/C",
+                "endpoint": "u_unified_p4_kernel/reserved_groups_q_reg[1]/D",
+                "start_loc": "SLICE_X70Y86",
+                "end_loc": "SLICE_X81Y32",
+                "datapath_delay_ns": 2.168,
+                "logic_delay_ns": 0.503,
+                "route_delay_ns": 1.665,
+                "logic_levels": "4",
+                "start_fanout": ""
+              }
+            }
+          },
+          "decision_status": "QUALIFICATION_ONLY_NO_P9_RTL_AUTHORIZATION",
+          "hold_is_separate_signoff": true
+        },
+        "hread_json_sha256": "04E062AAF31AB1F53A8423D3475E683C957D6EFC3930183001F9AD03704819AD",
+        "hread": {
+          "schema": "step12f.p9.r5.hread_address_validity.v1",
+          "read_only": true,
+          "dcp": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\55\\p9_r5a_implementation_stability_20260916\\R5_POSTROUTE_PHYSOPT\\final.dcp",
+          "objects": {
+            "haddr_q": 40,
+            "hpend_q": 1,
+            "hrun_q": 4,
+            "hstage_q": 1,
+            "hresp_d": 128,
+            "lfnst_resp_d": 16,
+            "ramd64e": 1280,
+            "tmp_rd_addr_nets": 0
+          },
+          "paths": {
+            "haddr_to_hresp": {
+              "query_rc": 0,
+              "path_count": 20,
+              "message": "{kernel_h_rd_addr_q_reg[1][3]/C --> kernel_h_rd_data_q_reg[19]/D} {kernel_h_rd_addr_q_reg[0][2]/C --> kernel_h_rd_data_q_reg[14]/D} {kernel_h_rd_addr_q_reg[0][1]/C --> kernel_h_rd_data_q_reg[0]/D} {kernel_h_rd_addr_q_reg[1][1]/C --> kernel_h_rd_data_q_reg[24]/D} {kernel_h_rd_addr_q_reg[0][0]/C --> kernel_h_rd_data_q_reg[15]/D} {kernel_h_rd_addr_q_reg[1][3]/C --> kernel_h_rd_data_q_reg[31]/D} {kernel_h_rd_addr_q_reg[0][2]/C --> kernel_h_rd_data_q_reg[6]/D} {kernel_h_rd_addr_q_reg[1][1]/C --> kernel_h_rd_data_q_reg[30]/D} {kernel_h_rd_addr_q_reg[0][5]/C --> kernel_h_rd_data_q_reg[1]/D} {kernel_h_rd_addr_q_reg[3][2]/C --> kernel_h_rd_data_q_reg[61]/D} {kernel_h_rd_addr_q_reg[0][0]/C --> kernel_h_rd_data_q_reg[12]/D} {kernel_h_rd_addr_q_reg[3][5]/C --> kernel_h_rd_data_q_reg[48]/D} {kernel_h_rd_addr_q_reg[1][1]/C --> kernel_h_rd_data_q_reg[28]/D} {kernel_h_rd_addr_q_reg[3][4]/C --> kernel_h_rd_data_q_reg[54]/D} {kernel_h_rd_addr_q_reg[3][2]/C --> kernel_h_rd_data_q_reg[50]/D} {kernel_h_rd_addr_q_reg[2][1]/C --> kernel_h_rd_data_q_reg[46]/D} {kernel_h_rd_addr_q_reg[1][1]/C --> kernel_h_rd_data_q_reg[27]/D} {kernel_h_rd_addr_q_reg[3][0]/C --> kernel_h_rd_data_q_reg[59]/D} {kernel_h_rd_addr_q_reg[0][0]/C --> kernel_h_rd_data_q_reg[8]/D} {kernel_h_rd_addr_q_reg[3][5]/C --> kernel_h_rd_data_q_reg[51]/D}"
+            },
+            "hpend_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hrun_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hstage_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "haddr_to_lresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hpend_to_lresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            }
+          },
+          "address_policy": "tmp_rd_addr is expected to be driven unconditionally by registered kernel_h_rd_addr_q; valid/pending qualifies transaction meaning",
+          "decision_status": "READ_ONLY_TARGET_QUALIFICATION_NO_RTL_AUTHORIZATION"
+        }
+      },
+      "qualification_expected": true
+    },
+    {
+      "run_id": "R5_INCREMENTAL",
+      "mode": "r5_incremental",
+      "label": "R5 incremental",
+      "input_checkpoint": "R5_POSTSYNTH",
+      "reference_checkpoint": "R4_POSTROUTE",
+      "directives": "Explore + incremental TimingClosure",
+      "command_transcript_sha256": "AF071348DF6129027224E6CF1A5F46131F2BFCD6C4A963DFCBDD98567076ECBE",
+      "final_dcp_sha256": "36D1C2C9949510D4D4C9F58C178AC7F2571F321A0EEBC5807A03CC6D3E719AAF",
+      "route": {
+        "fully_routed_nets": 48110,
+        "routing_errors": 0,
+        "fully_routed": true
+      },
+      "setup": {
+        "failing_endpoints": 1356,
+        "worst_slack_ns": -0.195,
+        "total_violation_ns": -68.791
+      },
+      "hold": {
+        "failing_endpoints": 61,
+        "worst_slack_ns": -0.08,
+        "total_violation_ns": -4.653
+      },
+      "vivado_version": "2025.2",
+      "max_threads": "4",
+      "incremental_requested": true,
+      "incremental_message_seen": true,
+      "incremental_flow_confirmed": true,
+      "reuse_reports": [
+        {
+          "file": "reuse_after_read.rpt",
+          "sha256": "818A8DE32FE578083F2E78334BF9275775FDAADA8B42476563492F2DF9B0D600",
+          "bytes": 8867
+        },
+        {
+          "file": "reuse_postplace.rpt",
+          "sha256": "4C8CABF8166477B0D8AEB016CC991767F86477026D508724F3ED4CCB778AE7D3",
+          "bytes": 9138
+        },
+        {
+          "file": "reuse_postroute.rpt",
+          "sha256": "8B31235CCF257D3C4F0D99D2A77F3ED1504A573FF3D35EFB3D17320FCC67EDE9",
+          "bytes": 9312
+        }
+      ],
+      "reuse_summary": {
+        "reuse_after_read.rpt": {
+          "cells": {
+            "matched_percent": 97.42,
+            "current_reuse_percent": 97.75,
+            "fixed_percent": 0.0,
+            "total": 60752
+          },
+          "nets": {
+            "matched_percent": 99.69,
+            "current_reuse_percent": 92.92,
+            "fixed_percent": 0.0,
+            "total": 47280
+          },
+          "pins": {
+            "matched_percent": null,
+            "current_reuse_percent": 90.03,
+            "fixed_percent": null,
+            "total": 291997
+          },
+          "ports": {
+            "matched_percent": 100.0,
+            "current_reuse_percent": 0.0,
+            "fixed_percent": 0.0,
+            "total": 100
+          }
+        },
+        "reuse_postplace.rpt": {},
+        "reuse_postroute.rpt": {}
+      },
+      "integrity": {
+        "unconstrained_internal_endpoints": 0,
+        "timing_exceptions": "none",
+        "drc_errors": 0,
+        "drc_out_of_context_warning": true
+      },
+      "qualification": {
+        "generic_json_sha256": "2EA6F8135D862F13A073D8F044112990E781ED1C2287228E577C45D3BA83D5F5",
+        "generic": {
+          "schema": "step12f.p9_a.routed_qualification.v1",
+          "read_only": true,
+          "dcp": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\55\\p9_r5a_implementation_stability_20260916\\R5_INCREMENTAL\\final.dcp",
+          "worst500_sample_path_count": 500,
+          "aggregate_label": "sampled_negative_slack_sum_not_full_design_tns",
+          "object_counts": {
+            "fire_net": 1,
+            "fire_driver_pins": 1,
+            "fire_load_pins": 11,
+            "phase_d": 4,
+            "feed_d": 5,
+            "drain_d": 5,
+            "lfnst_response_d": 16,
+            "p4_input_mem_d": 4032
+          },
+          "families": {
+            "A_cache_to_lfnst_response": {
+              "sampled_path_count": 19,
+              "sampled_negative_slack_sum_ns": -2.09,
+              "worst_slack_ns": -0.147,
+              "representative": {
+                "startpoint": "rd_cmd_addr_q_reg[0][3][0]/C",
+                "endpoint": "lfnst_mem_resp_data_q_reg[12]/D",
+                "start_loc": "SLICE_X69Y18",
+                "end_loc": "SLICE_X71Y33",
+                "datapath_delay_ns": 2.129,
+                "logic_delay_ns": 0.565,
+                "route_delay_ns": 1.564,
+                "logic_levels": "6",
+                "start_fanout": ""
+              }
+            },
+            "B_kernel_control_to_p4_input_mem": {
+              "sampled_path_count": 43,
+              "sampled_negative_slack_sum_ns": -3.451,
+              "worst_slack_ns": -0.112,
+              "representative": {
+                "startpoint": "u_unified_p4_kernel/ingress_data_q_reg[28]/C",
+                "endpoint": "u_unified_p4_kernel/input_mem_reg[0][25][12]/D",
+                "start_loc": "SLICE_X69Y41",
+                "end_loc": "SLICE_X78Y93",
+                "datapath_delay_ns": 2.094,
+                "logic_delay_ns": 0.079,
+                "route_delay_ns": 2.015,
+                "logic_levels": "0",
+                "start_fanout": ""
+              }
+            },
+            "C_other_cache_read_or_response": {
+              "sampled_path_count": 10,
+              "sampled_negative_slack_sum_ns": -0.68,
+              "worst_slack_ns": -0.086,
+              "representative": {
+                "startpoint": "fill_wr_cmd_data_q_reg[2]/C",
+                "endpoint": "gen_input_slots[1].gen_input_banks[0].u_input_cache_bank/data_mem_reg_576_639_0_6/RAMC/I",
+                "start_loc": "SLICE_X60Y10",
+                "end_loc": "SLICE_X81Y43",
+                "datapath_delay_ns": 2.009,
+                "logic_delay_ns": 0.079,
+                "route_delay_ns": 1.93,
+                "logic_levels": "0",
+                "start_fanout": ""
+              }
+            },
+            "C_other_cache_kernel_or_write": {
+              "sampled_path_count": 149,
+              "sampled_negative_slack_sum_ns": -14.749,
+              "worst_slack_ns": -0.189,
+              "representative": {
+                "startpoint": "u_unified_p4_kernel/fifo_rd_ptr_q_reg[2]_rep/C",
+                "endpoint": "vwrite_cmd_data_q_reg[0][7]/D",
+                "start_loc": "SLICE_X78Y151",
+                "end_loc": "SLICE_X72Y111",
+                "datapath_delay_ns": 2.171,
+                "logic_delay_ns": 0.413,
+                "route_delay_ns": 1.758,
+                "logic_levels": "6",
+                "start_fanout": ""
+              }
+            },
+            "D_control_or_r4c": {
+              "sampled_path_count": 194,
+              "sampled_negative_slack_sum_ns": -17.697,
+              "worst_slack_ns": -0.195,
+              "representative": {
+                "startpoint": "kernel_vector_q_reg[0]_rep__2/C",
+                "endpoint": "u_unified_p4_kernel/ingress_data_q_reg[25]/D",
+                "start_loc": "SLICE_X72Y26",
+                "end_loc": "SLICE_X67Y37",
+                "datapath_delay_ns": 2.177,
+                "logic_delay_ns": 0.616,
+                "route_delay_ns": 1.561,
+                "logic_levels": "5",
+                "start_fanout": ""
+              }
+            },
+            "E_other": {
+              "sampled_path_count": 85,
+              "sampled_negative_slack_sum_ns": -7.825,
+              "worst_slack_ns": -0.161,
+              "representative": {
+                "startpoint": "u_unified_p4_kernel/reserved_groups_q_reg[2]/C",
+                "endpoint": "rd_cmd_addr_q_reg[1][0][3]_replica_2/CE",
+                "start_loc": "SLICE_X67Y75",
+                "end_loc": "SLICE_X75Y25",
+                "datapath_delay_ns": 2.055,
+                "logic_delay_ns": 0.599,
+                "route_delay_ns": 1.456,
+                "logic_levels": "6",
+                "start_fanout": ""
+              }
+            }
+          },
+          "decision_status": "QUALIFICATION_ONLY_NO_P9_RTL_AUTHORIZATION",
+          "hold_is_separate_signoff": true
+        },
+        "hread_json_sha256": "63BFDCFEBA0FD1367195AF7A412670677D8C078B07733DE83B02EECED79B960D",
+        "hread": {
+          "schema": "step12f.p9.r5.hread_address_validity.v1",
+          "read_only": true,
+          "dcp": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\55\\p9_r5a_implementation_stability_20260916\\R5_INCREMENTAL\\final.dcp",
+          "objects": {
+            "haddr_q": 40,
+            "hpend_q": 1,
+            "hrun_q": 2,
+            "hstage_q": 1,
+            "hresp_d": 128,
+            "lfnst_resp_d": 16,
+            "ramd64e": 1280,
+            "tmp_rd_addr_nets": 0
+          },
+          "paths": {
+            "haddr_to_hresp": {
+              "query_rc": 0,
+              "path_count": 20,
+              "message": "{kernel_h_rd_addr_q_reg[3][0]/C --> kernel_h_rd_data_q_reg[62]/D} {kernel_h_rd_addr_q_reg[2][0]/C --> kernel_h_rd_data_q_reg[38]/D} {kernel_h_rd_addr_q_reg[0][5]/C --> kernel_h_rd_data_q_reg[3]/D} {kernel_h_rd_addr_q_reg[1][1]/C --> kernel_h_rd_data_q_reg[26]/D} {kernel_h_rd_addr_q_reg[1][1]/C --> kernel_h_rd_data_q_reg[19]/D} {kernel_h_rd_addr_q_reg[1][0]/C --> kernel_h_rd_data_q_reg[23]/D} {kernel_h_rd_addr_q_reg[1][0]/C --> kernel_h_rd_data_q_reg[27]/D} {kernel_h_rd_addr_q_reg[2][1]/C --> kernel_h_rd_data_q_reg[43]/D} {kernel_h_rd_addr_q_reg[1][5]/C --> kernel_h_rd_data_q_reg[20]/D} {kernel_h_rd_addr_q_reg[3][5]/C --> kernel_h_rd_data_q_reg[57]/D} {kernel_h_rd_addr_q_reg[3][1]/C --> kernel_h_rd_data_q_reg[50]/D} {kernel_h_rd_addr_q_reg[1][5]/C --> kernel_h_rd_data_q_reg[29]/D} {kernel_h_rd_addr_q_reg[2][1]/C --> kernel_h_rd_data_q_reg[39]/D} {kernel_h_rd_addr_q_reg[1][0]/C --> kernel_h_rd_data_q_reg[24]/D} {kernel_h_rd_addr_q_reg[2][4]/C --> kernel_h_rd_data_q_reg[34]/D} {kernel_h_rd_addr_q_reg[2][1]/C --> kernel_h_rd_data_q_reg[47]/D} {kernel_h_rd_addr_q_reg[3][4]/C --> kernel_h_rd_data_q_reg[58]/D} {kernel_h_rd_addr_q_reg[3][3]/C --> kernel_h_rd_data_q_reg[56]/D} {kernel_h_rd_addr_q_reg[1][1]/C --> kernel_h_rd_data_q_reg[25]/D} {kernel_h_rd_addr_q_reg[1][2]/C --> kernel_h_rd_data_q_reg[30]/D}"
+            },
+            "hpend_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hrun_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hstage_to_hresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "haddr_to_lresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            },
+            "hpend_to_lresp": {
+              "query_rc": 0,
+              "path_count": 0,
+              "message": ""
+            }
+          },
+          "address_policy": "tmp_rd_addr is expected to be driven unconditionally by registered kernel_h_rd_addr_q; valid/pending qualifies transaction meaning",
+          "decision_status": "READ_ONLY_TARGET_QUALIFICATION_NO_RTL_AUTHORIZATION"
+        }
+      },
+      "qualification_expected": true
+    }
+  ],
+  "controlled_comparison": {
+    "primary": "R4_REPLAY vs R5_REPLAY under identical Explore directives",
+    "r4_replay_setup_wns_ns": -0.099,
+    "r5_replay_setup_wns_ns": -0.247,
+    "r5_replay_penalty_reproducible_under_same_flow": true,
+    "r5_best_setup_run": "R5_NETDELAY",
+    "r5_best_setup_wns_ns": -0.063,
+    "r5_best_setup_hold_pass": false,
+    "decision": "RETAIN_R5_NO_ROLLBACK; use best R5 implementation flow for convergence; no 500MHz signoff"
+  }
+}
+

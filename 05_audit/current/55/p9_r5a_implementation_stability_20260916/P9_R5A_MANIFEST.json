@@ -1,0 +1,147 @@
+{
+  "schema": "step12f.p9.r5a.manifest.v1",
+  "generated_utc": "2026-09-16T19:04:49.4711165Z",
+  "baseline_commit": "92145aa102f5a41bb7ad0c1ecc644e3c3c2d5b6d",
+  "status": "COMPLETE_CONTROLLED_QUALIFICATION",
+  "rtl_changed": false,
+  "xdc_changed": false,
+  "resynthesis": false,
+  "route_required_for_signoff": true,
+  "run_matrix": "P9_R5A_RUN_MATRIX.json",
+  "input_hashes": {
+    "R4_IMPL_POSTSYNTH": "6D6B1BB94716BC79A7E82314CFDC68F5338389822A6563CC8C7A6C34F3A8ECD6",
+    "R4_POSTROUTE": "9CB1BCF744FB5AFB603DA8D15A3EE28720EDE1A3A83084C6256EC607BB31FB50",
+    "R5_POSTSYNTH": "8156F568B1A22D14542E35186FECC3B1E9A1746B4B138738AB8D96FF42FDCC28"
+  },
+  "runs": [
+    {
+      "run_id": "R4_REPLAY",
+      "final_dcp_sha256": "347DA6A0D8526A8B42FCADCC21110CDE5D4E75C3C3382536E88291CDC4DA60C2",
+      "setup": {
+        "failing_endpoints": 209,
+        "worst_slack_ns": -0.099,
+        "total_violation_ns": -6.607
+      },
+      "hold": {
+        "failing_endpoints": 76,
+        "worst_slack_ns": -0.08,
+        "total_violation_ns": -4.911
+      },
+      "fully_routed": true,
+      "incremental_requested": false,
+      "incremental_flow_confirmed": false
+    },
+    {
+      "run_id": "R5_REPLAY",
+      "final_dcp_sha256": "1F689CB88DA986D39A520C13C1455166825BD080F21B02EDA7784ED7E9781C3C",
+      "setup": {
+        "failing_endpoints": 1951,
+        "worst_slack_ns": -0.247,
+        "total_violation_ns": -110.011
+      },
+      "hold": {
+        "failing_endpoints": 62,
+        "worst_slack_ns": -0.08,
+        "total_violation_ns": -4.691
+      },
+      "fully_routed": true,
+      "incremental_requested": false,
+      "incremental_flow_confirmed": false
+    },
+    {
+      "run_id": "R5_NETDELAY",
+      "final_dcp_sha256": "6BE317AFB579115AF7451F872CF2D0C107C296E76432E34D741240248C8E236F",
+      "setup": {
+        "failing_endpoints": 84,
+        "worst_slack_ns": -0.063,
+        "total_violation_ns": -1.776
+      },
+      "hold": {
+        "failing_endpoints": 65,
+        "worst_slack_ns": -0.08,
+        "total_violation_ns": -4.764
+      },
+      "fully_routed": true,
+      "incremental_requested": false,
+      "incremental_flow_confirmed": false
+    },
+    {
+      "run_id": "R5_EXTRATIMING",
+      "final_dcp_sha256": "755B12A3F85A5D30D61FE763A0B13F1ED38535856077498F4BA42B197170D43F",
+      "setup": {
+        "failing_endpoints": 96,
+        "worst_slack_ns": -0.121,
+        "total_violation_ns": -2.548
+      },
+      "hold": {
+        "failing_endpoints": 62,
+        "worst_slack_ns": -0.08,
+        "total_violation_ns": -4.667
+      },
+      "fully_routed": true,
+      "incremental_requested": false,
+      "incremental_flow_confirmed": false
+    },
+    {
+      "run_id": "R5_POSTROUTE_PHYSOPT",
+      "final_dcp_sha256": "925C38104559F6741AD222FE0F34B5182B2151D126CD0BBB3E20728E87C2B854",
+      "setup": {
+        "failing_endpoints": 1951,
+        "worst_slack_ns": -0.247,
+        "total_violation_ns": -110.011
+      },
+      "hold": {
+        "failing_endpoints": 62,
+        "worst_slack_ns": -0.08,
+        "total_violation_ns": -4.691
+      },
+      "fully_routed": true,
+      "incremental_requested": false,
+      "incremental_flow_confirmed": false
+    },
+    {
+      "run_id": "R5_INCREMENTAL",
+      "final_dcp_sha256": "36D1C2C9949510D4D4C9F58C178AC7F2571F321A0EEBC5807A03CC6D3E719AAF",
+      "setup": {
+        "failing_endpoints": 1356,
+        "worst_slack_ns": -0.195,
+        "total_violation_ns": -68.791
+      },
+      "hold": {
+        "failing_endpoints": 61,
+        "worst_slack_ns": -0.08,
+        "total_violation_ns": -4.653
+      },
+      "fully_routed": true,
+      "incremental_requested": true,
+      "incremental_flow_confirmed": true
+    }
+  ],
+  "controlled_comparison": {
+    "primary": "R4_REPLAY vs R5_REPLAY under identical Explore directives",
+    "r4_replay_setup_wns_ns": -0.099,
+    "r5_replay_setup_wns_ns": -0.247,
+    "r5_replay_penalty_reproducible_under_same_flow": true,
+    "r5_best_setup_run": "R5_NETDELAY",
+    "r5_best_setup_wns_ns": -0.063,
+    "r5_best_setup_hold_pass": false,
+    "decision": "RETAIN_R5_NO_ROLLBACK; use best R5 implementation flow for convergence; no 500MHz signoff"
+  },
+  "qualification": {
+    "all_runs_have_generic": true,
+    "all_r5_runs_have_hread": true,
+    "worst500_family_census": "recorded per run in qualification/P9_A_ROUTED_READ_QUALIFICATION.json",
+    "hread_target": "registered-address path exists; pending/run/stage paths zero in all R5 runs"
+  },
+  "decision": {
+    "r5_retained": true,
+    "rollback_authorized": false,
+    "p9_r6_rtl_authorized": false,
+    "setup_signoff": false,
+    "hold_signoff": false,
+    "tag_authorized": false,
+    "next": "implementation convergence and hold closure; no RTL change authorized by R5A",
+    "rationale": "R5 replay is worse than R4 under identical Explore, but R5 NetDelay materially improves setup; this separates topology penalty from implementation convergence and does not close timing."
+  }
+}
+

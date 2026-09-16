@@ -1,0 +1,37 @@
+mode=r5_incremental
+input_dcp=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\54\p9_round5_hread_addr_validity_20260916\step12f_unified_wrapper_postsynth.dcp
+reference_dcp=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\53\p9_round4_lfnst_dsp_pipeline_20260916\vivado_impl\step12f_unified_wrapper_postroute.dcp
+vivado_version=2025.2
+maxThreads=4
+host=finesse
+part=xcku5p-ffvb676-2-e
+top=unified_its_wrapper
+opt_design=-directive Explore
+place_design=-directive Explore
+phys_opt_design=-directive Explore
+route_design=-directive Explore
+postroute_phys_opt=0
+opt_design -directive Explore
+read_checkpoint -incremental -directive TimingClosure C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\53\p9_round4_lfnst_dsp_pipeline_20260916\vivado_impl\step12f_unified_wrapper_postroute.dcp
+report_incremental_reuse -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/55/p9_r5a_implementation_stability_20260916/R5_INCREMENTAL/reuse_after_read.rpt
+place_design -directive Explore
+report_incremental_reuse -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/55/p9_r5a_implementation_stability_20260916/R5_INCREMENTAL/reuse_postplace.rpt
+phys_opt_design -directive Explore
+route_design -directive Explore
+report_incremental_reuse -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/55/p9_r5a_implementation_stability_20260916/R5_INCREMENTAL/reuse_postroute.rpt
+write_checkpoint -force C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/55/p9_r5a_implementation_stability_20260916/R5_INCREMENTAL/final.dcp
+report_utilization
+report_utilization -hierarchical
+report_timing_summary -delay_type max
+report_timing_summary -delay_type min
+report_timing -delay_type max -max_paths 100
+report_timing -delay_type min -max_paths 100
+report_timing -delay_type max -max_paths 500
+report_high_fanout_nets
+check_timing -verbose
+report_exceptions
+report_drc
+report_methodology
+report_power
+report_route_status
+
