@@ -79,6 +79,23 @@ module unified_p4_kernel #(
     logic                         issue_desc_last_c;
 
     logic signed [DATA_W-1:0] input_mem [0:SLOT_COUNT-1][0:MAX_N-1];
+
+    // P9 ingress boundary.  The wrapper-facing fire event captures one
+    // complete four-lane group into this elastic entry; input_mem is written
+    // only by the following commit event.  Keeping slot/group/last metadata
+    // with the payload is essential: the accept-side load context may already
+    // have advanced to the next vector when the prior entry commits.
+    logic                         ingress_valid_q;
+    logic signed [(4*DATA_W)-1:0] ingress_data_q;
+    logic [1:0]                   ingress_slot_q;
+    logic [4:0]                   ingress_group_q;
+    logic                         ingress_last_q;
+    logic                         ingress_ready;
+    logic                         commit_ready;
+    logic                         input_group_commit;
+    logic [1:0]                   accept_slot_c;
+    logic [4:0]                   accept_group_c;
+    logic                         accept_last_c;
     logic [1:0] slot_state_q [0:SLOT_COUNT-1];
     logic [1:0] slot_type_q  [0:SLOT_COUNT-1];
     logic [6:0] slot_size_q  [0:SLOT_COUNT-1];
@@ -107,7 +124,7 @@ module unified_p4_kernel #(
     logic [4:0] issue_emit_group_c;
 
     // Registered ready-token queue.  A token is enqueued when a slot's last
-    // input group is accepted and dequeued when that slot's first descriptor
+    // input group is committed and dequeued when that slot's first descriptor
     // is issued.  This removes the live slot-state priority scan from the
     // descriptor generation cone while preserving admission order.
     logic [1:0] ready_fifo_mem [0:SLOT_COUNT-1];
@@ -272,8 +289,17 @@ module unified_p4_kernel #(
         end
         new_group_count_c = output_group_count;
         capacity_ok_c = ((reserved_groups_q + new_group_count_c) <= FIFO_DEPTH);
-        in_req = load_active_q || (free_found_c && capacity_ok_c);
-        start_accept = start && !load_active_q && free_found_c && capacity_ok_c;
+        // The input entry is a one-deep elastic stage.  Because input_mem has
+        // no write-side backpressure, commit_ready is constant; retaining the
+        // explicit signal makes the accept/commit contract auditable and
+        // prevents a future write-stall change from silently dropping a fire.
+        commit_ready = 1'b1;
+        input_group_commit = ingress_valid_q && commit_ready;
+        ingress_ready = !ingress_valid_q || input_group_commit;
+        in_req = ingress_ready &&
+                 (load_active_q || (free_found_c && capacity_ok_c));
+        start_accept = start && !load_active_q && free_found_c &&
+                       capacity_ok_c && ingress_ready;
     end
 
     always_comb begin
@@ -287,6 +313,9 @@ module unified_p4_kernel #(
                 pending_load_last =
                     (load_group_q == ((slot_size_q[load_slot_q] >> 2) - 1'b1));
         end
+        accept_slot_c = start_accept ? free_slot_c : load_slot_q;
+        accept_group_c = start_accept ? 5'd0 : load_group_q;
+        accept_last_c = input_group_accept && pending_load_last;
     end
 
     // Same-edge handshake event.  This is intentionally not registered: the
@@ -298,8 +327,12 @@ module unified_p4_kernel #(
     always_comb begin
         ready_head_c = ready_fifo_mem[ready_rd_ptr_q];
         ready_dequeue_c = (ready_count_q != 3'd0) && !issue_active_q;
-        ready_enqueue_c = input_group_accept && pending_load_last;
-        ready_enqueue_slot_c = start_accept ? free_slot_c : load_slot_q;
+        // A slot is visible to the issue engine only after the registered
+        // ingress payload has committed to input_mem.  The enqueue slot must
+        // come from ingress metadata, not the current accept-side context,
+        // because the latter may already describe the next TU.
+        ready_enqueue_c = input_group_commit && ingress_last_q;
+        ready_enqueue_slot_c = ingress_slot_q;
     end
 
     // When the issue engine is idle, a ready slot can enter stage 0 on this
@@ -437,6 +470,10 @@ module unified_p4_kernel #(
     // asynchronous reset for all validity and ownership-visible state.
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
+            ingress_valid_q <= 1'b0;
+            ingress_slot_q <= '0;
+            ingress_group_q <= '0;
+            ingress_last_q <= 1'b0;
             issue_desc_valid_q <= 1'b0;
             issue_desc_slot_q <= '0;
             issue_desc_group_q <= '0;
@@ -473,11 +510,35 @@ module unified_p4_kernel #(
             pipe_out_last_q <= 1'b0;
             pipe_out_group_q <= '0;
         end else begin
+            // Elastic accept/commit update.  A commit and a new accept may
+            // occur on the same edge, preserving one group per cycle.  The
+            // old metadata drives input_mem, while the newly captured
+            // metadata becomes the next entry.
+            if (input_group_commit) begin
+                if (input_group_accept) begin
+                    ingress_valid_q <= 1'b1;
+                    ingress_slot_q <= accept_slot_c;
+                    ingress_group_q <= accept_group_c;
+                    ingress_last_q <= accept_last_c;
+                end else begin
+                    ingress_valid_q <= 1'b0;
+                    ingress_last_q <= 1'b0;
+                end
+            end else if (input_group_accept) begin
+                ingress_valid_q <= 1'b1;
+                ingress_slot_q <= accept_slot_c;
+                ingress_group_q <= accept_group_c;
+                ingress_last_q <= accept_last_c;
+            end
+
             // One-cycle registered completion token for the vector load.  It
             // is deliberately separate from input_group_fire so same-edge
-            // response consumption remains cycle-accurate.
+            // response consumption remains cycle-accurate.  With the P9
+            // ingress boundary this token is commit-qualified: the final
+            // group must already have reached input_mem before the wrapper
+            // can leave FEED and expose the slot to Stage 0.
             input_vector_done <= 1'b0;
-            if (input_group_accept && pending_load_last)
+            if (input_group_commit && ingress_last_q)
                 input_vector_done <= 1'b1;
 
             // Descriptor register: issue remains one group per cycle.
@@ -559,6 +620,12 @@ module unified_p4_kernel #(
     // the control valid pipeline above makes stale/uninitialized values
     // unobservable and permits DSP48E2 internal register inference.
     always_ff @(posedge clk) begin
+        // P9: capture the wrapper-facing transaction before any input_mem
+        // write.  The valid/slot/group/last metadata is registered in the
+        // control block below; all fields therefore advance as one entry.
+        if (input_group_accept)
+            ingress_data_q <= in_data;
+
         if (issue_desc_valid_q) begin
             s0_coeff_q <= coeff_bundle_mem[issue_desc_bundle_addr_q];
             for (pipe_term_i = 0; pipe_term_i < MAX_N;
@@ -728,29 +795,34 @@ module unified_p4_kernel #(
                 load_active_q <= 1'b1;
                 slot_state_q[free_slot_c] <= SLOT_LOAD;
                 if (input_group_accept) begin
-                    for (write_lane_i = 0; write_lane_i < 4;
-                         write_lane_i = write_lane_i + 1)
-                        input_mem[free_slot_c][write_lane_i] <=
-                            $signed(in_data[write_lane_i*DATA_W +: DATA_W]);
                     if (active_size <= 7'd4) begin
-                        slot_state_q[free_slot_c] <= SLOT_READY;
                         load_active_q <= 1'b0;
                     end else begin
                         load_group_q <= 5'd1;
                     end
                 end
             end else if (load_active_q && input_group_accept) begin
-                for (write_lane_i = 0; write_lane_i < 4;
-                     write_lane_i = write_lane_i + 1)
-                    input_mem[load_slot_q][load_group_q*4 + write_lane_i] <=
-                        $signed(in_data[write_lane_i*DATA_W +: DATA_W]);
                 if (pending_load_last) begin
-                    slot_state_q[load_slot_q] <= SLOT_READY;
                     load_active_q <= 1'b0;
                     load_group_q <= '0;
                 end else begin
                     load_group_q <= load_group_q + 1'b1;
                 end
+            end
+
+            // P9 commit side.  The accept-side load context above is allowed
+            // to close and advance to a following TU, but the slot remains
+            // SLOT_LOAD until this registered payload is physically written.
+            // Consequently READY/enqueue and input_vector_done are all
+            // commit-qualified and use ingress metadata rather than the
+            // possibly-new current load context.
+            if (input_group_commit) begin
+                for (write_lane_i = 0; write_lane_i < 4;
+                     write_lane_i = write_lane_i + 1)
+                    input_mem[ingress_slot_q][ingress_group_q*4 + write_lane_i] <=
+                        $signed(ingress_data_q[write_lane_i*DATA_W +: DATA_W]);
+                if (ingress_last_q)
+                    slot_state_q[ingress_slot_q] <= SLOT_READY;
             end
 
             if (ready_dequeue_c) begin
@@ -784,8 +856,9 @@ module unified_p4_kernel #(
                 slot_state_q[issue_desc_slot_q] <= SLOT_FREE;
 
             // Push completed loads and pop the token consumed for a new issue
-            // independently.  The four-entry queue supports a simultaneous
-            // N=4 completion/issue handoff without a descriptor bubble.
+            // independently.  The enqueue is commit-qualified; the four-entry
+            // queue still supports a simultaneous N=4 completion/issue
+            // handoff without a descriptor bubble.
             if (ready_enqueue_c) begin
                 ready_fifo_mem[ready_wr_ptr_q] <= ready_enqueue_slot_c;
                 ready_wr_ptr_q <= ready_wr_ptr_q + 1'b1;
@@ -811,7 +884,8 @@ module unified_p4_kernel #(
     end
 
     always_comb begin
-            busy = load_active_q || issue_active_q || issue_desc_valid_q ||
+            busy = load_active_q || ingress_valid_q || issue_active_q ||
+                   issue_desc_valid_q ||
                    (fifo_count_q != 0) ||
                    (reserved_groups_q != 0) || (ready_count_q != 0) ||
                    s0_valid_q || s1_valid_q ||

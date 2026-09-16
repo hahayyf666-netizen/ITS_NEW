@@ -294,6 +294,15 @@ module unified_its_wrapper #(
     logic                   kernel_h_rd_capture;
     logic                   kernel_h_rd_consume;
     logic [4:0]             kernel_h_rd_next_group;
+    logic                   kernel_h_input_last_fire_c;
+    // P9 ingress adds one cycle between the final input fire and the
+    // commit-qualified input_vector_done token.  During that interval the
+    // horizontal read sequencer must not pre-issue the next row: doing so
+    // would advance row metadata while the kernel is still waiting for the
+    // final input commit, and the response would then be discarded when the
+    // wrapper enters H_DRAIN.  This bit freezes H-read advancement for that
+    // bounded handoff window without changing steady-state request II.
+    logic                   kernel_h_input_commit_wait_q;
     integer                 kernel_h_addr_i;
     integer                 kernel_h_capture_bank_i;
     integer                 kernel_h_seq_addr_i;
@@ -912,10 +921,19 @@ module unified_its_wrapper #(
                               kernel_stage_q &&
                               ((kernel_phase_q == K_H_START) ||
                                (kernel_phase_q == K_H_FEED)) &&
+                              !kernel_h_input_commit_wait_q &&
                               kernel_input_group_fire;
         kernel_h_rd_capture = kernel_h_rd_pending_q &&
                               !kernel_h_rd_raw_tail_pending_q;
         kernel_h_rd_next_group = kernel_h_rd_group_q + 1'b1;
+        // The P4 kernel's final-input condition is based on active_size (the
+        // transform-support input cut), not necessarily the output group
+        // count.  This distinction matters for LFNST and DST7/DCT8 support
+        // cuts, where the H pass emits a wider result than it consumes.
+        kernel_h_input_last_fire_c = kernel_input_group_fire &&
+                                     (kernel_ctx_active_size_q != 7'd0) &&
+                                     ((kernel_feed_group_q + 1'b1) >=
+                                      (kernel_ctx_active_size_q >> 2));
     end
 
     // A response entry can be replaced on the same edge on which the kernel
@@ -970,7 +988,8 @@ module unified_its_wrapper #(
                             !kernel_start_sent_q) ||
                            ((kernel_phase_q == K_H_START) &&
                             !kernel_start_sent_q &&
-                            kernel_h_rd_raw_pending_q);
+                            kernel_h_rd_raw_pending_q &&
+                            !kernel_h_input_commit_wait_q);
         if (!kernel_stage_q && !lfnst_case_q)
             kernel_in_valid = ((kernel_phase_q == K_V_START) ||
                                (kernel_phase_q == K_V_FEED)) &&
@@ -980,6 +999,7 @@ module unified_its_wrapper #(
             kernel_in_valid = ((kernel_phase_q == K_H_START) ||
                                (kernel_phase_q == K_H_FEED)) &&
                               kernel_h_rd_raw_pending_q &&
+                              !kernel_h_input_commit_wait_q &&
                               !kernel_input_vector_done;
         else
             kernel_in_valid = (kernel_start ||
@@ -1339,6 +1359,7 @@ module unified_its_wrapper #(
             kernel_h_rd_raw_tail_pending_q <= 1'b0;
             kernel_h_rd_raw_tail_group_q <= 5'd0;
             kernel_h_rd_raw_tail_vector_q <= 7'd0;
+            kernel_h_input_commit_wait_q <= 1'b0;
             for (kernel_h_seq_addr_i = 0; kernel_h_seq_addr_i < 4;
                  kernel_h_seq_addr_i = kernel_h_seq_addr_i + 1) begin
                 kernel_h_rd_addr_q[kernel_h_seq_addr_i] <= '0;
@@ -1501,6 +1522,13 @@ module unified_its_wrapper #(
                 kernel_h_rd_pending_q <= 1'b0;
                 kernel_h_rd_raw_pending_q <= 1'b0;
                 kernel_h_rd_raw_tail_pending_q <= 1'b0;
+            end else if (kernel_h_input_commit_wait_q &&
+                         !kernel_input_vector_done) begin
+                // The last H input group has fired into the kernel ingress,
+                // but input_mem is not complete until the next commit edge.
+                // Hold all read/request state during this one-cycle handoff;
+                // otherwise K_H_START can prefetch the next row, and that
+                // response would be dropped when the phase changes to drain.
             end else begin
                 // Start a new horizontal row by issuing group zero.  The
                 // address is captured here; tmp RAM is read during the next
@@ -1769,6 +1797,7 @@ module unified_its_wrapper #(
             if (compute_valid) begin
                 slot_state[compute_slot] <= SLOT_OUT;
                 compute_slot_q <= compute_slot;
+                kernel_h_input_commit_wait_q <= 1'b0;
                 output_index  <= 12'd0;
                 output_last_index <= slot_output_last_index[compute_slot];
                 // Seed the horizontal bank-local address sequencer once per
@@ -1944,6 +1973,7 @@ module unified_its_wrapper #(
                     kernel_rd_resp_valid_q <= 1'b0;
                     kernel_rd_raw_pending_q <= 1'b0;
                     kernel_start_sent_q <= 1'b0;
+                    kernel_h_input_commit_wait_q <= 1'b0;
                 end
             end
 
@@ -2043,6 +2073,7 @@ module unified_its_wrapper #(
                             kernel_rd_raw_pending_q <= 1'b0;
                             kernel_start_sent_q <= 1'b0;
                             vwrite_last_commit_seen_q <= 1'b0;
+                            kernel_h_input_commit_wait_q <= 1'b0;
                             kernel_phase_q <= K_H_START;
                         end
                     end
@@ -2050,6 +2081,7 @@ module unified_its_wrapper #(
                         if (kernel_input_vector_done) begin
                             kernel_feed_group_q <= 5'd0;
                             kernel_drain_group_q <= 5'd0;
+                            kernel_h_input_commit_wait_q <= 1'b0;
                             kernel_phase_q <= K_H_DRAIN;
                         end else begin
                             if (kernel_input_group_fire) begin
@@ -2057,8 +2089,16 @@ module unified_its_wrapper #(
                                     kernel_ctx_group_count_q)
                                     kernel_feed_group_q <=
                                         kernel_feed_group_q + 1'b1;
-                                else
+                                if (kernel_h_input_last_fire_c) begin
                                     kernel_feed_group_q <= 5'd0;
+                                    // The final H input group has been
+                                    // accepted into the kernel ingress, but
+                                    // its payload is not in input_mem until
+                                    // the following commit edge.  Freeze the
+                                    // H-read sequencer until the registered
+                                    // completion token arrives.
+                                    kernel_h_input_commit_wait_q <= 1'b1;
+                                end
                             end
                             if (kernel_start_sent_q)
                                 kernel_phase_q <= K_H_FEED;
@@ -2068,14 +2108,17 @@ module unified_its_wrapper #(
                         if (kernel_input_vector_done) begin
                             kernel_feed_group_q <= 5'd0;
                             kernel_drain_group_q <= 5'd0;
+                            kernel_h_input_commit_wait_q <= 1'b0;
                             kernel_phase_q <= K_H_DRAIN;
                         end else if (kernel_input_group_fire) begin
                             if (kernel_feed_group_q + 1'b1 <
                                 kernel_ctx_group_count_q)
                                 kernel_feed_group_q <=
                                     kernel_feed_group_q + 1'b1;
-                            else
+                            if (kernel_h_input_last_fire_c) begin
                                 kernel_feed_group_q <= 5'd0;
+                                kernel_h_input_commit_wait_q <= 1'b1;
+                            end
                         end
                     end
                     K_H_DRAIN: begin
@@ -2093,6 +2136,7 @@ module unified_its_wrapper #(
                             if (kernel_vector_q + 1'b1 < kernel_h_q) begin
                                 kernel_vector_q <= kernel_vector_q + 1'b1;
                                 kernel_start_sent_q <= 1'b0;
+                                kernel_h_input_commit_wait_q <= 1'b0;
                                 kernel_phase_q <= K_H_START;
                             end else begin
                                 // The final horizontal group may have just
@@ -2113,6 +2157,7 @@ module unified_its_wrapper #(
                             !result_cmd_valid_q) begin
                             kernel_run_q <= 1'b0;
                             kernel_phase_q <= K_IDLE;
+                            kernel_h_input_commit_wait_q <= 1'b0;
                             result_last_commit_seen_q <= 1'b0;
                             output_active <= 1'b1;
                             output_slot <= compute_slot_q;

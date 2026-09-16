@@ -1,0 +1,149 @@
+{
+  "schema": "step12f.p9.ingress_accept_commit.manifest.v1",
+  "phase": "Step12F-P9 P4 Ingress Accept/Commit Isolation",
+  "date": "2026-09-16",
+  "status": "P9_FUNCTIONAL_PASS_PHYSICAL_TIMING_STOP",
+  "base_commit": "8ecf81dab5930eadad0b31341d2fb94c35e295b6",
+  "objective": "Cut the wrapper data-select/packing to P4 input_mem timing cone with an elastic ingress accept/commit boundary while preserving same-edge input_group_fire, group II=1, vector II=N/4, and slot ownership semantics.",
+  "scope": {
+    "rtl_changed": [
+      "02_rtl/rtl/unified_p4_kernel.sv",
+      "02_rtl/rtl/unified_its_wrapper.sv"
+    ],
+    "rtl_unchanged": [
+      "02_rtl/rtl/its_input_cache_bank.sv",
+      "02_rtl/rtl/bounded_lfnst_engine.sv",
+      "03_verification/vivado/step12f_unified_wrapper_2ns.xdc",
+      "Gate-A Oracle/profile",
+      "frozen R4C",
+      "v3.5-18"
+    ],
+    "oracle_changed": false,
+    "profile_changed": false,
+    "xdc_changed": false,
+    "r4c_changed": false,
+    "new_tag": false
+  },
+  "ingress_contract": {
+    "input_group_fire": "same-edge wrapper-facing transaction event; gated by ingress_ready",
+    "input_group_commit": "registered ingress entry writes input_mem on the following commit edge",
+    "input_vector_done": "commit-qualified registered pulse on final ingress commit",
+    "slot_ready": "SLOT_READY and ready FIFO enqueue occur only after final payload commit",
+    "elastic_behavior": "old commit and new capture may occur on the same edge",
+    "external_backpressure": "does not directly stall an admitted arithmetic/input transaction",
+    "h_read_guard": "horizontal request sequencer is held during the final-input commit handoff to prevent prefetched-row loss"
+  },
+  "functional": {
+    "status": "PASS",
+    "simulator": "ModelSim SE-64 2020.4",
+    "normal": "PASS",
+    "SYNTHESIS": "PASS",
+    "gate_b_numeric_cases": 156,
+    "gate_c_tuples": 369,
+    "gate_c_beats_per_mode": 45636,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 258,
+    "vector_ii_modes": 13,
+    "group_ii": 1,
+    "p4_n4_stream_vectors": 16,
+    "p3_vwrite_contract": "PASS",
+    "ownership_ordering_done_backpressure": "PASS",
+    "evidence": "05_audit/current/43/step12f_p9_ingress_fix2_20260916/STEP12F_COVERAGE_MODELSIM_RUN.json"
+  },
+  "fresh_synthesis": {
+    "status": "PASS_COMPLETED_BUT_TIMING_FAIL",
+    "tool": "Vivado 2025.2",
+    "device": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0,
+    "setup": {
+      "wns_ns": -0.547,
+      "tns_ns": -525.240,
+      "failing_endpoints": 4033
+    },
+    "hold": {
+      "whs_ns": -0.076,
+      "ths_ns": -3.358,
+      "failing_endpoints": 45
+    },
+    "unconstrained_internal_endpoints": 0,
+    "timing_exceptions": "No valid timing exceptions found",
+    "checkpoint": "05_audit/current/44/step12f_p9_ingress_fix2_synth_20260916/step12f_unified_wrapper_postsynth.dcp",
+    "worst100_observation": "The former wrapper live-select to P4 input_mem family is absent from the worst-100 report; the new leaders are H-read control and bounded-LFNST product paths. This is structural target evidence, not global timing closure."
+  },
+  "implementation": {
+    "status": "COMPLETED_FULLY_ROUTED",
+    "flow": "opt_design Explore; place_design Explore; phys_opt_design Explore; route_design Explore",
+    "setup": {
+      "wns_ns": -0.720,
+      "tns_ns": -5894.764,
+      "failing_endpoints": 30908,
+      "total_endpoints": 159110
+    },
+    "hold": {
+      "whs_ns": -0.080,
+      "ths_ns": -3.420,
+      "failing_endpoints": 46,
+      "total_endpoints": 159110
+    },
+    "route_status": {
+      "design_state": "Fully Routed",
+      "unrouted_nets": 0,
+      "partially_routed_nets": 0,
+      "node_overlaps": 0
+    },
+    "constraints": {
+      "unconstrained_internal_endpoints": 0,
+      "timing_exceptions": "No valid timing exceptions found"
+    },
+    "resource_snapshot": {
+      "clb_luts": 30410,
+      "lutram": 5641,
+      "clb_registers": 26739,
+      "dsp48e2": 320,
+      "bram36": 0,
+      "uram": 0
+    },
+    "power_total_w": 1.875,
+    "checkpoint": "05_audit/current/45/step12f_p9_ingress_fix2_impl_20260916/step12f_unified_wrapper_postroute.dcp"
+  },
+  "routed_leader": {
+    "family": "shared input-cache distributed-RAM read to LFNST response",
+    "source": "compute_slot_q_reg_replica_2/C",
+    "destination": "lfnst_mem_resp_data_q_reg[0]/D",
+    "slack_ns": -0.720,
+    "data_path_delay_ns": 2.700,
+    "logic_delay_ns": 0.767,
+    "routing_delay_ns": 1.933,
+    "routing_fraction": 0.7159,
+    "logic_levels": 8,
+    "interpretation": "P9 removes the targeted wrapper-to-input_mem family from the routed worst-100 population, but the global design remains setup/hold failing. The next repair must be chosen from the new routed evidence, not from the P9 target alone."
+  },
+  "reports": {
+    "coverage": "05_audit/current/43/step12f_p9_ingress_fix2_20260916/STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "synthesis_dir": "05_audit/current/44/step12f_p9_ingress_fix2_synth_20260916",
+    "implementation_dir": "05_audit/current/45/step12f_p9_ingress_fix2_impl_20260916",
+    "postroute_timing_summary_sha256": "042FD54C977E6D3D95E177CD7334EDB5376BD2B100AEA0E6FB59CA9E2CCF50FC",
+    "postroute_hold_summary_sha256": "CD3124DAAB5B69DAD5A82FBAE1873F43AC4D4DBE90C52DF7627F79E89ECB9D06",
+    "postroute_worst100_sha256": "DC7D430C2A2294B6E81FF08BB5451BF22EFE4AD5104E298A93E0C39AD9140991",
+    "postroute_check_timing_sha256": "D45398F52CD2CD52D9EB822EE5A2DBDD64681B96A7ACE9B96F4DDE120D51BC06",
+    "postroute_exceptions_sha256": "1E4DB62027C49F0C23CA157AE4EFE09A6200749B3F4FE87A70FDB9466637DDFD",
+    "postroute_drc_sha256": "9B2E8608FC85D5E5C627B2B95E644B5030988895A5AA489D001BB461743618B6",
+    "postroute_dcp_sha256": "88EBD0371C1790CC9E5DF2B687684FA5712B4CDFFC2212813E66E9870C3C6FFC"
+  },
+  "decision": {
+    "p9_target": "EFFECTIVE_STRUCTURALLY",
+    "functional": "PASS",
+    "synthesis": "PASS_COMPLETED_BUT_TIMING_FAIL",
+    "implementation": "COMPLETED_FULLY_ROUTED_BUT_TIMING_FAIL",
+    "physical_timing": "P1_STOP",
+    "tag": "NOT_CREATED",
+    "next": "Reclassify the new routed worst families before authorizing another RTL change; keep cache A, Oracle/profile, XDC, R4C, and v3.5-18 frozen until the next narrow repair is selected."
+  },
+  "source_hashes": {
+    "unified_its_wrapper_sha256": "0D7ADA70B8BA08B687CFDAC0FD0A05272BA81D3A959B5B019DFE74EF4857E5E3",
+    "unified_p4_kernel_sha256": "D996BC5A2BAE4579766821979719715FC3F405250294EEF7A6FE74832E0B0F02",
+    "input_cache_bank_sha256": "2476D5FBC1D3663515137F8768EC7F16A689B3150E4527D78B5743DF3E7A05D7",
+    "bounded_lfnst_engine_sha256": "6EB52770435E62442DFDA1CF1CB9D1F216707A675965B3AD779184413FDFE1D8",
+    "xdc_sha256": "8249A2643753D347F98F3F1AD775829AB13F277375801B7565C1AC7A347E1B2F"
+  }
+}
