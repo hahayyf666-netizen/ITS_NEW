@@ -1,0 +1,383 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Wed Sep 16 11:21:45 2026
+# Process ID         : 14660
+# Current directory  : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish
+# Command line       : vivado.exe -mode batch -source C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/report_p9_a_routed_qualification.tcl -log C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/40/p9_a_routed_qualification_20260916/vivado.log -journal C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/40/p9_a_routed_qualification_20260916/vivado.jou -tclargs C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/39/step12f_p8_1_impl_20260915_2335/step12f_unified_wrapper_postroute.dcp C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/40/p9_a_routed_qualification_20260916
+# Log file           : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/40/p9_a_routed_qualification_20260916/vivado.log
+# Journal file       : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/40/p9_a_routed_qualification_20260916/vivado.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 24696 MB
+# Total Virtual      : 41060 MB
+# Available Virtual  : 20260 MB
+#-----------------------------------------------------------
+INFO: [Common 17-1239] XILINX_LOCAL_USER_DATA is set to 'C:\Users\Fine\AppData\Local\Temp\step12f_p9_vivado_user'.
+source C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/03_verification/vivado/report_p9_a_routed_qualification.tcl
+# if {$argc < 2} {
+#     puts stderr "Usage: vivado -mode batch -source report_p9_a_routed_qualification.tcl -- <postroute.dcp> <out_dir>"
+#     exit 2
+# }
+# set dcp [lindex $argv 0]
+# set out_dir [lindex $argv 1]
+# file mkdir $out_dir
+# file mkdir [file join $out_dir path_reports]
+# proc safe_prop {obj key {default ""}} {
+#     if {$obj eq ""} { return $default }
+#     if {[catch {get_property $key $obj} value]} { return $default }
+#     return $value
+# }
+# proc safe_num {obj key {default 0.0}} {
+#     set value [safe_prop $obj $key ""]
+#     if {$value eq "" || ![string is double -strict $value]} { return $default }
+#     return $value
+# }
+# proc json_escape {value} {
+#     return [string map [list \\ \\\\ \" \\\" \n \\n \r \\r \t \\t] $value]
+# }
+# proc csv_escape {value} {
+#     return "\"[string map [list \" \"\"] $value]\""
+# }
+# proc object_names {objs} {
+#     if {[llength $objs] == 0} { return "" }
+#     return [join [get_property NAME $objs] "\n"]
+# }
+# proc first_cell {pin_obj} {
+#     if {$pin_obj eq ""} { return "" }
+#     set cells [get_cells -quiet -of_objects $pin_obj]
+#     if {[llength $cells] == 0} { return "" }
+#     return [lindex $cells 0]
+# }
+# proc path_family {start endpoint} {
+#     set text [string tolower "$start $endpoint"]
+#     if {[regexp {lfnst_mem_resp_data_q|lfnst_mem_resp_valid_q} $text]} {
+#         return "A_cache_to_lfnst_response"
+#     }
+#     if {[regexp {u_unified_p4_kernel/input_mem_reg|/input_mem_reg} $text]} {
+#         return "B_kernel_control_to_p4_input_mem"
+#     }
+#     if {[regexp {input_cache|input_rd_data|data_mem_reg|valid_mem_reg|ramd64e|lfnst_gather} $text]} {
+#         return "C_other_cache_read_or_response"
+#     }
+#     if {[regexp {result_mem|vwrite|intermediate|kernel_h_rd|kernel_rd} $text]} {
+#         return "C_other_cache_kernel_or_write"
+#     }
+#     if {[regexp {frozen_r4c|r4c|kernel_stage|kernel_phase|kernel_vector|lfnst_case|lfnst_grid} $text]} {
+#         return "D_control_or_r4c"
+#     }
+#     return "E_other"
+# }
+# proc write_targeted_report {path title from_objs through_objs to_objs out_file} {
+#     set f [open $out_file a]
+#     puts $f "\n=== $title ==="
+#     puts $f "FROM_COUNT=[llength $from_objs] THROUGH_COUNT=[llength $through_objs] TO_COUNT=[llength $to_objs]"
+#     if {[llength $to_objs] == 0 || ([llength $from_objs] == 0 && [llength $through_objs] == 0)} {
+#         puts $f "STATUS=NO_SOURCE_OR_DEST_OBJECT"
+#         close $f
+#         return
+#     }
+#     close $f
+#     set rc 0
+#     set msg ""
+#     set path_count -1
+#     set path_query_rc 0
+#     if {[llength $through_objs] != 0} {
+#         set path_query_rc [catch {
+#             set path_objs [get_timing_paths -through $through_objs -to $to_objs \
+#                 -delay_type max -max_paths 20 -nworst 1]
+#             set path_count [llength $path_objs]
+#         } path_query_msg]
+#         set rc [catch {
+#             if {[llength $to_objs] != 0} {
+#                 report_timing -through $through_objs -to $to_objs -delay_type max \
+#                     -max_paths 20 -path_type full -file $out_file -append
+#             } else {
+#                 report_timing -through $through_objs -delay_type max \
+#                     -max_paths 20 -path_type full -file $out_file -append
+#             }
+#         } msg]
+#     } else {
+#         set path_query_rc [catch {
+#             set path_objs [get_timing_paths -from $from_objs -to $to_objs \
+#                 -delay_type max -max_paths 20 -nworst 1]
+#             set path_count [llength $path_objs]
+#         } path_query_msg]
+#         set rc [catch {
+#         report_timing -from $from_objs -to $to_objs -delay_type max \
+#                 -max_paths 20 -path_type full -file $out_file -append
+#         } msg]
+#     }
+#     set f [open $out_file a]
+#     puts $f "PATH_QUERY_RC=$path_query_rc PATH_COUNT=$path_count"
+#     if {$path_query_rc} {
+#         puts $f "PATH_QUERY_MSG=[json_escape $path_query_msg]"
+#     } elseif {$path_count == 0} {
+#         puts $f "STATUS=NO_TIMING_PATHS"
+#     } else {
+#         puts $f "STATUS=PATHS_FOUND"
+#     }
+#     puts $f "REPORT_RC=$rc"
+#     if {$rc} { puts $f "REPORT_MSG=[json_escape $msg]" }
+#     close $f
+# }
+# if {![file exists $dcp]} {
+#     error "Missing routed checkpoint: $dcp"
+# }
+# open_checkpoint $dcp
+Command: open_checkpoint C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/39/step12f_p8_1_impl_20260915_2335/step12f_unified_wrapper_postroute.dcp
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.046 . Memory (MB): peak = 352.465 ; gain = 4.840
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.270 . Memory (MB): peak = 1700.840 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 4830 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 6 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2025.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Read ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.118 . Memory (MB): peak = 1744.840 ; gain = 4.684
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Constraints 18-5170] The checkpoint was created with non-default parameter values which do not match the current Vivado settings.  Mismatching parameters are:
+  general.maxThreads
+INFO: [Project 1-853] Binary constraint restore complete.
+INFO: [Designutils 20-5722] Start Reading Physical Databases.
+Reading placement.
+Read Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.077 . Memory (MB): peak = 2325.879 ; gain = 0.000
+Reading placer database...
+Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.032 . Memory (MB): peak = 2325.879 ; gain = 0.000
+Read PlaceDB: Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2406.434 ; gain = 80.555
+Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2406.434 ; gain = 0.000
+Reading routing.
+Read RouteStorage: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.940 . Memory (MB): peak = 2439.578 ; gain = 33.145
+Read Physdb Files: Time (s): cpu = 00:00:05 ; elapsed = 00:00:04 . Memory (MB): peak = 2439.578 ; gain = 113.699
+Restored from archive | CPU: 5.000000 secs | Memory: 0.000000 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:05 ; elapsed = 00:00:04 . Memory (MB): peak = 2439.578 ; gain = 113.699
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.029 . Memory (MB): peak = 2781.035 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1184 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 320 instances
+  RAM256X1D => RAM256X1D (MUXF7(x4), MUXF8(x2), RAMD64E(x8)): 32 instances
+  RAM64M => RAM64M (RAMD64E(x4)): 320 instances
+  RAM64M8 => RAM64M8 (RAMD64E(x8)): 512 instances
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2025.2 (64-bit) build 6299465
+open_checkpoint: Time (s): cpu = 00:00:54 ; elapsed = 00:00:59 . Memory (MB): peak = 2781.035 ; gain = 2444.020
+# set timing_summary [file join $out_dir report_timing_summary_postroute.rpt]
+# set hold_summary [file join $out_dir report_timing_hold_summary_postroute.rpt]
+# set check_timing [file join $out_dir report_check_timing_postroute.rpt]
+# set exceptions [file join $out_dir report_exceptions_postroute.rpt]
+# set fanout [file join $out_dir report_high_fanout_postroute.rpt]
+# report_timing_summary -file $timing_summary
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+WARNING: [Timing 38-242] The property HD.CLK_SRC of clock port "clk" is not set. In out-of-context mode, this prevents timing estimation for clock delay/skew
+Resolution: Set the HD.CLK_SRC property of the out-of-context port to the location of the clock buffer instance in the top-level design
+report_timing_summary: Time (s): cpu = 00:00:53 ; elapsed = 00:00:33 . Memory (MB): peak = 3124.633 ; gain = 343.598
+# report_timing_summary -delay_type min -file $hold_summary
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: min.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+# check_timing -verbose -file $check_timing
+# report_exceptions -file $exceptions
+# report_high_fanout_nets -max_nets 200 -file $fanout
+# set phase_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_phase_q_reg*}]
+# set phase_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *kernel_phase_q_reg*}]
+# set feed_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_feed_group_q_reg*}]
+# set feed_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *kernel_feed_group_q_reg*}]
+# set drain_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_drain_group_q_reg*}]
+# set drain_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *kernel_drain_group_q_reg*}]
+# set wrapper_state_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *state_q_reg*}]
+# set wrapper_phase_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *phase_q_reg*}]
+# set wrapper_group_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *group_q_reg*}]
+# set wrapper_group_forbidden_d {}
+# foreach group_pin $wrapper_group_d {
+#     set group_name [safe_prop $group_pin NAME]
+#     if {[string match *kernel_feed_group_q_reg* $group_name]} { continue }
+#     if {[string match *kernel_drain_group_q_reg* $group_name]} { continue }
+#     lappend wrapper_group_forbidden_d $group_pin
+# }
+# set fire_nets [get_nets -hier -quiet *kernel_input_group_fire*]
+# set fire_drv [get_pins -quiet -of_objects $fire_nets -filter {DIRECTION == OUT}]
+# set fire_loads [get_pins -quiet -of_objects $fire_nets -filter {DIRECTION == IN}]
+# set result_we [get_pins -hier -quiet -filter {REF_PIN_NAME == WE && (NAME =~ *u_result_bank* || NAME =~ *result_mem*)}]
+# set lfnst_resp_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *lfnst_mem_resp_data_q_reg*}]
+# set lfnst_resp_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *lfnst_mem_resp_data_q_reg*}]
+# set p4_input_mem_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ */input_mem_reg*}]
+# set kernel_rd_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && (NAME =~ *kernel_rd_req_pending_q_reg* || NAME =~ *kernel_stage_q_reg* || NAME =~ *lfnst_case_q_reg*)}]
+# set objects_file [file join $out_dir P9_A_TARGETED_OBJECTS.txt]
+# set of [open $objects_file w]
+# foreach {name objs} [list \
+#     PHASE_Q $phase_q PHASE_D $phase_d FEED_Q $feed_q FEED_D $feed_d \
+#     DRAIN_Q $drain_q DRAIN_D $drain_d WRAPPER_STATE_D $wrapper_state_d \
+#     WRAPPER_PHASE_D $wrapper_phase_d WRAPPER_GROUP_D $wrapper_group_d \
+#     WRAPPER_GROUP_FORBIDDEN_D $wrapper_group_forbidden_d \
+#     INPUT_FIRE_NETS $fire_nets INPUT_FIRE_DRIVER_PINS $fire_drv \
+#     INPUT_FIRE_LOAD_PINS $fire_loads RESULT_WE $result_we \
+#     LFNST_RESPONSE_D $lfnst_resp_d LFNST_RESPONSE_Q $lfnst_resp_q \
+#     P4_INPUT_MEM_D $p4_input_mem_d KERNEL_READ_CONTROL_Q $kernel_rd_q] {
+#     puts $of "-- $name --"
+#     puts $of "COUNT=[llength $objs]"
+#     puts $of [object_names $objs]
+# }
+# close $of
+# set targeted_file [file join $out_dir P9_A_TARGETED_TIMING.rpt]
+# set tf [open $targeted_file w]
+# puts $tf "Step12F-P9-A routed read-only qualification"
+# puts $tf "DCP=$dcp"
+# puts $tf "phase_q=[llength $phase_q] phase_d=[llength $phase_d]"
+# puts $tf "feed_q=[llength $feed_q] feed_d=[llength $feed_d]"
+# puts $tf "drain_q=[llength $drain_q] drain_d=[llength $drain_d]"
+# puts $tf "input_fire_nets=[llength $fire_nets] input_fire_driver_pins=[llength $fire_drv] input_fire_load_pins=[llength $fire_loads]"
+# puts $tf "lfnst_response_d=[llength $lfnst_resp_d] p4_input_mem_d=[llength $p4_input_mem_d]"
+# close $tf
+# write_targeted_report $targeted_file "fire_to_phase_forbidden_wide_control" $fire_drv $fire_nets $phase_d $targeted_file
+WARNING: [Vivado 12-975] No timing paths matched 'get_timing_paths -through [get_nets -hier -quiet *kernel_input_group_fire*] -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *kernel_phase_q_reg*}] -delay_type max -max_paths 20 -nworst 1'.
+INFO: [Timing 38-78] ReportTimingParams: -through_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+INFO: [Timing 38-72] No paths found.
+# write_targeted_report $targeted_file "fire_to_wrapper_state_forbidden_wide_control" $fire_drv $fire_nets $wrapper_state_d $targeted_file
+WARNING: [Vivado 12-975] No timing paths matched 'get_timing_paths -through [get_nets -hier -quiet *kernel_input_group_fire*] -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *state_q_reg*}] -delay_type max -max_paths 20 -nworst 1'.
+INFO: [Timing 38-78] ReportTimingParams: -through_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+INFO: [Timing 38-72] No paths found.
+# write_targeted_report $targeted_file "fire_to_wrapper_phase_forbidden_wide_control" $fire_drv $fire_nets $wrapper_phase_d $targeted_file
+WARNING: [Vivado 12-975] No timing paths matched 'get_timing_paths -through [get_nets -hier -quiet *kernel_input_group_fire*] -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *phase_q_reg*}] -delay_type max -max_paths 20 -nworst 1'.
+INFO: [Timing 38-78] ReportTimingParams: -through_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+INFO: [Timing 38-72] No paths found.
+# write_targeted_report $targeted_file "fire_to_wrapper_group_forbidden_wide_control" $fire_drv $fire_nets $wrapper_group_forbidden_d $targeted_file
+WARNING: [Vivado 12-975] No timing paths matched 'get_timing_paths -through [get_nets -hier -quiet *kernel_input_group_fire*] -to {{kernel_h_rd_group_q_reg[0]/D} {kernel_h_rd_group_q_reg[1]/D} {kernel_h_rd_group_q_reg[2]/D} {kernel_h_rd_group_q_reg[3]/D} {kernel_h_rd_group_q_reg[4]/D} {kernel_h_rd_raw_group_q_reg[0]/D} {kernel_h_rd_raw_group_q_reg[1]/D} {kernel_h_rd_raw_group_q_reg[2]/D} {kernel_h_rd_raw_group_q_reg[3]/D} {kernel_h_rd_raw_group_q_reg[4]/D} {kernel_h_rd_raw_tail_group_q_reg[0]/D} {kernel_h_rd_raw_tail_group_q_reg[1]/D} {kernel_h_rd_raw_tail_group_q_reg[2]/D} {kernel_h_rd_raw_tail_group_q_reg[3]/D} {kernel_h_rd_raw_tail_group_q_reg[4]/D} {kernel_rd_raw_group_q_reg[0]/D} {kernel_rd_raw_group_q_reg[1]/D} {kernel_rd_raw_group_q_reg[2]/D} {kernel_rd_raw_group_q_reg[3]/D} {kernel_rd_raw_group_q_reg[4]/D} {kernel_rd_req_group_q_reg[0]/D} {kernel_rd_req_group_q_reg[1]/D} {kernel_rd_req_group_q_reg[2]/D} {kernel_rd_req_group_q_reg[3]/D} {kernel_rd_req_group_q_reg[4]/D} {u_bounded_lfnst_engine/issue_group_q_reg[0]/D} {u_bounded_lfnst_engine/issue_group_q_reg[1]/D} {u_bounded_lfnst_engine/issue_group_q_reg[2]/D} {u_bounded_lfnst_engine/issue_group_q_reg[3]/D} {u_bounded_lfnst_engine/product_group_q_reg[0]/D} {u_bounded_lfnst_engine/product_group_q_reg[1]/D} {u_bounded_lfnst_engine/product_group_q_reg[2]/D} {u_bounded_lfnst_engine/product_group_q_reg[3]/D} u_bounded_lfnst_engine/red1_group_q_reg_c/D u_bounded_lfnst_engine/red2_group_q_reg_c/D {u_bounded_lfnst_engine/red3_group_q_reg[0]_srl3_red3_group_q_reg_c/D} {u_bounded_lfnst_engine/red3_group_q_reg[1]_srl3_red3_group_q_reg_c/D} {u_bounded_lfnst_engine/red3_group_q_reg[2]_srl3_red3_group_q_reg_c/D} {u_bounded_lfnst_engine/red3_group_q_reg[3]_srl3_red3_group_q_reg_c/D} u_bounded_lfnst_engine/red3_group_q_reg_c/D u_bounded_lfnst_engine/red3_last_q_reg_srl3_red3_group_q_reg_c/D {u_bounded_lfnst_engine/red4_group_q_reg[0]_red4_group_q_reg_c/D} {u_bounded_lfnst_engine/red4_group_q_reg[1]_red4_group_q_reg_c/D} {u_bounded_lfnst_engine/red4_group_q_reg[2]_red4_group_q_reg_c/D} {u_bounded_lfnst_engine/red4_group_q_reg[3]_red4_group_q_reg_c/D} u_bounded_lfnst_engine/red4_group_q_reg_c/D u_bounded_lfnst_engine/red4_last_q_reg_red4_group_q_reg_c/D {u_bounded_lfnst_engine/red5_group_q_reg[0]/D} {u_bounded_lfnst_engine/red5_group_q_reg[1]/D} {u_bounded_lfnst_engine/red5_group_q_reg[2]/D} {u_bounded_lfnst_engine/red5_group_q_reg[3]/D} {u_unified_p4_kernel/issue_group_q_reg[0]/D} {u_unified_p4_kernel/issue_group_q_reg[1]/D} {u_unified_p4_kernel/issue_group_q_reg[2]/D} {u_unified_p4_kernel/issue_group_q_reg[3]/D} {u_unified_p4_kernel/issue_group_q_reg[4]/D} {u_unified_p4_kernel/load_group_q_reg[0]/D} {u_unified_p4_kernel/load_group_q_reg[1]/D} {u_unified_p4_kernel/load_group_q_reg[2]/D} {u_unified_p4_kernel/load_group_q_reg[3]/D} {u_unified_p4_kernel/load_group_q_reg[4]/D}} -delay_type max -max_paths 20 -nworst 1'.
+INFO: [Timing 38-78] ReportTimingParams: -through_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+INFO: [Timing 38-72] No paths found.
+# write_targeted_report $targeted_file "fire_to_feed_allowed_local_bookkeeping" $fire_drv $fire_nets $feed_d $targeted_file
+INFO: [Timing 38-78] ReportTimingParams: -through_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+# write_targeted_report $targeted_file "fire_to_drain_forbidden_drain_bookkeeping" $fire_drv $fire_nets $drain_d $targeted_file
+WARNING: [Vivado 12-975] No timing paths matched 'get_timing_paths -through [get_nets -hier -quiet *kernel_input_group_fire*] -to [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *kernel_drain_group_q_reg*}] -delay_type max -max_paths 20 -nworst 1'.
+INFO: [Timing 38-78] ReportTimingParams: -through_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+INFO: [Timing 38-72] No paths found.
+# write_targeted_report $targeted_file "kernel_read_control_to_lfnst_response" $kernel_rd_q {} $lfnst_resp_d $targeted_file
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+# write_targeted_report $targeted_file "kernel_vector_control_to_p4_input_mem" [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_vector_q_reg*}] {} $p4_input_mem_d $targeted_file
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+# set family_reports [file join $out_dir path_reports]
+# if {[llength $kernel_rd_q] != 0 && [llength $lfnst_resp_d] != 0} {
+#     catch {report_timing -from $kernel_rd_q -to $lfnst_resp_d -delay_type max -max_paths 20 \
+#         -path_type full -file [file join $family_reports lfnst_cache_top20.rpt]} msg
+# }
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+# set kernel_vector_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_vector_q_reg*}]
+# if {[llength $kernel_vector_q] != 0 && [llength $p4_input_mem_d] != 0} {
+#     catch {report_timing -from $kernel_vector_q -to $p4_input_mem_d -delay_type max -max_paths 20 -path_type full \
+#         -file [file join $family_reports p4_input_mem_top20.rpt]} msg
+# }
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+# set ram_cells [get_cells -hier -quiet -filter {REF_NAME == RAMD64E}]
+# if {[llength $ram_cells] != 0 && [llength $lfnst_resp_d] != 0} {
+#     catch {report_timing -through $ram_cells -to $lfnst_resp_d -delay_type max -max_paths 20 -path_type full \
+#         -file [file join $family_reports lfnst_through_ramd_top20.rpt]} msg
+# }
+INFO: [Timing 38-78] ReportTimingParams: -through_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+# report_timing -delay_type max -max_paths 500 -path_type full \
+#     -file [file join $out_dir report_timing_worst500_postroute.rpt]
+INFO: [Timing 38-78] ReportTimingParams: -max_paths 500 -nworst 1 -delay_type max -sort_by slack.
+# set paths [get_timing_paths -delay_type max -max_paths 500 -nworst 1 -slack_lesser_than 0.0]
+# set csv [open [file join $out_dir p9_a_worst500.csv] w]
+# puts $csv "index,family,slack_ns,datapath_delay_ns,logic_delay_ns,route_delay_ns,logic_levels,startpoint,endpoint,start_loc,end_loc,start_fanout"
+# array set counts {}
+# array set sample_sum {}
+# array set worst {}
+# array set repr {}
+# set families {A_cache_to_lfnst_response B_kernel_control_to_p4_input_mem C_other_cache_read_or_response C_other_cache_kernel_or_write D_control_or_r4c E_other}
+# foreach fam $families {
+#     set counts($fam) 0
+#     set sample_sum($fam) 0.0
+#     set worst($fam) 0.0
+#     set repr($fam) ""
+# }
+# set idx 0
+# foreach path $paths {
+#     set slack [safe_num $path SLACK]
+#     if {$slack >= 0.0} { continue }
+#     set sp [safe_prop $path STARTPOINT_PIN]
+#     set ep [safe_prop $path ENDPOINT_PIN]
+#     set spn [safe_prop $sp NAME]
+#     set epn [safe_prop $ep NAME]
+#     set fam [path_family $spn $epn]
+#     set spcell [first_cell $sp]
+#     set epcell [first_cell $ep]
+#     set spname [safe_prop $spcell NAME]
+#     set epname [safe_prop $epcell NAME]
+#     set sploc [safe_prop $spcell LOC]
+#     set eploc [safe_prop $epcell LOC]
+#     set spnets [get_nets -quiet -of_objects $sp]
+#     set sfanout [safe_prop [lindex $spnets 0] FANOUT ""]
+#     set datapath [safe_num $path DATAPATH_DELAY]
+#     set logic [safe_num $path DATAPATH_LOGIC_DELAY]
+#     set route [safe_num $path DATAPATH_NET_DELAY]
+#     set levels [safe_prop $path LOGIC_LEVELS]
+#     puts $csv [join [list $idx $fam [format %.6f $slack] [format %.6f $datapath] \
+#         [format %.6f $logic] [format %.6f $route] [csv_escape $levels] \
+#         [csv_escape $spn] [csv_escape $epn] [csv_escape $sploc] [csv_escape $eploc] \
+#         [csv_escape $sfanout]] ","]
+#     incr counts($fam)
+#     set sample_sum($fam) [expr {$sample_sum($fam) + double($slack)}]
+#     if {$counts($fam) == 1 || $slack < $worst($fam)} {
+#         set worst($fam) $slack
+#         set repr($fam) [list $spn $epn $sploc $eploc $datapath $logic $route $levels $sfanout]
+#     }
+#     incr idx
+# }
+# close $csv
+# set json [open [file join $out_dir P9_A_ROUTED_READ_QUALIFICATION.json] w]
+# puts $json "{"
+# puts $json "  \"schema\": \"step12f.p9_a.routed_qualification.v1\","
+# puts $json "  \"read_only\": true,"
+# puts $json "  \"dcp\": \"[json_escape $dcp]\","
+# puts $json "  \"worst500_sample_path_count\": $idx,"
+# puts $json "  \"aggregate_label\": \"sampled_negative_slack_sum_not_full_design_tns\","
+# puts $json "  \"object_counts\": {\"fire_net\": [llength $fire_nets], \"fire_driver_pins\": [llength $fire_drv], \"fire_load_pins\": [llength $fire_loads], \"phase_d\": [llength $phase_d], \"feed_d\": [llength $feed_d], \"drain_d\": [llength $drain_d], \"lfnst_response_d\": [llength $lfnst_resp_d], \"p4_input_mem_d\": [llength $p4_input_mem_d]},"
+# puts $json "  \"families\": {"
+# set first 1
+# foreach fam $families {
+#     if {!$first} { puts $json "," }
+#     set first 0
+#     set rep $repr($fam)
+#     puts -nonewline $json "    \"$fam\": {\"sampled_path_count\": $counts($fam), \"sampled_negative_slack_sum_ns\": [format %.6f $sample_sum($fam)], \"worst_slack_ns\": [format %.6f $worst($fam)]"
+#     if {$rep ne ""} {
+#         puts -nonewline $json ", \"representative\": {\"startpoint\": \"[json_escape [lindex $rep 0]]\", \"endpoint\": \"[json_escape [lindex $rep 1]]\", \"start_loc\": \"[json_escape [lindex $rep 2]]\", \"end_loc\": \"[json_escape [lindex $rep 3]]\", \"datapath_delay_ns\": [lindex $rep 4], \"logic_delay_ns\": [lindex $rep 5], \"route_delay_ns\": [lindex $rep 6], \"logic_levels\": \"[json_escape [lindex $rep 7]]\", \"start_fanout\": \"[json_escape [lindex $rep 8]]\"}"
+#     }
+#     puts -nonewline $json "}"
+# }
+# puts $json ""
+# puts $json "  },"
+# puts $json "  \"decision_status\": \"QUALIFICATION_ONLY_NO_P9_RTL_AUTHORIZATION\","
+# puts $json "  \"hold_is_separate_signoff\": true"
+# puts $json "}"
+# close $json
+# set summary [open [file join $out_dir P9_A_ROUTED_READ_QUALIFICATION_SUMMARY.txt] w]
+# puts $summary "P9-A routed read-only qualification"
+# puts $summary "DCP=$dcp"
+# puts $summary "worst500_sample_path_count=$idx"
+# puts $summary "fire_net_count=[llength $fire_nets] fire_driver_pin_count=[llength $fire_drv] fire_load_pin_count=[llength $fire_loads]"
+# foreach fam $families {
+#     puts $summary "$fam count=$counts($fam) sampled_negative_slack_sum_ns=[format %.6f $sample_sum($fam)] worst_slack_ns=[format %.6f $worst($fam)]"
+# }
+# puts $summary "decision=QUALIFICATION_ONLY_NO_P9_RTL_AUTHORIZATION"
+# puts $summary "note=worst500 aggregates are sampled and are not full-design TNS"
+# close $summary
+# close_design
+# puts "P9_A_ROUTED_QUALIFICATION_DONE"
+P9_A_ROUTED_QUALIFICATION_DONE
+# puts "OUT_DIR=$out_dir"
+OUT_DIR=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/40/p9_a_routed_qualification_20260916
+# puts "WORST500_PATHS=$idx"
+WORST500_PATHS=500
+# exit
+INFO: [Common 17-206] Exiting Vivado at Wed Sep 16 11:25:11 2026...

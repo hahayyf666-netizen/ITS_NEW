@@ -1,0 +1,195 @@
+{
+  "schema": "step12f.p9_a.routed_qualification.manifest.v1",
+  "phase": "Step12F-P9-A Routed Read-Only Qualification",
+  "status": "QUALIFICATION_COMPLETE_NO_P9_RTL_AUTHORIZATION",
+  "read_only": true,
+  "base_commit": "9ad14814a72b26d0bc98044d77acb97bb70f586a",
+  "dcp": "05_audit/current/39/step12f_p8_1_impl_20260915_2335/step12f_unified_wrapper_postroute.dcp",
+  "dcp_sha256": "05751FE3F7CF341463A3D1A1FC42328D92F699C0788DB326770209004AFB92DE",
+  "tool": {
+    "name": "Vivado",
+    "version": "2025.2",
+    "device": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0
+  },
+  "baseline": {
+    "route": "FULLY_ROUTED",
+    "setup_wns_ns": -1.034,
+    "setup_tns_ns": -19931.496,
+    "setup_failing_endpoints": 49916,
+    "hold_whs_ns": -0.080,
+    "hold_ths_ns": -3.438,
+    "hold_failing_endpoints": 46,
+    "check_timing_internal_gaps": 0,
+    "timing_exceptions": "No valid timing exceptions found"
+  },
+  "objects": {
+    "fire_nets": 1,
+    "fire_driver_pins": 1,
+    "fire_load_pins": 3,
+    "phase_d": 4,
+    "feed_d": 5,
+    "drain_d": 5,
+    "lfnst_response_d": 16,
+    "p4_input_mem_d": 4032
+  },
+  "fire_queries": {
+    "fire_to_phase_forbidden_wide_control": {
+      "from_count": 1,
+      "through_count": 1,
+      "to_count": 4,
+      "path_count": 0,
+      "status": "NO_TIMING_PATHS"
+    },
+    "fire_to_wrapper_state_forbidden_wide_control": {
+      "from_count": 1,
+      "through_count": 1,
+      "to_count": 9,
+      "path_count": 0,
+      "status": "NO_TIMING_PATHS"
+    },
+    "fire_to_wrapper_phase_forbidden_wide_control": {
+      "from_count": 1,
+      "through_count": 1,
+      "to_count": 6,
+      "path_count": 0,
+      "status": "NO_TIMING_PATHS"
+    },
+    "fire_to_wrapper_group_forbidden_wide_control": {
+      "from_count": 1,
+      "through_count": 1,
+      "to_count": 61,
+      "path_count": 0,
+      "status": "NO_TIMING_PATHS"
+    },
+    "fire_to_feed_allowed_local_bookkeeping": {
+      "from_count": 1,
+      "through_count": 1,
+      "to_count": 5,
+      "path_count": 5,
+      "status": "PATHS_FOUND"
+    },
+    "fire_to_drain_forbidden_drain_bookkeeping": {
+      "from_count": 1,
+      "through_count": 1,
+      "to_count": 5,
+      "path_count": 0,
+      "status": "NO_TIMING_PATHS"
+    }
+  },
+  "worst500": {
+    "sample_path_count": 500,
+    "aggregate_label": "sampled_negative_slack_sum_not_full_design_tns",
+    "total_sampled_negative_slack_sum_ns": -458.578,
+    "families": {
+      "A_cache_to_lfnst_response": {
+        "sampled_path_count": 17,
+        "worst_slack_ns": -1.034,
+        "sampled_negative_slack_sum_ns": -16.755
+      },
+      "B_kernel_control_to_p4_input_mem": {
+        "sampled_path_count": 336,
+        "worst_slack_ns": -1.002,
+        "sampled_negative_slack_sum_ns": -307.644
+      },
+      "C_other_cache_read_or_response": {
+        "sampled_path_count": 100,
+        "worst_slack_ns": -0.947,
+        "sampled_negative_slack_sum_ns": -91.252
+      },
+      "C_other_cache_kernel_or_write": {
+        "sampled_path_count": 33,
+        "worst_slack_ns": -1.000,
+        "sampled_negative_slack_sum_ns": -30.252
+      },
+      "D_control_or_r4c": {
+        "sampled_path_count": 3,
+        "worst_slack_ns": -0.912,
+        "sampled_negative_slack_sum_ns": -2.709
+      },
+      "E_other": {
+        "sampled_path_count": 11,
+        "worst_slack_ns": -0.938,
+        "sampled_negative_slack_sum_ns": -9.966
+      }
+    },
+    "representative_A": {
+      "source": "kernel_rd_req_pending_q_reg_replica/C",
+      "endpoint": "lfnst_mem_resp_data_q_reg[4]/D",
+      "datapath_delay_ns": 3.016,
+      "logic_delay_ns": 0.792,
+      "route_delay_ns": 2.224,
+      "routing_fraction": 0.73736,
+      "logic_levels": 8
+    },
+    "representative_B": {
+      "source": "kernel_vector_q_reg[0]_rep__0/C",
+      "endpoint": "u_unified_p4_kernel/input_mem_reg[3][58][12]/D",
+      "datapath_delay_ns": 2.983,
+      "logic_delay_ns": 0.461,
+      "route_delay_ns": 2.522,
+      "routing_fraction": 0.84545,
+      "logic_levels": 6,
+      "contains_ramd64e": false
+    }
+  },
+  "A_same_path_segments": {
+    "source_q_to_ram_addr_avg_ns": 1.504,
+    "source_q_to_ram_addr_min_ns": 1.393,
+    "source_q_to_ram_addr_max_ns": 1.607,
+    "ram_addr_to_lfnst_response_avg_ns": 1.388,
+    "ram_addr_to_lfnst_response_min_ns": 1.249,
+    "ram_addr_to_lfnst_response_max_ns": 1.486,
+    "targeted_path_count": 16,
+    "representative": {
+      "source": "kernel_rd_req_pending_q_reg_replica/C",
+      "endpoint": "lfnst_mem_resp_data_q_reg[4]/D",
+      "source_q_cumulative_ns": 0.108,
+      "ram_addr_cumulative_ns": 1.558,
+      "pre_ram_ns": 1.450,
+      "post_ram_ns": 1.486,
+      "total_datapath_ns": 3.016
+    },
+    "segment_definition": "Same routed path cumulative arrival difference; source-Q and RAM address are internal path points, not independent timing endpoints."
+  },
+  "physical_interpretation": {
+    "family_A": "Live/read-control selection -> input-cache RAMD64E address -> asynchronous LUTRAM/read mux -> LFNST response register.",
+    "family_B": "kernel_vector_q -> P4 input_mem load/select; representative path has no RAMD64E and is a separate physical candidate.",
+    "input_cache_primary_v_shared_slow_cone": "NOT_PROVEN_BY_P9_A",
+    "high_fanout_observation": "input_rd_addr routed nets reach fanout 1152 in the post-route report"
+  },
+  "decision": {
+    "qualification": "COMPLETE",
+    "rtl_authorization": "NOT_AUTHORIZED",
+    "next": "Compare a narrow family-A physical read-command boundary against a narrow family-B P4 input-memory/load restructuring; keep RTL, XDC, Oracle/profile, R4C, and v3.5-18 frozen until that decision.",
+    "hold_is_separate_signoff": true
+  },
+  "reports": {
+    "script": "03_verification/vivado/report_p9_a_routed_qualification.tcl",
+    "script_sha256": "E3FFC765918B7A0F0A97A19965F75C18125737A1536A38EF1891AD2EE244EB2C",
+    "segment_parser": "03_verification/vivado/parse_p9_a_segments.ps1",
+    "segment_parser_sha256": "53855E760D5724AAF285995378402E2E67C2A963926E7720E30DF1691D0F9BE0",
+    "worst500_csv": "p9_a_worst500.csv",
+    "path_segments_csv": "p9_a_path_segments.csv",
+    "targeted_timing": "P9_A_TARGETED_TIMING.rpt",
+    "targeted_objects": "P9_A_TARGETED_OBJECTS.txt",
+    "summary": "P9_A_ROUTED_READ_QUALIFICATION_SUMMARY.txt",
+    "report": "P9_A_ROUTED_READ_QUALIFICATION.md",
+    "sha256": {
+      "qualification_json": "BB411562975064B314FE6C319FAB877A35A6AB4CD78C000B145C8304E80CE601",
+      "qualification_summary": "65849CE3BA84D7B4B46108170BD768F9A07403A7133DAF397801D4B3E021E2BA",
+      "targeted_timing": "716C59FD901132481E02D9DAFABB89B2B1FC019042C2AEE5AF8E0CEB152C33F7",
+      "targeted_objects": "0A7DBA5273D31883717E6607FD662E1FDDBA70D689A7C9580624A0D7D5AFB04B",
+      "worst500_report": "B93F4B163C4457CC81A2AD9E57A46BE0B44F95DADD536D46AB572DB4C2AC86DA",
+      "worst500_csv": "94E275AF14905E6519A4A3AD70BBD8BE0EED897EDF67A24B18421EF870E9A4BC",
+      "path_segments_csv": "2BD48EB7E78FF5A4B476E969624019E5A30A36A9168E328E450C8DD39DC281D5",
+      "lfnst_cache_top20": "3381BAF2CFBFF8642E82F107C64E6A742CD2A3703D418D8769B60034E29E5F09",
+      "p4_input_mem_top20": "B606E69415D40DD9E549FC60EC916BD4EBD4DB54939DD9CA6E0CBEDA4539C4B5",
+      "timing_summary": "478656D303759EBC7952D5C98FB405F26DA4A44C86343B0523007DE20965C8E0",
+      "hold_summary": "DB4F9A6720A52686CDB870618D247A9CDCF0138D53EF2F8B24CC4D681CAD2D79",
+      "check_timing": "C1224D90A820A3EE14D591BB9462BE640B575E2D4A55F38F8BCD07CF71552941",
+      "exceptions": "4BE797399060E4FCC91D7D3480BCAF960A6C28C92EAA6AF0F9AB0C37D6965419",
+      "high_fanout": "2B62EA57C5D78FDB9F84C4A9771D1657353F460D4737C9F37E702B2572864A6B"
+    }
+  }
+}

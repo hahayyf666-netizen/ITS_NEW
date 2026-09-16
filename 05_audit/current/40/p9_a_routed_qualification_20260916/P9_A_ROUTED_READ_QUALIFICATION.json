@@ -1,0 +1,18 @@
+{
+  "schema": "step12f.p9_a.routed_qualification.v1",
+  "read_only": true,
+  "dcp": "C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/39/step12f_p8_1_impl_20260915_2335/step12f_unified_wrapper_postroute.dcp",
+  "worst500_sample_path_count": 500,
+  "aggregate_label": "sampled_negative_slack_sum_not_full_design_tns",
+  "object_counts": {"fire_net": 1, "fire_driver_pins": 1, "fire_load_pins": 3, "phase_d": 4, "feed_d": 5, "drain_d": 5, "lfnst_response_d": 16, "p4_input_mem_d": 4032},
+  "families": {
+    "A_cache_to_lfnst_response": {"sampled_path_count": 17, "sampled_negative_slack_sum_ns": -16.755000, "worst_slack_ns": -1.034000, "representative": {"startpoint": "kernel_rd_req_pending_q_reg_replica/C", "endpoint": "lfnst_mem_resp_data_q_reg[4]/D", "start_loc": "SLICE_X78Y136", "end_loc": "SLICE_X77Y175", "datapath_delay_ns": 3.016, "logic_delay_ns": 0.792, "route_delay_ns": 2.224, "logic_levels": "8", "start_fanout": ""}},
+    "B_kernel_control_to_p4_input_mem": {"sampled_path_count": 336, "sampled_negative_slack_sum_ns": -307.644000, "worst_slack_ns": -1.002000, "representative": {"startpoint": "kernel_vector_q_reg[0]_rep__0/C", "endpoint": "u_unified_p4_kernel/input_mem_reg[3][58][12]/D", "start_loc": "SLICE_X101Y76", "end_loc": "SLICE_X82Y15", "datapath_delay_ns": 2.983, "logic_delay_ns": 0.461, "route_delay_ns": 2.522, "logic_levels": "6", "start_fanout": ""}},
+    "C_other_cache_read_or_response": {"sampled_path_count": 100, "sampled_negative_slack_sum_ns": -91.252000, "worst_slack_ns": -0.947000, "representative": {"startpoint": "fill_slot_reg/C", "endpoint": "gen_input_slots[0].gen_input_banks[2].u_input_cache_bank/data_mem_reg_512_575_7_13/RAMA/WE", "start_loc": "SLICE_X77Y156", "end_loc": "SLICE_X74Y209", "datapath_delay_ns": 2.745, "logic_delay_ns": 0.587, "route_delay_ns": 2.158, "logic_levels": "5", "start_fanout": ""}},
+    "C_other_cache_kernel_or_write": {"sampled_path_count": 33, "sampled_negative_slack_sum_ns": -30.252000, "worst_slack_ns": -1.000000, "representative": {"startpoint": "u_unified_p4_kernel/fifo_rd_ptr_q_reg[1]_rep__2/C", "endpoint": "vwrite_cmd_data_q_reg[1][15]/D", "start_loc": "SLICE_X91Y71", "end_loc": "SLICE_X72Y58", "datapath_delay_ns": 2.982, "logic_delay_ns": 0.559, "route_delay_ns": 2.423, "logic_levels": "6", "start_fanout": ""}},
+    "D_control_or_r4c": {"sampled_path_count": 3, "sampled_negative_slack_sum_ns": -2.709000, "worst_slack_ns": -0.912000, "representative": {"startpoint": "scrub_active_reg/C", "endpoint": "lfnst_grid_reg[18][11]/D", "start_loc": "SLICE_X79Y103", "end_loc": "SLICE_X101Y71", "datapath_delay_ns": 2.892, "logic_delay_ns": 0.561, "route_delay_ns": 2.331, "logic_levels": "5", "start_fanout": ""}},
+    "E_other": {"sampled_path_count": 11, "sampled_negative_slack_sum_ns": -9.966000, "worst_slack_ns": -0.938000, "representative": {"startpoint": "u_bounded_lfnst_engine/coeff_bundle_q_reg[182]/C", "endpoint": "u_bounded_lfnst_engine/products_q_reg[11][8]/D", "start_loc": "SLICE_X101Y109", "end_loc": "SLICE_X101Y111", "datapath_delay_ns": 2.919, "logic_delay_ns": 1.629, "route_delay_ns": 1.290, "logic_levels": "7", "start_fanout": ""}}
+  },
+  "decision_status": "QUALIFICATION_ONLY_NO_P9_RTL_AUTHORIZATION",
+  "hold_is_separate_signoff": true
+}
