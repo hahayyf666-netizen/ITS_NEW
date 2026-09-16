@@ -1,0 +1,218 @@
+{
+  "schema": "step12f.p9.round4.lfnst_dsp_pipeline.manifest.v1",
+  "phase": "Step12F-P9 Round 4 bounded LFNST DSP product pipeline",
+  "date": "2026-09-16",
+  "base_commit": "f4a9b9d",
+  "status": "FUNCTIONAL_PASS_PHYSICAL_TIMING_P1_STOP",
+  "objective": "Separate bounded LFNST operand capture and product formation into a synchronous data-only pipeline so the implementation can infer DSP resources without changing the mathematical contract or external protocol.",
+  "scope": {
+    "rtl_changed": [
+      "02_rtl/rtl/bounded_lfnst_engine.sv"
+    ],
+    "rtl_unchanged": [
+      "02_rtl/rtl/unified_p4_kernel.sv",
+      "02_rtl/rtl/unified_its_wrapper.sv",
+      "02_rtl/rtl/its_input_cache_bank.sv"
+    ],
+    "oracle_changed": false,
+    "profile_changed": false,
+    "xdc_changed": false,
+    "r4c_changed": false,
+    "v35_18_tag": "v3.5-18",
+    "v35_18_target_commit": "7415b0acb33481af1845f63e16b93ce7c33b977b",
+    "new_tag": false
+  },
+  "implementation_change": {
+    "operand_stage": "Registered coefficient/term capture with masking before product formation.",
+    "product_stage": "Synchronous signed DATA_W x COEFF_W product registers; data-only registers have no asynchronous reset so validity metadata controls observability.",
+    "metadata": "mul_valid/mul_group/mul_last and product_valid/product_group/product_last remain asynchronously reset and travel with the data.",
+    "throughput_contract": "issue II=1, group II=1, vector II=N/4; no output-side backpressure is introduced into an admitted arithmetic transaction.",
+    "mathematics": "Coefficient tables, term ordering, reduction, rounding, clipping, and output semantics unchanged."
+  },
+  "tools": {
+    "modelsim": {
+      "name": "ModelSim SE-64 2020.4",
+      "vsim": "D:\\software\\Modelsim\\win64\\vsim.exe",
+      "run_script": "03_verification/step12d_engineering/run_step12f_coverage_modelsim.ps1",
+      "modes": ["normal", "synthesis"]
+    },
+    "vivado": {
+      "version": "2025.2 Build 6299465",
+      "device": "xcku5p-ffvb676-2-e",
+      "clock_period_ns": 2.0,
+      "clock_frequency_mhz": 500,
+      "synthesis_elapsed_sec": 213,
+      "implementation_elapsed_sec": 1406,
+      "route_state": "Fully Routed"
+    }
+  },
+  "coverage": {
+    "status": "PASS",
+    "evidence": "STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "normal": {
+      "compile": "PASS",
+      "gate_b_numeric_cases": 156,
+      "gate_b_vector_ii_legacy_modes": 7,
+      "gate_f_vector_ii_modes": 13,
+      "gate_c_cases": 369,
+      "gate_c_beats": 45636,
+      "lfnst_engine_cases": 1088,
+      "lfnst_wrapper_cases": 258,
+      "p4_stage0_n4_vectors": 16,
+      "errors": 0
+    },
+    "synthesis": {
+      "compile": "PASS",
+      "gate_b_numeric_cases": 156,
+      "gate_b_vector_ii_legacy_modes": 7,
+      "gate_f_vector_ii_modes": 13,
+      "gate_c_cases": 369,
+      "gate_c_beats": 45636,
+      "lfnst_engine_cases": 1088,
+      "lfnst_wrapper_cases": 258,
+      "p4_stage0_n4_vectors": 16,
+      "errors": 0
+    },
+    "contracts": {
+      "group_ii": 1,
+      "vector_ii": "N/4",
+      "sparse_input": true,
+      "rectangles": true,
+      "lfnst": true,
+      "backpressure": true,
+      "two_tu": true,
+      "output_adapter": "LOW10_TWOS_COMPLEMENT"
+    }
+  },
+  "physical": {
+    "synthesis": {
+      "status": "PASS_COMPLETED_BUT_TIMING_FAIL",
+      "wns_ns": -0.564,
+      "tns_ns": -48.984,
+      "setup_failing_endpoints": 298,
+      "hold_whs_ns": -0.076,
+      "hold_ths_ns": -4.741,
+      "hold_failing_endpoints": 73,
+      "unconstrained_internal_endpoints": 0,
+      "resources": {
+        "clb_luts": 27997,
+        "logic_luts": 22356,
+        "lutram": 5641,
+        "clb_registers": 23340,
+        "carry8": 1477,
+        "f7_muxes": 1746,
+        "f8_muxes": 592,
+        "dsp48e2": 320,
+        "bram": 0,
+        "uram": 0
+      },
+      "bounded_lfnst_hierarchy": {
+        "dsp48e2": 64,
+        "lut": 2392,
+        "ff": 2182
+      },
+      "drc_warnings": {
+        "DPIP-2": 32,
+        "DPOP-3": 32
+      }
+    },
+    "postroute": {
+      "status": "FULLY_ROUTED_BUT_TIMING_FAIL",
+      "wns_ns": -0.113,
+      "tns_ns": -8.032,
+      "setup_failing_endpoints": 259,
+      "whs_ns": -0.080,
+      "ths_ns": -4.911,
+      "hold_failing_endpoints": 76,
+      "unconstrained_internal_endpoints": 0,
+      "valid_timing_exceptions": 0,
+      "route_state": "Fully Routed",
+      "total_on_chip_power_w": 1.864,
+      "worst_setup_path": {
+        "source": "kernel_h_rd_addr_q_reg[3][1]/C",
+        "destination": "kernel_h_rd_data_tail_q_reg[48]/D",
+        "wns_ns": -0.113,
+        "data_delay_ns": 2.095,
+        "logic_delay_ns": 0.443,
+        "routing_delay_ns": 1.652,
+        "logic_levels": 5,
+        "primitives": ["LUT4", "LUT6", "MUXF7", "MUXF8", "RAMD64E"],
+        "family": "H-read/temp-bank distributed-RAM read"
+      },
+      "representative_next_paths": [
+        {
+          "source": "kernel_h_rd_pending_q_reg/C",
+          "destination": "kernel_h_rd_data_q_reg[40]/D",
+          "wns_ns": -0.096,
+          "data_delay_ns": 2.077,
+          "logic_delay_ns": 0.630,
+          "routing_delay_ns": 1.447
+        },
+        {
+          "source": "u_unified_p4_kernel/fifo_rd_ptr_q_reg[2]_rep/C",
+          "destination": "vwrite_cmd_data_q_reg[1][7]/D",
+          "wns_ns": -0.094,
+          "data_delay_ns": 2.076,
+          "logic_delay_ns": 0.441,
+          "routing_delay_ns": 1.635
+        }
+      ],
+      "drc_warnings": {
+        "DPIP-2": 32,
+        "DPOP-4": 32,
+        "RTSTAT-10": 1,
+        "errors": 0
+      }
+    }
+  },
+  "constraints": {
+    "check_timing": {
+      "no_clock": 0,
+      "unconstrained_internal_endpoints": 0,
+      "no_input_delay": 0,
+      "no_output_delay": 0,
+      "loops": 0,
+      "multiple_clock": 0,
+      "partial_input_output_delay": 0
+    },
+    "timing_exceptions": "No valid timing exceptions found."
+  },
+  "evidence_hashes": {
+    "bounded_lfnst_engine_sha256": "4F9752585904474657E00E3B6550D95E7163699BF3FA195925AC0D0163C0A93A",
+    "coverage_json_sha256": "1D1C7D653BD90B3E9BA7755C0A1A4E37FE738A49B61600BF920EE9BEA7DF8ACF",
+    "postsynth_dcp_sha256": "8ACC08F3615617DF83EE8F922D8DB4478A97DEC7C441BDDBDD4E5B7425799857",
+    "postroute_dcp_sha256": "9CB1BCF744FB5AFB603DA8D15A3EE28720EDE1A3A83084C6256EC607BB31FB50",
+    "postroute_timing_sha256": "4E9A74AE67875BBF964319FE1FB071AFDD263E1EC3CEAC97ED11FCD441722297",
+    "postroute_hold_sha256": "718276F0250B511CD0BF51238D9D289214830160B77D59E8E17B1C8EC5C9F57A",
+    "postroute_utilization_sha256": "AEFFEC93921AB19B4E1A43DBA73B35B84BB8CD1B23664603681096E4C8CF9581",
+    "postroute_power_sha256": "BA169E765A32B19B8F74882FCCB688A26627A7DC9CA1769A29E52A43B7595B87"
+  },
+  "evidence": {
+    "coverage_json": "STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "postsynth_dcp": "vivado_synth/step12f_unified_wrapper_postsynth.dcp",
+    "postroute_dcp": "vivado_impl/step12f_unified_wrapper_postroute.dcp",
+    "postsynth_timing": "vivado_synth/report_timing_summary_postsynth.rpt",
+    "postsynth_hold": "vivado_synth/report_timing_hold_summary_postsynth.rpt",
+    "postroute_timing": "vivado_impl/report_timing_summary_postroute.rpt",
+    "postroute_hold": "vivado_impl/report_timing_hold_summary_postroute.rpt",
+    "postroute_worst100": "vivado_impl/report_timing_worst100_postroute.rpt",
+    "postroute_utilization": "vivado_impl/report_utilization_postroute.rpt",
+    "postroute_high_fanout": "vivado_impl/report_high_fanout_postroute.rpt",
+    "postroute_check_timing": "vivado_impl/report_check_timing_postroute.rpt",
+    "postroute_exceptions": "vivado_impl/report_exceptions_postroute.rpt",
+    "postroute_drc": "vivado_impl/report_drc_postroute.rpt",
+    "postroute_power": "vivado_impl/report_power_postroute.rpt",
+    "postroute_log": "vivado_impl/vivado_impl.log"
+  },
+  "decision": {
+    "functional": "PASS",
+    "synthesis": "PASS_COMPLETED_BUT_TIMING_FAIL",
+    "implementation": "FULLY_ROUTED_BUT_TIMING_FAIL",
+    "setup_signoff": "FAIL",
+    "hold_signoff": "FAIL",
+    "p9_round4_effective": true,
+    "p9_round4_authorized_tag": false,
+    "tag": "NOT_CREATED",
+    "next": "Use the post-route worst-path census to select the next narrow timing repair; current leading family is H-read/temp-bank distributed-RAM routing, not the bounded-LFNST product path."
+  }
+}
