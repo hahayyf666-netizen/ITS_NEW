@@ -1,0 +1,110 @@
+{
+  "schema": "step12f.p9.r5c.manifest.v1",
+  "generated_utc": "2026-09-17T03:36:14.1182898Z",
+  "baseline_commit": "1ffea5276fc4c95cac34ffc42cd0a66b98c2e8b3",
+  "scope": "READ_ONLY_ROOT_CAUSE_QUALIFICATION",
+  "status": "COMPLETE_NO_RTL_OR_XDC_CHANGE",
+  "rtl_changed": false,
+  "xdc_changed": false,
+  "resynthesis": false,
+  "implementation_rerun": false,
+  "strategy_search": false,
+  "p9_r6_rtl_authorized": false,
+  "new_tag": false,
+  "physical_context": {
+    "dcp": "05_audit/current/56/p9_r5b_implementation_convergence_20260917/B0_NETDELAY_REPLAY/final.dcp",
+    "dcp_sha256": "39DE741B81CBB7525B4D877BEB0A6E272969D4FA56665833B90FF720A250002A",
+    "vivado_version": "2025.2",
+    "part": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0,
+    "max_threads": 4,
+    "xdc": "03_verification/vivado/step12f_unified_wrapper_2ns.xdc",
+    "xdc_sha256": "8249A2643753D347F98F3F1AD775829AB13F277375801B7565C1AC7A347E1B2F",
+    "qualification_script": "03_verification/vivado/run_p9_r5c_root_cause.tcl",
+    "qualification_script_sha256": "73AD73C3206B1784DCDC9F412640214E3695E0EAE4AF77AE87806FD97A6CFCFB"
+  },
+  "authoritative_summary": {
+    "setup": {
+      "wns_ns": -0.063,
+      "tns_ns": -1.776,
+      "failing_endpoints": 84,
+      "negative_paths": 84,
+      "unique_endpoints": 84
+    },
+    "hold": {
+      "whs_ns": -0.080,
+      "ths_ns": -4.764,
+      "failing_endpoints": 65,
+      "negative_paths": 65,
+      "unique_endpoints": 65
+    },
+    "async_reset_removal": {
+      "failing_endpoints": 0,
+      "worst_slack_ns": 0.010
+    }
+  },
+  "hold_root_cause": {
+    "classification": "INTERFACE_OR_OOC_HARNESS_STRONGLY_INDICATED_NOT_PROVEN",
+    "all_negative_paths_source_is_input_port": true,
+    "all_negative_paths_zero_logic_level": true,
+    "all_negative_paths_first_register_endpoint": true,
+    "families": {
+      "input_it_info": {"count": 44, "tns_ns": -3.401, "worst_slack_ns": -0.080},
+      "input_it_data_in": {"count": 16, "tns_ns": -1.228, "worst_slack_ns": -0.080},
+      "input_it_data_addr": {"count": 5, "tns_ns": -0.135, "worst_slack_ns": -0.049}
+    },
+    "constraint": {
+      "clock": "clk",
+      "input_delay_min_ns": 0.0,
+      "input_delay_max_ns": 0.0,
+      "source_file": "03_verification/vivado/step12f_unified_wrapper_2ns.xdc",
+      "source_file_comment": "Registered-neighbor OOC contract",
+      "hd_clk_src_warning": true
+    },
+    "physical_io_observation": {
+      "endpoint_iob_property": "not_available_or_unset_in_checkpoint",
+      "port_loc_package_pin": "unset_in_checkpoint",
+      "ibuf_iodelay_iob_ff_in_negative_path": false,
+      "interpretation": "The routed DCP does not model a placed package I/O path for these ports; this is evidence for an OOC/interface-model issue, not permission to relax XDC."
+    },
+    "decision": "Do not modify core RTL or XDC in this batch; resolve against the final interface/top-level signoff methodology before any hold waiver or constraint change."
+  },
+  "setup_root_cause": {
+    "classification": "DISTRIBUTED_MULTI_FAMILY_TIMING_TAIL",
+    "families": {
+      "P4_slot_state": {"count": 20, "tns_ns": -0.581, "worst_slack_ns": -0.060},
+      "cache_read_command": {"count": 16, "tns_ns": -0.337, "worst_slack_ns": -0.063},
+      "P4_fifo_control": {"count": 20, "tns_ns": -0.290, "worst_slack_ns": -0.045},
+      "wrapper_kernel_vector": {"count": 11, "tns_ns": -0.244, "worst_slack_ns": -0.036},
+      "LFNST_control": {"count": 10, "tns_ns": -0.252, "worst_slack_ns": -0.041},
+      "H_read_or_kernel_control": {"count": 6, "tns_ns": -0.074, "worst_slack_ns": -0.028},
+      "P4_other_control": {"count": 1, "tns_ns": -0.003, "worst_slack_ns": -0.003}
+    },
+    "decision": "No single stable RTL cone is authorized by this census; retain RTL and defer any narrow R6 proposal until a separate physical or structural decision is approved."
+  },
+  "evidence_files": {
+    "tool_context": "R5C_TOOL_CONTEXT.txt",
+    "constraint_provenance": "input_delay_constraint_provenance.txt",
+    "setup_census": "setup_endpoint_census.csv",
+    "hold_census": "hold_endpoint_census.csv",
+    "census_summary": "R5C_CENSUS_SUMMARY.json",
+    "negative_setup_paths": "negative_setup_paths.rpt",
+    "negative_hold_paths": "negative_hold_paths.rpt",
+    "timing_summary_setup": "timing_summary_setup.rpt",
+    "timing_summary_hold": "timing_summary_hold.rpt",
+    "check_timing": "check_timing.rpt",
+    "exceptions": "exceptions.rpt",
+    "io_report": "io_report.rpt",
+    "port_properties": "port_properties.rpt"
+  },
+  "final_decision": {
+    "p9_r5c": "COMPLETE_READ_ONLY",
+    "hold_signoff": false,
+    "setup_signoff": false,
+    "five_hundred_mhz_signoff": false,
+    "r6_rtl": "NOT_AUTHORIZED",
+    "xdc_change": "NOT_AUTHORIZED",
+    "next": "Resolve interface/OOC hold responsibility and separately decide whether distributed setup tail warrants physical methodology work; no automatic RTL change."
+  }
+}
+

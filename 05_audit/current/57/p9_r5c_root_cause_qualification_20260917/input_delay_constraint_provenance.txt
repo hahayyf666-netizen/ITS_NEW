@@ -1,0 +1,8 @@
+source_xdc=03_verification/vivado/step12f_unified_wrapper_2ns.xdc
+create_clock -name clk -period 2.000 [get_ports clk]
+set step12f_inputs [get_ports {
+set_input_delay  -clock clk -max 0.000 $step12f_inputs
+set_input_delay  -clock clk -min 0.000 $step12f_inputs
+set_output_delay -clock clk -max 0.000 $step12f_outputs
+set_output_delay -clock clk -min 0.000 $step12f_outputs
+

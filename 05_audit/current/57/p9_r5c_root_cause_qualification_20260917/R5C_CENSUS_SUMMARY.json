@@ -1,0 +1,35 @@
+{
+  "schema": "step12f.p9.r5c.census.v1",
+  "read_only": true,
+  "dcp": "05_audit/current/56/p9_r5b_implementation_convergence_20260917/B0_NETDELAY_REPLAY/final.dcp",
+  "setup_negative_path_count": 84,
+  "setup_unique_endpoint_count": 84,
+  "hold_negative_path_count": 65,
+  "hold_unique_endpoint_count": 65,
+  "setup_families": {
+    "P4_slot_state": {"count": 20, "tns_ns": -0.581000, "worst_slack_ns": -0.060000},
+    "cache_read_command": {"count": 16, "tns_ns": -0.337000, "worst_slack_ns": -0.063000},
+    "P4_fifo_control": {"count": 20, "tns_ns": -0.290000, "worst_slack_ns": -0.045000},
+    "wrapper_kernel_vector": {"count": 11, "tns_ns": -0.244000, "worst_slack_ns": -0.036000},
+    "LFNST_control": {"count": 10, "tns_ns": -0.252000, "worst_slack_ns": -0.041000},
+    "H_read_or_kernel_control": {"count": 6, "tns_ns": -0.074000, "worst_slack_ns": -0.028000},
+    "P4_other_control": {"count": 1, "tns_ns": -0.003000, "worst_slack_ns": -0.003000},
+    "other": {"count": 0, "tns_ns": 0.000000, "worst_slack_ns": 0.000000}
+  },
+  "hold_families": {
+    "input_it_info": {"count": 44, "tns_ns": -3.401000, "worst_slack_ns": -0.080000},
+    "input_it_data_in": {"count": 16, "tns_ns": -1.228000, "worst_slack_ns": -0.080000},
+    "input_it_data_addr": {"count": 5, "tns_ns": -0.135000, "worst_slack_ns": -0.049000},
+    "input_protocol_control": {"count": 0, "tns_ns": 0.000000, "worst_slack_ns": 0.000000},
+    "input_reset": {"count": 0, "tns_ns": 0.000000, "worst_slack_ns": 0.000000},
+    "async_reset_removal_or_recovery": {"count": 0, "tns_ns": 0.000000, "worst_slack_ns": 0.000000},
+    "internal_or_other": {"count": 0, "tns_ns": 0.000000, "worst_slack_ns": 0.000000},
+    "other_input": {"count": 0, "tns_ns": 0.000000, "worst_slack_ns": 0.000000}
+  },
+  "interpretation": {
+    "hold": "Classify negative min-delay paths by source port, path type, endpoint register and I/O packing; do not change XDC in this read-only batch.",
+    "setup": "Classify one representative negative max-delay path per endpoint by source/destination family and physical delay; a worst-path sample is not treated as a new timing constraint.",
+    "signoff": "This census does not sign off 500 MHz and does not authorize R6 RTL."
+  }
+}
+
