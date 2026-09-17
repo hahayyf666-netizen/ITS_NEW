@@ -138,6 +138,14 @@ def main() -> int:
             slacks = [fnum(row.get("slack")) for row in subset]
             slacks = [s for s in slacks if s is not None]
             negative_tns = sum(s for s in slacks if s < 0.0)
+            start_regions = Counter(
+                inventory_by_cell.get(row.get("start_cell", ""), {}).get("clock_region") or "UNKNOWN"
+                for row in subset
+            )
+            end_regions = Counter(
+                inventory_by_cell.get(row.get("end_cell", ""), {}).get("clock_region") or "UNKNOWN"
+                for row in subset
+            )
             return {
                 "path_count": len(subset),
                 "negative_path_count": sum(1 for s in slacks if s < 0.0),
@@ -145,6 +153,8 @@ def main() -> int:
                 "distance": stats(distances),
                 "routing_fraction": stats(route_fracs),
                 "logic_levels": stats([float(v) for row in subset if (v := inum(row.get("logic_levels"))) is not None]),
+                "start_clock_regions": dict(sorted(start_regions.items())),
+                "end_clock_regions": dict(sorted(end_regions.items())),
             }
 
         path_stats[family] = {
@@ -172,6 +182,7 @@ def main() -> int:
             "unique_tile_count": len(tiles),
             "tile_bbox": bbox(rows),
             "site_types": dict(Counter(row.get("site_type", "") for row in rows)),
+            "clock_regions": dict(sorted(Counter(row.get("clock_region", "") or "UNKNOWN" for row in rows).items())),
             "fanout": stats([float(v) for v in fanouts]),
         }
 
@@ -241,6 +252,8 @@ def main() -> int:
             "limitations": [
                 "Tile Manhattan distance is a placement proxy, not a timing proof.",
                 "SLICE/DSP/RAM resource indices are not directly comparable; tile GRID_POINT coordinates are used.",
+                "G0 directly queried site/tile CLOCK_REGION where available; no same-region timing claim is made solely from region labels.",
+                "The historical R5F CSV region census was blank/unknown; G0 uses a fresh DCP cell/tile inventory instead.",
                 "G0 does not authorize a pblock or any implementation command.",
                 "G1 must use one common postsynth DCP and a matched CONTROL/TREATMENT A/B.",
             ],
@@ -299,26 +312,28 @@ def main() -> int:
     report.append("")
     report.append("## Complete-cell inventory")
     report.append("")
-    report.append("| Family | Cells | Sites | Tiles | Tile bbox |")
-    report.append("|---|---:|---:|---:|---|")
+    report.append("| Family | Cells | Sites | Tiles | Tile bbox | Clock regions |")
+    report.append("|---|---:|---:|---:|---|---|")
     for family in sorted(population):
         item = population[family]
-        report.append(f"| `{family}` | {item['cell_count']} | {item['unique_site_count']} | {item['unique_tile_count']} | `{item['tile_bbox']}` |")
+        report.append(f"| `{family}` | {item['cell_count']} | {item['unique_site_count']} | {item['unique_tile_count']} | `{item['tile_bbox']}` | `{item['clock_regions']}` |")
     report.append("")
     report.append("## Failing-versus-passing path population")
     report.append("")
-    report.append("Distances are tile-grid Manhattan proxies; they are not timing guarantees.")
+    report.append("Distances are tile-grid Manhattan proxies; they are not timing guarantees. Clock-region labels are reported as physical context only.")
     report.append("")
-    report.append("| Source family | Population | Paths | Negative TNS | Median distance | P90 distance |")
-    report.append("|---|---|---:|---:|---:|---:|")
+    report.append("| Source family | Population | Paths | Negative TNS | Median distance | P90 distance | End clock regions |")
+    report.append("|---|---|---:|---:|---:|---:|---|")
     for family in sorted(path_stats):
         for status, label in (("failing", "failing"), ("passing_or_zero", "passing/zero")):
             item = path_stats[family][status]
-            report.append(f"| `{family}` | {label} | {item['path_count']} | {item['negative_tns_ns']:.3f} | {item['distance']['median']:.1f} | {item['distance']['p90']:.1f} |")
+            report.append(f"| `{family}` | {label} | {item['path_count']} | {item['negative_tns_ns']:.3f} | {item['distance']['median']:.1f} | {item['distance']['p90']:.1f} | `{item['end_clock_regions']}` |")
     report.append("")
     report.append("## Decision")
     report.append("")
     report.append(result["g0_interpretation"]["evidence"])
+    report.append("")
+    report.append("G0 obtained CLOCK_REGION labels from the placed cell/site inventory. `input_mem_reg` spans multiple regions while ingress producers are concentrated more narrowly; this supports a locality hypothesis but is not itself a timing proof.")
     report.append("")
     report.append("This read-only result does not choose pblock coordinates. If G1 is run, it must use one common postsynth DCP and matched CONTROL/TREATMENT flows with exactly one locality constraint in TREATMENT.")
     (out_dir / "G0_LOCALITY_REPORT.md").write_text("\n".join(report) + "\n", encoding="utf-8")

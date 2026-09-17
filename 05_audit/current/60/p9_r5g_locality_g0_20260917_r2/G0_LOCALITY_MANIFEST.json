@@ -35,15 +35,20 @@
     "limitations": [
       "Tile Manhattan distance is a placement proxy, not a timing proof.",
       "SLICE/DSP/RAM resource indices are not directly comparable; tile GRID_POINT coordinates are used.",
+      "G0 directly queried site/tile CLOCK_REGION where available; no same-region timing claim is made solely from region labels.",
+      "The historical R5F CSV region census was blank/unknown; G0 uses a fresh DCP cell/tile inventory instead.",
       "G0 does not authorize a pblock or any implementation command.",
       "G1 must use one common postsynth DCP and a matched CONTROL/TREATMENT A/B."
     ],
     "locality_hypothesis": "STRONGLY_INDICATED"
   },
-  "generated_at": "2026-09-17T11:59:21.428263+00:00",
+  "generated_at": "2026-09-17T12:10:56.037067+00:00",
   "inventory": {
     "fill_wr_cmd_addr_q_reg": {
       "cell_count": 10,
+      "clock_regions": {
+        "X2Y2": 10
+      },
       "fanout": {
         "count": 10,
         "max": 16.0,
@@ -67,6 +72,9 @@
     },
     "ingress_data_q_reg": {
       "cell_count": 64,
+      "clock_regions": {
+        "X2Y2": 64
+      },
       "fanout": {
         "count": 64,
         "max": 64.0,
@@ -90,6 +98,10 @@
     },
     "ingress_group_q_reg": {
       "cell_count": 5,
+      "clock_regions": {
+        "X2Y1": 3,
+        "X2Y2": 2
+      },
       "fanout": {
         "count": 5,
         "max": 28.0,
@@ -113,6 +125,9 @@
     },
     "input_cache_bank": {
       "cell_count": 104,
+      "clock_regions": {
+        "X2Y2": 104
+      },
       "fanout": {
         "count": 0,
         "max": null,
@@ -137,6 +152,13 @@
     },
     "input_mem_reg": {
       "cell_count": 4032,
+      "clock_regions": {
+        "X1Y1": 461,
+        "X1Y2": 50,
+        "X2Y1": 2256,
+        "X2Y2": 23,
+        "X3Y1": 1242
+      },
       "fanout": {
         "count": 0,
         "max": null,
@@ -161,6 +183,10 @@
     },
     "kernel_h_rd_addr_q_reg": {
       "cell_count": 50,
+      "clock_regions": {
+        "X2Y1": 45,
+        "X2Y2": 5
+      },
       "fanout": {
         "count": 0,
         "max": null,
@@ -185,6 +211,9 @@
     },
     "kernel_h_rd_data_q_reg": {
       "cell_count": 64,
+      "clock_regions": {
+        "X2Y2": 64
+      },
       "fanout": {
         "count": 0,
         "max": null,
@@ -208,6 +237,10 @@
     },
     "kernel_rd_raw_data_q_reg": {
       "cell_count": 64,
+      "clock_regions": {
+        "X2Y1": 3,
+        "X2Y2": 61
+      },
       "fanout": {
         "count": 0,
         "max": null,
@@ -232,6 +265,9 @@
     },
     "kernel_run_q_reg": {
       "cell_count": 1,
+      "clock_regions": {
+        "X2Y2": 1
+      },
       "fanout": {
         "count": 1,
         "max": 39.0,
@@ -255,6 +291,10 @@
     },
     "lfnst_grid_reg": {
       "cell_count": 1024,
+      "clock_regions": {
+        "X1Y2": 188,
+        "X2Y2": 836
+      },
       "fanout": {
         "count": 0,
         "max": null,
@@ -279,6 +319,10 @@
     },
     "rd_cmd_addr_q_reg": {
       "cell_count": 174,
+      "clock_regions": {
+        "X2Y1": 2,
+        "X2Y2": 172
+      },
       "fanout": {
         "count": 0,
         "max": null,
@@ -303,6 +347,11 @@
     },
     "result_bank": {
       "cell_count": 110,
+      "clock_regions": {
+        "X1Y2": 1,
+        "X2Y1": 3,
+        "X2Y2": 106
+      },
       "fanout": {
         "count": 0,
         "max": null,
@@ -327,6 +376,9 @@
     },
     "result_cmd_slot_q_reg": {
       "cell_count": 1,
+      "clock_regions": {
+        "X2Y2": 1
+      },
       "fanout": {
         "count": 0,
         "max": null,
@@ -350,6 +402,9 @@
     },
     "result_cmd_valid_q_reg": {
       "cell_count": 1,
+      "clock_regions": {
+        "X2Y2": 1
+      },
       "fanout": {
         "count": 0,
         "max": null,
@@ -373,6 +428,9 @@
     },
     "vwrite_cmd_data_q_reg": {
       "cell_count": 64,
+      "clock_regions": {
+        "X2Y2": 64
+      },
       "fanout": {
         "count": 0,
         "max": null,
@@ -414,6 +472,13 @@
           "p90": 115.0,
           "p95": 122.0
         },
+        "end_clock_regions": {
+          "X1Y1": 461,
+          "X1Y2": 50,
+          "X2Y1": 2256,
+          "X2Y2": 23,
+          "X3Y1": 1242
+        },
         "logic_levels": {
           "count": 4032,
           "max": 0.0,
@@ -432,6 +497,9 @@
           "min": 0.842315369261477,
           "p90": 0.954335260115607,
           "p95": 0.9554929577464789
+        },
+        "start_clock_regions": {
+          "X2Y2": 4032
         }
       },
       "failing": {
@@ -442,6 +510,11 @@
           "min": 41.0,
           "p90": 122.0,
           "p95": 124.0
+        },
+        "end_clock_regions": {
+          "X1Y1": 3,
+          "X2Y1": 92,
+          "X3Y1": 106
         },
         "logic_levels": {
           "count": 201,
@@ -461,6 +534,9 @@
           "min": 0.9520048602673147,
           "p90": 0.9576180257510729,
           "p95": 0.9583552978386927
+        },
+        "start_clock_regions": {
+          "X2Y2": 201
         }
       },
       "failing_minus_passing_median_tile_distance": 18.0,
@@ -472,6 +548,13 @@
           "min": 20.0,
           "p90": 115.0,
           "p95": 122.0
+        },
+        "end_clock_regions": {
+          "X1Y1": 458,
+          "X1Y2": 50,
+          "X2Y1": 2164,
+          "X2Y2": 23,
+          "X3Y1": 1136
         },
         "logic_levels": {
           "count": 3831,
@@ -491,6 +574,9 @@
           "min": 0.842315369261477,
           "p90": 0.95366568914956,
           "p95": 0.9547277936962749
+        },
+        "start_clock_regions": {
+          "X2Y2": 3831
         }
       }
     },
@@ -503,6 +589,13 @@
           "min": 11.0,
           "p90": 96.0,
           "p95": 102.0
+        },
+        "end_clock_regions": {
+          "X1Y1": 461,
+          "X1Y2": 50,
+          "X2Y1": 2256,
+          "X2Y2": 23,
+          "X3Y1": 1242
         },
         "logic_levels": {
           "count": 4032,
@@ -522,6 +615,10 @@
           "min": 0.6823992133726647,
           "p90": 0.8753541076487252,
           "p95": 0.8857015423572743
+        },
+        "start_clock_regions": {
+          "X2Y1": 256,
+          "X2Y2": 3776
         }
       },
       "failing": {
@@ -532,6 +629,11 @@
           "min": 54.0,
           "p90": 109.0,
           "p95": 110.25
+        },
+        "end_clock_regions": {
+          "X1Y1": 10,
+          "X2Y1": 98,
+          "X3Y1": 168
         },
         "logic_levels": {
           "count": 276,
@@ -551,6 +653,9 @@
           "min": 0.7570093457943926,
           "p90": 0.8828880045480386,
           "p95": 0.8852144167970238
+        },
+        "start_clock_regions": {
+          "X2Y2": 276
         }
       },
       "failing_minus_passing_median_tile_distance": 31.0,
@@ -562,6 +667,13 @@
           "min": 11.0,
           "p90": 93.0,
           "p95": 99.0
+        },
+        "end_clock_regions": {
+          "X1Y1": 451,
+          "X1Y2": 50,
+          "X2Y1": 2158,
+          "X2Y2": 23,
+          "X3Y1": 1074
         },
         "logic_levels": {
           "count": 3756,
@@ -581,6 +693,10 @@
           "min": 0.6823992133726647,
           "p90": 0.8725663716814159,
           "p95": 0.8855749309392265
+        },
+        "start_clock_regions": {
+          "X2Y1": 256,
+          "X2Y2": 3500
         }
       }
     }
