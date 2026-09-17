@@ -73,6 +73,23 @@ module unified_its_wrapper #(
     logic [3:0]  fill_wr_cmd_target_c [0:1];
     logic [BANK_ADDR_W-1:0] fill_wr_cmd_addr_c;
     logic [DATA_W-1:0]      fill_wr_cmd_data_c;
+    // R6 candidate: keep the accepted command logically atomic, but replicate
+    // its physical payload at each slot/bank boundary.  The memory ports below
+    // are driven only by these local registers; the global command remains for
+    // lifecycle/equivalence bookkeeping and never fans out to a RAM port.
+    (* keep = "true", equivalent_register_removal = "no" *)
+    logic [BANK_ADDR_W-1:0] fill_wr_bank_addr_q [0:1][0:3];
+    (* keep = "true", equivalent_register_removal = "no" *)
+    logic [DATA_W-1:0] fill_wr_bank_data_q [0:1][0:3];
+    (* keep = "true", equivalent_register_removal = "no" *)
+    logic fill_wr_bank_target_q [0:1][0:3];
+    logic [7:0] fill_wr_bank_target_flat;
+    assign fill_wr_bank_target_flat = {
+        fill_wr_bank_target_q[1][3], fill_wr_bank_target_q[1][2],
+        fill_wr_bank_target_q[1][1], fill_wr_bank_target_q[1][0],
+        fill_wr_bank_target_q[0][3], fill_wr_bank_target_q[0][2],
+        fill_wr_bank_target_q[0][1], fill_wr_bank_target_q[0][0]
+    };
     logic        fill_end_pending_q;
     logic        fill_end_slot_q;
     integer fill_cmd_row_i, fill_cmd_col_i, fill_cmd_bank_i, fill_cmd_local_i;
@@ -1321,13 +1338,20 @@ module unified_its_wrapper #(
             assert (result_cmd_bank_mask_q != 4'b0000)
                 else $error("P6 empty result write command committed");
 
-        // P9 round 3 sparse-fill command invariants.  The target is one
+        // P9 round 3 / R6 sparse-fill command invariants.  The target is one
         // physical slot/bank for every valid command, and data/valid writes
-        // must be paired on that same commit edge.
+        // must be paired on that same commit edge.  The bank-local replicas
+        // are checked against the global logical command so replication cannot
+        // silently change ownership or payload.
         if (fill_wr_cmd_valid_q) begin
             assert ($onehot({fill_wr_cmd_target_q[1],
                              fill_wr_cmd_target_q[0]}))
                 else $error("P9 fill command target is not onehot");
+            assert ($onehot(fill_wr_bank_target_flat))
+                else $error("R6 local fill command target is not onehot");
+            assert ((fill_wr_bank_target_flat[3:0] == fill_wr_cmd_target_q[0]) &&
+                    (fill_wr_bank_target_flat[7:4] == fill_wr_cmd_target_q[1]))
+                else $error("R6 local/global fill target mismatch");
             for (vwrite_assert_lane_i = 0;
                  vwrite_assert_lane_i < 2;
                  vwrite_assert_lane_i = vwrite_assert_lane_i + 1)
@@ -1342,16 +1366,29 @@ module unified_its_wrapper #(
                                                         [vwrite_assert_lane_j])
                             else $error("P9 fill data/valid commit mismatch");
                         assert (input_data_wr_addr[vwrite_assert_lane_i]
-                                                         [vwrite_assert_lane_j] ==
-                                fill_wr_cmd_addr_q)
+                                                          [vwrite_assert_lane_j] ==
+                                fill_wr_bank_addr_q[vwrite_assert_lane_i]
+                                                       [vwrite_assert_lane_j])
                             else $error("P9 fill data address mismatch");
                         assert (input_valid_wr_addr[vwrite_assert_lane_i]
-                                                          [vwrite_assert_lane_j] ==
-                                fill_wr_cmd_addr_q)
+                                                           [vwrite_assert_lane_j] ==
+                                fill_wr_bank_addr_q[vwrite_assert_lane_i]
+                                                       [vwrite_assert_lane_j])
                             else $error("P9 fill valid address mismatch");
+                        assert (fill_wr_bank_addr_q[vwrite_assert_lane_i]
+                                                       [vwrite_assert_lane_j] ==
+                                fill_wr_cmd_addr_q)
+                            else $error("R6 local/global fill address mismatch");
+                        assert (fill_wr_bank_data_q[vwrite_assert_lane_i]
+                                                       [vwrite_assert_lane_j] ==
+                                fill_wr_cmd_data_q)
+                            else $error("R6 local/global fill data mismatch");
                     end
             if (scrub_active)
-                assert (!fill_wr_cmd_target_q[scrub_slot])
+                assert (!fill_wr_bank_target_q[scrub_slot][0] &&
+                        !fill_wr_bank_target_q[scrub_slot][1] &&
+                        !fill_wr_bank_target_q[scrub_slot][2] &&
+                        !fill_wr_bank_target_q[scrub_slot][3])
                     else $error("P9 fill commit conflicts with scrub slot");
         end
         if (fill_end_pending_q)
@@ -1431,17 +1468,21 @@ module unified_its_wrapper #(
             end
         end
 
-        // P9 round 3: the sparse-fill command is the only live source allowed
-        // to drive the input-cache write ports.  Address and data are held
-        // from command Q even when valid is low; command validity selects the
-        // single target bank, while the matching valid-memory write is issued
-        // on the same commit edge as the data write.
+        // P9 round 3 / R6 candidate: the sparse-fill command is the only live
+        // source allowed to drive the input-cache write ports.  The accepted
+        // command is replicated into bank-local address/data/target registers;
+        // the global command Q is deliberately absent from this physical path.
+        // A target bit is the local valid for that bank, while the matching
+        // valid-memory write is issued on the same commit edge as the data
+        // write.  Addresses/data hold their last value when the target is low.
         for (cmd_slot_i = 0; cmd_slot_i < 2; cmd_slot_i = cmd_slot_i + 1) begin
             for (cmd_bank_i = 0; cmd_bank_i < 4; cmd_bank_i = cmd_bank_i + 1) begin
                 input_data_wr_en[cmd_slot_i][cmd_bank_i] =
-                    fill_wr_cmd_valid_q && fill_wr_cmd_target_q[cmd_slot_i][cmd_bank_i];
-                input_data_wr_addr[cmd_slot_i][cmd_bank_i] = fill_wr_cmd_addr_q;
-                input_data_wr_data[cmd_slot_i][cmd_bank_i] = fill_wr_cmd_data_q;
+                    fill_wr_bank_target_q[cmd_slot_i][cmd_bank_i];
+                input_data_wr_addr[cmd_slot_i][cmd_bank_i] =
+                    fill_wr_bank_addr_q[cmd_slot_i][cmd_bank_i];
+                input_data_wr_data[cmd_slot_i][cmd_bank_i] =
+                    fill_wr_bank_data_q[cmd_slot_i][cmd_bank_i];
                 // Preserve a scrub valid-clear command when no fill command
                 // targets this bank.  The previous unconditional assignments
                 // overwrote scrub's write-enable/address/data with zeros on
@@ -1449,10 +1490,10 @@ module unified_its_wrapper #(
                 // reused by a later TU.  If a fill command is present it owns
                 // the same data/valid commit edge (and wins only for its
                 // one-hot target); a scrub on a different slot remains active.
-                if (fill_wr_cmd_valid_q &&
-                    fill_wr_cmd_target_q[cmd_slot_i][cmd_bank_i]) begin
+                if (fill_wr_bank_target_q[cmd_slot_i][cmd_bank_i]) begin
                     input_valid_wr_en[cmd_slot_i][cmd_bank_i] = 1'b1;
-                    input_valid_wr_addr[cmd_slot_i][cmd_bank_i] = fill_wr_cmd_addr_q;
+                    input_valid_wr_addr[cmd_slot_i][cmd_bank_i] =
+                        fill_wr_bank_addr_q[cmd_slot_i][cmd_bank_i];
                     input_valid_wr_data[cmd_slot_i][cmd_bank_i] = 1'b1;
                 end
             end
@@ -1512,6 +1553,7 @@ module unified_its_wrapper #(
     assign result_cmd_commit = result_cmd_valid_q;
 
     integer reset_i, lfnst_grid_i;
+    integer fill_replica_slot_i, fill_replica_bank_i;
     integer rd_cmd_reset_slot_i, rd_cmd_reset_bank_i;
     integer rd_cmd_load_slot_i, rd_cmd_load_bank_i;
     integer kernel_capture_lane_i;
@@ -1572,6 +1614,19 @@ module unified_its_wrapper #(
             fill_end_slot_q <= 1'b0;
             for (reset_i = 0; reset_i < 2; reset_i = reset_i + 1)
                 fill_wr_cmd_target_q[reset_i] <= 4'b0000;
+            for (fill_replica_slot_i = 0;
+                 fill_replica_slot_i < 2;
+                 fill_replica_slot_i = fill_replica_slot_i + 1)
+                for (fill_replica_bank_i = 0;
+                     fill_replica_bank_i < 4;
+                     fill_replica_bank_i = fill_replica_bank_i + 1) begin
+                    fill_wr_bank_addr_q[fill_replica_slot_i]
+                                           [fill_replica_bank_i] <= '0;
+                    fill_wr_bank_data_q[fill_replica_slot_i]
+                                           [fill_replica_bank_i] <= '0;
+                    fill_wr_bank_target_q[fill_replica_slot_i]
+                                             [fill_replica_bank_i] <= 1'b0;
+                end
             kernel_rd_req_pending_q <= 1'b0;
             kernel_rd_req_group_q <= 5'd0;
             kernel_rd_req_vector_q <= 7'd0;
@@ -1684,6 +1739,14 @@ module unified_its_wrapper #(
                 fill_wr_cmd_valid_q <= 1'b0;
                 fill_wr_cmd_target_q[0] <= 4'b0000;
                 fill_wr_cmd_target_q[1] <= 4'b0000;
+                for (fill_replica_slot_i = 0;
+                     fill_replica_slot_i < 2;
+                     fill_replica_slot_i = fill_replica_slot_i + 1)
+                    for (fill_replica_bank_i = 0;
+                         fill_replica_bank_i < 4;
+                         fill_replica_bank_i = fill_replica_bank_i + 1)
+                        fill_wr_bank_target_q[fill_replica_slot_i]
+                                                 [fill_replica_bank_i] <= 1'b0;
             end
             if (input_fire) begin
                 fill_wr_cmd_valid_q <= 1'b1;
@@ -1691,6 +1754,26 @@ module unified_its_wrapper #(
                 fill_wr_cmd_data_q <= fill_wr_cmd_data_c;
                 fill_wr_cmd_target_q[0] <= fill_wr_cmd_target_c[0];
                 fill_wr_cmd_target_q[1] <= fill_wr_cmd_target_c[1];
+                // Replicate the accepted payload to every physical bank.  The
+                // target bit is the only local validity/WE qualifier, so a
+                // commit followed by a refill remains atomic and bubble-free.
+                for (fill_replica_slot_i = 0;
+                     fill_replica_slot_i < 2;
+                     fill_replica_slot_i = fill_replica_slot_i + 1)
+                    for (fill_replica_bank_i = 0;
+                         fill_replica_bank_i < 4;
+                         fill_replica_bank_i = fill_replica_bank_i + 1) begin
+                        fill_wr_bank_addr_q[fill_replica_slot_i]
+                                               [fill_replica_bank_i] <=
+                            fill_wr_cmd_addr_c;
+                        fill_wr_bank_data_q[fill_replica_slot_i]
+                                               [fill_replica_bank_i] <=
+                            fill_wr_cmd_data_c;
+                        fill_wr_bank_target_q[fill_replica_slot_i]
+                                                 [fill_replica_bank_i] <=
+                            fill_wr_cmd_target_c[fill_replica_slot_i]
+                                                  [fill_replica_bank_i];
+                    end
             end
 
             // P9 second round physical-read command boundary.  A command is
@@ -2519,3 +2602,4 @@ module unified_its_wrapper #(
     end
 
 endmodule
+

@@ -1,0 +1,138 @@
+{
+  "schema": "step12f.p9_r6_input_cache_local.v1",
+  "stage": "Step12F-P9-R6",
+  "status": "FUNCTIONAL_PASS_PHYSICAL_EFFECTIVE_PARTIAL_SETUP_STOP",
+  "baseline": {
+    "local_source_base_commit": "d6b4302b0e493cc764e077d9cb1bf3b8b6dad878",
+    "comparison_r5e_commit": "55e88cf401407c23cc5881bf331acafb78c3a533",
+    "r6_wrapper_sha256": "3356E13DFD881EED6861771FF653F3D9227654017DD1AA3DEA7F99E6B591C7B7",
+    "frozen_boundaries": [
+      "contest_engineering_vtm10_v1 Oracle/profile",
+      "P4 arithmetic and coefficient organization",
+      "bounded LFNST arithmetic",
+      "input-cache memory type",
+      "registered-neighbor harness/XDC contract",
+      "R4C",
+      "v3.5-18"
+    ]
+  },
+  "locality_close": {
+    "source_csv": "05_audit/current/64/p9_r5g_g06_bounded_screen_20260918/bounded_screen_candidates.csv",
+    "source_sha256": "60548B5D64B2B4BB572AB637A7F845217594BA2B5E6B4C6C3B196CD67E51C6AD",
+    "rows_evaluated": 32,
+    "rows_with_any_d_near_reason": 4,
+    "rows_rejected_only_by_d_near": 0,
+    "producer_only_locality": "CLOSED",
+    "implementation_used": false
+  },
+  "rtl_delta": {
+    "changed_files": ["02_rtl/rtl/unified_its_wrapper.sv"],
+    "unchanged_cache_bank": true,
+    "physical_registers": [
+      "fill_wr_bank_addr_q[2][4]",
+      "fill_wr_bank_data_q[2][4]",
+      "fill_wr_bank_target_q[2][4]"
+    ],
+    "atomic_data_valid_commit": true,
+    "protocol_visible_latency_change": false,
+    "throughput_contract": "group II=1; vector II=N/4"
+  },
+  "functional": {
+    "simulator": "ModelSim SE-64 2020.4",
+    "normal": "PASS",
+    "synthesis_mode": "PASS",
+    "gate_b_numeric_cases": 156,
+    "gate_f_vector_ii_modes": 13,
+    "gate_c_tuples": 369,
+    "gate_c_beats": 45636,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 258,
+    "p4_n4_stream": "16/16/16/16 PASS"
+  },
+  "vivado": {
+    "version": "2025.2 Build 6299465",
+    "part": "xcku5p-ffvb676-2-e",
+    "top": "step12f_registered_neighbor_harness",
+    "clock_period_ns": 2.0,
+    "clock_mhz": 500.0,
+    "clock_uncertainty_setup_ns": 0.0,
+    "clock_uncertainty_hold_ns": 0.0,
+    "max_threads": 4,
+    "implementation_flow": [
+      "opt_design -directive Default",
+      "place_design -directive ExtraNetDelay_high",
+      "phys_opt_design -directive AggressiveExplore",
+      "route_design -directive NoTimingRelaxation"
+    ],
+    "implementation_elapsed_seconds": 3068,
+    "synthesis": "PASS",
+    "route_status": "FULLY_ROUTED",
+    "routable_nets": 48657,
+    "fully_routed_nets": 48657,
+    "routing_errors": 0,
+    "drc_errors": 0,
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "intentional_boundary_notes": [
+      "one no-input-delay port: rst_n",
+      "UCIO-1 top clk/rst_n package-pin warning; package signoff out of scope"
+    ],
+    "postroute_setup": {
+      "wns_ns": -0.045,
+      "tns_ns": -4.882,
+      "failing_endpoints": 312,
+      "status": "FAIL"
+    },
+    "postroute_hold": {
+      "whs_ns": 0.006,
+      "ths_ns": 0.0,
+      "failing_endpoints": 0,
+      "status": "PASS"
+    },
+    "utilization": {
+      "dsp48e2": 320,
+      "clb_luts": 28043,
+      "distributed_ram_luts": 5632,
+      "clb_registers": 25831,
+      "carry8": 1487,
+      "f7_muxes": 1743,
+      "f8_muxes": 592,
+      "block_ram_tiles": 0,
+      "uram": 0
+    }
+  },
+  "comparison_to_r5e": {
+    "r5e_setup_wns_ns": -0.139,
+    "r6_setup_wns_ns": -0.045,
+    "wns_improvement_ns": 0.094,
+    "r5e_setup_tns_ns": -74.139,
+    "r6_setup_tns_ns": -4.882,
+    "absolute_tns_reduction_ns": 69.257,
+    "r5e_setup_failing_endpoints": 1808,
+    "r6_setup_failing_endpoints": 312,
+    "failing_endpoint_reduction": 1496,
+    "comparison_note": "fresh registered-neighbor implementations; not same-placement A/B"
+  },
+  "structural_target": {
+    "global_fill_command_drives_physical_cache_write": false,
+    "local_bank_command_drives_data_and_valid_write": true,
+    "fill_command_names_in_postroute_worst100": false,
+    "local_bank_addr_postroute_fanout_observed": "approximately 368-373 loads per address bit",
+    "interpretation": "cross-bank fanout split; not zero-fanout replication"
+  },
+  "decision": {
+    "r6": "RETAINED_FROZEN",
+    "target_effect": "EFFECTIVE_PARTIAL",
+    "500mhz_signoff": "NOT_ACHIEVED",
+    "next_rtl_cut": "NOT_AUTHORIZED_BY_THIS_CHECKPOINT",
+    "new_tag": false
+  },
+  "evidence_paths": {
+    "coverage": "05_audit/current/65/p9_r6_input_cache_local_20260918/coverage_modelsim/STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "vivado_postroute_timing": "05_audit/current/65/p9_r6_input_cache_local_20260918/vivado/report_timing_summary_postroute.rpt",
+    "vivado_postroute_hold": "05_audit/current/65/p9_r6_input_cache_local_20260918/vivado/report_timing_hold_summary_postroute.rpt",
+    "vivado_route_status": "05_audit/current/65/p9_r6_input_cache_local_20260918/vivado/report_route_status_postroute.rpt",
+    "vivado_worst100": "05_audit/current/65/p9_r6_input_cache_local_20260918/vivado/report_timing_worst100_postroute.rpt"
+  }
+}
+

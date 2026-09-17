@@ -1,0 +1,18 @@
+{
+  "stage": "Step12F-P9-R5G-locality-close",
+  "status": "CLOSED_READ_ONLY",
+  "decision": "PRODUCER_ONLY_LOCALITY_CLOSED_NO_D_NEAR_ONLY_CANDIDATE",
+  "source_csv": "05_audit/current/64/p9_r5g_g06_bounded_screen_20260918/bounded_screen_candidates.csv",
+  "source_sha256": "60548B5D64B2B4BB572AB637A7F845217594BA2B5E6B4C6C3B196CD67E51C6AD",
+  "candidates_evaluated": 32,
+  "rows_with_any_d_near_reason": 4,
+  "rows_rejected_only_by_d_near": 0,
+  "relaxed_d_near_rescore": "NOT_RUN",
+  "producer_only_locality": "CLOSED",
+  "g07_or_g1_producer_intervention": "NOT_AUTHORIZED",
+  "rtl_changed": false,
+  "xdc_changed": false,
+  "implementation_run": false,
+  "next_candidate": "INPUT_CACHE_BANK_WRITE_COMMAND_FANOUT_LOCALIZATION"
+}
+

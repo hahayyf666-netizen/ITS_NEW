@@ -1,0 +1,168 @@
+{
+    "schema":  "step12f.coverage.modelsim_run.v1",
+    "status":  "PASS",
+    "simulator":  "ModelSim SE-64 2020.4",
+    "simulator_path":  "D:\\software\\Modelsim\\win64\\vsim.exe",
+    "license_path":  "D:\\software\\Modelsim\\LICENSE.TXT",
+    "work_root":  "C:\\Users\\Fine\\AppData\\Local\\Temp\\step12f_r6_coverage_20260918_b",
+    "source_hashes":  {
+                          "its_simple_ram":  "DD842C57DEABDF3AD3C75DC038A70CBB871E2D3B725D3108597B58846947845D",
+                          "its_input_cache_bank":  "2476D5FBC1D3663515137F8768EC7F16A689B3150E4527D78B5743DF3E7A05D7",
+                          "unified_p4_kernel":  "D996BC5A2BAE4579766821979719715FC3F405250294EEF7A6FE74832E0B0F02",
+                          "bounded_lfnst_engine":  "D54FA156114D74C538F385D34CD400188F3D809A6A42012EB6AFC2991E36D3AD",
+                          "bounded_lfnst_engine_tb":  "EC7BF615953BE5752D30404A6316D845952E3913826600E33254051C161B4907",
+                          "lfnst_vector_generator":  "C87C1843DE42E32B1AAF3000C46E2D6F117BE5FD2536B5DD6488A6EE45C3D905",
+                          "lfnst_wrapper_vector_generator":  "01CFAA87159A6DDC3608FB93120D03A0688A9D73D13C96D9D1E2E427C27C9C6E",
+                          "unified_its_wrapper":  "3356E13DFD881EED6861771FF653F3D9227654017DD1AA3DEA7F99E6B591C7B7",
+                          "gate_b_tb":  "A90EF4E1311B1C45D789375FA0AFF83D0681370F782F7D482EAD661B54C78BD5",
+                          "gate_b_throughput_tb":  "7138D0BFF9E208AA14749D26E0D0DE33FEF2DF56D566ADBEA592D80F2E179E7F",
+                          "gate_f_throughput_tb":  "77241DA93B921C181B500815151952227B20FC476AA12A0BE0AAA7E1EA2F10A2",
+                          "gate_c_smoke_tb":  "EC52245573410417D75E1DC297CEBA9E7B3AE658A62F6278D4C8722935B9CF85",
+                          "p3_vwrite_tb":  "3B1C055BCE8AA117991B13FB81B10E93493E453DD8DCB5230BC66DF825B6370D",
+                          "p4_stage0_tb":  "4EE95F48DFD912829927D747ADDEC37F2E82C480339AF5DE39E5A3F76E58A6FE",
+                          "gate_c_numeric_tb":  "5D7D7516FCD861684A64EB8C45F19F9E26884FFFBDA657ADE7010FF91DCF4C67"
+                      },
+    "vector_sets":  {
+                        "gate_b":  {
+                                       "cases":  156,
+                                       "one_d_modes":  13,
+                                       "stages":  2,
+                                       "patterns_per_stage":  6,
+                                       "throughput_modes_legacy":  7,
+                                       "throughput_modes_full":  13
+                                   },
+                        "gate_c":  {
+                                       "cases":  369,
+                                       "beats":  45636,
+                                       "tuple_source":  "05_audit/current/27/step12d_engineering/LEGAL_TRANSFORM_MATRIX.json",
+                                       "includes_lfnst":  true,
+                                       "includes_rectangles":  true,
+                                       "sparse_inputs":  true,
+                                       "output_adapter":  "LOW10_TWOS_COMPLEMENT",
+                                       "backpressure":  true
+                                   },
+                        "lfnst_specialty":  {
+                                                "engine_cases":  1088,
+                                                "engine_basis_cases":  1024,
+                                                "wrapper_cases":  258,
+                                                "wrapper_beats":  4644,
+                                                "all_gather_terms":  true,
+                                                "all_set_index":  true
+                                            }
+                    },
+    "runs":  [
+                 {
+                     "mode":  "normal",
+                     "compile":  "PASS",
+                     "gate_b_kernel_numeric":  "PASS_156_CASES",
+                     "gate_b_vector_ii_legacy":  "PASS_7_MODES",
+                     "gate_f_vector_ii":  "PASS_13_MODES",
+                     "gate_c_wrapper_smoke":  "PASS",
+                     "p3_vwrite_contract":  "PASS",
+                     "p4_stage0_issue_contract":  "PASS_16_N4_VECTORS_SLOT_RELEASE",
+                     "gate_c_wrapper_numeric":  "PASS_369_CASES",
+                     "lfnst_engine_specialty":  "PASS_1088_CASES",
+                     "lfnst_wrapper_specialty":  "PASS_258_CASES",
+                     "gate_c_beats":  45636,
+                     "logs":  [
+                                  {
+                                      "name":  "compile.log",
+                                      "sha256":  "7DACD604B3017DE84EFEF5F4DD4A30B162B23BD482830A4F04790CE11F40AB2C"
+                                  },
+                                  {
+                                      "name":  "gate_b_kernel_numeric.log",
+                                      "sha256":  "EF8ECA1DD78A36A1E33E26F652693806BDE71698C0F226DE4C826CB1831A27D8"
+                                  },
+                                  {
+                                      "name":  "gate_b_vector_ii.log",
+                                      "sha256":  "61981C5149F815209668CFA229D1577E22B9EBDEDA8ABAFEEEB896C9A70D8456"
+                                  },
+                                  {
+                                      "name":  "gate_f_vector_ii.log",
+                                      "sha256":  "F5EF517D42B29D3B580148A2048F8EA931A1B5E06B287780B3C530283877A871"
+                                  },
+                                  {
+                                      "name":  "gate_c_wrapper_smoke.log",
+                                      "sha256":  "D7F9B04E3CD22FD172F3B6ACD82FCB3E41ABC6A7A8952217FDD931D5BC9EBC82"
+                                  },
+                                  {
+                                      "name":  "p3_vwrite_contract.log",
+                                      "sha256":  "C9F9276D419D84928493BA2DE16F4273305667E046E2EA75647DDE3BF6E8D906"
+                                  },
+                                  {
+                                      "name":  "p4_stage0_issue_contract.log",
+                                      "sha256":  "0A47D8A69DEEE0CB4A2D22D1AFB007BF67D2BE8B7F99877CD5138B5A1F2BC70A"
+                                  },
+                                  {
+                                      "name":  "gate_c_wrapper_numeric.log",
+                                      "sha256":  "42559BA1AF2E802CD7E85121AC933519466754D4E6CD5135E3BBB89400101B02"
+                                  },
+                                  {
+                                      "name":  "lfnst_engine_specialty.log",
+                                      "sha256":  "103F936D5AA1CA712D3E2560FE14520BB1A8B749716CDFCE2FBF7614D5669A71"
+                                  },
+                                  {
+                                      "name":  "lfnst_wrapper_specialty.log",
+                                      "sha256":  "B30BB57D248CB601C4986A4E073C0C64C81C41064B16560ED948788B47FCD6C4"
+                                  }
+                              ]
+                 },
+                 {
+                     "mode":  "synthesis",
+                     "compile":  "PASS",
+                     "gate_b_kernel_numeric":  "PASS_156_CASES",
+                     "gate_b_vector_ii_legacy":  "PASS_7_MODES",
+                     "gate_f_vector_ii":  "PASS_13_MODES",
+                     "gate_c_wrapper_smoke":  "PASS",
+                     "p3_vwrite_contract":  "PASS",
+                     "p4_stage0_issue_contract":  "PASS_16_N4_VECTORS_SLOT_RELEASE",
+                     "gate_c_wrapper_numeric":  "PASS_369_CASES",
+                     "lfnst_engine_specialty":  "PASS_1088_CASES",
+                     "lfnst_wrapper_specialty":  "PASS_258_CASES",
+                     "gate_c_beats":  45636,
+                     "logs":  [
+                                  {
+                                      "name":  "compile.log",
+                                      "sha256":  "3E66D24F5AD05452CE66189F3A15E31B6889B5727E1F1B4282B848E5CE253804"
+                                  },
+                                  {
+                                      "name":  "gate_b_kernel_numeric.log",
+                                      "sha256":  "8725A0F4CC72080E02F8E8D5CBF1FEE73A2E01A80CFB605EBB88AD3B86C83D97"
+                                  },
+                                  {
+                                      "name":  "gate_b_vector_ii.log",
+                                      "sha256":  "7A83AB90A9D62B2E314CE2B30DE2EF13C657FAB8E41415B3670B68413753DA7D"
+                                  },
+                                  {
+                                      "name":  "gate_f_vector_ii.log",
+                                      "sha256":  "2B832BCAC8A81C25EED5FBB97FD6DA0C231E62E3ABAAFFF72F193B2A6AB30B04"
+                                  },
+                                  {
+                                      "name":  "gate_c_wrapper_smoke.log",
+                                      "sha256":  "D719483CDCE84223DF98DAB9AE0341DE150B5010866FBC130727A86BA89CEFFC"
+                                  },
+                                  {
+                                      "name":  "p3_vwrite_contract.log",
+                                      "sha256":  "4A54D5E52570B55C7379C7105DC73E2693456796D43B4133FA51598D57345837"
+                                  },
+                                  {
+                                      "name":  "p4_stage0_issue_contract.log",
+                                      "sha256":  "D3F7C26E2278F4D84AFEBEDB0AAE8BBF01EBF9810C8550E82213778C348F06D0"
+                                  },
+                                  {
+                                      "name":  "gate_c_wrapper_numeric.log",
+                                      "sha256":  "00348AF41C3C37F3010E2B7B88DF3547A6C66CACCE3E60C3E1113D04A9A0F042"
+                                  },
+                                  {
+                                      "name":  "lfnst_engine_specialty.log",
+                                      "sha256":  "99E483367ABE01BE10C6CD8C1AE175F396915B7D7B587248537EDC60F33B750A"
+                                  },
+                                  {
+                                      "name":  "lfnst_wrapper_specialty.log",
+                                      "sha256":  "71ACEF95F02BCE1CB58065895B3A90DFA5A17349060D6FF9AC07453EC5CB3109"
+                                  }
+                              ]
+                 }
+             ]
+}
+
