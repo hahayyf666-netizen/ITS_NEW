@@ -1,0 +1,80 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Thu Sep 17 21:09:10 2026
+# Process ID         : 3368
+# Current directory  : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish
+# Command line       : vivado.exe -mode batch -notrace -source C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\03_verification\vivado\run_step12f_r5g_g05_geometry.tcl -log C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\61\p9_r5g_g05_geometry_20260917\g05_vivado.log -journal C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\61\p9_r5g_g05_geometry_20260917\g05_vivado.jou
+# Log file           : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_p8_1_publish/05_audit/current/61/p9_r5g_g05_geometry_20260917/g05_vivado.log
+# Journal file       : C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\61\p9_r5g_g05_geometry_20260917\g05_vivado.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 24696 MB
+# Total Virtual      : 41060 MB
+# Available Virtual  : 16240 MB
+#-----------------------------------------------------------
+INFO: [Common 17-1239] XILINX_LOCAL_USER_DATA is set to 'C:\Users\Fine\AppData\Local\Temp\step12f_r5g_g05_vivado_user_r3'.
+source {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\03_verification\vivado\run_step12f_r5g_g05_geometry.tcl} -notrace
+P9R5G_G05_START
+DCP=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\59\p9_r5e_registered_neighbor_20260917_defaulttop\step12f_registered_neighbor_postroute.dcp
+OUT_DIR=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\61\p9_r5g_g05_geometry_20260917
+MAX_THREADS=4
+READ_ONLY=TRUE
+Command: open_checkpoint {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\59\p9_r5e_registered_neighbor_20260917_defaulttop\step12f_registered_neighbor_postroute.dcp}
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.067 . Memory (MB): peak = 352.332 ; gain = 6.109
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.286 . Memory (MB): peak = 1702.957 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 4816 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 6 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2025.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Read ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.121 . Memory (MB): peak = 1742.215 ; gain = 4.672
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+INFO: [Designutils 20-5722] Start Reading Physical Databases.
+Reading placement.
+Read Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.078 . Memory (MB): peak = 2329.781 ; gain = 0.000
+Reading placer database...
+Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.033 . Memory (MB): peak = 2329.781 ; gain = 0.000
+Read PlaceDB: Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2396.879 ; gain = 67.098
+Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2396.879 ; gain = 0.000
+Reading routing.
+Read RouteStorage: Time (s): cpu = 00:00:05 ; elapsed = 00:00:07 . Memory (MB): peak = 2830.828 ; gain = 433.949
+Read Physdb Files: Time (s): cpu = 00:00:09 ; elapsed = 00:00:11 . Memory (MB): peak = 2830.828 ; gain = 501.047
+Restored from archive | CPU: 11.000000 secs | Memory: 0.000000 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:09 ; elapsed = 00:00:11 . Memory (MB): peak = 2830.828 ; gain = 501.047
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.030 . Memory (MB): peak = 2830.828 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1186 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 320 instances
+  IBUF => IBUF (IBUFCTRL, INBUF): 2 instances
+  RAM256X1D => RAM256X1D (MUXF7(x4), MUXF8(x2), RAMD64E(x8)): 32 instances
+  RAM64M => RAM64M (RAMD64E(x4)): 320 instances
+  RAM64M8 => RAM64M8 (RAMD64E(x8)): 512 instances
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2025.2 (64-bit) build 6299465
+open_checkpoint: Time (s): cpu = 00:00:57 ; elapsed = 00:01:03 . Memory (MB): peak = 2830.828 ; gain = 2495.441
+VIVADO_VERSION=2025.2
+PART=xcku5p-ffvb676-2-e
+PRODUCER_CELLS=64
+INPUT_MEM_CELLS=4032
+get_timing_paths: Time (s): cpu = 00:00:37 ; elapsed = 00:00:16 . Memory (MB): peak = 2975.840 ; gain = 145.012
+UPSTREAM_ENDPOINTS=64
+UPSTREAM_PATHS=64
+CANDIDATE_SITES=5913
+P9R5G_G05_DONE
+INFO: [Common 17-206] Exiting Vivado at Thu Sep 17 21:12:13 2026...
+

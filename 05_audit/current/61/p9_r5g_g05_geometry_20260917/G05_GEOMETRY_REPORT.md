@@ -1,0 +1,40 @@
+# Step12F-P9-R5G-G0.5 — Producer Geometry / Risk Qualification
+
+Status: `CLOSED_READ_ONLY`; no opt/place/phys_opt/route, pblock creation, RTL/XDC change, or modified checkpoint.
+
+- Baseline commit: `4709bf4d885fa7f2c6fbc5844234c8fcc37f05ba`
+- Fixed routed DCP SHA-256: `D18A6213468C4EE270D03AF924BE53BE7298DD71A70C5B2651ED0DDB8767552C` (match=True)
+- Decision: **A1_GEOMETRY_REJECTED_UPSTREAM_RISK**
+
+## Population and centers
+
+- Producer cells: `64/64`
+- Downstream destinations: `4032/4032`; failing `201`, passing/zero `3831`
+- Primary failing endpoint tile center: `{'x': 304.0, 'y': 157.0}`
+- Slack-weighted failing endpoint tile center: `{'x': 304.0, 'y': 156.0}`
+- Current producer SLICE bbox: `{'x_min': 65, 'x_max': 73, 'y_min': 129, 'y_max': 148}`
+
+## Candidate geometry (hypothetical; not created)
+
+- Rule: `primary failing-endpoint SLICE median, half-width=12, half-height=16`
+- Candidate SLICE rectangle: `{'site_x_min': 78, 'site_x_max': 102, 'site_y_min': 72, 'site_y_max': 104, 'rule': 'primary failing-endpoint SLICE median, half-width=12, half-height=16'}`
+- Representative candidate tile: `{'x': 304.0, 'y': 157.0}`
+- Legal site/capacity summary: `{'site_count': 825, 'legal_ff_capacity': 13200, 'legal_lut_capacity': 13200, 'occupied_ff': 3724, 'occupied_lut': 2308, 'occupied_cells': 6329, 'available_ff_capacity_reference': 9476, 'projected_ff_after_64': 3788, 'projected_ff_utilization_reference': 0.286969696969697, 'occupied_control_set_count': 152, 'control_set_data_available': True, 'clock_regions': {'X2Y1': 396, 'X3Y1': 429}, 'site_types': {'SLICEL': 429, 'SLICEM': 396}, 'headroom_gate_pass': True}`
+
+## Downstream distance impact proxy
+
+- Failing 201: `{'count': 201, 'min': -112.0, 'median': -80.0, 'p90': -22.0, 'p95': 8.0, 'max': 68.0, 'decrease_count': 185, 'increase_count': 16, 'unchanged_count': 0}`
+- Passing 3831: `{'count': 3831, 'min': -127.0, 'median': -30.0, 'p90': 50.0, 'p95': 58.0, 'max': 86.0, 'decrease_count': 2193, 'increase_count': 1617, 'unchanged_count': 21}`
+- Near-zero passing 10%: `{'count': 384, 'current_slack': {'count': 384, 'min': 0.0, 'median': 0.043, 'p90': 0.07, 'p95': 0.074, 'max': 0.078}, 'predicted_distance_delta': {'count': 384, 'min': -127.0, 'median': -73.0, 'p90': 6.0, 'p95': 13.0, 'max': 66.0, 'decrease_count': 331, 'increase_count': 51, 'unchanged_count': 2}, 'source_bits': {'0': 4, '1': 7, '10': 8, '11': 4, '12': 3, '13': 8, '14': 5, '15': 7, '16': 5, '17': 2, '18': 3, '19': 2, '2': 8, '20': 3, '21': 3, '22': 1, '23': 4, '24': 8, '25': 7, '26': 6, '27': 5, '28': 5, '29': 7, '3': 7, '30': 9, '31': 2, '32': 6, '33': 4, '34': 6, '37': 1, '38': 1, '39': 12, '4': 4, '40': 14, '41': 14, '42': 5, '43': 11, '44': 3, '45': 3, '46': 7, '47': 5, '48': 15, '49': 6, '5': 9, '50': 19, '51': 8, '52': 8, '53': 4, '54': 15, '55': 3, '56': 5, '57': 7, '58': 1, '59': 6, '60': 14, '61': 10, '62': 6, '7': 8, '8': 6, '9': 5}, 'destination_regions': {'X1Y1': 1, 'X2Y1': 208, 'X3Y1': 175}}`
+
+## Per-bit and upstream risk
+
+- Active-bit coherence: `{'active_bits': 46, 'coherent_bits_in_candidate_region': 35, 'coherence_ratio': 0.7608695652173914, 'rule': 'at least 75% of active bits have failing-endpoint median inside the primary candidate region'}`
+- Upstream summary: `{'endpoint_cells': 64, 'path_rows': 64, 'coverage_complete': True, 'by_source_family': {'kernel_control': {'endpoint_count': 5, 'failing_count': 4, 'wns_ns': -0.112, 'tns_ns': -0.387, 'slack': {'count': 5, 'min': -0.112, 'median': -0.089, 'p90': 0.044, 'p95': 0.044, 'max': 0.044}, 'logic_delay_ns': {'count': 5, 'min': 0.519, 'median': 0.618, 'p90': 0.69, 'p95': 0.69, 'max': 0.69}, 'routing_delay_ns': {'count': 5, 'min': 1.291, 'median': 1.317, 'p90': 1.458, 'p95': 1.458, 'max': 1.458}, 'routing_fraction': {'count': 5, 'min': 0.655860349127182, 'median': 0.6960157402852927, 'p90': 0.7374810318664643, 'p95': 0.7374810318664643, 'max': 0.7374810318664643}, 'tile_distance': {'count': 5, 'min': 6.0, 'median': 17.0, 'p90': 21.0, 'p95': 21.0, 'max': 21.0}, 'source_cells': ['u_dut/kernel_cut_h_q_reg[4]', 'u_dut/kernel_h_rd_raw_group_q_reg[2]'], 'source_clock_regions': {'X2Y2': 5}, 'candidate_distance_delta': {'count': 5, 'min': 83.0, 'median': 88.0, 'p90': 94.0, 'p95': 94.0, 'max': 94.0, 'decrease_count': 0, 'increase_count': 5, 'unchanged_count': 0}}, 'kernel_stage': {'endpoint_count': 13, 'failing_count': 11, 'wns_ns': -0.123, 'tns_ns': -0.949, 'slack': {'count': 13, 'min': -0.123, 'median': -0.082, 'p90': 0.011, 'p95': 0.049, 'max': 0.049}, 'logic_delay_ns': {'count': 13, 'min': 0.484, 'median': 0.582, 'p90': 0.73, 'p95': 0.74, 'max': 0.74}, 'routing_delay_ns': {'count': 13, 'min': 1.16, 'median': 1.377, 'p90': 1.452, 'p95': 1.494, 'max': 1.494}, 'routing_fraction': {'count': 13, 'min': 0.6105263157894737, 'median': 0.7027720739219713, 'p90': 0.7412731006160164, 'p95': 0.751131221719457, 'max': 0.751131221719457}, 'tile_distance': {'count': 13, 'min': 4.0, 'median': 12.0, 'p90': 17.0, 'p95': 18.0, 'max': 18.0}, 'source_cells': ['u_dut/kernel_stage_q_reg'], 'source_clock_regions': {'X2Y2': 13}, 'candidate_distance_delta': {'count': 13, 'min': 85.0, 'median': 91.0, 'p90': 95.0, 'p95': 99.0, 'max': 99.0, 'decrease_count': 0, 'increase_count': 13, 'unchanged_count': 0}}, 'kernel_vector': {'endpoint_count': 45, 'failing_count': 42, 'wns_ns': -0.132, 'tns_ns': -3.324, 'slack': {'count': 45, 'min': -0.132, 'median': -0.078, 'p90': -0.018, 'p95': 0.033, 'max': 0.066}, 'logic_delay_ns': {'count': 45, 'min': 0.331, 'median': 0.459, 'p90': 0.535, 'p95': 0.551, 'max': 0.583}, 'routing_delay_ns': {'count': 45, 'min': 1.379, 'median': 1.53, 'p90': 1.674, 'p95': 1.683, 'max': 1.708}, 'routing_fraction': {'count': 45, 'min': 0.7028542303771662, 'median': 0.7702569169960474, 'p90': 0.8184965380811079, 'p95': 0.8251099169516365, 'max': 0.8352078239608802}, 'tile_distance': {'count': 45, 'min': 13.0, 'median': 33.0, 'p90': 43.0, 'p95': 47.0, 'max': 48.0}, 'source_cells': ['u_dut/kernel_vector_q_reg[0]_rep', 'u_dut/kernel_vector_q_reg[0]_rep__0', 'u_dut/kernel_vector_q_reg[0]_rep__1', 'u_dut/kernel_vector_q_reg[1]_rep__0_replica_2', 'u_dut/kernel_vector_q_reg[1]_rep__1', 'u_dut/kernel_vector_q_reg[1]_rep__2', 'u_dut/kernel_vector_q_reg[2]'], 'source_clock_regions': {'X2Y2': 45}, 'candidate_distance_delta': {'count': 45, 'min': 96.0, 'median': 107.0, 'p90': 112.0, 'p95': 112.0, 'max': 120.0, 'decrease_count': 0, 'increase_count': 45, 'unchanged_count': 0}}, 'lfnst_grid': {'endpoint_count': 1, 'failing_count': 1, 'wns_ns': -0.136, 'tns_ns': -0.136, 'slack': {'count': 1, 'min': -0.136, 'median': -0.136, 'p90': -0.136, 'p95': -0.136, 'max': -0.136}, 'logic_delay_ns': {'count': 1, 'min': 0.497, 'median': 0.497, 'p90': 0.497, 'p95': 0.497, 'max': 0.497}, 'routing_delay_ns': {'count': 1, 'min': 1.463, 'median': 1.463, 'p90': 1.463, 'p95': 1.463, 'max': 1.463}, 'routing_fraction': {'count': 1, 'min': 0.7464285714285714, 'median': 0.7464285714285714, 'p90': 0.7464285714285714, 'p95': 0.7464285714285714, 'max': 0.7464285714285714}, 'tile_distance': {'count': 1, 'min': 69.0, 'median': 69.0, 'p90': 69.0, 'p95': 69.0, 'max': 69.0}, 'source_cells': ['u_dut/lfnst_grid_reg[18][13]'], 'source_clock_regions': {'X1Y2': 1}, 'candidate_distance_delta': {'count': 1, 'min': 108.0, 'median': 108.0, 'p90': 108.0, 'p95': 108.0, 'max': 108.0, 'decrease_count': 0, 'increase_count': 1, 'unchanged_count': 0}}}, 'negative_path_candidate_delta': {'count': 58, 'min': 85.0, 'median': 105.0, 'p90': 112.0, 'p95': 112.0, 'max': 120.0, 'decrease_count': 0, 'increase_count': 58, 'unchanged_count': 0}}`
+
+## Interpretation
+
+The geometry decision is a pre-implementation screening result. Distance deltas do not predict routed slack, and the reference-DCP capacity must be rechecked after the common post-opt branch point in G1-PREP.
+
+Only `A1_GEOMETRY_APPROVED` can unlock G1-PREP. A1 remains a single producer-only pblock experiment; no input_mem, ingress_group, upstream LUT, or whole-kernel cells may be added.
+

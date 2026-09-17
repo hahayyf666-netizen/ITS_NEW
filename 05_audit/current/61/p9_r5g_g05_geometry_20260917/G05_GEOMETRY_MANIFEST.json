@@ -1,0 +1,2503 @@
+{
+  "active_bit_coherence": {
+    "active_bits": 46,
+    "coherence_ratio": 0.7608695652173914,
+    "coherent_bits_in_candidate_region": 35,
+    "rule": "at least 75% of active bits have failing-endpoint median inside the primary candidate region"
+  },
+  "baseline_commit": "4709bf4d885fa7f2c6fbc5844234c8fcc37f05ba",
+  "candidate_geometry": {
+    "capacity": {
+      "available_ff_capacity_reference": 9476,
+      "clock_regions": {
+        "X2Y1": 396,
+        "X3Y1": 429
+      },
+      "control_set_data_available": true,
+      "headroom_gate_pass": true,
+      "legal_ff_capacity": 13200,
+      "legal_lut_capacity": 13200,
+      "occupied_cells": 6329,
+      "occupied_control_set_count": 152,
+      "occupied_ff": 3724,
+      "occupied_lut": 2308,
+      "projected_ff_after_64": 3788,
+      "projected_ff_utilization_reference": 0.286969696969697,
+      "site_count": 825,
+      "site_types": {
+        "SLICEL": 429,
+        "SLICEM": 396
+      }
+    },
+    "region": {
+      "rule": "primary failing-endpoint SLICE median, half-width=12, half-height=16",
+      "site_x_max": 102,
+      "site_x_min": 78,
+      "site_y_max": 104,
+      "site_y_min": 72
+    },
+    "region_clock_regions": {
+      "X2Y1": 396,
+      "X3Y1": 429
+    },
+    "region_tile_population": 825
+  },
+  "centers": {
+    "candidate_tile_representative": {
+      "x": 304.0,
+      "y": 157.0
+    },
+    "current_producer_slice_bbox": {
+      "x_max": 73,
+      "x_min": 65,
+      "y_max": 148,
+      "y_min": 129
+    },
+    "failing_endpoint_primary_slice": {
+      "x": 90.0,
+      "y": 88.0
+    },
+    "failing_endpoint_primary_tile": {
+      "x": 304.0,
+      "y": 157.0
+    },
+    "failing_endpoint_slack_weighted_slice": {
+      "x": 90.0,
+      "y": 89.0
+    },
+    "failing_endpoint_slack_weighted_tile": {
+      "x": 304.0,
+      "y": 156.0
+    }
+  },
+  "decision": "A1_GEOMETRY_REJECTED_UPSTREAM_RISK",
+  "decision_rules": {
+    "coherence_min_ratio": 0.75,
+    "failing_median_distance_improvement_min_tiles": 10.0,
+    "max_projected_ff_utilization_reference": 0.5,
+    "min_available_ff_headroom": 128,
+    "near_zero_passing_definition": "lowest-slack 10% of all non-negative destinations",
+    "upstream_negative_median_distance_increase_reject_tiles": 5.0
+  },
+  "downstream_impact_proxy": {
+    "failing_201": {
+      "count": 201,
+      "decrease_count": 185,
+      "increase_count": 16,
+      "max": 68.0,
+      "median": -80.0,
+      "min": -112.0,
+      "p90": -22.0,
+      "p95": 8.0,
+      "unchanged_count": 0
+    },
+    "near_zero_passing_10pct": {
+      "count": 384,
+      "current_slack": {
+        "count": 384,
+        "max": 0.078,
+        "median": 0.043,
+        "min": 0.0,
+        "p90": 0.07,
+        "p95": 0.074
+      },
+      "destination_regions": {
+        "X1Y1": 1,
+        "X2Y1": 208,
+        "X3Y1": 175
+      },
+      "predicted_distance_delta": {
+        "count": 384,
+        "decrease_count": 331,
+        "increase_count": 51,
+        "max": 66.0,
+        "median": -73.0,
+        "min": -127.0,
+        "p90": 6.0,
+        "p95": 13.0,
+        "unchanged_count": 2
+      },
+      "source_bits": {
+        "0": 4,
+        "1": 7,
+        "10": 8,
+        "11": 4,
+        "12": 3,
+        "13": 8,
+        "14": 5,
+        "15": 7,
+        "16": 5,
+        "17": 2,
+        "18": 3,
+        "19": 2,
+        "2": 8,
+        "20": 3,
+        "21": 3,
+        "22": 1,
+        "23": 4,
+        "24": 8,
+        "25": 7,
+        "26": 6,
+        "27": 5,
+        "28": 5,
+        "29": 7,
+        "3": 7,
+        "30": 9,
+        "31": 2,
+        "32": 6,
+        "33": 4,
+        "34": 6,
+        "37": 1,
+        "38": 1,
+        "39": 12,
+        "4": 4,
+        "40": 14,
+        "41": 14,
+        "42": 5,
+        "43": 11,
+        "44": 3,
+        "45": 3,
+        "46": 7,
+        "47": 5,
+        "48": 15,
+        "49": 6,
+        "5": 9,
+        "50": 19,
+        "51": 8,
+        "52": 8,
+        "53": 4,
+        "54": 15,
+        "55": 3,
+        "56": 5,
+        "57": 7,
+        "58": 1,
+        "59": 6,
+        "60": 14,
+        "61": 10,
+        "62": 6,
+        "7": 8,
+        "8": 6,
+        "9": 5
+      }
+    },
+    "passing_3831": {
+      "count": 3831,
+      "decrease_count": 2193,
+      "increase_count": 1617,
+      "max": 86.0,
+      "median": -30.0,
+      "min": -127.0,
+      "p90": 50.0,
+      "p95": 58.0,
+      "unchanged_count": 21
+    }
+  },
+  "fixed_dcp": {
+    "expected_sha256": "D18A6213468C4EE270D03AF924BE53BE7298DD71A70C5B2651ED0DDB8767552C",
+    "path": "05_audit\\current\\59\\p9_r5e_registered_neighbor_20260917_defaulttop\\step12f_registered_neighbor_postroute.dcp",
+    "sha256": "D18A6213468C4EE270D03AF924BE53BE7298DD71A70C5B2651ED0DDB8767552C",
+    "sha256_match": true
+  },
+  "generated_at": "2026-09-17T13:13:20.100870+00:00",
+  "limitations": [
+    "Tile/site distance is a geometry proxy, not a timing prediction.",
+    "G0.5 does not create a pblock or run implementation.",
+    "Clock-region labels are context only; clock-skew change is not predicted.",
+    "Reference occupancy/capacity comes from the routed DCP; G1-PREP must recheck after common opt_design.",
+    "Phys-opt replica lineage is not present in this pre-implementation audit and must be counted in G1.",
+    "A/B causality is not established until a common post-opt DCP is used for CONTROL/TREATMENT."
+  ],
+  "per_bit_destination_clustering": {
+    "0": {
+      "failing_count": 2,
+      "failing_endpoint_median_slice": {
+        "x": 91.0,
+        "y": 88.5
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 2,
+          "max": 92.0,
+          "median": 91.0,
+          "min": 90.0,
+          "p90": 92.0,
+          "p95": 92.0
+        },
+        "y": {
+          "count": 2,
+          "max": 89.0,
+          "median": 88.5,
+          "min": 88.0,
+          "p90": 89.0,
+          "p95": 89.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 62,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 2
+    },
+    "1": {
+      "failing_count": 4,
+      "failing_endpoint_median_slice": {
+        "x": 86.5,
+        "y": 81.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 4,
+          "max": 87.0,
+          "median": 86.5,
+          "min": 86.0,
+          "p90": 87.0,
+          "p95": 87.0
+        },
+        "y": {
+          "count": 4,
+          "max": 81.0,
+          "median": 81.0,
+          "min": 77.0,
+          "p90": 81.0,
+          "p95": 81.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 60,
+      "path_count": 64,
+      "x2y1_count": 4,
+      "x3y1_count": 0
+    },
+    "10": {
+      "failing_count": 1,
+      "failing_endpoint_median_slice": {
+        "x": 92.0,
+        "y": 89.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 1,
+          "max": 92.0,
+          "median": 92.0,
+          "min": 92.0,
+          "p90": 92.0,
+          "p95": 92.0
+        },
+        "y": {
+          "count": 1,
+          "max": 89.0,
+          "median": 89.0,
+          "min": 89.0,
+          "p90": 89.0,
+          "p95": 89.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 63,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 1
+    },
+    "11": {
+      "failing_count": 2,
+      "failing_endpoint_median_slice": {
+        "x": 73.5,
+        "y": 95.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 2,
+          "max": 89.0,
+          "median": 73.5,
+          "min": 58.0,
+          "p90": 89.0,
+          "p95": 89.0
+        },
+        "y": {
+          "count": 2,
+          "max": 96.0,
+          "median": 95.0,
+          "min": 94.0,
+          "p90": 96.0,
+          "p95": 96.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 62,
+      "path_count": 64,
+      "x2y1_count": 2,
+      "x3y1_count": 0
+    },
+    "12": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 64,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "13": {
+      "failing_count": 2,
+      "failing_endpoint_median_slice": {
+        "x": 93.5,
+        "y": 104.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 2,
+          "max": 96.0,
+          "median": 93.5,
+          "min": 91.0,
+          "p90": 96.0,
+          "p95": 96.0
+        },
+        "y": {
+          "count": 2,
+          "max": 110.0,
+          "median": 104.0,
+          "min": 98.0,
+          "p90": 110.0,
+          "p95": 110.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 62,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 2
+    },
+    "14": {
+      "failing_count": 3,
+      "failing_endpoint_median_slice": {
+        "x": 72.0,
+        "y": 79.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 3,
+          "max": 88.0,
+          "median": 72.0,
+          "min": 72.0,
+          "p90": 88.0,
+          "p95": 88.0
+        },
+        "y": {
+          "count": 3,
+          "max": 80.0,
+          "median": 79.0,
+          "min": 78.0,
+          "p90": 80.0,
+          "p95": 80.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 61,
+      "path_count": 64,
+      "x2y1_count": 3,
+      "x3y1_count": 0
+    },
+    "15": {
+      "failing_count": 15,
+      "failing_endpoint_median_slice": {
+        "x": 90.0,
+        "y": 82.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 15,
+          "max": 93.0,
+          "median": 90.0,
+          "min": 84.0,
+          "p90": 93.0,
+          "p95": 93.0
+        },
+        "y": {
+          "count": 15,
+          "max": 103.0,
+          "median": 82.0,
+          "min": 77.0,
+          "p90": 103.0,
+          "p95": 103.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 49,
+      "path_count": 64,
+      "x2y1_count": 3,
+      "x3y1_count": 12
+    },
+    "16": {
+      "failing_count": 4,
+      "failing_endpoint_median_slice": {
+        "x": 84.5,
+        "y": 78.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 4,
+          "max": 86.0,
+          "median": 84.5,
+          "min": 84.0,
+          "p90": 86.0,
+          "p95": 86.0
+        },
+        "y": {
+          "count": 4,
+          "max": 94.0,
+          "median": 78.0,
+          "min": 77.0,
+          "p90": 94.0,
+          "p95": 94.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 60,
+      "path_count": 64,
+      "x2y1_count": 4,
+      "x3y1_count": 0
+    },
+    "17": {
+      "failing_count": 1,
+      "failing_endpoint_median_slice": {
+        "x": 67.0,
+        "y": 99.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 1,
+          "max": 67.0,
+          "median": 67.0,
+          "min": 67.0,
+          "p90": 67.0,
+          "p95": 67.0
+        },
+        "y": {
+          "count": 1,
+          "max": 99.0,
+          "median": 99.0,
+          "min": 99.0,
+          "p90": 99.0,
+          "p95": 99.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 63,
+      "path_count": 64,
+      "x2y1_count": 1,
+      "x3y1_count": 0
+    },
+    "18": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 64,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "19": {
+      "failing_count": 1,
+      "failing_endpoint_median_slice": {
+        "x": 86.0,
+        "y": 91.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 1,
+          "max": 86.0,
+          "median": 86.0,
+          "min": 86.0,
+          "p90": 86.0,
+          "p95": 86.0
+        },
+        "y": {
+          "count": 1,
+          "max": 91.0,
+          "median": 91.0,
+          "min": 91.0,
+          "p90": 91.0,
+          "p95": 91.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 63,
+      "path_count": 64,
+      "x2y1_count": 1,
+      "x3y1_count": 0
+    },
+    "2": {
+      "failing_count": 12,
+      "failing_endpoint_median_slice": {
+        "x": 91.0,
+        "y": 101.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 12,
+          "max": 96.0,
+          "median": 91.0,
+          "min": 79.0,
+          "p90": 94.0,
+          "p95": 96.0
+        },
+        "y": {
+          "count": 12,
+          "max": 110.0,
+          "median": 101.0,
+          "min": 77.0,
+          "p90": 110.0,
+          "p95": 110.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 52,
+      "path_count": 64,
+      "x2y1_count": 2,
+      "x3y1_count": 10
+    },
+    "20": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 64,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "21": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 64,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "22": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 64,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "23": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 64,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "24": {
+      "failing_count": 2,
+      "failing_endpoint_median_slice": {
+        "x": 91.0,
+        "y": 83.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 2,
+          "max": 91.0,
+          "median": 91.0,
+          "min": 91.0,
+          "p90": 91.0,
+          "p95": 91.0
+        },
+        "y": {
+          "count": 2,
+          "max": 83.0,
+          "median": 83.0,
+          "min": 83.0,
+          "p90": 83.0,
+          "p95": 83.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 62,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 2
+    },
+    "25": {
+      "failing_count": 3,
+      "failing_endpoint_median_slice": {
+        "x": 89.0,
+        "y": 85.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 3,
+          "max": 89.0,
+          "median": 89.0,
+          "min": 79.0,
+          "p90": 89.0,
+          "p95": 89.0
+        },
+        "y": {
+          "count": 3,
+          "max": 85.0,
+          "median": 85.0,
+          "min": 84.0,
+          "p90": 85.0,
+          "p95": 85.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 61,
+      "path_count": 64,
+      "x2y1_count": 3,
+      "x3y1_count": 0
+    },
+    "26": {
+      "failing_count": 3,
+      "failing_endpoint_median_slice": {
+        "x": 93.0,
+        "y": 88.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 3,
+          "max": 93.0,
+          "median": 93.0,
+          "min": 89.0,
+          "p90": 93.0,
+          "p95": 93.0
+        },
+        "y": {
+          "count": 3,
+          "max": 88.0,
+          "median": 88.0,
+          "min": 85.0,
+          "p90": 88.0,
+          "p95": 88.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 61,
+      "path_count": 64,
+      "x2y1_count": 1,
+      "x3y1_count": 2
+    },
+    "27": {
+      "failing_count": 1,
+      "failing_endpoint_median_slice": {
+        "x": 95.0,
+        "y": 95.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 1,
+          "max": 95.0,
+          "median": 95.0,
+          "min": 95.0,
+          "p90": 95.0,
+          "p95": 95.0
+        },
+        "y": {
+          "count": 1,
+          "max": 95.0,
+          "median": 95.0,
+          "min": 95.0,
+          "p90": 95.0,
+          "p95": 95.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 63,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 1
+    },
+    "28": {
+      "failing_count": 5,
+      "failing_endpoint_median_slice": {
+        "x": 83.0,
+        "y": 76.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 5,
+          "max": 85.0,
+          "median": 83.0,
+          "min": 83.0,
+          "p90": 85.0,
+          "p95": 85.0
+        },
+        "y": {
+          "count": 5,
+          "max": 92.0,
+          "median": 76.0,
+          "min": 76.0,
+          "p90": 92.0,
+          "p95": 92.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 59,
+      "path_count": 64,
+      "x2y1_count": 5,
+      "x3y1_count": 0
+    },
+    "29": {
+      "failing_count": 2,
+      "failing_endpoint_median_slice": {
+        "x": 91.0,
+        "y": 81.5
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 2,
+          "max": 93.0,
+          "median": 91.0,
+          "min": 89.0,
+          "p90": 93.0,
+          "p95": 93.0
+        },
+        "y": {
+          "count": 2,
+          "max": 87.0,
+          "median": 81.5,
+          "min": 76.0,
+          "p90": 87.0,
+          "p95": 87.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 62,
+      "path_count": 64,
+      "x2y1_count": 1,
+      "x3y1_count": 1
+    },
+    "3": {
+      "failing_count": 5,
+      "failing_endpoint_median_slice": {
+        "x": 79.0,
+        "y": 81.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 5,
+          "max": 94.0,
+          "median": 79.0,
+          "min": 56.0,
+          "p90": 94.0,
+          "p95": 94.0
+        },
+        "y": {
+          "count": 5,
+          "max": 98.0,
+          "median": 81.0,
+          "min": 79.0,
+          "p90": 98.0,
+          "p95": 98.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 59,
+      "path_count": 64,
+      "x2y1_count": 3,
+      "x3y1_count": 2
+    },
+    "30": {
+      "failing_count": 1,
+      "failing_endpoint_median_slice": {
+        "x": 97.0,
+        "y": 107.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 1,
+          "max": 97.0,
+          "median": 97.0,
+          "min": 97.0,
+          "p90": 97.0,
+          "p95": 97.0
+        },
+        "y": {
+          "count": 1,
+          "max": 107.0,
+          "median": 107.0,
+          "min": 107.0,
+          "p90": 107.0,
+          "p95": 107.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 63,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 1
+    },
+    "31": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 64,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "32": {
+      "failing_count": 4,
+      "failing_endpoint_median_slice": {
+        "x": 87.0,
+        "y": 94.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 4,
+          "max": 96.0,
+          "median": 87.0,
+          "min": 84.0,
+          "p90": 96.0,
+          "p95": 96.0
+        },
+        "y": {
+          "count": 4,
+          "max": 106.0,
+          "median": 94.0,
+          "min": 83.0,
+          "p90": 106.0,
+          "p95": 106.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 60,
+      "path_count": 64,
+      "x2y1_count": 2,
+      "x3y1_count": 2
+    },
+    "33": {
+      "failing_count": 3,
+      "failing_endpoint_median_slice": {
+        "x": 91.0,
+        "y": 113.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 3,
+          "max": 94.0,
+          "median": 91.0,
+          "min": 90.0,
+          "p90": 94.0,
+          "p95": 94.0
+        },
+        "y": {
+          "count": 3,
+          "max": 113.0,
+          "median": 113.0,
+          "min": 104.0,
+          "p90": 113.0,
+          "p95": 113.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 61,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 3
+    },
+    "34": {
+      "failing_count": 4,
+      "failing_endpoint_median_slice": {
+        "x": 92.0,
+        "y": 84.5
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 4,
+          "max": 93.0,
+          "median": 92.0,
+          "min": 72.0,
+          "p90": 93.0,
+          "p95": 93.0
+        },
+        "y": {
+          "count": 4,
+          "max": 99.0,
+          "median": 84.5,
+          "min": 84.0,
+          "p90": 99.0,
+          "p95": 99.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 60,
+      "path_count": 64,
+      "x2y1_count": 1,
+      "x3y1_count": 3
+    },
+    "35": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 64,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "36": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 64,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "37": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 64,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "38": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 64,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "39": {
+      "failing_count": 2,
+      "failing_endpoint_median_slice": {
+        "x": 91.5,
+        "y": 99.5
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 2,
+          "max": 93.0,
+          "median": 91.5,
+          "min": 90.0,
+          "p90": 93.0,
+          "p95": 93.0
+        },
+        "y": {
+          "count": 2,
+          "max": 105.0,
+          "median": 99.5,
+          "min": 94.0,
+          "p90": 105.0,
+          "p95": 105.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 62,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 2
+    },
+    "4": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 64,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "40": {
+      "failing_count": 2,
+      "failing_endpoint_median_slice": {
+        "x": 90.0,
+        "y": 100.5
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 2,
+          "max": 93.0,
+          "median": 90.0,
+          "min": 87.0,
+          "p90": 93.0,
+          "p95": 93.0
+        },
+        "y": {
+          "count": 2,
+          "max": 108.0,
+          "median": 100.5,
+          "min": 93.0,
+          "p90": 108.0,
+          "p95": 108.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 62,
+      "path_count": 64,
+      "x2y1_count": 1,
+      "x3y1_count": 1
+    },
+    "41": {
+      "failing_count": 10,
+      "failing_endpoint_median_slice": {
+        "x": 93.0,
+        "y": 88.5
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 10,
+          "max": 96.0,
+          "median": 93.0,
+          "min": 87.0,
+          "p90": 96.0,
+          "p95": 96.0
+        },
+        "y": {
+          "count": 10,
+          "max": 106.0,
+          "median": 88.5,
+          "min": 79.0,
+          "p90": 97.0,
+          "p95": 106.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 54,
+      "path_count": 64,
+      "x2y1_count": 2,
+      "x3y1_count": 8
+    },
+    "42": {
+      "failing_count": 6,
+      "failing_endpoint_median_slice": {
+        "x": 77.5,
+        "y": 79.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 6,
+          "max": 83.0,
+          "median": 77.5,
+          "min": 75.0,
+          "p90": 83.0,
+          "p95": 83.0
+        },
+        "y": {
+          "count": 6,
+          "max": 88.0,
+          "median": 79.0,
+          "min": 72.0,
+          "p90": 88.0,
+          "p95": 88.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 58,
+      "path_count": 64,
+      "x2y1_count": 6,
+      "x3y1_count": 0
+    },
+    "43": {
+      "failing_count": 3,
+      "failing_endpoint_median_slice": {
+        "x": 89.0,
+        "y": 88.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 3,
+          "max": 90.0,
+          "median": 89.0,
+          "min": 70.0,
+          "p90": 90.0,
+          "p95": 90.0
+        },
+        "y": {
+          "count": 3,
+          "max": 110.0,
+          "median": 88.0,
+          "min": 87.0,
+          "p90": 110.0,
+          "p95": 110.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 61,
+      "path_count": 64,
+      "x2y1_count": 2,
+      "x3y1_count": 1
+    },
+    "44": {
+      "failing_count": 1,
+      "failing_endpoint_median_slice": {
+        "x": 89.0,
+        "y": 93.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 1,
+          "max": 89.0,
+          "median": 89.0,
+          "min": 89.0,
+          "p90": 89.0,
+          "p95": 89.0
+        },
+        "y": {
+          "count": 1,
+          "max": 93.0,
+          "median": 93.0,
+          "min": 93.0,
+          "p90": 93.0,
+          "p95": 93.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 63,
+      "path_count": 64,
+      "x2y1_count": 1,
+      "x3y1_count": 0
+    },
+    "45": {
+      "failing_count": 1,
+      "failing_endpoint_median_slice": {
+        "x": 75.0,
+        "y": 74.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 1,
+          "max": 75.0,
+          "median": 75.0,
+          "min": 75.0,
+          "p90": 75.0,
+          "p95": 75.0
+        },
+        "y": {
+          "count": 1,
+          "max": 74.0,
+          "median": 74.0,
+          "min": 74.0,
+          "p90": 74.0,
+          "p95": 74.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 63,
+      "path_count": 64,
+      "x2y1_count": 1,
+      "x3y1_count": 0
+    },
+    "46": {
+      "failing_count": 15,
+      "failing_endpoint_median_slice": {
+        "x": 90.0,
+        "y": 85.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 15,
+          "max": 96.0,
+          "median": 90.0,
+          "min": 73.0,
+          "p90": 96.0,
+          "p95": 96.0
+        },
+        "y": {
+          "count": 15,
+          "max": 99.0,
+          "median": 85.0,
+          "min": 71.0,
+          "p90": 99.0,
+          "p95": 99.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 49,
+      "path_count": 64,
+      "x2y1_count": 7,
+      "x3y1_count": 8
+    },
+    "47": {
+      "failing_count": 6,
+      "failing_endpoint_median_slice": {
+        "x": 88.5,
+        "y": 86.5
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 6,
+          "max": 91.0,
+          "median": 88.5,
+          "min": 82.0,
+          "p90": 91.0,
+          "p95": 91.0
+        },
+        "y": {
+          "count": 6,
+          "max": 96.0,
+          "median": 86.5,
+          "min": 72.0,
+          "p90": 96.0,
+          "p95": 96.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 58,
+      "path_count": 64,
+      "x2y1_count": 4,
+      "x3y1_count": 2
+    },
+    "48": {
+      "failing_count": 4,
+      "failing_endpoint_median_slice": {
+        "x": 68.5,
+        "y": 71.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 4,
+          "max": 69.0,
+          "median": 68.5,
+          "min": 68.0,
+          "p90": 69.0,
+          "p95": 69.0
+        },
+        "y": {
+          "count": 4,
+          "max": 71.0,
+          "median": 71.0,
+          "min": 71.0,
+          "p90": 71.0,
+          "p95": 71.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 56,
+      "path_count": 60,
+      "x2y1_count": 4,
+      "x3y1_count": 0
+    },
+    "49": {
+      "failing_count": 19,
+      "failing_endpoint_median_slice": {
+        "x": 94.0,
+        "y": 90.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 19,
+          "max": 98.0,
+          "median": 94.0,
+          "min": 76.0,
+          "p90": 97.0,
+          "p95": 98.0
+        },
+        "y": {
+          "count": 19,
+          "max": 107.0,
+          "median": 90.0,
+          "min": 72.0,
+          "p90": 107.0,
+          "p95": 107.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 41,
+      "path_count": 60,
+      "x2y1_count": 8,
+      "x3y1_count": 11
+    },
+    "5": {
+      "failing_count": 1,
+      "failing_endpoint_median_slice": {
+        "x": 76.0,
+        "y": 78.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 1,
+          "max": 76.0,
+          "median": 76.0,
+          "min": 76.0,
+          "p90": 76.0,
+          "p95": 76.0
+        },
+        "y": {
+          "count": 1,
+          "max": 78.0,
+          "median": 78.0,
+          "min": 78.0,
+          "p90": 78.0,
+          "p95": 78.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 63,
+      "path_count": 64,
+      "x2y1_count": 1,
+      "x3y1_count": 0
+    },
+    "50": {
+      "failing_count": 1,
+      "failing_endpoint_median_slice": {
+        "x": 98.0,
+        "y": 94.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 1,
+          "max": 98.0,
+          "median": 98.0,
+          "min": 98.0,
+          "p90": 98.0,
+          "p95": 98.0
+        },
+        "y": {
+          "count": 1,
+          "max": 94.0,
+          "median": 94.0,
+          "min": 94.0,
+          "p90": 94.0,
+          "p95": 94.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 59,
+      "path_count": 60,
+      "x2y1_count": 0,
+      "x3y1_count": 1
+    },
+    "51": {
+      "failing_count": 12,
+      "failing_endpoint_median_slice": {
+        "x": 94.0,
+        "y": 98.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 12,
+          "max": 99.0,
+          "median": 94.0,
+          "min": 86.0,
+          "p90": 98.0,
+          "p95": 99.0
+        },
+        "y": {
+          "count": 12,
+          "max": 109.0,
+          "median": 98.0,
+          "min": 79.0,
+          "p90": 107.0,
+          "p95": 109.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 48,
+      "path_count": 60,
+      "x2y1_count": 2,
+      "x3y1_count": 10
+    },
+    "52": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 60,
+      "path_count": 60,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "53": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 60,
+      "path_count": 60,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "54": {
+      "failing_count": 4,
+      "failing_endpoint_median_slice": {
+        "x": 52.0,
+        "y": 105.5
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 4,
+          "max": 86.0,
+          "median": 52.0,
+          "min": 52.0,
+          "p90": 86.0,
+          "p95": 86.0
+        },
+        "y": {
+          "count": 4,
+          "max": 117.0,
+          "median": 105.5,
+          "min": 80.0,
+          "p90": 117.0,
+          "p95": 117.0
+        }
+      },
+      "other_region_count": 3,
+      "passing_count": 56,
+      "path_count": 60,
+      "x2y1_count": 1,
+      "x3y1_count": 0
+    },
+    "55": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 60,
+      "path_count": 60,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "56": {
+      "failing_count": 5,
+      "failing_endpoint_median_slice": {
+        "x": 86.0,
+        "y": 80.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 5,
+          "max": 87.0,
+          "median": 86.0,
+          "min": 85.0,
+          "p90": 87.0,
+          "p95": 87.0
+        },
+        "y": {
+          "count": 5,
+          "max": 105.0,
+          "median": 80.0,
+          "min": 80.0,
+          "p90": 105.0,
+          "p95": 105.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 55,
+      "path_count": 60,
+      "x2y1_count": 5,
+      "x3y1_count": 0
+    },
+    "57": {
+      "failing_count": 3,
+      "failing_endpoint_median_slice": {
+        "x": 88.0,
+        "y": 78.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 3,
+          "max": 92.0,
+          "median": 88.0,
+          "min": 74.0,
+          "p90": 92.0,
+          "p95": 92.0
+        },
+        "y": {
+          "count": 3,
+          "max": 99.0,
+          "median": 78.0,
+          "min": 76.0,
+          "p90": 99.0,
+          "p95": 99.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 57,
+      "path_count": 60,
+      "x2y1_count": 2,
+      "x3y1_count": 1
+    },
+    "58": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 60,
+      "path_count": 60,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "59": {
+      "failing_count": 1,
+      "failing_endpoint_median_slice": {
+        "x": 69.0,
+        "y": 73.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 1,
+          "max": 69.0,
+          "median": 69.0,
+          "min": 69.0,
+          "p90": 69.0,
+          "p95": 69.0
+        },
+        "y": {
+          "count": 1,
+          "max": 73.0,
+          "median": 73.0,
+          "min": 73.0,
+          "p90": 73.0,
+          "p95": 73.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 59,
+      "path_count": 60,
+      "x2y1_count": 1,
+      "x3y1_count": 0
+    },
+    "6": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 64,
+      "path_count": 64,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "60": {
+      "failing_count": 8,
+      "failing_endpoint_median_slice": {
+        "x": 93.0,
+        "y": 95.5
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 8,
+          "max": 95.0,
+          "median": 93.0,
+          "min": 91.0,
+          "p90": 95.0,
+          "p95": 95.0
+        },
+        "y": {
+          "count": 8,
+          "max": 113.0,
+          "median": 95.5,
+          "min": 77.0,
+          "p90": 113.0,
+          "p95": 113.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 52,
+      "path_count": 60,
+      "x2y1_count": 0,
+      "x3y1_count": 8
+    },
+    "61": {
+      "failing_count": 2,
+      "failing_endpoint_median_slice": {
+        "x": 94.0,
+        "y": 85.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 2,
+          "max": 97.0,
+          "median": 94.0,
+          "min": 91.0,
+          "p90": 97.0,
+          "p95": 97.0
+        },
+        "y": {
+          "count": 2,
+          "max": 97.0,
+          "median": 85.0,
+          "min": 73.0,
+          "p90": 97.0,
+          "p95": 97.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 58,
+      "path_count": 60,
+      "x2y1_count": 0,
+      "x3y1_count": 2
+    },
+    "62": {
+      "failing_count": 1,
+      "failing_endpoint_median_slice": {
+        "x": 86.0,
+        "y": 90.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 1,
+          "max": 86.0,
+          "median": 86.0,
+          "min": 86.0,
+          "p90": 86.0,
+          "p95": 86.0
+        },
+        "y": {
+          "count": 1,
+          "max": 90.0,
+          "median": 90.0,
+          "min": 90.0,
+          "p90": 90.0,
+          "p95": 90.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 59,
+      "path_count": 60,
+      "x2y1_count": 1,
+      "x3y1_count": 0
+    },
+    "63": {
+      "failing_count": 0,
+      "failing_endpoint_median_slice": {
+        "x": null,
+        "y": null
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        },
+        "y": {
+          "count": 0,
+          "max": null,
+          "median": null,
+          "min": null,
+          "p90": null,
+          "p95": null
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 60,
+      "path_count": 60,
+      "x2y1_count": 0,
+      "x3y1_count": 0
+    },
+    "7": {
+      "failing_count": 1,
+      "failing_endpoint_median_slice": {
+        "x": 86.0,
+        "y": 81.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 1,
+          "max": 86.0,
+          "median": 86.0,
+          "min": 86.0,
+          "p90": 86.0,
+          "p95": 86.0
+        },
+        "y": {
+          "count": 1,
+          "max": 81.0,
+          "median": 81.0,
+          "min": 81.0,
+          "p90": 81.0,
+          "p95": 81.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 63,
+      "path_count": 64,
+      "x2y1_count": 1,
+      "x3y1_count": 0
+    },
+    "8": {
+      "failing_count": 11,
+      "failing_endpoint_median_slice": {
+        "x": 90.0,
+        "y": 77.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 11,
+          "max": 91.0,
+          "median": 90.0,
+          "min": 79.0,
+          "p90": 91.0,
+          "p95": 91.0
+        },
+        "y": {
+          "count": 11,
+          "max": 98.0,
+          "median": 77.0,
+          "min": 75.0,
+          "p90": 97.0,
+          "p95": 98.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 53,
+      "path_count": 64,
+      "x2y1_count": 5,
+      "x3y1_count": 6
+    },
+    "9": {
+      "failing_count": 2,
+      "failing_endpoint_median_slice": {
+        "x": 89.5,
+        "y": 92.0
+      },
+      "failing_endpoint_slice_dispersion": {
+        "x": {
+          "count": 2,
+          "max": 91.0,
+          "median": 89.5,
+          "min": 88.0,
+          "p90": 91.0,
+          "p95": 91.0
+        },
+        "y": {
+          "count": 2,
+          "max": 110.0,
+          "median": 92.0,
+          "min": 74.0,
+          "p90": 110.0,
+          "p95": 110.0
+        }
+      },
+      "other_region_count": 0,
+      "passing_count": 62,
+      "path_count": 64,
+      "x2y1_count": 1,
+      "x3y1_count": 1
+    }
+  },
+  "population": {
+    "destination_paths_expected": 4032,
+    "destination_paths_found": 4032,
+    "failing_destination_count": 201,
+    "near_zero_passing_count": 384,
+    "passing_destination_count": 3831,
+    "producer_cells_expected": 64,
+    "producer_cells_found": 64
+  },
+  "r5e_context": {
+    "anti_pruning": "PASS",
+    "check_timing": {
+      "constant_clock": 0,
+      "loops": 0,
+      "multiple_clock": 0,
+      "no_clock": 0,
+      "no_input_delay": 1,
+      "no_input_delay_expected": [
+        "rst_n"
+      ],
+      "no_output_delay": 0,
+      "partial_input_delay": 0,
+      "partial_output_delay": 0,
+      "unconstrained_internal_endpoints": 0
+    },
+    "drc": {
+      "advisory_count": 32,
+      "critical_warning_count": 2,
+      "critical_warning_note": "NSTD-1/UCIO-1 for unconstrained top clk/rst_n package pins; package-level pin contract is out of scope.",
+      "error_count": 0,
+      "warning_count": 65,
+      "warning_note": "Mostly DSP input/output pipelining recommendations and one no-routable-load diagnostic; not treated as timing signoff."
+    },
+    "evidence_dir": "05_audit/current/59/p9_r5e_registered_neighbor_20260917_defaulttop",
+    "exceptions": {
+      "unjustified_timing_exceptions": 0,
+      "valid_timing_exceptions": 0
+    },
+    "hold": {
+      "failing_endpoints": 0,
+      "status": "PASS",
+      "ths_ns": 0.0,
+      "total_endpoints": 161802,
+      "whs_ns": 0.01
+    },
+    "implementation": "FULLY_ROUTED",
+    "power": {
+      "device_static_w": 0.459,
+      "dynamic_w": 1.056,
+      "total_on_chip_w": 1.515
+    },
+    "route_status": {
+      "fully_routed_nets": 48232,
+      "logical_nets": 324052,
+      "nets_with_routing_errors": 0,
+      "node_overlaps": 0,
+      "routable_nets": 48232
+    },
+    "routing_errors": 0,
+    "setup": {
+      "failing_endpoints": 1808,
+      "status": "FAIL",
+      "tns_ns": -74.139,
+      "total_endpoints": 161802,
+      "wns_ns": -0.139
+    },
+    "synthesis": "PASS",
+    "utilization": {
+      "block_ram_tiles": 0,
+      "carry8": 1487,
+      "clb_luts": 28133,
+      "clb_registers": 25494,
+      "dsp48e2": 320,
+      "f7_muxes": 1743,
+      "f8_muxes": 592,
+      "lut_as_distributed_ram": 5632,
+      "lut_as_logic": 22491,
+      "uram": 0
+    }
+  },
+  "read_only_contract": {
+    "implementation_commands": "FORBIDDEN",
+    "pblock_creation": "FORBIDDEN",
+    "rtl_xdc_changes": "FORBIDDEN",
+    "write_checkpoint": "FORBIDDEN"
+  },
+  "stage": "Step12F-P9-R5G-G0.5",
+  "status": "CLOSED_READ_ONLY",
+  "tool": {
+    "max_threads": 4,
+    "part": "xcku5p-ffvb676-2-e",
+    "vivado": "2025.2"
+  },
+  "upstream_to_ingress_data": {
+    "by_source_family": {
+      "kernel_control": {
+        "candidate_distance_delta": {
+          "count": 5,
+          "decrease_count": 0,
+          "increase_count": 5,
+          "max": 94.0,
+          "median": 88.0,
+          "min": 83.0,
+          "p90": 94.0,
+          "p95": 94.0,
+          "unchanged_count": 0
+        },
+        "endpoint_count": 5,
+        "failing_count": 4,
+        "logic_delay_ns": {
+          "count": 5,
+          "max": 0.69,
+          "median": 0.618,
+          "min": 0.519,
+          "p90": 0.69,
+          "p95": 0.69
+        },
+        "routing_delay_ns": {
+          "count": 5,
+          "max": 1.458,
+          "median": 1.317,
+          "min": 1.291,
+          "p90": 1.458,
+          "p95": 1.458
+        },
+        "routing_fraction": {
+          "count": 5,
+          "max": 0.7374810318664643,
+          "median": 0.6960157402852927,
+          "min": 0.655860349127182,
+          "p90": 0.7374810318664643,
+          "p95": 0.7374810318664643
+        },
+        "slack": {
+          "count": 5,
+          "max": 0.044,
+          "median": -0.089,
+          "min": -0.112,
+          "p90": 0.044,
+          "p95": 0.044
+        },
+        "source_cells": [
+          "u_dut/kernel_cut_h_q_reg[4]",
+          "u_dut/kernel_h_rd_raw_group_q_reg[2]"
+        ],
+        "source_clock_regions": {
+          "X2Y2": 5
+        },
+        "tile_distance": {
+          "count": 5,
+          "max": 21.0,
+          "median": 17.0,
+          "min": 6.0,
+          "p90": 21.0,
+          "p95": 21.0
+        },
+        "tns_ns": -0.387,
+        "wns_ns": -0.112
+      },
+      "kernel_stage": {
+        "candidate_distance_delta": {
+          "count": 13,
+          "decrease_count": 0,
+          "increase_count": 13,
+          "max": 99.0,
+          "median": 91.0,
+          "min": 85.0,
+          "p90": 95.0,
+          "p95": 99.0,
+          "unchanged_count": 0
+        },
+        "endpoint_count": 13,
+        "failing_count": 11,
+        "logic_delay_ns": {
+          "count": 13,
+          "max": 0.74,
+          "median": 0.582,
+          "min": 0.484,
+          "p90": 0.73,
+          "p95": 0.74
+        },
+        "routing_delay_ns": {
+          "count": 13,
+          "max": 1.494,
+          "median": 1.377,
+          "min": 1.16,
+          "p90": 1.452,
+          "p95": 1.494
+        },
+        "routing_fraction": {
+          "count": 13,
+          "max": 0.751131221719457,
+          "median": 0.7027720739219713,
+          "min": 0.6105263157894737,
+          "p90": 0.7412731006160164,
+          "p95": 0.751131221719457
+        },
+        "slack": {
+          "count": 13,
+          "max": 0.049,
+          "median": -0.082,
+          "min": -0.123,
+          "p90": 0.011,
+          "p95": 0.049
+        },
+        "source_cells": [
+          "u_dut/kernel_stage_q_reg"
+        ],
+        "source_clock_regions": {
+          "X2Y2": 13
+        },
+        "tile_distance": {
+          "count": 13,
+          "max": 18.0,
+          "median": 12.0,
+          "min": 4.0,
+          "p90": 17.0,
+          "p95": 18.0
+        },
+        "tns_ns": -0.949,
+        "wns_ns": -0.123
+      },
+      "kernel_vector": {
+        "candidate_distance_delta": {
+          "count": 45,
+          "decrease_count": 0,
+          "increase_count": 45,
+          "max": 120.0,
+          "median": 107.0,
+          "min": 96.0,
+          "p90": 112.0,
+          "p95": 112.0,
+          "unchanged_count": 0
+        },
+        "endpoint_count": 45,
+        "failing_count": 42,
+        "logic_delay_ns": {
+          "count": 45,
+          "max": 0.583,
+          "median": 0.459,
+          "min": 0.331,
+          "p90": 0.535,
+          "p95": 0.551
+        },
+        "routing_delay_ns": {
+          "count": 45,
+          "max": 1.708,
+          "median": 1.53,
+          "min": 1.379,
+          "p90": 1.674,
+          "p95": 1.683
+        },
+        "routing_fraction": {
+          "count": 45,
+          "max": 0.8352078239608802,
+          "median": 0.7702569169960474,
+          "min": 0.7028542303771662,
+          "p90": 0.8184965380811079,
+          "p95": 0.8251099169516365
+        },
+        "slack": {
+          "count": 45,
+          "max": 0.066,
+          "median": -0.078,
+          "min": -0.132,
+          "p90": -0.018,
+          "p95": 0.033
+        },
+        "source_cells": [
+          "u_dut/kernel_vector_q_reg[0]_rep",
+          "u_dut/kernel_vector_q_reg[0]_rep__0",
+          "u_dut/kernel_vector_q_reg[0]_rep__1",
+          "u_dut/kernel_vector_q_reg[1]_rep__0_replica_2",
+          "u_dut/kernel_vector_q_reg[1]_rep__1",
+          "u_dut/kernel_vector_q_reg[1]_rep__2",
+          "u_dut/kernel_vector_q_reg[2]"
+        ],
+        "source_clock_regions": {
+          "X2Y2": 45
+        },
+        "tile_distance": {
+          "count": 45,
+          "max": 48.0,
+          "median": 33.0,
+          "min": 13.0,
+          "p90": 43.0,
+          "p95": 47.0
+        },
+        "tns_ns": -3.324,
+        "wns_ns": -0.132
+      },
+      "lfnst_grid": {
+        "candidate_distance_delta": {
+          "count": 1,
+          "decrease_count": 0,
+          "increase_count": 1,
+          "max": 108.0,
+          "median": 108.0,
+          "min": 108.0,
+          "p90": 108.0,
+          "p95": 108.0,
+          "unchanged_count": 0
+        },
+        "endpoint_count": 1,
+        "failing_count": 1,
+        "logic_delay_ns": {
+          "count": 1,
+          "max": 0.497,
+          "median": 0.497,
+          "min": 0.497,
+          "p90": 0.497,
+          "p95": 0.497
+        },
+        "routing_delay_ns": {
+          "count": 1,
+          "max": 1.463,
+          "median": 1.463,
+          "min": 1.463,
+          "p90": 1.463,
+          "p95": 1.463
+        },
+        "routing_fraction": {
+          "count": 1,
+          "max": 0.7464285714285714,
+          "median": 0.7464285714285714,
+          "min": 0.7464285714285714,
+          "p90": 0.7464285714285714,
+          "p95": 0.7464285714285714
+        },
+        "slack": {
+          "count": 1,
+          "max": -0.136,
+          "median": -0.136,
+          "min": -0.136,
+          "p90": -0.136,
+          "p95": -0.136
+        },
+        "source_cells": [
+          "u_dut/lfnst_grid_reg[18][13]"
+        ],
+        "source_clock_regions": {
+          "X1Y2": 1
+        },
+        "tile_distance": {
+          "count": 1,
+          "max": 69.0,
+          "median": 69.0,
+          "min": 69.0,
+          "p90": 69.0,
+          "p95": 69.0
+        },
+        "tns_ns": -0.136,
+        "wns_ns": -0.136
+      }
+    },
+    "coverage_complete": true,
+    "endpoint_cells": 64,
+    "negative_path_candidate_delta": {
+      "count": 58,
+      "decrease_count": 0,
+      "increase_count": 58,
+      "max": 120.0,
+      "median": 105.0,
+      "min": 85.0,
+      "p90": 112.0,
+      "p95": 112.0,
+      "unchanged_count": 0
+    },
+    "path_rows": 64
+  }
+}
+
