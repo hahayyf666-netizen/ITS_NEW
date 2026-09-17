@@ -1,0 +1,217 @@
+{
+  "stage": "Step12F-P9-R5E",
+  "title": "Registered-neighbor integration qualification",
+  "status": "P9R5E_ACCEPTED_REGISTERED_NEIGHBOR_SETUP_STOP",
+  "baseline_commit": "cf1f889bedaf57b0209c36743f19ad7f06eb98aa",
+  "scope": {
+    "dut": "unified_its_wrapper",
+    "logical_submission_top": "unified_its_wrapper",
+    "physical_implementation_top": "step12f_registered_neighbor_harness",
+    "package_level_signoff": "NOT_EVALUATED",
+    "dut_rtl_frozen": true,
+    "old_step12f_ooc_xdc_loaded": false,
+    "rtl_changes_in_r5e": false,
+    "xdc_changes_to_dut_contract": false,
+    "model_sim_rerun_required": false,
+    "r6_rtl_authorized": false,
+    "new_tag_created": false,
+    "v3_5_18_unchanged": true
+  },
+  "harness_contract": {
+    "clock_period_ns": 2.0,
+    "clock_mhz": 500.0,
+    "clock_uncertainty_setup_ns": 0.0,
+    "clock_uncertainty_hold_ns": 0.0,
+    "uncertainty_note": "Nominal registered-neighbor contract; Vivado system-jitter accounting remains visible in reports.",
+    "source_boundary_expected_ff_bits": 54,
+    "source_boundary_found_ff_bits": 54,
+    "sink_boundary_expected_ff_bits": 44,
+    "sink_boundary_found_ff_bits": 44,
+    "source_fields": {
+      "it_info": 22,
+      "it_info_vld": 1,
+      "it_data_in": 16,
+      "it_data_addr": 12,
+      "it_data_in_vld": 1,
+      "it_data_end": 1,
+      "it_data_out_req": 1
+    },
+    "sink_fields": {
+      "it_data_in_req": 1,
+      "it_data_out": 40,
+      "it_data_out_vld": 1,
+      "it_done": 1,
+      "protocol_error": 1
+    },
+    "boundary_anti_pruning": "PASS",
+    "source_registers_dynamic": true,
+    "sink_registers_dynamic": true,
+    "boundary_keep_scope": "54 source bits + 44 sink bits; reset conditioner only",
+    "reset": "active-low asynchronous assertion with synchronous deassertion; recovery/removal not waived"
+  },
+  "tool_and_flow": {
+    "vivado": "2025.2 (Build 6299465)",
+    "part": "xcku5p-ffvb676-2-e",
+    "max_threads": 4,
+    "top_clocking": "explicit IBUF + BUFG; clk_g drives source FFs, DUT and sink FFs",
+    "synthesis": "synth_design -top step12f_registered_neighbor_harness -part xcku5p-ffvb676-2-e -flatten_hierarchy none -directive Default",
+    "implementation": [
+      "opt_design -directive Default",
+      "place_design -directive ExtraNetDelay_high",
+      "phys_opt_design -directive AggressiveExplore",
+      "route_design -directive NoTimingRelaxation"
+    ],
+    "constraint_file": "03_verification/vivado/step12f_registered_neighbor_2ns.xdc",
+    "constraint_policy": "2.000 ns clock, 0.000 ns explicit setup/hold uncertainty, no data input/output delays, no false paths, no multicycle paths",
+    "normal_top_correction": "The initial OOC attempt was not used for signoff; the authoritative run synthesizes the enclosing normal top with explicit clock I/O context."
+  },
+  "attempt_history": {
+    "previous_ooc_attempt": {
+      "status": "TOOL_CRASH_AT_PLACE_PHASE_1_3",
+      "evidence_dir": "05_audit/current/59/p9_r5e_registered_neighbor_20260917_final",
+      "note": "OOC synthesis and 54/44 anti-pruning passed; ExtraNetDelay_high place exited with access-violation code -1073741819 before implementation."
+    },
+    "recovery_diagnostic": {
+      "status": "NON_AUTHORITATIVE_PLACE_ROUTE_SURVIVED",
+      "evidence_dir": "05_audit/current/59/p9_r5e_registered_neighbor_diag_explore2",
+      "note": "Explore-based diagnostic was used to separate strategy/tool behavior from netlist feasibility; it is not the R5E signoff run."
+    }
+  },
+  "authoritative_run": {
+    "evidence_dir": "05_audit/current/59/p9_r5e_registered_neighbor_20260917_defaulttop",
+    "synthesis": "PASS",
+    "implementation": "FULLY_ROUTED",
+    "routing_errors": 0,
+    "anti_pruning": "PASS",
+    "setup": {
+      "wns_ns": -0.139,
+      "tns_ns": -74.139,
+      "failing_endpoints": 1808,
+      "total_endpoints": 161802,
+      "status": "FAIL"
+    },
+    "hold": {
+      "whs_ns": 0.010,
+      "ths_ns": 0.0,
+      "failing_endpoints": 0,
+      "total_endpoints": 161802,
+      "status": "PASS"
+    },
+    "route_status": {
+      "logical_nets": 324052,
+      "routable_nets": 48232,
+      "fully_routed_nets": 48232,
+      "nets_with_routing_errors": 0,
+      "node_overlaps": 0
+    },
+    "check_timing": {
+      "no_clock": 0,
+      "constant_clock": 0,
+      "unconstrained_internal_endpoints": 0,
+      "no_input_delay": 1,
+      "no_input_delay_expected": ["rst_n"],
+      "no_output_delay": 0,
+      "multiple_clock": 0,
+      "loops": 0,
+      "partial_input_delay": 0,
+      "partial_output_delay": 0
+    },
+    "exceptions": {
+      "valid_timing_exceptions": 0,
+      "unjustified_timing_exceptions": 0
+    },
+    "drc": {
+      "error_count": 0,
+      "critical_warning_count": 2,
+      "warning_count": 65,
+      "advisory_count": 32,
+      "critical_warning_note": "NSTD-1/UCIO-1 for unconstrained top clk/rst_n package pins; package-level pin contract is out of scope.",
+      "warning_note": "Mostly DSP input/output pipelining recommendations and one no-routable-load diagnostic; not treated as timing signoff."
+    },
+    "utilization": {
+      "clb_luts": 28133,
+      "lut_as_logic": 22491,
+      "lut_as_distributed_ram": 5632,
+      "clb_registers": 25494,
+      "carry8": 1487,
+      "f7_muxes": 1743,
+      "f8_muxes": 592,
+      "dsp48e2": 320,
+      "block_ram_tiles": 0,
+      "uram": 0
+    },
+    "power": {
+      "total_on_chip_w": 1.515,
+      "dynamic_w": 1.056,
+      "device_static_w": 0.459
+    }
+  },
+  "directional_postroute_evidence": {
+    "source_ff_to_dut": {
+      "report": "postroute_audit4/report_paths_source_ff_to_dut_postroute.rpt",
+      "representative_slack_ns": 0.070,
+      "representative_data_delay_ns": 1.729,
+      "representative_logic_ns": 0.435,
+      "representative_route_ns": 1.294,
+      "representative_source": "src_it_data_out_req_q_reg/C",
+      "representative_destination": "u_dut/output_index_reg[3]_replica_4/D"
+    },
+    "dut_internal": {
+      "report": "postroute_audit4/report_paths_dut_internal_postroute.rpt",
+      "representative_slack_ns": -0.139,
+      "representative_data_delay_ns": 2.080,
+      "representative_logic_ns": 0.520,
+      "representative_route_ns": 1.560,
+      "representative_source": "u_dut/rd_cmd_addr_q_reg[1][0][2]/C",
+      "representative_destination": "u_dut/lfnst_mem_resp_data_q_reg[7]/D"
+    },
+    "dut_to_sink_ff": {
+      "report": "postroute_audit4/report_paths_dut_to_sink_ff_postroute.rpt",
+      "representative_slack_ns": -0.130,
+      "representative_data_delay_ns": 1.927,
+      "representative_logic_ns": 0.433,
+      "representative_route_ns": 1.494,
+      "representative_source": "u_dut/output_index_reg[1]_replica_4/C",
+      "representative_destination": "sink_it_data_out_q_reg[25]/D"
+    }
+  },
+  "r5_h_read_structural_gate": {
+    "audit_script": "03_verification/vivado/run_step12f_registered_neighbor_postroute_audit.tcl",
+    "audit_dir": "postroute_audit4",
+    "ramd64e_cells_found": 5632,
+    "ram_address_pins_found": 33792,
+    "pending_through_ramd64e_to_h_response": "NO_PATH",
+    "run_through_ramd64e_to_h_response": "NO_PATH",
+    "stage_through_ramd64e_to_h_response": "NO_PATH",
+    "registered_h_address_through_ramd64e_to_h_response": {
+      "status": "PATH_EXISTS",
+      "representative_slack_ns": -0.133,
+      "representative_data_delay_ns": 2.017,
+      "logic_levels": "LUT4=1 LUT6=1 MUXF7=1 MUXF8=1 RAMD64E=1"
+    },
+    "interpretation": "The R5 address-valid control gate is preserved on the same routed DCP; pending/run/stage do not traverse RAMD64E to H response, while registered address does."
+  },
+  "source_hashes_sha256": {
+    "02_rtl/rtl/unified_its_wrapper.sv": "C6082176CCDEF6B53114F44B59E7008767EF02AAB4CED0410CAFC07C179F0C25",
+    "02_rtl/rtl/unified_p4_kernel.sv": "D996BC5A2BAE4579766821979719715FC3F405250294EEF7A6FE74832E0B0F02",
+    "02_rtl/rtl/its_simple_ram.sv": "DD842C57DEABDF3AD3C75DC038A70CBB871E2D3B725D3108597B58846947845D",
+    "02_rtl/rtl/its_input_cache_bank.sv": "2476D5FBC1D3663515137F8768EC7F16A689B3150E4527D78B5743DF3E7A05D7",
+    "02_rtl/rtl/bounded_lfnst_engine.sv": "152ADAB019570906831805B033A86F9F5C1A1658DB94B82B07B2466B0EC4BD1A",
+    "02_rtl/rtl/step12f_registered_neighbor_harness.sv": "F3486B35387342772B2E661A5C7339BED5924F00E3570ED3BA90A5EE587BCB17",
+    "03_verification/vivado/step12f_registered_neighbor_2ns.xdc": "DF8768566AA79BF5A3B5BBDE290388C9E490C40CAF7E740E782DAEAE5DA51C97",
+    "03_verification/vivado/run_step12f_registered_neighbor.tcl": "ABEF98FE6BA44D0C8DAEB09B8EB73AD231BFB7A506CC2EA5F11F834A457A3276",
+    "03_verification/vivado/run_step12f_registered_neighbor.ps1": "AD677E0C38DD823790DB7FF09142DC5741A767648FB2DAE811F46BA41F8227",
+    "03_verification/vivado/run_step12f_registered_neighbor_postroute_audit.tcl": "372C120AD9D25FD1179F7E8EDDFCC243EE39B0031646E1620C0CDCD62E238FAD",
+    "03_verification/vivado/query_r5e_ram_pins.tcl": "CC388C29B310EBC58E50A6457E8E9E6BACD2788186C4515B613066EBBC8F106A"
+  },
+  "decision": {
+    "registered_neighbor_core_timing": "SETUP_FAIL_HOLD_PASS",
+    "500mhz_core_signoff": "NOT_ACHIEVED",
+    "package_level_fpga_timing": "NOT_EVALUATED",
+    "next_authorized_stage": "NONE; resolve integration responsibility before any R6 RTL",
+    "r5_dut_retained": true,
+    "r6_rtl": "NOT_AUTHORIZED"
+  },
+  "evidence_boundary": "This run proves the frozen R5 DUT in a registered-neighbor integration context. It does not prove package-level I/O timing, historical hidden-golden equivalence, or a 500 MHz setup signoff."
+}
+
