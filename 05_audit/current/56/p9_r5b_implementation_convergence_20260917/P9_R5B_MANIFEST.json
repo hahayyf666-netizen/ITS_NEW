@@ -1,0 +1,166 @@
+{
+  "schema": "step12f.p9.r5b.manifest.v1",
+  "generated_utc": "2026-09-17T03:06:06.7837514Z",
+  "baseline_commit": "64219104be0e3afd313c180f7d3b85f36e8694de",
+  "pre_batch_local_evidence_commit": "e75e2abf52d197e0349bc2ce6399c45cbf09bad2",
+  "status": "COMPLETE_LIMITED_IMPLEMENTATION_CONVERGENCE_NO_SIGNOFF",
+  "rtl_changed": false,
+  "xdc_changed": false,
+  "resynthesis": false,
+  "modelsim_rerun": false,
+  "new_tag": false,
+  "p9_r6_rtl_authorized": false,
+  "r5_rollback_authorized": false,
+  "physical_context": {
+    "vivado_version": "2025.2",
+    "part": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0,
+    "max_threads": 4,
+    "postsynth_dcp_sha256": "8156F568B1A22D14542E35186FECC3B1E9A1746B4B138738AB8D96FF42FDCC28",
+    "r5a_netdelay_routed_dcp_sha256": "6BE317AFB579115AF7451F872CF2D0C107C296E76432E34D741240248C8E236F",
+    "preferred_flow": [
+      "opt_design -directive Default",
+      "place_design -directive ExtraNetDelay_high",
+      "phys_opt_design -directive AggressiveExplore",
+      "route_design -directive NoTimingRelaxation"
+    ]
+  },
+  "runs": [
+    {
+      "run_id": "B0_NETDELAY_REPLAY",
+      "flow": "postsynth NetDelay replay",
+      "input": "R5_POSTSYNTH",
+      "final_dcp_sha256": "39DE741B81CBB7525B4D877BEB0A6E272969D4FA56665833B90FF720A250002A",
+      "setup": {
+        "wns_ns": -0.063,
+        "tns_ns": -1.776,
+        "failing_endpoints": 84
+      },
+      "hold": {
+        "whs_ns": -0.08,
+        "ths_ns": -4.764,
+        "failing_endpoints": 65
+      },
+      "fully_routed": true,
+      "routing_errors": 0,
+      "drc_errors": 0,
+      "drc_checks": 65,
+      "unconstrained_internal_endpoints": 0,
+      "valid_timing_exceptions": 0
+    },
+    {
+      "run_id": "B1_SETUP_OPT",
+      "flow": "post-route phys_opt_design -directive Explore",
+      "input": "R5A_NETDELAY_ROUTED",
+      "final_dcp_sha256": "4B87E80F377C7DFC7B8440493AE9C2D4065AC93D8E3DE33286EF60CF457F293E",
+      "setup": {
+        "wns_ns": -0.063,
+        "tns_ns": -1.776,
+        "failing_endpoints": 84
+      },
+      "hold": {
+        "whs_ns": -0.08,
+        "ths_ns": -4.764,
+        "failing_endpoints": 65
+      },
+      "fully_routed": true,
+      "routing_errors": 0,
+      "drc_errors": 0,
+      "drc_checks": 65,
+      "unconstrained_internal_endpoints": 0,
+      "valid_timing_exceptions": 0
+    },
+    {
+      "run_id": "B2_HOLD_FIX",
+      "flow": "post-route phys_opt_design -hold_fix",
+      "input": "R5A_NETDELAY_ROUTED",
+      "final_dcp_sha256": "33133DE6D2B036525D183C3613D79345FBFF922931CEEA0C1EE1CEE396203E9B",
+      "setup": {
+        "wns_ns": -0.258,
+        "tns_ns": -2.034,
+        "failing_endpoints": 85
+      },
+      "hold": {
+        "whs_ns": -0.08,
+        "ths_ns": -4.658,
+        "failing_endpoints": 62
+      },
+      "fully_routed": true,
+      "routing_errors": 0,
+      "drc_errors": 0,
+      "drc_checks": 65,
+      "unconstrained_internal_endpoints": 0,
+      "valid_timing_exceptions": 0,
+      "tool_action": "5 candidate nets, 3 nets optimized, 3 buffers inserted, no ZHOLD delays"
+    },
+    {
+      "run_id": "B4_AGGRESSIVE_HOLD",
+      "flow": "post-route phys_opt_design -aggressive_hold_fix",
+      "input": "B2_HOLD_FIX",
+      "final_dcp_sha256": "DAA036B34E9CF98E097638E2AC7A0680D4E9206E75DCC21C235342A8E929E1BA4",
+      "setup": {
+        "wns_ns": -0.258,
+        "tns_ns": -2.034,
+        "failing_endpoints": 85
+      },
+      "hold": {
+        "whs_ns": -0.08,
+        "ths_ns": -4.658,
+        "failing_endpoints": 62
+      },
+      "fully_routed": true,
+      "routing_errors": 0,
+      "drc_errors": 0,
+      "drc_checks": 65,
+      "unconstrained_internal_endpoints": 0,
+      "valid_timing_exceptions": 0,
+      "tool_action": "2 candidate nets, 0 nets optimized, 0 delays/buffers inserted"
+    }
+  ],
+  "conditional_runs": {
+    "b3_combined_run": false,
+    "b3_skip_reason": "B1 did not both improve setup over B0 (-0.063 ns) and retain a hold violation",
+    "b4_run": true,
+    "b4_parent": "B2_HOLD_FIX"
+  },
+  "targeted_structural_qualification": {
+    "runs": [
+      "B0_NETDELAY_REPLAY",
+      "B1_SETUP_OPT",
+      "B2_HOLD_FIX",
+      "B4_AGGRESSIVE_HOLD"
+    ],
+    "hread_address_validity": {
+      "pending_to_response_path_count": 0,
+      "run_to_response_path_count": 0,
+      "stage_to_response_path_count": 0,
+      "registered_h_address_to_response_path_count": 20,
+      "tmp_rd_addr_nets": 0,
+      "result": "PASS_FOR_R5_STRUCTURAL_GATE"
+    },
+    "qualification_scope": "read-only reports against each final routed DCP; no RTL authorization"
+  },
+  "hold_classification": {
+    "signoff_axis": "independent from setup",
+    "observed_source_family": "input ports to first registers under frozen input-delay min constraints",
+    "ordinary_hold_fix_effect": "THS improved from -4.764 ns to -4.658 ns but WHS remained -0.080 ns and setup degraded",
+    "aggressive_hold_fix_effect": "no additional optimization or delay insertion"
+  },
+  "decision": {
+    "best_observed_run": "B0_NETDELAY_REPLAY",
+    "best_setup_wns_ns": -0.063,
+    "setup_signoff": false,
+    "hold_signoff": false,
+    "fully_routed_signoff": false,
+    "r5_retained": true,
+    "next": "bounded implementation convergence / hold closure with RTL frozen",
+    "rationale": "No branch simultaneously meets setup and hold. B1 is unchanged, B2 worsens setup while only reducing hold TNS, and B4 adds no improvement. A future passing candidate must be independently reproduced from the R5 postsynth DCP with the exact final flow before signoff."
+  },
+  "evidence_files": {
+    "execution": "P9_R5B_EXECUTION.json",
+    "orchestrator_transcript": "R5B_ORCHESTRATOR_TRANSCRIPT.txt",
+    "targeted_transcript": "R5B_TARGETED_QUALIFICATION_TRANSCRIPT.txt",
+    "run_reports": "B0_NETDELAY_REPLAY/ through B4_AGGRESSIVE_HOLD/"
+  }
+}
+

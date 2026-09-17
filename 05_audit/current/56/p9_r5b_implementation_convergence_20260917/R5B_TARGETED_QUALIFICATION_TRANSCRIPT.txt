@@ -1,0 +1,23 @@
+P9-R5B targeted qualification
+vivado=D:\AMDDesignTools\2025.2\Vivado\bin\vivado.bat
+vivado_version=2025.2
+maxThreads=4
+
+RUN_START B0_NETDELAY_REPLAY generic
+RUN_END B0_NETDELAY_REPLAY generic exit_code=0
+RUN_START B0_NETDELAY_REPLAY hread
+RUN_END B0_NETDELAY_REPLAY hread exit_code=0
+RUN_START B1_SETUP_OPT generic
+RUN_END B1_SETUP_OPT generic exit_code=0
+RUN_START B1_SETUP_OPT hread
+RUN_END B1_SETUP_OPT hread exit_code=0
+RUN_START B2_HOLD_FIX generic
+RUN_END B2_HOLD_FIX generic exit_code=0
+RUN_START B2_HOLD_FIX hread
+RUN_END B2_HOLD_FIX hread exit_code=0
+RUN_START B4_AGGRESSIVE_HOLD generic
+RUN_END B4_AGGRESSIVE_HOLD generic exit_code=0
+RUN_START B4_AGGRESSIVE_HOLD hread
+RUN_END B4_AGGRESSIVE_HOLD hread exit_code=0
+P9_R5B_TARGETED_QUALIFICATION_DONE
+

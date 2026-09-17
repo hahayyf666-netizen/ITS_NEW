@@ -1,0 +1,24 @@
+P9-R5B bounded implementation convergence
+repo=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish
+vivado=D:\AMDDesignTools\2025.2\Vivado\bin\vivado.bat
+tcl=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\03_verification\vivado\run_p9_r5b_postroute.tcl
+vivado_version=2025.2
+maxThreads=4
+part=xcku5p-ffvb676-2-e
+
+HASH_CHECK R5_POSTSYNTH expected=8156F568B1A22D14542E35186FECC3B1E9A1746B4B138738AB8D96FF42FDCC28 actual=8156F568B1A22D14542E35186FECC3B1E9A1746B4B138738AB8D96FF42FDCC28
+HASH_CHECK R5_NETDELAY_ROUTED expected=6BE317AFB579115AF7451F872CF2D0C107C296E76432E34D741240248C8E236F actual=6BE317AFB579115AF7451F872CF2D0C107C296E76432E34D741240248C8E236F
+RUN_START B0_NETDELAY_REPLAY mode=b0_netdelay_replay input=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\54\p9_round5_hread_addr_validity_20260916\step12f_unified_wrapper_postsynth.dcp reference=
+RUN_END B0_NETDELAY_REPLAY exit_code=0
+FINAL_DCP B0_NETDELAY_REPLAY sha256=39DE741B81CBB7525B4D877BEB0A6E272969D4FA56665833B90FF720A250002A
+RUN_START B1_SETUP_OPT mode=b1_setup_opt input=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\55\p9_r5a_implementation_stability_20260916\R5_NETDELAY\final.dcp reference=
+RUN_END B1_SETUP_OPT exit_code=0
+FINAL_DCP B1_SETUP_OPT sha256=4B87E80F377C7DFC7B8440493AE9C2D4065AC93D8E3DE33286EF60CF457F293E
+RUN_START B2_HOLD_FIX mode=b2_hold_fix input=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\55\p9_r5a_implementation_stability_20260916\R5_NETDELAY\final.dcp reference=
+RUN_END B2_HOLD_FIX exit_code=0
+FINAL_DCP B2_HOLD_FIX sha256=33133DE6D2B036525D183C3613D79345FBFF922931CEEA0C1EE1CEE396203E9B
+RUN_START B4_AGGRESSIVE_HOLD mode=b4_aggressive_hold input=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\56\p9_r5b_implementation_convergence_20260917\B2_HOLD_FIX\final.dcp reference=
+RUN_END B4_AGGRESSIVE_HOLD exit_code=0
+FINAL_DCP B4_AGGRESSIVE_HOLD sha256=DAA036B34E9CF98E097638E2AC7A0680D4E9206E75DC21C235342A8E929E1BA4
+P9_R5B_ORCHESTRATION_DONE
+

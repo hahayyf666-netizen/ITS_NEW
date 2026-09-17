@@ -1,0 +1,56 @@
+{
+  "schema": "step12f.p9.r5b.execution.v1",
+  "generated_utc": "2026-09-17T02:21:28.6889478Z",
+  "baseline_commit": "64219104be0e3afd313c180f7d3b85f36e8694de",
+  "local_full_evidence_commit": "e75e2abf52d197e0349bc2ce6399c45cbf09bad2",
+  "postsynth_sha256": "8156F568B1A22D14542E35186FECC3B1E9A1746B4B138738AB8D96FF42FDCC28",
+  "netdelay_routed_sha256": "6BE317AFB579115AF7451F872CF2D0C107C296E76432E34D741240248C8E236F",
+  "modes": [
+    "B0_NETDELAY_REPLAY",
+    "B1_SETUP_OPT",
+    "B2_HOLD_FIX",
+    "B4_AGGRESSIVE_HOLD"
+  ],
+  "conditional": {
+    "b3_run": false,
+    "b4_run": true,
+    "reason": [
+      "B3 not run: B1 did not both improve setup over -0.063 ns and retain a hold violation"
+    ]
+  },
+  "summaries": [
+    {
+      "run_dir": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\56\\p9_r5b_implementation_convergence_20260917\\B0_NETDELAY_REPLAY",
+      "wns_ns": -0.063,
+      "whs_ns": -0.08,
+      "setup_summary": "     -0.063       -1.776                     84               161179        0.468        0.000                       0                 31122  ",
+      "hold_summary": "     -0.080       -4.764                     65               161179        0.468        0.000                       0                 31122  ",
+      "route_summary": "Design Route Status"
+    },
+    {
+      "run_dir": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\56\\p9_r5b_implementation_convergence_20260917\\B1_SETUP_OPT",
+      "wns_ns": -0.063,
+      "whs_ns": -0.08,
+      "setup_summary": "     -0.063       -1.776                     84               161179        0.468        0.000                       0                 31122  ",
+      "hold_summary": "     -0.080       -4.764                     65               161179        0.468        0.000                       0                 31122  ",
+      "route_summary": "Design Route Status"
+    },
+    {
+      "run_dir": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\56\\p9_r5b_implementation_convergence_20260917\\B2_HOLD_FIX",
+      "wns_ns": -0.258,
+      "whs_ns": -0.08,
+      "setup_summary": "     -0.258       -2.034                     85               161179        0.468        0.000                       0                 31122  ",
+      "hold_summary": "     -0.080       -4.658                     62               161179        0.468        0.000                       0                 31122  ",
+      "route_summary": "Design Route Status"
+    },
+    {
+      "run_dir": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_its_new_p8_1_publish\\05_audit\\current\\56\\p9_r5b_implementation_convergence_20260917\\B4_AGGRESSIVE_HOLD",
+      "wns_ns": -0.258,
+      "whs_ns": -0.08,
+      "setup_summary": "     -0.258       -2.034                     85               161179        0.468        0.000                       0                 31122  ",
+      "hold_summary": "     -0.080       -4.658                     62               161179        0.468        0.000                       0                 31122  ",
+      "route_summary": "Design Route Status"
+    }
+  ]
+}
+
