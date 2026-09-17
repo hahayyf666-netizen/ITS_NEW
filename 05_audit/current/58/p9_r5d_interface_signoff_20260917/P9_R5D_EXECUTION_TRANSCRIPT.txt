@@ -1,0 +1,62 @@
+Step12F-P9-R5D execution transcript
+Date: 2026-09-17 (Asia/Shanghai workspace)
+Mode: read-only source/interface responsibility audit
+
+Mutations prohibited by contract:
+  RTL change: false
+  XDC change: false
+  resynthesis: false
+  implementation rerun: false
+  strategy search: false
+  ModelSim/Vivado run: not required
+
+Repository observations:
+  remote origin: https://github.com/hahayyf666-netizen/ITS_NEW.git
+  git ls-remote origin refs/heads/main:
+    dd8201d479f8e42bcabc0f9b34edafabeceee267 refs/heads/main
+  local full-evidence HEAD:
+    5b697cafab0264b458389547973bba9beb6b5d25
+
+Source checks performed:
+  1. Read 03_verification/vivado/step12f_unified_wrapper_2ns.xdc.
+     Finding: explicit OOC boundary comment; registered-neighbor OOC contract;
+     input/output min/max delays all 0.000 ns.
+  2. Read 03_verification/vivado/run_step12f_unified_wrapper.tcl.
+     Finding: top unified_its_wrapper; synth_design -mode out_of_context;
+     BOUNDARY_CONTRACT=registered-neighbor-zero-delay.
+  3. Read 02_rtl/rtl/unified_its_wrapper.sv.
+     Finding: standalone contest logical interface ports; no package pin or
+     enclosing top-level physical model in this module.
+  4. Read 03_verification/vivado/boundary_pre/step12c_registered_neighbor_harness.sv
+     and .xdc.
+     Finding: historical diagnostic internal source/sink registered neighbors;
+     not Step12F unified signoff.
+  5. Read 05_audit/current/57/p9_r5c.../port_properties.rpt and io_report.rpt.
+     Finding: LOC/PACKAGE_PIN/IOB/IOBDELAY unset for relevant ports; no placed
+     data package-I/O path evidence.
+  6. Extracted the interface section from 04_reference/huawei/华为附件.docx.
+     Normalized text SHA-256:
+       D977A9DF54C01629A4F57ECDA035D8DC08110B27BD263269872E891704167A9B
+     Finding: logical interface and shape rows present; physical boundary
+     keywords (FPGA/package/pin/IBUF/IOB/IODELAY/clock/input_delay/etc.) absent.
+  7. Read historical 02_rtl/synth/timing_top_500_singleclk.xdc.
+     Finding: 0.200 ns I/O delays belong to a different legacy top; not
+     transferable to Step12F.
+  8. Read 05_audit/current/22/BOUNDARY_PRE_RESULT.json.
+     Finding: registered-neighbor experiment is explicitly diagnostic and not
+     a v3.5-18 signoff; prior port hold issue was not reproduced in that
+     internal-neighbor context.
+
+Final findings:
+  current Step12F physical context: OOC module boundary
+  final package/top-level context: not proven
+  final input driver: unresolved
+  0/0 input delay: explicit OOC abstraction, not final package proof
+  package/clock/earliest-arrival signoff owner: unresolved final integration
+  hold decision: INTERFACE_OR_OOC_HARNESS_STRONGLY_INDICATED_NOT_PROVEN
+  setup decision: DISTRIBUTED_MULTI_FAMILY_TIMING_TAIL (frozen, out of scope)
+  RTL/XDC action: none authorized
+
+P9-R5D result:
+  COMPLETE_READ_ONLY_UNRESOLVED_EXTERNAL_INTEGRATION_CONTRACT
+

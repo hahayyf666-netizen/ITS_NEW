@@ -1,0 +1,63 @@
+Source: 04_reference/huawei/华为附件.docx
+Extraction: word/document.xml; XML tags removed; paragraph boundaries preserved.
+Normalized-text SHA-256: D977A9DF54C01629A4F57ECDA035D8DC08110B27BD263269872E891704167A9B
+
+The following is the interface and shape-support section of the supplied
+attachment (normalized-text anchors 985-1048):
+
+接口
+接口信号
+位宽
+I/O
+描述
+it_info
+22
+I
+[6:0]：tu_width，TU宽度
+[13:7]：tu_height，TU高度
+[15:14]：tr_type_hor，水平变换类型
+[17:16]：tr_type_ver，垂直变化类型
+[19:18]：lfnst_tr_set_idx，LFNST变换类型集索引
+[21:20]：lfnst_idx，LFNST变换核索引，0表示不需要LFNST变换
+it_info_vld
+1
+I
+info有效，脉冲信号，高电平有效，时序上先发info再发data和end
+it_data_in
+16
+I
+输入数据，有符号数，只输入非零数据，零数据跳过
+it_data_addr
+12
+I
+当前输入数据在TU内的光栅扫描顺序
+it_data_end
+1
+I
+TU块数据输入完成，脉冲信号，高电平有效，时序上要么与it_data_in_vld同拍生效，要么单独生效
+it_data_in_vld
+1
+I
+输入数据有效，脉冲信号，高电平有效
+it_data_out
+40
+O
+反量化反变换后的数据结果，要求按照TU内光栅扫描顺序输出，一拍4个点
+[9:0]：4个点光栅序第一个结果
+[19:10]：第二个结果
+[29:20]：第三个结果
+[39:30]：第四个结果
+it_data_out_vld
+1
+O
+输出数据有效，脉冲信号，高电平有效
+it_done
+1
+O
+TU计算完成，脉冲信号，高电平有效
+
+The attachment then lists the supported shape rows for DCT2, DCT8, DST7,
+and LFNST nTrs=16/48.  It does not state package pins, I/O standards,
+IBUF/IODELAY/IOB placement, input/output delay constraints, launch-clock
+relationships, or whether the module is the final FPGA package top.
+

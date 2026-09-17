@@ -1,0 +1,111 @@
+{
+  "schema": "step12f.p9.r5d.boundary_context_matrix.v1",
+  "generated_utc": "2026-09-17T05:30:00Z",
+  "purpose": "Compare logical contest interface evidence with the physical/OOC contexts used by current and historical flows.",
+  "rows": [
+    {
+      "id": "STEP12F_UNIFIED_WRAPPER_OOC",
+      "top_or_dut": "unified_its_wrapper",
+      "role": "current Step12F unified physical target",
+      "driver_model": "top-level DUT ports constrained by explicit zero-delay input assumptions; no internal data source registers",
+      "receiver_model": "top-level DUT output ports constrained by explicit zero-delay output assumptions",
+      "clock_model": "create_clock clk, period 2.000 ns; OOC clock has no package/board clock context",
+      "input_delay_min_ns": 0.0,
+      "input_delay_max_ns": 0.0,
+      "output_delay_min_ns": 0.0,
+      "output_delay_max_ns": 0.0,
+      "package_io_modeled": false,
+      "ibuf_iodelay_iob_modeled": false,
+      "authority": "current unified core OOC setup/logic evidence only",
+      "can_signoff_final_package_hold": false,
+      "evidence": [
+        "03_verification/vivado/step12f_unified_wrapper_2ns.xdc:1",
+        "03_verification/vivado/step12f_unified_wrapper_2ns.xdc:25-30",
+        "03_verification/vivado/run_step12f_unified_wrapper.tcl:46",
+        "03_verification/vivado/run_step12f_unified_wrapper.tcl:66-67",
+        "05_audit/current/57/p9_r5c_root_cause_qualification_20260917/port_properties.rpt",
+        "05_audit/current/57/p9_r5c_root_cause_qualification_20260917/io_report.rpt"
+      ]
+    },
+    {
+      "id": "STEP12C_REGISTERED_NEIGHBOR_HARNESS",
+      "top_or_dut": "step12c_registered_neighbor_harness",
+      "role": "historical diagnostic boundary experiment",
+      "driver_model": "internal source registers launch DUT inputs",
+      "receiver_model": "internal sink registers capture DUT outputs",
+      "clock_model": "harness clock port through IBUF/BUFG; data source/sink are internal registered neighbors",
+      "input_delay_min_ns": "not applied to DUT data ports",
+      "input_delay_max_ns": "not applied to DUT data ports",
+      "package_io_modeled": false,
+      "ibuf_iodelay_iob_modeled": false,
+      "authority": "diagnostic registered-neighbor timing context; not Step12F signoff",
+      "can_signoff_final_package_hold": false,
+      "evidence": [
+        "03_verification/vivado/boundary_pre/step12c_registered_neighbor_harness.sv:3-13",
+        "03_verification/vivado/boundary_pre/step12c_registered_neighbor_harness.sv:16-19",
+        "03_verification/vivado/boundary_pre/step12c_registered_neighbor_harness.sv:62-63",
+        "03_verification/vivado/boundary_pre/step12c_registered_neighbor_harness.xdc:1-11",
+        "05_audit/current/22/BOUNDARY_PRE_RESULT.json"
+      ]
+    },
+    {
+      "id": "LEGACY_ITS_TOP_500_SINGLECLK",
+      "top_or_dut": "its_top_500_singleclk",
+      "role": "historical legacy submission/top flow",
+      "driver_model": "module ports matching the contest logical interface; OOC top in its own historical flow",
+      "receiver_model": "module output ports in historical flow",
+      "clock_model": "create_clock clk, period 2.000 ns",
+      "input_delay_min_ns": 0.2,
+      "input_delay_max_ns": 0.2,
+      "output_delay_min_ns": 0.2,
+      "output_delay_max_ns": 0.2,
+      "package_io_modeled": false,
+      "ibuf_iodelay_iob_modeled": false,
+      "authority": "historical legacy baseline only; different RTL/topology from Step12F unified wrapper",
+      "can_signoff_step12f": false,
+      "evidence": [
+        "02_rtl/rtl/its_top.v:1-14",
+        "02_rtl/rtl/its_top_500_singleclk.v:1-24",
+        "02_rtl/synth/timing_top_500_singleclk.xdc:7",
+        "02_rtl/synth/timing_top_500_singleclk.xdc:14-36",
+        "02_rtl/synth/its_top_500_singleclk_ooc_usp.tcl:38"
+      ]
+    },
+    {
+      "id": "HUAWEI_ATTACHMENT_LOGICAL_INTERFACE",
+      "top_or_dut": "contest interface description",
+      "role": "official logical protocol/shape evidence",
+      "driver_model": "not specified beyond I/O direction and pulse/order semantics",
+      "receiver_model": "not specified beyond I/O direction and output order",
+      "clock_model": "not specified in the attachment text",
+      "input_delay_min_ns": "not specified",
+      "input_delay_max_ns": "not specified",
+      "package_io_modeled": false,
+      "ibuf_iodelay_iob_modeled": false,
+      "authority": "official for the listed logical interface and shape rows",
+      "can_signoff_final_package_hold": false,
+      "evidence": [
+        "04_reference/huawei/华为附件.docx",
+        "05_audit/current/58/p9_r5d_interface_signoff_20260917/HUAWEI_ATTACHMENT_INTERFACE_EXTRACT.txt"
+      ]
+    },
+    {
+      "id": "OFFICIAL_EXPERT_QA_LOGICAL_CONTRACT",
+      "top_or_dut": "user-supplied official answer transcript",
+      "role": "officially supplied logical protocol clarification",
+      "driver_model": "not specified",
+      "receiver_model": "not specified",
+      "clock_model": "clk required; rst_n active-low asynchronous",
+      "input_delay_min_ns": "not specified",
+      "input_delay_max_ns": "not specified",
+      "package_io_modeled": false,
+      "ibuf_iodelay_iob_modeled": false,
+      "authority": "official answer as supplied; logical semantics only",
+      "can_signoff_final_package_hold": false,
+      "evidence": [
+        "05_audit/current/27/step12d_engineering/OFFICIAL_EXPERT_QA_EVIDENCE.json"
+      ]
+    }
+  ]
+}
+

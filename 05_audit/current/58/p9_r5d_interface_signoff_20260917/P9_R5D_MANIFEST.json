@@ -1,0 +1,105 @@
+{
+  "schema": "step12f.p9.r5d.interface_signoff_responsibility.manifest.v1",
+  "generated_utc": "2026-09-17T05:30:00Z",
+  "baseline": {
+    "remote_main_observed_by_git_ls_remote": "dd8201d479f8e42bcabc0f9b34edafabeceee267",
+    "local_full_evidence_head": "5b697cafab0264b458389547973bba9beb6b5d25",
+    "r5c_remote_compact_commit": "dd8201d479f8e42bcabc0f9b34edafabeceee267",
+    "note": "The local worktree contains the full-evidence R5C commit while the remote main observation is recorded independently; no claim of identical trees is made here."
+  },
+  "scope": "READ_ONLY_INTERFACE_SIGNOFF_RESPONSIBILITY",
+  "status": "COMPLETE_READ_ONLY_UNRESOLVED_EXTERNAL_INTEGRATION_CONTRACT",
+  "mutations": {
+    "rtl_changed": false,
+    "xdc_changed": false,
+    "resynthesis": false,
+    "implementation_rerun": false,
+    "strategy_search": false,
+    "modelsim_required": false,
+    "vivado_required": false,
+    "new_tag": false
+  },
+  "physical_baseline": {
+    "dcp": "05_audit/current/56/p9_r5b_implementation_convergence_20260917/B0_NETDELAY_REPLAY/final.dcp",
+    "dcp_sha256": "39DE741B81CBB7525B4D877BEB0A6E272969D4FA56665833B90FF720A250002A",
+    "vivado": "2025.2",
+    "part": "xcku5p-ffvb676-2-e",
+    "period_ns": 2.0,
+    "input_delay_contract": "set_input_delay -min/-max 0.000 on Step12F wrapper ports",
+    "physical_io_observation": "LOC/PACKAGE_PIN/IOB/IOBDELAY unset; negative hold paths have no IBUF/IODELAY/IOB-FF evidence"
+  },
+  "source_hashes": {
+    "04_reference/huawei/华为附件.docx": "37306990FC8F885C5F9579552FF503CB13FAEFDA7CB8A2BA39878A180D7986A9",
+    "03_verification/vivado/step12f_unified_wrapper_2ns.xdc": "8249A2643753D347F98F3F1AD775829AB13F277375801B7565C1AC7A347E1B2F",
+    "03_verification/vivado/run_step12f_unified_wrapper.tcl": "E3418D176FFC2032B00A860C622E358CA4872F37BB81446F701515FD9C6017BE",
+    "02_rtl/rtl/unified_its_wrapper.sv": "C6082176CCDEF6B53114F44B59E7008767EF02AAB4CED0410CAFC07C179F0C25",
+    "03_verification/vivado/boundary_pre/step12c_registered_neighbor_harness.sv": "3714CD8C6DF238B73F3AF1F800FDBBD1656169220E03645EA3CC08554D833377",
+    "03_verification/vivado/boundary_pre/step12c_registered_neighbor_harness.xdc": "D1F39A63A480919DA7A468FC081AF20755EAAFADB17F47ADF218458B5B059E69",
+    "02_rtl/synth/timing_top_500_singleclk.xdc": "D38DE1F456BCA3C7EF95D5D7353104334ECFC4CBACA7589A78B9188D817E83D0",
+    "05_audit/current/57/p9_r5c_root_cause_qualification_20260917/P9_R5C_MANIFEST.json": "12A7C1E4B68E2E2BA9E20053589FC1F71BA809BD1D0F936AF568061C1E3E28CF"
+  },
+  "questions": {
+    "q1_current_top_vs_final_deployment": {
+      "current_step12f_answer": "unified_its_wrapper is the OOC physical-flow top/module boundary",
+      "final_contest_or_package_top": "NOT_PROVEN",
+      "evidence_class": "repository_flow_evidence",
+      "reason": "The current Tcl uses synth_design -mode out_of_context and the XDC names a unified-wrapper OOC boundary; no final package/top-level integration source is present in the reviewed evidence."
+    },
+    "q2_actual_input_driver": {
+      "current_ooc_driver_model": "abstract zero-delay boundary at DUT ports",
+      "final_driver": "UNRESOLVED",
+      "possible_models": [
+        "internal upstream registered neighbor in an enclosing top",
+        "FPGA package I/O with IBUF/IODELAY/IOB context",
+        "other system-level source with an explicit launch-clock relationship"
+      ],
+      "evidence_class": "not_defined_by_current_step12f_or_official_attachment_text"
+    },
+    "q3_zero_input_delay_meaning": {
+      "finding": "The Step12F 0.000 ns min/max input delay is an explicit registered-neighbor OOC assumption, not proven final package-I/O timing.",
+      "source": "03_verification/vivado/step12f_unified_wrapper_2ns.xdc:25-30",
+      "do_not": "Do not change the XDC solely to make hold pass."
+    },
+    "q4_signoff_responsibility": {
+      "current_dcp_owner": "internal OOC core timing only",
+      "package_delay_iobuf_iob_clock_relationship_owner": "final integration/top-level signoff owner, not identified by current sources",
+      "classification": "UNRESOLVED_EXTERNAL_INTEGRATION_CONTRACT"
+    }
+  },
+  "hold_conclusion": {
+    "classification": "INTERFACE_OR_OOC_HARNESS_STRONGLY_INDICATED_NOT_PROVEN",
+    "current_negative_paths": 65,
+    "source_families": {
+      "it_info_to_first_register": 44,
+      "it_data_in_to_first_register": 16,
+      "it_data_addr_to_first_register": 5
+    },
+    "core_rtl_hold_fix_authorized": false,
+    "xdc_relaxation_authorized": false,
+    "required_next_evidence": "final contest/top-level integration methodology or a Step12F-specific registered-neighbor/package harness"
+  },
+  "setup_conclusion": {
+    "classification": "DISTRIBUTED_MULTI_FAMILY_TIMING_TAIL",
+    "wns_ns": -0.063,
+    "tns_ns": -1.776,
+    "failing_endpoints": 84,
+    "r5d_scope": "OUT_OF_SCOPE_AND_FROZEN",
+    "r6_rtl_authorized": false
+  },
+  "decision": {
+    "p9_r5d": "COMPLETE_READ_ONLY",
+    "r5_rtl": "RETAINED_FROZEN",
+    "xdc": "RETAINED_FROZEN",
+    "r6": "NOT_AUTHORIZED",
+    "five_hundred_mhz_signoff": false,
+    "next": "Identify the final integration boundary and its signoff owner; if internal registered-neighbor, build a Step12F-specific enclosing harness; if package I/O, provide real pin/I/O/clock/board constraints; if unresolved, retain the hold result as unowned OOC evidence without waiver."
+  },
+  "evidence_files": [
+    "BOUNDARY_CONTEXT_MATRIX.json",
+    "INTERFACE_PHYSICAL_SOURCE_SCAN.json",
+    "HUAWEI_ATTACHMENT_INTERFACE_EXTRACT.txt",
+    "P9_R5D_REPORT.md",
+    "P9_R5D_EXECUTION_TRANSCRIPT.txt"
+  ]
+}
+
