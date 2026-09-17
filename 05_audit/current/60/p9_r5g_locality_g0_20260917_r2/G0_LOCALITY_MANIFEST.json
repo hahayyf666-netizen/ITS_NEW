@@ -1,0 +1,595 @@
+{
+  "authoritative_r5e": {
+    "hold": {
+      "failing_endpoints": 0,
+      "status": "PASS",
+      "ths_ns": 0.0,
+      "total_endpoints": 161802,
+      "whs_ns": 0.01
+    },
+    "route_status": {
+      "fully_routed_nets": 48232,
+      "logical_nets": 324052,
+      "nets_with_routing_errors": 0,
+      "node_overlaps": 0,
+      "routable_nets": 48232
+    },
+    "setup": {
+      "failing_endpoints": 1808,
+      "status": "FAIL",
+      "tns_ns": -74.139,
+      "total_endpoints": 161802,
+      "wns_ns": -0.139
+    }
+  },
+  "baseline_commit": "cf1f889bedaf57b0209c36743f19ad7f06eb98aa",
+  "fixed_dcp": {
+    "expected_sha256": "D18A6213468C4EE270D03AF924BE53BE7298DD71A70C5B2651ED0DDB8767552C",
+    "path": "05_audit\\current\\59\\p9_r5e_registered_neighbor_20260917_defaulttop\\step12f_registered_neighbor_postroute.dcp",
+    "sha256": "D18A6213468C4EE270D03AF924BE53BE7298DD71A70C5B2651ED0DDB8767552C",
+    "sha256_match": true
+  },
+  "g0_decision": "A_OR_B_CANDIDATE_REQUIRES_GEOMETRY_SELECTION",
+  "g0_interpretation": {
+    "evidence": "Failing ingress->input_mem paths are materially farther in tile coordinates than passing paths for both control and data source families.",
+    "limitations": [
+      "Tile Manhattan distance is a placement proxy, not a timing proof.",
+      "SLICE/DSP/RAM resource indices are not directly comparable; tile GRID_POINT coordinates are used.",
+      "G0 does not authorize a pblock or any implementation command.",
+      "G1 must use one common postsynth DCP and a matched CONTROL/TREATMENT A/B."
+    ],
+    "locality_hypothesis": "STRONGLY_INDICATED"
+  },
+  "generated_at": "2026-09-17T11:59:21.428263+00:00",
+  "inventory": {
+    "fill_wr_cmd_addr_q_reg": {
+      "cell_count": 10,
+      "fanout": {
+        "count": 10,
+        "max": 16.0,
+        "median": 16.0,
+        "min": 16.0,
+        "p90": 16.0,
+        "p95": 16.0
+      },
+      "site_types": {
+        "SLICEL": 10
+      },
+      "tile_bbox": {
+        "coordinate_count": 10,
+        "x_max": 246,
+        "x_min": 222,
+        "y_max": 119,
+        "y_min": 104
+      },
+      "unique_site_count": 8,
+      "unique_tile_count": 8
+    },
+    "ingress_data_q_reg": {
+      "cell_count": 64,
+      "fanout": {
+        "count": 64,
+        "max": 64.0,
+        "median": 64.0,
+        "min": 60.0,
+        "p90": 64.0,
+        "p95": 64.0
+      },
+      "site_types": {
+        "SLICEL": 64
+      },
+      "tile_bbox": {
+        "coordinate_count": 64,
+        "x_max": 255,
+        "x_min": 234,
+        "y_max": 114,
+        "y_min": 95
+      },
+      "unique_site_count": 35,
+      "unique_tile_count": 35
+    },
+    "ingress_group_q_reg": {
+      "cell_count": 5,
+      "fanout": {
+        "count": 5,
+        "max": 28.0,
+        "median": 24.0,
+        "min": 13.0,
+        "p90": 28.0,
+        "p95": 28.0
+      },
+      "site_types": {
+        "SLICEL": 5
+      },
+      "tile_bbox": {
+        "coordinate_count": 5,
+        "x_max": 255,
+        "x_min": 251,
+        "y_max": 134,
+        "y_min": 123
+      },
+      "unique_site_count": 5,
+      "unique_tile_count": 5
+    },
+    "input_cache_bank": {
+      "cell_count": 104,
+      "fanout": {
+        "count": 0,
+        "max": null,
+        "median": null,
+        "min": null,
+        "p90": null,
+        "p95": null
+      },
+      "site_types": {
+        "SLICEL": 91,
+        "SLICEM": 13
+      },
+      "tile_bbox": {
+        "coordinate_count": 104,
+        "x_max": 297,
+        "x_min": 241,
+        "y_max": 113,
+        "y_min": 81
+      },
+      "unique_site_count": 47,
+      "unique_tile_count": 47
+    },
+    "input_mem_reg": {
+      "cell_count": 4032,
+      "fanout": {
+        "count": 0,
+        "max": null,
+        "median": null,
+        "min": null,
+        "p90": null,
+        "p95": null
+      },
+      "site_types": {
+        "SLICEL": 2137,
+        "SLICEM": 1895
+      },
+      "tile_bbox": {
+        "coordinate_count": 4032,
+        "x_max": 329,
+        "x_min": 186,
+        "y_max": 174,
+        "y_min": 120
+      },
+      "unique_site_count": 974,
+      "unique_tile_count": 974
+    },
+    "kernel_h_rd_addr_q_reg": {
+      "cell_count": 50,
+      "fanout": {
+        "count": 0,
+        "max": null,
+        "median": null,
+        "min": null,
+        "p90": null,
+        "p95": null
+      },
+      "site_types": {
+        "SLICEL": 45,
+        "SLICEM": 5
+      },
+      "tile_bbox": {
+        "coordinate_count": 50,
+        "x_max": 264,
+        "x_min": 222,
+        "y_max": 137,
+        "y_min": 105
+      },
+      "unique_site_count": 24,
+      "unique_tile_count": 24
+    },
+    "kernel_h_rd_data_q_reg": {
+      "cell_count": 64,
+      "fanout": {
+        "count": 0,
+        "max": null,
+        "median": null,
+        "min": null,
+        "p90": null,
+        "p95": null
+      },
+      "site_types": {
+        "SLICEL": 64
+      },
+      "tile_bbox": {
+        "coordinate_count": 64,
+        "x_max": 251,
+        "x_min": 232,
+        "y_max": 122,
+        "y_min": 115
+      },
+      "unique_site_count": 22,
+      "unique_tile_count": 22
+    },
+    "kernel_rd_raw_data_q_reg": {
+      "cell_count": 64,
+      "fanout": {
+        "count": 0,
+        "max": null,
+        "median": null,
+        "min": null,
+        "p90": null,
+        "p95": null
+      },
+      "site_types": {
+        "SLICEL": 51,
+        "SLICEM": 13
+      },
+      "tile_bbox": {
+        "coordinate_count": 64,
+        "x_max": 293,
+        "x_min": 262,
+        "y_max": 128,
+        "y_min": 100
+      },
+      "unique_site_count": 53,
+      "unique_tile_count": 53
+    },
+    "kernel_run_q_reg": {
+      "cell_count": 1,
+      "fanout": {
+        "count": 1,
+        "max": 39.0,
+        "median": 39.0,
+        "min": 39.0,
+        "p90": 39.0,
+        "p95": 39.0
+      },
+      "site_types": {
+        "SLICEL": 1
+      },
+      "tile_bbox": {
+        "coordinate_count": 1,
+        "x_max": 244,
+        "x_min": 244,
+        "y_max": 92,
+        "y_min": 92
+      },
+      "unique_site_count": 1,
+      "unique_tile_count": 1
+    },
+    "lfnst_grid_reg": {
+      "cell_count": 1024,
+      "fanout": {
+        "count": 0,
+        "max": null,
+        "median": null,
+        "min": null,
+        "p90": null,
+        "p95": null
+      },
+      "site_types": {
+        "SLICEL": 551,
+        "SLICEM": 473
+      },
+      "tile_bbox": {
+        "coordinate_count": 1024,
+        "x_max": 244,
+        "x_min": 198,
+        "y_max": 99,
+        "y_min": 70
+      },
+      "unique_site_count": 313,
+      "unique_tile_count": 313
+    },
+    "rd_cmd_addr_q_reg": {
+      "cell_count": 174,
+      "fanout": {
+        "count": 0,
+        "max": null,
+        "median": null,
+        "min": null,
+        "p90": null,
+        "p95": null
+      },
+      "site_types": {
+        "SLICEL": 125,
+        "SLICEM": 49
+      },
+      "tile_bbox": {
+        "coordinate_count": 174,
+        "x_max": 297,
+        "x_min": 244,
+        "y_max": 128,
+        "y_min": 94
+      },
+      "unique_site_count": 87,
+      "unique_tile_count": 87
+    },
+    "result_bank": {
+      "cell_count": 110,
+      "fanout": {
+        "count": 0,
+        "max": null,
+        "median": null,
+        "min": null,
+        "p90": null,
+        "p95": null
+      },
+      "site_types": {
+        "SLICEL": 77,
+        "SLICEM": 33
+      },
+      "tile_bbox": {
+        "coordinate_count": 110,
+        "x_max": 251,
+        "x_min": 207,
+        "y_max": 158,
+        "y_min": 68
+      },
+      "unique_site_count": 53,
+      "unique_tile_count": 53
+    },
+    "result_cmd_slot_q_reg": {
+      "cell_count": 1,
+      "fanout": {
+        "count": 0,
+        "max": null,
+        "median": null,
+        "min": null,
+        "p90": null,
+        "p95": null
+      },
+      "site_types": {
+        "SLICEL": 1
+      },
+      "tile_bbox": {
+        "coordinate_count": 1,
+        "x_max": 231,
+        "x_min": 231,
+        "y_max": 99,
+        "y_min": 99
+      },
+      "unique_site_count": 1,
+      "unique_tile_count": 1
+    },
+    "result_cmd_valid_q_reg": {
+      "cell_count": 1,
+      "fanout": {
+        "count": 0,
+        "max": null,
+        "median": null,
+        "min": null,
+        "p90": null,
+        "p95": null
+      },
+      "site_types": {
+        "SLICEL": 1
+      },
+      "tile_bbox": {
+        "coordinate_count": 1,
+        "x_max": 231,
+        "x_min": 231,
+        "y_max": 100,
+        "y_min": 100
+      },
+      "unique_site_count": 1,
+      "unique_tile_count": 1
+    },
+    "vwrite_cmd_data_q_reg": {
+      "cell_count": 64,
+      "fanout": {
+        "count": 0,
+        "max": null,
+        "median": null,
+        "min": null,
+        "p90": null,
+        "p95": null
+      },
+      "site_types": {
+        "SLICEL": 53,
+        "SLICEM": 11
+      },
+      "tile_bbox": {
+        "coordinate_count": 64,
+        "x_max": 255,
+        "x_min": 243,
+        "y_max": 76,
+        "y_min": 65
+      },
+      "unique_site_count": 35,
+      "unique_tile_count": 35
+    }
+  },
+  "negative_r5f_population": {
+    "endpoint:input_mem_reg": 459,
+    "source:u_dut/u_unified_p4_kernel/ingress_data_q_reg": 46,
+    "source:u_dut/u_unified_p4_kernel/ingress_group_q_reg": 2
+  },
+  "stage": "Step12F-P9-R5G-G0",
+  "status": "CLOSED_READ_ONLY",
+  "targeted_path_population": {
+    "ingress_data_q_reg": {
+      "all": {
+        "distance": {
+          "count": 4032,
+          "max": 145.0,
+          "median": 86.0,
+          "min": 20.0,
+          "p90": 115.0,
+          "p95": 122.0
+        },
+        "logic_levels": {
+          "count": 4032,
+          "max": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "p90": 0.0,
+          "p95": 0.0
+        },
+        "negative_path_count": 201,
+        "negative_tns_ns": -7.99,
+        "path_count": 4032,
+        "routing_fraction": {
+          "count": 4032,
+          "max": 0.959796437659033,
+          "median": 0.9446778711484594,
+          "min": 0.842315369261477,
+          "p90": 0.954335260115607,
+          "p95": 0.9554929577464789
+        }
+      },
+      "failing": {
+        "distance": {
+          "count": 201,
+          "max": 129.0,
+          "median": 103.0,
+          "min": 41.0,
+          "p90": 122.0,
+          "p95": 124.0
+        },
+        "logic_levels": {
+          "count": 201,
+          "max": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "p90": 0.0,
+          "p95": 0.0
+        },
+        "negative_path_count": 201,
+        "negative_tns_ns": -7.99,
+        "path_count": 201,
+        "routing_fraction": {
+          "count": 201,
+          "max": 0.9597349643221204,
+          "median": 0.9556677890011224,
+          "min": 0.9520048602673147,
+          "p90": 0.9576180257510729,
+          "p95": 0.9583552978386927
+        }
+      },
+      "failing_minus_passing_median_tile_distance": 18.0,
+      "passing_or_zero": {
+        "distance": {
+          "count": 3831,
+          "max": 145.0,
+          "median": 85.0,
+          "min": 20.0,
+          "p90": 115.0,
+          "p95": 122.0
+        },
+        "logic_levels": {
+          "count": 3831,
+          "max": 0.0,
+          "median": 0.0,
+          "min": 0.0,
+          "p90": 0.0,
+          "p95": 0.0
+        },
+        "negative_path_count": 0,
+        "negative_tns_ns": 0,
+        "path_count": 3831,
+        "routing_fraction": {
+          "count": 3831,
+          "max": 0.959796437659033,
+          "median": 0.9438122332859176,
+          "min": 0.842315369261477,
+          "p90": 0.95366568914956,
+          "p95": 0.9547277936962749
+        }
+      }
+    },
+    "ingress_group_q_reg": {
+      "all": {
+        "distance": {
+          "count": 4032,
+          "max": 113.0,
+          "median": 68.0,
+          "min": 11.0,
+          "p90": 96.0,
+          "p95": 102.0
+        },
+        "logic_levels": {
+          "count": 4032,
+          "max": 3.0,
+          "median": 2.0,
+          "min": 2.0,
+          "p90": 2.0,
+          "p95": 3.0
+        },
+        "negative_path_count": 276,
+        "negative_tns_ns": -9.695,
+        "path_count": 4032,
+        "routing_fraction": {
+          "count": 4032,
+          "max": 0.9117137911136757,
+          "median": 0.830087611234785,
+          "min": 0.6823992133726647,
+          "p90": 0.8753541076487252,
+          "p95": 0.8857015423572743
+        }
+      },
+      "failing": {
+        "distance": {
+          "count": 276,
+          "max": 113.0,
+          "median": 97.0,
+          "min": 54.0,
+          "p90": 109.0,
+          "p95": 110.25
+        },
+        "logic_levels": {
+          "count": 276,
+          "max": 3.0,
+          "median": 2.0,
+          "min": 2.0,
+          "p90": 2.0,
+          "p95": 3.0
+        },
+        "negative_path_count": 276,
+        "negative_tns_ns": -9.695,
+        "path_count": 276,
+        "routing_fraction": {
+          "count": 276,
+          "max": 0.9117137911136757,
+          "median": 0.8726150392817059,
+          "min": 0.7570093457943926,
+          "p90": 0.8828880045480386,
+          "p95": 0.8852144167970238
+        }
+      },
+      "failing_minus_passing_median_tile_distance": 31.0,
+      "passing_or_zero": {
+        "distance": {
+          "count": 3756,
+          "max": 113.0,
+          "median": 66.0,
+          "min": 11.0,
+          "p90": 93.0,
+          "p95": 99.0
+        },
+        "logic_levels": {
+          "count": 3756,
+          "max": 3.0,
+          "median": 2.0,
+          "min": 2.0,
+          "p90": 2.0,
+          "p95": 3.0
+        },
+        "negative_path_count": 0,
+        "negative_tns_ns": 0,
+        "path_count": 3756,
+        "routing_fraction": {
+          "count": 3756,
+          "max": 0.9083832335329342,
+          "median": 0.8281461434370772,
+          "min": 0.6823992133726647,
+          "p90": 0.8725663716814159,
+          "p95": 0.8855749309392265
+        }
+      }
+    }
+  },
+  "tool": {
+    "implementation_commands": "FORBIDDEN",
+    "max_threads": 4,
+    "part": "xcku5p-ffvb676-2-e",
+    "rtl_xdc_changes": "FORBIDDEN",
+    "vivado": "2025.2"
+  }
+}
