@@ -1,0 +1,14 @@
+P9-R5F independent reset recovery/removal audit
+vivado_report_timing_check_type=UNSUPPORTED_IN_VIVADO_2025.2
+directional_queries=recovery clock->async-control; removal async-control->clock
+recovery_status=QUERY_COMPLETE
+recovery_path_count=9386
+recovery_worst_slack_ns=0.03
+recovery_negative_tns_ns=0.000000000
+recovery_report=reset_recovery.rpt
+removal_status=QUERY_COMPLETE
+removal_path_count=0
+removal_worst_slack_ns=NA
+removal_negative_tns_ns=0.000000000
+removal_report=reset_removal.rpt
+async_control_pin_count=9506

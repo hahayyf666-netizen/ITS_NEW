@@ -1,0 +1,212 @@
+[
+  {
+    "family": "u_dut/u_unified_p4_kernel/ingress_group_q_reg",
+    "endpoint_count": 276,
+    "tns_ns": -9.694999999999995,
+    "worst_violation_ns": 0.113,
+    "tns_share": 0.13084730207574158
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/ingress_data_q_reg",
+    "endpoint_count": 201,
+    "tns_ns": -7.989999999999999,
+    "worst_violation_ns": 0.133,
+    "tns_share": 0.10783599211812023
+  },
+  {
+    "family": "u_dut/kernel_run_q_reg",
+    "endpoint_count": 125,
+    "tns_ns": -5.252999999999996,
+    "worst_violation_ns": 0.128,
+    "tns_share": 0.07089642886063643
+  },
+  {
+    "family": "u_dut/fill_wr_cmd_addr_q_reg",
+    "endpoint_count": 144,
+    "tns_ns": -4.763999999999998,
+    "worst_violation_ns": 0.086,
+    "tns_share": 0.06429670418657378
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/fifo_rd_ptr_q_reg_rep",
+    "endpoint_count": 47,
+    "tns_ns": -3.493,
+    "worst_violation_ns": 0.125,
+    "tns_share": 0.0471428185818015
+  },
+  {
+    "family": "u_dut/kernel_vector_q_reg_rep",
+    "endpoint_count": 40,
+    "tns_ns": -3.2430000000000008,
+    "worst_violation_ns": 0.135,
+    "tns_share": 0.04376872621264881
+  },
+  {
+    "family": "u_dut/rd_cmd_addr_q_reg",
+    "endpoint_count": 36,
+    "tns_ns": -2.6049999999999995,
+    "worst_violation_ns": 0.139,
+    "tns_share": 0.03515804248657111
+  },
+  {
+    "family": "u_dut/result_cmd_valid_q_reg",
+    "endpoint_count": 110,
+    "tns_ns": -2.3009999999999997,
+    "worst_violation_ns": 0.059,
+    "tns_share": 0.03105514616568143
+  },
+  {
+    "family": "u_dut/result_cmd_slot_q_reg",
+    "endpoint_count": 70,
+    "tns_ns": -2.084,
+    "worst_violation_ns": 0.077,
+    "tns_share": 0.028126433989256894
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/slot_state_q_reg_replica",
+    "endpoint_count": 49,
+    "tns_ns": -2.0169999999999995,
+    "worst_violation_ns": 0.087,
+    "tns_share": 0.027222177234323963
+  },
+  {
+    "family": "u_dut/scrub_slot_reg",
+    "endpoint_count": 40,
+    "tns_ns": -1.9199999999999997,
+    "worst_violation_ns": 0.085,
+    "tns_share": 0.02591302939509272
+  },
+  {
+    "family": "u_dut/kernel_h_rd_addr_q_reg",
+    "endpoint_count": 34,
+    "tns_ns": -1.886,
+    "worst_violation_ns": 0.133,
+    "tns_share": 0.025454152832887954
+  },
+  {
+    "family": "u_dut/rd_cmd_addr_q_reg_replica",
+    "endpoint_count": 28,
+    "tns_ns": -1.8430000000000004,
+    "worst_violation_ns": 0.132,
+    "tns_share": 0.024873808945393698
+  },
+  {
+    "family": "u_dut/kernel_vector_q_reg",
+    "endpoint_count": 28,
+    "tns_ns": -1.8410000000000006,
+    "worst_violation_ns": 0.122,
+    "tns_share": 0.024846816206440477
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/ready_fifo_mem_reg",
+    "endpoint_count": 27,
+    "tns_ns": -1.7030000000000003,
+    "worst_violation_ns": 0.131,
+    "tns_share": 0.022984317218668185
+  },
+  {
+    "family": "u_dut/output_index_reg_replica",
+    "endpoint_count": 22,
+    "tns_ns": -1.5760000000000005,
+    "worst_violation_ns": 0.13,
+    "tns_share": 0.021270278295138615
+  },
+  {
+    "family": "u_dut/lfnst_run_q_reg",
+    "endpoint_count": 35,
+    "tns_ns": -1.5679999999999992,
+    "worst_violation_ns": 0.115,
+    "tns_share": 0.02116230733932571
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/issue_desc_bundle_addr_q_reg_rep",
+    "endpoint_count": 54,
+    "tns_ns": -1.5479999999999994,
+    "worst_violation_ns": 0.103,
+    "tns_share": 0.0208923799497935
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/pipe_out_data_q_reg",
+    "endpoint_count": 41,
+    "tns_ns": -1.327,
+    "worst_violation_ns": 0.089,
+    "tns_share": 0.017909682295462522
+  },
+  {
+    "family": "u_dut/vwrite_cmd_valid_q_reg",
+    "endpoint_count": 20,
+    "tns_ns": -1.324,
+    "worst_violation_ns": 0.084,
+    "tns_share": 0.01786919318703269
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/reduce_l4_q_reg",
+    "endpoint_count": 24,
+    "tns_ns": -1.307,
+    "worst_violation_ns": 0.117,
+    "tns_share": 0.017639754905930307
+  },
+  {
+    "family": "u_dut/fill_wr_cmd_data_q_reg",
+    "endpoint_count": 39,
+    "tns_ns": -1.0020000000000004,
+    "worst_violation_ns": 0.074,
+    "tns_share": 0.01352336221556402
+  },
+  {
+    "family": "u_dut/kernel_stage_q_reg",
+    "endpoint_count": 11,
+    "tns_ns": -0.949,
+    "worst_violation_ns": 0.123,
+    "tns_share": 0.012808054633303641
+  },
+  {
+    "family": "u_dut/fill_wr_cmd_target_q_reg",
+    "endpoint_count": 40,
+    "tns_ns": -0.9040000000000002,
+    "worst_violation_ns": 0.05,
+    "tns_share": 0.01220071800685616
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/issue_desc_valid_q_reg_rep",
+    "endpoint_count": 21,
+    "tns_ns": -0.748,
+    "worst_violation_ns": 0.085,
+    "tns_share": 0.010095284368504874
+  },
+  {
+    "family": "u_dut/lfnst_mem_resp_valid_q_reg_rep",
+    "endpoint_count": 17,
+    "tns_ns": -0.6190000000000002,
+    "worst_violation_ns": 0.088,
+    "tns_share": 0.008354252706022084
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/fifo_data_q_reg",
+    "endpoint_count": 9,
+    "tns_ns": -0.574,
+    "worst_violation_ns": 0.107,
+    "tns_share": 0.007746916079574595
+  },
+  {
+    "family": "u_dut/lfnst_case_q_reg",
+    "endpoint_count": 11,
+    "tns_ns": -0.545,
+    "worst_violation_ns": 0.109,
+    "tns_share": 0.007355521364752883
+  },
+  {
+    "family": "u_dut/vwrite_cmd_data_q_reg",
+    "endpoint_count": 15,
+    "tns_ns": -0.541,
+    "worst_violation_ns": 0.088,
+    "tns_share": 0.00730153588684644
+  },
+  {
+    "family": "u_dut/scrub_active_reg",
+    "endpoint_count": 8,
+    "tns_ns": -0.488,
+    "worst_violation_ns": 0.061,
+    "tns_share": 0.006586228304586067
+  }
+]

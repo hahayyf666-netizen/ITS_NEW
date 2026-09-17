@@ -1,0 +1,212 @@
+[
+  {
+    "family": "u_dut/u_unified_p4_kernel/input_mem_reg",
+    "endpoint_count": 480,
+    "tns_ns": -17.691,
+    "worst_violation_ns": 0.133,
+    "tns_share": 0.23876427241072157
+  },
+  {
+    "family": "u_dut/input_cache_bank",
+    "endpoint_count": 271,
+    "tns_ns": -9.077999999999994,
+    "worst_violation_ns": 0.086,
+    "tns_share": 0.12252004210867272
+  },
+  {
+    "family": "u_dut/lfnst_grid_reg",
+    "endpoint_count": 157,
+    "tns_ns": -5.875999999999998,
+    "worst_violation_ns": 0.112,
+    "tns_share": 0.079304667044565
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/ingress_data_q_reg",
+    "endpoint_count": 58,
+    "tns_ns": -4.796000000000001,
+    "worst_violation_ns": 0.136,
+    "tns_share": 0.0647285880098254
+  },
+  {
+    "family": "u_dut/result_bank",
+    "endpoint_count": 193,
+    "tns_ns": -4.775999999999989,
+    "worst_violation_ns": 0.077,
+    "tns_share": 0.06445866062029301
+  },
+  {
+    "family": "u_dut/vwrite_cmd_data_q_reg",
+    "endpoint_count": 48,
+    "tns_ns": -3.7789999999999995,
+    "worst_violation_ns": 0.133,
+    "tns_share": 0.05100278025211219
+  },
+  {
+    "family": "u_dut/kernel_rd_raw_data_q_reg",
+    "endpoint_count": 48,
+    "tns_ns": -3.199,
+    "worst_violation_ns": 0.137,
+    "tns_share": 0.04317488595567793
+  },
+  {
+    "family": "u_dut/temp_bank",
+    "endpoint_count": 43,
+    "tns_ns": -2.245000000000001,
+    "worst_violation_ns": 0.088,
+    "tns_share": 0.030299349474991247
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/product_q_reg_i_psdsp",
+    "endpoint_count": 54,
+    "tns_ns": -1.963999999999999,
+    "worst_violation_ns": 0.103,
+    "tns_share": 0.02650686965206359
+  },
+  {
+    "family": "u_dut/kernel_h_rd_data_q_reg",
+    "endpoint_count": 35,
+    "tns_ns": -1.9249999999999998,
+    "worst_violation_ns": 0.133,
+    "tns_share": 0.02598051124247578
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/fifo_data_q_reg",
+    "endpoint_count": 56,
+    "tns_ns": -1.6520000000000004,
+    "worst_violation_ns": 0.089,
+    "tns_share": 0.02229600237536104
+  },
+  {
+    "family": "harness/sink_boundary",
+    "endpoint_count": 22,
+    "tns_ns": -1.5760000000000005,
+    "worst_violation_ns": 0.13,
+    "tns_share": 0.021270278295138622
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/issue_desc_bundle_addr_q_reg_rep",
+    "endpoint_count": 25,
+    "tns_ns": -1.5090000000000001,
+    "worst_violation_ns": 0.131,
+    "tns_share": 0.02036602154020569
+  },
+  {
+    "family": "u_dut/rd_cmd_addr_q_reg_replica",
+    "endpoint_count": 30,
+    "tns_ns": -1.4080000000000001,
+    "worst_violation_ns": 0.128,
+    "tns_share": 0.019002888223068
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/reduce_l5_q_reg",
+    "endpoint_count": 24,
+    "tns_ns": -1.307,
+    "worst_violation_ns": 0.117,
+    "tns_share": 0.017639754905930307
+  },
+  {
+    "family": "u_dut/rd_cmd_addr_q_reg",
+    "endpoint_count": 17,
+    "tns_ns": -0.921,
+    "worst_violation_ns": 0.109,
+    "tns_share": 0.012430156287958544
+  },
+  {
+    "family": "u_dut/kernel_phase_q_reg_replica",
+    "endpoint_count": 11,
+    "tns_ns": -0.8280000000000001,
+    "worst_violation_ns": 0.115,
+    "tns_share": 0.01117499392663374
+  },
+  {
+    "family": "u_dut/lfnst_mem_resp_data_q_reg",
+    "endpoint_count": 12,
+    "tns_ns": -0.8160000000000001,
+    "worst_violation_ns": 0.139,
+    "tns_share": 0.01101303749291441
+  },
+  {
+    "family": "u_dut/kernel_rd_req_group_q_reg",
+    "endpoint_count": 7,
+    "tns_ns": -0.6759999999999999,
+    "worst_violation_ns": 0.111,
+    "tns_share": 0.009123545766188897
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/s0_input_q_reg",
+    "endpoint_count": 28,
+    "tns_ns": -0.6450000000000004,
+    "worst_violation_ns": 0.08,
+    "tns_share": 0.008705158312413967
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/product_q_reg",
+    "endpoint_count": 26,
+    "tns_ns": -0.6010000000000001,
+    "worst_violation_ns": 0.089,
+    "tns_share": 0.008111318055443089
+  },
+  {
+    "family": "u_dut/result_cmd_data_q_reg",
+    "endpoint_count": 10,
+    "tns_ns": -0.4589999999999999,
+    "worst_violation_ns": 0.09,
+    "tns_share": 0.006194833589764354
+  },
+  {
+    "family": "u_dut/kernel_phase_q_reg",
+    "endpoint_count": 5,
+    "tns_ns": -0.35,
+    "worst_violation_ns": 0.103,
+    "tns_share": 0.004723729316813778
+  },
+  {
+    "family": "u_dut/kernel_vector_q_reg_rep",
+    "endpoint_count": 7,
+    "tns_ns": -0.33299999999999996,
+    "worst_violation_ns": 0.118,
+    "tns_share": 0.004494291035711394
+  },
+  {
+    "family": "u_dut/output_index_reg_replica",
+    "endpoint_count": 7,
+    "tns_ns": -0.325,
+    "worst_violation_ns": 0.101,
+    "tns_share": 0.004386320079898509
+  },
+  {
+    "family": "u_dut/lfnst_ntrs48_q_reg_rep",
+    "endpoint_count": 5,
+    "tns_ns": -0.321,
+    "worst_violation_ns": 0.119,
+    "tns_share": 0.004332334601992066
+  },
+  {
+    "family": "u_dut/u_bounded_lfnst_engine/coeff_fetch_addr_q_reg_rep_rep",
+    "endpoint_count": 12,
+    "tns_ns": -0.274,
+    "worst_violation_ns": 0.048,
+    "tns_share": 0.0036980052365913584
+  },
+  {
+    "family": "u_dut/kernel_vector_q_reg",
+    "endpoint_count": 4,
+    "tns_ns": -0.269,
+    "worst_violation_ns": 0.135,
+    "tns_share": 0.003630523389208304
+  },
+  {
+    "family": "u_dut/lfnst_tail_index_q_reg",
+    "endpoint_count": 4,
+    "tns_ns": -0.26,
+    "worst_violation_ns": 0.066,
+    "tns_share": 0.003509056063918807
+  },
+  {
+    "family": "u_dut/u_unified_p4_kernel/slot_state_q_reg",
+    "endpoint_count": 3,
+    "tns_ns": -0.24300000000000002,
+    "worst_violation_ns": 0.123,
+    "tns_share": 0.0032796177828164235
+  }
+]

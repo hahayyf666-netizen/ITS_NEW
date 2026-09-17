@@ -1,0 +1,15 @@
+P9-R5F provenance
+baseline_remote_main=55e88cf401407c23cc5881bf331acafb78c3a533
+authoritative_dcp_relative_path=05_audit/current/59/p9_r5e_registered_neighbor_20260917_defaulttop/step12f_registered_neighbor_postroute.dcp
+authoritative_dcp_sha256=D18A6213468C4EE270D03AF924BE53BE7298DD71A70C5B2651ED0DDB8767552C
+top=step12f_registered_neighbor_harness
+dcp_state=Fully Routed
+vivado=2025.2 (SW Build 6299465)
+max_threads=4
+clock_period_ns=2.000
+old_ooc_xdc_loaded=false
+design_changing_commands=[]
+script=03_verification/vivado/run_step12f_r5f_setup_census.tcl
+command_line=vivado.exe -mode batch -source 03_verification\vivado\run_step12f_r5f_setup_census.tcl -log <out_dir>\r5f_census_vivado.log -journal <out_dir>\r5f_census_vivado.jou
+scope=read-only open_checkpoint plus timing/netlist queries; no synth/opt/place/phys_opt/route/write_checkpoint
+output_dir=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\59\p9_r5f_setup_census_20260917_final

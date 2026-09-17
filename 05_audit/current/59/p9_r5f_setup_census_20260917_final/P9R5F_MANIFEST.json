@@ -1,0 +1,494 @@
+{
+  "stage": "Step12F-P9-R5F",
+  "title": "Registered-neighbor setup root-cause census",
+  "status": "CLOSED_READ_ONLY",
+  "decision": {
+    "setup_root_cause": "DISTRIBUTED_MULTI_FAMILY_TIMING_TAIL",
+    "hold_root_cause": "SEPARATE_R5E_REGISTERED_NEIGHBOR_HOLD_PASS; OOC_PORT_HOLD_NOT_SIGNOFF",
+    "r6_rtl": "NOT_AUTHORIZED",
+    "rtl_change": false,
+    "xdc_change": false,
+    "implementation_rerun": false
+  },
+  "provenance": {
+    "baseline_remote_main": "55e88cf401407c23cc5881bf331acafb78c3a533",
+    "authoritative_dcp_relative_path": "05_audit/current/59/p9_r5e_registered_neighbor_20260917_defaulttop/step12f_registered_neighbor_postroute.dcp",
+    "authoritative_dcp_sha256": "D18A6213468C4EE270D03AF924BE53BE7298DD71A70C5B2651ED0DDB8767552C",
+    "dcp_exists_in_workspace": true,
+    "top": "step12f_registered_neighbor_harness",
+    "dcp_state": "Fully Routed",
+    "vivado": "2025.2 (SW Build 6299465)",
+    "max_threads": 4,
+    "clock_period_ns": 2.0,
+    "old_ooc_xdc_loaded": false,
+    "design_changing_commands": []
+  },
+  "census": {
+    "raw_negative_path_objects": 1808,
+    "unique_negative_endpoints": 1808,
+    "duplicate_endpoints": 0,
+    "unclassified_endpoints": 0,
+    "reconstructed_tns_ns": -74.094,
+    "authoritative_r5e_setup_tns_ns": -74.139,
+    "rounded_report_tns_discrepancy_ns": 0.045,
+    "precision_note": "Vivado timing_path/report_timing exposed three decimal places; CSV pads to nine decimals and reconciliation is rounded-report based",
+    "bucket_count": 3,
+    "family_count": 234,
+    "signature_count": 138,
+    "region_pair_count": 1
+  },
+  "buckets": [
+    {
+      "bucket": "DUT_INTERNAL",
+      "endpoint_count": 1777,
+      "tns_ns": -72.297,
+      "tns_share": 0.975747024,
+      "worst_violation_ns": 0.139,
+      "median_violation_ns": 0.033,
+      "p90_violation_ns": 0.086,
+      "p99_violation_ns": 0.124,
+      "logic_levels_min": 0,
+      "logic_levels_median": 2.0,
+      "logic_levels_p90": 5.0,
+      "logic_levels_max": 8,
+      "logic_delay_median_ns": 0.229,
+      "logic_delay_p90_ns": 0.525,
+      "logic_delay_max_ns": 0.791,
+      "routing_delay_median_ns": 1.514,
+      "routing_delay_p90_ns": 1.721,
+      "routing_delay_max_ns": 1.883,
+      "routing_fraction_median": 0.867021277,
+      "routing_fraction_p90": 0.955568054,
+      "routing_fraction_max": 0.9597349643221204
+    },
+    {
+      "bucket": "DUT_TO_SINK_BOUNDARY",
+      "endpoint_count": 22,
+      "tns_ns": -1.576,
+      "tns_share": 0.021270278,
+      "worst_violation_ns": 0.13,
+      "median_violation_ns": 0.084,
+      "p90_violation_ns": 0.116,
+      "p99_violation_ns": 0.13,
+      "logic_levels_min": 5,
+      "logic_levels_median": 5.0,
+      "logic_levels_p90": 5.0,
+      "logic_levels_max": 5,
+      "logic_delay_median_ns": 0.466,
+      "logic_delay_p90_ns": 0.533,
+      "logic_delay_max_ns": 0.58,
+      "routing_delay_median_ns": 1.424,
+      "routing_delay_p90_ns": 1.5,
+      "routing_delay_max_ns": 1.555,
+      "routing_fraction_median": 0.750133476,
+      "routing_fraction_p90": 0.813890396,
+      "routing_fraction_max": 0.8441910966340933
+    },
+    {
+      "bucket": "SOURCE_BOUNDARY_TO_DUT",
+      "endpoint_count": 9,
+      "tns_ns": -0.221,
+      "tns_share": 0.002982698,
+      "worst_violation_ns": 0.058,
+      "median_violation_ns": 0.018,
+      "p90_violation_ns": 0.058,
+      "p99_violation_ns": 0.058,
+      "logic_levels_min": 5,
+      "logic_levels_median": 5.0,
+      "logic_levels_p90": 5.0,
+      "logic_levels_max": 5,
+      "logic_delay_median_ns": 0.545,
+      "logic_delay_p90_ns": 0.547,
+      "logic_delay_max_ns": 0.547,
+      "routing_delay_median_ns": 1.261,
+      "routing_delay_p90_ns": 1.303,
+      "routing_delay_max_ns": 1.303,
+      "routing_fraction_median": 0.69789357,
+      "routing_fraction_p90": 0.70508658,
+      "routing_fraction_max": 0.70508658008658
+    }
+  ],
+  "top_source_families": [
+    {
+      "family": "u_dut/u_unified_p4_kernel/ingress_group_q_reg",
+      "endpoint_count": 276,
+      "tns_ns": -9.694999999999995,
+      "worst_violation_ns": 0.113,
+      "tns_share": 0.13084730207574158
+    },
+    {
+      "family": "u_dut/u_unified_p4_kernel/ingress_data_q_reg",
+      "endpoint_count": 201,
+      "tns_ns": -7.989999999999999,
+      "worst_violation_ns": 0.133,
+      "tns_share": 0.10783599211812023
+    },
+    {
+      "family": "u_dut/kernel_run_q_reg",
+      "endpoint_count": 125,
+      "tns_ns": -5.252999999999996,
+      "worst_violation_ns": 0.128,
+      "tns_share": 0.07089642886063643
+    },
+    {
+      "family": "u_dut/fill_wr_cmd_addr_q_reg",
+      "endpoint_count": 144,
+      "tns_ns": -4.763999999999998,
+      "worst_violation_ns": 0.086,
+      "tns_share": 0.06429670418657378
+    },
+    {
+      "family": "u_dut/u_unified_p4_kernel/fifo_rd_ptr_q_reg_rep",
+      "endpoint_count": 47,
+      "tns_ns": -3.493,
+      "worst_violation_ns": 0.125,
+      "tns_share": 0.0471428185818015
+    },
+    {
+      "family": "u_dut/kernel_vector_q_reg_rep",
+      "endpoint_count": 40,
+      "tns_ns": -3.2430000000000008,
+      "worst_violation_ns": 0.135,
+      "tns_share": 0.04376872621264881
+    },
+    {
+      "family": "u_dut/rd_cmd_addr_q_reg",
+      "endpoint_count": 36,
+      "tns_ns": -2.6049999999999995,
+      "worst_violation_ns": 0.139,
+      "tns_share": 0.03515804248657111
+    },
+    {
+      "family": "u_dut/result_cmd_valid_q_reg",
+      "endpoint_count": 110,
+      "tns_ns": -2.3009999999999997,
+      "worst_violation_ns": 0.059,
+      "tns_share": 0.03105514616568143
+    },
+    {
+      "family": "u_dut/result_cmd_slot_q_reg",
+      "endpoint_count": 70,
+      "tns_ns": -2.084,
+      "worst_violation_ns": 0.077,
+      "tns_share": 0.028126433989256894
+    },
+    {
+      "family": "u_dut/u_unified_p4_kernel/slot_state_q_reg_replica",
+      "endpoint_count": 49,
+      "tns_ns": -2.0169999999999995,
+      "worst_violation_ns": 0.087,
+      "tns_share": 0.027222177234323963
+    }
+  ],
+  "top_endpoint_families": [
+    {
+      "family": "u_dut/u_unified_p4_kernel/input_mem_reg",
+      "endpoint_count": 480,
+      "tns_ns": -17.691,
+      "worst_violation_ns": 0.133,
+      "tns_share": 0.23876427241072157
+    },
+    {
+      "family": "u_dut/input_cache_bank",
+      "endpoint_count": 271,
+      "tns_ns": -9.077999999999994,
+      "worst_violation_ns": 0.086,
+      "tns_share": 0.12252004210867272
+    },
+    {
+      "family": "u_dut/lfnst_grid_reg",
+      "endpoint_count": 157,
+      "tns_ns": -5.875999999999998,
+      "worst_violation_ns": 0.112,
+      "tns_share": 0.079304667044565
+    },
+    {
+      "family": "u_dut/u_unified_p4_kernel/ingress_data_q_reg",
+      "endpoint_count": 58,
+      "tns_ns": -4.796000000000001,
+      "worst_violation_ns": 0.136,
+      "tns_share": 0.0647285880098254
+    },
+    {
+      "family": "u_dut/result_bank",
+      "endpoint_count": 193,
+      "tns_ns": -4.775999999999989,
+      "worst_violation_ns": 0.077,
+      "tns_share": 0.06445866062029301
+    },
+    {
+      "family": "u_dut/vwrite_cmd_data_q_reg",
+      "endpoint_count": 48,
+      "tns_ns": -3.7789999999999995,
+      "worst_violation_ns": 0.133,
+      "tns_share": 0.05100278025211219
+    },
+    {
+      "family": "u_dut/kernel_rd_raw_data_q_reg",
+      "endpoint_count": 48,
+      "tns_ns": -3.199,
+      "worst_violation_ns": 0.137,
+      "tns_share": 0.04317488595567793
+    },
+    {
+      "family": "u_dut/temp_bank",
+      "endpoint_count": 43,
+      "tns_ns": -2.245000000000001,
+      "worst_violation_ns": 0.088,
+      "tns_share": 0.030299349474991247
+    },
+    {
+      "family": "u_dut/u_unified_p4_kernel/product_q_reg_i_psdsp",
+      "endpoint_count": 54,
+      "tns_ns": -1.963999999999999,
+      "worst_violation_ns": 0.103,
+      "tns_share": 0.02650686965206359
+    },
+    {
+      "family": "u_dut/kernel_h_rd_data_q_reg",
+      "endpoint_count": 35,
+      "tns_ns": -1.9249999999999998,
+      "worst_violation_ns": 0.133,
+      "tns_share": 0.02598051124247578
+    }
+  ],
+  "top_structural_signatures": [
+    {
+      "normalized_structural_signature": "FDCE|INBUF>IBUFCTRL>BUFGCE>FDCE>LUT5>LUT5|FDRE",
+      "occurrence_count": 250,
+      "tns_ns": -8.798,
+      "tns_share": 0.118741059,
+      "worst_violation_ns": 0.113,
+      "median_violation_ns": 0.029,
+      "p90_violation_ns": 0.076,
+      "p99_violation_ns": 0.113
+    },
+    {
+      "normalized_structural_signature": "FDRE|INBUF>IBUFCTRL>BUFGCE>FDRE|FDRE",
+      "occurrence_count": 201,
+      "tns_ns": -7.99,
+      "tns_share": 0.107835992,
+      "worst_violation_ns": 0.133,
+      "median_violation_ns": 0.038,
+      "p90_violation_ns": 0.078,
+      "p99_violation_ns": 0.109
+    },
+    {
+      "normalized_structural_signature": "FDCE|INBUF>IBUFCTRL>BUFGCE>FDCE>LUT5|RAMD64E",
+      "occurrence_count": 104,
+      "tns_ns": -3.876,
+      "tns_share": 0.052311928,
+      "worst_violation_ns": 0.086,
+      "median_violation_ns": 0.026,
+      "p90_violation_ns": 0.071,
+      "p99_violation_ns": 0.086
+    },
+    {
+      "normalized_structural_signature": "FDCE|INBUF>IBUFCTRL>BUFGCE>FDCE>LUT2>LUT5|RAMD64E",
+      "occurrence_count": 108,
+      "tns_ns": -3.712,
+      "tns_share": 0.050098523,
+      "worst_violation_ns": 0.084,
+      "median_violation_ns": 0.029,
+      "p90_violation_ns": 0.08,
+      "p99_violation_ns": 0.084
+    },
+    {
+      "normalized_structural_signature": "FDCE|INBUF>IBUFCTRL>BUFGCE>FDCE>RAMD64E>LUT6>MUXF7>MUXF8>LUT4|FDCE",
+      "occurrence_count": 57,
+      "tns_ns": -3.501,
+      "tns_share": 0.04725079,
+      "worst_violation_ns": 0.133,
+      "median_violation_ns": 0.063,
+      "p90_violation_ns": 0.109,
+      "p99_violation_ns": 0.133
+    },
+    {
+      "normalized_structural_signature": "FDCE|INBUF>IBUFCTRL>BUFGCE>FDCE>RAMD64E>LUT6>MUXF7>MUXF8>LUT3|FDCE",
+      "occurrence_count": 47,
+      "tns_ns": -3.188,
+      "tns_share": 0.043026426,
+      "worst_violation_ns": 0.137,
+      "median_violation_ns": 0.066,
+      "p90_violation_ns": 0.115,
+      "p99_violation_ns": 0.137
+    },
+    {
+      "normalized_structural_signature": "FDCE|INBUF>IBUFCTRL>BUFGCE>FDCE>LUT4>LUT5>LUT3>LUT3>LUT6|FDCE",
+      "occurrence_count": 51,
+      "tns_ns": -2.301,
+      "tns_share": 0.031055146,
+      "worst_violation_ns": 0.112,
+      "median_violation_ns": 0.025,
+      "p90_violation_ns": 0.098,
+      "p99_violation_ns": 0.112
+    },
+    {
+      "normalized_structural_signature": "FDCE|INBUF>IBUFCTRL>BUFGCE>FDCE>LUT6>MUXF7>LUT3>LUT6>LUT6|FDRE",
+      "occurrence_count": 29,
+      "tns_ns": -2.279,
+      "tns_share": 0.030758226,
+      "worst_violation_ns": 0.132,
+      "median_violation_ns": 0.083,
+      "p90_violation_ns": 0.119,
+      "p99_violation_ns": 0.132
+    },
+    {
+      "normalized_structural_signature": "FDCE|INBUF>IBUFCTRL>BUFGCE>FDCE>LUT6>LUT3|RAMD64E",
+      "occurrence_count": 48,
+      "tns_ns": -2.088,
+      "tns_share": 0.028180419,
+      "worst_violation_ns": 0.085,
+      "median_violation_ns": 0.04,
+      "p90_violation_ns": 0.085,
+      "p99_violation_ns": 0.085
+    },
+    {
+      "normalized_structural_signature": "FDCE|INBUF>IBUFCTRL>BUFGCE>FDCE>LUT3>LUT5|RAMD64E",
+      "occurrence_count": 64,
+      "tns_ns": -2.052,
+      "tns_share": 0.02769455,
+      "worst_violation_ns": 0.077,
+      "median_violation_ns": 0.026,
+      "p90_violation_ns": 0.065,
+      "p99_violation_ns": 0.077
+    }
+  ],
+  "physical_regions": [
+    {
+      "start_clock_region": "",
+      "end_clock_region": "",
+      "endpoint_count": 1808,
+      "tns_ns": -74.094,
+      "tns_share": 1.0,
+      "worst_violation_ns": 0.139,
+      "median_violation_ns": 0.033,
+      "p90_violation_ns": 0.087,
+      "p99_violation_ns": 0.124
+    }
+  ],
+  "reset_audit": {
+    "vivado_report_timing_check_type": "UNSUPPORTED_IN_VIVADO_2025.2",
+    "directional_queries": "recovery clock->async-control; removal async-control->clock",
+    "recovery_status": "QUERY_COMPLETE",
+    "recovery_path_count": "9386",
+    "recovery_worst_slack_ns": "0.03",
+    "recovery_negative_tns_ns": "0.000000000",
+    "recovery_report": "reset_recovery.rpt",
+    "removal_status": "QUERY_COMPLETE",
+    "removal_path_count": "0",
+    "removal_worst_slack_ns": "NA",
+    "removal_negative_tns_ns": "0.000000000",
+    "removal_report": "reset_removal.rpt",
+    "async_control_pin_count": "9506"
+  },
+  "structural_gate_reference": {
+    "pending_run_stage_through_ram_to_h_response": "NO_PATH (R5E authoritative targeted evidence)",
+    "registered_h_address_through_ram_to_h_response": "PATH_EXISTS (R5E authoritative targeted evidence)",
+    "this_census_requery": false
+  },
+  "limitations": [
+    "TNS reconciliation uses Vivado 2025.2 timing properties exposed to three decimal places; CSV values are padded, not extra precision.",
+    "Blank CLOCK_REGION properties in the routed DCP are reported as unknown; no same-region claim is made.",
+    "Reset timing uses directional recovery/removal queries because report_timing -check_type is unsupported in Vivado 2025.2.",
+    "This is a fixed R5E registered-neighbor DCP census, not package-level FPGA timing or hidden-golden proof."
+  ],
+  "generated_at": "2026-09-17T19:09:47.856268+08:00",
+  "evidence_inventory": [
+    {
+      "file": "check_timing_read_only.rpt",
+      "bytes": 3553,
+      "sha256": "DF80A9BC7F12FFDD66FC0C221A5E4BD8ED7ECD2A839F13B7A10AA8215D65BADB"
+    },
+    {
+      "file": "exceptions_read_only.rpt",
+      "bytes": 1184,
+      "sha256": "BC43A3F55A3B902DFBA241173E8538BF37AF646EF3CDDDF313CA9F75E2685768"
+    },
+    {
+      "file": "P9R5F_COMMAND_TRANSCRIPT.txt",
+      "bytes": 1094,
+      "sha256": "846533020EE814FF8D82605BC3D9C85C437B991133E5AF85BC6D41871CDBBD1F"
+    },
+    {
+      "file": "P9R5F_PROVENANCE.txt",
+      "bytes": 996,
+      "sha256": "F0A8DCB5D1F16A48159E7A29FB605B0D1597F5FE1281A6B21E3400263E5EC6A6"
+    },
+    {
+      "file": "P9R5F_REPORT.md",
+      "bytes": 9336,
+      "sha256": "F95BE2BF64E1C34E0F503B8E589497FED98608EE5FA9C7E165509952DE6215C4"
+    },
+    {
+      "file": "physical_region_summary.csv",
+      "bytes": 260,
+      "sha256": "E1338CCEF0A9EC73A0096F08EF90B8D20D47682F1C9D89D8861D6B0531491992"
+    },
+    {
+      "file": "physical_region_summary.json",
+      "bytes": 284,
+      "sha256": "2F704C3ECB7AA65E7DA164C336B58D5C2DA7F44BFDCD22A90BD7721EC7B73F2E"
+    },
+    {
+      "file": "r5f_census_metrics.txt",
+      "bytes": 432,
+      "sha256": "4F251099AE3D52DFD33501817C287AD8DA9B793F6743F74F2B571B754AEF7703"
+    },
+    {
+      "file": "reset_recovery_removal_summary.json",
+      "bytes": 595,
+      "sha256": "1BD5788E54C9055BEA1C41C8002005E92B3E8A8FA16E703F507DD01D41AD5322"
+    },
+    {
+      "file": "reset_recovery_removal_summary.txt",
+      "bytes": 535,
+      "sha256": "F3F6629832E1F007DC443783BFCDC6E0BFE3281BA18463D4600408FEA30B5D33"
+    },
+    {
+      "file": "setup_bucket_summary.csv",
+      "bytes": 1224,
+      "sha256": "4C2E19FDF4BF731564D8A1233ACF391CEF6FC74E4BE5741FCC46A2C98FBBBA88"
+    },
+    {
+      "file": "setup_bucket_summary.json",
+      "bytes": 2194,
+      "sha256": "D6653AE13585F68472ABC482820ABEEF4D16603C3955F40891214C0E093EF5FD"
+    },
+    {
+      "file": "setup_endpoint_census.csv",
+      "bytes": 1356723,
+      "sha256": "5518FD77FB5E448701BF2BF40BF73542B50ED47A51038FC08DC0E929B07B7C49"
+    },
+    {
+      "file": "setup_endpoint_family_summary.json",
+      "bytes": 5795,
+      "sha256": "3ECE0B33A94A6E8D2322C3F392E9232ED2F68024B674F7D32B230FE9BC33BF80"
+    },
+    {
+      "file": "setup_family_summary.csv",
+      "bytes": 44407,
+      "sha256": "880C4D8D3B84BB664D096B8B7BA794F3A52380B290F2AC804A8DCF689458A26E"
+    },
+    {
+      "file": "setup_family_summary.json",
+      "bytes": 90190,
+      "sha256": "8948A0C35ECBB88626FE8B6CBB445B37F455E7D9E8AAC6A6A5A9D45E83DA7328"
+    },
+    {
+      "file": "setup_source_family_summary.json",
+      "bytes": 5805,
+      "sha256": "96FC1E218D84599DEE15B1AA987713AF8324454596F1143C81CD7BA336363B6B"
+    },
+    {
+      "file": "structural_signature_summary.csv",
+      "bytes": 20861,
+      "sha256": "95C77A5485C291E64C0F58CECD4C60D5A6BFB084C813F28D655885740675F516"
+    },
+    {
+      "file": "structural_signature_summary.json",
+      "bytes": 44907,
+      "sha256": "CE823F74B22E10C9CA1CF7D3699BDB9C05BFCAB6E8547797279E31BFEFDE8E26"
+    }
+  ]
+}

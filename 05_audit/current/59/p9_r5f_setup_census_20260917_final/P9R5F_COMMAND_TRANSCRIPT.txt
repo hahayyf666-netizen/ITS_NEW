@@ -1,0 +1,8 @@
+P9-R5F command transcript (canonical run)
+1. STEP12F_R5F_POSTROUTE_DCP=05_audit/current/59/p9_r5e_registered_neighbor_20260917_defaulttop/step12f_registered_neighbor_postroute.dcp
+2. STEP12F_R5F_CENSUS_DIR=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\59\p9_r5f_setup_census_20260917_final
+3. vivado.exe -mode batch -source 03_verification\vivado\run_step12f_r5f_setup_census.tcl -log C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\59\p9_r5f_setup_census_20260917_final\r5f_census_vivado.log -journal C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_p8_1_publish\05_audit\current\59\p9_r5f_setup_census_20260917_final\r5f_census_vivado.jou
+4. Tcl set_param general.maxThreads 4
+5. Tcl open_checkpoint $STEP12F_R5F_POSTROUTE_DCP
+6. Tcl read-only queries: get_timing_paths, report_timing -of_objects, check_timing, report_exceptions, directional reset timing queries
+7. No read_xdc, synth_design, opt_design, place_design, phys_opt_design, route_design, write_checkpoint, or design mutation command was issued.
