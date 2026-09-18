@@ -1,0 +1,537 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Fri Sep 18 21:47:43 2026
+| Host         : Finesse running 64-bit major release  (build 9200)
+| Command      : report_drc -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_its_new_r6/05_audit/current/68/p9_r7_lfnst_grid_clear_20260918/vivado/report_drc_postroute.rpt
+| Design       : step12f_registered_neighbor_harness
+| Device       : xcku5p-ffvb676-2-e
+| Speed File   : -2
+| Design State : Fully Routed
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Report DRC
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: step12f_registered_neighbor_harness
+          Floorplan: design_1
+      Design limits: <entire design considered>
+           Ruledeck: default
+             Max checks: <unlimited>
+             Checks found: 99
++-----------+------------------+------------------------------+--------+
+| Rule      | Severity         | Description                  | Checks |
++-----------+------------------+------------------------------+--------+
+| NSTD-1    | Critical Warning | Unspecified I/O Standard     | 1      |
+| UCIO-1    | Critical Warning | Unconstrained Logical Port   | 1      |
+| DPIP-2    | Warning          | Input pipelining             | 32     |
+| DPOP-4    | Warning          | MREG Output pipelining       | 32     |
+| RTSTAT-10 | Warning          | No routable loads            | 1      |
+| REQP-1679 | Advisory         | enum_MREG_0_connects_CEM_GND | 32     |
++-----------+------------------+------------------------------+--------+
+
+2. REPORT DETAILS
+-----------------
+NSTD-1#1 Critical Warning
+Unspecified I/O Standard  
+2 out of 2 logical ports use I/O standard (IOSTANDARD) value 'DEFAULT', instead of a user assigned specific value. This may cause I/O contention or incompatibility with the board power or connectivity affecting performance, signal integrity or in extreme cases cause damage to the device or the components to which it is connected. To correct this violation, specify all I/O standards. This design will fail to generate a bitstream unless all logical ports have a user specified I/O standard value defined. To allow bitstream creation with unspecified I/O standard values (not recommended), use this command: set_property SEVERITY {Warning} [get_drc_checks NSTD-1].  NOTE: When using the Vivado Runs infrastructure (e.g. launch_runs Tcl command), add this command to a .tcl file and add that file as a pre-hook for write_bitstream step for the implementation run. Problem ports: clk, rst_n.
+Related violations: <none>
+
+UCIO-1#1 Critical Warning
+Unconstrained Logical Port  
+2 out of 2 logical ports have no user assigned specific location constraint (LOC). This may cause I/O contention or incompatibility with the board power or connectivity affecting performance, signal integrity or in extreme cases cause damage to the device or the components to which it is connected. To correct this violation, specify all pin locations. This design will fail to generate a bitstream unless all logical ports have a user specified site LOC constraint defined.  To allow bitstream creation with unspecified pin locations (not recommended), use this command: set_property SEVERITY {Warning} [get_drc_checks UCIO-1].  NOTE: When using the Vivado Runs infrastructure (e.g. launch_runs Tcl command), add this command to a .tcl file and add that file as a pre-hook for write_bitstream step for the implementation run.  Problem ports: clk, rst_n.
+Related violations: <none>
+
+DPIP-2#1 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_0_out input u_dut/u_bounded_lfnst_engine/p_0_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#2 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_12_out input u_dut/u_bounded_lfnst_engine/p_12_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#3 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_15_out input u_dut/u_bounded_lfnst_engine/p_15_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#4 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_18_out input u_dut/u_bounded_lfnst_engine/p_18_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#5 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_21_out input u_dut/u_bounded_lfnst_engine/p_21_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#6 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_24_out input u_dut/u_bounded_lfnst_engine/p_24_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#7 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_27_out input u_dut/u_bounded_lfnst_engine/p_27_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#8 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_30_out input u_dut/u_bounded_lfnst_engine/p_30_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#9 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_33_out input u_dut/u_bounded_lfnst_engine/p_33_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#10 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_36_out input u_dut/u_bounded_lfnst_engine/p_36_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#11 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_39_out input u_dut/u_bounded_lfnst_engine/p_39_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#12 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_3_out input u_dut/u_bounded_lfnst_engine/p_3_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#13 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_42_out input u_dut/u_bounded_lfnst_engine/p_42_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#14 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_45_out input u_dut/u_bounded_lfnst_engine/p_45_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#15 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_48_out input u_dut/u_bounded_lfnst_engine/p_48_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#16 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_51_out input u_dut/u_bounded_lfnst_engine/p_51_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#17 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_54_out input u_dut/u_bounded_lfnst_engine/p_54_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#18 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_57_out input u_dut/u_bounded_lfnst_engine/p_57_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#19 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_60_out input u_dut/u_bounded_lfnst_engine/p_60_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#20 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_63_out input u_dut/u_bounded_lfnst_engine/p_63_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#21 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_66_out input u_dut/u_bounded_lfnst_engine/p_66_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#22 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_69_out input u_dut/u_bounded_lfnst_engine/p_69_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#23 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_6_out input u_dut/u_bounded_lfnst_engine/p_6_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#24 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_72_out input u_dut/u_bounded_lfnst_engine/p_72_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#25 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_75_out input u_dut/u_bounded_lfnst_engine/p_75_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#26 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_78_out input u_dut/u_bounded_lfnst_engine/p_78_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#27 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_81_out input u_dut/u_bounded_lfnst_engine/p_81_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#28 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_84_out input u_dut/u_bounded_lfnst_engine/p_84_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#29 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_87_out input u_dut/u_bounded_lfnst_engine/p_87_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#30 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_90_out input u_dut/u_bounded_lfnst_engine/p_90_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#31 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_93_out input u_dut/u_bounded_lfnst_engine/p_93_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPIP-2#32 Warning
+Input pipelining  
+DSP u_dut/u_bounded_lfnst_engine/p_9_out input u_dut/u_bounded_lfnst_engine/p_9_out/C[47:0] is not pipelined. Pipelining DSP48 input will improve performance.
+Related violations: <none>
+
+DPOP-4#1 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[0] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[0]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#2 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[10] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[10]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#3 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[12] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[12]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#4 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[14] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[14]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#5 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[16] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[16]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#6 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[18] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[18]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#7 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[20] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[20]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#8 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[22] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[22]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#9 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[24] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[24]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#10 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[26] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[26]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#11 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[28] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[28]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#12 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[2] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[2]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#13 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[30] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[30]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#14 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[32] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[32]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#15 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[34] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[34]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#16 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[36] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[36]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#17 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[38] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[38]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#18 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[40] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[40]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#19 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[42] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[42]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#20 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[44] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[44]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#21 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[46] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[46]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#22 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[48] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[48]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#23 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[4] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[4]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#24 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[50] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[50]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#25 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[52] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[52]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#26 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[54] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[54]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#27 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[56] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[56]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#28 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[58] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[58]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#29 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[60] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[60]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#30 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[62] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[62]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#31 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[6] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[6]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+DPOP-4#32 Warning
+MREG Output pipelining  
+DSP u_dut/u_bounded_lfnst_engine/products_q_reg[8] multiplier stage u_dut/u_bounded_lfnst_engine/products_q_reg[8]/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.
+Related violations: <none>
+
+RTSTAT-10#1 Warning
+No routable loads  
+44 net(s) have no routable loads. The problem bus(es) and/or net(s) are sink_it_data_in_req_q, sink_it_data_out_q[39:0], sink_it_data_out_vld_q,
+sink_it_done_q, sink_protocol_error_q.
+Related violations: <none>
+
+REQP-1679#1 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[0]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#2 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[10]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#3 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[12]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#4 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[14]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#5 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[16]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#6 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[18]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#7 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[20]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#8 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[22]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#9 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[24]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#10 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[26]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#11 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[28]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#12 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[2]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#13 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[30]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#14 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[32]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#15 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[34]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#16 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[36]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#17 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[38]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#18 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[40]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#19 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[42]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#20 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[44]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#21 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[46]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#22 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[48]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#23 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[4]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#24 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[50]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#25 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[52]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#26 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[54]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#27 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[56]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#28 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[58]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#29 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[60]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#30 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[62]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#31 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[6]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+REQP-1679#32 Advisory
+enum_MREG_0_connects_CEM_GND  
+u_dut/u_bounded_lfnst_engine/products_q_reg[8]: When the DSP48E2 MREG attribute is set to 0, the CEM input pin should be tied to GND to save power.
+Related violations: <none>
+
+

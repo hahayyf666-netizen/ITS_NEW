@@ -1,0 +1,74 @@
+{
+  "schema": "step12f.p9_r7_lfnst_grid_clear.v1",
+  "stage": "Step12F-P9-R7",
+  "status": "CLOSED_REJECTED_PHYSICAL_SETUP_REGRESSION",
+  "baseline_commit": "89e4c4e10c0a7ff380ec2570c5b596cc582bfa15",
+  "rtl_change": "Removed redundant lfnst_grid data clear during active-LFNST admission; retained valid-bit clear and reset-time clears.",
+  "rtl_files_changed": ["02_rtl/rtl/unified_its_wrapper.sv"],
+  "rtl_diff_lines": {"added": 0, "deleted": 1},
+  "functional": {
+    "simulator": "ModelSim SE-64 2020.4",
+    "modes": ["normal", "SYNTHESIS"],
+    "status": "PASS",
+    "gate_b_numeric_cases": 156,
+    "gate_c_tuples": 369,
+    "gate_c_beats_per_mode": 45636,
+    "gate_f_vector_ii_modes": 13,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 258,
+    "n4_stream": "16/16/16/16 PASS",
+    "evidence": "coverage_modelsim/STEP12F_COVERAGE_MODELSIM_RUN.json"
+  },
+  "implementation": {
+    "vivado": "2025.2 Build 6299465",
+    "part": "xcku5p-ffvb676-2-e",
+    "top": "step12f_registered_neighbor_harness",
+    "clock_period_ns": 2.0,
+    "clock_uncertainty_ns": 0.0,
+    "max_threads": 4,
+    "flow": {"synth": "Default", "opt": "Default", "place": "ExtraNetDelay_high", "phys_opt": "AggressiveExplore", "route": "NoTimingRelaxation"},
+    "postsynth_dcp_sha256": "06F6BE58318E28BE9409CC24E06FAB25C8C86A7BFC78F65A12C0DA066586F6A2",
+    "postroute_dcp_sha256": "D071EAC6011F33F5AA4EA0AFCCF6399C85E30A96ED7CC02CD274DD23608614D1",
+    "fully_routed": true,
+    "routing_errors": 0,
+    "drc_errors": 0,
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "expected_harness_no_input_delay_ports": ["rst_n"]
+  },
+  "routed_qor": {
+    "r6a_reference": {"setup_wns_ns": -0.045, "setup_tns_ns": -4.882, "setup_failing_endpoints": 312, "hold_whs_ns": 0.006, "hold_ths_ns": 0.0, "hold_failing_endpoints": 0},
+    "r7": {"setup_wns_ns": -0.134, "setup_tns_ns": -42.408, "setup_failing_endpoints": 1006, "hold_whs_ns": 0.007, "hold_ths_ns": 0.0, "hold_failing_endpoints": 0}
+  },
+  "r7_census": {
+    "raw_negative_path_objects": 1006,
+    "unique_negative_endpoints": 1006,
+    "duplicate_endpoints": 0,
+    "unclassified_endpoints": 0,
+    "reconstructed_tns_ns": -42.426,
+    "authoritative_summary_tns_ns": -42.408,
+    "precision_reconciliation_delta_ns": -0.018,
+    "bucket_summary": {
+      "DUT_INTERNAL": {"endpoints": 972, "tns_ns": -40.971, "tns_share": 0.965705, "median_routing_fraction": 0.804604},
+      "DUT_TO_SINK_BOUNDARY": {"endpoints": 24, "tns_ns": -1.227, "tns_share": 0.028921, "median_routing_fraction": 0.748476},
+      "SOURCE_BOUNDARY_TO_DUT": {"endpoints": 10, "tns_ns": -0.228, "tns_share": 0.005374, "median_routing_fraction": 0.847826}
+    },
+    "family_count": 192,
+    "focus": {
+      "vwrite_cmd_bank_mask_to_temp_bank": {"endpoints": 76, "tns_ns": -2.644},
+      "h_read_addr_to_data": {"endpoints": 41, "tns_ns": -2.570},
+      "p4_ingress_data_slot_valid_to_input_mem": {"endpoints": 199, "tns_ns": -6.613},
+      "rd_cmd_addr_to_kernel_rd_raw_data": {"endpoints": 31, "tns_ns": -2.161}
+    }
+  },
+  "decision": {
+    "r7": "REJECTED",
+    "r6": "RETAINED_FROZEN",
+    "registered_neighbor_hold": "PASS",
+    "registered_neighbor_setup": "FAIL",
+    "500mhz_core_signoff": "NOT_ACHIEVED",
+    "package_level_timing": "NOT_EVALUATED",
+    "follow_on_rtl": "NOT_AUTHORIZED",
+    "new_tag": false
+  }
+}
