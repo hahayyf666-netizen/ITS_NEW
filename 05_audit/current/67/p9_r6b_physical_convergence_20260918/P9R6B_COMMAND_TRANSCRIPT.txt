@@ -1,0 +1,40 @@
+P9-R6B bounded physical-convergence A/B command record
+
+Vivado: D:/AMDDesignTools/2025.2/Vivado/bin/vivado.bat
+Build: 2025.2 Build 6299465
+Part: xcku5p-ffvb676-2-e
+maxThreads: 4
+Clock: 2.000 ns
+Clock uncertainty: 0.000 ns
+
+Common input:
+  postsynth DCP = 05_audit/current/65/p9_r6_input_cache_local_20260918/vivado/step12f_registered_neighbor_postroute.dcp
+  postsynth SHA256 = 0AC1CA33EBD4A7A993C8B0083F3C2FB1AFA97F081139F64463CD625AA089A374
+
+Common post-opt:
+  open_checkpoint <R6_POSTSYNTH_DCP>
+  opt_design -directive Default
+  write_checkpoint -force common_postopt.dcp
+  SHA256 = 1134315A2760F08D217E687A2F64093AA75BE4EFD5C113F9582FD318A64873CC
+
+CONTROL:
+  open_checkpoint common_postopt.dcp
+  place_design -directive ExtraNetDelay_high
+  phys_opt_design -directive AggressiveExplore
+  route_design -directive NoTimingRelaxation
+  final DCP SHA256 = 624F515AB9F5556E4807E5A74BBEDB8F7BD71219C0BE2C1853D65B61C2FCD587
+
+TREATMENT:
+  open_checkpoint common_postopt.dcp
+  place_design -directive ExtraTimingOpt
+  phys_opt_design -directive AggressiveExplore
+  route_design -directive NoTimingRelaxation
+  final DCP SHA256 = AF90905B545A29E5B02DA0BBBF7F1DDD1B599E7BB29E820F249A0CA6899189DB
+
+Read-only final census (each branch):
+  open_checkpoint <branch>/final.dcp
+  source 03_verification/vivado/run_step12f_r6a_setup_tail_census.tcl
+  STEP12F_SKIP_PATH_SIGNATURE=1
+  No opt/place/phys_opt/route/checkpoint-writing command used by the census entry point.
+
+No RTL, XDC, synthesis, or package-level constraint changes were made for R6B.

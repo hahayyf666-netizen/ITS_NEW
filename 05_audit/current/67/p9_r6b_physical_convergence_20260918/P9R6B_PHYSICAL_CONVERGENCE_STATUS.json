@@ -1,0 +1,97 @@
+{
+  "schema": "step12f.p9_r6b_physical_convergence.v1",
+  "stage": "Step12F-P9-R6B",
+  "status": "CLOSED_PHYSICAL_TREATMENT_REJECTED",
+  "baseline_commit": "2a04edb93836c5771f7fda26fd559372d7d2f6a8",
+  "r6_rtl": "RETAINED_FROZEN",
+  "rtl_changed": false,
+  "xdc_changed": false,
+  "resynthesis": false,
+  "common": {
+    "postsynth_dcp_sha256": "0AC1CA33EBD4A7A993C8B0083F3C2FB1AFA97F081139F64463CD625AA089A374",
+    "postopt_dcp_sha256": "1134315A2760F08D217E687A2F64093AA75BE4EFD5C113F9582FD318A64873CC",
+    "vivado": "2025.2 Build 6299465",
+    "part": "xcku5p-ffvb676-2-e",
+    "top": "step12f_registered_neighbor_harness",
+    "clock_period_ns": 2.0,
+    "clock_uncertainty_ns": 0.0,
+    "max_threads": 4,
+    "phys_opt_directive": "AggressiveExplore",
+    "route_directive": "NoTimingRelaxation"
+  },
+  "reference_r6a": {
+    "setup_wns_ns": -0.045,
+    "setup_tns_ns": -4.882,
+    "setup_failing_endpoints": 312,
+    "hold_whs_ns": 0.006,
+    "hold_ths_ns": 0.0,
+    "hold_failing_endpoints": 0
+  },
+  "runs": {
+    "control": {
+      "placement_directive": "ExtraNetDelay_high",
+      "final_dcp_sha256": "624F515AB9F5556E4807E5A74BBEDB8F7BD71219C0BE2C1853D65B61C2FCD587",
+      "setup_wns_ns": -0.055,
+      "setup_tns_ns": -5.960,
+      "setup_failing_endpoints": 320,
+      "hold_whs_ns": 0.011,
+      "hold_ths_ns": 0.0,
+      "hold_failing_endpoints": 0,
+      "fully_routed": true,
+      "routing_errors": 0,
+      "unconstrained_internal_endpoints": 0,
+      "valid_timing_exceptions": 0,
+      "census": {
+        "raw_negative_path_objects": 320,
+        "unique_negative_endpoints": 320,
+        "reconstructed_tns_ns": -5.965,
+        "bucket_tns_ns": {
+          "DUT_INTERNAL": -5.855,
+          "RESET_RELATED_SETUP": -0.022,
+          "DUT_TO_SINK_BOUNDARY": -0.072,
+          "SOURCE_BOUNDARY_TO_DUT": -0.016
+        }
+      }
+    },
+    "treatment": {
+      "placement_directive": "ExtraTimingOpt",
+      "final_dcp_sha256": "AF90905B545A29E5B02DA0BBBF7F1DDD1B599E7BB29E820F249A0CA6899189DB",
+      "setup_wns_ns": -0.188,
+      "setup_tns_ns": -416.302,
+      "setup_failing_endpoints": 6047,
+      "clock_group_setup_wns_ns": -0.188,
+      "clock_group_setup_tns_ns": -291.049,
+      "clock_group_setup_failing_endpoints": 4577,
+      "async_default_setup_wns_ns": -0.149,
+      "async_default_setup_tns_ns": -125.253,
+      "async_default_setup_failing_endpoints": 1470,
+      "hold_whs_ns": 0.007,
+      "hold_ths_ns": 0.0,
+      "hold_failing_endpoints": 0,
+      "fully_routed": true,
+      "routing_errors": 0,
+      "unconstrained_internal_endpoints": 0,
+      "valid_timing_exceptions": 0,
+      "census": {
+        "raw_negative_path_objects": 6047,
+        "unique_negative_endpoints": 6047,
+        "reconstructed_tns_ns": -416.315,
+        "bucket_tns_ns": {
+          "DUT_INTERNAL": -284.189,
+          "RESET_RELATED_SETUP": -127.357,
+          "DUT_TO_SINK_BOUNDARY": -4.692,
+          "SOURCE_BOUNDARY_TO_DUT": -0.077
+        }
+      }
+    }
+  },
+  "decision": {
+    "treatment": "REJECTED_REGRESSION",
+    "control": "NO_IMPROVEMENT_OVER_R6A",
+    "independent_treatment_replay": "NOT_RUN",
+    "r7_rtl": "NOT_AUTHORIZED",
+    "registered_neighbor_core_timing": "FAIL",
+    "package_level_timing": "NOT_EVALUATED",
+    "new_tag": false
+  }
+}
