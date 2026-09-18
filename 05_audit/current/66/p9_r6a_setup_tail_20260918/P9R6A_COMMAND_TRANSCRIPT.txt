@@ -1,0 +1,13 @@
+P9-R6A read-only setup-tail classification
+baseline_r6_dcp=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_its_new_r6\05_audit\current\65\p9_r6_input_cache_local_20260918\vivado\step12f_registered_neighbor_postroute.dcp
+baseline_r6_dcp_sha256=6FCD3084E9166C0A114503D0C1A1062F9E9DAFCF79C549CD27C744C2B09F92FC
+expected_sha256=6FCD3084E9166C0A114503D0C1A1062F9E9DAFCF79C549CD27C744C2B09F92FC
+vivado=2025.2 Build 6299465
+maxThreads=4
+commands=open_checkpoint; get_timing_paths; get_property; report_timing (disabled for full per-path signature); check_timing; report_exceptions; close_project
+forbidden_commands=opt_design; place_design; phys_opt_design; route_design; read_xdc; write_checkpoint; set_property on design objects
+classifier=03_verification/vivado/run_step12f_r5f_setup_census.tcl
+entry=03_verification/vivado/run_step12f_r6a_setup_tail_census.tcl
+raw_negative_path_objects=312
+unique_negative_endpoints=312
+P9R6A_CENSUS_DONE

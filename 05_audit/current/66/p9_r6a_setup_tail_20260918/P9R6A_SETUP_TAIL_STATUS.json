@@ -1,0 +1,150 @@
+{
+  "schema": "step12f.p9_r6a_setup_tail.v1",
+  "stage": "Step12F-P9-R6A",
+  "status": "CLOSED_READ_ONLY",
+  "generated_utc": "2026-09-18T00:41:04.795228+00:00",
+  "authority": {
+    "routed_checkpoint": "05_audit/current/65/p9_r6_input_cache_local_20260918/vivado/step12f_registered_neighbor_postroute.dcp",
+    "routed_checkpoint_sha256": "6FCD3084E9166C0A114503D0C1A1062F9E9DAFCF79C549CD27C744C2B09F92FC",
+    "expected_dcp_sha256": "6FCD3084E9166C0A114503D0C1A1062F9E9DAFCF79C549CD27C744C2B09F92FC",
+    "top": "step12f_registered_neighbor_harness",
+    "vivado": "2025.2 Build 6299465",
+    "part": "xcku5p-ffvb676-2-e",
+    "clock_period_ns": 2.0,
+    "max_threads": 4,
+    "read_only": true,
+    "classifier_script_sha256": "2FC2D1F89817FC86F4D6848D2AB0F3BB94CB6F94B4CCD23029BBACED4C8764F7",
+    "entry_script_sha256": "C6C9CE03725A2D6D8C08D2CD199D37212579DAF2D19AFDE29405E06304E4D008"
+  },
+  "integrity": {
+    "raw_negative_path_objects": 312,
+    "unique_negative_endpoints": 312,
+    "duplicate_endpoints": 0,
+    "unclassified_endpoints": 0,
+    "reconstructed_tns_ns": -4.893,
+    "authoritative_summary_wns_ns": -0.045,
+    "authoritative_summary_tns_ns": -4.882,
+    "authoritative_summary_failing_endpoints": 312,
+    "tns_reconstruction_delta_ns": -0.011,
+    "precision_note": "Vivado path properties expose rounded timing; summary values remain authoritative, endpoint sums are reconciliation evidence."
+  },
+  "buckets": [
+    {
+      "bucket": "DUT_INTERNAL",
+      "endpoint_count": 303,
+      "tns_ns": -4.835,
+      "worst_slack_ns": -0.045,
+      "median_logic_delay_ns": 0.489,
+      "median_routing_delay_ns": 1.38,
+      "median_routing_fraction": 0.740921
+    },
+    {
+      "bucket": "DUT_TO_SINK_BOUNDARY",
+      "endpoint_count": 7,
+      "tns_ns": -0.056,
+      "worst_slack_ns": -0.018,
+      "median_logic_delay_ns": 0.452,
+      "median_routing_delay_ns": 1.445,
+      "median_routing_fraction": 0.764583
+    },
+    {
+      "bucket": "SOURCE_BOUNDARY_TO_DUT",
+      "endpoint_count": 2,
+      "tns_ns": -0.002,
+      "worst_slack_ns": -0.001,
+      "median_logic_delay_ns": 0.615,
+      "median_routing_delay_ns": 1.216,
+      "median_routing_fraction": 0.664118
+    }
+  ],
+  "focus": [
+    {
+      "focus": "slot_state_to_lfnst_grid",
+      "endpoint_count": 45,
+      "tns_ns": -0.914,
+      "worst_slack_ns": -0.045,
+      "median_routing_fraction": 0.743295,
+      "p90_routing_fraction": 0.764962,
+      "source_families": [
+        "u_dut/slot_state_reg"
+      ],
+      "endpoint_families": [
+        "u_dut/lfnst_grid_reg"
+      ]
+    },
+    {
+      "focus": "kernel_cut_h_to_any",
+      "endpoint_count": 2,
+      "tns_ns": -0.046,
+      "worst_slack_ns": -0.041,
+      "median_routing_fraction": 0.701485,
+      "p90_routing_fraction": 0.701485,
+      "source_families": [
+        "u_dut/kernel_cut_h_q_reg"
+      ],
+      "endpoint_families": [
+        "u_dut/kernel_rd_resp_data_q_reg",
+        "u_dut/u_unified_p4_kernel/ingress_data_q_reg"
+      ]
+    },
+    {
+      "focus": "rd_cmd_addr_to_any",
+      "endpoint_count": 28,
+      "tns_ns": -0.505,
+      "worst_slack_ns": -0.04,
+      "median_routing_fraction": 0.743063,
+      "p90_routing_fraction": 0.802516,
+      "source_families": [
+        "u_dut/rd_cmd_addr_q_reg",
+        "u_dut/rd_cmd_addr_q_reg_replica_1",
+        "u_dut/rd_cmd_addr_q_reg_replica_3",
+        "u_dut/rd_cmd_addr_q_reg_replica_4"
+      ],
+      "endpoint_families": [
+        "u_dut/kernel_rd_raw_data_q_reg",
+        "u_dut/kernel_rd_raw_valid_q_reg",
+        "u_dut/lfnst_mem_resp_data_q_reg",
+        "u_dut/lfnst_mem_resp_valid_q_reg"
+      ]
+    },
+    {
+      "focus": "historical_fill_command_to_input_cache",
+      "endpoint_count": 0,
+      "tns_ns": 0,
+      "worst_slack_ns": null,
+      "median_routing_fraction": null,
+      "p90_routing_fraction": null,
+      "source_families": [],
+      "endpoint_families": []
+    }
+  ],
+  "family_population": {
+    "r6a_family_count": 60,
+    "r5f_family_count": 180,
+    "r6a_top1_abs_tns_share": 0.186797,
+    "r6a_top5_abs_tns_share": 0.416718,
+    "setup_root_cause": "DISTRIBUTED_MULTI_FAMILY_ROUTING_TAIL"
+  },
+  "compare_to_r5f": {
+    "r5f_endpoint_count": 1808,
+    "r6a_endpoint_count": 312,
+    "r5f_reconstructed_tns_ns": -74.094,
+    "r6a_reconstructed_tns_ns": -4.893,
+    "family_delta_csv": "r5f_r6a_family_delta.csv",
+    "comparison_scope": "canonical family-level diagnostic; not same-cell or same-placement causality",
+    "old_fill_write_family_present_in_r6a": false
+  },
+  "signature": {
+    "mode": "SKIPPED_FOR_R6A_FULL_CENSUS_STABILITY",
+    "reason": "Vivado 2025.2 terminated while extracting report_timing -of_objects for every R6 path; cell REF_NAME, logic levels, and all delay/family fields were retained.",
+    "coarse_primitive_signature": "start_ref->end_ref plus logic_levels, retained per endpoint",
+    "advisory_only": true
+  },
+  "decision": {
+    "r6": "RETAINED_FROZEN",
+    "r7_rtl": "NOT_AUTHORIZED",
+    "500mhz_signoff": "NOT_ACHIEVED",
+    "next": "Do not authorize R7 from this census; use a bounded physical-convergence experiment or revisit only the highest-value family with a concrete intervention.",
+    "new_tag": false
+  }
+}

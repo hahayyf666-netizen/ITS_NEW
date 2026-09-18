@@ -1,0 +1,5 @@
+focus,endpoint_count,tns_ns,worst_slack_ns,median_routing_fraction,p90_routing_fraction,source_families,endpoint_families
+slot_state_to_lfnst_grid,45,-0.914,-0.045,0.743295,0.764962,u_dut/slot_state_reg,u_dut/lfnst_grid_reg
+kernel_cut_h_to_any,2,-0.046,-0.041,0.701485,0.701485,u_dut/kernel_cut_h_q_reg,u_dut/kernel_rd_resp_data_q_reg;u_dut/u_unified_p4_kernel/ingress_data_q_reg
+rd_cmd_addr_to_any,28,-0.505,-0.04,0.743063,0.802516,u_dut/rd_cmd_addr_q_reg;u_dut/rd_cmd_addr_q_reg_replica_1;u_dut/rd_cmd_addr_q_reg_replica_3;u_dut/rd_cmd_addr_q_reg_replica_4,u_dut/kernel_rd_raw_data_q_reg;u_dut/kernel_rd_raw_valid_q_reg;u_dut/lfnst_mem_resp_data_q_reg;u_dut/lfnst_mem_resp_valid_q_reg
+historical_fill_command_to_input_cache,0,0,,,,,

@@ -110,6 +110,16 @@ proc endpoint_family {cell pin} {
 }
 
 proc path_signature {path sp_cell ep_cell} {
+    # Vivado 2025.2 can terminate while extracting a full report_timing
+    # string for every path in some routed DCPs.  R6A remains a read-only
+    # family census; its launcher may explicitly disable this optional,
+    # per-path decoration while retaining all endpoint, delay, and family
+    # fields.  Historical R5F runs keep the original default behavior.
+    if {[info exists ::env(STEP12F_SKIP_PATH_SIGNATURE)] && $::env(STEP12F_SKIP_PATH_SIGNATURE) eq "1"} {
+        set sp_ref [prop_or $sp_cell REF_NAME "START_UNKNOWN"]
+        set ep_ref [prop_or $ep_cell REF_NAME "END_UNKNOWN"]
+        return [list "SIGNATURE_SKIPPED|$sp_ref|$ep_ref" "SIGNATURE_SKIPPED|$sp_ref|$ep_ref"]
+    }
     # report_timing -of_objects emits the complete selected path.  Vivado
     # 2025.2 limits significant_digits to three, but the primitive sequence is
     # still exact for the path topology and is retained separately from the
