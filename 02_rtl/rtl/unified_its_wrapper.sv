@@ -2334,6 +2334,7 @@ module unified_its_wrapper #(
                     kernel_start_sent_q <= 1'b0;
                     for (lfnst_grid_i = 0; lfnst_grid_i < 64;
                          lfnst_grid_i = lfnst_grid_i + 1) begin
+                        lfnst_grid[lfnst_grid_i] <= '0;
                         lfnst_grid_valid[lfnst_grid_i] <= 1'b0;
                     end
                 end
