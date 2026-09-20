@@ -310,9 +310,7 @@ module unified_its_wrapper #(
     logic [BANK_ADDR_W-1:0]       rd_cmd_addr_q [0:1][0:3];
     logic [4:0]                   rd_cmd_group_q;
     logic [6:0]                   rd_cmd_vector_q;
-    logic                         rd_cmd_lfnst_is_tail_q;
     logic [4:0]                   rd_cmd_lfnst_index_q;
-    logic [5:0]                   rd_cmd_lfnst_grid_addr_q;
     logic                         rd_cmd_lfnst_valid_q;
     logic                         rd_cmd_lfnst_last_q;
     logic [1:0]                   rd_cmd_lfnst_bank_q;
@@ -324,9 +322,7 @@ module unified_its_wrapper #(
     logic [BANK_ADDR_W-1:0]       rd_cmd_candidate_addr_c [0:1][0:3];
     logic [4:0]                   rd_cmd_candidate_group;
     logic [6:0]                   rd_cmd_candidate_vector;
-    logic                         rd_cmd_candidate_lfnst_is_tail;
     logic [4:0]                   rd_cmd_candidate_lfnst_index;
-    logic [5:0]                   rd_cmd_candidate_lfnst_grid_addr;
     logic                         rd_cmd_candidate_lfnst_valid;
     logic                         rd_cmd_candidate_lfnst_last;
     logic [1:0]                   rd_cmd_candidate_lfnst_bank;
@@ -400,26 +396,20 @@ module unified_its_wrapper #(
     logic       lfnst_case_q;
     logic       lfnst_gather_q;
     logic [4:0] lfnst_gather_index_q;
-    logic       lfnst_tail_q;
-    logic [4:0] lfnst_tail_index_q;
     // LFNST input reads use an explicit request/response boundary.  The
     // request registers hold the bank-local physical address and its source
     // metadata; the response registers then isolate the cache read from the
     // term/grid write.  This keeps the gather path bounded without changing
     // the external transaction contract.
     logic       lfnst_mem_req_q;
-    logic       lfnst_mem_req_is_tail_q;
     logic [4:0] lfnst_mem_req_index_q;
-    logic [5:0] lfnst_mem_req_grid_addr_q;
     logic [BANK_ADDR_W-1:0] lfnst_mem_req_addr_q;
     logic       lfnst_mem_req_valid_q;
     logic       lfnst_mem_req_last_q;
     logic       lfnst_mem_req_slot_q;
     logic [1:0] lfnst_mem_req_bank_q;
     logic       lfnst_mem_resp_pending_q;
-    logic       lfnst_mem_resp_is_tail_q;
     logic [4:0] lfnst_mem_resp_index_q;
-    logic [5:0] lfnst_mem_resp_grid_addr_q;
     logic signed [15:0] lfnst_mem_resp_data_q;
     logic       lfnst_mem_resp_valid_q;
     logic       lfnst_mem_resp_last_q;
@@ -799,6 +789,61 @@ module unified_its_wrapper #(
         end
     endfunction
 
+    // LFNST input contract: the transform always gathers the fixed low
+    // frequency 4x4 support in the VTM-defined order.  This is deliberately
+    // separate from the output-layout and scan tables below: the first 16
+    // entries of an 8x8 diagonal scan are not the LFNST input order.
+    function automatic integer lfnst_input_coord_lut(input integer index_i);
+        begin
+            case (index_i)
+                0:  lfnst_input_coord_lut = 0;   // (0,0)
+                1:  lfnst_input_coord_lut = 8;   // (1,0)
+                2:  lfnst_input_coord_lut = 1;   // (0,1)
+                3:  lfnst_input_coord_lut = 16;  // (2,0)
+                4:  lfnst_input_coord_lut = 9;   // (1,1)
+                5:  lfnst_input_coord_lut = 2;   // (0,2)
+                6:  lfnst_input_coord_lut = 24;  // (3,0)
+                7:  lfnst_input_coord_lut = 17;  // (2,1)
+                8:  lfnst_input_coord_lut = 10;  // (1,2)
+                9:  lfnst_input_coord_lut = 3;   // (0,3)
+                10: lfnst_input_coord_lut = 25;  // (3,1)
+                11: lfnst_input_coord_lut = 18;  // (2,2)
+                12: lfnst_input_coord_lut = 11;  // (1,3)
+                13: lfnst_input_coord_lut = 26;  // (3,2)
+                14: lfnst_input_coord_lut = 19;  // (2,3)
+                15: lfnst_input_coord_lut = 27;  // (3,3)
+                default: lfnst_input_coord_lut = 0;
+            endcase
+        end
+    endfunction
+
+    // LFNST output contract: nTrs=16 writes one 4x4 block; nTrs=48 writes
+    // three raster-order 4x4 blocks (top-left, top-right, bottom-left) in an
+    // 8x8 support grid.  The bottom-right 4x4 is intentionally not written.
+    function automatic integer lfnst_output_coord_lut(
+        input integer index_i,
+        input integer ntrs48_i);
+        integer local_i;
+        begin
+            lfnst_output_coord_lut = 0;
+            if (!ntrs48_i) begin
+                lfnst_output_coord_lut = (index_i >> 2) * 8 +
+                                         (index_i & 3);
+            end else if (index_i < 16) begin
+                lfnst_output_coord_lut = (index_i >> 2) * 8 +
+                                         (index_i & 3);
+            end else if (index_i < 32) begin
+                local_i = index_i - 16;
+                lfnst_output_coord_lut = (local_i >> 2) * 8 +
+                                         4 + (local_i & 3);
+            end else if (index_i < 48) begin
+                local_i = index_i - 32;
+                lfnst_output_coord_lut = ((local_i >> 2) + 4) * 8 +
+                                         (local_i & 3);
+            end
+        end
+    endfunction
+
     // Static LFNST scan lookup used by synthesis.  Keeping the reference
     // arithmetic helpers above preserves an independent readable model, while
     // this bounded coordinate table removes runtime diagonal iteration from
@@ -939,7 +984,7 @@ module unified_its_wrapper #(
     // Build one logical request candidate at a time.  The candidate is
     // captured only when the atomic command bundle is ready; all physical
     // addresses are then held in rd_cmd_addr_q until the matching response is
-    // consumed.  LFNST retains priority during its gather/tail phase, while
+    // consumed.  LFNST retains priority during its gather phase, while
     // primary-V owns the cache in the normal transform phase.
     integer rd_candidate_slot_i, rd_candidate_bank_i;
     integer rd_candidate_row_i, rd_candidate_col_i;
@@ -951,9 +996,7 @@ module unified_its_wrapper #(
         rd_cmd_candidate_bank_mask = 4'b0000;
         rd_cmd_candidate_group = 5'd0;
         rd_cmd_candidate_vector = 7'd0;
-        rd_cmd_candidate_lfnst_is_tail = 1'b0;
         rd_cmd_candidate_lfnst_index = 5'd0;
-        rd_cmd_candidate_lfnst_grid_addr = 6'd0;
         rd_cmd_candidate_lfnst_valid = 1'b0;
         rd_cmd_candidate_lfnst_last = 1'b0;
         rd_cmd_candidate_lfnst_bank = 2'd0;
@@ -971,9 +1014,7 @@ module unified_its_wrapper #(
             rd_cmd_candidate_slot = lfnst_mem_req_slot_q;
             rd_cmd_candidate_bank_mask =
                 (4'b0001 << lfnst_mem_req_bank_q);
-            rd_cmd_candidate_lfnst_is_tail = lfnst_mem_req_is_tail_q;
             rd_cmd_candidate_lfnst_index = lfnst_mem_req_index_q;
-            rd_cmd_candidate_lfnst_grid_addr = lfnst_mem_req_grid_addr_q;
             rd_cmd_candidate_lfnst_valid = lfnst_mem_req_valid_q;
             rd_cmd_candidate_lfnst_last = lfnst_mem_req_last_q;
             rd_cmd_candidate_lfnst_bank = lfnst_mem_req_bank_q;
@@ -1643,9 +1684,7 @@ module unified_its_wrapper #(
             rd_cmd_bank_mask_q <= 4'b0000;
             rd_cmd_group_q <= 5'd0;
             rd_cmd_vector_q <= 7'd0;
-            rd_cmd_lfnst_is_tail_q <= 1'b0;
             rd_cmd_lfnst_index_q <= 5'd0;
-            rd_cmd_lfnst_grid_addr_q <= 6'd0;
             rd_cmd_lfnst_valid_q <= 1'b0;
             rd_cmd_lfnst_last_q <= 1'b0;
             rd_cmd_lfnst_bank_q <= 2'd0;
@@ -1684,21 +1723,15 @@ module unified_its_wrapper #(
             lfnst_case_q <= 1'b0;
             lfnst_gather_q <= 1'b0;
             lfnst_gather_index_q <= 5'd0;
-            lfnst_tail_q <= 1'b0;
-            lfnst_tail_index_q <= 5'd0;
             lfnst_mem_req_q <= 1'b0;
-            lfnst_mem_req_is_tail_q <= 1'b0;
             lfnst_mem_req_index_q <= 5'd0;
-            lfnst_mem_req_grid_addr_q <= 6'd0;
             lfnst_mem_req_addr_q <= '0;
             lfnst_mem_req_valid_q <= 1'b0;
             lfnst_mem_req_last_q <= 1'b0;
             lfnst_mem_req_slot_q <= 1'b0;
             lfnst_mem_req_bank_q <= 2'd0;
             lfnst_mem_resp_pending_q <= 1'b0;
-            lfnst_mem_resp_is_tail_q <= 1'b0;
             lfnst_mem_resp_index_q <= 5'd0;
-            lfnst_mem_resp_grid_addr_q <= 6'd0;
             lfnst_mem_resp_data_q <= '0;
             lfnst_mem_resp_valid_q <= 1'b0;
             lfnst_mem_resp_last_q <= 1'b0;
@@ -1790,12 +1823,8 @@ module unified_its_wrapper #(
                     rd_cmd_bank_mask_q <= rd_cmd_candidate_bank_mask;
                     rd_cmd_group_q <= rd_cmd_candidate_group;
                     rd_cmd_vector_q <= rd_cmd_candidate_vector;
-                    rd_cmd_lfnst_is_tail_q <=
-                        rd_cmd_candidate_lfnst_is_tail;
                     rd_cmd_lfnst_index_q <=
                         rd_cmd_candidate_lfnst_index;
-                    rd_cmd_lfnst_grid_addr_q <=
-                        rd_cmd_candidate_lfnst_grid_addr;
                     rd_cmd_lfnst_valid_q <=
                         rd_cmd_candidate_lfnst_valid;
                     rd_cmd_lfnst_last_q <=
@@ -2050,7 +2079,7 @@ module unified_its_wrapper #(
             end
 
             // A logical LFNST request remains held until the atomic physical
-            // command accepts it.  When it is accepted, the next gather/tail
+            // command accepts it.  When it is accepted, the next gather
             // request may refill this logical-request register on the same
             // edge, preserving one request per cycle in steady state.
             lfnst_mem_resp_pending_q <= 1'b0;
@@ -2062,86 +2091,56 @@ module unified_its_wrapper #(
             // the source-index/address network cannot reach the term/grid
             // write endpoint in one long combinational path.
             if (lfnst_mem_resp_pending_q) begin
-                if (lfnst_mem_resp_is_tail_q) begin
-                    lfnst_grid[lfnst_mem_resp_grid_addr_q] <=
-                        lfnst_mem_resp_valid_q ? lfnst_mem_resp_data_q : '0;
-                    lfnst_grid_valid[lfnst_mem_resp_grid_addr_q] <=
-                        lfnst_mem_resp_valid_q;
-                end else begin
-                    lfnst_input_terms_q[lfnst_mem_resp_index_q*16 +: 16] <=
-                        lfnst_mem_resp_valid_q ? lfnst_mem_resp_data_q : '0;
-                end
+                lfnst_input_terms_q[lfnst_mem_resp_index_q*16 +: 16] <=
+                    lfnst_mem_resp_valid_q ? lfnst_mem_resp_data_q : '0;
 
                 if (lfnst_mem_resp_last_q) begin
-                    if (lfnst_mem_resp_is_tail_q) begin
-                        lfnst_tail_q <= 1'b0;
-                        lfnst_start_q <= 1'b1;
-                    end else if (lfnst_ntrs48_q) begin
-                        // The 48-term LFNST replaces only the first 48
-                        // diagonal coefficients.  Preserve the remaining 16
-                        // low-frequency-grid coefficients from the input TU.
-                        lfnst_tail_q <= 1'b1;
-                        lfnst_tail_index_q <= 5'd0;
-                    end else begin
-                        lfnst_start_q <= 1'b1;
-                    end
+                    // The output grid is cleared at transaction start; input
+                    // coefficients outside the gathered 4x4 support are not
+                    // preserved or copied back for nTrs=48.
+                    lfnst_start_q <= 1'b1;
                 end
             end
 
             // Issue one bank-local request per cycle.  The address and all
             // source metadata are registered here; the response is captured
             // on the following edge and committed one edge after that.
-            if ((lfnst_gather_q || lfnst_tail_q) &&
+            if (lfnst_gather_q &&
                 (!lfnst_mem_req_q || lfnst_mem_req_accept)) begin
                 integer issue_index_i, issue_row_i, issue_col_i;
-                integer issue_bank_i, issue_local_i, issue_grid_addr_i;
-                issue_index_i = lfnst_gather_q ? lfnst_gather_index_q :
-                                (48 + lfnst_tail_index_q);
-                issue_row_i = scan_row_lut(issue_index_i,
-                                           lfnst_ntrs48_q ? 8 : 4);
-                issue_col_i = scan_col_lut(issue_index_i,
-                                           lfnst_ntrs48_q ? 8 : 4);
+                integer issue_coord_i;
+                integer issue_bank_i, issue_local_i;
+                issue_index_i = lfnst_gather_index_q;
+                issue_coord_i =
+                    lfnst_input_coord_lut(lfnst_gather_index_q);
+                issue_row_i = issue_coord_i >> 3;
+                issue_col_i = issue_coord_i & 7;
                 issue_bank_i = cache_bank_for(issue_row_i, issue_col_i);
                 issue_local_i = cache_local_for(issue_row_i, issue_col_i);
-                issue_grid_addr_i = issue_row_i * 8 + issue_col_i;
 
                 lfnst_mem_req_q <= 1'b1;
-                lfnst_mem_req_is_tail_q <= lfnst_tail_q;
-                lfnst_mem_req_index_q <= lfnst_gather_q ?
-                                         lfnst_gather_index_q : 5'd0;
-                lfnst_mem_req_grid_addr_q <= issue_grid_addr_i[5:0];
+                lfnst_mem_req_index_q <= lfnst_gather_index_q;
                 lfnst_mem_req_addr_q <= issue_local_i[BANK_ADDR_W-1:0];
                 lfnst_mem_req_valid_q <=
                     (issue_row_i < slot_height[lfnst_slot_q]) &&
                     (issue_col_i < slot_width[lfnst_slot_q]);
-                lfnst_mem_req_last_q <= lfnst_gather_q ?
-                                        (lfnst_gather_index_q == 5'd15) :
-                                        (lfnst_tail_index_q == 5'd15);
+                lfnst_mem_req_last_q <= (lfnst_gather_index_q == 5'd15);
                 lfnst_mem_req_slot_q <= lfnst_slot_q;
                 lfnst_mem_req_bank_q <= issue_bank_i[1:0];
 
-                if (lfnst_gather_q) begin
-                    if (lfnst_gather_index_q == 5'd15)
-                        lfnst_gather_q <= 1'b0;
-                    else
-                        lfnst_gather_index_q <= lfnst_gather_index_q + 1'b1;
-                end else begin
-                    if (lfnst_tail_index_q == 5'd15)
-                        lfnst_tail_q <= 1'b0;
-                    else
-                        lfnst_tail_index_q <= lfnst_tail_index_q + 1'b1;
-                end
+                if (lfnst_gather_index_q == 5'd15)
+                    lfnst_gather_q <= 1'b0;
+                else
+                    lfnst_gather_index_q <= lfnst_gather_index_q + 1'b1;
             end
 
             // Capture the asynchronous cache read addressed by the physical
-            // command.  Metadata is copied from that same command so a tail
-            // write can never be associated with a different gather index.
+            // command.  Metadata is copied from that same command so a cache
+            // response can never be associated with a different gather index.
             if (rd_cmd_response_fire &&
                 (rd_cmd_owner_q == RD_OWNER_LFNST)) begin
                 lfnst_mem_resp_pending_q <= 1'b1;
-                lfnst_mem_resp_is_tail_q <= rd_cmd_lfnst_is_tail_q;
                 lfnst_mem_resp_index_q <= rd_cmd_lfnst_index_q;
-                lfnst_mem_resp_grid_addr_q <= rd_cmd_lfnst_grid_addr_q;
                 lfnst_mem_resp_data_q <=
                     input_rd_data[rd_cmd_slot_q][rd_cmd_lfnst_bank_q];
                 lfnst_mem_resp_valid_q <= rd_cmd_lfnst_valid_q &&
@@ -2306,8 +2305,6 @@ module unified_its_wrapper #(
                     lfnst_start_q <= 1'b0;
                     lfnst_gather_q <= 1'b1;
                     lfnst_gather_index_q <= 5'd0;
-                    lfnst_tail_q <= 1'b0;
-                    lfnst_tail_index_q <= 5'd0;
                     lfnst_input_terms_q <= '0;
                     lfnst_case_q <= 1'b1;
                     lfnst_slot_q <= compute_slot;
@@ -2361,11 +2358,9 @@ module unified_its_wrapper #(
                         if ((lfnst_out_group * 4 + kernel_capture_lane_i) <
                             (lfnst_ntrs48_q ? 48 : 16)) begin
                             lfnst_write_addr =
-                                scan_row_lut(lfnst_out_group * 4 + kernel_capture_lane_i,
-                                         lfnst_ntrs48_q ? 8 : 4) *
-                                8 +
-                                scan_col_lut(lfnst_out_group * 4 + kernel_capture_lane_i,
-                                         lfnst_ntrs48_q ? 8 : 4);
+                                lfnst_output_coord_lut(
+                                    lfnst_out_group * 4 + kernel_capture_lane_i,
+                                    lfnst_ntrs48_q);
                             if (lfnst_write_addr < 64) begin
                                 lfnst_grid[lfnst_write_addr] <=
                                     $signed(lfnst_out_data[kernel_capture_lane_i*16 +: 16]);

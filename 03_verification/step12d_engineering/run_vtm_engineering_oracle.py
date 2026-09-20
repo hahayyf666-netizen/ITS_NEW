@@ -22,6 +22,29 @@ EVIDENCE = ROOT / "05_audit" / "current" / "27" / "step12d_engineering"
 EMIT = "--emit" in sys.argv
 
 
+# Fixed VTM LFNST input contract.  Both LFNST sizes gather the same low-
+# frequency 4x4 support; the 8x8 output scan is a separate mapping.
+LFNST_INPUT_SCAN: tuple[tuple[int, int], ...] = (
+    (0, 0), (1, 0), (0, 1), (2, 0),
+    (1, 1), (0, 2), (3, 0), (2, 1),
+    (1, 2), (0, 3), (3, 1), (2, 2),
+    (1, 3), (3, 2), (2, 3), (3, 3),
+)
+
+
+def lfnst_output_scan(ntrs: int) -> list[tuple[int, int]]:
+    """Return the fixed raster placement for the LFNST output support."""
+    if ntrs == 16:
+        return [(row, col) for row in range(4) for col in range(4)]
+    if ntrs == 48:
+        return (
+            [(row, col) for row in range(4) for col in range(4)] +
+            [(row, col) for row in range(4) for col in range(4, 8)] +
+            [(row, col) for row in range(4, 8) for col in range(4)]
+        )
+    raise ValueError(f"unsupported LFNST output size: {ntrs}")
+
+
 def load_canonical() -> dict[str, Any]:
     return json.loads(CANONICAL_PATH.read_text(encoding="utf-8"))
 
@@ -112,9 +135,8 @@ def apply_lfnst(coeff: list[list[int]], width: int, height: int, set_idx: int,
         return [row[:] for row in coeff]
     ntrs = 48 if width >= 8 and height >= 8 else 16
     nonzero = 8 if (width, height) in ((4, 4), (8, 8)) else 16
-    sb = 8 if ntrs == 48 else 4
-    scan = diag_scan(sb, sb)
-    gathered = [coeff[r][c] if r < height and c < width else 0 for r, c in scan[:16]]
+    gathered = [coeff[r][c] if r < height and c < width else 0
+                for r, c in LFNST_INPUT_SCAN]
     matrix = canonical["lfnst"][str(ntrs)][str(set_idx)][str(lfnst_idx)]
     wide = []
     for out in range(ntrs):
@@ -126,13 +148,16 @@ def apply_lfnst(coeff: list[list[int]], width: int, height: int, set_idx: int,
     # explicit scatter is an engineering binding, not an assertion about all
     # VTM intra-mode transpose contexts.
     result = [row[:] for row in coeff]
-    out_scan = diag_scan(sb, sb)[:ntrs]
+    out_scan = lfnst_output_scan(ntrs)
     for (r, c), value in zip(out_scan, wide):
         if r < height and c < width:
             result[r][c] = value
-    for r, c in scan[:16]:
-        if r < height and c < width and (r, c) not in out_scan:
-            result[r][c] = 0
+    support_side = 4 if ntrs == 16 else 8
+    output_set = set(out_scan)
+    for r in range(min(height, support_side)):
+        for c in range(min(width, support_side)):
+            if (r, c) not in output_set:
+                result[r][c] = 0
     return result
 
 

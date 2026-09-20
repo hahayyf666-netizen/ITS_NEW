@@ -15,6 +15,7 @@ from pathlib import Path
 from validate_gate_c_model import (
     CANONICAL,
     Descriptor,
+    LFNST_INPUT_SCAN,
     inverse_2d,
     load_json,
     output_beats,
@@ -70,12 +71,25 @@ def full_engineering_cases() -> list[Descriptor]:
 
 def sparse_entries(desc: Descriptor, seed: int) -> list[tuple[int, int]]:
     points = desc.width * desc.height
-    candidates = [
-        (0, 32767 if seed & 1 else -32768),
-        (points - 1, -32768 if seed & 1 else 32767),
-        ((seed * 17) % points, 511),
-        ((desc.width + seed * 7) % points, -512),
-    ]
+    if desc.lfnst_idx:
+        # Active LFNST inputs are restricted to the fixed left-top 4x4
+        # support.  This prevents a random sparse term from testing a path
+        # that the LFNST layout contract explicitly clears.
+        support = [row * desc.width + col for row, col in LFNST_INPUT_SCAN
+                   if row < desc.height and col < desc.width]
+        candidates = [
+            (support[0], 32767 if seed & 1 else -32768),
+            (support[-1], -32768 if seed & 1 else 32767),
+            (support[(seed * 17) % len(support)], 511),
+            (support[(desc.width + seed * 7) % len(support)], -512),
+        ]
+    else:
+        candidates = [
+            (0, 32767 if seed & 1 else -32768),
+            (points - 1, -32768 if seed & 1 else 32767),
+            ((seed * 17) % points, 511),
+            ((desc.width + seed * 7) % points, -512),
+        ]
     # Preserve the last value for duplicate raster addresses and emit them in
     # ascending raster order, matching the contest sparse-input contract.
     merged: dict[int, int] = {}

@@ -17,7 +17,7 @@ from pathlib import Path
 from validate_gate_c_model import (
     CANONICAL,
     Descriptor,
-    diag_scan,
+    LFNST_INPUT_SCAN,
     inverse_2d,
     load_json,
     output_beats,
@@ -46,33 +46,44 @@ def main() -> int:
     # nTrs=16: 4x4 support and nonzeroSize=8.  Terms 0..15 are all sent,
     # including the eight terms that the contract requires the engine to
     # ignore for nonzeroSize=8.
-    scan4 = diag_scan(4, 4)
     for set_idx in range(4):
         for idx in (1, 2):
             for term, value in enumerate([32767, -32768] * 8):
-                row, col = scan4[term]
+                row, col = LFNST_INPUT_SCAN[term]
                 add_case(cases, Descriptor(4, 4, 0, 0, set_idx, idx),
                          [(row * 4 + col, value)])
 
     # nTrs=48: 8x16 support and nonzeroSize=16.  This exercises the complete
     # 16-term gather and all 48 output scatter positions for every selector.
-    scan8 = diag_scan(8, 8)
     for set_idx in range(4):
         for idx in (1, 2):
             for term in range(16):
-                row, col = scan8[term]
+                row, col = LFNST_INPUT_SCAN[term]
                 value = 32767 if term % 2 == 0 else -32768
                 add_case(cases, Descriptor(8, 16, 0, 0, set_idx, idx),
+                         [(row * 8 + col, value)])
+
+    # nTrs=48: the 8x8 shape uses nonzeroSize=8.  Terms 8..15 are included
+    # as directed inputs so the RTL engine must prove that they are ignored.
+    for set_idx in range(4):
+        for idx in (1, 2):
+            for term in range(16):
+                row, col = LFNST_INPUT_SCAN[term]
+                value = 32767 if term % 2 == 0 else -32768
+                add_case(cases, Descriptor(8, 8, 0, 0, set_idx, idx),
                          [(row * 8 + col, value)])
 
     # Dense directed patterns ensure accumulation and writeback are also
     # exercised when multiple gather terms are simultaneously nonzero.
     add_case(cases, Descriptor(4, 4, 0, 0, 0, 1),
              [(row * 4 + col, 257 if i % 2 == 0 else -311)
-              for i, (row, col) in enumerate(scan4)])
+              for i, (row, col) in enumerate(LFNST_INPUT_SCAN)])
     add_case(cases, Descriptor(8, 16, 0, 0, 3, 2),
              [(row * 8 + col, 1024 - 37 * i if i % 2 == 0
-               else -1024 + 29 * i) for i, (row, col) in enumerate(scan8[:16])])
+               else -1024 + 29 * i) for i, (row, col) in enumerate(LFNST_INPUT_SCAN)])
+    add_case(cases, Descriptor(8, 8, 0, 0, 3, 2),
+             [(row * 8 + col, 1024 - 37 * i if i % 2 == 0
+               else -1024 + 29 * i) for i, (row, col) in enumerate(LFNST_INPUT_SCAN)])
 
     lines = [str(len(cases))]
     total_beats = 0
@@ -96,8 +107,8 @@ def main() -> int:
         "status": "PASS_GENERATE_LFNST_WRAPPER_VECTORS",
         "cases": len(cases),
         "beats": total_beats,
-        "ntrs16_cases": 64 + 1,
-        "ntrs48_cases": 128 + 1,
+        "ntrs16_cases": 128 + 1,
+        "ntrs48_cases": (128 + 1) + (128 + 1),
         "all_gather_terms": True,
         "all_set_index": True,
         "sha256": hashlib.sha256(encoded).hexdigest().upper(),

@@ -23,6 +23,30 @@ CANONICAL = ROOT / "03_verification" / "output" / "canonical_matrices.json"
 EMIT = "--emit" in sys.argv
 
 
+# Fixed VTM LFNST input contract.  LFNST consumes the low-frequency 4x4
+# support in this order for both nTrs=16 and nTrs=48; it is not the first 16
+# entries of the 8x8 output scan.
+LFNST_INPUT_SCAN: tuple[tuple[int, int], ...] = (
+    (0, 0), (1, 0), (0, 1), (2, 0),
+    (1, 1), (0, 2), (3, 0), (2, 1),
+    (1, 2), (0, 3), (3, 1), (2, 2),
+    (1, 3), (3, 2), (2, 3), (3, 3),
+)
+
+
+def lfnst_output_scan(ntrs: int) -> list[tuple[int, int]]:
+    """Return the fixed raster placement for the LFNST output support."""
+    if ntrs == 16:
+        return [(row, col) for row in range(4) for col in range(4)]
+    if ntrs == 48:
+        return (
+            [(row, col) for row in range(4) for col in range(4)] +
+            [(row, col) for row in range(4) for col in range(4, 8)] +
+            [(row, col) for row in range(4, 8) for col in range(4)]
+        )
+    raise ValueError(f"unsupported LFNST output size: {ntrs}")
+
+
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -93,10 +117,8 @@ def apply_lfnst(coeff: list[list[int]], width: int, height: int,
         raise ValueError("invalid LFNST selector")
     ntrs = 16 if (width == 4 or height == 4) else 48
     nonzero = 8 if (width, height) in ((4, 4), (8, 8)) else 16
-    side = 4 if ntrs == 16 else 8
-    scan = diag_scan(side, side)
     gathered = [coeff[r][c] if r < height and c < width else 0
-                for r, c in scan[:16]]
+                for r, c in LFNST_INPUT_SCAN]
     matrix = canonical["lfnst"][str(ntrs)][str(set_idx)][str(lfnst_idx)]
     transformed = []
     lo, hi = -(1 << max_range), (1 << max_range) - 1
@@ -106,12 +128,18 @@ def apply_lfnst(coeff: list[list[int]], width: int, height: int,
         transformed.append(round_clip(raw, 7, lo, hi))
 
     result = [row[:] for row in coeff]
-    output_scan = scan[:ntrs]
+    output_scan = lfnst_output_scan(ntrs)
     for (row, col), value in zip(output_scan, transformed):
         if row < height and col < width:
             result[row][col] = value
-    # Positions gathered by LFNST but outside the output domain are already
-    # zero by construction; no hidden transposition/context is introduced.
+    support_side = 4 if ntrs == 16 else 8
+    output_set = set(output_scan)
+    for row in range(min(height, support_side)):
+        for col in range(min(width, support_side)):
+            if (row, col) not in output_set:
+                result[row][col] = 0
+    # The bottom-right 4x4 of the nTrs=48 support is therefore explicitly
+    # cleared; no tail-preserve or hidden transposition is introduced.
     return result
 
 
@@ -193,15 +221,19 @@ def valid_descriptor(desc: Descriptor) -> bool:
 def sparse_coeff(width: int, height: int, seed: int,
                  lfnst: bool = False) -> list[list[int]]:
     result = [[0 for _ in range(width)] for _ in range(height)]
-    addresses = [0, width * height - 1, (seed * 17) % (width * height)]
     values = [((seed * 13) % 1023) - 511,
               -(((seed * 29) % 1023) - 511),
               ((seed * 47) % 2047) - 1023]
-    # LFNST consumes low-frequency diagonal input; keep one deterministic
-    # nonzero there while still exercising an arbitrary raster address.
     if lfnst:
-        addresses[0] = 0
+        # Active LFNST vectors may only populate the fixed left-top 4x4
+        # support.  Do not inject a tail or another out-of-support term.
+        support = [row * width + col for row, col in LFNST_INPUT_SCAN
+                   if row < height and col < width]
+        addresses = [support[0], support[-1],
+                     support[(seed * 17) % len(support)]]
         values[0] = 257
+    else:
+        addresses = [0, width * height - 1, (seed * 17) % (width * height)]
     for address, value in zip(addresses, values):
         row, col = divmod(address, width)
         result[row][col] = value

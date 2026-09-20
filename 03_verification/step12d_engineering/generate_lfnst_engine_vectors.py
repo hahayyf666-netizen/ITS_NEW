@@ -35,7 +35,7 @@ def expected_groups(canonical: dict, ntrs: int, set_idx: int,
                     lfnst_idx: int, nonzero8: bool,
                     terms: list[int]) -> list[int]:
     matrix = canonical["lfnst"][str(ntrs)][str(set_idx)][str(lfnst_idx)]
-    active = 8 if ntrs == 16 and nonzero8 else 16
+    active = 8 if nonzero8 else 16
     values = [round_clip(sum(matrix[row][term] * terms[term]
                              for term in range(active)))
               for row in range(ntrs)]
@@ -65,10 +65,9 @@ def main() -> int:
     canonical = json.loads(CANONICAL.read_text(encoding="utf-8"))
     cases: list[dict] = []
 
-    # Every selector, every term, both signs.  For nTrs=16, the nonzero8
-    # selector is exercised explicitly, including terms 8..15 which must be
-    # ignored.  For nTrs=48 the flag is intentionally toggled to prove it is
-    # harmless outside the 16-output form.
+    # Every selector, every term, both signs.  The 8-term contract applies to
+    # both nTrs forms when nonzero8 is asserted, including nTrs=48 (the 8x8
+    # LFNST shape). Terms 8..15 must then be ignored in either form.
     for ntrs in (16, 48):
         for set_idx in range(4):
             for lfnst_idx in (1, 2):

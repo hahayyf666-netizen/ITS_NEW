@@ -172,7 +172,7 @@ module bounded_lfnst_engine #(
             for (mul_seq_i = 0; mul_seq_i < 64; mul_seq_i = mul_seq_i + 1) begin
                 mul_term_q[mul_seq_i] <=
                     input_terms_q[(mul_seq_i % 16)*DATA_W +: DATA_W];
-                if (!ntrs48_q && nonzero8_q && ((mul_seq_i % 16) >= 8))
+                if (nonzero8_q && ((mul_seq_i % 16) >= 8))
                     mul_coeff_q[mul_seq_i] <= '0;
                 else
                     mul_coeff_q[mul_seq_i] <=
