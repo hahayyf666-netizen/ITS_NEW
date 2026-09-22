@@ -85,6 +85,12 @@ def main() -> int:
              [(row * 8 + col, 1024 - 37 * i if i % 2 == 0
                else -1024 + 29 * i) for i, (row, col) in enumerate(LFNST_INPUT_SCAN)])
 
+    # Tail-poison negative test: the old nTrs=48 implementation copied the
+    # last 16 scanned values back into the 8x8 support.  Nonzero values in the
+    # bottom-right 4x4 must now be ignored and must not alter the result.
+    add_case(cases, Descriptor(8, 8, 0, 0, 0, 1),
+             [(4 * 8 + 4, 32767), (7 * 8 + 7, -32768)])
+
     lines = [str(len(cases))]
     total_beats = 0
     for desc, entries in cases:
@@ -108,7 +114,7 @@ def main() -> int:
         "cases": len(cases),
         "beats": total_beats,
         "ntrs16_cases": 128 + 1,
-        "ntrs48_cases": (128 + 1) + (128 + 1),
+        "ntrs48_cases": (128 + 1) + (128 + 1) + 1,
         "all_gather_terms": True,
         "all_set_index": True,
         "sha256": hashlib.sha256(encoded).hexdigest().upper(),

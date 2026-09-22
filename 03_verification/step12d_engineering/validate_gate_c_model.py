@@ -40,8 +40,7 @@ def lfnst_output_scan(ntrs: int) -> list[tuple[int, int]]:
         return [(row, col) for row in range(4) for col in range(4)]
     if ntrs == 48:
         return (
-            [(row, col) for row in range(4) for col in range(4)] +
-            [(row, col) for row in range(4) for col in range(4, 8)] +
+            [(row, col) for row in range(4) for col in range(8)] +
             [(row, col) for row in range(4, 8) for col in range(4)]
         )
     raise ValueError(f"unsupported LFNST output size: {ntrs}")

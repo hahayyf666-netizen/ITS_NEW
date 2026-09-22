@@ -46,6 +46,16 @@ $GateCGenerator = Join-Path $RepoRoot "03_verification\step12d_engineering\gener
 $LfnstVectorGenerator = Join-Path $RepoRoot "03_verification\step12d_engineering\generate_lfnst_engine_vectors.py"
 $LfnstTb = Join-Path $RepoRoot "03_verification\tb\bounded_lfnst_engine_tb.sv"
 $LfnstWrapperVectorGenerator = Join-Path $RepoRoot "03_verification\step12d_engineering\generate_lfnst_wrapper_vectors.py"
+$LfnstLayoutTest = Join-Path $RepoRoot "03_verification\step12d_engineering\test_lfnst_layout_contract.py"
+
+$layoutTestOutput = (& python $LfnstLayoutTest | Out-String)
+if ($LASTEXITCODE -ne 0 -or
+    -not $layoutTestOutput.Contains("PASS_LFNST_LAYOUT_CONTRACT")) {
+    throw "LFNST layout contract test failed"
+}
+if ($EvidenceDir) {
+    $layoutTestOutput | Set-Content -LiteralPath (Join-Path $EvidenceDir "lfnst_layout_contract.log") -Encoding utf8
+}
 
 $LfnstVector = Join-Path $WorkRoot "lfnst_engine_vectors.txt"
 $lfnstVectorOutput = (& python $LfnstVectorGenerator $LfnstVector | Out-String)
@@ -63,7 +73,7 @@ $LfnstWrapperVector = Join-Path $WorkRoot "lfnst_wrapper_vectors.txt"
 $lfnstWrapperVectorOutput = (& python $LfnstWrapperVectorGenerator $LfnstWrapperVector | Out-String)
 if ($LASTEXITCODE -ne 0) { throw "LFNST wrapper specialty vector generation failed" }
 $lfnstWrapperVectorManifest = $lfnstWrapperVectorOutput | ConvertFrom-Json
-if (($lfnstWrapperVectorManifest.cases -ne 387) -or
+if (($lfnstWrapperVectorManifest.cases -ne 388) -or
     ($lfnstWrapperVectorManifest.all_gather_terms -ne $true)) {
     throw "unexpected LFNST wrapper specialty vector set"
 }
@@ -153,7 +163,7 @@ foreach ($mode in @("normal", "synthesis")) {
 
         $lfnstWrapperLog = Join-Path $dir "lfnst_wrapper_specialty.log"
         & $Vsim -c work.unified_its_wrapper_numeric_tb "-gVECTOR_FILE=lfnst_wrapper_vectors.txt" -l $lfnstWrapperLog -do "run -all; quit -f"
-        Assert-TranscriptPass $lfnstWrapperLog "GATE_C_NUMERIC_TB_PASS cases=387"
+        Assert-TranscriptPass $lfnstWrapperLog "GATE_C_NUMERIC_TB_PASS cases=388"
 
         $modeLogs = @($compileLog, $kernelLog, $throughputLog, $throughputFullLog,
                       $smokeLog, $p3Log, $p4Log, $numericLog, $lfnstLog, $lfnstWrapperLog)
@@ -173,7 +183,7 @@ foreach ($mode in @("normal", "synthesis")) {
             p4_stage0_issue_contract = "PASS_16_N4_VECTORS_SLOT_RELEASE"
             gate_c_wrapper_numeric = "PASS_369_CASES"
             lfnst_engine_specialty = "PASS_1088_CASES"
-            lfnst_wrapper_specialty = "PASS_387_CASES"
+            lfnst_wrapper_specialty = "PASS_388_CASES"
             gate_c_beats = 45636
             logs = @($modeLogs | ForEach-Object {
                 [ordered]@{
@@ -233,8 +243,8 @@ $summary = [ordered]@{
         lfnst_specialty = [ordered]@{
             engine_cases = 1088
             engine_basis_cases = 1024
-            wrapper_cases = 387
-            wrapper_beats = 6708
+            wrapper_cases = 388
+            wrapper_beats = 6724
             all_gather_terms = $true
             all_set_index = $true
         }

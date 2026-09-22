@@ -1,0 +1,41 @@
+{
+  "schema": "step12f_lfnst_layout_fix.v1",
+  "status": "FUNCTIONAL_PASS_PENDING_INDEPENDENT_REVIEW",
+  "base_commit": "504630694abcd4376ac27c209ad1275080f3c9fc",
+  "main_unchanged": true,
+  "main_merge": "NOT_AUTHORIZED",
+  "scatter_contract": {
+    "ntrs16": "TOP_LEFT_4X4_ROW_MAJOR",
+    "ntrs48": "TOP_4X8_ROW_MAJOR_THEN_BOTTOM_LEFT_4X4_ROW_MAJOR",
+    "bottom_right_4x4": "ZERO_OR_INVALID"
+  },
+  "directed_contract": {
+    "status": "PASS",
+    "boundary_indices": [0, 4, 7, 8, 15, 16, 31, 32, 47],
+    "tail_poison": "PASS"
+  },
+  "coverage": {
+    "normal": {
+      "gate_b_cases": 156,
+      "gate_f_modes": 13,
+      "gate_c_cases": 369,
+      "gate_c_beats": 45636,
+      "lfnst_engine_cases": 1088,
+      "lfnst_wrapper_cases": 388
+    },
+    "synthesis": {
+      "gate_b_cases": 156,
+      "gate_f_modes": 13,
+      "gate_c_cases": 369,
+      "gate_c_beats": 45636,
+      "lfnst_engine_cases": 1088,
+      "lfnst_wrapper_cases": 388
+    }
+  },
+  "physical": {
+    "fresh_synthesis": "NOT_RUN",
+    "place_route": "NOT_RUN",
+    "timing": "NOT_RUN"
+  },
+  "next": "INDEPENDENT_REVIEW_THEN_FRESH_REGISTERED_NEIGHBOR_PHYSICAL_FLOW"
+}

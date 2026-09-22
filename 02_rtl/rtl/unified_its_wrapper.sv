@@ -829,13 +829,11 @@ module unified_its_wrapper #(
             if (!ntrs48_i) begin
                 lfnst_output_coord_lut = (index_i >> 2) * 8 +
                                          (index_i & 3);
-            end else if (index_i < 16) begin
-                lfnst_output_coord_lut = (index_i >> 2) * 8 +
-                                         (index_i & 3);
             end else if (index_i < 32) begin
-                local_i = index_i - 16;
-                lfnst_output_coord_lut = (local_i >> 2) * 8 +
-                                         4 + (local_i & 3);
+                // The first 32 outputs are the complete top 4x8 region in
+                // row-major order, not two block-major 4x4 sub-blocks.
+                lfnst_output_coord_lut = (index_i >> 3) * 8 +
+                                         (index_i & 7);
             end else if (index_i < 48) begin
                 local_i = index_i - 32;
                 lfnst_output_coord_lut = ((local_i >> 2) + 4) * 8 +
