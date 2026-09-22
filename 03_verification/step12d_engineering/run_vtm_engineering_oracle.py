@@ -15,6 +15,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from profile_contract import adapter_mode, load_profile, profile_metadata, profile_parser
+
 
 ROOT = Path(__file__).resolve().parents[2]
 CANONICAL_PATH = ROOT / "03_verification" / "output" / "canonical_matrices.json"
@@ -266,8 +268,19 @@ def audit_bucket(name: str, tuples: list[tuple[int, int, int, int]], kind: str,
 
 
 def main() -> int:
+    parser = profile_parser("Run the independent VTM engineering oracle")
+    parser.add_argument("--emit", action="store_true")
+    parser.add_argument("--evidence-dir", type=Path, default=None)
+    args = parser.parse_args()
+    profile = load_profile(args.profile)
+    evidence_out = args.evidence_dir.resolve() if args.evidence_dir else EVIDENCE
+    evidence_out.mkdir(parents=True, exist_ok=True)
     canonical = load_canonical()
-    params = profile_params(10, False)
+    binding = profile["algorithm_binding"]
+    params = profile_params(
+        int(binding["bit_depth"]),
+        bool(binding["extended_precision_processing"]),
+    )
     tuples = supported_tuples()
     one_d = [(0, n, 0, 0) for n in (4, 8, 16, 32, 64)] + [(1, n, 0, 0) for n in (4, 8, 16, 32)] + [(2, n, 0, 0) for n in (4, 8, 16, 32)]
     buckets = [
@@ -282,6 +295,8 @@ def main() -> int:
         "status": "PASS_INDEPENDENT_VTM_PROFILE_ORACLE_AND_IMPACT_AUDIT",
         "canonical_sha256": sha256(CANONICAL_PATH),
         "profile": params,
+        **profile_metadata(profile),
+        "adapter_mode_used": adapter_mode(profile),
         "profile_variant": profile_params(10, True),
         "profile_variant_name": "bitDepth10_extendedPrecisionOn",
         "one_d_cases_available": len(one_d),
@@ -296,7 +311,7 @@ def main() -> int:
     impact = {
         "schema": "step12d_engineering.ambiguity_impact_audit.v1",
         "status": "PASS_IMPACT_AUDIT_WITH_OFFICIAL_VECTOR_BUCKET_EMPTY",
-        "profile_binding": "contest_engineering_vtm10_v1",
+        "profile_binding": profile["profile_name"],
         "official_equivalence": "NOT_PROVEN",
         "buckets": [{k: v for k, v in row.items() if k != "cases"} for row in buckets],
         "conclusion": "engineering profile and adapters are reproducible; sample-domain differences are measured, not a claim about historical hidden golden",
@@ -304,11 +319,12 @@ def main() -> int:
     if EMIT:
         print(json.dumps({"VTM_PROFILE_ORACLE_RESULTS.json": json.dumps(result, ensure_ascii=False, indent=2) + "\n", "AMBIGUITY_IMPACT_AUDIT.json": json.dumps(impact, ensure_ascii=False, indent=2) + "\n"}, ensure_ascii=False))
     else:
-        (EVIDENCE / "VTM_PROFILE_ORACLE_RESULTS.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        (EVIDENCE / "AMBIGUITY_IMPACT_AUDIT.json").write_text(json.dumps(impact, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        (evidence_out / "VTM_PROFILE_ORACLE_RESULTS.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        (evidence_out / "AMBIGUITY_IMPACT_AUDIT.json").write_text(json.dumps(impact, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps({"status": result["status"], "buckets": len(buckets)}, ensure_ascii=False, indent=2))
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

@@ -95,7 +95,9 @@ module step12f_registered_neighbor_harness (
         end
     end
 
-    unified_its_wrapper u_dut (
+    unified_its_wrapper #(
+        .FINAL_SATURATE(1)
+    ) u_dut (
         .clk              (clk_g),
         .rst_n            (dut_rst_n),
         .it_info          (src_it_info_q),
@@ -131,4 +133,5 @@ module step12f_registered_neighbor_harness (
     end
 
 endmodule
+
 

@@ -20,6 +20,7 @@ from validate_gate_c_model import (
     load_json,
     output_beats,
 )
+from profile_contract import adapter_mode, load_profile, profile_metadata, profile_parser
 
 
 CASES = [
@@ -106,7 +107,7 @@ def pack_beat(values: tuple[int, int, int, int]) -> int:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = profile_parser("Generate Gate-C HDL vectors")
     parser.add_argument("output", type=Path)
     parser.add_argument(
         "--full", action="store_true",
@@ -115,6 +116,8 @@ def main() -> int:
     args = parser.parse_args()
 
     canonical = load_json(CANONICAL)
+    profile = load_profile(args.profile)
+    output_mode = adapter_mode(profile)
     cases = full_engineering_cases() if args.full else CASES
     lines = [str(len(cases))]
     manifest_cases = []
@@ -135,7 +138,7 @@ def main() -> int:
             desc.lfnst_idx,
             canonical,
         )
-        beats = output_beats(wide, "LOW10")
+        beats = output_beats(wide, output_mode)
         lines.append(f"{desc.pack():06x} {len(entries)} {len(beats)}")
         lines.extend(f"{address} {value}" for address, value in entries)
         lines.extend(f"{pack_beat(beat):010x}" for beat in beats)
@@ -163,6 +166,8 @@ def main() -> int:
         json.dumps(
             {
                 "status": "PASS_VECTOR_GENERATION",
+                **profile_metadata(profile),
+                "adapter_mode_used": output_mode,
                 "cases": len(cases),
                 "beats": total_beats,
                 "campaign": "full_engineering_tuple_universe" if args.full else "directed_smoke",
@@ -177,3 +182,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

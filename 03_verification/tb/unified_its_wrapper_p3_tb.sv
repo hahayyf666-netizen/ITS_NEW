@@ -24,7 +24,9 @@ module unified_its_wrapper_p3_tb;
     logic it_done;
     logic protocol_error;
 
-    unified_its_wrapper dut (
+    unified_its_wrapper #(
+        .FINAL_SATURATE(1)
+    ) dut (
         .clk(clk), .rst_n(rst_n),
         .it_info(it_info), .it_info_vld(it_info_vld),
         .it_data_in(it_data_in), .it_data_addr(it_data_addr),
@@ -162,3 +164,4 @@ module unified_its_wrapper_p3_tb;
         $finish;
     end
 endmodule
+

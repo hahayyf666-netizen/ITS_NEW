@@ -16,7 +16,10 @@ module unified_its_wrapper #(
     parameter integer MAX_POINTS = 4096,
     parameter integer COEFF_DEPTH = 8176,
     parameter integer LFNST_DEPTH = 8192,
-    parameter integer FINAL_SATURATE = 0,
+    // SAT10 is the selected v2 engineering profile.  The final submission
+    // top must still override this explicitly; LOW10 remains available only
+    // through the preserved v1 profile/legacy adapter configuration.
+    parameter integer FINAL_SATURATE = 1,
     parameter string COEFF_FILE = "03_verification/sim/rom_coeffs.hex",
     parameter string LFNST_FILE = "03_verification/sim/lfnst_coeffs.hex",
     parameter string LFNST_PACKED_FILE = "03_verification/sim/lfnst_packed_coeffs.hex"
@@ -2595,4 +2598,5 @@ module unified_its_wrapper #(
     end
 
 endmodule
+
 

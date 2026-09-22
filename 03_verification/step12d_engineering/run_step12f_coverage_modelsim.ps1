@@ -1,11 +1,17 @@
 param(
     [string]$WorkRoot = (Join-Path $env:TEMP ("step12f_coverage_" + (Get-Date -Format "yyyyMMdd_HHmmss"))),
     [string]$EvidenceDir = "",
-    [string]$KernelSource = ""
+    [string]$KernelSource = "",
+    [string]$ProfileName = "contest_engineering_vtm10_sat10_v2"
 )
 
 $ErrorActionPreference = "Stop"
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
+$ProfilePath = Join-Path $PSScriptRoot ("profiles\" + $ProfileName + ".json")
+if (-not (Test-Path -LiteralPath $ProfilePath)) { throw "Engineering profile not found: $ProfileName" }
+$Profile = Get-Content -LiteralPath $ProfilePath -Raw | ConvertFrom-Json
+if ($Profile.schema -ne "step12d_engineering.vtm_profile.v2") { throw "Unsupported engineering profile schema" }
+if ($Profile.final10.default -notin @("LOW10_TWOS_COMPLEMENT", "SAT10")) { throw "Invalid final10.default" }
 $ModelSim = "D:\software\Modelsim\win64"
 $Vlib = Join-Path $ModelSim "vlib.exe"
 $Vlog = Join-Path $ModelSim "vlog.exe"
@@ -34,6 +40,7 @@ $SimpleRam = Join-Path $RepoRoot "02_rtl\rtl\its_simple_ram.sv"
 $InputBank = Join-Path $RepoRoot "02_rtl\rtl\its_input_cache_bank.sv"
 $LfnstEngine = Join-Path $RepoRoot "02_rtl\rtl\bounded_lfnst_engine.sv"
 $Wrapper = Join-Path $RepoRoot "02_rtl\rtl\unified_its_wrapper.sv"
+$SubmissionTop = Join-Path $RepoRoot "02_rtl\rtl\its_unified_submission_top.sv"
 $KernelTb = Join-Path $RepoRoot "03_verification\tb\unified_p4_kernel_numeric_tb.sv"
 $ThroughputTb = Join-Path $RepoRoot "03_verification\tb\unified_p4_kernel_throughput_tb.sv"
 $ThroughputFullTb = Join-Path $RepoRoot "03_verification\tb\unified_p4_kernel_throughput_full_tb.sv"
@@ -41,6 +48,8 @@ $SmokeTb = Join-Path $RepoRoot "03_verification\tb\unified_its_wrapper_tb.sv"
 $P3Tb = Join-Path $RepoRoot "03_verification\tb\unified_its_wrapper_p3_tb.sv"
 $P4Tb = Join-Path $RepoRoot "03_verification\tb\unified_p4_kernel_p4_tb.sv"
 $NumericTb = Join-Path $RepoRoot "03_verification\tb\unified_its_wrapper_numeric_tb.sv"
+$AdapterTb = Join-Path $RepoRoot "03_verification\tb\unified_its_final_adapter_tb.sv"
+$SatWrapperTb = Join-Path $RepoRoot "03_verification\tb\unified_its_sat10_wrapper_tb.sv"
 $GateBGenerator = Join-Path $RepoRoot "03_verification\step12d_engineering\generate_gate_b_hdl_vectors.py"
 $GateCGenerator = Join-Path $RepoRoot "03_verification\step12d_engineering\generate_gate_c_hdl_vectors.py"
 $LfnstVectorGenerator = Join-Path $RepoRoot "03_verification\step12d_engineering\generate_lfnst_engine_vectors.py"
@@ -70,7 +79,7 @@ if ($EvidenceDir) {
     $lfnstVectorOutput | Set-Content -LiteralPath (Join-Path $EvidenceDir "LFNST_ENGINE_VECTOR_MANIFEST.json") -Encoding utf8
 }
 $LfnstWrapperVector = Join-Path $WorkRoot "lfnst_wrapper_vectors.txt"
-$lfnstWrapperVectorOutput = (& python $LfnstWrapperVectorGenerator $LfnstWrapperVector | Out-String)
+$lfnstWrapperVectorOutput = (& python $LfnstWrapperVectorGenerator --profile $ProfileName $LfnstWrapperVector | Out-String)
 if ($LASTEXITCODE -ne 0) { throw "LFNST wrapper specialty vector generation failed" }
 $lfnstWrapperVectorManifest = $lfnstWrapperVectorOutput | ConvertFrom-Json
 if (($lfnstWrapperVectorManifest.cases -ne 388) -or
@@ -107,7 +116,7 @@ foreach ($mode in @("normal", "synthesis")) {
     $gateCVector = Join-Path $dir "unified_gate_c_vectors.txt"
     $gateBGeneratorOutput = (& python $GateBGenerator $gateBVector | Out-String)
     if ($LASTEXITCODE -ne 0) { throw "Gate-B vector generation failed for $mode" }
-    $gateCGeneratorOutput = (& python $GateCGenerator --full $gateCVector | Out-String)
+    $gateCGeneratorOutput = (& python $GateCGenerator --profile $ProfileName --full $gateCVector | Out-String)
     if ($LASTEXITCODE -ne 0) { throw "full Gate-C vector generation failed for $mode" }
     $gateBManifest = $gateBGeneratorOutput | ConvertFrom-Json
     $gateCManifest = $gateCGeneratorOutput | ConvertFrom-Json
@@ -126,7 +135,7 @@ foreach ($mode in @("normal", "synthesis")) {
         $define = @()
         if ($mode -eq "synthesis") { $define = @("+define+SYNTHESIS") }
         $compileLog = Join-Path $dir "compile.log"
-        & $Vlog -sv @define $SimpleRam $InputBank $Kernel $LfnstEngine $Wrapper $KernelTb $ThroughputTb $ThroughputFullTb $SmokeTb $P3Tb $P4Tb $NumericTb $LfnstTb -l $compileLog
+        & $Vlog -sv @define $SimpleRam $InputBank $Kernel $LfnstEngine $Wrapper $SubmissionTop $KernelTb $ThroughputTb $ThroughputFullTb $SmokeTb $P3Tb $P4Tb $NumericTb $AdapterTb $SatWrapperTb $LfnstTb -l $compileLog
         if ($LASTEXITCODE -ne 0) { throw "vlog failed for $mode" }
 
         $kernelLog = Join-Path $dir "gate_b_kernel_numeric.log"
@@ -157,6 +166,14 @@ foreach ($mode in @("normal", "synthesis")) {
         & $Vsim -c work.unified_its_wrapper_numeric_tb -l $numericLog -do "run -all; quit -f"
         Assert-TranscriptPass $numericLog "GATE_C_NUMERIC_TB_PASS cases=369"
 
+        $adapterLog = Join-Path $dir "sat10_adapter_exhaustive.log"
+        & $Vsim -c work.unified_its_final_adapter_tb -l $adapterLog -do "run -all; quit -f"
+        Assert-TranscriptPass $adapterLog "SAT10_ADAPTER_EXHAUSTIVE_PASS values=65536"
+
+        $satWrapperLog = Join-Path $dir "sat10_wrapper_boundary.log"
+        & $Vsim -c work.unified_its_sat10_wrapper_tb -l $satWrapperLog -do "run -all; quit -f"
+        Assert-TranscriptPass $satWrapperLog "SAT10_WRAPPER_BOUNDARY_PASS cases=3 beats=16"
+
         $lfnstLog = Join-Path $dir "lfnst_engine_specialty.log"
         & $Vsim -c work.bounded_lfnst_engine_tb -l $lfnstLog -do "run -all; quit -f"
         Assert-TranscriptPass $lfnstLog "LFNST_ENGINE_TB_PASS cases=1088"
@@ -166,7 +183,8 @@ foreach ($mode in @("normal", "synthesis")) {
         Assert-TranscriptPass $lfnstWrapperLog "GATE_C_NUMERIC_TB_PASS cases=388"
 
         $modeLogs = @($compileLog, $kernelLog, $throughputLog, $throughputFullLog,
-                      $smokeLog, $p3Log, $p4Log, $numericLog, $lfnstLog, $lfnstWrapperLog)
+                      $smokeLog, $p3Log, $p4Log, $numericLog, $adapterLog, $satWrapperLog,
+                      $lfnstLog, $lfnstWrapperLog)
         if ($EvidenceDir) {
             foreach ($log in $modeLogs) {
                 Copy-Item -LiteralPath $log -Destination (Join-Path $EvidenceDir ($mode + "_" + (Split-Path $log -Leaf)))
@@ -182,6 +200,8 @@ foreach ($mode in @("normal", "synthesis")) {
             p3_vwrite_contract = "PASS"
             p4_stage0_issue_contract = "PASS_16_N4_VECTORS_SLOT_RELEASE"
             gate_c_wrapper_numeric = "PASS_369_CASES"
+            sat10_adapter_exhaustive = "PASS_65536_VALUES"
+            sat10_wrapper_boundary = "PASS_3_CASES_16_BEATS"
             lfnst_engine_specialty = "PASS_1088_CASES"
             lfnst_wrapper_specialty = "PASS_388_CASES"
             gate_c_beats = 45636
@@ -213,6 +233,7 @@ $summary = [ordered]@{
         lfnst_vector_generator = (Get-FileHash -Algorithm SHA256 -LiteralPath $LfnstVectorGenerator).Hash
         lfnst_wrapper_vector_generator = (Get-FileHash -Algorithm SHA256 -LiteralPath $LfnstWrapperVectorGenerator).Hash
         unified_its_wrapper = (Get-FileHash -Algorithm SHA256 -LiteralPath $Wrapper).Hash
+        its_unified_submission_top = (Get-FileHash -Algorithm SHA256 -LiteralPath $SubmissionTop).Hash
         gate_b_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $KernelTb).Hash
         gate_b_throughput_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $ThroughputTb).Hash
         gate_f_throughput_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $ThroughputFullTb).Hash
@@ -220,6 +241,8 @@ $summary = [ordered]@{
         p3_vwrite_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $P3Tb).Hash
         p4_stage0_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $P4Tb).Hash
         gate_c_numeric_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $NumericTb).Hash
+        sat10_adapter_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $AdapterTb).Hash
+        sat10_wrapper_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $SatWrapperTb).Hash
     }
     vector_sets = [ordered]@{
         gate_b = [ordered]@{
@@ -237,7 +260,7 @@ $summary = [ordered]@{
             includes_lfnst = $true
             includes_rectangles = $true
             sparse_inputs = $true
-            output_adapter = "LOW10_TWOS_COMPLEMENT"
+            output_adapter = $Profile.final10.default
             backpressure = $true
         }
         lfnst_specialty = [ordered]@{
@@ -250,9 +273,18 @@ $summary = [ordered]@{
         }
     }
     runs = $runs
+    profile = [ordered]@{
+        name = $Profile.profile_name
+        adapter = $Profile.final10.default
+        decision_class = $Profile.decision_class
+        official_equivalence = $Profile.official_equivalence
+        source = $ProfilePath
+        sha256 = (Get-FileHash -Algorithm SHA256 -LiteralPath $ProfilePath).Hash
+    }
 }
 $summaryJson = $summary | ConvertTo-Json -Depth 10
 if ($EvidenceDir) {
     $summaryJson | Set-Content -LiteralPath (Join-Path $EvidenceDir "STEP12F_COVERAGE_MODELSIM_RUN.json") -Encoding utf8
 }
 $summaryJson
+

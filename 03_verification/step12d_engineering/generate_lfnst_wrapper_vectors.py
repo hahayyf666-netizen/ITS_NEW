@@ -22,6 +22,7 @@ from validate_gate_c_model import (
     load_json,
     output_beats,
 )
+from profile_contract import adapter_mode, load_profile, profile_metadata, profile_parser
 
 
 def add_case(cases: list[tuple[Descriptor, list[tuple[int, int]]]],
@@ -37,10 +38,12 @@ def pack_beat(values: tuple[int, int, int, int]) -> int:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = profile_parser("Generate LFNST wrapper vectors")
     parser.add_argument("output", type=Path)
     args = parser.parse_args()
     canonical = load_json(CANONICAL)
+    profile = load_profile(args.profile)
+    output_mode = adapter_mode(profile)
     cases: list[tuple[Descriptor, list[tuple[int, int]]]] = []
 
     # nTrs=16: 4x4 support and nonzeroSize=8.  Terms 0..15 are all sent,
@@ -100,7 +103,7 @@ def main() -> int:
             coeff[row][col] = value
         wide = inverse_2d(coeff, desc.width, desc.height, desc.hor, desc.ver,
                           desc.set_idx, desc.lfnst_idx, canonical)
-        beats = output_beats(wide, "LOW10")
+        beats = output_beats(wide, output_mode)
         lines.append(f"{desc.pack():06x} {len(entries)} {len(beats)}")
         lines.extend(f"{address} {value}" for address, value in entries)
         lines.extend(f"{pack_beat(beat):010x}" for beat in beats)
@@ -111,6 +114,8 @@ def main() -> int:
     args.output.write_bytes(encoded)
     print(json.dumps({
         "status": "PASS_GENERATE_LFNST_WRAPPER_VECTORS",
+        **profile_metadata(profile),
+        "adapter_mode_used": output_mode,
         "cases": len(cases),
         "beats": total_beats,
         "ntrs16_cases": 128 + 1,
@@ -125,3 +130,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

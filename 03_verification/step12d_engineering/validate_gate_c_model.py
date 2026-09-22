@@ -16,6 +16,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
 
+from profile_contract import adapter_mode, load_profile, profile_metadata, profile_parser
+
 
 ROOT = Path(__file__).resolve().parents[2]
 EVIDENCE = ROOT / "05_audit" / "current" / "27" / "step12d_engineering"
@@ -285,8 +287,11 @@ class TwoSlotProtocolModel:
     and a second slot can be filled while the first slot is stalled at output.
     """
 
-    def __init__(self, canonical: dict[str, Any]):
+    def __init__(self, canonical: dict[str, Any], output_mode: str = "LOW10"):
         self.canonical = canonical
+        if output_mode not in ("LOW10", "SAT10"):
+            raise ValueError(f"unsupported output mode: {output_mode}")
+        self.output_mode = output_mode
         self.desc_fifo: list[Descriptor] = []
         self.slots: list[dict[str, Any] | None] = [None, None]
         self.fill_slot: int | None = None
@@ -341,8 +346,9 @@ class TwoSlotProtocolModel:
         self.output_slot = ready
         self.output_index = 0
 
-    def output_step(self, req: bool, mode: str = "LOW10") -> dict[str, Any]:
+    def output_step(self, req: bool, mode: str | None = None) -> dict[str, Any]:
         assert self.output_slot is not None
+        mode = mode or self.output_mode
         beats = self.slots[self.output_slot]["beats_low10" if mode == "LOW10" else "beats_sat10"]
         data = beats[self.output_index]
         valid = bool(req)
@@ -363,15 +369,16 @@ class TwoSlotProtocolModel:
 
 
 def run_case(desc: Descriptor, canonical: dict[str, Any], seed: int,
-             stalls: Iterable[int]) -> dict[str, Any]:
+             stalls: Iterable[int], output_mode: str) -> dict[str, Any]:
     assert valid_descriptor(desc)
     coeff = sparse_coeff(desc.width, desc.height, seed, bool(desc.lfnst_idx))
     wide = inverse_2d(coeff, desc.width, desc.height, desc.hor, desc.ver,
                       desc.set_idx, desc.lfnst_idx, canonical)
     low = output_beats(wide, "LOW10")
     sat = output_beats(wide, "SAT10")
-    stream = drain_with_backpressure(low, stalls)
-    assert [beat for _, beat in stream["fires"]] == low
+    selected = low if output_mode == "LOW10" else sat
+    stream = drain_with_backpressure(selected, stalls)
+    assert [beat for _, beat in stream["fires"]] == selected
     # The alternate adapter must be a pure post-process of the same wide data.
     assert len(low) == len(sat)
     return {
@@ -393,11 +400,17 @@ def run_case(desc: Descriptor, canonical: dict[str, Any], seed: int,
 
 
 def main() -> int:
+    parser = profile_parser("Validate Gate-C engineering profile")
+    parser.add_argument("--emit", action="store_true")
+    parser.add_argument("--evidence-dir", type=Path, default=None)
+    args = parser.parse_args()
+    evidence_out = args.evidence_dir.resolve() if args.evidence_dir else EVIDENCE
+    evidence_out.mkdir(parents=True, exist_ok=True)
     canonical = load_json(CANONICAL)
-    profile = load_json(EVIDENCE / "ENGINEERING_PROFILE.json")
+    profile = load_profile(args.profile)
+    output_mode = adapter_mode(profile)
     legal = load_json(EVIDENCE / "LEGAL_TRANSFORM_MATRIX.json")
-    assert profile["profile_name"] == "contest_engineering_vtm10_v1"
-    assert profile["final10"]["default"] == "LOW10_TWOS_COMPLEMENT"
+    assert output_mode in ("LOW10", "SAT10")
     assert legal["lfnst_off"]["count"] == 169
     assert legal["lfnst_on"]["count"] == 200
 
@@ -414,17 +427,17 @@ def main() -> int:
     off_rows = []
     for index, desc in enumerate(off_descs):
         off_rows.append(run_case(desc, canonical, 0x100 + index,
-                                 (1, 3) if index % 9 == 0 else ()))
+                                 (1, 3) if index % 9 == 0 else (), output_mode))
     active_rows = []
     for index, desc in enumerate(active_descs):
         active_rows.append(run_case(desc, canonical, 0x900 + index,
-                                    (1, 2, 5) if index % 11 == 0 else ()))
+                                    (1, 2, 5) if index % 11 == 0 else (), output_mode))
 
     # Explicit ownership/back-to-back test: TU1 remains immutable while TU2
     # is accepted and filled during an output stall.
     d1 = Descriptor(8, 8, 0, 0)
     d2 = Descriptor(16, 4, 2, 1)
-    two = TwoSlotProtocolModel(canonical)
+    two = TwoSlotProtocolModel(canonical, output_mode)
     two.submit(d1)
     two.data_fire(0, 123)
     two.data_fire(63, -77, end=True)
@@ -459,8 +472,8 @@ def main() -> int:
         "model": "independent VTM-profile 2-D inverse + two-slot transaction model",
         "canonical_sha256": sha256(CANONICAL),
         "profile": profile["profile_name"],
-        "adapter_default": "LOW10_TWOS_COMPLEMENT",
-        "adapter_alternate": "SAT10",
+        **profile_metadata(profile),
+        "adapter_mode_used": output_mode,
         "scope": {
             "official_source_equivalence": "NOT_PROVEN",
             "lfnst_off_implementation_superset": len(off_rows),
@@ -508,7 +521,7 @@ def main() -> int:
     if EMIT:
         print(json.dumps(result, ensure_ascii=False, indent=2))
     else:
-        (EVIDENCE / "GATE_C_MODEL_VALIDATION.json").write_text(
+        (evidence_out / "GATE_C_MODEL_VALIDATION.json").write_text(
             json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
         print(json.dumps({"status": result["status"], "cases": len(all_rows)}, ensure_ascii=False))
@@ -517,3 +530,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
