@@ -41,6 +41,9 @@ P3 vwrite, P4 stage-0 issue, wrapper smoke, ownership/order/backpressure
 checks also passed.  The wrapper specialty count is 388 because this
 checkpoint adds one explicit tail-poison vector to the prior 387 cases.
 
+The independent Python Gate-C model also completed with 369 cases and 45,636
+beats.
+
 ## Boundary
 
 Fresh Vivado synthesis, placement, routing, PPA, and 500 MHz timing are not
