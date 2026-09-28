@@ -6,7 +6,13 @@ import hashlib
 import json
 from pathlib import Path
 
-from profile_contract import load_profile, profile_metadata, profile_parser
+from profile_contract import (
+    SAT10_PROFILE_NAME,
+    SAT10_PROFILE_SHA256,
+    load_profile,
+    profile_metadata,
+    profile_parser,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -24,8 +30,12 @@ def main() -> int:
     parser.add_argument("--evidence-dir", type=Path, required=True)
     args = parser.parse_args()
     profile = load_profile(args.profile)
+    if profile["profile_name"] != SAT10_PROFILE_NAME:
+        raise AssertionError(f"checkpoint requires frozen profile {SAT10_PROFILE_NAME}")
     if profile["final10"]["default"] != "SAT10":
         raise AssertionError("this validator only accepts a SAT10 profile")
+    if profile["_sha256"] != SAT10_PROFILE_SHA256:
+        raise AssertionError("SAT10 profile identity does not match the frozen checkpoint")
     old = json.loads((HISTORICAL / "ENGINEERING_PROFILE.json").read_text(encoding="utf-8"))
     for key in ("algorithm_binding", "vtm_reference_build", "inverse_2d", "lfnst"):
         if profile[key] != old[key]:
@@ -37,6 +47,7 @@ def main() -> int:
         "status": "PASS_SAT10_PROFILE_INHERITS_V1_ARITHMETIC",
         **profile_metadata(profile),
         "historical_profile": old["profile_name"],
+        "tested_profile_sha256": profile["_sha256"],
         "historical_profile_sha256": sha256(HISTORICAL / "ENGINEERING_PROFILE.json"),
         "canonical_sha256": sha256(CANONICAL),
         "arithmetic_inheritance": "PASS",

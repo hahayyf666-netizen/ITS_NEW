@@ -36,6 +36,9 @@ module unified_its_final_adapter_tb;
 
     integer i;
     integer expected;
+    integer boundary_i;
+    integer boundary_value [0:5];
+    integer boundary_expected [0:5];
     logic signed [9:0] got;
 
     initial begin
@@ -48,10 +51,29 @@ module unified_its_final_adapter_tb;
                        $signed(got), expected);
             end
         end
+        boundary_value[0] = -513;
+        boundary_value[1] = -512;
+        boundary_value[2] = -511;
+        boundary_value[3] = 510;
+        boundary_value[4] = 511;
+        boundary_value[5] = 512;
+        boundary_expected[0] = -512;
+        boundary_expected[1] = -512;
+        boundary_expected[2] = -511;
+        boundary_expected[3] = 510;
+        boundary_expected[4] = 511;
+        boundary_expected[5] = 511;
+        for (boundary_i = 0; boundary_i < 6; boundary_i = boundary_i + 1) begin
+            got = dut.final_adapter(boundary_value[boundary_i]);
+            if ($signed(got) !== boundary_expected[boundary_i])
+                $fatal(1, "SAT10 boundary mismatch x=%0d got=%0d expected=%0d",
+                       boundary_value[boundary_i], $signed(got), boundary_expected[boundary_i]);
+        end
         if ($signed(dut.final_adapter(-16'sd513)) !== -512 ||
             $signed(dut.final_adapter(16'sd512)) !== 511) begin
             $fatal(1, "SAT10 explicit boundary check failed");
         end
+        $display("SAT10_ADAPTER_BOUNDARY_PASS values=-513,-512,-511,510,511,512");
         $display("SAT10_ADAPTER_EXHAUSTIVE_PASS values=65536");
         $finish;
     end

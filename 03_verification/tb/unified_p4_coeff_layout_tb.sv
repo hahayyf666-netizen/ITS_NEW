@@ -5,12 +5,16 @@ module unified_p4_coeff_layout_tb;
     logic signed [15:0] canonical [0:8175];
     integer typ, lg, n, row, term, bundle, cursor, checked, padding;
     logic signed [15:0] observed;
+    logic input_group_fire;
+    logic input_vector_done;
     unified_p4_kernel dut (
         .clk(1'b0), .rst_n(1'b0), .start(1'b0), .tr_type(2'd0),
         .transform_size(7'd4), .active_size(7'd4), .output_size(7'd4),
         .output_group_count(6'd1),
         .stage_sel(1'b0), .in_valid(1'b0), .in_data(64'd0), .out_req(1'b0),
-        .in_req(), .out_valid(), .out_data(), .done(), .busy(), .error()
+        .in_req(), .out_valid(), .out_data(), .done(),
+        .input_group_fire(input_group_fire),
+        .input_vector_done(input_vector_done), .busy(), .error()
     );
     initial begin
         $readmemh("03_verification/sim/rom_coeffs.hex", canonical);

@@ -6,10 +6,25 @@ param(
 
 $ErrorActionPreference = "Stop"
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
+$ExpectedProfileName = "contest_engineering_vtm10_sat10_v2"
+$ExpectedProfileSha256 = "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746"
+if ($ProfileName -cne $ExpectedProfileName) {
+    throw "SAT10 release runner only accepts $ExpectedProfileName (got $ProfileName)"
+}
 $ProfilePath = Join-Path $PSScriptRoot ("profiles\" + $ProfileName + ".json")
 if (-not (Test-Path -LiteralPath $ProfilePath)) { throw "Engineering profile not found: $ProfileName" }
 $Profile = Get-Content -LiteralPath $ProfilePath -Raw | ConvertFrom-Json
 if ($Profile.schema -ne "step12d_engineering.vtm_profile.v2") { throw "Unsupported engineering profile schema" }
+$ProfileCanonicalText = ([IO.File]::ReadAllText($ProfilePath)).Replace(([string][char]13 + [string][char]10), [string][char]10)
+$ProfileCanonicalBytes = [Text.UTF8Encoding]::new($false).GetBytes($ProfileCanonicalText)
+$ProfileSha256 = [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($ProfileCanonicalBytes))
+if ($Profile.profile_name -cne $ExpectedProfileName -or
+    $Profile.final10.default -cne "SAT10" -or
+    $Profile.final10.range.Count -ne 2 -or
+    $Profile.final10.range[0] -ne -512 -or $Profile.final10.range[1] -ne 511 -or
+    $ProfileSha256 -cne $ExpectedProfileSha256) {
+    throw "SAT10 profile identity/adapter/range validation failed; refusing to launch ModelSim"
+}
 $ModelSim = "D:\software\Modelsim\win64"
 $Vlib = Join-Path $ModelSim "vlib.exe"
 $Vlog = Join-Path $ModelSim "vlog.exe"
@@ -149,10 +164,16 @@ $summary = [ordered]@{
         gate_b_throughput_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $ThroughputTb).Hash
         gate_c_smoke_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $SmokeTb).Hash
         gate_c_numeric_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $NumericTb).Hash
+        sat10_adapter_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $AdapterTb).Hash
+        sat10_wrapper_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $SatWrapperTb).Hash
     }
     vector_sets = [ordered]@{
         profile = $Profile.profile_name
         output_adapter = $Profile.final10.default
+        profile_path = (Resolve-Path -LiteralPath $ProfilePath).Path
+        profile_sha256 = $ProfileSha256
+        decision_class = $Profile.decision_class
+        official_equivalence = $Profile.official_equivalence
         gate_b = [ordered]@{
             cases = 156
             one_d_modes = 13

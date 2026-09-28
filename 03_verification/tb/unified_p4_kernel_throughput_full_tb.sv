@@ -23,6 +23,8 @@ module unified_p4_kernel_throughput_full_tb;
     logic done;
     logic busy;
     logic error;
+    logic input_group_fire;
+    logic input_vector_done;
 
     integer cycle_i;
     integer group_i;
@@ -47,7 +49,8 @@ module unified_p4_kernel_throughput_full_tb;
         .stage_sel(stage_sel),
         .in_valid(in_valid), .in_req(in_req), .in_data(in_data),
         .out_valid(out_valid), .out_req(out_req), .out_data(out_data),
-        .done(done), .busy(busy), .error(error)
+        .done(done), .input_group_fire(input_group_fire),
+        .input_vector_done(input_vector_done), .busy(busy), .error(error)
     );
 
     task automatic reset_kernel;
