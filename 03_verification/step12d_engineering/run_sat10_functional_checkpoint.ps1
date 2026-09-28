@@ -185,7 +185,6 @@ try {
 
     Assert-SourceFrozen
     $modelsimStage = Join-Path $EvidenceDir "06_full_modelsims"
-    New-Item -ItemType Directory -Path $modelsimStage -ErrorAction Stop | Out-Null
     $modelsimWork = Join-Path $env:TEMP ("sat10_functional_" + $runId)
     if (Test-Path -LiteralPath $modelsimWork) {
         throw "ModelSim work root already exists; refusing to reuse or overwrite it"
