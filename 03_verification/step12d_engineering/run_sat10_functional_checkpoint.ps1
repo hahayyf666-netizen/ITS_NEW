@@ -31,7 +31,11 @@ $sourceCommit = (git -C $RepoRoot rev-parse HEAD).Trim()
 if ($LASTEXITCODE -ne 0 -or $sourceCommit -cne $ExpectedSourceCommit) {
     throw "Tested source commit mismatch: expected $ExpectedSourceCommit, got $sourceCommit"
 }
-if ((git -C $RepoRoot status --porcelain --untracked-files=all).Trim()) {
+$worktreeStatus = (git -C $RepoRoot status --porcelain --untracked-files=all | Out-String).Trim()
+if ($LASTEXITCODE -ne 0) {
+    throw "Unable to inspect source worktree status"
+}
+if ($worktreeStatus.Length -gt 0) {
     throw "Checkpoint must start from a clean source worktree"
 }
 
@@ -276,7 +280,8 @@ try {
         schema = "step12d_engineering.sat10_functional_checkpoint.v1"
         status = "FUNCTIONAL_PASS"
         tested_source_commit = $sourceCommit
-        branch = (git -C $RepoRoot branch --show-current).Trim()
+        checkout_state = "DETACHED_AT_TESTED_SOURCE_COMMIT"
+        remote_target_branch = "sat10-profile-v2"
         profile = [ordered]@{
             name = $ExpectedProfileName
             path = "03_verification/step12d_engineering/profiles/contest_engineering_vtm10_sat10_v2.json"
