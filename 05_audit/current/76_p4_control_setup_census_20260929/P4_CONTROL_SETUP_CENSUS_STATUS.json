@@ -1,0 +1,129 @@
+{
+  "schema": "its_new.p4_control_setup_census.v1",
+  "status": "COMPLETE_READ_ONLY_SETUP_FAIL",
+  "repository": "hahayyf666-netizen/ITS_NEW",
+  "branch": "sat10-functional-evidence",
+  "experiment_evidence_commit": "bf838a7345131067f8cea9cfd612899e38984ff3",
+  "rtl_source_commit": "9e67d4aa2696255f8b527a614e872cb367e654ce",
+  "experiment": "P4 FIFO placement A/B CONTROL_REPLAY followed by read-only setup census",
+  "design": {
+    "top": "step12f_registered_neighbor_harness",
+    "part": "xcku5p-ffvb676-2-e",
+    "vivado": "2025.2",
+    "build": "6299465 Fri Nov 14 19:35:11 GMT 2025",
+    "max_threads": 4,
+    "clock_period_ns": 2.0,
+    "effective_path_uncertainty_ns": 0.035,
+    "rtl_changed": false,
+    "xdc_changed": false,
+    "synthesis_or_implementation_rerun_for_census": false
+  },
+  "profile": {
+    "name": "contest_engineering_vtm10_sat10_v2",
+    "adapter": "SAT10",
+    "official_equivalence": "NOT_PROVEN",
+    "canonical_sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746"
+  },
+  "authoritative_dcp": {
+    "branch": "CONTROL_REPLAY",
+    "path_outside_git": "outputs/sat10_fifo_physical_ab_20260929/CONTROL_REPLAY/final.dcp",
+    "sha256": "7387AB1F15F233498E58DDD3A8672434AA99C82479E0557273436487C64F26F4",
+    "sha256_rechecked_before_and_after_census": true
+  },
+  "census_execution": {
+    "mode": "READ_ONLY",
+    "vivado_command": "vivado.exe -mode batch -source 03_verification/vivado/run_step12f_r5f_setup_census.tcl -log <control_census>/vivado_control_census.log -journal <control_census>/vivado_control_census.jou",
+    "path_signature_env": "STEP12F_SKIP_PATH_SIGNATURE=1",
+    "path_signature_limitation": "detailed custom primitive signature skipped; routed worst100 retained",
+    "operations_forbidden_and_not_run": [
+      "synthesis",
+      "opt_design",
+      "place_design",
+      "phys_opt_design",
+      "route_design",
+      "write_checkpoint",
+      "read_xdc"
+    ],
+    "tcl_sha256": "2FC2D1F89817FC86F4D6848D2AB0F3BB94CB6F94B4CCD23029BBACED4C8764F7",
+    "tool_log_terminator": "P9R5F_CENSUS_DONE"
+  },
+  "timing_authority": {
+    "setup_wns_ns": -0.034,
+    "setup_tns_ns": -2.026,
+    "setup_failing_endpoints": 134,
+    "hold_whs_ns": 0.007,
+    "hold_ths_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "fully_routed": true,
+    "routing_errors": 0,
+    "drc_errors": 0,
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0
+  },
+  "census": {
+    "raw_negative_path_objects": 134,
+    "unique_negative_endpoints": 134,
+    "duplicate_endpoints": 0,
+    "unclassified_endpoints": 0,
+    "reconstructed_tns_ns_three_decimal_path_slacks": -2.032,
+    "authority_reconciliation_delta_ns": -0.006,
+    "reconciliation_note": "Vivado summary is the authority; per-path CSV values are rounded to three decimals.",
+    "boundary_buckets": {
+      "dut_internal": {
+        "endpoints": 128,
+        "reconstructed_tns_ns": -1.937,
+        "share_percent": 95.3,
+        "median_logic_levels": 5,
+        "median_logic_delay_ns": 0.489,
+        "median_routing_delay_ns": 1.408,
+        "median_routing_fraction": 0.7393,
+        "p90_routing_fraction": 0.8206
+      },
+      "dut_to_sink_ff": {
+        "endpoints": 6,
+        "reconstructed_tns_ns": -0.095,
+        "share_percent": 4.7
+      },
+      "source_ff_to_dut": {
+        "endpoints": 0,
+        "reconstructed_tns_ns": 0.0,
+        "share_percent": 0.0
+      }
+    },
+    "canonicalization": "R6A-style canonical(source_family, endpoint_family): strip bracketed indices, replica suffixes, and repeated underscores.",
+    "canonical_family_pairs": 37,
+    "top_one_tns_share_percent": 14.4,
+    "top_five_tns_share_percent": 46.9,
+    "top_families": [
+      {"source": "kernel_h_rd_addr_q", "endpoint": "kernel_h_rd_data_q", "endpoints": 18, "reconstructed_tns_ns": -0.293, "share_percent": 14.4},
+      {"source": "rd_cmd_addr_q", "endpoint": "kernel_rd_raw_data_q", "endpoints": 11, "reconstructed_tns_ns": -0.228, "share_percent": 11.2},
+      {"source": "lfnst_grid_reg", "endpoint": "P4 ingress_data_q", "endpoints": 10, "reconstructed_tns_ns": -0.192, "share_percent": 9.4},
+      {"source": "P4 reduce_l4_q", "endpoint": "P4 reduce_l5_q", "endpoints": 6, "reconstructed_tns_ns": -0.128, "share_percent": 6.3},
+      {"source": "P4 ingress_data_q", "endpoint": "P4 input_mem_reg", "endpoints": 7, "reconstructed_tns_ns": -0.113, "share_percent": 5.6}
+    ],
+    "representative_global_leaders": [
+      {"source": "lfnst_grid_reg[18][4]", "destination": "P4 ingress_data_q_reg[4]/D", "slack_ns": -0.034, "datapath_delay_ns": 1.890, "logic_delay_ns": 0.634, "routing_delay_ns": 1.256, "routing_fraction_percent": 66.5, "logic_levels": 5},
+      {"source": "P4 ingress_group_q_reg[0]", "destination": "P4 input_mem_reg[1][62][15]/CE", "slack_ns": -0.034, "datapath_delay_ns": 1.849, "logic_delay_ns": 0.318, "routing_delay_ns": 1.531, "routing_fraction_percent": 82.8, "logic_levels": 2, "source_fanout": 68, "second_lut_output_fanout": 32},
+      {"source": "kernel_h_rd_addr_q_reg[3][2]", "destination": "kernel_h_rd_data_q_reg[59]/D", "slack_ns": -0.031, "datapath_delay_ns": 1.977, "routing_fraction_percent": 80.5}
+    ]
+  },
+  "reset_and_constraints": {
+    "recovery_path_count": 5109,
+    "recovery_worst_slack_ns": 0.037,
+    "recovery_negative_tns_ns": 0.0,
+    "removal_path_count": 0,
+    "removal_margin": "NO_PATHS_RETURNED",
+    "clock_region_properties": "UNAVAILABLE_OR_EMPTY; no region conclusion",
+    "check_timing_unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0
+  },
+  "ab_decision": {
+    "explore_treatment": "REJECTED",
+    "extra_net_delay_high": "BEST_OBSERVED_IN_SINGLE_COMPLETED_CONTROL_RUN; repeatability_not_established",
+    "registered_neighbor_setup": "FAIL",
+    "registered_neighbor_hold": "PASS",
+    "package_level_signoff": "NOT_EVALUATED",
+    "recommended_next_step": "NARROW_P4_INGRESS_WRITE_SELECT_PREDECODE_CANDIDATE_ONLY; NOT_IMPLEMENTED"
+  },
+  "artifact_hashes_are_in": "SHA256SUMS.json"
+}
