@@ -1,0 +1,236 @@
+{
+  "schema": "step12f.p4_lfnst_grid_transpose.v1",
+  "status": "FUNCTIONAL_PASS_PHYSICALLY_EFFECTIVE_SETUP_NOT_CLOSED",
+  "date": "2026-09-30",
+  "repository": "hahayyf666-netizen/ITS_NEW",
+  "branch": "sat10-functional-evidence",
+  "source_commit": "17496666f3192cd3e1f96ae4e590c2b3b77919f4",
+  "source_parent": "4aa6fb6f9922d8a886973871b4d086cbba1423d5",
+  "physical_control_rtl_commit": "9e67d4aa2696255f8b527a614e872cb367e654ce",
+  "scope": {
+    "rtl_changed": ["02_rtl/rtl/unified_its_wrapper.sv"],
+    "xdc_changed": false,
+    "arithmetic_changed": false,
+    "protocol_or_latency_changed": false,
+    "memory_type_changed": false,
+    "official_equivalence": "NOT_PROVEN",
+    "package_level_signoff": "NOT_EVALUATED"
+  },
+  "source_hashes": {
+    "02_rtl/rtl/unified_its_wrapper.sv_working_tree_sha256": "176DD67ED1B943B05CC0FB805ADB1158561BD8F60317B4AECE876A73F994DBC4",
+    "02_rtl/rtl/unified_its_wrapper.sv_git_blob": "2cce585dddb321d7a2f748aa1d6a27dd300861f5",
+    "02_rtl/rtl/unified_p4_kernel.sv_sha256": "AB79E6AF55F42E76B9B56E86C628E57A93F477E40DDF21F7298DDB25D4541064",
+    "02_rtl/rtl/bounded_lfnst_engine.sv_sha256": "560408512493C838A7F40D4D4EF8E5D1594FFD63F4E0A247E56473C225D9BF78",
+    "02_rtl/rtl/its_unified_submission_top.sv_sha256": "39CAF8E3BBA2992FFAD8C2407F9AD10341E2AA8C03EA0A07F5C0A0E6744436D1",
+    "03_verification/tb/its_unified_submission_top_sat10_tb.sv_sha256": "C3E4000FC6ACFDAA022B7D2AC503478B2F873ACFA26527FEBB1813D1C4C70765",
+    "03_verification/vivado/step12f_registered_neighbor_2ns.xdc_sha256": "346E4D1BAA867FD7F16E8474FC3E903B3616633450F487AB168383BAE38A3786",
+    "03_verification/vivado/run_step12f_registered_neighbor.tcl_sha256": "23821871662D12169AC3ADD893A75536338DEF9AA8575BC1F234CC48254CBA71",
+    "03_verification/vivado/run_step12f_registered_neighbor.ps1_sha256": "1DFD6B6F3C9F7FC7F636E79B23352F6339D06E7DD4904DF8825DDB2697123C60",
+    "SAT10_profile_raw_file_sha256": "AD11CA8EB0FDE362079EAB10312C48B33F4A2EC5684D0296521B60E59665CA2C",
+    "SAT10_profile_canonical_sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746"
+  },
+  "profile": {
+    "name": "contest_engineering_vtm10_sat10_v2",
+    "adapter": "SAT10",
+    "range": [-512, 511],
+    "decision_class": "PROVISIONAL_ENGINEERING_DECISION",
+    "official_equivalence": "NOT_PROVEN",
+    "canonical_sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746",
+    "raw_profile_file_sha256": "AD11CA8EB0FDE362079EAB10312C48B33F4A2EC5684D0296521B60E59665CA2C"
+  },
+  "functional": {
+    "status": "PASS",
+    "tested_source_commit": "17496666f3192cd3e1f96ae4e590c2b3b77919f4",
+    "simulator": "ModelSim SE-64 2020.4",
+    "modes": ["normal", "SYNTHESIS"],
+    "compile_errors": 0,
+    "compile_warnings": 0,
+    "gate_b_numeric_cases": 156,
+    "gate_b_legacy_ii_modes": 7,
+    "gate_f_ii_modes": 13,
+    "gate_c_tuples": 369,
+    "gate_c_beats": 45636,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 388,
+    "lfnst_wrapper_beats": 6724,
+    "sat10_exhaustive_signed16_values": 65536,
+    "sat10_wrapper_boundary_cases": 3,
+    "sat10_wrapper_boundary_beats": 16,
+    "submission_top_tus": 2,
+    "submission_top_beats": 8,
+    "submission_top_done_pulses": 2,
+    "submission_top_real_pending_stall_cycles": 80,
+    "lfnst_transpose_shadow_assertion": "PASS_ON_ALL_ACCEPTED_LFNST_TO_P4_GROUPS_IN_NORMAL_MODE; EXCLUDED_WHEN_SYNTHESIS_MACRO_IS_DEFINED",
+    "manifest_path": "05_audit/current/77_p4_lfnst_transpose_20260930_090000_commitbound/STEP12F_COVERAGE_MODELSIM_RUN.json",
+    "manifest_sha256": "34AB76641ACE316D5BC5E28CFADC1FA577647FE0ED4C18142F28EA0E105A3E91",
+    "runner": "03_verification/step12d_engineering/run_step12f_coverage_modelsim.ps1",
+    "runner_command": "pwsh.exe -NoLogo -NoProfile -File 03_verification/step12d_engineering/run_step12f_coverage_modelsim.ps1 -WorkRoot C:/Users/Fine/Documents/Codex/2026-07-23/ni/_lfnst_fix_work/outputs/sat10_p4_lfnst_transpose_20260930_090000_commitbound -EvidenceDir C:/Users/Fine/Documents/Codex/2026-07-23/ni/_lfnst_fix_work/05_audit/current/77_p4_lfnst_transpose_20260930_090000_commitbound -ProfileName contest_engineering_vtm10_sat10_v2",
+    "runner_exit_code": 0,
+    "important_vectors": {
+      "normal_gate_c_manifest_sha256": "A54B69917BD2B329D9F1673B8DD181471378E5384A98AC47FE735F73A3BDFDE6",
+      "synthesis_gate_c_manifest_sha256": "A54B69917BD2B329D9F1673B8DD181471378E5384A98AC47FE735F73A3BDFDE6",
+      "lfnst_engine_manifest_sha256": "FA98984CDB3178C60531D8ADF596A46225DCD27496A9D5E4883732CC5DB72985",
+      "lfnst_wrapper_manifest_sha256": "65DE05B5CB112326F32DC28678C235C879A55479E49BF447038783F9DB9B92B0",
+      "normal_sat10_adapter_log_sha256": "9AB7904A7A51AA3FA406AA9D2825BE9D6032B93A08E2DBF11F11F89927D93547",
+      "synthesis_sat10_adapter_log_sha256": "6882FDD3FDA372F94CB462EB62E996E80D8D2FEF739DC27E29E2D3A242E77926",
+      "normal_submission_top_log_sha256": "1F2CEFB5440109ACF94BC3B27DEE5ECDC55F8F4E5D61627EB28B87FB3C8E26DB",
+      "synthesis_submission_top_log_sha256": "E16B88475BEBF914562FC2F088A39B195511D2065C1D812DF85571DF721104AA"
+    }
+  },
+  "synthesis_targeted": {
+    "baseline_common_postopt_dcp_sha256": "CD3B2665ABD66033EE09E40BC246BF375AFB45774CD793639D813360D2A6BADB",
+    "candidate_postsynth_dcp_sha256": "86AADA6150CA1E786E14A4D5EA03F68BFB162729BACFD66BB1F001ECA25CF427",
+    "lfnst_grid_to_ingress": {
+      "baseline_levels": 5,
+      "baseline_data_delay_ns": 1.373,
+      "baseline_logic_delay_ns": 0.56,
+      "baseline_net_delay_ns": 0.813,
+      "candidate_levels": 4,
+      "candidate_data_delay_ns": 1.107,
+      "candidate_logic_delay_ns": 0.393,
+      "candidate_net_delay_ns": 0.714,
+      "improvement_ps": 266
+    },
+    "candidate_postopt_global": {
+      "wns_ns": -0.525,
+      "tns_ns": -157.789,
+      "failing_endpoints": 1009
+    },
+    "baseline_postopt_global": {
+      "wns_ns": -0.473,
+      "tns_ns": -170.605,
+      "failing_endpoints": 1148
+    }
+  },
+  "implementation": {
+    "status": "FULLY_ROUTED",
+    "setup_signoff": "FAIL",
+    "setup_wns_ns": -0.005,
+    "setup_tns_ns": -0.015,
+    "setup_failing_endpoints": 4,
+    "setup_total_endpoints": 149453,
+    "hold_signoff": "PASS",
+    "hold_whs_ns": 0.01,
+    "hold_ths_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "routable_nets": 43489,
+    "fully_routed_nets": 43489,
+    "routing_error_nets": 0,
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "drc_errors": 0,
+    "drc_critical_warning_rules": ["NSTD-1", "UCIO-1"],
+    "h_read_targeted_gate": "NOT_RERUN; RTL_CONE_UNCHANGED",
+    "final_timing_paths": [
+      {
+        "rank": 1,
+        "source": "u_dut/kernel_ctx_output_size_q_reg[5]/C",
+        "destination": "u_dut/kernel_feed_group_q_reg[0]/CE",
+        "slack_ns": -0.005,
+        "data_delay_ns": 1.802,
+        "logic_delay_ns": 0.749,
+        "route_delay_ns": 1.053,
+        "logic_levels": 7
+      },
+      {
+        "rank": 2,
+        "source": "u_dut/kernel_stage_q_reg/C",
+        "destination": "u_dut/u_unified_p4_kernel/ingress_data_q_reg[13]/D",
+        "slack_ns": -0.005,
+        "data_delay_ns": 1.891,
+        "logic_delay_ns": 0.689,
+        "route_delay_ns": 1.202,
+        "logic_levels": 5
+      },
+      {
+        "rank": 3,
+        "source": "u_dut/slot_state_reg[0][1]/C",
+        "destination": "u_dut/lfnst_grid_reg[56][2]/CE",
+        "slack_ns": -0.002,
+        "data_delay_ns": 1.793,
+        "logic_delay_ns": 0.428,
+        "route_delay_ns": 1.365,
+        "logic_levels": 3
+      },
+      {
+        "rank": 4,
+        "source": "u_dut/u_unified_p4_kernel/ready_rd_ptr_q_reg[0]/C",
+        "destination": "u_dut/u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[5]_rep__5/D",
+        "slack_ns": -0.002,
+        "data_delay_ns": 1.926,
+        "logic_delay_ns": 0.452,
+        "route_delay_ns": 1.474,
+        "logic_levels": 5
+      }
+    ],
+    "flow": [
+      "synth_design -directive Default",
+      "opt_design -directive Default",
+      "place_design -directive ExtraNetDelay_high",
+      "phys_opt_design -directive AggressiveExplore",
+      "route_design -directive NoTimingRelaxation"
+    ],
+    "runner_command": "pwsh.exe -NoLogo -NoProfile -File 03_verification/vivado/run_step12f_registered_neighbor.ps1 -EvidenceDir C:/Users/Fine/Documents/Codex/2026-07-23/ni/outputs/sat10_lfnst_transpose_registered_neighbor_20260930_0025",
+    "runner_exit_code": 0,
+    "tool": {
+      "vivado": "2025.2",
+      "build": "6299465",
+      "part": "xcku5p-ffvb676-2-e",
+      "max_threads": 4,
+      "top": "step12f_registered_neighbor_harness",
+      "clock_period_ns": 2.0,
+      "user_setup_uncertainty_ns": 0.0,
+      "user_hold_uncertainty_ns": 0.0,
+      "effective_path_uncertainty_ns": 0.035
+    },
+    "boundary_antiprune": {
+      "expected_source_ff": 54,
+      "found_source_ff": 54,
+      "expected_sink_ff": 44,
+      "found_sink_ff": 44
+    },
+    "postroute_resources": {
+      "lut_total_including_lutram": 26391,
+      "lut_logic": 20673,
+      "lutram": 5718,
+      "ff": 21202,
+      "carry8": 1500,
+      "dsp": 320,
+      "bram": 0,
+      "uram": 0
+    },
+    "vectorless_power_estimate_w": {
+      "total": 1.502,
+      "dynamic": 1.044,
+      "static": 0.458,
+      "confidence": "Medium",
+      "activity_file": null
+    },
+    "timing_summary_sha256": "4192BA0F7044DD298836C7A3F6C4FB9EE35F6142CD21A8A2EB045FBF93BF1CA1",
+    "hold_summary_sha256": "AD9B5247C9B2C1FE95B61FAD50271184B0780BD8A68679E559EF29D23757EA6D",
+    "worst100_sha256": "73DF97F30ED4188F30493B84C8B0A076644DC4013C51ABFC6E77FC0862BAC2C6",
+    "route_status_sha256": "8B00DFD76E3D08CD22D5CA27100F8CB4DEA4BF785597D84B7EC65278AE4EAEE3",
+    "drc_sha256": "3076431AB8AA0215EF82CBF23360B0659F4ECD32C4AB0A4F26DB77A8DB97892A",
+    "power_sha256": "AC5E92586963DDABA92F6768CD85B23F83F974220970D4A1C19D815CB0088C2D",
+    "vivado_log_sha256": "AEC42E40A9C36870BBC690BAEB49DD4F8B9555C9C7163010380714F407781C4B"
+  },
+  "comparison_to_existing_control": {
+    "control_source_commit": "9e67d4aa2696255f8b527a614e872cb367e654ce",
+    "control_common_postopt_dcp_sha256": "CD3B2665ABD66033EE09E40BC246BF375AFB45774CD793639D813360D2A6BADB",
+    "control_setup_wns_ns": -0.034,
+    "control_setup_tns_ns": -2.026,
+    "control_setup_failing_endpoints": 134,
+    "control_hold_whs_ns": 0.007,
+    "candidate_wns_improvement_ps": 29,
+    "candidate_tns_improvement_ns": 2.011,
+    "candidate_failing_endpoint_reduction": 130,
+    "comparison_class": "SAME_FLOW_DIFFERENT_NETLIST_AND_FRESH_SYNTH; NOT_SAME_PLACEMENT_A_B"
+  },
+  "physical_artifacts": {
+    "local_output_dir": "outputs/sat10_lfnst_transpose_registered_neighbor_20260930_0025",
+    "postsynth_dcp_sha256": "86AADA6150CA1E786E14A4D5EA03F68BFB162729BACFD66BB1F001ECA25CF427",
+    "postroute_dcp_sha256": "E93F18866F4063E0460F9F35F4E82FD7E837174A9F912C5D02616463722B1911",
+    "full_dcp_committed": false,
+    "log_sha256": "AEC42E40A9C36870BBC690BAEB99DD4F8B9555C9C7163010380714F407781C4B"
+  }
+}

@@ -1,0 +1,473 @@
+{
+  "schema": "step12f.coverage.modelsim_run.v1",
+  "status": "PASS",
+  "simulator": "ModelSim SE-64 2020.4",
+  "simulator_path": "D:\\software\\Modelsim\\win64\\vsim.exe",
+  "license_path": "D:\\software\\Modelsim\\LICENSE.TXT",
+  "work_root": "C:/Users/Fine/Documents/Codex/2026-07-23/ni/_lfnst_fix_work/outputs/sat10_p4_lfnst_transpose_20260930_090000_commitbound",
+  "source_hashes": {
+    "its_simple_ram": "DD842C57DEABDF3AD3C75DC038A70CBB871E2D3B725D3108597B58846947845D",
+    "its_input_cache_bank": "2476D5FBC1D3663515137F8768EC7F16A689B3150E4527D78B5743DF3E7A05D7",
+    "unified_p4_kernel": "AB79E6AF55F42E76B9B56E86C628E57A93F477E40DDF21F7298DDB25D4541064",
+    "bounded_lfnst_engine": "560408512493C838A7F40D4D4EF8E5D1594FFD63F4E0A247E56473C225D9BF78",
+    "bounded_lfnst_engine_tb": "EC7BF615953BE5752D30404A6316D845952E3913826600E33254051C161B4907",
+    "lfnst_vector_generator": "ADD837D074661444078A1342F0C614BD01CFBDB08B983AC706DA9002B246EB55",
+    "lfnst_wrapper_vector_generator": "05250C34586CB0DD1425F7ED6253BD7273A51CA42604552BBA3BFAF9F3CBC243",
+    "unified_its_wrapper": "176DD67ED1B943B05CC0FB805ADB1158561BD8F60317B4AECE876A73F994DBC4",
+    "its_unified_submission_top": "39CAF8E3BBA2992FFAD8C2407F9AD10341E2AA8C03EA0A07F5C0A0E6744436D1",
+    "gate_b_tb": "B9763A97621E54A21D7955F8CF019E1EC2B0EDA0A74DB8A62C218AA1CA147402",
+    "gate_b_throughput_tb": "53AE150441D3A3A7D08D9ADC0999E38BC64D3F57CDA8F40FE0BA5E2F1E0F871B",
+    "gate_f_throughput_tb": "567B24489E7EEA484BB59EB01762133689A517ADB093545783441F66E52AEAC3",
+    "gate_c_smoke_tb": "37E4D5D62AA4A9DFB592D763338D58FD33E419FC3337427F5A4BD85F46E0E2C9",
+    "p3_vwrite_tb": "66ABDAD10AB9370CA50574A35A7567905CA89A771CD3D7F631C318A7592EA643",
+    "p4_stage0_tb": "3ADFA62D7E0254759469585C3BBA87BCC38047F7F8A13E30BC720CE72CC0D691",
+    "p4_fifo_payload_reset_tb": "C498E7E222B84C3460EEF171B8C4A290EFAF5EA0AD4F0D65B1334C5601249E1D",
+    "gate_c_numeric_tb": "058A530E8C17ACBA2A453A676A6CBE92BC7B3463C68B38245F2ADF279B636514",
+    "sat10_adapter_tb": "F71E276160F07BC7E610BDEB3D1B175C901FEF32420DE24D443E3AE10114A082",
+    "sat10_wrapper_tb": "3C565E7E31F17884A0E19D09E4A2B6209C77E8C3B9A82939BBA4806026136173",
+    "sat10_submission_top_tb": "C3E4000FC6ACFDAA022B7D2AC503478B2F873ACFA26527FEBB1813D1C4C70765"
+  },
+  "vector_sets": {
+    "gate_b": {
+      "cases": 156,
+      "one_d_modes": 13,
+      "stages": 2,
+      "patterns_per_stage": 6,
+      "throughput_modes_legacy": 7,
+      "throughput_modes_full": 13
+    },
+    "gate_c": {
+      "cases": 369,
+      "beats": 45636,
+      "tuple_source": "05_audit/current/27/step12d_engineering/LEGAL_TRANSFORM_MATRIX.json",
+      "includes_lfnst": true,
+      "includes_rectangles": true,
+      "sparse_inputs": true,
+      "output_adapter": "SAT10",
+      "backpressure": true
+    },
+    "lfnst_specialty": {
+      "engine_cases": 1088,
+      "engine_basis_cases": 1024,
+      "wrapper_cases": 388,
+      "wrapper_beats": 6724,
+      "all_gather_terms": true,
+      "all_set_index": true
+    }
+  },
+  "runs": [
+    {
+      "mode": "normal",
+      "compile": "PASS",
+      "gate_b_kernel_numeric": "PASS_156_CASES",
+      "gate_b_vector_ii_legacy": "PASS_7_MODES",
+      "gate_f_vector_ii": "PASS_13_MODES",
+      "gate_c_wrapper_smoke": "PASS",
+      "p3_vwrite_contract": "PASS",
+      "p4_stage0_issue_contract": "PASS_16_N4_VECTORS_SLOT_RELEASE",
+      "p4_fifo_payload_reset": "PASS_INFLIGHT_AND_QUEUED_RESET_NO_STALE_OUTPUT",
+      "gate_c_wrapper_numeric": "PASS_369_CASES",
+      "sat10_adapter_exhaustive": "PASS_65536_VALUES",
+      "sat10_wrapper_boundary": "PASS_3_CASES_16_BEATS",
+      "sat10_submission_top": "PASS_2_TUS_8_BEATS_MIN_8_REAL_PENDING_STALL_CYCLES",
+      "lfnst_engine_specialty": "PASS_1088_CASES",
+      "lfnst_wrapper_specialty": "PASS_388_CASES",
+      "gate_c_beats": 45636,
+      "logs": [
+        {
+          "name": "compile.log",
+          "sha256": "832B6C17EDF2A3315A0079B4EAB8CC34FB0C20D2FB60CC478EFE9F4C08EDE98F"
+        },
+        {
+          "name": "gate_b_kernel_numeric.log",
+          "sha256": "2348FD8550D3495E3D2105430ED2A6845D12E8DD9AA8A0AEE612B9B76234CBD4"
+        },
+        {
+          "name": "gate_b_vector_ii.log",
+          "sha256": "3C638B382A4436C41CF0DD27E93FB7B4187114342F858A4A649E5C5BB77BCE07"
+        },
+        {
+          "name": "gate_f_vector_ii.log",
+          "sha256": "D0749B911D558F949BBE85EF669F60223B3A43C160E3BA44968E2EA1AF65301F"
+        },
+        {
+          "name": "gate_c_wrapper_smoke.log",
+          "sha256": "CBA09A944F3A2C5972F9AF1FC338BC089B22675480D0E857E97052521185A8FB"
+        },
+        {
+          "name": "p3_vwrite_contract.log",
+          "sha256": "2054CBFDC10CC43EC1B9F32EBE841558A52191F9635C56B7A8E5F77262596AE7"
+        },
+        {
+          "name": "p4_stage0_issue_contract.log",
+          "sha256": "643450627A9BA1EFA90B322B2AA78DA52B8149B99EE9AE3D9B454A544C8276F7"
+        },
+        {
+          "name": "p4_fifo_payload_reset.log",
+          "sha256": "239D5808D08A4A442833BB619ACF6CCAC0C5A15B41A2CC013AFA97A0D8ED09E2"
+        },
+        {
+          "name": "gate_c_wrapper_numeric.log",
+          "sha256": "89D0FAE153AB3A1C75D5856B07A5AD81512B8E7C83742AE7C211B181D19731EF"
+        },
+        {
+          "name": "sat10_adapter_exhaustive.log",
+          "sha256": "9AB7904A7A51AA3FA406AA9D2825BE9D6032B93A08E2DBF11F11F89927D93547"
+        },
+        {
+          "name": "sat10_wrapper_boundary.log",
+          "sha256": "3C7FB1BF3A1537F64CD4AAE8F61F3DE8320DCB24DE6D98C245B7EA40F2DA1101"
+        },
+        {
+          "name": "sat10_submission_top.log",
+          "sha256": "1F2CEFB5440109ACF94BC3B27DEE5ECDC55F8F4E5D61627EB28B87FB3C8E26DB"
+        },
+        {
+          "name": "lfnst_engine_specialty.log",
+          "sha256": "46552EB3538E5D068D16663088494421422A0041789301E82BF59C644B201A50"
+        },
+        {
+          "name": "lfnst_wrapper_specialty.log",
+          "sha256": "0F2F0AC8B48B2DB93FD7C9434D066E8C75CF699AFD580A309D2722DEA54882F5"
+        }
+      ]
+    },
+    {
+      "mode": "synthesis",
+      "compile": "PASS",
+      "gate_b_kernel_numeric": "PASS_156_CASES",
+      "gate_b_vector_ii_legacy": "PASS_7_MODES",
+      "gate_f_vector_ii": "PASS_13_MODES",
+      "gate_c_wrapper_smoke": "PASS",
+      "p3_vwrite_contract": "PASS",
+      "p4_stage0_issue_contract": "PASS_16_N4_VECTORS_SLOT_RELEASE",
+      "p4_fifo_payload_reset": "PASS_INFLIGHT_AND_QUEUED_RESET_NO_STALE_OUTPUT",
+      "gate_c_wrapper_numeric": "PASS_369_CASES",
+      "sat10_adapter_exhaustive": "PASS_65536_VALUES",
+      "sat10_wrapper_boundary": "PASS_3_CASES_16_BEATS",
+      "sat10_submission_top": "PASS_2_TUS_8_BEATS_MIN_8_REAL_PENDING_STALL_CYCLES",
+      "lfnst_engine_specialty": "PASS_1088_CASES",
+      "lfnst_wrapper_specialty": "PASS_388_CASES",
+      "gate_c_beats": 45636,
+      "logs": [
+        {
+          "name": "compile.log",
+          "sha256": "5BE2C53323863EDE128B89299C775087816DACD82228B096FB1F6D7BF271B26B"
+        },
+        {
+          "name": "gate_b_kernel_numeric.log",
+          "sha256": "1E89ACCB80836B27AA4034C280793B8A7E3D536B6E430D6172E921199F970DDB"
+        },
+        {
+          "name": "gate_b_vector_ii.log",
+          "sha256": "8D46931C59AA73B70B52C02287AC2EA84F1BFC40AA39C9EB0B99C7D312D18325"
+        },
+        {
+          "name": "gate_f_vector_ii.log",
+          "sha256": "3380690230A4D651A95AF5AC5D93B1A67B496AA06A98DA1B083E8EDCEF0AEB5F"
+        },
+        {
+          "name": "gate_c_wrapper_smoke.log",
+          "sha256": "AA2B23AF7F2C6E42FA42CEE25882228E51DA8EFE99A0EADBE438A9701528C2B4"
+        },
+        {
+          "name": "p3_vwrite_contract.log",
+          "sha256": "5584B76B09BED9A09E0799C7D02353B664B99175092FD159CC6B5D48331F496F"
+        },
+        {
+          "name": "p4_stage0_issue_contract.log",
+          "sha256": "478DE471FB519FEF2C54F28451D2DE0C7AEC60A4CF649B51DACFBB7A463351D5"
+        },
+        {
+          "name": "p4_fifo_payload_reset.log",
+          "sha256": "A616521035682EC8B5B9BE56B14F2E08A2C29680AFC1D5E5AB026B7B3FF204DB"
+        },
+        {
+          "name": "gate_c_wrapper_numeric.log",
+          "sha256": "20D680503D668035A3BE1A32623E257077D678CB5A486CE8F85C6E374E70702F"
+        },
+        {
+          "name": "sat10_adapter_exhaustive.log",
+          "sha256": "6882FDD3FDA372F94CB462EB62E996E80D8D2FEF739DC27E29E2D3A242E77926"
+        },
+        {
+          "name": "sat10_wrapper_boundary.log",
+          "sha256": "043358428078EA5AC1B5EEC168BABE5CC79F965B96E49A9A01AED9138A890C3B"
+        },
+        {
+          "name": "sat10_submission_top.log",
+          "sha256": "E16B88475BEBF914562FC2F088A39B195511D2065C1D812DF85571DF721104AA"
+        },
+        {
+          "name": "lfnst_engine_specialty.log",
+          "sha256": "8ABF7ED242A9DF4004805A78775F299F887E31C13DB0A3C272F7E1354E9B8A68"
+        },
+        {
+          "name": "lfnst_wrapper_specialty.log",
+          "sha256": "C6AE172C4F4A0FC51C65DC58FB125F7EDD7870616AE1A896E8C08B7A726FAFEA"
+        }
+      ]
+    }
+  ],
+  "profile": {
+    "name": "contest_engineering_vtm10_sat10_v2",
+    "adapter": "SAT10",
+    "decision_class": "PROVISIONAL_ENGINEERING_DECISION",
+    "official_equivalence": "NOT_PROVEN",
+    "source": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\step12d_engineering\\profiles\\contest_engineering_vtm10_sat10_v2.json",
+    "sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746"
+  },
+  "tested_source_commit": "17496666f3192cd3e1f96ae4e590c2b3b77919f4",
+  "compile_records": [
+    {
+      "mode": "normal",
+      "command": "\"D:\\software\\Modelsim\\win64\\vlog.exe\" -sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\02_rtl\\rtl\\its_simple_ram.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\02_rtl\\rtl\\its_input_cache_bank.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\02_rtl\\rtl\\unified_p4_kernel.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\02_rtl\\rtl\\bounded_lfnst_engine.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\02_rtl\\rtl\\unified_its_wrapper.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\02_rtl\\rtl\\its_unified_submission_top.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_p4_kernel_numeric_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_p4_kernel_throughput_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_p4_kernel_throughput_full_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_its_wrapper_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_its_wrapper_p3_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_p4_kernel_p4_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_p4_fifo_payload_reset_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_its_wrapper_numeric_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_its_final_adapter_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_its_sat10_wrapper_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\its_unified_submission_top_sat10_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\bounded_lfnst_engine_tb.sv -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\compile.log",
+      "exit_code": 0,
+      "log": "compile.log",
+      "log_sha256": "832B6C17EDF2A3315A0079B4EAB8CC34FB0C20D2FB60CC478EFE9F4C08EDE98F"
+    },
+    {
+      "mode": "synthesis",
+      "command": "\"D:\\software\\Modelsim\\win64\\vlog.exe\" -sv +define+SYNTHESIS C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\02_rtl\\rtl\\its_simple_ram.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\02_rtl\\rtl\\its_input_cache_bank.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\02_rtl\\rtl\\unified_p4_kernel.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\02_rtl\\rtl\\bounded_lfnst_engine.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\02_rtl\\rtl\\unified_its_wrapper.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\02_rtl\\rtl\\its_unified_submission_top.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_p4_kernel_numeric_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_p4_kernel_throughput_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_p4_kernel_throughput_full_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_its_wrapper_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_its_wrapper_p3_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_p4_kernel_p4_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_p4_fifo_payload_reset_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_its_wrapper_numeric_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_its_final_adapter_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\unified_its_sat10_wrapper_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\its_unified_submission_top_sat10_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\03_verification\\tb\\bounded_lfnst_engine_tb.sv -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\compile.log",
+      "exit_code": 0,
+      "log": "compile.log",
+      "log_sha256": "5BE2C53323863EDE128B89299C775087816DACD82228B096FB1F6D7BF271B26B"
+    }
+  ],
+  "command_records": [
+    {
+      "mode": "normal",
+      "design": "unified_p4_kernel_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_numeric_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\gate_b_kernel_numeric.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_b_kernel_numeric.log",
+      "log_sha256": "2348FD8550D3495E3D2105430ED2A6845D12E8DD9AA8A0AEE612B9B76234CBD4",
+      "pass_marker": "GATE_B_NUMERIC_TB_PASS cases=156"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_p4_kernel_throughput_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_throughput_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\gate_b_vector_ii.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_b_vector_ii.log",
+      "log_sha256": "3C638B382A4436C41CF0DD27E93FB7B4187114342F858A4A649E5C5BB77BCE07",
+      "pass_marker": "GATE_B_VECTOR_II_TB_PASS modes=7"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_p4_kernel_throughput_full_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_throughput_full_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\gate_f_vector_ii.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_f_vector_ii.log",
+      "log_sha256": "D0749B911D558F949BBE85EF669F60223B3A43C160E3BA44968E2EA1AF65301F",
+      "pass_marker": "GATE_F_VECTOR_II_TB_PASS modes=13"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_wrapper_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\gate_c_wrapper_smoke.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_c_wrapper_smoke.log",
+      "log_sha256": "CBA09A944F3A2C5972F9AF1FC338BC089B22675480D0E857E97052521185A8FB",
+      "pass_marker": "GATE_C_WRAPPER_TB_PASS beats=16/16 done=1/1"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_wrapper_p3_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_p3_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\p3_vwrite_contract.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p3_vwrite_contract.log",
+      "log_sha256": "2054CBFDC10CC43EC1B9F32EBE841558A52191F9635C56B7A8E5F77262596AE7",
+      "pass_marker": "P3_VWRITE_TB_PASS"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_p4_kernel_p4_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_p4_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\p4_stage0_issue_contract.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p4_stage0_issue_contract.log",
+      "log_sha256": "643450627A9BA1EFA90B322B2AA78DA52B8149B99EE9AE3D9B454A544C8276F7",
+      "pass_marker": "GATE_F_P4_STAGE0_TB_PASS vectors=16 descriptors=16 captures=16 releases=16"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_p4_fifo_payload_reset_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_fifo_payload_reset_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\p4_fifo_payload_reset.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p4_fifo_payload_reset.log",
+      "log_sha256": "239D5808D08A4A442833BB619ACF6CCAC0C5A15B41A2CC013AFA97A0D8ED09E2",
+      "pass_marker": "P4_FIFO_PAYLOAD_RESET_PASS inflight_reset=1 queued_nonzero_reset=1 stale_outputs=0"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_wrapper_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_numeric_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\gate_c_wrapper_numeric.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_c_wrapper_numeric.log",
+      "log_sha256": "89D0FAE153AB3A1C75D5856B07A5AD81512B8E7C83742AE7C211B181D19731EF",
+      "pass_marker": "GATE_C_NUMERIC_TB_PASS cases=369"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_final_adapter_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_final_adapter_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\sat10_adapter_exhaustive.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_adapter_exhaustive.log",
+      "log_sha256": "9AB7904A7A51AA3FA406AA9D2825BE9D6032B93A08E2DBF11F11F89927D93547",
+      "pass_marker": "SAT10_ADAPTER_EXHAUSTIVE_PASS values=65536"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_sat10_wrapper_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_sat10_wrapper_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\sat10_wrapper_boundary.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_wrapper_boundary.log",
+      "log_sha256": "3C7FB1BF3A1537F64CD4AAE8F61F3DE8320DCB24DE6D98C245B7EA40F2DA1101",
+      "pass_marker": "SAT10_WRAPPER_BOUNDARY_PASS cases=3 beats=16"
+    },
+    {
+      "mode": "normal",
+      "design": "its_unified_submission_top_sat10_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.its_unified_submission_top_sat10_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\sat10_submission_top.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_submission_top.log",
+      "log_sha256": "1F2CEFB5440109ACF94BC3B27DEE5ECDC55F8F4E5D61627EB28B87FB3C8E26DB",
+      "pass_marker": "SAT10_SUBMISSION_TOP_PASS tus=2 beats=8 done=2"
+    },
+    {
+      "mode": "normal",
+      "design": "bounded_lfnst_engine_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.bounded_lfnst_engine_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\lfnst_engine_specialty.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "lfnst_engine_specialty.log",
+      "log_sha256": "46552EB3538E5D068D16663088494421422A0041789301E82BF59C644B201A50",
+      "pass_marker": "LFNST_ENGINE_TB_PASS cases=1088"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_wrapper_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_numeric_tb -gVECTOR_FILE=lfnst_wrapper_vectors.txt -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\normal\\lfnst_wrapper_specialty.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "lfnst_wrapper_specialty.log",
+      "log_sha256": "0F2F0AC8B48B2DB93FD7C9434D066E8C75CF699AFD580A309D2722DEA54882F5",
+      "pass_marker": "GATE_C_NUMERIC_TB_PASS cases=388"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_kernel_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_numeric_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\gate_b_kernel_numeric.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_b_kernel_numeric.log",
+      "log_sha256": "1E89ACCB80836B27AA4034C280793B8A7E3D536B6E430D6172E921199F970DDB",
+      "pass_marker": "GATE_B_NUMERIC_TB_PASS cases=156"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_kernel_throughput_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_throughput_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\gate_b_vector_ii.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_b_vector_ii.log",
+      "log_sha256": "8D46931C59AA73B70B52C02287AC2EA84F1BFC40AA39C9EB0B99C7D312D18325",
+      "pass_marker": "GATE_B_VECTOR_II_TB_PASS modes=7"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_kernel_throughput_full_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_throughput_full_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\gate_f_vector_ii.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_f_vector_ii.log",
+      "log_sha256": "3380690230A4D651A95AF5AC5D93B1A67B496AA06A98DA1B083E8EDCEF0AEB5F",
+      "pass_marker": "GATE_F_VECTOR_II_TB_PASS modes=13"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_wrapper_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\gate_c_wrapper_smoke.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_c_wrapper_smoke.log",
+      "log_sha256": "AA2B23AF7F2C6E42FA42CEE25882228E51DA8EFE99A0EADBE438A9701528C2B4",
+      "pass_marker": "GATE_C_WRAPPER_TB_PASS beats=16/16 done=1/1"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_wrapper_p3_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_p3_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\p3_vwrite_contract.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p3_vwrite_contract.log",
+      "log_sha256": "5584B76B09BED9A09E0799C7D02353B664B99175092FD159CC6B5D48331F496F",
+      "pass_marker": "P3_VWRITE_TB_PASS"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_kernel_p4_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_p4_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\p4_stage0_issue_contract.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p4_stage0_issue_contract.log",
+      "log_sha256": "478DE471FB519FEF2C54F28451D2DE0C7AEC60A4CF649B51DACFBB7A463351D5",
+      "pass_marker": "GATE_F_P4_STAGE0_TB_PASS vectors=16 descriptors=16 captures=16 releases=16"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_fifo_payload_reset_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_fifo_payload_reset_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\p4_fifo_payload_reset.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p4_fifo_payload_reset.log",
+      "log_sha256": "A616521035682EC8B5B9BE56B14F2E08A2C29680AFC1D5E5AB026B7B3FF204DB",
+      "pass_marker": "P4_FIFO_PAYLOAD_RESET_PASS inflight_reset=1 queued_nonzero_reset=1 stale_outputs=0"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_wrapper_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_numeric_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\gate_c_wrapper_numeric.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_c_wrapper_numeric.log",
+      "log_sha256": "20D680503D668035A3BE1A32623E257077D678CB5A486CE8F85C6E374E70702F",
+      "pass_marker": "GATE_C_NUMERIC_TB_PASS cases=369"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_final_adapter_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_final_adapter_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\sat10_adapter_exhaustive.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_adapter_exhaustive.log",
+      "log_sha256": "6882FDD3FDA372F94CB462EB62E996E80D8D2FEF739DC27E29E2D3A242E77926",
+      "pass_marker": "SAT10_ADAPTER_EXHAUSTIVE_PASS values=65536"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_sat10_wrapper_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_sat10_wrapper_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\sat10_wrapper_boundary.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_wrapper_boundary.log",
+      "log_sha256": "043358428078EA5AC1B5EEC168BABE5CC79F965B96E49A9A01AED9138A890C3B",
+      "pass_marker": "SAT10_WRAPPER_BOUNDARY_PASS cases=3 beats=16"
+    },
+    {
+      "mode": "synthesis",
+      "design": "its_unified_submission_top_sat10_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.its_unified_submission_top_sat10_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\sat10_submission_top.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_submission_top.log",
+      "log_sha256": "E16B88475BEBF914562FC2F088A39B195511D2065C1D812DF85571DF721104AA",
+      "pass_marker": "SAT10_SUBMISSION_TOP_PASS tus=2 beats=8 done=2"
+    },
+    {
+      "mode": "synthesis",
+      "design": "bounded_lfnst_engine_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.bounded_lfnst_engine_tb -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\lfnst_engine_specialty.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "lfnst_engine_specialty.log",
+      "log_sha256": "8ABF7ED242A9DF4004805A78775F299F887E31C13DB0A3C272F7E1354E9B8A68",
+      "pass_marker": "LFNST_ENGINE_TB_PASS cases=1088"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_wrapper_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_numeric_tb -gVECTOR_FILE=lfnst_wrapper_vectors.txt -l C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_lfnst_fix_work\\outputs\\sat10_p4_lfnst_transpose_20260930_090000_commitbound\\synthesis\\lfnst_wrapper_specialty.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "lfnst_wrapper_specialty.log",
+      "log_sha256": "C6AE172C4F4A0FC51C65DC58FB125F7EDD7870616AE1A896E8C08B7A726FAFEA",
+      "pass_marker": "GATE_C_NUMERIC_TB_PASS cases=388"
+    }
+  ]
+}
