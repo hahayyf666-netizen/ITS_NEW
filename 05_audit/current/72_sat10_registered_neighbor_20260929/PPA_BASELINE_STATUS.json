@@ -1,0 +1,137 @@
+{
+  "schema": "its_new.step12f_sat10_registered_neighbor_ppa.v1",
+  "run_id": "72_sat10_registered_neighbor_20260929",
+  "run_date": "2026-09-29",
+  "repository": "hahayyf666-netizen/ITS_NEW",
+  "remote_main_at_run": "f53e3b213120122bb8efbad16217e64c324ec414",
+  "functional_source_commit": "61e0c6b91dcce9fb7d22741c2ce75ff3b141b0e8",
+  "local_checkout_commit": "03406a706471b53092d0e5e33e963ed72d0a583e",
+  "tested_git_tree": "2364494e8cf6fa200d66e24ffc9c1cd015ed63f7",
+  "profile": {
+    "name": "contest_engineering_vtm10_sat10_v2",
+    "sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746",
+    "final10": "SAT10",
+    "range": [-512, 511],
+    "official_equivalence": "NOT_PROVEN"
+  },
+  "tool": {
+    "name": "Vivado",
+    "version": "2025.2",
+    "build": "6299465 Fri Nov 14 19:35:11 GMT 2025",
+    "part": "xcku5p-ffvb676-2-e",
+    "max_threads": 4,
+    "top": "step12f_registered_neighbor_harness",
+    "final_saturate_parameter": 1,
+    "source_ff_expected_found": [54, 54],
+    "sink_ff_expected_found": [44, 44],
+    "flow": [
+      "synth_design -directive Default",
+      "opt_design -directive Default",
+      "place_design -directive ExtraNetDelay_high",
+      "phys_opt_design -directive AggressiveExplore",
+      "route_design -directive NoTimingRelaxation"
+    ]
+  },
+  "constraints": {
+    "clock_period_ns": 2.0,
+    "user_setup_uncertainty_ns": 0.0,
+    "user_hold_uncertainty_ns": 0.0,
+    "effective_path_uncertainty_observed_ns": 0.035,
+    "effective_uncertainty_source": "Vivado default system jitter 0.071 ns; no set_system_jitter override",
+    "legacy_ooc_xdc_loaded": false,
+    "package_level_timing": "NOT_EVALUATED"
+  },
+  "result": {
+    "synthesis": "PASS",
+    "implementation": "FULLY_ROUTED",
+    "setup_signoff": "FAIL",
+    "setup_wns_ns_all_groups": -0.103,
+    "setup_tns_ns_all_groups": -30.143,
+    "setup_failing_endpoints_all_groups": 937,
+    "synchronous_setup": {
+      "wns_ns": -0.103,
+      "tns_ns": -28.457,
+      "failing_endpoints": 797
+    },
+    "async_default_setup_recovery_group": {
+      "wns_ns": -0.038,
+      "tns_ns": -1.686,
+      "failing_endpoints": 140
+    },
+    "hold_signoff": "PASS",
+    "hold_whs_ns": 0.008,
+    "hold_ths_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "async_default_min_group_whs_ns": 0.14,
+    "async_default_min_group_failing_endpoints": 0,
+    "removal_status": "NOT_SEPARATELY_CLASSIFIED_IN_SUMMARY",
+    "fully_routed_routable_nets": 48020,
+    "routing_error_nets": 0,
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "drc_errors": 0,
+    "drc_critical_warning_rules": ["NSTD-1", "UCIO-1"],
+    "timing_500mhz_closed": false
+  },
+  "worst_synchronous_setup_path": {
+    "source": "u_dut/kernel_vector_q_reg[0]_rep__1/C",
+    "destination": "u_dut/u_unified_p4_kernel/ingress_data_q_reg[49]/D",
+    "slack_ns": -0.103,
+    "data_delay_ns": 1.892,
+    "logic_delay_ns": 0.532,
+    "routing_delay_ns": 1.36,
+    "routing_fraction": 0.71878,
+    "logic_levels": 5
+  },
+  "postroute_resources": {
+    "lut_total_including_lutram": 27326,
+    "lut_logic": 21682,
+    "lutram": 5644,
+    "ff": 25433,
+    "carry8": 1500,
+    "dsp": 320,
+    "bram": 0,
+    "uram": 0
+  },
+  "vectorless_power_estimate_w": {
+    "total": 1.872,
+    "dynamic": 1.411,
+    "static": 0.461,
+    "confidence": "Medium",
+    "activity_file": null
+  },
+  "source_file_sha256": {
+    "02_rtl/rtl/unified_its_wrapper.sv": "19A133460E851A17C2A870E1433968AB4B515A0695A7D6BA1436ABD1313E06AC",
+    "02_rtl/rtl/unified_p4_kernel.sv": "D996BC5A2BAE4579766821979719715FC3F405250294EEF7A6FE74832E0B0F02",
+    "02_rtl/rtl/its_simple_ram.sv": "DD842C57DEABDF3AD3C75DC038A70CBB871E2D3B725D3108597B58846947845D",
+    "02_rtl/rtl/its_input_cache_bank.sv": "2476D5FBC1D3663515137F8768EC7F16A689B3150E4527D78B5743DF3E7A05D7",
+    "02_rtl/rtl/bounded_lfnst_engine.sv": "560408512493C838A7F40D4D4EF8E5D1594FFD63F4E0A247E56473C225D9BF78",
+    "02_rtl/rtl/step12f_registered_neighbor_harness.sv": "BB6BEE87957E2E399461184AEE0F054B2EF070F51426605719025623D67806A3",
+    "03_verification/vivado/step12f_registered_neighbor_2ns.xdc": "346E4D1BAA867FD7F16E8474FC3E903B3616633450F487AB168383BAE38A3786",
+    "03_verification/vivado/run_step12f_registered_neighbor.tcl": "23821871662D12169AC3ADD893A75536338DEF9AA8575BC1F234CC48254CBA71",
+    "03_verification/vivado/run_step12f_registered_neighbor.ps1": "1DFD6B6F3C9F7FC7F636E79B23352F6339D06E7DD4904DF8825DDB2697123C60"
+  },
+  "run_artifact_sha256": {
+    "report_timing_summary_postroute.rpt": "F279F16DBCA8DC468D77C1863BBE7D39F891928BD50FB435F6DAA2C15A11F384",
+    "report_timing_hold_summary_postroute.rpt": "54E7A1D2C079A864E95482C2D93443D9952174C44128E2F00271F608773ED56C",
+    "report_timing_worst100_postroute.rpt": "5FF4269208B772BA84A37D28DDED91AD85C7BE0E78AA8893F68AE868BA380F06",
+    "report_hold_worst100_postroute.rpt": "D831AAED315EF39A8E44E5EF6F988C6FE731C305C6C626CEFACCA7250E1C8EDD",
+    "report_route_status_postroute.rpt": "2C97FF9775171964747306B1D992F22E886BEC6F024DE0664133EEAC039CE89A",
+    "report_utilization_postroute.rpt": "CDF2DADEBFB83FBD541C5B8A1E71955B044A54CA05FA1C3232DB5D465B1CA0CE",
+    "report_power_postroute.rpt": "8EB1AE0089C6FB5BB8833D6996DC3A660BE54B8B8C7A16B2D7742BE92827708A",
+    "report_drc_postroute.rpt": "CE7DABD123755561A4105E34D456D5535A966F3A973F0D6FE797DEE277176176",
+    "report_check_timing_postroute.rpt": "729995415B7279BF4550882D99A12A270AADB762B86D2412446CF6402F26DE34",
+    "report_exceptions_postroute.rpt": "8518B46239FA90D7C460E2A2FF74151EAFDDFAE746098252F60E815F000AA9A1",
+    "report_methodology_postroute.rpt": "4D983A6A1A812AF76327481B2524B00FBB962DB0C497CDE3E9040B7D7C489D09",
+    "step12f_registered_neighbor_postsynth.dcp": "EDBD610338822674FA66CE4CB02EF0CF168462E00A6F8BA54F30C1816D6ABC18",
+    "step12f_registered_neighbor_postroute.dcp": "B16F59300A0677145B87E5FBEF976650F909DA22E30C4BE7DF5EC5B6ACCEAE13",
+    "vivado.log": "A3D1D78ECA782FF4661EFFC341A647713BEB5142D13CCAADF4574A096ECABD08"
+  },
+  "run_command": "pwsh.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File 03_verification/vivado/run_step12f_registered_neighbor.ps1 -EvidenceDir 05_audit/current/72_sat10_registered_neighbor_20260929",
+  "exit_code": 0,
+  "fresh_modelsim_rerun": false,
+  "functional_evidence": "PASS at the same tested source commit; see 05_audit/current/71_sat10_functional_checkpoint/20260928T154132Z_61e0c6b91dcc",
+  "fresh_synthesis_place_route": "COMPLETED_THIS_RUN",
+  "package_level_fpga_signoff": "NOT_EVALUATED"
+}
+
