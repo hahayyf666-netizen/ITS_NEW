@@ -417,8 +417,22 @@ module unified_its_wrapper #(
     logic       lfnst_mem_resp_valid_q;
     logic       lfnst_mem_resp_last_q;
     logic signed [255:0] lfnst_input_terms_q;
+    // Keep the LFNST result grid in vector-major order. The following DCT2
+    // gather uses one common vector across four adjacent samples, so making
+    // sample the low address dimension gives synthesis a different read mux
+    // ordering than the former row-major sample*8+vector layout.
     logic signed [15:0] lfnst_grid [0:63];
     logic               lfnst_grid_valid [0:63];
+`ifndef SYNTHESIS
+    // Simulation-only row-major shadow proves the layout change preserves
+    // every accepted LFNST gather value.
+    logic signed [15:0] lfnst_grid_legacy [0:63];
+    logic               lfnst_grid_legacy_valid [0:63];
+    integer lfnst_gather_check_lane;
+    integer lfnst_gather_check_sample;
+    integer lfnst_gather_check_addr;
+    logic signed [15:0] lfnst_gather_check_data;
+`endif
 
     unified_p4_kernel #(
         .DATA_W(16), .COEFF_W(16), .ACC_W(40), .MAX_N(64),
@@ -1253,11 +1267,22 @@ module unified_its_wrapper #(
             if (kernel_in_valid && !kernel_stage_q) begin
                 if (kernel_sample_index_i < kernel_cut_h_q) begin
                     if (lfnst_case_q) begin
-                        if ((kernel_sample_index_i < kernel_cut_h_q) &&
-                            (kernel_vector_q < kernel_cut_w_q) &&
-                            lfnst_grid_valid[kernel_sample_index_i * 8 + kernel_vector_q])
-                            kernel_in_data[kernel_lane_i*16 +: 16] =
-                                lfnst_grid[kernel_sample_index_i * 8 + kernel_vector_q];
+                        // LFNST geometry is at most 8x8. Keep the physical
+                        // address explicitly six bits wide and transpose the
+                        // logical row-major coordinate (sample, vector) into
+                        // vector-major storage. The range checks prevent
+                        // truncation from aliasing an out-of-range coordinate.
+                        if ((kernel_sample_index_i < 8) &&
+                            (kernel_vector_q < 7'd8) &&
+                            (kernel_vector_q < kernel_cut_w_q)) begin
+                            if (lfnst_grid_valid[
+                                    {kernel_vector_q[2:0],
+                                     kernel_sample_index_i[2:0]}])
+                                kernel_in_data[kernel_lane_i*16 +: 16] =
+                                    lfnst_grid[
+                                        {kernel_vector_q[2:0],
+                                         kernel_sample_index_i[2:0]}];
+                        end
                     end else if (kernel_rd_resp_valid_q)
                         kernel_in_data[kernel_lane_i*16 +: 16] =
                             kernel_rd_resp_data_q[kernel_lane_i*16 +: 16];
@@ -1277,6 +1302,41 @@ module unified_its_wrapper #(
             end
         end
     end
+
+`ifndef SYNTHESIS
+    // Compare the vector-major implementation against the former logical
+    // row-major layout on every LFNST group that the P4 kernel really accepts.
+    always @(posedge clk) begin
+        if (rst_n && kernel_input_group_fire && lfnst_case_q &&
+            !kernel_stage_q) begin
+            for (lfnst_gather_check_lane = 0;
+                 lfnst_gather_check_lane < 4;
+                 lfnst_gather_check_lane = lfnst_gather_check_lane + 1) begin
+                lfnst_gather_check_sample = kernel_feed_group_q * 4 +
+                                            lfnst_gather_check_lane;
+                lfnst_gather_check_data = '0;
+                if ((lfnst_gather_check_sample < kernel_cut_h_q) &&
+                    (lfnst_gather_check_sample < 8) &&
+                    (kernel_vector_q < kernel_cut_w_q) &&
+                    (kernel_vector_q < 7'd8)) begin
+                    lfnst_gather_check_addr =
+                        lfnst_gather_check_sample * 8 + kernel_vector_q;
+                    if (lfnst_grid_legacy_valid[lfnst_gather_check_addr])
+                        lfnst_gather_check_data =
+                            lfnst_grid_legacy[lfnst_gather_check_addr];
+                end
+                if (kernel_in_data[lfnst_gather_check_lane*16 +: 16] !==
+                    lfnst_gather_check_data)
+                    $fatal(1,
+                        "LFNST transpose mismatch lane=%0d sample=%0d vector=%0d got=%0d expected=%0d",
+                        lfnst_gather_check_lane, lfnst_gather_check_sample,
+                        kernel_vector_q,
+                        $signed(kernel_in_data[lfnst_gather_check_lane*16 +: 16]),
+                        $signed(lfnst_gather_check_data));
+            end
+        end
+    end
+`endif
 
     // The overlapping kernel can become output-active on the same edge that
     // accepts its final input group.  Keep its output held while the wrapper
@@ -1600,6 +1660,7 @@ module unified_its_wrapper #(
     integer rd_cmd_load_slot_i, rd_cmd_load_bank_i;
     integer kernel_capture_lane_i;
     integer lfnst_write_addr;
+    integer lfnst_write_storage_addr;
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             desc_rd_ptr   <= 1'b0;
@@ -1759,6 +1820,10 @@ module unified_its_wrapper #(
             for (lfnst_grid_i = 0; lfnst_grid_i < 64; lfnst_grid_i = lfnst_grid_i + 1) begin
                 lfnst_grid[lfnst_grid_i] <= '0;
                 lfnst_grid_valid[lfnst_grid_i] <= 1'b0;
+`ifndef SYNTHESIS
+                lfnst_grid_legacy[lfnst_grid_i] <= '0;
+                lfnst_grid_legacy_valid[lfnst_grid_i] <= 1'b0;
+`endif
             end
         end else begin
             // A one-cycle pulse starts the bounded LFNST engine on the next
@@ -2334,6 +2399,10 @@ module unified_its_wrapper #(
                          lfnst_grid_i = lfnst_grid_i + 1) begin
                         lfnst_grid[lfnst_grid_i] <= '0;
                         lfnst_grid_valid[lfnst_grid_i] <= 1'b0;
+`ifndef SYNTHESIS
+                        lfnst_grid_legacy[lfnst_grid_i] <= '0;
+                        lfnst_grid_legacy_valid[lfnst_grid_i] <= 1'b0;
+`endif
                     end
                 end
             end else if (output_fire) begin
@@ -2362,10 +2431,22 @@ module unified_its_wrapper #(
                                 lfnst_output_coord_lut(
                                     lfnst_out_group * 4 + kernel_capture_lane_i,
                                     lfnst_ntrs48_q);
-                            if (lfnst_write_addr < 64) begin
-                                lfnst_grid[lfnst_write_addr] <=
+                            if ((lfnst_write_addr >= 0) &&
+                                (lfnst_write_addr < 64)) begin
+                                // lfnst_write_addr is the logical row-major
+                                // output coordinate. Store it transposed so
+                                // common-vector gathers use vector-major data.
+                                lfnst_write_storage_addr =
+                                    {lfnst_write_addr[2:0],
+                                     lfnst_write_addr[5:3]};
+                                lfnst_grid[lfnst_write_storage_addr] <=
                                     $signed(lfnst_out_data[kernel_capture_lane_i*16 +: 16]);
-                                lfnst_grid_valid[lfnst_write_addr] <= 1'b1;
+                                lfnst_grid_valid[lfnst_write_storage_addr] <= 1'b1;
+`ifndef SYNTHESIS
+                                lfnst_grid_legacy[lfnst_write_addr] <=
+                                    $signed(lfnst_out_data[kernel_capture_lane_i*16 +: 16]);
+                                lfnst_grid_legacy_valid[lfnst_write_addr] <= 1'b1;
+`endif
                             end
                         end
                     end
