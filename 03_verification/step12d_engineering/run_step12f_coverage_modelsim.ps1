@@ -68,6 +68,7 @@ $ThroughputFullTb = Join-Path $RepoRoot "03_verification\tb\unified_p4_kernel_th
 $SmokeTb = Join-Path $RepoRoot "03_verification\tb\unified_its_wrapper_tb.sv"
 $P3Tb = Join-Path $RepoRoot "03_verification\tb\unified_its_wrapper_p3_tb.sv"
 $P4Tb = Join-Path $RepoRoot "03_verification\tb\unified_p4_kernel_p4_tb.sv"
+$FifoResetTb = Join-Path $RepoRoot "03_verification\tb\unified_p4_fifo_payload_reset_tb.sv"
 $NumericTb = Join-Path $RepoRoot "03_verification\tb\unified_its_wrapper_numeric_tb.sv"
 $AdapterTb = Join-Path $RepoRoot "03_verification\tb\unified_its_final_adapter_tb.sv"
 $SatWrapperTb = Join-Path $RepoRoot "03_verification\tb\unified_its_sat10_wrapper_tb.sv"
@@ -186,7 +187,7 @@ foreach ($mode in @("normal", "synthesis")) {
         if ($mode -eq "synthesis") { $define = @("+define+SYNTHESIS") }
         $compileLog = Join-Path $dir "compile.log"
         $compileSources = @($SimpleRam, $InputBank, $Kernel, $LfnstEngine, $Wrapper, $SubmissionTop,
-                            $KernelTb, $ThroughputTb, $ThroughputFullTb, $SmokeTb, $P3Tb, $P4Tb,
+                            $KernelTb, $ThroughputTb, $ThroughputFullTb, $SmokeTb, $P3Tb, $P4Tb, $FifoResetTb,
                             $NumericTb, $AdapterTb, $SatWrapperTb, $SubmissionTopTb, $LfnstTb)
         $compileArguments = @("-sv") + $define + $compileSources + @("-l", $compileLog)
         $compileCommand = '"{0}" {1}' -f $Vlog, (($compileArguments | ForEach-Object {
@@ -225,6 +226,9 @@ foreach ($mode in @("normal", "synthesis")) {
         $p4Log = Join-Path $dir "p4_stage0_issue_contract.log"
         Invoke-VsimTest $mode "unified_p4_kernel_p4_tb" $p4Log "GATE_F_P4_STAGE0_TB_PASS vectors=16 descriptors=16 captures=16 releases=16"
 
+        $fifoResetLog = Join-Path $dir "p4_fifo_payload_reset.log"
+        Invoke-VsimTest $mode "unified_p4_fifo_payload_reset_tb" $fifoResetLog "P4_FIFO_PAYLOAD_RESET_PASS inflight_reset=1 queued_nonzero_reset=1 stale_outputs=0"
+
         $numericLog = Join-Path $dir "gate_c_wrapper_numeric.log"
         Invoke-VsimTest $mode "unified_its_wrapper_numeric_tb" $numericLog "GATE_C_NUMERIC_TB_PASS cases=369"
 
@@ -245,7 +249,7 @@ foreach ($mode in @("normal", "synthesis")) {
         Invoke-VsimTest $mode "unified_its_wrapper_numeric_tb" $lfnstWrapperLog "GATE_C_NUMERIC_TB_PASS cases=388" @("-gVECTOR_FILE=lfnst_wrapper_vectors.txt")
 
         $modeLogs = @($compileLog, $kernelLog, $throughputLog, $throughputFullLog,
-                      $smokeLog, $p3Log, $p4Log, $numericLog, $adapterLog, $satWrapperLog,
+                      $smokeLog, $p3Log, $p4Log, $fifoResetLog, $numericLog, $adapterLog, $satWrapperLog,
                       $topLog, $lfnstLog, $lfnstWrapperLog)
         if ($EvidenceDir) {
             foreach ($log in $modeLogs) {
@@ -261,6 +265,7 @@ foreach ($mode in @("normal", "synthesis")) {
             gate_c_wrapper_smoke = "PASS"
             p3_vwrite_contract = "PASS"
             p4_stage0_issue_contract = "PASS_16_N4_VECTORS_SLOT_RELEASE"
+            p4_fifo_payload_reset = "PASS_INFLIGHT_AND_QUEUED_RESET_NO_STALE_OUTPUT"
             gate_c_wrapper_numeric = "PASS_369_CASES"
             sat10_adapter_exhaustive = "PASS_65536_VALUES"
             sat10_wrapper_boundary = "PASS_3_CASES_16_BEATS"
@@ -303,6 +308,7 @@ $summary = [ordered]@{
         gate_c_smoke_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $SmokeTb).Hash
         p3_vwrite_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $P3Tb).Hash
         p4_stage0_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $P4Tb).Hash
+        p4_fifo_payload_reset_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $FifoResetTb).Hash
         gate_c_numeric_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $NumericTb).Hash
         sat10_adapter_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $AdapterTb).Hash
         sat10_wrapper_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $SatWrapperTb).Hash

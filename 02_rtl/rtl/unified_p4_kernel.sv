@@ -698,6 +698,7 @@ module unified_p4_kernel #(
 
     // Result FIFO. The FIFO is sized for multiple complete 64-point vectors
     // plus the arithmetic pipeline, while admission reserves actual groups.
+    (* ram_style = "distributed" *)
     logic signed [(4*DATA_W)-1:0] fifo_data_q [0:FIFO_DEPTH-1];
     logic                         fifo_last_q [0:FIFO_DEPTH-1];
     logic [FIFO_PTR_W-1:0]        fifo_rd_ptr_q;
@@ -721,18 +722,25 @@ module unified_p4_kernel #(
         output_active_q = (fifo_count_q != 0);
     end
 
+    // Payload contents are not architecturally observable while the FIFO is
+    // empty.  Keep the ownership/valid state asynchronously reset below, but
+    // leave this synchronous-write, asynchronous-read payload array unreset so
+    // Vivado can infer distributed RAM instead of 4096 resettable FFs.
+    always_ff @(posedge clk) begin
+        if (rst_n && fifo_push_c && !fifo_full_c)
+            fifo_data_q[fifo_wr_ptr_q] <= pipe_out_data_q;
+    end
+
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             fifo_rd_ptr_q <= '0;
             fifo_wr_ptr_q <= '0;
             fifo_count_q <= '0;
             for (reset_i = 0; reset_i < FIFO_DEPTH; reset_i = reset_i + 1) begin
-                fifo_data_q[reset_i] <= '0;
                 fifo_last_q[reset_i] <= 1'b0;
             end
         end else begin
             if (fifo_push_c && !fifo_full_c) begin
-                fifo_data_q[fifo_wr_ptr_q] <= pipe_out_data_q;
                 fifo_last_q[fifo_wr_ptr_q] <= pipe_out_last_q;
                 fifo_wr_ptr_q <= fifo_wr_ptr_q + 1'b1;
             end

@@ -236,6 +236,7 @@ try {
         "03_verification/tb/unified_p4_kernel_throughput_tb.sv",
         "03_verification/tb/unified_p4_kernel_throughput_full_tb.sv",
         "03_verification/tb/unified_p4_kernel_p4_tb.sv",
+        "03_verification/tb/unified_p4_fifo_payload_reset_tb.sv",
         "03_verification/tb/unified_p4_coeff_layout_tb.sv",
         "03_verification/tb/unified_its_wrapper_tb.sv",
         "03_verification/tb/unified_its_wrapper_p3_tb.sv",
