@@ -133,5 +133,20 @@
     "package_level_signoff": "NOT_EVALUATED",
     "recommended_next_step": "NARROW_P4_INGRESS_WRITE_SELECT_PREDECODE_CANDIDATE_ONLY; NOT_IMPLEMENTED"
   },
+  "independent_control_replay": {
+    "status": "INCOMPLETE_TOOLFLOW_NO_QOR",
+    "common_postopt_dcp_sha256": "CD3B2665ABD66033EE09E40BC246BF375AFB45774CD793639D813360D2A6BADB",
+    "place_design": "ExtraNetDelay_high",
+    "phys_opt_design": "AggressiveExplore_NOT_REACHED",
+    "route_design": "NoTimingRelaxation_NOT_REACHED",
+    "vivado": "2025.2 build 6299465",
+    "max_threads": 4,
+    "terminal_stage": "Phase 4.1.1.2 Post Placement Timing Optimization",
+    "stop_condition": "stage exceeded 35 minutes without log advancement; process stopped at bounded replay budget",
+    "final_dcp_created": false,
+    "final_timing_reports_created": false,
+    "qor_value": "NONE",
+    "logs": ["control_replay_timeout.log", "control_replay_timeout.jou"]
+  },
   "artifact_hashes_are_in": "SHA256SUMS.json"
 }

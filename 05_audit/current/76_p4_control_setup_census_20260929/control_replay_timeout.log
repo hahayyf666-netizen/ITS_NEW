@@ -1,0 +1,454 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Sep 29 22:45:46 2026
+# Process ID         : 21008
+# Current directory  : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_lfnst_fix_work
+# Command line       : vivado.exe -mode batch -source 03_verification\vivado\run_sat10_fifo_physical_ab_branch.tcl -log C:\Users\Fine\Documents\Codex\2026-07-23\ni\outputs\sat10_fifo_control_replay2_20260929\vivado.log -journal C:\Users\Fine\Documents\Codex\2026-07-23\ni\outputs\sat10_fifo_control_replay2_20260929\vivado.jou
+# Log file           : C:/Users/Fine/Documents/Codex/2026-07-23/ni/outputs/sat10_fifo_control_replay2_20260929/vivado.log
+# Journal file       : C:\Users\Fine\Documents\Codex\2026-07-23\ni\outputs\sat10_fifo_control_replay2_20260929\vivado.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 31026 MB
+# Total Virtual      : 47391 MB
+# Available Virtual  : 17610 MB
+#-----------------------------------------------------------
+source {03_verification\vivado\run_sat10_fifo_physical_ab_branch.tcl}
+# if {![info exists ::env(SAT10_AB_COMMON_DCP)]} { error "SAT10_AB_COMMON_DCP is required" }
+# if {![info exists ::env(SAT10_AB_OUT_DIR)]} { error "SAT10_AB_OUT_DIR is required" }
+# if {![info exists ::env(SAT10_AB_MODE)]} { error "SAT10_AB_MODE is required" }
+# set mode $::env(SAT10_AB_MODE)
+# if {$mode ni {CONTROL TREATMENT}} { error "Unexpected mode: $mode" }
+# set place_directive [expr {$mode eq "CONTROL" ? "ExtraNetDelay_high" : "Explore"}]
+# set out_dir [file normalize $::env(SAT10_AB_OUT_DIR)]
+# file mkdir $out_dir
+# set_param general.maxThreads 4
+# puts "AB_MODE=$mode"
+AB_MODE=CONTROL
+# puts "VIVADO_VERSION=[version -short]"
+VIVADO_VERSION=2025.2
+# puts "MAX_THREADS=[get_param general.maxThreads]"
+MAX_THREADS=4
+# puts "INPUT_DCP=$::env(SAT10_AB_COMMON_DCP)"
+INPUT_DCP=C:\Users\Fine\Documents\Codex\2026-07-23\ni\outputs\sat10_fifo_physical_ab_20260929\common\common_postopt.dcp
+# puts "PLACE_DIRECTIVE=$place_directive"
+PLACE_DIRECTIVE=ExtraNetDelay_high
+# puts "PHYS_OPT_DIRECTIVE=AggressiveExplore"
+PHYS_OPT_DIRECTIVE=AggressiveExplore
+# puts "ROUTE_DIRECTIVE=NoTimingRelaxation"
+ROUTE_DIRECTIVE=NoTimingRelaxation
+# open_checkpoint $::env(SAT10_AB_COMMON_DCP)
+Command: open_checkpoint {C:\Users\Fine\Documents\Codex\2026-07-23\ni\outputs\sat10_fifo_physical_ab_20260929\common\common_postopt.dcp}
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.033 . Memory (MB): peak = 350.328 ; gain = 5.188
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.147 . Memory (MB): peak = 1699.215 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 3943 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 3 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2025.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Read ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.080 . Memory (MB): peak = 1734.965 ; gain = 10.059
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.016 . Memory (MB): peak = 2344.625 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1196 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 320 instances
+  IBUF => IBUF (IBUFCTRL, INBUF): 2 instances
+  RAM256X1D => RAM256X1D (MUXF7(x4), MUXF8(x2), RAMD64E(x8)): 32 instances
+  RAM64M => RAM64M (RAMD64E(x4)): 320 instances
+  RAM64M8 => RAM64M8 (RAMD64E(x8)): 521 instances
+  RAM64X1D => RAM64X1D (RAMD64E(x2)): 1 instance 
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2025.2 (64-bit) build 6299465
+open_checkpoint: Time (s): cpu = 00:00:29 ; elapsed = 00:00:30 . Memory (MB): peak = 2344.625 ; gain = 2010.348
+# set design [current_design]
+# if {[get_property TOP $design] ne "step12f_registered_neighbor_harness"} { error "Unexpected top" }
+# if {[get_property PART $design] ne "xcku5p-ffvb676-2-e"} { error "Unexpected part" }
+# place_design -directive $place_directive
+Command: place_design -directive ExtraNetDelay_high
+Attempting to get a license for feature 'Implementation' and/or device 'xcku5p'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xcku5p'
+INFO: [Common 17-83] Releasing license: Implementation
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Vivado_Tcl 4-2302] The placer was invoked with the 'ExtraNetDelay_high' directive.
+Running DRC as a precondition to command place_design
+INFO: [DRC 23-27] Running DRC with 4 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 4 CPUs
+
+Starting Placer Task
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.017 . Memory (MB): peak = 2863.902 ; gain = 0.000
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 1a91f2583
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.038 . Memory (MB): peak = 2863.902 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.015 . Memory (MB): peak = 2863.902 ; gain = 0.000
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 146fbb5b4
+
+Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 3896.352 ; gain = 1032.449
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: 148dcd0e9
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:29 . Memory (MB): peak = 3901.941 ; gain = 1038.039
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: 148dcd0e9
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:29 . Memory (MB): peak = 3901.941 ; gain = 1038.039
+Phase 1 Placer Initialization | Checksum: 148dcd0e9
+
+Time (s): cpu = 00:00:44 ; elapsed = 00:00:29 . Memory (MB): peak = 3901.941 ; gain = 1038.039
+
+Phase 2 Global Placement
+
+Phase 2.1 Floorplanning
+
+Phase 2.1.1 Partition Driven Placement
+
+Phase 2.1.1.1 PBP: Partition Driven Placement
+Phase 2.1.1.1 PBP: Partition Driven Placement | Checksum: 209163b79
+
+Time (s): cpu = 00:01:00 ; elapsed = 00:00:36 . Memory (MB): peak = 3901.941 ; gain = 1038.039
+
+Phase 2.1.1.2 PBP: Clock Region Placement
+INFO: [Place 30-3162] Check ILP status : ILP-based clock placer completed successfully.
+Phase 2.1.1.2 PBP: Clock Region Placement | Checksum: 1f91eac0a
+
+Time (s): cpu = 00:01:01 ; elapsed = 00:00:37 . Memory (MB): peak = 3901.941 ; gain = 1038.039
+
+Phase 2.1.1.3 PBP: Compute Congestion
+Phase 2.1.1.3 PBP: Compute Congestion | Checksum: 1f91eac0a
+
+Time (s): cpu = 00:01:17 ; elapsed = 00:00:42 . Memory (MB): peak = 4277.648 ; gain = 1413.746
+
+Phase 2.1.1.4 PBP: UpdateTiming
+Phase 2.1.1.4 PBP: UpdateTiming | Checksum: 206a9bfd8
+
+Time (s): cpu = 00:01:21 ; elapsed = 00:00:44 . Memory (MB): peak = 4277.648 ; gain = 1413.746
+
+Phase 2.1.1.5 PBP: Add part constraints
+Phase 2.1.1.5 PBP: Add part constraints | Checksum: 206a9bfd8
+
+Time (s): cpu = 00:01:21 ; elapsed = 00:00:44 . Memory (MB): peak = 4277.648 ; gain = 1413.746
+Phase 2.1.1 Partition Driven Placement | Checksum: 206a9bfd8
+
+Time (s): cpu = 00:01:21 ; elapsed = 00:00:44 . Memory (MB): peak = 4277.648 ; gain = 1413.746
+Phase 2.1 Floorplanning | Checksum: 206a9bfd8
+
+Time (s): cpu = 00:01:21 ; elapsed = 00:00:44 . Memory (MB): peak = 4277.648 ; gain = 1413.746
+
+Phase 2.2 Update Timing before SLR Path Opt
+Phase 2.2 Update Timing before SLR Path Opt | Checksum: 206a9bfd8
+
+Time (s): cpu = 00:01:21 ; elapsed = 00:00:44 . Memory (MB): peak = 4277.648 ; gain = 1413.746
+
+Phase 2.3 Post-Processing in Floorplanning
+Phase 2.3 Post-Processing in Floorplanning | Checksum: 231070236
+
+Time (s): cpu = 00:01:21 ; elapsed = 00:00:44 . Memory (MB): peak = 4277.648 ; gain = 1413.746
+
+Phase 2.4 Global Place Phase1
+Phase 2.4 Global Place Phase1 | Checksum: 241efb92a
+
+Time (s): cpu = 00:04:42 ; elapsed = 00:01:57 . Memory (MB): peak = 4558.586 ; gain = 1694.684
+
+Phase 2.5 Global Place Phase2
+
+Phase 2.5.1 UpdateTiming Before Physical Synthesis
+Phase 2.5.1 UpdateTiming Before Physical Synthesis | Checksum: 1d750a884
+
+Time (s): cpu = 00:04:58 ; elapsed = 00:02:02 . Memory (MB): peak = 4558.586 ; gain = 1694.684
+
+Phase 2.5.2 Physical Synthesis In Placer
+INFO: [Physopt 32-1035] Found 341 LUTNM shape to break, 807 LUT instances to create LUTNM shape
+INFO: [Physopt 32-1044] Break lutnm for timing: one critical 141, two critical 200, total 341, new lutff created 0
+INFO: [Physopt 32-1138] End 1 Pass. Optimized 686 nets or LUTs. Breaked 341 LUTs, combined 345 existing LUTs and moved 0 existing LUT
+INFO: [Physopt 32-1030] Pass 1. Identified 58 candidate driver sets for equivalent driver rewiring.
+INFO: [Physopt 32-661] Optimized 35 nets.  Re-placed 357 instances.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 35 nets or cells. Created 0 new cell, deleted 22 existing cells and moved 357 existing cells
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.438 . Memory (MB): peak = 4558.586 ; gain = 0.000
+INFO: [Physopt 32-1132] Very high fanout net 'u_dut/vwrite_cmd_addr_q[0]' is not considered as a candidate in VHFN optimization. The fanout considered for this optimization is changed from 1472 to 193 due to a timing constraint or macro primitives that prevent optimization on all of the loads. To force replication, set the FORCE_MAX_FANOUT property on the net to a number less than 193.
+INFO: [Physopt 32-1132] Very high fanout net 'u_dut/vwrite_cmd_addr_q[1]' is not considered as a candidate in VHFN optimization. The fanout considered for this optimization is changed from 1472 to 193 due to a timing constraint or macro primitives that prevent optimization on all of the loads. To force replication, set the FORCE_MAX_FANOUT property on the net to a number less than 193.
+INFO: [Physopt 32-1132] Very high fanout net 'u_dut/vwrite_cmd_addr_q[2]' is not considered as a candidate in VHFN optimization. The fanout considered for this optimization is changed from 1472 to 193 due to a timing constraint or macro primitives that prevent optimization on all of the loads. To force replication, set the FORCE_MAX_FANOUT property on the net to a number less than 193.
+INFO: [Physopt 32-1132] Very high fanout net 'u_dut/vwrite_cmd_addr_q[3]' is not considered as a candidate in VHFN optimization. The fanout considered for this optimization is changed from 1472 to 193 due to a timing constraint or macro primitives that prevent optimization on all of the loads. To force replication, set the FORCE_MAX_FANOUT property on the net to a number less than 193.
+INFO: [Physopt 32-1132] Very high fanout net 'u_dut/vwrite_cmd_addr_q[4]' is not considered as a candidate in VHFN optimization. The fanout considered for this optimization is changed from 1472 to 193 due to a timing constraint or macro primitives that prevent optimization on all of the loads. To force replication, set the FORCE_MAX_FANOUT property on the net to a number less than 193.
+INFO: [Physopt 32-1132] Very high fanout net 'u_dut/vwrite_cmd_addr_q[5]' is not considered as a candidate in VHFN optimization. The fanout considered for this optimization is changed from 1472 to 193 due to a timing constraint or macro primitives that prevent optimization on all of the loads. To force replication, set the FORCE_MAX_FANOUT property on the net to a number less than 193.
+INFO: [Physopt 32-1408] Pass 1. Identified 17 candidate nets for high-fanout optimization.
+INFO: [Physopt 32-81] Processed net u_dut/rd_cmd_addr_q_reg_n_0_[0][0][0]. Replicated 5 times.
+INFO: [Physopt 32-81] Processed net u_dut/rd_cmd_addr_q_reg_n_0_[1][0][0]. Replicated 6 times.
+INFO: [Physopt 32-81] Processed net u_dut/rd_cmd_addr_q_reg_n_0_[0][0][3]. Replicated 5 times.
+INFO: [Physopt 32-81] Processed net u_dut/rd_cmd_addr_q_reg_n_0_[1][0][3]. Replicated 6 times.
+INFO: [Physopt 32-81] Processed net u_dut/rd_cmd_addr_q_reg_n_0_[0][0][1]. Replicated 5 times.
+INFO: [Physopt 32-81] Processed net u_dut/rd_cmd_addr_q_reg_n_0_[1][0][1]. Replicated 6 times.
+INFO: [Physopt 32-81] Processed net u_dut/rd_cmd_addr_q_reg_n_0_[0][0][2]. Replicated 5 times.
+INFO: [Physopt 32-81] Processed net u_dut/rd_cmd_addr_q_reg_n_0_[1][0][2]. Replicated 6 times.
+INFO: [Physopt 32-81] Processed net u_dut/output_index_reg_n_0_[2]. Replicated 8 times.
+INFO: [Physopt 32-81] Processed net u_dut/output_index_reg_n_0_[3]. Replicated 8 times.
+INFO: [Physopt 32-81] Processed net u_dut/output_index_reg_n_0_[5]. Replicated 9 times.
+INFO: [Physopt 32-81] Processed net u_dut/output_index_reg_n_0_[4]. Replicated 9 times.
+INFO: [Physopt 32-81] Processed net u_dut/output_index_reg_n_0_[1]. Replicated 9 times.
+INFO: [Physopt 32-81] Processed net u_dut/output_index_reg_n_0_[0]. Replicated 9 times.
+INFO: [Physopt 32-81] Processed net u_dut/u_unified_p4_kernel/s1_valid_q. Replicated 24 times.
+INFO: [Physopt 32-81] Processed net u_dut/u_unified_p4_kernel/s2_valid_q. Replicated 15 times.
+INFO: [Physopt 32-81] Processed net u_dut/u_unified_p4_kernel/s3_valid_q. Replicated 7 times.
+INFO: [Physopt 32-232] Optimized 17 nets. Created 142 new instances.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 17 nets or cells. Created 142 new cells, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.266 . Memory (MB): peak = 4558.586 ; gain = 0.000
+INFO: [Physopt 32-76] Pass 1. Identified 2 candidate nets for fanout optimization.
+INFO: [Physopt 32-81] Processed net u_dut/u_bounded_lfnst_engine/product_valid_q_reg_n_0. Replicated 7 times.
+INFO: [Physopt 32-81] Processed net u_dut/u_bounded_lfnst_engine/mul_valid_q. Replicated 8 times.
+INFO: [Physopt 32-232] Optimized 2 nets. Created 15 new instances.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 2 nets or cells. Created 15 new cells, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.063 . Memory (MB): peak = 4558.586 ; gain = 0.000
+INFO: [Physopt 32-736] Net u_dut/u_unified_p4_kernel/s0_valid_q_reg_rep__23_n_0 has fanout of one; hence not performing Critical-cell optimization
+INFO: [Physopt 32-46] Identified 16 candidate nets for critical-cell optimization.
+INFO: [Physopt 32-232] Optimized 0 net. Created 0 new instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-457] Pass 1. Identified 50 candidate cells for DSP register optimization.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][29]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][7]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][47]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][17]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][51]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][13]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][5]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][2]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][35]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][4]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][21]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][63]. 7 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][1]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][15]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][27]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][3]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][23]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][2]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][49]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][30]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][6]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][20]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][60]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][21]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][31]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][29]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][11]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][6]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][3]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][39]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][42]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][36]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][63]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][29]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][31]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][21]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][10]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][10]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][37]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][2]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][30]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][10]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][46]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][27]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][44]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][9]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][5]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][6]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][5]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][18]. 8 registers were pushed out.
+INFO: [Physopt 32-457] Pass 2. Identified 40 candidate cells for DSP register optimization.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][14]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][1]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][51]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][54]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][7]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][22]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][61]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][26]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][61]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][47]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][35]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][13]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][44]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][22]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][19]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][24]. 7 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][3]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][33]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][4]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][52]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][59]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][7]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][28]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][52]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][23]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][25]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][43]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][4]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][57]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][4]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][25]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[2][38]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][58]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][41]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][49]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[3][45]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][9]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][55]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[0][37]. 8 registers were pushed out.
+INFO: [Physopt 32-665] Processed cell u_dut/u_unified_p4_kernel/product_q_reg[1][1]. 8 registers were pushed out.
+INFO: [Physopt 32-775] End 2 Pass. Optimized 90 nets or cells. Created 718 new cells, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.332 . Memory (MB): peak = 4558.586 ; gain = 0.000
+INFO: [Physopt 32-1123] No candidate cells found for Shift Register to Pipeline optimization
+INFO: [Physopt 32-775] End 2 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-1401] No candidate cells found for Shift Register optimization.
+INFO: [Physopt 32-677] No candidate cells for Shift Register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-526] No candidate cells for BRAM register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-846] No candidate cells for URAM register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-846] No candidate cells for URAM register optimization found in the design
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+INFO: [Physopt 32-949] No candidate nets found for dynamic/static region interface net replication
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.030 . Memory (MB): peak = 4558.586 ; gain = 0.000
+INFO: [Physopt 32-68] No nets found for critical-cell optimization.
+INFO: [Physopt 32-232] Optimized 0 net. Created 0 new instance.
+INFO: [Physopt 32-775] End 1 Pass. Optimized 0 net or cell. Created 0 new cell, deleted 0 existing cell and moved 0 existing cell
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.026 . Memory (MB): peak = 4558.586 ; gain = 0.000
+
+Summary of Physical Synthesis Optimizations
+============================================
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+|  Optimization                                     |  Added Cells  |  Removed Cells  |  Optimized Cells/Nets  |  Dont Touch  |  Iterations  |  Elapsed   |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+|  LUT Combining                                    |          341  |            345  |                   686  |           0  |           1  |  00:00:01  |
+|  Retime                                           |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Equivalent Driver Rewiring                       |            0  |             22  |                    35  |           0  |           1  |  00:00:17  |
+|  Very High Fanout                                 |          142  |              0  |                    17  |           1  |           1  |  00:00:09  |
+|  Fanout                                           |           15  |              0  |                     2  |           0  |           1  |  00:00:01  |
+|  Critical Cell                                    |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  DSP Register                                     |          718  |              0  |                    90  |           0  |           1  |  00:00:14  |
+|  Shift Register to Pipeline                       |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Shift Register                                   |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  BRAM Register                                    |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  URAM Register                                    |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Dynamic/Static Region Interface Net Replication  |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Critical Cell                                    |            0  |              0  |                     0  |           0  |           1  |  00:00:00  |
+|  Total                                            |         1216  |            367  |                   830  |           1  |          13  |  00:00:43  |
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Phase 2.5.2 Physical Synthesis In Placer | Checksum: 184a28c33
+
+Time (s): cpu = 00:05:55 ; elapsed = 00:02:55 . Memory (MB): peak = 4558.586 ; gain = 1694.684
+Phase 2.5 Global Place Phase2 | Checksum: 15ed446d2
+
+Time (s): cpu = 00:06:18 ; elapsed = 00:03:04 . Memory (MB): peak = 4558.586 ; gain = 1694.684
+Phase 2 Global Placement | Checksum: 15ed446d2
+
+Time (s): cpu = 00:06:18 ; elapsed = 00:03:05 . Memory (MB): peak = 4558.586 ; gain = 1694.684
+
+Phase 3 Detail Placement
+
+Phase 3.1 Commit Multi Column Macros
+Phase 3.1 Commit Multi Column Macros | Checksum: 177199237
+
+Time (s): cpu = 00:06:43 ; elapsed = 00:03:13 . Memory (MB): peak = 4558.586 ; gain = 1694.684
+
+Phase 3.2 Commit Most Macros & LUTRAMs
+Phase 3.2 Commit Most Macros & LUTRAMs | Checksum: 225c96443
+
+Time (s): cpu = 00:06:58 ; elapsed = 00:03:23 . Memory (MB): peak = 4558.586 ; gain = 1694.684
+
+Phase 3.3 Small Shape DP
+
+Phase 3.3.1 Small Shape Clustering
+Phase 3.3.1 Small Shape Clustering | Checksum: 251a19654
+
+Time (s): cpu = 00:08:13 ; elapsed = 00:03:53 . Memory (MB): peak = 4561.625 ; gain = 1697.723
+
+Phase 3.3.2 Slice Area Swap
+
+Phase 3.3.2.1 Slice Area Swap Initial
+Phase 3.3.2.1 Slice Area Swap Initial | Checksum: 280007784
+
+Time (s): cpu = 00:08:35 ; elapsed = 00:04:05 . Memory (MB): peak = 4561.625 ; gain = 1697.723
+Phase 3.3.2 Slice Area Swap | Checksum: 280007784
+
+Time (s): cpu = 00:08:36 ; elapsed = 00:04:05 . Memory (MB): peak = 4561.625 ; gain = 1697.723
+Phase 3.3 Small Shape DP | Checksum: 2029af323
+
+Time (s): cpu = 00:09:20 ; elapsed = 00:04:19 . Memory (MB): peak = 4598.539 ; gain = 1734.637
+
+Phase 3.4 Re-assign LUT pins
+Phase 3.4 Re-assign LUT pins | Checksum: 2564772b3
+
+Time (s): cpu = 00:09:25 ; elapsed = 00:04:24 . Memory (MB): peak = 4598.539 ; gain = 1734.637
+
+Phase 3.5 Pipeline Register Optimization
+Phase 3.5 Pipeline Register Optimization | Checksum: 2cde3442d
+
+Time (s): cpu = 00:09:25 ; elapsed = 00:04:24 . Memory (MB): peak = 4598.539 ; gain = 1734.637
+
+Phase 3.6 Fast Optimization
+Phase 3.6 Fast Optimization | Checksum: 180530c8d
+
+Time (s): cpu = 00:10:38 ; elapsed = 00:05:08 . Memory (MB): peak = 4598.539 ; gain = 1734.637
+Phase 3 Detail Placement | Checksum: 180530c8d
+
+Time (s): cpu = 00:10:38 ; elapsed = 00:05:09 . Memory (MB): peak = 4598.539 ; gain = 1734.637
+
+Phase 4 Post Placement Optimization and Clean-Up
+
+Phase 4.1 Post Commit Optimization
+INFO: [Place 46-20] Placer is running with the ExtraNetDelay_high directive. Post Placement Optimization may take longer to complete with ExtraNetDelay_high compared to other directives.
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+
+Phase 4.1.1 Post Placement Optimization
+Post Placement Optimization Initialization | Checksum: 24afd0fe0
+
+Phase 4.1.1.1 BUFG Insertion
+
+Starting Physical Synthesis Task
+
+Phase 1 Physical Synthesis Initialization
+INFO: [Physopt 32-721] Multithreading enabled for phys_opt_design using a maximum of 4 CPUs
+INFO: [Physopt 32-619] Estimated Timing Summary | WNS=-0.583 | TNS=-375.671 |
+Phase 1 Physical Synthesis Initialization | Checksum: 1a40565c3
+
+Time (s): cpu = 00:00:05 ; elapsed = 00:00:02 . Memory (MB): peak = 4623.910 ; gain = 0.000
+INFO: [Place 46-56] BUFG insertion identified 0 candidate nets. Inserted BUFG: 0, Replicated BUFG Driver: 0, Skipped due to Placement/Routing Conflicts: 0, Skipped due to Timing Degradation: 0, Skipped due to netlist editing failed: 0.
+Ending Physical Synthesis Task | Checksum: 20fb7eb6f
+
+Time (s): cpu = 00:00:08 ; elapsed = 00:00:03 . Memory (MB): peak = 4623.910 ; gain = 0.000
+Phase 4.1.1.1 BUFG Insertion | Checksum: 24afd0fe0
+
+Time (s): cpu = 00:12:05 ; elapsed = 00:05:45 . Memory (MB): peak = 4623.910 ; gain = 1760.008
+
+Phase 4.1.1.2 Post Placement Timing Optimization

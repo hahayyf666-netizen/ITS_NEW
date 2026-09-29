@@ -37,6 +37,8 @@ The exact DCP remains in the local Vivado output directory and is not committed.
 
 The census was launched with Vivado batch using `run_step12f_r5f_setup_census.tcl`, the DCP above as `STEP12F_R5F_POSTROUTE_DCP`, and the dedicated `control_census` output directory. `STEP12F_SKIP_PATH_SIGNATURE=1` was set: the custom primitive-signature extraction is therefore explicitly incomplete. The raw endpoint CSV and the archived CONTROL `setup_worst100.rpt` remain available for independent review of actual path endpoints and primitive detail.
 
+One independent CONTROL replay was also attempted from the same common post-opt DCP (`CD3B2665...BADB`) with the identical CONTROL Tcl/directives, Vivado 2025.2, and four threads. It loaded the design and obtained the Implementation license, but remained in `Phase 4.1.1.2 Post Placement Timing Optimization` for more than 35 minutes without advancing the log. It was stopped at the predeclared budget. No routed checkpoint or final timing report was produced, so this attempt is **INCOMPLETE and has no QoR value**; it does not change the CONTROL result above or establish repeatability. The retained `control_replay_timeout.log` and `.jou` are included for transparency.
+
 ## Global timing and accounting
 
 CONTROL's authoritative routed setup summary is:
@@ -112,6 +114,7 @@ Alternative: a separately authorized LFNST gather-layout experiment could target
 - `physical_region_summary.csv`: region fields unavailable, retained as empty.
 - `control_setup_worst100.rpt`: routed representative paths and physical delay decomposition.
 - `reset_recovery_detail.zip`, `reset_recovery_removal_summary.txt`, `reset_removal.rpt`: reset checks.
+- `control_replay_timeout.log`, `control_replay_timeout.jou`: the single incomplete independent CONTROL replay; no QoR result.
 - `check_timing_read_only.rpt`, `exceptions_read_only.rpt`, `vivado_control_census.log`, `vivado_control_census.jou`, `r5f_census_metrics.txt`: read-only tool record and counters.
 - `P4_CONTROL_SETUP_CENSUS_STATUS.json`: machine-readable provenance and findings.
 - `SHA256SUMS.json`: hashes of the evidence payload files (excluding the hash list itself).
