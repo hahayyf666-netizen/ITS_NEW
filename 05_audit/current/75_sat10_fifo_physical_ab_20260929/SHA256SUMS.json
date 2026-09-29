@@ -1,0 +1,166 @@
+{
+  "schema": "its_new.evidence.sha256.v1",
+  "note": "Hashes for committed experiment evidence files only; external DCP hashes are recorded in P4_FIFO_PHYSICAL_AB_STATUS.json.",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705FD4D6451A31D36B3DF7DE96F83F30AC976C9B4A6D1E51671D8E2F33E2D0DA",
+      "bytes": 8
+    },
+    {
+      "path": "common/common_postopt_check_timing.rpt",
+      "sha256": "42A9A7E47CD327430361A0541185B773CBD8E9664224DD8C93F2E2447E0CCF92",
+      "bytes": 3481
+    },
+    {
+      "path": "common/common_postopt_exceptions.rpt",
+      "sha256": "8BAEE68377795C5690E7E389AB7345E1D32F4228B05F2D5D15E52281EBE9C964",
+      "bytes": 1112
+    },
+    {
+      "path": "common/common_postopt_timing_summary_max.rpt",
+      "sha256": "7AD4F38D960C1A09FAA2561BB93D798C590BD23B2EFE7505D77981C7C34483BE",
+      "bytes": 1154612
+    },
+    {
+      "path": "common/common_postopt_timing_summary_min.rpt",
+      "sha256": "D247E270C95314A4EC35D1CE337CE3E292E3552D224138B00981C1E55DB9D42D",
+      "bytes": 921895
+    },
+    {
+      "path": "control/check_timing.rpt",
+      "sha256": "D7C1A8A6168D49DD97BE7756E68908113CF37206F59B92796FF2F079246D45F4",
+      "bytes": 3457
+    },
+    {
+      "path": "control/drc.rpt",
+      "sha256": "FA3A0CED1010D0BECEE6D7F4B9E79C2FB3A59201A065D8668F1D79F63540DBF0",
+      "bytes": 45160
+    },
+    {
+      "path": "control/exceptions.rpt",
+      "sha256": "04611611681218F9CE7641D84B0C9FAE976F8A02A768602CDF1D4EEE16ABB7C1",
+      "bytes": 1088
+    },
+    {
+      "path": "control/hold_postplace.rpt",
+      "sha256": "4EF9FF693857278E11671781AE7048D1F19570CBF997296DAA07D1C21C99CAE9",
+      "bytes": 1065125
+    },
+    {
+      "path": "control/hold_postroute.rpt",
+      "sha256": "3C5555403E6A99A8BFA163F615145B78981B41BA5B283BB2F6489E93405DCD18",
+      "bytes": 1060425
+    },
+    {
+      "path": "control/hold_worst100.rpt",
+      "sha256": "EDA5E11176987B880B3C796AAAF6B3298EE31D6819B476A13E76AD0F83366532",
+      "bytes": 526323
+    },
+    {
+      "path": "control/power.rpt",
+      "sha256": "3D162608BDD103DE7DB7B15156AEEF3B4E2CEFFC6ECE71B0F4EDC40D712D350A",
+      "bytes": 11436
+    },
+    {
+      "path": "control/route_status.rpt",
+      "sha256": "46B917395BC8E5E59675B6FB71505FDEA2B803503BC14E22F15E1B94A553E067",
+      "bytes": 651
+    },
+    {
+      "path": "control/setup_postplace.rpt",
+      "sha256": "A0C86602863CE44CFC7A0EC6EC56BEF284EBDBCC2F01DCB804AEA9598A7E7D43",
+      "bytes": 1241452
+    },
+    {
+      "path": "control/setup_postroute.rpt",
+      "sha256": "85EA51746559448A9F5AE1C5F5B5B18AF12E728D3933427B080AA3FAFFA705EB",
+      "bytes": 1248960
+    },
+    {
+      "path": "control/setup_worst100.rpt",
+      "sha256": "FA2669F2EE8BFE6479F827550FD78ECBBB12B1743433EFCD429E51C1AAE2B57C",
+      "bytes": 667535
+    },
+    {
+      "path": "control/utilization.rpt",
+      "sha256": "7ED6A7E60CE7DFF40E86BAE58BDAB66847D438037A63778845FA9919B7D12436",
+      "bytes": 12337
+    },
+    {
+      "path": "P4_FIFO_PHYSICAL_AB_REPORT.md",
+      "sha256": "F991F2D2C7D111A740B53589BFC895B26FC69014C0CE54CC4F34A2E5AC5D54F0",
+      "bytes": 4968
+    },
+    {
+      "path": "P4_FIFO_PHYSICAL_AB_STATUS.json",
+      "sha256": "BD381EE8BB2F5BC75DDC01DBA3D70F8D0E29E173872B1526BF89987250255C76",
+      "bytes": 6078
+    },
+    {
+      "path": "treatment/check_timing.rpt",
+      "sha256": "CA19A83E8B34A3E8EB44EDA6946951791128BCB35524BFD8CF1CE3AD9D797E83",
+      "bytes": 3442
+    },
+    {
+      "path": "treatment/drc.rpt",
+      "sha256": "5765ED7B8D966111BD6DD77D46DDD9BF0B45CF141CC0DA9DED3FA2791695C4D2",
+      "bytes": 44516
+    },
+    {
+      "path": "treatment/exceptions.rpt",
+      "sha256": "56760C0E30BFABDCD8E4A6D8AAFA1894531EA18E2E269C2B2B3C5045DFA770BA",
+      "bytes": 1073
+    },
+    {
+      "path": "treatment/hold_postplace.rpt",
+      "sha256": "EF0B146FE509C42FFDD170BBC904C5EAF32906FC5A4AAEEF1D1918CD1A8E0A0A",
+      "bytes": 1050346
+    },
+    {
+      "path": "treatment/hold_postroute.rpt",
+      "sha256": "0668165D8580A8F89B6B45CD3F06E007802742BD0880E5E6BE8CE77EBB29ADFF",
+      "bytes": 1051986
+    },
+    {
+      "path": "treatment/hold_worst100.rpt",
+      "sha256": "0E0FAEC9E19E118EEFD7289BC76DA8B4F7EC033F1B38CBEDF32F15D7CCEDFBC4",
+      "bytes": 514950
+    },
+    {
+      "path": "treatment/power.rpt",
+      "sha256": "55385E120DF64FCA3B741ACF02625CB17A59B1B0483A95DC9EE9022F014C129E",
+      "bytes": 11499
+    },
+    {
+      "path": "treatment/route_status.rpt",
+      "sha256": "47FFF88E64041072A218A5C3E8CAA2AD6281DB82770FEFE25EFF42947C08B859",
+      "bytes": 651
+    },
+    {
+      "path": "treatment/setup_postplace.rpt",
+      "sha256": "AF014E0681A208FB022652D1F05D35C932E256F1E9B9DFDB101EDE43B01B2AD4",
+      "bytes": 1276657
+    },
+    {
+      "path": "treatment/setup_postroute.rpt",
+      "sha256": "CF806874E756848C8849B26108A4BB1C1E67B2C41FCCEE3941AC8887C6BBB483",
+      "bytes": 1235976
+    },
+    {
+      "path": "treatment/setup_worst100.rpt",
+      "sha256": "6D38D93D410878B06854D5DFDD866BE4CB4079CAB4E06BD257550FEA0C320E15",
+      "bytes": 656036
+    },
+    {
+      "path": "treatment/utilization.rpt",
+      "sha256": "82C5B33B81CC1B935541EC49FAA996906D996BEC0713AA673F2B8F9F728FB78A",
+      "bytes": 12322
+    },
+    {
+      "path": "vivado_transcripts.zip",
+      "sha256": "D2E2F7BE8B29C109CA30270E2B15BF023C7CE31C6801ADC89847ABC5D912601A",
+      "bytes": 65384
+    }
+  ]
+}
