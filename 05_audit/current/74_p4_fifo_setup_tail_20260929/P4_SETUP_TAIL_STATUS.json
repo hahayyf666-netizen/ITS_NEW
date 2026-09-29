@@ -1,0 +1,128 @@
+{
+  "schema": "its_new.step12f.p4_fifo_setup_tail_census.v1",
+  "status": "READ_ONLY_CENSUS_COMPLETE_SETUP_NOT_CLOSED",
+  "repository": "hahayyf666-netizen/ITS_NEW",
+  "branch_baseline": "sat10-functional-evidence",
+  "branch_baseline_commit": "ef8d0d758ea1822d74efa6a0286d99f3f54f70a6",
+  "design_source_commit": "9e67d4aa2696255f8b527a614e872cb367e654ce",
+  "referenced_status": "05_audit/current/73_p4_fifo_payload_20260929/P4_FIFO_PAYLOAD_RESET_STATUS.json",
+  "analysis": {
+    "kind": "READ_ONLY_EXISTING_ROUTED_DCP_CENSUS",
+    "vivado": "2025.2",
+    "build": "6299465 Fri Nov 14 19:35:11 GMT 2025",
+    "threads": 4,
+    "postroute_dcp_sha256": "E6EF3B75FA06E1AEB2F95BAD9C32EA93587B2DECFFE8FBB455CE53A75D8C2239",
+    "rtl_changed": false,
+    "xdc_changed": false,
+    "synthesis_rerun": false,
+    "implementation_rerun": false,
+    "timing_exceptions_added": false
+  },
+  "population": {
+    "raw_negative_path_objects": 177,
+    "unique_negative_endpoints": 177,
+    "duplicates": 0,
+    "unclassified": 0,
+    "reconstructed_tns_ns": -3.537,
+    "classification_family_pairs": 61,
+    "dut_internal": {"endpoints": 168, "tns_ns": -3.372},
+    "dut_to_sink": {"endpoints": 9, "tns_ns": -0.165},
+    "source_to_dut": {"endpoints": 0, "tns_ns": 0.0}
+  },
+  "leaders": [
+    {
+      "family": "H_READ_DATA_D",
+      "representative": "kernel_h_rd_addr_q -> async temp-bank RAM/mux -> kernel_h_rd_data_q/D",
+      "endpoints": 21,
+      "tns_ns": -0.373,
+      "worst_slack_ns": -0.045,
+      "data_delay_ns": 1.860,
+      "logic_delay_ns": 0.469,
+      "net_delay_ns": 1.391,
+      "routing_fraction": 0.74778,
+      "clock_skew_ns": -0.175
+    },
+    {
+      "family": "H_METADATA_CONTROL",
+      "representative": "kernel_phase_q -> kernel_h_rd_raw_group_q/CE",
+      "endpoints": 5,
+      "tns_ns": -0.202,
+      "worst_slack_ns": -0.045,
+      "data_delay_ns": 1.858,
+      "logic_delay_ns": 0.575,
+      "net_delay_ns": 1.283,
+      "routing_fraction": 0.69052,
+      "clock_skew_ns": -0.090
+    },
+    {
+      "family": "H_RESPONSE_CAPTURE_CE",
+      "representative": "kernel_phase_q -> kernel_h_rd_data_q/tail_q CE",
+      "endpoints": 28,
+      "tns_ns": -0.663,
+      "worst_slack_ns": -0.043
+    },
+    {
+      "family": "P4_INPUT_MEM",
+      "representative": "P4 ingress_data_q -> input_mem/D",
+      "endpoints": 12,
+      "tns_ns": -0.190,
+      "worst_slack_ns": -0.045,
+      "data_delay_ns": 1.942,
+      "logic_delay_ns": 0.079,
+      "net_delay_ns": 1.863,
+      "routing_fraction": 0.95932,
+      "clock_skew_ns": -0.092
+    }
+  ],
+  "clock_skew": {
+    "negative_skew_paths": 168,
+    "path_count": 177,
+    "median_ns": -0.108,
+    "p10_ns": -0.186,
+    "p90_ns": -0.024,
+    "minimum_ns": -0.247,
+    "maximum_ns": 0.030
+  },
+  "overall": {
+    "setup_wns_ns": -0.045,
+    "setup_tns_ns": -3.537,
+    "setup_failing_endpoints": 177,
+    "hold_whs_ns": 0.003,
+    "hold_ths_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "route_status": "FULLY_ROUTED",
+    "official_equivalence": "NOT_PROVEN",
+    "package_level_signoff": "NOT_EVALUATED"
+  },
+  "queries": {
+    "setup_census": {
+      "script": "run_setup_census.tcl",
+      "script_sha256": "2FC2D1F89817FC86F4D6848D2AB0F3BB94CB6F94B4CCD23029BBACED4C8764F7",
+      "env": {
+        "STEP12F_R5F_POSTROUTE_DCP": "step12f_registered_neighbor_postroute.dcp (external path recorded in run log)",
+        "STEP12F_R5F_CENSUS_DIR": "read_only_tail_census",
+        "STEP12F_SKIP_PATH_SIGNATURE": "1",
+        "Vivado general.maxThreads": "4"
+      },
+      "result": "P9R5F_CENSUS_DONE"
+    },
+    "clock_skew": {
+      "script": "clock_skew_properties.tcl",
+      "script_sha256": "F43A4C93556B6C4BBE1CEC1A2295667B0CB287C46896673A0C1838050AE3DB6A"
+    }
+  },
+  "file_sha256": {
+    "run_setup_census.tcl": "2FC2D1F89817FC86F4D6848D2AB0F3BB94CB6F94B4CCD23029BBACED4C8764F7",
+    "clock_skew_properties.tcl": "F43A4C93556B6C4BBE1CEC1A2295667B0CB287C46896673A0C1838050AE3DB6A",
+    "setup_endpoint_census.csv": "7181AB0E5218574EA262FF6BDA9E129AB7198B9F2088E54D8060BFC21A56304F",
+    "setup_family_summary.csv": "811856B7F61EC6F52DDD9361F879C959DAFCBC3EE74E7CCEB639B324BD27CEF4",
+    "setup_bucket_summary.csv": "8C8B37C3AAAD2DE49EA0E18343A7595733E2A755BFECE75250F3FD68F686FA0E",
+    "r5f_census_metrics.txt": "9775AF580FBE453D99774A9E1166FFEC5B4C7435A6E5991A1AE79E051BAC4487",
+    "timing_path_properties.txt": "147B21E73CF729849CEF331D91C95A52C94408091A29312B8EFD5DCCC6C91572",
+    "check_timing_read_only.rpt": "47B21F707748F2319B1CE34416AC78CB488E51C3EBE83C83CC747B69143D8449",
+    "exceptions_read_only.rpt": "CEA3849C94492A11CA9AD833C0C3C2B419DB6A20F8A36E27781D706AC0371335",
+    "vivado.log": "4AB9FD2683BE9EDAA384003A79E6C87ADFABE102992F0763615D6075A29966F5",
+    "skew_props.log": "08BB25FB5803EA05C1D9D4A1192BEE9F43DB142F3ABE65C3C2B32C08D05F7B7C"
+  },
+  "next_action": "ONE_BOUNDED_SAME_POSTOPT_DCP_PLACEMENT_AB_BEFORE_ANY_RTL_CHANGE"
+}
