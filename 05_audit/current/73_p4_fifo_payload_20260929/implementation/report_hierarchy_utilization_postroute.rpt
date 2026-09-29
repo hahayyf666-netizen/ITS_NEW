@@ -1,0 +1,54 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Tue Sep 29 14:38:57 2026
+| Host         : Finesse running 64-bit major release  (build 9200)
+| Command      : report_utilization -hierarchical -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/outputs/sat10_fifo_payload_20260929/implementation/report_hierarchy_utilization_postroute.rpt
+| Design       : step12f_registered_neighbor_harness
+| Device       : xcku5p-ffvb676-2-e
+| Speed File   : -2
+| Design State : Routed
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++--------------------------------------------------------------+-----------------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+|                           Instance                           |               Module              | Total LUTs | Logic LUTs | LUTRAMs | SRLs |  FFs  | RAMB36 | RAMB18 | URAM | DSP Blocks |
++--------------------------------------------------------------+-----------------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+| step12f_registered_neighbor_harness                          |                             (top) |      26520 |      20802 |    5706 |   12 | 21339 |      0 |      0 |    0 |        320 |
+|   (step12f_registered_neighbor_harness)                      |                             (top) |         13 |         10 |       0 |    3 |   123 |      0 |      0 |    0 |          0 |
+|   u_dut                                                      |               unified_its_wrapper |      26509 |      20794 |    5706 |    9 | 21216 |      0 |      0 |    0 |        320 |
+|     (u_dut)                                                  |               unified_its_wrapper |       3396 |       3396 |       0 |    0 |  2400 |      0 |      0 |    0 |          0 |
+|     gen_input_slots[0].gen_input_banks[0].u_input_cache_bank |              its_input_cache_bank |        429 |         77 |     352 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_input_slots[0].gen_input_banks[1].u_input_cache_bank |           its_input_cache_bank__7 |        429 |         77 |     352 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_input_slots[0].gen_input_banks[2].u_input_cache_bank |           its_input_cache_bank__6 |        427 |         75 |     352 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_input_slots[0].gen_input_banks[3].u_input_cache_bank |           its_input_cache_bank__5 |        430 |         78 |     352 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_input_slots[1].gen_input_banks[0].u_input_cache_bank |           its_input_cache_bank__4 |        427 |         75 |     352 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_input_slots[1].gen_input_banks[1].u_input_cache_bank |           its_input_cache_bank__3 |        428 |         76 |     352 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_input_slots[1].gen_input_banks[2].u_input_cache_bank |           its_input_cache_bank__2 |        429 |         77 |     352 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_input_slots[1].gen_input_banks[3].u_input_cache_bank |           its_input_cache_bank__1 |        428 |         76 |     352 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_result_slots[0].gen_result_banks[0].u_result_bank    |                    its_simple_ram |        247 |         55 |     192 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_result_slots[0].gen_result_banks[1].u_result_bank    |                 its_simple_ram__7 |        247 |         55 |     192 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_result_slots[0].gen_result_banks[2].u_result_bank    |                 its_simple_ram__6 |        248 |         56 |     192 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_result_slots[0].gen_result_banks[3].u_result_bank    |                 its_simple_ram__5 |        248 |         56 |     192 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_result_slots[1].gen_result_banks[0].u_result_bank    |                 its_simple_ram__4 |        248 |         56 |     192 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_result_slots[1].gen_result_banks[1].u_result_bank    |                 its_simple_ram__3 |        247 |         55 |     192 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_result_slots[1].gen_result_banks[2].u_result_bank    |                 its_simple_ram__2 |        248 |         56 |     192 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_result_slots[1].gen_result_banks[3].u_result_bank    |                 its_simple_ram__1 |        248 |         56 |     192 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_tmp_banks[0].u_kernel_tmp_bank                       |    its_simple_ram__parameterized0 |        398 |         78 |     320 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_tmp_banks[1].u_kernel_tmp_bank                       | its_simple_ram__parameterized0__3 |        400 |         80 |     320 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_tmp_banks[2].u_kernel_tmp_bank                       | its_simple_ram__parameterized0__2 |        399 |         79 |     320 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     gen_tmp_banks[3].u_kernel_tmp_bank                       | its_simple_ram__parameterized0__1 |        392 |         72 |     320 |    0 |     0 |      0 |      0 |    0 |          0 |
+|     u_bounded_lfnst_engine                                   |              bounded_lfnst_engine |       2383 |       2378 |       0 |    5 |  2203 |      0 |      0 |    0 |         64 |
+|     u_unified_p4_kernel                                      |                 unified_p4_kernel |      13737 |      13659 |      74 |    4 | 16613 |      0 |      0 |    0 |        256 |
++--------------------------------------------------------------+-----------------------------------+------------+------------+---------+------+-------+--------+--------+------+------------+
+* Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
+
+
