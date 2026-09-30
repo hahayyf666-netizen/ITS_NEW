@@ -1,0 +1,1543 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Wed Sep 30 09:58:53 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -delay_type min -to [get_pins -hier -quiet -filter {REF_PIN_NAME == PRE}] -max_paths 100 -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_lfnst_fix_work/05_audit/current/79_postroute_explore_20260930/candidate_preset_removal.rpt
+| Design            : step12f_registered_neighbor_harness
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Physopt postRoute
+| Temperature Grade : E
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             0.281ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/s2_shift_q_reg_p/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.301ns  (logic 0.039ns (12.936%)  route 0.262ns (87.064%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.040ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.151ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.418ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.396ns (routing 0.728ns, distribution 0.668ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.262     1.994    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X70Y80         FDPE                                         f  u_dut/u_unified_p4_kernel/s2_shift_q_reg_p/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.396     2.151    u_dut/u_unified_p4_kernel/clk
+    SLICE_X70Y80         FDPE                                         r  u_dut/u_unified_p4_kernel/s2_shift_q_reg_p/C
+                         clock pessimism             -0.418     1.733    
+    SLICE_X70Y80         FDPE (Remov_EFF_SLICEL_C_PRE)
+                                                     -0.020     1.713    u_dut/u_unified_p4_kernel/s2_shift_q_reg_p
+  -------------------------------------------------------------------
+                         required time                         -1.713    
+                         arrival time                           1.994    
+  -------------------------------------------------------------------
+                         slack                                  0.281    
+
+Slack (MET) :             0.285ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/s3_shift_q_reg_p/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.301ns  (logic 0.039ns (12.936%)  route 0.262ns (87.064%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.036ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.147ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.418ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.392ns (routing 0.728ns, distribution 0.664ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.262     1.994    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X70Y80         FDPE                                         f  u_dut/u_unified_p4_kernel/s3_shift_q_reg_p/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.392     2.147    u_dut/u_unified_p4_kernel/clk
+    SLICE_X70Y80         FDPE                                         r  u_dut/u_unified_p4_kernel/s3_shift_q_reg_p/C
+                         clock pessimism             -0.418     1.729    
+    SLICE_X70Y80         FDPE (Remov_AFF_SLICEL_C_PRE)
+                                                     -0.020     1.709    u_dut/u_unified_p4_kernel/s3_shift_q_reg_p
+  -------------------------------------------------------------------
+                         required time                         -1.709    
+                         arrival time                           1.994    
+  -------------------------------------------------------------------
+                         slack                                  0.285    
+
+Slack (MET) :             0.285ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/s4_shift_q_reg_p/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.301ns  (logic 0.039ns (12.936%)  route 0.262ns (87.064%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.036ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.147ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.418ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.392ns (routing 0.728ns, distribution 0.664ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.262     1.994    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X70Y80         FDPE                                         f  u_dut/u_unified_p4_kernel/s4_shift_q_reg_p/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.392     2.147    u_dut/u_unified_p4_kernel/clk
+    SLICE_X70Y80         FDPE                                         r  u_dut/u_unified_p4_kernel/s4_shift_q_reg_p/C
+                         clock pessimism             -0.418     1.729    
+    SLICE_X70Y80         FDPE (Remov_AFF2_SLICEL_C_PRE)
+                                                     -0.020     1.709    u_dut/u_unified_p4_kernel/s4_shift_q_reg_p
+  -------------------------------------------------------------------
+                         required time                         -1.709    
+                         arrival time                           1.994    
+  -------------------------------------------------------------------
+                         slack                                  0.285    
+
+Slack (MET) :             0.285ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/s5_shift_q_reg_p/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.301ns  (logic 0.039ns (12.936%)  route 0.262ns (87.064%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.036ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.147ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.418ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.392ns (routing 0.728ns, distribution 0.664ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.262     1.994    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X70Y80         FDPE                                         f  u_dut/u_unified_p4_kernel/s5_shift_q_reg_p/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.392     2.147    u_dut/u_unified_p4_kernel/clk
+    SLICE_X70Y80         FDPE                                         r  u_dut/u_unified_p4_kernel/s5_shift_q_reg_p/C
+                         clock pessimism             -0.418     1.729    
+    SLICE_X70Y80         FDPE (Remov_BFF_SLICEL_C_PRE)
+                                                     -0.020     1.709    u_dut/u_unified_p4_kernel/s5_shift_q_reg_p
+  -------------------------------------------------------------------
+                         required time                         -1.709    
+                         arrival time                           1.994    
+  -------------------------------------------------------------------
+                         slack                                  0.285    
+
+Slack (MET) :             0.285ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/s6_shift_q_reg[0]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.301ns  (logic 0.039ns (12.936%)  route 0.262ns (87.064%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.036ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.147ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.418ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.392ns (routing 0.728ns, distribution 0.664ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.262     1.994    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X70Y80         FDPE                                         f  u_dut/u_unified_p4_kernel/s6_shift_q_reg[0]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.392     2.147    u_dut/u_unified_p4_kernel/clk
+    SLICE_X70Y80         FDPE                                         r  u_dut/u_unified_p4_kernel/s6_shift_q_reg[0]/C
+                         clock pessimism             -0.418     1.729    
+    SLICE_X70Y80         FDPE (Remov_BFF2_SLICEL_C_PRE)
+                                                     -0.020     1.709    u_dut/u_unified_p4_kernel/s6_shift_q_reg[0]
+  -------------------------------------------------------------------
+                         required time                         -1.709    
+                         arrival time                           1.994    
+  -------------------------------------------------------------------
+                         slack                                  0.285    
+
+Slack (MET) :             0.285ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/s6_shift_q_reg[1]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.301ns  (logic 0.039ns (12.936%)  route 0.262ns (87.064%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.036ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.147ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.418ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.392ns (routing 0.728ns, distribution 0.664ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.262     1.994    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X70Y80         FDPE                                         f  u_dut/u_unified_p4_kernel/s6_shift_q_reg[1]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.392     2.147    u_dut/u_unified_p4_kernel/clk
+    SLICE_X70Y80         FDPE                                         r  u_dut/u_unified_p4_kernel/s6_shift_q_reg[1]/C
+                         clock pessimism             -0.418     1.729    
+    SLICE_X70Y80         FDPE (Remov_CFF_SLICEL_C_PRE)
+                                                     -0.020     1.709    u_dut/u_unified_p4_kernel/s6_shift_q_reg[1]
+  -------------------------------------------------------------------
+                         required time                         -1.709    
+                         arrival time                           1.994    
+  -------------------------------------------------------------------
+                         slack                                  0.285    
+
+Slack (MET) :             0.357ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/slot_shift_q_reg[0][0]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.418ns  (logic 0.039ns (9.326%)  route 0.379ns (90.674%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.081ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.164ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.391ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.408ns (routing 0.728ns, distribution 0.680ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.379     2.111    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X72Y50         FDPE                                         f  u_dut/u_unified_p4_kernel/slot_shift_q_reg[0][0]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.408     2.164    u_dut/u_unified_p4_kernel/clk
+    SLICE_X72Y50         FDPE                                         r  u_dut/u_unified_p4_kernel/slot_shift_q_reg[0][0]/C
+                         clock pessimism             -0.391     1.773    
+    SLICE_X72Y50         FDPE (Remov_HFF_SLICEL_C_PRE)
+                                                     -0.020     1.753    u_dut/u_unified_p4_kernel/slot_shift_q_reg[0][0]
+  -------------------------------------------------------------------
+                         required time                         -1.753    
+                         arrival time                           2.111    
+  -------------------------------------------------------------------
+                         slack                                  0.357    
+
+Slack (MET) :             0.405ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/slot_shift_q_reg[3][0]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.465ns  (logic 0.039ns (8.395%)  route 0.426ns (91.605%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.080ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.163ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.391ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.407ns (routing 0.728ns, distribution 0.679ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.426     2.157    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X72Y48         FDPE                                         f  u_dut/u_unified_p4_kernel/slot_shift_q_reg[3][0]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.407     2.163    u_dut/u_unified_p4_kernel/clk
+    SLICE_X72Y48         FDPE                                         r  u_dut/u_unified_p4_kernel/slot_shift_q_reg[3][0]/C
+                         clock pessimism             -0.391     1.772    
+    SLICE_X72Y48         FDPE (Remov_EFF2_SLICEL_C_PRE)
+                                                     -0.020     1.752    u_dut/u_unified_p4_kernel/slot_shift_q_reg[3][0]
+  -------------------------------------------------------------------
+                         required time                         -1.752    
+                         arrival time                           2.157    
+  -------------------------------------------------------------------
+                         slack                                  0.405    
+
+Slack (MET) :             0.464ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/mul_m_shift_q_reg[0]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.475ns  (logic 0.039ns (8.204%)  route 0.436ns (91.796%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.031ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.142ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.419ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.386ns (routing 0.728ns, distribution 0.658ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.436     2.168    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X73Y63         FDPE                                         f  u_dut/u_unified_p4_kernel/mul_m_shift_q_reg[0]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.386     2.142    u_dut/u_unified_p4_kernel/clk
+    SLICE_X73Y63         FDPE                                         r  u_dut/u_unified_p4_kernel/mul_m_shift_q_reg[0]/C
+                         clock pessimism             -0.419     1.723    
+    SLICE_X73Y63         FDPE (Remov_HFF2_SLICEL_C_PRE)
+                                                     -0.020     1.703    u_dut/u_unified_p4_kernel/mul_m_shift_q_reg[0]
+  -------------------------------------------------------------------
+                         required time                         -1.703    
+                         arrival time                           2.168    
+  -------------------------------------------------------------------
+                         slack                                  0.464    
+
+Slack (MET) :             0.464ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/mul_m_shift_q_reg[1]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.475ns  (logic 0.039ns (8.204%)  route 0.436ns (91.796%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.031ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.142ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.419ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.386ns (routing 0.728ns, distribution 0.658ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.436     2.168    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X73Y63         FDPE                                         f  u_dut/u_unified_p4_kernel/mul_m_shift_q_reg[1]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.386     2.142    u_dut/u_unified_p4_kernel/clk
+    SLICE_X73Y63         FDPE                                         r  u_dut/u_unified_p4_kernel/mul_m_shift_q_reg[1]/C
+                         clock pessimism             -0.419     1.723    
+    SLICE_X73Y63         FDPE (Remov_GFF2_SLICEL_C_PRE)
+                                                     -0.020     1.703    u_dut/u_unified_p4_kernel/mul_m_shift_q_reg[1]
+  -------------------------------------------------------------------
+                         required time                         -1.703    
+                         arrival time                           2.168    
+  -------------------------------------------------------------------
+                         slack                                  0.464    
+
+Slack (MET) :             0.468ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/mul_in_shift_q_reg[0]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.475ns  (logic 0.039ns (8.204%)  route 0.436ns (91.796%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.027ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.138ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.419ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.382ns (routing 0.728ns, distribution 0.654ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.436     2.168    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X73Y63         FDPE                                         f  u_dut/u_unified_p4_kernel/mul_in_shift_q_reg[0]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.382     2.138    u_dut/u_unified_p4_kernel/clk
+    SLICE_X73Y63         FDPE                                         r  u_dut/u_unified_p4_kernel/mul_in_shift_q_reg[0]/C
+                         clock pessimism             -0.419     1.719    
+    SLICE_X73Y63         FDPE (Remov_DFF2_SLICEL_C_PRE)
+                                                     -0.020     1.699    u_dut/u_unified_p4_kernel/mul_in_shift_q_reg[0]
+  -------------------------------------------------------------------
+                         required time                         -1.699    
+                         arrival time                           2.168    
+  -------------------------------------------------------------------
+                         slack                                  0.468    
+
+Slack (MET) :             0.468ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/mul_in_shift_q_reg[1]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.475ns  (logic 0.039ns (8.204%)  route 0.436ns (91.796%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.027ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.138ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.419ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.382ns (routing 0.728ns, distribution 0.654ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.436     2.168    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X73Y63         FDPE                                         f  u_dut/u_unified_p4_kernel/mul_in_shift_q_reg[1]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.382     2.138    u_dut/u_unified_p4_kernel/clk
+    SLICE_X73Y63         FDPE                                         r  u_dut/u_unified_p4_kernel/mul_in_shift_q_reg[1]/C
+                         clock pessimism             -0.419     1.719    
+    SLICE_X73Y63         FDPE (Remov_CFF2_SLICEL_C_PRE)
+                                                     -0.020     1.699    u_dut/u_unified_p4_kernel/mul_in_shift_q_reg[1]
+  -------------------------------------------------------------------
+                         required time                         -1.699    
+                         arrival time                           2.168    
+  -------------------------------------------------------------------
+                         slack                                  0.468    
+
+Slack (MET) :             0.471ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/issue_desc_shift_q_reg[1]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.529ns  (logic 0.039ns (7.371%)  route 0.490ns (92.629%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.078ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.161ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.391ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.405ns (routing 0.728ns, distribution 0.677ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.490     2.221    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X72Y55         FDPE                                         f  u_dut/u_unified_p4_kernel/issue_desc_shift_q_reg[1]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.405     2.161    u_dut/u_unified_p4_kernel/clk
+    SLICE_X72Y55         FDPE                                         r  u_dut/u_unified_p4_kernel/issue_desc_shift_q_reg[1]/C
+                         clock pessimism             -0.391     1.770    
+    SLICE_X72Y55         FDPE (Remov_DFF_SLICEL_C_PRE)
+                                                     -0.020     1.750    u_dut/u_unified_p4_kernel/issue_desc_shift_q_reg[1]
+  -------------------------------------------------------------------
+                         required time                         -1.750    
+                         arrival time                           2.221    
+  -------------------------------------------------------------------
+                         slack                                  0.471    
+
+Slack (MET) :             0.471ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/s0_shift_q_reg[0]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.529ns  (logic 0.039ns (7.371%)  route 0.490ns (92.629%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.078ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.161ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.391ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.405ns (routing 0.728ns, distribution 0.677ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.490     2.221    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X72Y55         FDPE                                         f  u_dut/u_unified_p4_kernel/s0_shift_q_reg[0]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.405     2.161    u_dut/u_unified_p4_kernel/clk
+    SLICE_X72Y55         FDPE                                         r  u_dut/u_unified_p4_kernel/s0_shift_q_reg[0]/C
+                         clock pessimism             -0.391     1.770    
+    SLICE_X72Y55         FDPE (Remov_DFF2_SLICEL_C_PRE)
+                                                     -0.020     1.750    u_dut/u_unified_p4_kernel/s0_shift_q_reg[0]
+  -------------------------------------------------------------------
+                         required time                         -1.750    
+                         arrival time                           2.221    
+  -------------------------------------------------------------------
+                         slack                                  0.471    
+
+Slack (MET) :             0.531ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/kernel_h_rd_raw_vector_q_reg[6]_inv/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.582ns  (logic 0.039ns (6.699%)  route 0.543ns (93.301%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.071ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.154ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.391ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.398ns (routing 0.728ns, distribution 0.670ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.543     2.275    u_dut/rst_n
+    SLICE_X72Y38         FDPE                                         f  u_dut/kernel_h_rd_raw_vector_q_reg[6]_inv/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.398     2.154    u_dut/clk
+    SLICE_X72Y38         FDPE                                         r  u_dut/kernel_h_rd_raw_vector_q_reg[6]_inv/C
+                         clock pessimism             -0.391     1.763    
+    SLICE_X72Y38         FDPE (Remov_CFF_SLICEL_C_PRE)
+                                                     -0.020     1.743    u_dut/kernel_h_rd_raw_vector_q_reg[6]_inv
+  -------------------------------------------------------------------
+                         required time                         -1.743    
+                         arrival time                           2.275    
+  -------------------------------------------------------------------
+                         slack                                  0.531    
+
+Slack (MET) :             0.547ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/s0_shift_q_reg[1]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.600ns  (logic 0.039ns (6.503%)  route 0.561ns (93.497%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.073ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.156ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.391ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.400ns (routing 0.728ns, distribution 0.672ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.561     2.292    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X73Y55         FDPE                                         f  u_dut/u_unified_p4_kernel/s0_shift_q_reg[1]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.400     2.156    u_dut/u_unified_p4_kernel/clk
+    SLICE_X73Y55         FDPE                                         r  u_dut/u_unified_p4_kernel/s0_shift_q_reg[1]/C
+                         clock pessimism             -0.391     1.765    
+    SLICE_X73Y55         FDPE (Remov_EFF_SLICEL_C_PRE)
+                                                     -0.020     1.745    u_dut/u_unified_p4_kernel/s0_shift_q_reg[1]
+  -------------------------------------------------------------------
+                         required time                         -1.745    
+                         arrival time                           2.292    
+  -------------------------------------------------------------------
+                         slack                                  0.547    
+
+Slack (MET) :             0.558ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/slot_shift_q_reg[1][0]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.613ns  (logic 0.039ns (6.363%)  route 0.574ns (93.637%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.075ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.158ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.391ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.402ns (routing 0.728ns, distribution 0.674ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.574     2.305    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X72Y45         FDPE                                         f  u_dut/u_unified_p4_kernel/slot_shift_q_reg[1][0]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.402     2.158    u_dut/u_unified_p4_kernel/clk
+    SLICE_X72Y45         FDPE                                         r  u_dut/u_unified_p4_kernel/slot_shift_q_reg[1][0]/C
+                         clock pessimism             -0.391     1.767    
+    SLICE_X72Y45         FDPE (Remov_FFF2_SLICEL_C_PRE)
+                                                     -0.020     1.747    u_dut/u_unified_p4_kernel/slot_shift_q_reg[1][0]
+  -------------------------------------------------------------------
+                         required time                         -1.747    
+                         arrival time                           2.305    
+  -------------------------------------------------------------------
+                         slack                                  0.558    
+
+Slack (MET) :             0.561ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/slot_shift_q_reg[2][0]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.621ns  (logic 0.039ns (6.278%)  route 0.582ns (93.722%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.080ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.163ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.391ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.407ns (routing 0.728ns, distribution 0.679ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.582     2.314    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X72Y46         FDPE                                         f  u_dut/u_unified_p4_kernel/slot_shift_q_reg[2][0]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.407     2.163    u_dut/u_unified_p4_kernel/clk
+    SLICE_X72Y46         FDPE                                         r  u_dut/u_unified_p4_kernel/slot_shift_q_reg[2][0]/C
+                         clock pessimism             -0.391     1.772    
+    SLICE_X72Y46         FDPE (Remov_GFF_SLICEL_C_PRE)
+                                                     -0.020     1.752    u_dut/u_unified_p4_kernel/slot_shift_q_reg[2][0]
+  -------------------------------------------------------------------
+                         required time                         -1.752    
+                         arrival time                           2.314    
+  -------------------------------------------------------------------
+                         slack                                  0.561    
+
+Slack (MET) :             0.636ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/issue_desc_shift_q_reg[0]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.694ns  (logic 0.039ns (5.620%)  route 0.655ns (94.380%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.078ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.161ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.391ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.405ns (routing 0.728ns, distribution 0.677ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.655     2.386    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X72Y54         FDPE                                         f  u_dut/u_unified_p4_kernel/issue_desc_shift_q_reg[0]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.405     2.161    u_dut/u_unified_p4_kernel/clk
+    SLICE_X72Y54         FDPE                                         r  u_dut/u_unified_p4_kernel/issue_desc_shift_q_reg[0]/C
+                         clock pessimism             -0.391     1.770    
+    SLICE_X72Y54         FDPE (Remov_CFF_SLICEL_C_PRE)
+                                                     -0.020     1.750    u_dut/u_unified_p4_kernel/issue_desc_shift_q_reg[0]
+  -------------------------------------------------------------------
+                         required time                         -1.750    
+                         arrival time                           2.386    
+  -------------------------------------------------------------------
+                         slack                                  0.636    
+
+Slack (MET) :             0.644ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/kernel_h_row_base_q_reg[2][1]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.689ns  (logic 0.039ns (5.661%)  route 0.650ns (94.339%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.065ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.148ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.391ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.393ns (routing 0.728ns, distribution 0.665ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.650     2.381    u_dut/rst_n
+    SLICE_X78Y38         FDPE                                         f  u_dut/kernel_h_row_base_q_reg[2][1]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.393     2.148    u_dut/clk
+    SLICE_X78Y38         FDPE                                         r  u_dut/kernel_h_row_base_q_reg[2][1]/C
+                         clock pessimism             -0.391     1.757    
+    SLICE_X78Y38         FDPE (Remov_BFF_SLICEL_C_PRE)
+                                                     -0.020     1.737    u_dut/kernel_h_row_base_q_reg[2][1]
+  -------------------------------------------------------------------
+                         required time                         -1.737    
+                         arrival time                           2.381    
+  -------------------------------------------------------------------
+                         slack                                  0.644    
+
+Slack (MET) :             0.737ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/kernel_h_row_base_q_reg[3][0]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.761ns  (logic 0.039ns (5.126%)  route 0.722ns (94.874%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.044ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.127ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.391ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.371ns (routing 0.728ns, distribution 0.643ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.722     2.453    u_dut/rst_n
+    SLICE_X80Y38         FDPE                                         f  u_dut/kernel_h_row_base_q_reg[3][0]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.371     2.127    u_dut/clk
+    SLICE_X80Y38         FDPE                                         r  u_dut/kernel_h_row_base_q_reg[3][0]/C
+                         clock pessimism             -0.391     1.736    
+    SLICE_X80Y38         FDPE (Remov_AFF_SLICEL_C_PRE)
+                                                     -0.020     1.716    u_dut/kernel_h_row_base_q_reg[3][0]
+  -------------------------------------------------------------------
+                         required time                         -1.716    
+                         arrival time                           2.453    
+  -------------------------------------------------------------------
+                         slack                                  0.737    
+
+Slack (MET) :             0.737ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/kernel_h_row_base_q_reg[3][1]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.761ns  (logic 0.039ns (5.126%)  route 0.722ns (94.874%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.044ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.127ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.391ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.371ns (routing 0.728ns, distribution 0.643ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.722     2.453    u_dut/rst_n
+    SLICE_X80Y38         FDPE                                         f  u_dut/kernel_h_row_base_q_reg[3][1]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.371     2.127    u_dut/clk
+    SLICE_X80Y38         FDPE                                         r  u_dut/kernel_h_row_base_q_reg[3][1]/C
+                         clock pessimism             -0.391     1.736    
+    SLICE_X80Y38         FDPE (Remov_BFF_SLICEL_C_PRE)
+                                                     -0.020     1.716    u_dut/kernel_h_row_base_q_reg[3][1]
+  -------------------------------------------------------------------
+                         required time                         -1.716    
+                         arrival time                           2.453    
+  -------------------------------------------------------------------
+                         slack                                  0.737    
+
+Slack (MET) :             0.757ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/kernel_h_row_base_q_reg[1][0]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.780ns  (logic 0.039ns (5.002%)  route 0.741ns (94.998%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.043ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.126ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.391ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.370ns (routing 0.728ns, distribution 0.642ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.741     2.472    u_dut/rst_n
+    SLICE_X80Y36         FDPE                                         f  u_dut/kernel_h_row_base_q_reg[1][0]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.370     2.126    u_dut/clk
+    SLICE_X80Y36         FDPE                                         r  u_dut/kernel_h_row_base_q_reg[1][0]/C
+                         clock pessimism             -0.391     1.735    
+    SLICE_X80Y36         FDPE (Remov_AFF_SLICEL_C_PRE)
+                                                     -0.020     1.715    u_dut/kernel_h_row_base_q_reg[1][0]
+  -------------------------------------------------------------------
+                         required time                         -1.715    
+                         arrival time                           2.472    
+  -------------------------------------------------------------------
+                         slack                                  0.757    
+
+Slack (MET) :             0.816ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/s1_shift_q_reg[0]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.834ns  (logic 0.039ns (4.679%)  route 0.795ns (95.321%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.037ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.148ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.418ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.392ns (routing 0.728ns, distribution 0.664ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.795     2.526    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X71Y79         FDPE                                         f  u_dut/u_unified_p4_kernel/s1_shift_q_reg[0]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.392     2.148    u_dut/u_unified_p4_kernel/clk
+    SLICE_X71Y79         FDPE                                         r  u_dut/u_unified_p4_kernel/s1_shift_q_reg[0]/C
+                         clock pessimism             -0.418     1.730    
+    SLICE_X71Y79         FDPE (Remov_EFF_SLICEM_C_PRE)
+                                                     -0.020     1.710    u_dut/u_unified_p4_kernel/s1_shift_q_reg[0]
+  -------------------------------------------------------------------
+                         required time                         -1.710    
+                         arrival time                           2.526    
+  -------------------------------------------------------------------
+                         slack                                  0.816    
+
+Slack (MET) :             0.816ns  (arrival time - required time)
+  Source:                 reset_sync_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/u_unified_p4_kernel/s1_shift_q_reg[1]/PRE
+                            (removal check against rising-edge clock clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             **async_default**
+  Path Type:              Removal (Min at Fast Process Corner)
+  Requirement:            0.000ns  (clk rise@0.000ns - clk rise@0.000ns)
+  Data Path Delay:        0.834ns  (logic 0.039ns (4.679%)  route 0.795ns (95.321%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.037ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    2.148ns
+    Source Clock Delay      (SCD):    1.692ns
+    Clock Pessimism Removal (CPR):    0.418ns
+  Clock Net Delay (Source):      1.249ns (routing 0.651ns, distribution 0.598ns)
+  Clock Net Delay (Destination): 1.392ns (routing 0.728ns, distribution 0.664ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.336     0.336 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.336    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.336 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.091     0.427    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.017     0.444 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.249     1.692    clk_g
+    SLICE_X62Y67         FDCE                                         r  reset_sync_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X62Y67         FDCE (Prop_AFF2_SLICEM_C_Q)
+                                                      0.039     1.731 r  reset_sync_q_reg[1]/Q
+                         net (fo=5101, routed)        0.795     2.526    u_dut/u_unified_p4_kernel/rst_n
+    SLICE_X71Y79         FDPE                                         f  u_dut/u_unified_p4_kernel/s1_shift_q_reg[1]/PRE  (IS_INVERTED)
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.624     0.624 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     0.624    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     0.624 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.113     0.737    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.019     0.756 r  u_boundary_bufg/O
+    X2Y1 (CLOCK_ROOT)    net (fo=28840, routed)       1.392     2.148    u_dut/u_unified_p4_kernel/clk
+    SLICE_X71Y79         FDPE                                         r  u_dut/u_unified_p4_kernel/s1_shift_q_reg[1]/C
+                         clock pessimism             -0.418     1.730    
+    SLICE_X71Y79         FDPE (Remov_EFF2_SLICEM_C_PRE)
+                                                     -0.020     1.710    u_dut/u_unified_p4_kernel/s1_shift_q_reg[1]
+  -------------------------------------------------------------------
+                         required time                         -1.710    
+                         arrival time                           2.526    
+  -------------------------------------------------------------------
+                         slack                                  0.816    
+
+
+
+

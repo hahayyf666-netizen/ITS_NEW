@@ -1,0 +1,183 @@
+{
+  "schema": "step12f.postroute_physopt_explore.v1",
+  "date": "2026-09-30",
+  "repository": "hahayyf666-netizen/ITS_NEW",
+  "branch": "sat10-functional-evidence",
+  "source_commit": "cddb7f7f68a59e349a71343cf5aa06f6b1dd410a",
+  "functional_source_commit": "17496666f3192cd3e1f96ae4e590c2b3b77919f4",
+  "operation": "OPEN_FROZEN_POSTROUTE_DCP_THEN_PHYS_OPT_DESIGN_EXPLORE",
+  "scope": {
+    "rtl_changed": false,
+    "xdc_changed": false,
+    "synthesis_run": false,
+    "placement_run": false,
+    "routing_run": false,
+    "clock_or_uncertainty_changed": false,
+    "timing_exceptions_changed": false,
+    "official_equivalence": "NOT_PROVEN",
+    "package_level_signoff": "NOT_EVALUATED"
+  },
+  "tool": {
+    "vivado": "2025.2",
+    "build": "6299465",
+    "part": "xcku5p-ffvb676-2-e",
+    "max_threads": 4,
+    "design": "step12f_registered_neighbor_harness"
+  },
+  "input": {
+    "source_dcp": "outputs/sat10_lfnst_transpose_registered_neighbor_20260930_0025/step12f_registered_neighbor_postroute.dcp",
+    "sha256": "E93F18866F4063E0460F9F35F4E82FD7E837174A9F912C5D02616463722B1911",
+    "route_state": "ROUTED",
+    "setup_wns_ns": -0.005,
+    "setup_tns_ns": -0.015,
+    "setup_failing_endpoints": 4,
+    "hold_whs_ns": 0.010,
+    "hold_ths_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "routable_nets": 43489,
+    "fully_routed_nets": 43489,
+    "routing_error_nets": 0
+  },
+  "physical_optimization": {
+    "command": "phys_opt_design -directive Explore",
+    "exit_code": 0,
+    "wns_gain_ns": 0.0,
+    "tns_gain_ns": 0.0,
+    "added_cells": 0,
+    "removed_cells": 0,
+    "optimized_cells_or_nets": 0,
+    "result": "NO_TIMING_CHANGE"
+  },
+  "candidate": {
+    "dcp_path_local_only": "outputs/sat10_postroute_explore_20260930/candidate_postroute_explore.dcp",
+    "dcp_sha256": "C3124E785EA4F6B81D24D54CD0DA5312237671F383C8D60748545B2B9DC3F993",
+    "design_state": "Physopt postRoute",
+    "setup_wns_ns": -0.005,
+    "setup_tns_ns": -0.015,
+    "setup_failing_endpoints": 4,
+    "hold_whs_ns": 0.010,
+    "hold_ths_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "routable_nets": 43489,
+    "fully_routed_nets": 43489,
+    "routing_error_nets": 0,
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "drc_errors": 0,
+    "drc_critical_warnings": ["NSTD-1", "UCIO-1"]
+  },
+  "postroute_structure": {
+    "async_path_group": {
+      "name": "async_default",
+      "wns_ns": 0.003,
+      "tns_ns": 0.0,
+      "failing_endpoints": 0,
+      "total_endpoints": 5026
+    },
+    "reset_checks": {
+      "clear_recovery_worst_slack_ns": 0.003,
+      "clear_removal_worst_slack_ns": 0.212,
+      "preset_recovery_worst_slack_ns": 0.041,
+      "preset_removal_worst_slack_ns": 0.281
+    },
+    "source_boundary_ff": {"expected": 54, "found": 54},
+    "sink_boundary_ff": {"expected": 44, "found": 44},
+    "hread_negative_checks": {
+      "through_objects": "RAMD64E",
+      "ramd64e_count": 5706,
+      "response_d_pins": 128,
+      "pending_source_q_pins": 1,
+      "run_source_q_pins": 1,
+      "stage_source_q_pins": 1,
+      "pending_to_ram_to_response": "NO_PATH",
+      "run_to_ram_to_response": "NO_PATH",
+      "stage_to_ram_to_response": "NO_PATH"
+    },
+    "hread_positive_control": {
+      "address_source_q_pins": 40,
+      "ramd64e_count": 5706,
+      "response_d_pins": 128,
+      "path_exists": true,
+      "representative_slack_ns": 0.0
+    }
+  },
+  "timing_paths": [
+    {
+      "source": "u_dut/kernel_ctx_output_size_q_reg[5]/C",
+      "destination": "u_dut/kernel_feed_group_q_reg[0]/CE",
+      "slack_ns": -0.005,
+      "data_delay_ns": 1.802,
+      "logic_delay_ns": 0.749,
+      "route_delay_ns": 1.053,
+      "levels": 7,
+      "clock_skew_ns": -0.108
+    },
+    {
+      "source": "u_dut/kernel_stage_q_reg/C",
+      "destination": "u_dut/u_unified_p4_kernel/ingress_data_q_reg[13]/D",
+      "slack_ns": -0.005,
+      "data_delay_ns": 1.891,
+      "logic_delay_ns": 0.689,
+      "route_delay_ns": 1.202,
+      "levels": 5,
+      "clock_skew_ns": -0.104
+    },
+    {
+      "source": "u_dut/slot_state_reg[0][1]/C",
+      "destination": "u_dut/lfnst_grid_reg[56][2]/CE",
+      "slack_ns": -0.002,
+      "data_delay_ns": 1.793,
+      "logic_delay_ns": 0.428,
+      "route_delay_ns": 1.365,
+      "levels": 3,
+      "clock_skew_ns": -0.114
+    },
+    {
+      "source": "u_dut/u_unified_p4_kernel/ready_rd_ptr_q_reg[0]/C",
+      "destination": "u_dut/u_unified_p4_kernel/issue_desc_bundle_addr_q_reg[5]_rep__5/D",
+      "slack_ns": -0.002,
+      "data_delay_ns": 1.926,
+      "logic_delay_ns": 0.452,
+      "route_delay_ns": 1.474,
+      "levels": 5,
+      "clock_skew_ns": -0.066
+    }
+  ],
+  "artifact_hashes": {
+    "run_postroute_explore_tcl": "0A9556CC3EB62A16A90A005818EB31AB8D85C5087641F459DCD88DD0AFFDCD28",
+    "query_candidate_structure_tcl": "1E0C45FCAFC1CD45F60B4D85C24E2DDD0D32E0E6E6635152E5546CCC4EE86331",
+    "query_hread_address_positive_tcl": "A3A159DA729DAAD387B35790524D398BD5D0062FDC2E31C40CC743CAA67BE46B",
+    "vivado_log": "F4E367E89DA7BEE2247FE4EF1E0BD285B3877F4A32FA0ADFA9A3B45086C68B78",
+    "structure_query_log": "8D6A9971CAD4AEBA8E13AE036C77FE31BBE5296354914E8490CAB84CA02B6F6E",
+    "positive_control_log": "8E35E1E0C54B4CF2F12E28078B20B37CCC20AA77B7CF9E89978ECC6DDBF939DC",
+    "reset_query_tcl": "07778FAD5AF42F8938C46B19AC838B9AE370C4BB453F2F7C2FA55A3722482409",
+    "reset_query_log": "E3B45CA677C84A842EEEC2E0A83DEBFF2CD7DE13173B19EED0BAA7C8A3D36EA4",
+    "reset_recovery_report": "502B743F41D63A6BA46992FABDEBF1ECBEC3F3F8E0A8FBCBA2E06552CE8F861B",
+    "reset_removal_report": "186B27454B57756F666E51D63853C7239C8E34245E5929BA5A4CD1F7004007E6",
+    "preset_recovery_report": "2F28E3AE3F51FDBCD5344B4D0C3EC46FA28ED36DDDECA9B66EDD59E54B9F3889",
+    "preset_removal_report": "E482B6910075B6D3DDDFEA7C77BE7FFE420168573D763D10A3128FF5C94B60DD",
+    "candidate_setup_report": "9FBB7456EBAD0A6B0B215E99E79216B357DBE353ADCB48A1088321EAEB0A66CF",
+    "candidate_hold_report": "792EAD7FF5AA156E48694E91ED5D24427C322A77DAEB986FF295353180E3B8B1",
+    "candidate_worst100_report": "7354529CFA0AB385EE56CBF044D2C74B57E98A072D650E6032AA33C6970FC423",
+    "candidate_route_status_report": "8B00DFD76E3D08CD22D5CA27100F8CB4DEA4BF785597D84B7EC65278AE4EAEE3",
+    "candidate_drc_report": "A42B342E518159D034027D9708D2080FD6EB897178BDE57CF60DED813A338682",
+    "candidate_check_timing_report": "CC9DD51CD6CC440460AB1358CC78D32A5F456DEB8B499DFD246B350B46BC0EDA",
+    "candidate_exceptions_report": "1259636FBC2C9478D589308110F82FE7210CBF093356DA0D3498CD7A21D37848",
+    "candidate_utilization_report": "7CF9C9EE7FCB37E8A483DAB8E983FA29D200E5783F3F1B3421E68E9B74615E9D",
+    "candidate_methodology_report": "F6DD069C8A66907B6DC6A2EEB9B4BF830F1EA11777055D2C94CE14AFA4C7EB31",
+    "candidate_power_report": "4D327B41A58343B6CB3DF31A513140B2D0C0134820EB99D09507433442202599",
+    "hread_address_positive_report": "65BA265246E47EC4FDBEAE7E52BA51498CFBA081F5DF179EE5637F1FBD17BA8B",
+    "hread_pending_no_path_report": "3A72516DF1F392C7145EB04CDD341D8017581753D48188BAACC8C93784DF7CA7",
+    "hread_run_no_path_report": "EFFA035896BB0E44993BE5E4B6D2A03584A42F6C21DE207B4EDB91AA3FFCA18D",
+    "hread_stage_no_path_report": "B504483ED92DBFAE6D6ADD9E456FD25FF4FBA734858549E344F48C5BAD4D0F2B",
+    "reset_summary_report": "991A7418DF579C97E9C4EC0FE2ADDC66165051E1E2C13CAAB59CAFAFE04D32DA",
+    "postroute_structure_check_timing_report": "B457026DF2CFADB95FF95718750CFFB86805F49268500E580E29F668929912E7"
+  },
+  "decision": {
+    "setup_signoff": "FAIL",
+    "hold_signoff": "PASS",
+    "postroute_explore": "NO_EFFECT",
+    "rtl_change_authorized": false,
+    "next_candidate_for_review": "LOCAL_FEED_COUNTER_ENABLE_FACTORIZATION"
+  }
+}
