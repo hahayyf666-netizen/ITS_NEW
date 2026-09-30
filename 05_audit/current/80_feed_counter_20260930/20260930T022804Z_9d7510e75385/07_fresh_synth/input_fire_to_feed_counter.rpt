@@ -1,0 +1,18 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Wed Sep 30 10:37:34 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -leaf -of_objects [get_nets -hier -filter {NAME =~ *kernel_input_group_fire*}] -filter {DIRECTION == OUT}] -to [get_pins -of_objects [get_cells -hier -filter {NAME =~ *kernel_feed_group_q_reg*}] -filter {REF_PIN_NAME == CE}] -delay_type max -max_paths 20 -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/05_audit/current/80_feed_counter_20260930/20260930T022804Z_9d7510e75385/07_fresh_synth/input_fire_to_feed_counter.rpt
+| Design            : unified_its_wrapper
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Synthesized
+| Temperature Grade : E
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+No timing paths found.
+
+

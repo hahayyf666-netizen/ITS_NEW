@@ -1,0 +1,235 @@
+{
+  "schema": "step12f.feed_counter_registered_neighbor_qualification.v1",
+  "date": "2026-09-30",
+  "repository": "hahayyf666-netizen/ITS_NEW",
+  "branch": "sat10-functional-evidence",
+  "tested_source_commit": "9d7510e75385c3b83cee7afd799c9e6db0b4d95e",
+  "source_parent": "4b182f0023e1fa1b80a9594c3adcb9b809b83997",
+  "scope": {
+    "rtl_changed_in_source_commit": [
+      "02_rtl/rtl/unified_its_wrapper.sv"
+    ],
+    "xdc_changed": false,
+    "profile_changed": false,
+    "arithmetic_changed": false,
+    "official_equivalence": "NOT_PROVEN",
+    "package_level_timing": "NOT_EVALUATED",
+    "historical_low10_audit_modified": false
+  },
+  "profile": {
+    "name": "contest_engineering_vtm10_sat10_v2",
+    "canonical_sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746",
+    "decision_class": "PROVISIONAL_ENGINEERING_DECISION",
+    "official_equivalence": "NOT_PROVEN"
+  },
+  "functional": {
+    "status": "PASS",
+    "normal": "PASS",
+    "SYNTHESIS": "PASS",
+    "gate_b_cases": 156,
+    "gate_f_modes": 13,
+    "gate_c_cases": 369,
+    "gate_c_beats_per_mode": 45636,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 388,
+    "sat10_exhaustive_signed16_values": 65536,
+    "manifest": "CHECKPOINT_MANIFEST.json",
+    "manifest_sha256": "9DD246D7D5C1BC97217D20A45032F06AC82C33D4F976A5E8305F015C0E792A4C"
+  },
+  "tool_and_contract": {
+    "vivado": "2025.2",
+    "build": "6299465",
+    "part": "xcku5p-ffvb676-2-e",
+    "max_threads": 4,
+    "top": "step12f_registered_neighbor_harness",
+    "clock_period_ns": 2.0,
+    "user_clock_uncertainty_ns": 0.0,
+    "observed_total_clock_uncertainty_ns": 0.035,
+    "old_ooc_xdc_loaded": false,
+    "harness_xdc": "03_verification/vivado/step12f_registered_neighbor_2ns.xdc"
+  },
+  "flow": {
+    "synthesis": "synth_design -top step12f_registered_neighbor_harness -part xcku5p-ffvb676-2-e -flatten_hierarchy none -directive Default",
+    "implementation_input": "registered_neighbor_postsynth.dcp",
+    "implementation_commands": [
+      "opt_design -directive Default",
+      "place_design -directive ExtraNetDelay_high",
+      "phys_opt_design -directive AggressiveExplore",
+      "route_design -directive NoTimingRelaxation"
+    ],
+    "implementation_exit_code": 0,
+    "route_state": "FULLY_ROUTED",
+    "launcher_log_note": "The initial implementation invocation placed -log/-journal after -tclargs; Vivado used default vivado.log/vivado.jou in the worktree root. Those exact generated files were copied into this evidence directory. The full transcript confirms command sequence and successful exit.",
+    "full_command_as_invoked": "vivado.bat -mode batch -source implement_registered_neighbor.tcl -tclargs <registered_neighbor_postsynth.dcp> <08_registered_neighbor_synth/> -log <implementation.log> -journal <implementation.jou>"
+  },
+  "timing": {
+    "registered_neighbor_setup": {
+      "wns_ns": -0.11,
+      "tns_ns": -35.277,
+      "failing_endpoints": 929,
+      "total_endpoints": 144656,
+      "status": "FAIL"
+    },
+    "registered_neighbor_hold": {
+      "whs_ns": 0.011,
+      "ths_ns": 0.0,
+      "failing_endpoints": 0,
+      "status": "PASS"
+    },
+    "global_worst_path": {
+      "source": "src_it_data_end_q_reg/C",
+      "destination": "u_dut/slot_state_reg[0][0]/CE",
+      "slack_ns": -0.11,
+      "data_delay_ns": 1.863,
+      "logic_delay_ns": 0.402,
+      "route_delay_ns": 1.461,
+      "route_fraction": 0.784,
+      "logic_levels": 3
+    },
+    "target_path": {
+      "source_family": "kernel_ctx_output_size_q",
+      "destination_family": "kernel_feed_group_q/CE",
+      "slack_ns": -0.041,
+      "data_delay_ns": 1.81,
+      "logic_delay_ns": 0.671,
+      "route_delay_ns": 1.139,
+      "route_fraction": 0.629,
+      "logic_levels": 6,
+      "postroute_result": "STILL_NEGATIVE"
+    },
+    "timing_exceptions": "NONE",
+    "unconstrained_internal_endpoints": 0,
+    "unconstrained_external_input": "rst_n only; expected harness reset treatment"
+  },
+  "targeted_structural_checks": {
+    "source_boundary_ff": {
+      "expected": 54,
+      "found": 54,
+      "status": "PASS"
+    },
+    "sink_boundary_ff": {
+      "expected": 44,
+      "found": 44,
+      "status": "PASS"
+    },
+    "hread_negative_path_checks": {
+      "ramd64e_through_cells": 5706,
+      "h_response_destination_pins": 128,
+      "pending_source_pins": 1,
+      "run_source_pins": 1,
+      "stage_source_pins": 4,
+      "pending_to_ramd64e_to_response": "NO_PATH",
+      "run_to_ramd64e_to_response": "NO_PATH",
+      "stage_to_ramd64e_to_response": "NO_PATH"
+    },
+    "hread_positive_control": {
+      "address_source_pins": 59,
+      "ramd64e_through_cells": 5706,
+      "h_response_destination_pins": 128,
+      "path_exists": true,
+      "representative_slack_ns": -0.109,
+      "logic_levels": 5
+    },
+    "reset_timing_ns": {
+      "clear_recovery_worst": 0.046,
+      "clear_removal_worst": 0.177,
+      "preset_recovery_worst": 0.21,
+      "preset_removal_worst": 0.332,
+      "all_sampled_paths_nonnegative": true
+    }
+  },
+  "physical": {
+    "routable_nets": 43639,
+    "fully_routed_nets": 43639,
+    "routing_error_nets": 0,
+    "drc_errors": 0,
+    "drc_critical_warnings": [
+      "NSTD-1",
+      "UCIO-1"
+    ],
+    "dsp_drc_warnings": {
+      "DPIP-2": 38,
+      "DPOP-4": 32
+    },
+    "resources": {
+      "clb_luts": 26376,
+      "clb_registers": 21378,
+      "dsps": 320,
+      "bram": 0,
+      "uram": 0
+    },
+    "power_estimate_w": {
+      "total": 1.492,
+      "dynamic": 1.034,
+      "static": 0.458,
+      "confidence": "MEDIUM_VECTORLESS"
+    }
+  },
+  "comparison_to_prior_reference": {
+    "prior_source_commit": "cddb7f7f68a59e349a71343cf5aa06f6b1dd410a",
+    "prior_postroute_dcp_sha256": "C3124E785EA4F6B81D24D54CD0DA5312237671F383C8D60748545B2B9DC3F993",
+    "prior_setup": {
+      "wns_ns": -0.005,
+      "tns_ns": -0.015,
+      "failing_endpoints": 4
+    },
+    "prior_hold": {
+      "whs_ns": 0.01,
+      "ths_ns": 0.0,
+      "failing_endpoints": 0
+    },
+    "prior_target_path": {
+      "slack_ns": -0.005,
+      "logic_levels": 7,
+      "data_delay_ns": 1.802,
+      "logic_delay_ns": 0.749,
+      "route_delay_ns": 1.053
+    },
+    "current_vs_prior": "FRESH_IMPLEMENTATION_QOR_REGRESSION_OBSERVED; different synthesized netlists and physical instances, so RTL causality is not isolated"
+  },
+  "artifact_hashes": {
+    "wrapper_working_tree_sha256": "D87CA77B58CBDB640C4F502017B271AD8D5F812ABEEA84483855EDB06580AC6C",
+    "wrapper_git_blob_sha1": "58cf61c9ac386a4f8d8ea9e43777218aa32cc2c8",
+    "registered_neighbor_harness_sha256": "BB6BEE87957E2E399461184AEE0F054B2EF070F51426605719025623D67806A3",
+    "registered_neighbor_xdc_sha256": "346E4D1BAA867FD7F16E8474FC3E903B3616633450F487AB168383BAE38A3786",
+    "registered_neighbor_synth_tcl_sha256": "B382F86140E63FB6A0DD4B293C2EBFB6B6A159B8B27ED7F158F1330D80CCFCED",
+    "implementation_tcl_sha256": "A09E99A089A6C44C6947C684D95C999F5DA0BB86A2714F646B9E9810227093CA",
+    "feed_counter_query_tcl_sha256": "9D0A3AAD67D67BC5F87648BE3068F74E58787AC70DB9B825EF1D64FDB2A83F51",
+    "postsynth_dcp_sha256_local_only": "4813F4F6AB0977AAFDE383443E05CD70A14BDA7D7CD3BF10B52747B7FAD6D27C",
+    "postroute_dcp_sha256_local_only": "36A2702CC4A6DBE190C8254B43756DF9408FD9C8595D446AC173E13B014EC529",
+    "implementation_log_sha256": "A86D20077D03FAEFD81D133B9116E6CC14F8CC8A53342E24955E5B9FDFF6691E",
+    "implementation_journal_sha256": "A8742A402C61D86EDC23892491BA639E8A40773C36C530AD8FD5A897373C461D",
+    "postroute_setup_summary_sha256": "0FB436890094F6FB215A23B569ABB6286FFC34D66120A6964EFFD1750676E6EB",
+    "postroute_hold_summary_sha256": "887A0776CE9318378D4239DF971715A80448881B97E8D70102A8554B69FC6B74",
+    "postroute_worst100_setup_sha256": "466C29AA6C2842DF30F8977AE049113E7DFD6F170CCBEE922885702ECC025FD5",
+    "postroute_worst100_hold_sha256": "E7862B9E22BA665FE8C0F1F0D930BD66624F90804CD03C19728DED458FDB491F",
+    "postroute_route_status_sha256": "628EDC26A8C2B1FB4C4914086282F3E477BA6DA21022720036A0A4F4AAA69C3D",
+    "postroute_check_timing_sha256": "D82040F8042A2E409BAA40B2D80F370F3E095B09BEEC57CEE8945B1D68E8744F",
+    "postroute_exceptions_sha256": "F2F92A2E189358BD82F56A5C8E952BB919A55C44FFCF2D74E6A0D460D73327C7",
+    "postroute_drc_sha256": "437C193F29FE12946A54C38DE172EB2B2546CD435D2B9D91C66A0C60CBCF29ED",
+    "postroute_utilization_sha256": "C9B95E80DBBCD86F2D8EBC1E51508AE8C5A3CF4086B50CD664745325C037BCDE",
+    "postroute_power_sha256": "C5F5F97C34660942E9C014EDAC54DA4429EA61EF9BA2450F00A1871CDE27F430",
+    "postroute_target_output_size_to_feed_ce_sha256": "1B24D5A79F5C64CEA109A6A20362D62E127D4DDD6BD73C040D9A9BA457449EA3",
+    "postroute_target_worst_to_feed_ce_sha256": "521CCD6DB1C3897DFD1BE7C3A80133F329529F0C55AE6F02C04DB3C9F49BE377",
+    "hread_positive_control_sha256": "0F2482A54330A08370B71FC6578D4551C0D9FE33D80E76A5FAA770F823F4481B",
+    "reset_recovery_sha256": "9C00AC9531AA6BDD7EC152062D646A9F8E68F11352A9AA4D7C08EAC04CFF54FF",
+    "reset_removal_sha256": "3F8B424E40C5E1F05A1A22C0C59534A542E38FF57FC7A9673F11576717852E21",
+    "preset_recovery_sha256": "D4852BD9AB6A0906A105D364A203D3C28AFBDC6FBCEDA224C3E3EA27358EAC2C",
+    "preset_removal_sha256": "74ED46AD0F60E0B26DAB0DAE8CCB3BB9574EC0492CA870602117AA55D9CFAB0F"
+  },
+  "decision": {
+    "candidate_functional": "PASS",
+    "candidate_structural_target": "PARTIAL_LOGIC_DEPTH_REDUCTION; TARGET_SLACK_REMAINS_NEGATIVE",
+    "candidate_global_timing": "FAIL_QOR_REGRESSION_OBSERVED_IN_THIS_FRESH_RUN",
+    "registered_neighbor_500mhz_signoff": "NOT_ACHIEVED",
+    "package_level_signoff": "NOT_EVALUATED",
+    "next": "ONE_CONTROLLED_PRE_COUNTER_BASELINE_REPLAY_BEFORE_ANY_NEW_RTL_EDIT",
+    "new_tag": "NO"
+  },
+  "evidence_index_correction": {
+    "original_manifest_sha256": "36D65FB8F6923EE63A172C24BBE2C6560DC72E7E4E3F9E498F10BF9088106E3E",
+    "corrected_manifest_sha256": "9DD246D7D5C1BC97217D20A45032F06AC82C33D4F976A5E8305F015C0E792A4C",
+    "correction": "Normalized evidence_files paths to run-relative paths and corrected remote target branch metadata. All 54 listed evidence files were reverified by byte count and SHA256; raw execution artifacts and RTL were unchanged.",
+    "corrected_at": "2026-09-30"
+  }
+}

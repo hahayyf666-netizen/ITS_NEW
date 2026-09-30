@@ -1,0 +1,93 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Wed Sep 30 11:43:10 2026
+# Process ID         : 11160
+# Current directory  : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify
+# Command line       : vivado.exe -mode batch -log C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\05_audit\current\80_feed_counter_20260930\20260930T022804Z_9d7510e75385\08_registered_neighbor_synth\hread_positive_query.log -journal C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\05_audit\current\80_feed_counter_20260930\20260930T022804Z_9d7510e75385\08_registered_neighbor_synth\hread_positive_query.jou -source C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\05_audit\current\79_postroute_explore_20260930\query_hread_address_positive.tcl
+# Log file           : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/05_audit/current/80_feed_counter_20260930/20260930T022804Z_9d7510e75385/08_registered_neighbor_synth/hread_positive_query.log
+# Journal file       : C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\05_audit\current\80_feed_counter_20260930\20260930T022804Z_9d7510e75385\08_registered_neighbor_synth\hread_positive_query.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 31022 MB
+# Total Virtual      : 47387 MB
+# Available Virtual  : 16468 MB
+#-----------------------------------------------------------
+INFO: [Common 17-1239] XILINX_LOCAL_USER_DATA is set to 'C:\Users\Fine\AppData\Local\Temp\step12f_vivado_user'.
+source {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\05_audit\current\79_postroute_explore_20260930\query_hread_address_positive.tcl}
+# set candidate_dcp $::env(STEP12F_CANDIDATE_DCP)
+# set report_dir $::env(STEP12F_POSTROUTE_EXPLORE_DIR)
+# set_param general.maxThreads 4
+# puts "P9_HREAD_ADDRESS_POSITIVE_QUERY_START"
+P9_HREAD_ADDRESS_POSITIVE_QUERY_START
+# puts "VIVADO_VERSION=[version -short]"
+VIVADO_VERSION=2025.2
+# puts "MAX_THREADS=[get_param general.maxThreads]"
+MAX_THREADS=4
+# open_checkpoint $candidate_dcp
+Command: open_checkpoint C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/05_audit/current/80_feed_counter_20260930/20260930T022804Z_9d7510e75385/08_registered_neighbor_synth/registered_neighbor_postroute.dcp
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.030 . Memory (MB): peak = 352.262 ; gain = 6.121
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.147 . Memory (MB): peak = 1701.508 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 4134 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 3 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2025.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Read ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.048 . Memory (MB): peak = 1734.191 ; gain = 4.625
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+INFO: [Designutils 20-5722] Start Reading Physical Databases.
+Reading placement.
+Read Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.054 . Memory (MB): peak = 2310.098 ; gain = 0.000
+Reading placer database...
+Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.023 . Memory (MB): peak = 2310.098 ; gain = 0.000
+Read PlaceDB: Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2371.141 ; gain = 61.043
+Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 2371.141 ; gain = 0.000
+Reading routing.
+Read RouteStorage: Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 2803.000 ; gain = 431.859
+Read Physdb Files: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2803.000 ; gain = 492.902
+Restored from archive | CPU: 7.000000 secs | Memory: 0.000000 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2803.000 ; gain = 492.902
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.015 . Memory (MB): peak = 2803.000 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1196 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 320 instances
+  IBUF => IBUF (IBUFCTRL, INBUF): 2 instances
+  RAM256X1D => RAM256X1D (MUXF7(x4), MUXF8(x2), RAMD64E(x8)): 32 instances
+  RAM64M => RAM64M (RAMD64E(x4)): 320 instances
+  RAM64M8 => RAM64M8 (RAMD64E(x8)): 521 instances
+  RAM64X1D => RAM64X1D (RAMD64E(x2)): 1 instance 
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2025.2 (64-bit) build 6299465
+open_checkpoint: Time (s): cpu = 00:00:36 ; elapsed = 00:00:35 . Memory (MB): peak = 2803.000 ; gain = 2468.070
+# set addr_q [get_pins -hier -quiet -regexp {.*kernel_h_rd_addr_q_reg.*/Q$}]
+# set ram_cells [get_cells -hier -quiet -filter {REF_NAME == RAMD64E}]
+# set response_d [get_pins -hier -quiet -regexp {.*kernel_h_rd_data(_tail)?_q_reg.*/D$}]
+# puts "HREAD_ADDR_Q_PINS=[llength $addr_q] RAMD64E_CELLS=[llength $ram_cells] RESPONSE_D_PINS=[llength $response_d]"
+HREAD_ADDR_Q_PINS=59 RAMD64E_CELLS=5706 RESPONSE_D_PINS=128
+# if {[llength $addr_q] == 0 || [llength $ram_cells] == 0 || [llength $response_d] == 0} {
+#     error "H-read address positive control has an empty object set"
+# }
+# report_timing -delay_type max -from $addr_q -through $ram_cells -to $response_d \
+#     -max_paths 20 -file [file join $report_dir hread_address_through_ramd64e_to_response.rpt]
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -through_pins  -to_pins  -max_paths 20 -nworst 1 -delay_type max -sort_by slack.
+report_timing: Time (s): cpu = 00:00:26 ; elapsed = 00:00:10 . Memory (MB): peak = 2931.570 ; gain = 128.570
+# close_design
+# puts "P9_HREAD_ADDRESS_POSITIVE_QUERY_DONE"
+P9_HREAD_ADDRESS_POSITIVE_QUERY_DONE
+INFO: [Common 17-206] Exiting Vivado at Wed Sep 30 11:44:22 2026...

@@ -1,0 +1,1319 @@
+Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+Start time: 10:28:10 on Sep 30,2026
+vlog -sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\02_rtl\rtl\its_simple_ram.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\02_rtl\rtl\its_input_cache_bank.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\02_rtl\rtl\unified_p4_kernel.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\02_rtl\rtl\bounded_lfnst_engine.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\02_rtl\rtl\unified_its_wrapper.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\02_rtl\rtl\its_unified_submission_top.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_p4_kernel_numeric_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_p4_kernel_throughput_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_p4_kernel_throughput_full_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_its_wrapper_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_its_wrapper_p3_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_p4_kernel_p4_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_p4_fifo_payload_reset_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_its_wrapper_numeric_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_its_final_adapter_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_its_sat10_wrapper_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\its_unified_submission_top_sat10_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\bounded_lfnst_engine_tb.sv -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\compile.log 
+-- Compiling module its_simple_ram
+-- Compiling module its_input_cache_bank
+-- Compiling module unified_p4_kernel
+-- Compiling module bounded_lfnst_engine
+-- Compiling module unified_its_wrapper
+-- Compiling module its_unified_submission_top
+-- Compiling module unified_p4_kernel_numeric_tb
+-- Compiling module unified_p4_kernel_throughput_tb
+-- Compiling module unified_p4_kernel_throughput_full_tb
+-- Compiling module unified_its_wrapper_tb
+-- Compiling module unified_its_wrapper_p3_tb
+-- Compiling module unified_p4_kernel_p4_tb
+-- Compiling module unified_p4_fifo_payload_reset_tb
+-- Compiling module unified_its_wrapper_numeric_tb
+-- Compiling module unified_its_final_adapter_tb
+-- Compiling module unified_its_sat10_wrapper_tb
+-- Compiling module its_unified_submission_top_sat10_tb
+-- Compiling module bounded_lfnst_engine_tb
+
+Top level modules:
+	unified_p4_kernel_numeric_tb
+	unified_p4_kernel_throughput_tb
+	unified_p4_kernel_throughput_full_tb
+	unified_its_wrapper_tb
+	unified_its_wrapper_p3_tb
+	unified_p4_kernel_p4_tb
+	unified_p4_fifo_payload_reset_tb
+	unified_its_wrapper_numeric_tb
+	unified_its_final_adapter_tb
+	unified_its_sat10_wrapper_tb
+	its_unified_submission_top_sat10_tb
+	bounded_lfnst_engine_tb
+End time: 10:28:10 on Sep 30,2026, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_p4_kernel_numeric_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\gate_b_kernel_numeric.log -do "run -all; quit -f" 
+# Start time: 10:28:12 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_p4_kernel_numeric_tb(fast)
+# run -all
+# GATE_B_NUMERIC_TB_PASS cases=156
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_p4_kernel_numeric_tb.sv(196)
+#    Time: 8766 ns  Iteration: 1  Instance: /unified_p4_kernel_numeric_tb
+# End time: 10:28:13 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_p4_kernel_throughput_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\gate_b_vector_ii.log -do "run -all; quit -f" 
+# Start time: 10:28:14 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_p4_kernel_throughput_tb(fast)
+# run -all
+# GATE_B_VECTOR_II_PASS type=0 size=4 ii=1 vectors=8
+# GATE_B_VECTOR_II_PASS type=0 size=8 ii=2 vectors=8
+# GATE_B_VECTOR_II_PASS type=0 size=16 ii=4 vectors=8
+# GATE_B_VECTOR_II_PASS type=0 size=32 ii=8 vectors=8
+# GATE_B_VECTOR_II_PASS type=0 size=64 ii=16 vectors=8
+# GATE_B_VECTOR_II_PASS type=1 size=32 ii=8 vectors=8
+# GATE_B_VECTOR_II_PASS type=2 size=32 ii=8 vectors=8
+# GATE_B_VECTOR_II_TB_PASS modes=7
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_p4_kernel_throughput_tb.sv(153)
+#    Time: 1083001 ps  Iteration: 0  Instance: /unified_p4_kernel_throughput_tb
+# End time: 10:28:15 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_p4_kernel_throughput_full_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\gate_f_vector_ii.log -do "run -all; quit -f" 
+# Start time: 10:28:16 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_p4_kernel_throughput_full_tb(fast)
+# run -all
+# GATE_F_VECTOR_II_PASS type=0 size=4 ii=1 vectors=8
+# GATE_F_VECTOR_II_PASS type=0 size=8 ii=2 vectors=8
+# GATE_F_VECTOR_II_PASS type=0 size=16 ii=4 vectors=8
+# GATE_F_VECTOR_II_PASS type=0 size=32 ii=8 vectors=8
+# GATE_F_VECTOR_II_PASS type=0 size=64 ii=16 vectors=8
+# GATE_F_VECTOR_II_PASS type=1 size=4 ii=1 vectors=8
+# GATE_F_VECTOR_II_PASS type=1 size=8 ii=2 vectors=8
+# GATE_F_VECTOR_II_PASS type=1 size=16 ii=4 vectors=8
+# GATE_F_VECTOR_II_PASS type=1 size=32 ii=8 vectors=8
+# GATE_F_VECTOR_II_PASS type=2 size=4 ii=1 vectors=8
+# GATE_F_VECTOR_II_PASS type=2 size=8 ii=2 vectors=8
+# GATE_F_VECTOR_II_PASS type=2 size=16 ii=4 vectors=8
+# GATE_F_VECTOR_II_PASS type=2 size=32 ii=8 vectors=8
+# GATE_F_VECTOR_II_TB_PASS modes=13
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_p4_kernel_throughput_full_tb.sv(162)
+#    Time: 1539001 ps  Iteration: 0  Instance: /unified_p4_kernel_throughput_full_tb
+# End time: 10:28:17 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_its_wrapper_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\gate_c_wrapper_smoke.log -do "run -all; quit -f" 
+# Start time: 10:28:18 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_its_wrapper_tb(fast)
+# run -all
+# GATE_C_WRAPPER_TB_PASS beats=16/16 done=1/1
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_its_wrapper_tb.sv(158)
+#    Time: 5057 ns  Iteration: 1  Instance: /unified_its_wrapper_tb
+# End time: 10:28:19 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_its_wrapper_p3_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\p3_vwrite_contract.log -do "run -all; quit -f" 
+# Start time: 10:28:20 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_its_wrapper_p3_tb(fast)
+# run -all
+# P3_VWRITE_TB_PASS commands=16 commits=16 last_commit_cycle=177 outputs=16
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_its_wrapper_p3_tb.sv(164)
+#    Time: 2851 ns  Iteration: 1  Instance: /unified_its_wrapper_p3_tb
+# End time: 10:28:21 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_p4_kernel_p4_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\p4_stage0_issue_contract.log -do "run -all; quit -f" 
+# Start time: 10:28:22 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_p4_kernel_p4_tb(fast)
+# run -all
+# GATE_F_P4_STAGE0_TB_PASS vectors=16 descriptors=16 captures=16 releases=16
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_p4_kernel_p4_tb.sv(214)
+#    Time: 43001 ps  Iteration: 0  Instance: /unified_p4_kernel_p4_tb
+# End time: 10:28:22 on Sep 30,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_p4_fifo_payload_reset_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\p4_fifo_payload_reset.log -do "run -all; quit -f" 
+# Start time: 10:28:23 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_p4_fifo_payload_reset_tb(fast)
+# run -all
+# P4_FIFO_PAYLOAD_RESET_PASS inflight_reset=1 queued_nonzero_reset=1 stale_outputs=0
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_p4_fifo_payload_reset_tb.sv(160)
+#    Time: 145001 ps  Iteration: 0  Instance: /unified_p4_fifo_payload_reset_tb
+# End time: 10:28:24 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_its_wrapper_numeric_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\gate_c_wrapper_numeric.log -do "run -all; quit -f" 
+# Start time: 10:28:25 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_its_wrapper_numeric_tb(fast)
+# run -all
+# GATE_C_NUMERIC_TB_PASS cases=369
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_its_wrapper_numeric_tb.sv(179)
+#    Time: 1470667 ns  Iteration: 1  Instance: /unified_its_wrapper_numeric_tb
+# End time: 10:28:28 on Sep 30,2026, Elapsed time: 0:00:03
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_its_final_adapter_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\sat10_adapter_exhaustive.log -do "run -all; quit -f" 
+# Start time: 10:28:29 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_its_final_adapter_tb(fast)
+# run -all
+# SAT10_ADAPTER_BOUNDARY_PASS values=-513,-512,-511,510,511,512
+# SAT10_ADAPTER_EXHAUSTIVE_PASS values=65536
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_its_final_adapter_tb.sv(78)
+#    Time: 0 ps  Iteration: 0  Instance: /unified_its_final_adapter_tb/dut/u_unified_p4_kernel
+# End time: 10:28:30 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_its_sat10_wrapper_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\sat10_wrapper_boundary.log -do "run -all; quit -f" 
+# Start time: 10:28:31 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_its_sat10_wrapper_tb(fast)
+# run -all
+# SAT10_REAL_PENDING_STALL_PASS cycles=80
+# SAT10_WRAPPER_BOUNDARY_PASS cases=3 beats=16
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_its_sat10_wrapper_tb.sv(196)
+#    Time: 9430 ns  Iteration: 1  Instance: /unified_its_sat10_wrapper_tb
+# End time: 10:28:32 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.its_unified_submission_top_sat10_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\sat10_submission_top.log -do "run -all; quit -f" 
+# Start time: 10:28:33 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.its_unified_submission_top_sat10_tb(fast)
+# run -all
+# SAT10_SUBMISSION_TOP_PASS tus=2 beats=8 done=2 observed_stall_cycles=80
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/its_unified_submission_top_sat10_tb.sv(142)
+#    Time: 4626 ns  Iteration: 1  Instance: /its_unified_submission_top_sat10_tb
+# End time: 10:28:34 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.bounded_lfnst_engine_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\lfnst_engine_specialty.log -do "run -all; quit -f" 
+# Start time: 10:28:35 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.bounded_lfnst_engine_tb(fast)
+# run -all
+# LFNST_ENGINE_TB_PASS cases=1088
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/bounded_lfnst_engine_tb.sv(136)
+#    Time: 41350 ns  Iteration: 1  Instance: /bounded_lfnst_engine_tb
+# End time: 10:28:36 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_its_wrapper_numeric_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\normal\lfnst_wrapper_specialty.log -do "run -all; quit -f" -gVECTOR_FILE=lfnst_wrapper_vectors.txt 
+# Start time: 10:28:37 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_its_wrapper_numeric_tb(fast)
+# run -all
+# GATE_C_NUMERIC_TB_PASS cases=388
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_its_wrapper_numeric_tb.sv(179)
+#    Time: 1098185 ns  Iteration: 1  Instance: /unified_its_wrapper_numeric_tb
+# End time: 10:28:39 on Sep 30,2026, Elapsed time: 0:00:02
+# Errors: 0, Warnings: 0
+Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+Start time: 10:28:40 on Sep 30,2026
+vlog -sv "+define+SYNTHESIS" C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\02_rtl\rtl\its_simple_ram.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\02_rtl\rtl\its_input_cache_bank.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\02_rtl\rtl\unified_p4_kernel.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\02_rtl\rtl\bounded_lfnst_engine.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\02_rtl\rtl\unified_its_wrapper.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\02_rtl\rtl\its_unified_submission_top.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_p4_kernel_numeric_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_p4_kernel_throughput_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_p4_kernel_throughput_full_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_its_wrapper_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_its_wrapper_p3_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_p4_kernel_p4_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_p4_fifo_payload_reset_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_its_wrapper_numeric_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_its_final_adapter_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\unified_its_sat10_wrapper_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\its_unified_submission_top_sat10_tb.sv C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\03_verification\tb\bounded_lfnst_engine_tb.sv -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\compile.log 
+-- Compiling module its_simple_ram
+-- Compiling module its_input_cache_bank
+-- Compiling module unified_p4_kernel
+-- Compiling module bounded_lfnst_engine
+-- Compiling module unified_its_wrapper
+-- Compiling module its_unified_submission_top
+-- Compiling module unified_p4_kernel_numeric_tb
+-- Compiling module unified_p4_kernel_throughput_tb
+-- Compiling module unified_p4_kernel_throughput_full_tb
+-- Compiling module unified_its_wrapper_tb
+-- Compiling module unified_its_wrapper_p3_tb
+-- Compiling module unified_p4_kernel_p4_tb
+-- Compiling module unified_p4_fifo_payload_reset_tb
+-- Compiling module unified_its_wrapper_numeric_tb
+-- Compiling module unified_its_final_adapter_tb
+-- Compiling module unified_its_sat10_wrapper_tb
+-- Compiling module its_unified_submission_top_sat10_tb
+-- Compiling module bounded_lfnst_engine_tb
+
+Top level modules:
+	unified_p4_kernel_numeric_tb
+	unified_p4_kernel_throughput_tb
+	unified_p4_kernel_throughput_full_tb
+	unified_its_wrapper_tb
+	unified_its_wrapper_p3_tb
+	unified_p4_kernel_p4_tb
+	unified_p4_fifo_payload_reset_tb
+	unified_its_wrapper_numeric_tb
+	unified_its_final_adapter_tb
+	unified_its_sat10_wrapper_tb
+	its_unified_submission_top_sat10_tb
+	bounded_lfnst_engine_tb
+End time: 10:28:40 on Sep 30,2026, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_p4_kernel_numeric_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\gate_b_kernel_numeric.log -do "run -all; quit -f" 
+# Start time: 10:28:41 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_p4_kernel_numeric_tb(fast)
+# run -all
+# GATE_B_NUMERIC_TB_PASS cases=156
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_p4_kernel_numeric_tb.sv(196)
+#    Time: 8766 ns  Iteration: 1  Instance: /unified_p4_kernel_numeric_tb
+# End time: 10:28:42 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_p4_kernel_throughput_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\gate_b_vector_ii.log -do "run -all; quit -f" 
+# Start time: 10:28:43 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_p4_kernel_throughput_tb(fast)
+# run -all
+# GATE_B_VECTOR_II_PASS type=0 size=4 ii=1 vectors=8
+# GATE_B_VECTOR_II_PASS type=0 size=8 ii=2 vectors=8
+# GATE_B_VECTOR_II_PASS type=0 size=16 ii=4 vectors=8
+# GATE_B_VECTOR_II_PASS type=0 size=32 ii=8 vectors=8
+# GATE_B_VECTOR_II_PASS type=0 size=64 ii=16 vectors=8
+# GATE_B_VECTOR_II_PASS type=1 size=32 ii=8 vectors=8
+# GATE_B_VECTOR_II_PASS type=2 size=32 ii=8 vectors=8
+# GATE_B_VECTOR_II_TB_PASS modes=7
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_p4_kernel_throughput_tb.sv(153)
+#    Time: 1083001 ps  Iteration: 0  Instance: /unified_p4_kernel_throughput_tb
+# End time: 10:28:44 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_p4_kernel_throughput_full_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\gate_f_vector_ii.log -do "run -all; quit -f" 
+# Start time: 10:28:45 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_p4_kernel_throughput_full_tb(fast)
+# run -all
+# GATE_F_VECTOR_II_PASS type=0 size=4 ii=1 vectors=8
+# GATE_F_VECTOR_II_PASS type=0 size=8 ii=2 vectors=8
+# GATE_F_VECTOR_II_PASS type=0 size=16 ii=4 vectors=8
+# GATE_F_VECTOR_II_PASS type=0 size=32 ii=8 vectors=8
+# GATE_F_VECTOR_II_PASS type=0 size=64 ii=16 vectors=8
+# GATE_F_VECTOR_II_PASS type=1 size=4 ii=1 vectors=8
+# GATE_F_VECTOR_II_PASS type=1 size=8 ii=2 vectors=8
+# GATE_F_VECTOR_II_PASS type=1 size=16 ii=4 vectors=8
+# GATE_F_VECTOR_II_PASS type=1 size=32 ii=8 vectors=8
+# GATE_F_VECTOR_II_PASS type=2 size=4 ii=1 vectors=8
+# GATE_F_VECTOR_II_PASS type=2 size=8 ii=2 vectors=8
+# GATE_F_VECTOR_II_PASS type=2 size=16 ii=4 vectors=8
+# GATE_F_VECTOR_II_PASS type=2 size=32 ii=8 vectors=8
+# GATE_F_VECTOR_II_TB_PASS modes=13
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_p4_kernel_throughput_full_tb.sv(162)
+#    Time: 1539001 ps  Iteration: 0  Instance: /unified_p4_kernel_throughput_full_tb
+# End time: 10:28:46 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_its_wrapper_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\gate_c_wrapper_smoke.log -do "run -all; quit -f" 
+# Start time: 10:28:47 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_its_wrapper_tb(fast)
+# run -all
+# GATE_C_WRAPPER_TB_PASS beats=16/16 done=1/1
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_its_wrapper_tb.sv(158)
+#    Time: 5057 ns  Iteration: 1  Instance: /unified_its_wrapper_tb
+# End time: 10:28:47 on Sep 30,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_its_wrapper_p3_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\p3_vwrite_contract.log -do "run -all; quit -f" 
+# Start time: 10:28:48 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_its_wrapper_p3_tb(fast)
+# run -all
+# P3_VWRITE_TB_PASS commands=16 commits=16 last_commit_cycle=177 outputs=16
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_its_wrapper_p3_tb.sv(164)
+#    Time: 2851 ns  Iteration: 1  Instance: /unified_its_wrapper_p3_tb
+# End time: 10:28:49 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_p4_kernel_p4_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\p4_stage0_issue_contract.log -do "run -all; quit -f" 
+# Start time: 10:28:50 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_p4_kernel_p4_tb(fast)
+# run -all
+# GATE_F_P4_STAGE0_TB_PASS vectors=16 descriptors=16 captures=16 releases=16
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_p4_kernel_p4_tb.sv(214)
+#    Time: 43001 ps  Iteration: 0  Instance: /unified_p4_kernel_p4_tb
+# End time: 10:28:51 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_p4_fifo_payload_reset_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\p4_fifo_payload_reset.log -do "run -all; quit -f" 
+# Start time: 10:28:52 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_p4_fifo_payload_reset_tb(fast)
+# run -all
+# P4_FIFO_PAYLOAD_RESET_PASS inflight_reset=1 queued_nonzero_reset=1 stale_outputs=0
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_p4_fifo_payload_reset_tb.sv(160)
+#    Time: 145001 ps  Iteration: 0  Instance: /unified_p4_fifo_payload_reset_tb
+# End time: 10:28:53 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_its_wrapper_numeric_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\gate_c_wrapper_numeric.log -do "run -all; quit -f" 
+# Start time: 10:28:54 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_its_wrapper_numeric_tb(fast)
+# run -all
+# GATE_C_NUMERIC_TB_PASS cases=369
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_its_wrapper_numeric_tb.sv(179)
+#    Time: 1470667 ns  Iteration: 1  Instance: /unified_its_wrapper_numeric_tb
+# End time: 10:28:57 on Sep 30,2026, Elapsed time: 0:00:03
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_its_final_adapter_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\sat10_adapter_exhaustive.log -do "run -all; quit -f" 
+# Start time: 10:28:58 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_its_final_adapter_tb(fast)
+# run -all
+# SAT10_ADAPTER_BOUNDARY_PASS values=-513,-512,-511,510,511,512
+# SAT10_ADAPTER_EXHAUSTIVE_PASS values=65536
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_its_final_adapter_tb.sv(78)
+#    Time: 0 ps  Iteration: 0  Instance: /unified_its_final_adapter_tb/dut/u_unified_p4_kernel
+# End time: 10:28:59 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_its_sat10_wrapper_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\sat10_wrapper_boundary.log -do "run -all; quit -f" 
+# Start time: 10:29:00 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_its_sat10_wrapper_tb(fast)
+# run -all
+# SAT10_REAL_PENDING_STALL_PASS cycles=80
+# SAT10_WRAPPER_BOUNDARY_PASS cases=3 beats=16
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_its_sat10_wrapper_tb.sv(196)
+#    Time: 9430 ns  Iteration: 1  Instance: /unified_its_sat10_wrapper_tb
+# End time: 10:29:01 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.its_unified_submission_top_sat10_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\sat10_submission_top.log -do "run -all; quit -f" 
+# Start time: 10:29:01 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.its_unified_submission_top_sat10_tb(fast)
+# run -all
+# SAT10_SUBMISSION_TOP_PASS tus=2 beats=8 done=2 observed_stall_cycles=80
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/its_unified_submission_top_sat10_tb.sv(142)
+#    Time: 4626 ns  Iteration: 1  Instance: /its_unified_submission_top_sat10_tb
+# End time: 10:29:02 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.bounded_lfnst_engine_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\lfnst_engine_specialty.log -do "run -all; quit -f" 
+# Start time: 10:29:03 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.bounded_lfnst_engine_tb(fast)
+# run -all
+# LFNST_ENGINE_TB_PASS cases=1088
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/bounded_lfnst_engine_tb.sv(136)
+#    Time: 41350 ns  Iteration: 1  Instance: /bounded_lfnst_engine_tb
+# End time: 10:29:04 on Sep 30,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 2020.4
+
+# vsim -c work.unified_its_wrapper_numeric_tb -l C:\Users\Fine\AppData\Local\Temp\sat10_functional_20260930T022804Z_9d7510e75385\synthesis\lfnst_wrapper_specialty.log -do "run -all; quit -f" -gVECTOR_FILE=lfnst_wrapper_vectors.txt 
+# Start time: 10:29:05 on Sep 30,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.unified_its_wrapper_numeric_tb(fast)
+# run -all
+# GATE_C_NUMERIC_TB_PASS cases=388
+# ** Note: $finish    : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/03_verification/tb/unified_its_wrapper_numeric_tb.sv(179)
+#    Time: 1098185 ns  Iteration: 1  Instance: /unified_its_wrapper_numeric_tb
+# End time: 10:29:07 on Sep 30,2026, Elapsed time: 0:00:02
+# Errors: 0, Warnings: 0
+{
+  "schema": "step12f.coverage.modelsim_run.v1",
+  "status": "PASS",
+  "simulator": "ModelSim SE-64 2020.4",
+  "simulator_path": "D:\\software\\Modelsim\\win64\\vsim.exe",
+  "license_path": "D:\\software\\Modelsim\\LICENSE.TXT",
+  "work_root": "C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385",
+  "source_hashes": {
+    "its_simple_ram": "DD842C57DEABDF3AD3C75DC038A70CBB871E2D3B725D3108597B58846947845D",
+    "its_input_cache_bank": "2476D5FBC1D3663515137F8768EC7F16A689B3150E4527D78B5743DF3E7A05D7",
+    "unified_p4_kernel": "AB79E6AF55F42E76B9B56E86C628E57A93F477E40DDF21F7298DDB25D4541064",
+    "bounded_lfnst_engine": "560408512493C838A7F40D4D4EF8E5D1594FFD63F4E0A247E56473C225D9BF78",
+    "bounded_lfnst_engine_tb": "EC7BF615953BE5752D30404A6316D845952E3913826600E33254051C161B4907",
+    "lfnst_vector_generator": "ADD837D074661444078A1342F0C614BD01CFBDB08B983AC706DA9002B246EB55",
+    "lfnst_wrapper_vector_generator": "05250C34586CB0DD1425F7ED6253BD7273A51CA42604552BBA3BFAF9F3CBC243",
+    "unified_its_wrapper": "D87CA77B58CBDB640C4F502017B271AD8D5F812ABEEA84483855EDB06580AC6C",
+    "its_unified_submission_top": "39CAF8E3BBA2992FFAD8C2407F9AD10341E2AA8C03EA0A07F5C0A0E6744436D1",
+    "gate_b_tb": "85A466EC07F195D5C1788A30A400957C237174BA77A3B9705DE520031CC3E198",
+    "gate_b_throughput_tb": "793C6997C499ED40A91A8B9986BBA12958DDB967D06E550DA5CC204457CEEDD6",
+    "gate_f_throughput_tb": "E9CFBFF26BA6003017C5C69FB2ED563CB0448BB509759DA86E716023B274D180",
+    "gate_c_smoke_tb": "37E4D5D62AA4A9DFB592D763338D58FD33E419FC3337427F5A4BD85F46E0E2C9",
+    "p3_vwrite_tb": "66ABDAD10AB9370CA50574A35A7567905CA89A771CD3D7F631C318A7592EA643",
+    "p4_stage0_tb": "1D7FA2BC9B4C7936D508CB79B30E97A7A6DEF7A267A8C9DA029C6A88B7036722",
+    "p4_fifo_payload_reset_tb": "04268398C3637DB038D5DD6A9EE85876211BF331BE562635BCA81E337EA6157C",
+    "gate_c_numeric_tb": "058A530E8C17ACBA2A453A676A6CBE92BC7B3463C68B38245F2ADF279B636514",
+    "sat10_adapter_tb": "F71E276160F07BC7E610BDEB3D1B175C901FEF32420DE24D443E3AE10114A082",
+    "sat10_wrapper_tb": "B3CE421ECDFB28618FA5E69C45DE8A6E5F6D6BAD3DCDEF8D54464ACE861B0404",
+    "sat10_submission_top_tb": "BDFE7C57B05CA37350C5B4698EACBC53E510A0EEE117BE6A98B4FC00A1173A54"
+  },
+  "vector_sets": {
+    "gate_b": {
+      "cases": 156,
+      "one_d_modes": 13,
+      "stages": 2,
+      "patterns_per_stage": 6,
+      "throughput_modes_legacy": 7,
+      "throughput_modes_full": 13
+    },
+    "gate_c": {
+      "cases": 369,
+      "beats": 45636,
+      "tuple_source": "05_audit/current/27/step12d_engineering/LEGAL_TRANSFORM_MATRIX.json",
+      "includes_lfnst": true,
+      "includes_rectangles": true,
+      "sparse_inputs": true,
+      "output_adapter": "SAT10",
+      "backpressure": true
+    },
+    "lfnst_specialty": {
+      "engine_cases": 1088,
+      "engine_basis_cases": 1024,
+      "wrapper_cases": 388,
+      "wrapper_beats": 6724,
+      "all_gather_terms": true,
+      "all_set_index": true
+    }
+  },
+  "runs": [
+    {
+      "mode": "normal",
+      "compile": "PASS",
+      "gate_b_kernel_numeric": "PASS_156_CASES",
+      "gate_b_vector_ii_legacy": "PASS_7_MODES",
+      "gate_f_vector_ii": "PASS_13_MODES",
+      "gate_c_wrapper_smoke": "PASS",
+      "p3_vwrite_contract": "PASS",
+      "p4_stage0_issue_contract": "PASS_16_N4_VECTORS_SLOT_RELEASE",
+      "p4_fifo_payload_reset": "PASS_INFLIGHT_AND_QUEUED_RESET_NO_STALE_OUTPUT",
+      "gate_c_wrapper_numeric": "PASS_369_CASES",
+      "sat10_adapter_exhaustive": "PASS_65536_VALUES",
+      "sat10_wrapper_boundary": "PASS_3_CASES_16_BEATS",
+      "sat10_submission_top": "PASS_2_TUS_8_BEATS_MIN_8_REAL_PENDING_STALL_CYCLES",
+      "lfnst_engine_specialty": "PASS_1088_CASES",
+      "lfnst_wrapper_specialty": "PASS_388_CASES",
+      "gate_c_beats": 45636,
+      "logs": [
+        {
+          "name": "compile.log",
+          "sha256": "F19FD9D3D4B51BB41ED0853215D28D0B8A4A397EB8349B1163BB12392947A003"
+        },
+        {
+          "name": "gate_b_kernel_numeric.log",
+          "sha256": "5B749F97759D2C9085F5808C8A3CBF17CB0378228E22A0A018B7F962C79E2D60"
+        },
+        {
+          "name": "gate_b_vector_ii.log",
+          "sha256": "8B7BE2418FF55DFA67EA92A2293CB0A9760B354DDAC5B3098AD0107D4CA4709F"
+        },
+        {
+          "name": "gate_f_vector_ii.log",
+          "sha256": "035FFB1062965490F1CD09F803E4DE4AB3C39F1875205D916AB9633D7318082A"
+        },
+        {
+          "name": "gate_c_wrapper_smoke.log",
+          "sha256": "402899746177AF32383611BF5778B723FA4B4F647EBBF02F955544BA6E820A96"
+        },
+        {
+          "name": "p3_vwrite_contract.log",
+          "sha256": "82C56CCEEF3A42B9ADD7B3BFD0C87BDC6DF4CF9D68CFC461CB8A7A03D3CCA762"
+        },
+        {
+          "name": "p4_stage0_issue_contract.log",
+          "sha256": "C694B7416DB4E9510EF62281F4F586D153A2E3188A97665AD3F6645C4A91BC90"
+        },
+        {
+          "name": "p4_fifo_payload_reset.log",
+          "sha256": "B0B8DBEFD1000BF7A16FAD04061A8B9D83B7D48426B4728378CC23D40A9D5DC4"
+        },
+        {
+          "name": "gate_c_wrapper_numeric.log",
+          "sha256": "1878F349C5E5A8C66D623ED03F1C6B4AC1A0118F4EAC59D63EAA5EBE3EFE3A7A"
+        },
+        {
+          "name": "sat10_adapter_exhaustive.log",
+          "sha256": "66414091FFA6A7741C0AC7A5E661B9B47BD54B373DA0284502E04F0A3EDC2E95"
+        },
+        {
+          "name": "sat10_wrapper_boundary.log",
+          "sha256": "91B0559F25FE05111B640DFF32339333A64E3D8104B279A1E27F154644F3F72A"
+        },
+        {
+          "name": "sat10_submission_top.log",
+          "sha256": "9F423D0EA2F1B54FC4ED01C511506C1F1B0A39DCD535E4A914F2DF4A917919A2"
+        },
+        {
+          "name": "lfnst_engine_specialty.log",
+          "sha256": "690B87773190B56A1C39F842D30A575812D0DD00D5FD126CEB3550E5636DFE06"
+        },
+        {
+          "name": "lfnst_wrapper_specialty.log",
+          "sha256": "C8066DFA55A5E701BA40F8E7EDEC224808FEC968FDB2B05D44D4733274472202"
+        }
+      ]
+    },
+    {
+      "mode": "synthesis",
+      "compile": "PASS",
+      "gate_b_kernel_numeric": "PASS_156_CASES",
+      "gate_b_vector_ii_legacy": "PASS_7_MODES",
+      "gate_f_vector_ii": "PASS_13_MODES",
+      "gate_c_wrapper_smoke": "PASS",
+      "p3_vwrite_contract": "PASS",
+      "p4_stage0_issue_contract": "PASS_16_N4_VECTORS_SLOT_RELEASE",
+      "p4_fifo_payload_reset": "PASS_INFLIGHT_AND_QUEUED_RESET_NO_STALE_OUTPUT",
+      "gate_c_wrapper_numeric": "PASS_369_CASES",
+      "sat10_adapter_exhaustive": "PASS_65536_VALUES",
+      "sat10_wrapper_boundary": "PASS_3_CASES_16_BEATS",
+      "sat10_submission_top": "PASS_2_TUS_8_BEATS_MIN_8_REAL_PENDING_STALL_CYCLES",
+      "lfnst_engine_specialty": "PASS_1088_CASES",
+      "lfnst_wrapper_specialty": "PASS_388_CASES",
+      "gate_c_beats": 45636,
+      "logs": [
+        {
+          "name": "compile.log",
+          "sha256": "EF6A3878FFC713FE2B5554310BEDF8E8A9905C06675383183C70F82F97DC86FD"
+        },
+        {
+          "name": "gate_b_kernel_numeric.log",
+          "sha256": "21CA204CF21CCCCA7F2BC9ED3A996E269441206695EA5478BB0D0984C1FC6776"
+        },
+        {
+          "name": "gate_b_vector_ii.log",
+          "sha256": "B5B36FFB0819A3D8D4A4F742CBBD745A4588C371726B460FF77290DB55BE8402"
+        },
+        {
+          "name": "gate_f_vector_ii.log",
+          "sha256": "5D84893342AD558FB6EFF64E767EBE67BF918731E6F1BDD7558DE21E59C8FA03"
+        },
+        {
+          "name": "gate_c_wrapper_smoke.log",
+          "sha256": "96731C90F47E8FF0C89C71C7C14B8CBA57BEC46FFF63FF7BDC7DB737810899FB"
+        },
+        {
+          "name": "p3_vwrite_contract.log",
+          "sha256": "B39832BABAC0F7F1DE4DDF1B5DE09470A12BF2A7F6D78C6264FD2C359C749609"
+        },
+        {
+          "name": "p4_stage0_issue_contract.log",
+          "sha256": "8C53E3A30CC64AE7B2FB9C0A0A45240D726E6A3997C6FC08722C8C784B3A0C13"
+        },
+        {
+          "name": "p4_fifo_payload_reset.log",
+          "sha256": "4949C95829785348704EDBF9CE82D1C85D3161252597018C36D58F105D5C9E1F"
+        },
+        {
+          "name": "gate_c_wrapper_numeric.log",
+          "sha256": "2AA50BF79F187961D5072FA48FDB45AD50FD431C57ECA119FA6EE1F562CFD38D"
+        },
+        {
+          "name": "sat10_adapter_exhaustive.log",
+          "sha256": "8C9602F77B39994606F37201242F6D5AE3D47774E13A823B186A5EE480F89C5C"
+        },
+        {
+          "name": "sat10_wrapper_boundary.log",
+          "sha256": "68B7169D02F467D72EAF13F1B117371C76219B041BA8963B0FB99A95C8416D07"
+        },
+        {
+          "name": "sat10_submission_top.log",
+          "sha256": "4B50CEB212C6DB03929973DB1C2631A8D920B4F49FBFEC105133E8B9F5F7E8AA"
+        },
+        {
+          "name": "lfnst_engine_specialty.log",
+          "sha256": "762FC8D636DCB6EA3CBC065031AD28EF6FE456DBC6C233FB9676E2AC53ADE6ED"
+        },
+        {
+          "name": "lfnst_wrapper_specialty.log",
+          "sha256": "F2E7B3B5E607C606007EAA5C76C2047B61589873AF0FBD8548BDB61772020917"
+        }
+      ]
+    }
+  ],
+  "profile": {
+    "name": "contest_engineering_vtm10_sat10_v2",
+    "adapter": "SAT10",
+    "decision_class": "PROVISIONAL_ENGINEERING_DECISION",
+    "official_equivalence": "NOT_PROVEN",
+    "source": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\step12d_engineering\\profiles\\contest_engineering_vtm10_sat10_v2.json",
+    "sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746"
+  },
+  "tested_source_commit": "9d7510e75385c3b83cee7afd799c9e6db0b4d95e",
+  "compile_records": [
+    {
+      "mode": "normal",
+      "command": "\"D:\\software\\Modelsim\\win64\\vlog.exe\" -sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\02_rtl\\rtl\\its_simple_ram.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\02_rtl\\rtl\\its_input_cache_bank.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\02_rtl\\rtl\\unified_p4_kernel.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\02_rtl\\rtl\\bounded_lfnst_engine.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\02_rtl\\rtl\\unified_its_wrapper.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\02_rtl\\rtl\\its_unified_submission_top.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_p4_kernel_numeric_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_p4_kernel_throughput_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_p4_kernel_throughput_full_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_its_wrapper_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_its_wrapper_p3_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_p4_kernel_p4_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_p4_fifo_payload_reset_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_its_wrapper_numeric_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_its_final_adapter_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_its_sat10_wrapper_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\its_unified_submission_top_sat10_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\bounded_lfnst_engine_tb.sv -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\compile.log",
+      "exit_code": 0,
+      "log": "compile.log",
+      "log_sha256": "F19FD9D3D4B51BB41ED0853215D28D0B8A4A397EB8349B1163BB12392947A003"
+    },
+    {
+      "mode": "synthesis",
+      "command": "\"D:\\software\\Modelsim\\win64\\vlog.exe\" -sv +define+SYNTHESIS C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\02_rtl\\rtl\\its_simple_ram.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\02_rtl\\rtl\\its_input_cache_bank.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\02_rtl\\rtl\\unified_p4_kernel.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\02_rtl\\rtl\\bounded_lfnst_engine.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\02_rtl\\rtl\\unified_its_wrapper.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\02_rtl\\rtl\\its_unified_submission_top.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_p4_kernel_numeric_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_p4_kernel_throughput_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_p4_kernel_throughput_full_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_its_wrapper_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_its_wrapper_p3_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_p4_kernel_p4_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_p4_fifo_payload_reset_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_its_wrapper_numeric_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_its_final_adapter_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\unified_its_sat10_wrapper_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\its_unified_submission_top_sat10_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\03_verification\\tb\\bounded_lfnst_engine_tb.sv -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\compile.log",
+      "exit_code": 0,
+      "log": "compile.log",
+      "log_sha256": "EF6A3878FFC713FE2B5554310BEDF8E8A9905C06675383183C70F82F97DC86FD"
+    }
+  ],
+  "command_records": [
+    {
+      "mode": "normal",
+      "design": "unified_p4_kernel_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_numeric_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\gate_b_kernel_numeric.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_b_kernel_numeric.log",
+      "log_sha256": "5B749F97759D2C9085F5808C8A3CBF17CB0378228E22A0A018B7F962C79E2D60",
+      "pass_marker": "GATE_B_NUMERIC_TB_PASS cases=156"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_p4_kernel_throughput_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_throughput_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\gate_b_vector_ii.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_b_vector_ii.log",
+      "log_sha256": "8B7BE2418FF55DFA67EA92A2293CB0A9760B354DDAC5B3098AD0107D4CA4709F",
+      "pass_marker": "GATE_B_VECTOR_II_TB_PASS modes=7"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_p4_kernel_throughput_full_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_throughput_full_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\gate_f_vector_ii.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_f_vector_ii.log",
+      "log_sha256": "035FFB1062965490F1CD09F803E4DE4AB3C39F1875205D916AB9633D7318082A",
+      "pass_marker": "GATE_F_VECTOR_II_TB_PASS modes=13"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_wrapper_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\gate_c_wrapper_smoke.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_c_wrapper_smoke.log",
+      "log_sha256": "402899746177AF32383611BF5778B723FA4B4F647EBBF02F955544BA6E820A96",
+      "pass_marker": "GATE_C_WRAPPER_TB_PASS beats=16/16 done=1/1"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_wrapper_p3_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_p3_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\p3_vwrite_contract.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p3_vwrite_contract.log",
+      "log_sha256": "82C56CCEEF3A42B9ADD7B3BFD0C87BDC6DF4CF9D68CFC461CB8A7A03D3CCA762",
+      "pass_marker": "P3_VWRITE_TB_PASS"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_p4_kernel_p4_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_p4_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\p4_stage0_issue_contract.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p4_stage0_issue_contract.log",
+      "log_sha256": "C694B7416DB4E9510EF62281F4F586D153A2E3188A97665AD3F6645C4A91BC90",
+      "pass_marker": "GATE_F_P4_STAGE0_TB_PASS vectors=16 descriptors=16 captures=16 releases=16"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_p4_fifo_payload_reset_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_fifo_payload_reset_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\p4_fifo_payload_reset.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p4_fifo_payload_reset.log",
+      "log_sha256": "B0B8DBEFD1000BF7A16FAD04061A8B9D83B7D48426B4728378CC23D40A9D5DC4",
+      "pass_marker": "P4_FIFO_PAYLOAD_RESET_PASS inflight_reset=1 queued_nonzero_reset=1 stale_outputs=0"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_wrapper_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_numeric_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\gate_c_wrapper_numeric.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_c_wrapper_numeric.log",
+      "log_sha256": "1878F349C5E5A8C66D623ED03F1C6B4AC1A0118F4EAC59D63EAA5EBE3EFE3A7A",
+      "pass_marker": "GATE_C_NUMERIC_TB_PASS cases=369"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_final_adapter_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_final_adapter_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\sat10_adapter_exhaustive.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_adapter_exhaustive.log",
+      "log_sha256": "66414091FFA6A7741C0AC7A5E661B9B47BD54B373DA0284502E04F0A3EDC2E95",
+      "pass_marker": "SAT10_ADAPTER_EXHAUSTIVE_PASS values=65536"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_sat10_wrapper_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_sat10_wrapper_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\sat10_wrapper_boundary.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_wrapper_boundary.log",
+      "log_sha256": "91B0559F25FE05111B640DFF32339333A64E3D8104B279A1E27F154644F3F72A",
+      "pass_marker": "SAT10_WRAPPER_BOUNDARY_PASS cases=3 beats=16"
+    },
+    {
+      "mode": "normal",
+      "design": "its_unified_submission_top_sat10_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.its_unified_submission_top_sat10_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\sat10_submission_top.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_submission_top.log",
+      "log_sha256": "9F423D0EA2F1B54FC4ED01C511506C1F1B0A39DCD535E4A914F2DF4A917919A2",
+      "pass_marker": "SAT10_SUBMISSION_TOP_PASS tus=2 beats=8 done=2"
+    },
+    {
+      "mode": "normal",
+      "design": "bounded_lfnst_engine_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.bounded_lfnst_engine_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\lfnst_engine_specialty.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "lfnst_engine_specialty.log",
+      "log_sha256": "690B87773190B56A1C39F842D30A575812D0DD00D5FD126CEB3550E5636DFE06",
+      "pass_marker": "LFNST_ENGINE_TB_PASS cases=1088"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_wrapper_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_numeric_tb -gVECTOR_FILE=lfnst_wrapper_vectors.txt -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\normal\\lfnst_wrapper_specialty.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "lfnst_wrapper_specialty.log",
+      "log_sha256": "C8066DFA55A5E701BA40F8E7EDEC224808FEC968FDB2B05D44D4733274472202",
+      "pass_marker": "GATE_C_NUMERIC_TB_PASS cases=388"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_kernel_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_numeric_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\gate_b_kernel_numeric.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_b_kernel_numeric.log",
+      "log_sha256": "21CA204CF21CCCCA7F2BC9ED3A996E269441206695EA5478BB0D0984C1FC6776",
+      "pass_marker": "GATE_B_NUMERIC_TB_PASS cases=156"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_kernel_throughput_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_throughput_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\gate_b_vector_ii.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_b_vector_ii.log",
+      "log_sha256": "B5B36FFB0819A3D8D4A4F742CBBD745A4588C371726B460FF77290DB55BE8402",
+      "pass_marker": "GATE_B_VECTOR_II_TB_PASS modes=7"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_kernel_throughput_full_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_throughput_full_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\gate_f_vector_ii.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_f_vector_ii.log",
+      "log_sha256": "5D84893342AD558FB6EFF64E767EBE67BF918731E6F1BDD7558DE21E59C8FA03",
+      "pass_marker": "GATE_F_VECTOR_II_TB_PASS modes=13"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_wrapper_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\gate_c_wrapper_smoke.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_c_wrapper_smoke.log",
+      "log_sha256": "96731C90F47E8FF0C89C71C7C14B8CBA57BEC46FFF63FF7BDC7DB737810899FB",
+      "pass_marker": "GATE_C_WRAPPER_TB_PASS beats=16/16 done=1/1"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_wrapper_p3_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_p3_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\p3_vwrite_contract.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p3_vwrite_contract.log",
+      "log_sha256": "B39832BABAC0F7F1DE4DDF1B5DE09470A12BF2A7F6D78C6264FD2C359C749609",
+      "pass_marker": "P3_VWRITE_TB_PASS"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_kernel_p4_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_p4_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\p4_stage0_issue_contract.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p4_stage0_issue_contract.log",
+      "log_sha256": "8C53E3A30CC64AE7B2FB9C0A0A45240D726E6A3997C6FC08722C8C784B3A0C13",
+      "pass_marker": "GATE_F_P4_STAGE0_TB_PASS vectors=16 descriptors=16 captures=16 releases=16"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_fifo_payload_reset_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_fifo_payload_reset_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\p4_fifo_payload_reset.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p4_fifo_payload_reset.log",
+      "log_sha256": "4949C95829785348704EDBF9CE82D1C85D3161252597018C36D58F105D5C9E1F",
+      "pass_marker": "P4_FIFO_PAYLOAD_RESET_PASS inflight_reset=1 queued_nonzero_reset=1 stale_outputs=0"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_wrapper_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_numeric_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\gate_c_wrapper_numeric.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_c_wrapper_numeric.log",
+      "log_sha256": "2AA50BF79F187961D5072FA48FDB45AD50FD431C57ECA119FA6EE1F562CFD38D",
+      "pass_marker": "GATE_C_NUMERIC_TB_PASS cases=369"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_final_adapter_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_final_adapter_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\sat10_adapter_exhaustive.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_adapter_exhaustive.log",
+      "log_sha256": "8C9602F77B39994606F37201242F6D5AE3D47774E13A823B186A5EE480F89C5C",
+      "pass_marker": "SAT10_ADAPTER_EXHAUSTIVE_PASS values=65536"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_sat10_wrapper_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_sat10_wrapper_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\sat10_wrapper_boundary.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_wrapper_boundary.log",
+      "log_sha256": "68B7169D02F467D72EAF13F1B117371C76219B041BA8963B0FB99A95C8416D07",
+      "pass_marker": "SAT10_WRAPPER_BOUNDARY_PASS cases=3 beats=16"
+    },
+    {
+      "mode": "synthesis",
+      "design": "its_unified_submission_top_sat10_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.its_unified_submission_top_sat10_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\sat10_submission_top.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_submission_top.log",
+      "log_sha256": "4B50CEB212C6DB03929973DB1C2631A8D920B4F49FBFEC105133E8B9F5F7E8AA",
+      "pass_marker": "SAT10_SUBMISSION_TOP_PASS tus=2 beats=8 done=2"
+    },
+    {
+      "mode": "synthesis",
+      "design": "bounded_lfnst_engine_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.bounded_lfnst_engine_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\lfnst_engine_specialty.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "lfnst_engine_specialty.log",
+      "log_sha256": "762FC8D636DCB6EA3CBC065031AD28EF6FE456DBC6C233FB9676E2AC53ADE6ED",
+      "pass_marker": "LFNST_ENGINE_TB_PASS cases=1088"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_wrapper_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_numeric_tb -gVECTOR_FILE=lfnst_wrapper_vectors.txt -l C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20260930T022804Z_9d7510e75385\\synthesis\\lfnst_wrapper_specialty.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "lfnst_wrapper_specialty.log",
+      "log_sha256": "F2E7B3B5E607C606007EAA5C76C2047B61589873AF0FBD8548BDB61772020917",
+      "pass_marker": "GATE_C_NUMERIC_TB_PASS cases=388"
+    }
+  ]
+}
