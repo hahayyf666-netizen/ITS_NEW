@@ -1,0 +1,156 @@
+{
+  "schema": "step12f.registered_neighbor_old_postsynth_replay.v1",
+  "run_date": "2026-10-03",
+  "status": "COMPLETED_SETUP_FAIL_HOLD_PASS",
+  "purpose": "Replay the exact pre-feed-counter postsynth DCP to test reproducibility of the prior near-zero implementation result.",
+  "source_changes": false,
+  "xdc_changes": false,
+  "resynthesis": false,
+  "functional_tests_run": false,
+  "tested_branch_evidence_head": "fd477741f0802bae744a6e6c79ad251813c461fb",
+  "baseline_dcp_origin_source_commit": "17496666f3192cd3e1f96ae4e590c2b3b77919f4",
+  "candidate_context_source_commit": "9d7510e75385c3b83cee7afd799c9e6db0b4d95e",
+  "tool": {
+    "name": "Vivado",
+    "version": "2025.2",
+    "build": "6299465",
+    "part": "xcku5p-ffvb676-2-e",
+    "max_threads": 4,
+    "clock_period_ns": 2.0
+  },
+  "input_checkpoint": {
+    "kind": "postsynthesis",
+    "sha256": "86AADA6150CA1E786E14A4D5EA03F68BFB162729BACFD66BB1F001ECA25CF427",
+    "size_bytes": 30067123,
+    "local_source_path": "../outputs/sat10_lfnst_transpose_registered_neighbor_20260930_0025/step12f_registered_neighbor_postsynth.dcp",
+    "same_sha_as_original_implementation_input": true
+  },
+  "implementation_tcl": {
+    "path": "05_audit/current/80_feed_counter_20260930/20260930T022804Z_9d7510e75385/08_registered_neighbor_synth/implement_registered_neighbor.tcl",
+    "sha256": "A09E99A089A6C44C6947C684D95C999F5DA0BB86A2714F646B9E9810227093CA",
+    "commands": [
+      "open_checkpoint <input_dcp>",
+      "opt_design -directive Default",
+      "place_design -directive ExtraNetDelay_high",
+      "phys_opt_design -directive AggressiveExplore",
+      "route_design -directive NoTimingRelaxation"
+    ]
+  },
+  "execution": {
+    "exit_code": 0,
+    "completion_marker": "REGISTERED_NEIGHBOR_IMPL_DONE",
+    "full_command": "D:\\AMDDesignTools\\2025.2\\Vivado\\bin\\vivado.bat -mode batch -log C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\05_audit\\current\\81_feed_counter_baseline_replay_20261003\\old_postsynth_replay\\vivado.log -journal C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\05_audit\\current\\81_feed_counter_baseline_replay_20261003\\old_postsynth_replay\\vivado.jou -source C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\05_audit\\current\\80_feed_counter_20260930\\20260930T022804Z_9d7510e75385\\08_registered_neighbor_synth\\implement_registered_neighbor.tcl -tclargs C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\outputs\\sat10_lfnst_transpose_registered_neighbor_20260930_0025\\step12f_registered_neighbor_postsynth.dcp C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_feed_counter_verify\\05_audit\\current\\81_feed_counter_baseline_replay_20261003\\old_postsynth_replay",
+    "vivado_log": "old_postsynth_replay/vivado.log",
+    "vivado_journal": "old_postsynth_replay/vivado.jou",
+    "final_route_state": "FULLY_ROUTED",
+    "routable_nets": 43489,
+    "fully_routed_nets": 43489,
+    "routing_errors": 0
+  },
+  "timing": {
+    "setup": {
+      "wns_ns": -0.103,
+      "tns_ns": -18.379,
+      "failing_endpoints": 512,
+      "total_endpoints": 149453,
+      "status": "FAIL"
+    },
+    "hold": {
+      "whs_ns": 0.006,
+      "ths_ns": 0.0,
+      "failing_endpoints": 0,
+      "total_endpoints": 149453,
+      "status": "PASS"
+    },
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "package_level_signoff": "NOT_EVALUATED"
+  },
+  "comparison": {
+    "prior_same_dcp_run": {
+      "postsynth_dcp_sha256": "86AADA6150CA1E786E14A4D5EA03F68BFB162729BACFD66BB1F001ECA25CF427",
+      "postroute_dcp_sha256": "E93F18866F4063E0460F9F35F4E82FD7E837174A9F912C5D02616463722B1911",
+      "timing_summary_sha256": "4192BA0F7044DD298836C7A3F6C4FB9EE35F6142CD21A8A2EB045FBF93BF1CA1",
+      "wns_ns": -0.005,
+      "tns_ns": -0.015,
+      "failing_endpoints": 4,
+      "whs_ns": 0.010,
+      "ths_ns": 0.0,
+      "hold_failing_endpoints": 0
+    },
+    "current_candidate_run_context_only": {
+      "source_commit": "9d7510e75385c3b83cee7afd799c9e6db0b4d95e",
+      "postsynth_dcp_sha256": "4813F4F6AB0977AAFDE383443E05CD70A14BDA7D7CD3BF10B52747B7FAD6D27C",
+      "wns_ns": -0.110,
+      "tns_ns": -35.277,
+      "failing_endpoints": 929,
+      "whs_ns": 0.011,
+      "ths_ns": 0.0,
+      "hold_failing_endpoints": 0,
+      "same_netlist_ab": false
+    },
+    "interpretation": "The original near-zero physical result did not reproduce on the exact same postsynth DCP. This demonstrates implementation-result sensitivity but does not prove the feed-counter RTL change is physically neutral or identify the source of run-to-run variation."
+  },
+  "critical_paths": [
+    {
+      "source": "u_dut/kernel_phase_q_reg[0]/C",
+      "destination": "u_dut/kernel_feed_group_q_reg[0]/D",
+      "slack_ns": -0.103,
+      "data_delay_ns": 2.099,
+      "logic_delay_ns": 0.646,
+      "route_delay_ns": 1.453,
+      "logic_levels": 7
+    },
+    {
+      "source": "u_dut/u_unified_p4_kernel/ingress_data_q_reg[52]/C",
+      "destination": "u_dut/u_unified_p4_kernel/input_mem_reg[0][19][4]/D",
+      "slack_ns": -0.102,
+      "data_delay_ns": 1.954,
+      "logic_delay_ns": 0.079,
+      "route_delay_ns": 1.875,
+      "logic_levels": 0
+    }
+  ],
+  "drc": {
+    "errors": 0,
+    "critical_warnings": {
+      "NSTD-1": 1,
+      "UCIO-1": 1
+    },
+    "notes": "Package I/O standard and pin assignment are outside this registered-neighbor core timing context; package-level signoff was not evaluated."
+  },
+  "power": {
+    "estimated_total_w": 1.501,
+    "confidence": "MEDIUM",
+    "activity": "VECTORLESS",
+    "use": "informational_only_not_activity_based_signoff"
+  },
+  "artifact_hash_scope": "SHA-256 values below are of the local working-tree file bytes captured before Git commit; they are not Git blob identifiers, and Windows EOL conversion may change a later checkout's byte hash.",
+  "artifact_working_tree_sha256": {
+    "vivado.log": "7CCAE711FAE41367BD246059ACD9C7D7966A542E88E458B026302B3260FB1741",
+    "vivado.jou": "0E71625CF3586DF349BD55554B676E7A0133197DCB214F6CB655C7618CD42FED",
+    "report_timing_summary_postroute.rpt": "868D7226517FE3C9230B8F3FD8EA01E92681DBF2033349F08E2DDB700EE025AE",
+    "report_timing_hold_summary_postroute.rpt": "ECBB2507A4ACB4364FC5E4E329BF012EF28BA474784A56FA988C81F789B1FF06",
+    "report_timing_worst100_postroute.rpt": "C0F7568CF42896552635109A985C4A0E2E7BBEDA492193481A74BD569E0D1421",
+    "report_hold_worst100_postroute.rpt": "D73121DCE4294BC469D0E41A4D616C79B72C74E73E1051253E9ADA2BC7795950",
+    "report_route_status_postroute.rpt": "8B00DFD76E3D08CD22D5CA27100F8CB4DEA4BF785597D84B7EC65278AE4EAEE3",
+    "report_drc_postroute.rpt": "0AFA8DDEFDF43006EA751B564E632E81DD7649A057891D94623D8B03CD25F8F0",
+    "report_check_timing_postroute.rpt": "A61560DA2E873FA2A2F1FDB20E3B73D88A3356B0190B6E8525C4DE151A005753",
+    "report_exceptions_postroute.rpt": "5D29AE22367A2462162D5DB7537CD00B187C75F412A5D94E5865E0B4FD316B4A",
+    "report_utilization_postroute.rpt": "D87BC0E7F67476918AD7840EE01ACA08E0E70DC71256BEB4ED14310A8FADF4FD",
+    "report_hierarchy_utilization_postroute.rpt": "5504785A47EE34AAD4A9E3A1CA7FE80590B4175278022A75B162C44F9B750EE4",
+    "report_high_fanout_postroute.rpt": "091A8F27B02554E5C913A6C68704B383D04D3500765729CB15641A49E6BD27E2",
+    "report_methodology_postroute.rpt": "E6BC5A498386CF227FDF9884F33249C17466CBB60DDD2E88E5BDC59871E732A2",
+    "report_power_postroute.rpt": "397BA2045C1A7ED26FB4E9701EA276BC380AAA62C04A38602CD64DD0C34ACB1C",
+    "registered_neighbor_postroute.dcp_local_only": "C230A535EF022CE6E2959276DAC985AC0F43115042ADD858295DB98A3DF3EFE2"
+  },
+  "release": {
+    "source_commit_created": false,
+    "evidence_only": true,
+    "new_tag": false,
+    "setup_signoff": false,
+    "hold_signoff": true,
+    "functional_status": "INHERITED_NOT_RERUN",
+    "recommendation": "Do not attribute the regression to feed-counter RTL from this comparison. If approved, one fixed-candidate-postsynth replay is the narrow next discriminator; stop after that result."
+  }
+}
