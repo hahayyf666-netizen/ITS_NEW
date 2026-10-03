@@ -149,7 +149,9 @@
     "evidence_only": true,
     "new_tag": false,
     "setup_signoff": false,
-    "hold_signoff": true,
+    "hold_status": "PASS_FOR_THIS_REGISTERED_NEIGHBOR_RUN",
+    "hold_signoff": false,
+    "core_timing_signoff": false,
     "functional_status": "INHERITED_NOT_RERUN",
     "recommendation": "Do not attribute the regression to feed-counter RTL from this comparison. If approved, one fixed-candidate-postsynth replay is the narrow next discriminator; stop after that result."
   }
