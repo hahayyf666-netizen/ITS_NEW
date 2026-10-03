@@ -1,0 +1,95 @@
+{
+  "experiment": "latest_source_fixed_placement_router_ab",
+  "date_utc": "2026-10-04",
+  "decision": "MIXED_INCONCLUSIVE",
+  "tested_source_commit": "9d7510e75385c3b83cee7afd799c9e6db0b4d95e",
+  "pre_report_evidence_checkout": "b4fd5c32b05f89710c0c45dd0dfb55922e304cbf",
+  "source_immutability_check": {
+    "command": "git diff --quiet 9d7510e75385c3b83cee7afd799c9e6db0b4d95e HEAD -- 02_rtl 03_verification",
+    "exit_code": 0
+  },
+  "artifact_hash_semantics": "SHA256SUMS.csv stores execution-host working-tree SHA-256 and Git clean-filtered blob object ID; DCP binaries are excluded from publication and pinned by SHA-256 here.",
+  "profile": {
+    "name": "contest_engineering_vtm10_sat10_v2",
+    "file_sha256": "AD11CA8EB0FDE362079EAB10312C48B33F4A2EC5684D0296521B60E59665CA2C",
+    "official_equivalence": "NOT_PROVEN"
+  },
+  "tool": {
+    "vivado": "2025.2 build 6299465",
+    "part": "xcku5p-ffvb676-2-e",
+    "max_threads": 4,
+    "clock_period_ns": 2.0,
+    "xdc_user_setup_uncertainty_ns": 0.0,
+    "reported_total_clock_uncertainty_ns": 0.035,
+    "reported_total_uncertainty_basis": "Vivado default total-system-jitter term 0.071 ns; user uncertainty remains 0"
+  },
+  "physical_inputs": {
+    "postsynth_dcp_sha256": "4813F4F6AB0977AAFDE383443E05CD70A14BDA7D7CD3BF10B52747B7FAD6D27C",
+    "common_postphysopt_dcp_sha256": "D5D4651F6C1DCC886355D9BFF8394DB39A4FA5D3AB7AF4A9569EBCBD503A2462",
+    "pre_route_placedb_checksum": "28bd3f86",
+    "pre_route_shapesum_checksum": "3a6af66d",
+    "pre_route_routedb_checksum": "93ad4449",
+    "common_flow": [
+      "opt_design -directive Default",
+      "place_design -directive ExtraNetDelay_high",
+      "phys_opt_design -directive AggressiveExplore"
+    ],
+    "only_branch_variable": "route_design directive"
+  },
+  "control": {
+    "route_directive": "NoTimingRelaxation",
+    "postroute_dcp_sha256": "68D946C4F8E5F1B93F11389DED26D59953C99FB7B19FE46EF7B50CFF469451DA",
+    "setup": {"wns_ns": -0.110, "tns_ns": -35.277, "failing_endpoints": 929},
+    "hold": {"whs_ns": 0.011, "ths_ns": 0.0, "failing_endpoints": 0},
+    "async_default_max_group": {"wns_ns": 0.046, "tns_ns": 0.0, "failing_endpoints": 0},
+    "routing": {"routable_nets": 43639, "fully_routed_nets": 43639, "routing_errors": 0},
+    "negative_endpoint_census": {
+      "raw_paths": 929,
+      "unique_endpoints": 929,
+      "duplicates": 0,
+      "unclassified": 0,
+      "reconstructed_tns_ns": -35.299,
+      "dut_internal_endpoints": 897,
+      "dut_internal_tns_share_pct": 95.22,
+      "dut_internal_median_route_fraction": 0.7746
+    },
+    "hread_forbidden_controls_to_ram_response": "NO_PATH",
+    "hread_registered_address_to_response": "PATH_EXISTS"
+  },
+  "treatment": {
+    "route_directive": "MoreGlobalIterations",
+    "postroute_dcp_sha256": "81F4E533F08B898008C739D805B87424C74320939CFF391AC429F2DEF5C8C5BB",
+    "setup": {"wns_ns": -0.151, "tns_ns": -32.735, "failing_endpoints": 810},
+    "hold": {"whs_ns": 0.003, "ths_ns": 0.0, "failing_endpoints": 0},
+    "async_default_max_group": {"wns_ns": -0.001, "tns_ns": -0.004, "failing_endpoints": 4},
+    "routing": {"routable_nets": 43638, "fully_routed_nets": 43638, "routing_errors": 0},
+    "negative_endpoint_census": {
+      "raw_paths": 814,
+      "unique_endpoints": 814,
+      "duplicates": 0,
+      "unclassified": 0,
+      "reconstructed_tns_ns": -32.741,
+      "dut_internal_endpoints": 784,
+      "dut_internal_tns_share_pct": 96.26,
+      "dut_internal_median_route_fraction": 0.8085
+    },
+    "hread_forbidden_controls_to_ram_response": "NO_PATH",
+    "hread_registered_address_to_response": "PATH_EXISTS"
+  },
+  "delta_treatment_vs_control": {
+    "wns_ns": -0.041,
+    "tns_improvement_ns": 2.542,
+    "tns_improvement_pct": 7.2,
+    "failing_endpoint_reduction": 119,
+    "failing_endpoint_reduction_pct": 12.8,
+    "hold_whs_change_ns": -0.008,
+    "async_default_group": "regressed_from_pass_to_4_failing_endpoints"
+  },
+  "functional_tests_rerun": false,
+  "fresh_synthesis_run": false,
+  "package_level_signoff": "NOT_EVALUATED",
+  "registered_neighbor_500mhz_signoff": "NOT_ACHIEVED",
+  "treatment_promoted_as_baseline": false,
+  "new_rtl_change_authorized": false,
+  "tag_created": false
+}
