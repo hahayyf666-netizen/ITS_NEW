@@ -1,0 +1,178 @@
+{
+  "schema": "step12f.p9.r6b.fixed_netlist_route_ab.v1",
+  "date": "2026-10-04",
+  "checkout_head": "300099de18470ca681322c3b32284a861d969c89",
+  "checkout_branch": "sat10-feed-counter-replay-evidence",
+  "source_tree_scope": {
+    "latest_functional_source_commit": "9d7510e75385c3b83cee7afd799c9e6db0b4d95e",
+    "02_rtl_changed_since_functional_source": false,
+    "03_verification_changed_since_functional_source": false,
+    "profile_changed_since_functional_source": false,
+    "experiment_dcp_origin_source_commit": "17496666f3192cd3e1f96ae4e590c2b3b77919f4",
+    "experiment_netlist_is_latest_functional_source": false
+  },
+  "scope": {
+    "type": "fixed_common_postphysopt_dcp_route_directive_ab",
+    "rtl_changed": false,
+    "xdc_changed": false,
+    "resynthesis": false,
+    "functional_regression_rerun": false,
+    "official_equivalence": "NOT_PROVEN",
+    "package_level_timing": "NOT_EVALUATED"
+  },
+  "tool": {
+    "vivado": "2025.2",
+    "build": "6299465",
+    "part": "xcku5p-ffvb676-2-e",
+    "threads": 4,
+    "clock_period_ns": 2.0,
+    "frequency_mhz": 500.0,
+    "user_uncertainty_ns": 0.0,
+    "reported_total_uncertainty_ns": 0.035
+  },
+  "netlist_provenance": {
+    "input_postsynth_dcp_sha256": "86AADA6150CA1E786E14A4D5EA03F68BFB162729BACFD66BB1F001ECA25CF427",
+    "input_postsynth_source_commit": "17496666f3192cd3e1f96ae4e590c2b3b77919f4",
+    "common_postphysopt_dcp_sha256": "86713A3C74910AEAD4601E18A51FAD639468A14135F4F0CF8EA14D34FD646396",
+    "latest_functional_postsynth_dcp_sha256_not_used": "4813F4F6AB0977AAFDE383443E05CD70A14BDA7D7CD3BF10B52747B7FAD6D27C",
+    "common_preparation_commands": [
+      "opt_design -directive Default",
+      "place_design -directive ExtraNetDelay_high",
+      "phys_opt_design -directive AggressiveExplore"
+    ],
+    "common_route_entry_checksums": {
+      "placedb": "5ae9e92c",
+      "shape": "234f6158",
+      "routedb": "2ba02511",
+      "netgraph": "2f9dbc33"
+    }
+  },
+  "runs": {
+    "control": {
+      "route_directive": "NoTimingRelaxation",
+      "vivado_exit_code": 0,
+      "global_route_iterations": 3,
+      "setup": {
+        "wns_ns": -0.103,
+        "tns_ns": -18.379,
+        "failing_endpoints": 512
+      },
+      "hold": {
+        "whs_ns": 0.006,
+        "ths_ns": 0.0,
+        "failing_endpoints": 0
+      },
+      "route": {
+        "status": "FULLY_ROUTED",
+        "routable_nets": 43489,
+        "fully_routed_nets": 43489,
+        "routing_errors": 0
+      },
+      "worst_setup_path": {
+        "source": "u_dut/kernel_phase_q_reg[0]/C",
+        "destination": "u_dut/kernel_feed_group_q_reg[0]/D",
+        "slack_ns": -0.103,
+        "data_delay_ns": 2.099,
+        "logic_delay_ns": 0.646,
+        "route_delay_ns": 1.453,
+        "logic_levels": 7,
+        "routing_fraction": 0.69223
+      },
+      "postroute_vectorless_power_w": 1.501
+    },
+    "treatment": {
+      "route_directive": "MoreGlobalIterations",
+      "vivado_exit_code": 0,
+      "global_route_iterations": 4,
+      "setup": {
+        "wns_ns": -0.063,
+        "tns_ns": -4.669,
+        "failing_endpoints": 203
+      },
+      "hold": {
+        "whs_ns": 0.0,
+        "ths_ns": 0.0,
+        "failing_endpoints": 0
+      },
+      "route": {
+        "status": "FULLY_ROUTED",
+        "routable_nets": 43489,
+        "fully_routed_nets": 43489,
+        "routing_errors": 0
+      },
+      "worst_setup_path": {
+        "source": "u_dut/u_unified_p4_kernel/reserved_groups_q_reg[3]_replica/C",
+        "destination": "u_dut/kernel_rd_req_group_q_reg[0]/CE",
+        "slack_ns": -0.063,
+        "data_delay_ns": 1.870,
+        "logic_delay_ns": 0.628,
+        "route_delay_ns": 1.242,
+        "logic_levels": 8,
+        "routing_fraction": 0.66419
+      },
+      "postroute_vectorless_power_w": 1.485
+    }
+  },
+  "delta_treatment_minus_control": {
+    "setup_wns_improvement_ns": 0.04,
+    "setup_tns_improvement_ns": 13.71,
+    "setup_failing_endpoint_delta": -309,
+    "setup_failing_endpoint_reduction_fraction": 0.60352,
+    "hold_whs_delta_ns": -0.006,
+    "setup_timing_closed": false,
+    "hold_no_negative_slack": true
+  },
+  "structural_checks": {
+    "boundary_source_ffs_expected": 54,
+    "boundary_sink_ffs_expected": 44,
+    "control_source_ffs_found": 54,
+    "control_sink_ffs_found": 44,
+    "treatment_source_ffs_found": 54,
+    "treatment_sink_ffs_found": 44,
+    "pending_run_stage_to_ramd64e_to_hresponse": {
+      "control": "NO_PATH",
+      "treatment": "NO_PATH"
+    },
+    "registered_hread_address_to_ramd64e_to_hresponse": {
+      "control": "PATH_EXISTS",
+      "control_worst_slack_ns": -0.088,
+      "treatment": "PATH_EXISTS",
+      "treatment_worst_slack_ns": -0.056
+    }
+  },
+  "constraints_and_drc": {
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "rst_n_no_input_delay_port_count": 1,
+    "drc_error_severity_count": 0,
+    "drc_critical_warning_rules": ["NSTD-1", "UCIO-1"],
+    "notes": "Registered-neighbor harness; package I/O signoff is out of scope."
+  },
+  "resource_estimates_same_in_both_runs": {
+    "clb_luts": 26391,
+    "clb_registers": 21202,
+    "dsps": 320,
+    "bram_tiles": 0
+  },
+  "verdict": {
+    "status": "PARTIAL_IMPROVEMENT_ON_HISTORICAL_FIXED_NETLIST",
+    "current_functional_rtl_applicability": "UNVERIFIED",
+    "timing_500mhz_signed_off": false,
+    "independent_replay_required": "YES_IF_A_SIGNOFF_CANDIDATE_IS_EVER_OBTAINED"
+  },
+  "artifact_hash_scope": "SHA-256 values identify the local files used/generated in this run before Git checkout EOL conversion. Binary DCP hashes are byte-stable. For published text reports/scripts, the evidence commit identifies the Git blobs; a Windows checkout may use CRLF.",
+  "key_artifact_sha256": {
+    "prepare_tcl": "55568D4CB6FE056D6403DE9C24FCE2FDAABA75FCFB4FAF3249A0C10F35B2EBC4",
+    "route_tcl": "F5548B63AA977837D97B6DA241ED56D8F9BCC6C7CEF8DCF7315EDAEBE7978B48",
+    "control_log": "06E1B2111451703084F80D42DA408621AE5790B80567DB8C8A2323A8ACBE9606",
+    "treatment_log": "C6418E87234D6316CE1F74555DA30CFE6FE9F49AAC5ABF08A218C371FE6EFF16",
+    "control_setup_report": "00026546E5FF190308000CE6719244EFDF57440D307164A23294F5B6B86ADC09",
+    "treatment_setup_report": "0CE2B551950A8366BAC25F688FFCE0F5ACB725BA2C4FF1502D1DF094F14EA1AE",
+    "control_hold_report": "59EF1C68222B6FCDE861AE41006B6E38B6B2777DECE51606AD920C1BA4B64122",
+    "treatment_hold_report": "A5A13491A11F9899AC4B9430DBC50796ED75CFBE0937A2D7A4BD2C92C8F8654B",
+    "control_postroute_dcp": "C64270517CDC5A6F97A012384EA0B9B588A99A7E092CDB62A36EFC42E3612952",
+    "treatment_postroute_dcp": "7EA75DB642C0EF402D0A7FDEE085A9A975BEDFB102A5E067CA6F1A0E97939527"
+  },
+  "binary_checkpoints_committed_to_git": false,
+  "binary_checkpoints_note": "20–26 MB checkpoints are retained locally and SHA-256 pinned here; audit text reports/logs/scripts are published."
+}

@@ -1,0 +1,128 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Sun Oct  4 00:25:00 2026
+# Process ID         : 50596
+# Current directory  : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify
+# Command line       : vivado.exe -mode batch -log C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\05_audit\current\82_route_convergence_ab_20261003\treatment\structural\structure.log -journal C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\05_audit\current\82_route_convergence_ab_20261003\treatment\structural\structure.jou -source C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\05_audit\current\79_postroute_explore_20260930\query_candidate_structure.tcl
+# Log file           : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/05_audit/current/82_route_convergence_ab_20261003/treatment/structural/structure.log
+# Journal file       : C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\05_audit\current\82_route_convergence_ab_20261003\treatment\structural\structure.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 31015 MB
+# Total Virtual      : 47380 MB
+# Available Virtual  : 16351 MB
+#-----------------------------------------------------------
+source {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\05_audit\current\79_postroute_explore_20260930\query_candidate_structure.tcl}
+# set candidate_dcp $::env(STEP12F_CANDIDATE_DCP)
+# set report_dir $::env(STEP12F_POSTROUTE_EXPLORE_DIR)
+# if {![file exists $candidate_dcp]} { error "Missing candidate DCP: $candidate_dcp" }
+# set_param general.maxThreads 4
+# puts "P9_POSTROUTE_STRUCTURE_QUERY_START"
+P9_POSTROUTE_STRUCTURE_QUERY_START
+# puts "VIVADO_VERSION=[version -short]"
+VIVADO_VERSION=2025.2
+# puts "MAX_THREADS=[get_param general.maxThreads]"
+MAX_THREADS=4
+# open_checkpoint $candidate_dcp
+Command: open_checkpoint {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_feed_counter_verify\05_audit\current\82_route_convergence_ab_20261003\treatment\postroute.dcp}
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.030 . Memory (MB): peak = 351.355 ; gain = 6.285
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.147 . Memory (MB): peak = 1701.871 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 3947 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 3 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2025.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Read ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.047 . Memory (MB): peak = 1733.277 ; gain = 4.707
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+INFO: [Designutils 20-5722] Start Reading Physical Databases.
+Reading placement.
+Read Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.053 . Memory (MB): peak = 2309.309 ; gain = 0.000
+Reading placer database...
+Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.022 . Memory (MB): peak = 2309.309 ; gain = 0.000
+Read PlaceDB: Time (s): cpu = 00:00:01 ; elapsed = 00:00:02 . Memory (MB): peak = 2370.664 ; gain = 61.355
+Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2370.664 ; gain = 0.000
+Reading routing.
+Read RouteStorage: Time (s): cpu = 00:00:05 ; elapsed = 00:00:04 . Memory (MB): peak = 2801.680 ; gain = 431.016
+Read Physdb Files: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2801.680 ; gain = 492.371
+Restored from archive | CPU: 7.000000 secs | Memory: 0.000000 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2801.680 ; gain = 492.371
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.016 . Memory (MB): peak = 2801.680 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1196 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 320 instances
+  IBUF => IBUF (IBUFCTRL, INBUF): 2 instances
+  RAM256X1D => RAM256X1D (MUXF7(x4), MUXF8(x2), RAMD64E(x8)): 32 instances
+  RAM64M => RAM64M (RAMD64E(x4)): 320 instances
+  RAM64M8 => RAM64M8 (RAMD64E(x8)): 521 instances
+  RAM64X1D => RAM64X1D (RAMD64E(x2)): 1 instance 
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2025.2 (64-bit) build 6299465
+open_checkpoint: Time (s): cpu = 00:00:36 ; elapsed = 00:00:31 . Memory (MB): peak = 2801.680 ; gain = 2466.852
+# set source_q [get_pins -hier -quiet -regexp {.*src_(it_info|it_info_vld|it_data_in|it_data_addr|it_data_in_vld|it_data_end|it_data_out_req)_q_reg.*/Q$}]
+# set sink_d [get_pins -hier -quiet -regexp {.*sink_(it_data_in_req|it_data_out|it_data_out_vld|it_done|protocol_error)_q_reg.*/D$}]
+# set source_cells [get_cells -quiet -of_objects $source_q]
+# set sink_cells [get_cells -quiet -of_objects $sink_d]
+# puts "SOURCE_Q_PINS=[llength $source_q] SOURCE_FFS=[llength $source_cells]"
+SOURCE_Q_PINS=54 SOURCE_FFS=54
+# puts "SINK_D_PINS=[llength $sink_d] SINK_FFS=[llength $sink_cells]"
+SINK_D_PINS=44 SINK_FFS=44
+# set pending_q [get_pins -hier -quiet -regexp {.*kernel_h_rd_pending_q_reg.*/Q$}]
+# set run_q [get_pins -hier -quiet -regexp {.*kernel_run_q_reg.*/Q$}]
+# set stage_q [get_pins -hier -quiet -regexp {.*kernel_stage_q_reg.*/Q$}]
+# set ram_cells [get_cells -hier -quiet -filter {REF_NAME == RAMD64E}]
+# set response_d [get_pins -hier -quiet -regexp {.*kernel_h_rd_data(_tail)?_q_reg.*/D$}]
+# puts "HREAD_SOURCE_PINS pending=[llength $pending_q] run=[llength $run_q] stage=[llength $stage_q]"
+HREAD_SOURCE_PINS pending=1 run=1 stage=1
+# puts "HREAD_RAMD64E_CELLS=[llength $ram_cells] HREAD_RESPONSE_D_PINS=[llength $response_d]"
+HREAD_RAMD64E_CELLS=5706 HREAD_RESPONSE_D_PINS=128
+# if {[llength $source_cells] != 54 || [llength $sink_cells] != 44} {
+#     error "Post-route boundary FF population mismatch"
+# }
+# if {[llength $pending_q] == 0 || [llength $run_q] == 0 || [llength $stage_q] == 0 ||
+#     [llength $ram_cells] == 0 || [llength $response_d] == 0} {
+#     error "H-read structural query has empty source/through/destination object set"
+# }
+# set idx 0
+# foreach {label src} [list pending $pending_q run $run_q stage $stage_q] {
+#     incr idx
+#     set rpt [file join $report_dir hread_${label}_through_ramd64e.rpt]
+#     report_timing -delay_type max -from $src -through $ram_cells -to $response_d \
+#         -max_paths 100 -file $rpt
+#     puts "HREAD_QUERY_${label}=NONEMPTY_OBJECTS; report=$rpt"
+# }
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -through_pins  -to_pins  -max_paths 100 -nworst 1 -delay_type max -sort_by slack.
+INFO: [Timing 38-72] No paths found.
+report_timing: Time (s): cpu = 00:00:21 ; elapsed = 00:00:09 . Memory (MB): peak = 2930.742 ; gain = 129.062
+HREAD_QUERY_pending=NONEMPTY_OBJECTS; report=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/05_audit/current/82_route_convergence_ab_20261003/treatment/structural/hread_pending_through_ramd64e.rpt
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -through_pins  -to_pins  -max_paths 100 -nworst 1 -delay_type max -sort_by slack.
+INFO: [Timing 38-72] No paths found.
+HREAD_QUERY_run=NONEMPTY_OBJECTS; report=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/05_audit/current/82_route_convergence_ab_20261003/treatment/structural/hread_run_through_ramd64e.rpt
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -through_pins  -to_pins  -max_paths 100 -nworst 1 -delay_type max -sort_by slack.
+INFO: [Timing 38-72] No paths found.
+HREAD_QUERY_stage=NONEMPTY_OBJECTS; report=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify/05_audit/current/82_route_convergence_ab_20261003/treatment/structural/hread_stage_through_ramd64e.rpt
+# check_timing -verbose -file [file join $report_dir candidate_structure_check_timing.rpt]
+# close_design
+# puts "P9_POSTROUTE_STRUCTURE_QUERY_DONE"
+P9_POSTROUTE_STRUCTURE_QUERY_DONE
+INFO: [Common 17-206] Exiting Vivado at Sun Oct  4 00:26:50 2026...
