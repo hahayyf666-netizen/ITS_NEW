@@ -121,6 +121,106 @@ report_exceptions -file [file join $report_dir report_exceptions_postroute.rpt]
 report_drc -file [file join $report_dir report_drc_postroute.rpt]
 report_methodology -file [file join $report_dir report_methodology_postroute.rpt]
 report_power -file [file join $report_dir report_power_postroute.rpt]
+
+# P9 primary-V read-return diagnostics.  These are report-only queries on the
+# completed route.  The same-edge kernel input fire may update FIFO retirement
+# bookkeeping, but it must not feed the wide physical-read command or bank-raw
+# capture D/CE cones.
+set primary_fire_nets [get_nets -hier -quiet -regexp {.*kernel_input_group_fire.*}]
+set primary_fire_drivers [get_pins -quiet -of_objects $primary_fire_nets \
+    -filter {DIRECTION == OUT}]
+set primary_cmd_addr_q [get_pins -hier -quiet -regexp {.*rd_cmd_addr_q_reg.*/Q$}]
+set primary_cmd_addr_d [get_pins -hier -quiet -regexp {.*rd_cmd_addr_q_reg.*/D$}]
+set primary_cmd_addr_ce [get_pins -hier -quiet -regexp {.*rd_cmd_addr_q_reg.*/CE$}]
+set primary_cmd_valid_d [get_pins -hier -quiet -regexp {.*rd_cmd_valid_q_reg.*/D$}]
+set primary_cmd_valid_ce [get_pins -hier -quiet -regexp {.*rd_cmd_valid_q_reg.*/CE$}]
+set primary_bank_raw_q [get_pins -hier -quiet -regexp {.*kernel_rd_bank_data_q_reg.*/Q$}]
+set primary_bank_raw_d [get_pins -hier -quiet -regexp {.*kernel_rd_bank_data_q_reg.*/D$}]
+set primary_bank_raw_ce [get_pins -hier -quiet -regexp {.*kernel_rd_bank_data_q_reg.*/CE$}]
+set primary_bank_valid_d [get_pins -hier -quiet -regexp {.*kernel_rd_bank_valid_q_reg.*/D$}]
+set primary_bank_valid_ce [get_pins -hier -quiet -regexp {.*kernel_rd_bank_valid_q_reg.*/CE$}]
+set primary_fifo_data_q [get_pins -hier -quiet -regexp {.*primary_return_data_q_reg.*/Q$}]
+set primary_fifo_data_d [get_pins -hier -quiet -regexp {.*primary_return_data_q_reg.*/D$}]
+set primary_fifo_data_ce [get_pins -hier -quiet -regexp {.*primary_return_data_q_reg.*/CE$}]
+set primary_kernel_input_d [get_pins -hier -quiet -regexp {.*input_mem_reg.*/D$}]
+set primary_kernel_input_ce [get_pins -hier -quiet -regexp {.*input_mem_reg.*/CE$}]
+
+puts "P9_PRIMARY_FIRE_NETS=[llength $primary_fire_nets]"
+puts "P9_PRIMARY_FIRE_DRIVER_PINS=[llength $primary_fire_drivers]"
+puts "P9_PRIMARY_CMD_ADDR_Q=[llength $primary_cmd_addr_q]"
+puts "P9_PRIMARY_CMD_ADDR_D=[llength $primary_cmd_addr_d]"
+puts "P9_PRIMARY_CMD_ADDR_CE=[llength $primary_cmd_addr_ce]"
+puts "P9_PRIMARY_CMD_VALID_D=[llength $primary_cmd_valid_d]"
+puts "P9_PRIMARY_CMD_VALID_CE=[llength $primary_cmd_valid_ce]"
+puts "P9_PRIMARY_BANK_RAW_Q=[llength $primary_bank_raw_q]"
+puts "P9_PRIMARY_BANK_RAW_D=[llength $primary_bank_raw_d]"
+puts "P9_PRIMARY_BANK_RAW_CE=[llength $primary_bank_raw_ce]"
+puts "P9_PRIMARY_BANK_VALID_D=[llength $primary_bank_valid_d]"
+puts "P9_PRIMARY_BANK_VALID_CE=[llength $primary_bank_valid_ce]"
+puts "P9_PRIMARY_FIFO_DATA_Q=[llength $primary_fifo_data_q]"
+puts "P9_PRIMARY_FIFO_DATA_D=[llength $primary_fifo_data_d]"
+puts "P9_PRIMARY_FIFO_DATA_CE=[llength $primary_fifo_data_ce]"
+puts "P9_PRIMARY_KERNEL_INPUT_D=[llength $primary_kernel_input_d]"
+puts "P9_PRIMARY_KERNEL_INPUT_CE=[llength $primary_kernel_input_ce]"
+
+if {[llength $primary_fire_drivers] > 0 &&
+    [llength $primary_cmd_addr_d] > 0 &&
+    [llength $primary_cmd_addr_ce] > 0} {
+    report_timing -from $primary_fire_drivers \
+        -to [concat $primary_cmd_addr_d $primary_cmd_addr_ce] \
+        -delay_type max -max_paths 100 \
+        -file [file join $report_dir report_p9_fire_to_command_d_ce.rpt]
+} else {
+    puts "P9_PRIMARY_FIRE_TO_COMMAND_QUERY=NO_SOURCE_OR_DEST_OBJECT"
+}
+if {[llength $primary_fire_drivers] > 0 &&
+    [llength $primary_bank_raw_d] > 0 &&
+    [llength $primary_bank_raw_ce] > 0} {
+    report_timing -from $primary_fire_drivers \
+        -to [concat $primary_bank_raw_d $primary_bank_raw_ce] \
+        -delay_type max -max_paths 100 \
+        -file [file join $report_dir report_p9_fire_to_bank_raw_d_ce.rpt]
+} else {
+    puts "P9_PRIMARY_FIRE_TO_BANK_RAW_QUERY=NO_SOURCE_OR_DEST_OBJECT"
+}
+
+set primary_ram_cells [get_cells -hier -quiet -filter {REF_NAME =~ RAMD64E*}]
+set primary_ram_addr_pins {}
+foreach primary_ram_cell $primary_ram_cells {
+    foreach primary_ram_pin [get_pins -of_objects $primary_ram_cell -quiet] {
+        if {[regexp {^RADR[0-5]$} [get_property REF_PIN_NAME $primary_ram_pin]]} {
+            lappend primary_ram_addr_pins $primary_ram_pin
+        }
+    }
+}
+puts "P9_PRIMARY_RAM_CELLS=[llength $primary_ram_cells]"
+puts "P9_PRIMARY_RAM_ADDR_PINS=[llength $primary_ram_addr_pins]"
+if {[llength $primary_cmd_addr_q] > 0 &&
+    [llength $primary_ram_addr_pins] > 0 &&
+    [llength $primary_bank_raw_d] > 0} {
+    report_timing -from $primary_cmd_addr_q \
+        -through $primary_ram_addr_pins -to $primary_bank_raw_d \
+        -delay_type max -max_paths 100 \
+        -file [file join $report_dir report_p9_command_through_ram_to_bank_raw.rpt]
+} else {
+    puts "P9_PRIMARY_COMMAND_RAM_RAW_QUERY=NO_SOURCE_OR_DEST_OBJECT"
+}
+if {[llength $primary_bank_raw_q] > 0 &&
+    [llength $primary_fifo_data_d] > 0} {
+    report_timing -from $primary_bank_raw_q -to $primary_fifo_data_d \
+        -delay_type max -max_paths 100 \
+        -file [file join $report_dir report_p9_bank_raw_to_return_fifo.rpt]
+} else {
+    puts "P9_PRIMARY_BANK_RAW_TO_FIFO_QUERY=NO_SOURCE_OR_DEST_OBJECT"
+}
+if {[llength $primary_fifo_data_q] > 0 &&
+    [llength $primary_kernel_input_d] > 0} {
+    report_timing -from $primary_fifo_data_q -to $primary_kernel_input_d \
+        -delay_type max -max_paths 100 \
+        -file [file join $report_dir report_p9_return_fifo_to_p4_input.rpt]
+} else {
+    puts "P9_PRIMARY_FIFO_TO_P4_QUERY=NO_SOURCE_OR_DEST_OBJECT"
+}
 write_checkpoint -force [file join $report_dir step12f_registered_neighbor_postroute.dcp]
 
 close_project
