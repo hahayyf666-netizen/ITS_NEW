@@ -280,23 +280,33 @@ module unified_its_wrapper #(
     logic       kernel_rd_req_pending_q;
     logic [4:0] kernel_rd_req_group_q;
     logic [6:0] kernel_rd_req_vector_q;
-    logic signed [63:0] kernel_rd_resp_data_q;
-    logic       kernel_rd_resp_valid_q;
-    // The cache bank outputs are sampled before the lane packing/validity
-    // mux.  This keeps the physical RAM read path separate from the small
-    // four-lane reorder and also prevents the active-height compare from
-    // reaching the RAM response register.
-    logic signed [63:0] kernel_rd_raw_data_q;
-    logic [3:0]         kernel_rd_raw_valid_q;
+    // Reserve a return slot when a primary-V request is accepted. Outstanding
+    // includes the command, bank-local raw stage, and return FIFO entries, so
+    // a consumer stall cannot back-pressure a command already sent to RAM.
+    localparam integer PRIMARY_RETURN_DEPTH = 4;
+    logic [2:0] primary_outstanding_q;
+    logic       primary_issue_ready;
+    logic       primary_return_pop;
+    logic       primary_return_push;
+    logic [1:0] primary_return_wr_ptr_q;
+    logic [1:0] primary_return_rd_ptr_q;
+    logic [2:0] primary_return_count_q;
+    logic signed [63:0] primary_return_data_q [0:PRIMARY_RETURN_DEPTH-1];
+    logic signed [63:0] kernel_rd_return_data;
+    logic               kernel_rd_return_valid;
+    // Each physical slot×bank has its own raw data/valid register. The slot
+    // mux and lane packing happen after this bank-local capture boundary.
+    logic signed [15:0] kernel_rd_bank_data_q [0:1][0:3];
+    logic               kernel_rd_bank_valid_q [0:1][0:3];
     logic               kernel_rd_raw_pending_q;
+    logic               kernel_rd_raw_slot_q;
+    logic [3:0]         kernel_rd_raw_bank_mask_q;
     logic [4:0]         kernel_rd_raw_group_q;
     logic [6:0]         kernel_rd_raw_vector_q;
     logic       kernel_start_sent_q;
     logic       kernel_group_accept;
     logic signed [63:0] kernel_rd_data_comb;
     logic               kernel_rd_valid_comb;
-    logic               kernel_rd_resp_slot_ready;
-    logic               kernel_rd_raw_to_resp;
     logic               kernel_rd_raw_capture;
 
     // P9 second round: one atomic elastic physical-read command is shared by
@@ -310,6 +320,7 @@ module unified_its_wrapper #(
     logic                         rd_cmd_owner_q;
     logic                         rd_cmd_slot_q;
     logic [3:0]                   rd_cmd_bank_mask_q;
+    logic                         rd_cmd_bank_valid_q [0:1][0:3];
     logic [BANK_ADDR_W-1:0]       rd_cmd_addr_q [0:1][0:3];
     logic [4:0]                   rd_cmd_group_q;
     logic [6:0]                   rd_cmd_vector_q;
@@ -329,11 +340,11 @@ module unified_its_wrapper #(
     logic                         rd_cmd_candidate_lfnst_valid;
     logic                         rd_cmd_candidate_lfnst_last;
     logic [1:0]                   rd_cmd_candidate_lfnst_bank;
-    logic                         rd_cmd_owner_response_ready;
     logic                         rd_cmd_response_fire;
     logic                         rd_cmd_ready;
     logic                         rd_cmd_accept;
     logic                         primary_logical_req_fire;
+    logic                         primary_outstanding_command_q;
     logic                         lfnst_mem_req_accept;
 
     // Horizontal intermediate reads use a bank-local address register and a
@@ -1075,22 +1086,25 @@ module unified_its_wrapper #(
         end
     end
 
-    // A command is an atomic bundle even though it drives four physical bank
-    // ports for primary-V.  The owner-specific response slot controls whether
-    // the bundle may be retired and replaced on the same edge.
+    // The physical command is a fixed one-edge stage. Primary-V capacity is
+    // reserved at issue time, so its retirement never waits for a same-edge
+    // kernel consume. LFNST retains its existing one-edge response contract.
     always_comb begin : rd_command_flow_comb
-        if (rd_cmd_owner_q == RD_OWNER_LFNST)
-            rd_cmd_owner_response_ready = 1'b1;
-        else
-            rd_cmd_owner_response_ready =
-                !kernel_rd_raw_pending_q || kernel_rd_resp_slot_ready;
-        rd_cmd_response_fire = rd_cmd_valid_q && rd_cmd_owner_response_ready;
-        rd_cmd_ready = !rd_cmd_valid_q || rd_cmd_response_fire;
-        rd_cmd_accept = rd_cmd_candidate_valid && rd_cmd_ready;
+        rd_cmd_response_fire = rd_cmd_valid_q;
+        rd_cmd_ready = 1'b1;
+        primary_issue_ready = (primary_outstanding_q < PRIMARY_RETURN_DEPTH);
+        rd_cmd_accept = rd_cmd_candidate_valid && rd_cmd_ready &&
+                        ((rd_cmd_candidate_owner == RD_OWNER_LFNST) ||
+                         primary_issue_ready);
         primary_logical_req_fire = rd_cmd_accept &&
                                     (rd_cmd_candidate_owner == RD_OWNER_PRIMARY_V);
         lfnst_mem_req_accept = rd_cmd_accept &&
                                (rd_cmd_candidate_owner == RD_OWNER_LFNST);
+        primary_outstanding_command_q = rd_cmd_valid_q &&
+                                         (rd_cmd_owner_q == RD_OWNER_PRIMARY_V);
+        primary_return_push = kernel_rd_raw_pending_q;
+        primary_return_pop = kernel_rd_return_valid && kernel_group_accept &&
+                             !kernel_stage_q && !lfnst_case_q;
     end
 
 `ifndef SYNTHESIS
@@ -1112,13 +1126,32 @@ module unified_its_wrapper #(
                       (rd_cmd_candidate_owner == RD_OWNER_PRIMARY_V) &&
                       lfnst_mem_req_q))
                 else $error("P9 primary-V and LFNST logical read owners overlap");
+        if (rst_n) begin
+            assert (primary_outstanding_q <= PRIMARY_RETURN_DEPTH)
+                else $error("P9 primary-V outstanding credit overflow");
+            assert (primary_return_count_q <= PRIMARY_RETURN_DEPTH)
+                else $error("P9 primary-V return FIFO overflow");
+            assert (primary_outstanding_q ==
+                    (primary_return_count_q +
+                     (kernel_rd_raw_pending_q ? 3'd1 : 3'd0) +
+                     (primary_outstanding_command_q ? 3'd1 : 3'd0)))
+                else $error("P9 primary-V credit/command/raw/FIFO accounting mismatch");
+            if (primary_return_push && !primary_return_pop)
+                assert (primary_return_count_q < PRIMARY_RETURN_DEPTH)
+                    else $error("P9 primary-V return FIFO push without reserved capacity");
+            if (primary_return_pop)
+                assert ((primary_return_count_q != 0) &&
+                        (primary_outstanding_q != 0))
+                    else $error("P9 primary-V pop without a credited return");
+            if (primary_logical_req_fire)
+                assert (primary_outstanding_q < PRIMARY_RETURN_DEPTH)
+                    else $error("P9 primary-V accepted a request without a credit");
+        end
     end
 `endif
 
     // Physical RAM addresses are unconditional connections from the command
-    // registers.  Invalid commands retain their previous address; valid and
-    // owner metadata give the address meaning to the response stage.  No
-    // valid/owner mux is allowed in front of the RAMD64E ADDR pins.
+    // registers. Valid and owner metadata qualify the response transaction.
     always_comb begin : input_read_addr_comb
         integer read_slot_i, read_bank_i;
         for (read_slot_i = 0; read_slot_i < 2; read_slot_i = read_slot_i + 1)
@@ -1127,11 +1160,10 @@ module unified_its_wrapper #(
                     rd_cmd_addr_q[read_slot_i][read_bank_i];
     end
 
-    // The primary vertical transform consumes a two-stage cache response.
-    // First, all four physical bank outputs are sampled without a dynamic
-    // lane mux.  The following stage performs only the bounded 4x4 lane
-    // reorder and active-height masking.  Thus the cache RAM output is not
-    // combined with the row-range/arithmetic cone in one timing interval.
+    // The primary vertical transform consumes a reserved return FIFO. Raw
+    // cache data and valid bits have already been captured independently per
+    // physical slot/bank; this stage performs the slot/bank selection, bounded
+    // four-lane reorder, and active-height masking after that register edge.
     integer kernel_rd_lane_i;
     integer kernel_rd_row_i;
     integer kernel_rd_bank_i;
@@ -1144,11 +1176,19 @@ module unified_its_wrapper #(
             if (kernel_rd_raw_pending_q && (kernel_rd_row_i < kernel_cut_h_q)) begin
                 kernel_rd_bank_i = cache_bank_for(kernel_rd_row_i,
                                                   kernel_rd_raw_vector_q);
-                if (kernel_rd_raw_valid_q[kernel_rd_bank_i])
+                if (kernel_rd_raw_bank_mask_q[kernel_rd_bank_i] &&
+                    kernel_rd_bank_valid_q[kernel_rd_raw_slot_q]
+                                              [kernel_rd_bank_i])
                     kernel_rd_data_comb[kernel_rd_lane_i*16 +: 16] =
-                        kernel_rd_raw_data_q[kernel_rd_bank_i*16 +: 16];
+                        kernel_rd_bank_data_q[kernel_rd_raw_slot_q]
+                                             [kernel_rd_bank_i];
             end
         end
+    end
+
+    always_comb begin : primary_return_head_comb
+        kernel_rd_return_valid = (primary_return_count_q != 0);
+        kernel_rd_return_data = primary_return_data_q[primary_return_rd_ptr_q];
     end
 
     // Horizontal addresses use a bank-local recurrence.  The row-zero base is
@@ -1202,16 +1242,7 @@ module unified_its_wrapper #(
                                       (kernel_ctx_active_size_q >> 2));
     end
 
-    // A response entry can be replaced on the same edge on which the kernel
-    // accepts it.  The raw bank-response stage follows the same elastic rule,
-    // allowing one request and one response to advance every cycle after the
-    // initial two-edge fill.
     always_comb begin
-        kernel_rd_resp_slot_ready = !kernel_rd_resp_valid_q || kernel_group_accept;
-        kernel_rd_raw_to_resp = kernel_rd_raw_pending_q && kernel_rd_resp_slot_ready;
-        // A primary raw response is captured only when the atomic physical
-        // command retires.  The command itself, rather than the live request
-        // counters, supplies the slot/group/vector metadata below.
         kernel_rd_raw_capture = rd_cmd_response_fire &&
                                 (rd_cmd_owner_q == RD_OWNER_PRIMARY_V);
     end
@@ -1263,7 +1294,7 @@ module unified_its_wrapper #(
         if (!kernel_stage_q && !lfnst_case_q)
             kernel_in_valid = ((kernel_phase_q == K_V_START) ||
                                (kernel_phase_q == K_V_FEED)) &&
-                              kernel_rd_resp_valid_q &&
+                              kernel_rd_return_valid &&
                               !kernel_input_vector_done;
         else if (kernel_stage_q)
             kernel_in_valid = ((kernel_phase_q == K_H_START) ||
@@ -1302,9 +1333,9 @@ module unified_its_wrapper #(
                                         {kernel_vector_q[2:0],
                                          kernel_sample_index_i[2:0]}];
                         end
-                    end else if (kernel_rd_resp_valid_q)
+                    end else if (kernel_rd_return_valid)
                         kernel_in_data[kernel_lane_i*16 +: 16] =
-                            kernel_rd_resp_data_q[kernel_lane_i*16 +: 16];
+                            kernel_rd_return_data[kernel_lane_i*16 +: 16];
                 end
             end else if (kernel_in_valid && kernel_stage_q) begin
                 // The vertical transform writes only its transform-support
@@ -1713,6 +1744,7 @@ module unified_its_wrapper #(
     integer fill_replica_slot_i, fill_replica_bank_i;
     integer rd_cmd_reset_slot_i, rd_cmd_reset_bank_i;
     integer rd_cmd_load_slot_i, rd_cmd_load_bank_i;
+    integer primary_reset_i, primary_update_slot_i, primary_update_bank_i;
     integer kernel_capture_lane_i;
     integer lfnst_write_addr;
     integer lfnst_write_storage_addr;
@@ -1788,13 +1820,15 @@ module unified_its_wrapper #(
             kernel_rd_req_pending_q <= 1'b0;
             kernel_rd_req_group_q <= 5'd0;
             kernel_rd_req_vector_q <= 7'd0;
-            kernel_rd_resp_data_q <= '0;
-            kernel_rd_resp_valid_q <= 1'b0;
-            kernel_rd_raw_data_q <= '0;
-            kernel_rd_raw_valid_q <= '0;
             kernel_rd_raw_pending_q <= 1'b0;
+            kernel_rd_raw_slot_q <= 1'b0;
+            kernel_rd_raw_bank_mask_q <= 4'b0000;
             kernel_rd_raw_group_q <= 5'd0;
             kernel_rd_raw_vector_q <= 7'd0;
+            primary_outstanding_q <= 3'd0;
+            primary_return_wr_ptr_q <= 2'd0;
+            primary_return_rd_ptr_q <= 2'd0;
+            primary_return_count_q <= 3'd0;
             rd_cmd_valid_q <= 1'b0;
             rd_cmd_owner_q <= RD_OWNER_PRIMARY_V;
             rd_cmd_slot_q <= 1'b0;
@@ -1810,8 +1844,13 @@ module unified_its_wrapper #(
                  rd_cmd_reset_slot_i = rd_cmd_reset_slot_i + 1)
                 for (rd_cmd_reset_bank_i = 0;
                      rd_cmd_reset_bank_i < 4;
-                     rd_cmd_reset_bank_i = rd_cmd_reset_bank_i + 1)
+                     rd_cmd_reset_bank_i = rd_cmd_reset_bank_i + 1) begin
                     rd_cmd_addr_q[rd_cmd_reset_slot_i][rd_cmd_reset_bank_i] <= '0;
+                    rd_cmd_bank_valid_q[rd_cmd_reset_slot_i]
+                                         [rd_cmd_reset_bank_i] <= 1'b0;
+                    kernel_rd_bank_valid_q[rd_cmd_reset_slot_i]
+                                            [rd_cmd_reset_bank_i] <= 1'b0;
+                end
             kernel_h_rd_pending_q <= 1'b0;
             kernel_h_rd_group_q <= 5'd0;
             kernel_h_rd_vector_q <= 7'd0;
@@ -1945,41 +1984,46 @@ module unified_its_wrapper #(
                     end
             end
 
-            // P9 second round physical-read command boundary.  A command is
-            // retired only when its owner response slot can capture the
-            // asynchronous RAM result.  If that retirement and a new logical
-            // request coincide, the bundle is atomically refilled in the same
-            // edge; otherwise the command remains held without advancing any
-            // request counters.
-            if (rd_cmd_ready) begin
-                if (rd_cmd_accept) begin
-                    rd_cmd_valid_q <= 1'b1;
-                    rd_cmd_owner_q <= rd_cmd_candidate_owner;
-                    rd_cmd_slot_q <= rd_cmd_candidate_slot;
-                    rd_cmd_bank_mask_q <= rd_cmd_candidate_bank_mask;
-                    rd_cmd_group_q <= rd_cmd_candidate_group;
-                    rd_cmd_vector_q <= rd_cmd_candidate_vector;
-                    rd_cmd_lfnst_index_q <=
-                        rd_cmd_candidate_lfnst_index;
-                    rd_cmd_lfnst_valid_q <=
-                        rd_cmd_candidate_lfnst_valid;
-                    rd_cmd_lfnst_last_q <=
-                        rd_cmd_candidate_lfnst_last;
-                    rd_cmd_lfnst_bank_q <=
-                        rd_cmd_candidate_lfnst_bank;
-                    for (rd_cmd_load_slot_i = 0;
-                         rd_cmd_load_slot_i < 2;
-                         rd_cmd_load_slot_i = rd_cmd_load_slot_i + 1)
-                        for (rd_cmd_load_bank_i = 0;
-                             rd_cmd_load_bank_i < 4;
-                             rd_cmd_load_bank_i = rd_cmd_load_bank_i + 1)
-                            rd_cmd_addr_q[rd_cmd_load_slot_i][rd_cmd_load_bank_i] <=
-                                rd_cmd_candidate_addr_c[rd_cmd_load_slot_i]
-                                                                   [rd_cmd_load_bank_i];
-                end else begin
-                    rd_cmd_valid_q <= 1'b0;
-                    rd_cmd_bank_mask_q <= 4'b0000;
-                end
+            // Fixed one-edge physical command stage. Primary-V acceptance
+            // uses registered return capacity; response consumption cannot
+            // feed the address-register CE in this cycle.
+            rd_cmd_valid_q <= rd_cmd_accept;
+            if (rd_cmd_accept) begin
+                rd_cmd_owner_q <= rd_cmd_candidate_owner;
+                rd_cmd_slot_q <= rd_cmd_candidate_slot;
+                rd_cmd_bank_mask_q <= rd_cmd_candidate_bank_mask;
+                rd_cmd_group_q <= rd_cmd_candidate_group;
+                rd_cmd_vector_q <= rd_cmd_candidate_vector;
+                rd_cmd_lfnst_index_q <= rd_cmd_candidate_lfnst_index;
+                rd_cmd_lfnst_valid_q <= rd_cmd_candidate_lfnst_valid;
+                rd_cmd_lfnst_last_q <= rd_cmd_candidate_lfnst_last;
+                rd_cmd_lfnst_bank_q <= rd_cmd_candidate_lfnst_bank;
+                for (rd_cmd_load_slot_i = 0;
+                     rd_cmd_load_slot_i < 2;
+                     rd_cmd_load_slot_i = rd_cmd_load_slot_i + 1)
+                    for (rd_cmd_load_bank_i = 0;
+                         rd_cmd_load_bank_i < 4;
+                         rd_cmd_load_bank_i = rd_cmd_load_bank_i + 1) begin
+                        rd_cmd_addr_q[rd_cmd_load_slot_i][rd_cmd_load_bank_i] <=
+                            rd_cmd_candidate_addr_c[rd_cmd_load_slot_i]
+                                                       [rd_cmd_load_bank_i];
+                        rd_cmd_bank_valid_q[rd_cmd_load_slot_i]
+                                             [rd_cmd_load_bank_i] <=
+                            (rd_cmd_load_slot_i == rd_cmd_candidate_slot) &&
+                            ((rd_cmd_candidate_owner == RD_OWNER_PRIMARY_V) ||
+                             (rd_cmd_load_bank_i ==
+                              rd_cmd_candidate_lfnst_bank));
+                    end
+            end else begin
+                rd_cmd_bank_mask_q <= 4'b0000;
+                for (rd_cmd_load_slot_i = 0;
+                     rd_cmd_load_slot_i < 2;
+                     rd_cmd_load_slot_i = rd_cmd_load_slot_i + 1)
+                    for (rd_cmd_load_bank_i = 0;
+                         rd_cmd_load_bank_i < 4;
+                         rd_cmd_load_bank_i = rd_cmd_load_bank_i + 1)
+                        rd_cmd_bank_valid_q[rd_cmd_load_slot_i]
+                                             [rd_cmd_load_bank_i] <= 1'b0;
             end
 
             // P3 vertical write-command pipeline.  The old command is
@@ -2035,51 +2079,74 @@ module unified_its_wrapper #(
                 result_write_beat_q <= '0;
             end
 
-            // Primary vertical reads use a raw-bank register followed by a
-            // packed response register.  The response is held until the
-            // kernel accepts it; both stages can advance on the same edge, so
-            // the steady-state group cadence remains one group per cycle.
+            // The command and raw stages advance every cycle. Each accepted
+            // primary request already owns a return credit, so neither stage
+            // uses the kernel's same-edge input fire as a ready/CE source.
             if (kernel_start)
                 kernel_start_sent_q <= 1'b1;
-            if (!kernel_run_q || kernel_stage_q || lfnst_case_q) begin
+            if (!kernel_run_q || kernel_stage_q || lfnst_case_q)
                 kernel_rd_req_pending_q <= 1'b0;
-                kernel_rd_resp_valid_q <= 1'b0;
-                kernel_rd_raw_pending_q <= 1'b0;
-            end else begin
-                if (kernel_rd_raw_to_resp) begin
-                    kernel_rd_resp_data_q <= kernel_rd_data_comb;
-                    kernel_rd_resp_valid_q <= kernel_rd_valid_comb;
-                end else if (kernel_group_accept) begin
-                    kernel_rd_resp_valid_q <= 1'b0;
-                end
 
-                if (kernel_rd_raw_capture) begin
-                    for (kernel_capture_lane_i = 0;
-                         kernel_capture_lane_i < 4;
-                         kernel_capture_lane_i = kernel_capture_lane_i + 1) begin
-                        kernel_rd_raw_data_q[kernel_capture_lane_i*16 +: 16] <=
-                            input_rd_data[rd_cmd_slot_q][kernel_capture_lane_i];
-                        kernel_rd_raw_valid_q[kernel_capture_lane_i] <=
-                            rd_cmd_bank_mask_q[kernel_capture_lane_i] &&
-                            input_rd_valid[rd_cmd_slot_q][kernel_capture_lane_i];
+            // Sample only the addressed physical banks. The command's
+            // registered one-hot bank-valid bits are local capture enables;
+            // no slot mux or kernel consume signal is in these data cones.
+            for (primary_update_slot_i = 0;
+                 primary_update_slot_i < 2;
+                 primary_update_slot_i = primary_update_slot_i + 1)
+                for (primary_update_bank_i = 0;
+                     primary_update_bank_i < 4;
+                     primary_update_bank_i = primary_update_bank_i + 1)
+                    if (rd_cmd_bank_valid_q[primary_update_slot_i]
+                                              [primary_update_bank_i]) begin
+                        kernel_rd_bank_data_q[primary_update_slot_i]
+                                                [primary_update_bank_i] <=
+                            input_rd_data[primary_update_slot_i]
+                                          [primary_update_bank_i];
+                        kernel_rd_bank_valid_q[primary_update_slot_i]
+                                                 [primary_update_bank_i] <=
+                            input_rd_valid[primary_update_slot_i]
+                                          [primary_update_bank_i];
                     end
-                    kernel_rd_raw_pending_q <= 1'b1;
-                    kernel_rd_raw_group_q <= rd_cmd_group_q;
-                    kernel_rd_raw_vector_q <= rd_cmd_vector_q;
-                end else if (kernel_rd_raw_to_resp) begin
-                    kernel_rd_raw_pending_q <= 1'b0;
-                end
 
-                // The request counter advances when the logical request is
-                // accepted into the atomic command bundle, not when the
-                // asynchronous RAM response later retires.
-                if (primary_logical_req_fire) begin
-                    if (kernel_rd_req_group_q ==
-                        ((kernel_cut_h_q >> 2) - 1'b1)) begin
-                        kernel_rd_req_pending_q <= 1'b0;
-                    end else begin
-                        kernel_rd_req_group_q <= kernel_rd_req_group_q + 1'b1;
-                    end
+            kernel_rd_raw_pending_q <= kernel_rd_raw_capture;
+            if (kernel_rd_raw_capture) begin
+                kernel_rd_raw_slot_q <= rd_cmd_slot_q;
+                kernel_rd_raw_bank_mask_q <= rd_cmd_bank_mask_q;
+                kernel_rd_raw_group_q <= rd_cmd_group_q;
+                kernel_rd_raw_vector_q <= rd_cmd_vector_q;
+            end
+
+            // The raw stage always drains into a slot reserved at request
+            // acceptance. The FIFO uses a circular write pointer, so its
+            // payload write enable is local to one 64-bit entry.
+            if (primary_return_push) begin
+                primary_return_data_q[primary_return_wr_ptr_q] <=
+                    kernel_rd_data_comb;
+                primary_return_wr_ptr_q <= primary_return_wr_ptr_q + 1'b1;
+            end
+            if (primary_return_pop)
+                primary_return_rd_ptr_q <= primary_return_rd_ptr_q + 1'b1;
+            case ({primary_return_push, primary_return_pop})
+                2'b10: primary_return_count_q <= primary_return_count_q + 1'b1;
+                2'b01: primary_return_count_q <= primary_return_count_q - 1'b1;
+                default: primary_return_count_q <= primary_return_count_q;
+            endcase
+
+            case ({primary_logical_req_fire, primary_return_pop})
+                2'b10: primary_outstanding_q <= primary_outstanding_q + 1'b1;
+                2'b01: primary_outstanding_q <= primary_outstanding_q - 1'b1;
+                default: primary_outstanding_q <= primary_outstanding_q;
+            endcase
+
+            // The request counter advances on accepted issue, independent of
+            // response consumption. It therefore cannot inherit the ready
+            // path through kernel_input_group_fire.
+            if (primary_logical_req_fire) begin
+                if (kernel_rd_req_group_q ==
+                    ((kernel_cut_h_q >> 2) - 1'b1)) begin
+                    kernel_rd_req_pending_q <= 1'b0;
+                end else begin
+                    kernel_rd_req_group_q <= kernel_rd_req_group_q + 1'b1;
                 end
             end
 
@@ -2418,8 +2485,6 @@ module unified_its_wrapper #(
                     kernel_rd_req_pending_q <= 1'b1;
                     kernel_rd_req_group_q <= 5'd0;
                     kernel_rd_req_vector_q <= 7'd0;
-                    kernel_rd_resp_valid_q <= 1'b0;
-                    kernel_rd_raw_pending_q <= 1'b0;
                     kernel_start_sent_q <= 1'b0;
                     lfnst_case_q <= 1'b0;
                     output_active <= 1'b0;
@@ -2455,8 +2520,6 @@ module unified_its_wrapper #(
                     kernel_vector_q <= 7'd0;
                     kernel_drain_group_q <= 5'd0;
                     kernel_rd_req_pending_q <= 1'b0;
-                    kernel_rd_resp_valid_q <= 1'b0;
-                    kernel_rd_raw_pending_q <= 1'b0;
                     kernel_start_sent_q <= 1'b0;
                     for (lfnst_grid_i = 0; lfnst_grid_i < 64;
                          lfnst_grid_i = lfnst_grid_i + 1) begin
@@ -2539,8 +2602,6 @@ module unified_its_wrapper #(
                     kernel_vector_q <= 7'd0;
                     kernel_drain_group_q <= 5'd0;
                     kernel_rd_req_pending_q <= 1'b0;
-                    kernel_rd_resp_valid_q <= 1'b0;
-                    kernel_rd_raw_pending_q <= 1'b0;
                     kernel_start_sent_q <= 1'b0;
                     kernel_h_input_commit_wait_q <= 1'b0;
                 end
@@ -2580,15 +2641,11 @@ module unified_its_wrapper #(
                                 kernel_rd_req_pending_q <= 1'b1;
                                 kernel_rd_req_group_q <= 5'd0;
                                 kernel_rd_req_vector_q <= kernel_vector_q + 1'b1;
-                                kernel_rd_resp_valid_q <= 1'b0;
-                                kernel_rd_raw_pending_q <= 1'b0;
                                 kernel_start_sent_q <= 1'b0;
                                 kernel_phase_q <= K_V_START;
                             end else begin
                                 kernel_vector_q <= 7'd0;
                                 kernel_rd_req_pending_q <= 1'b0;
-                                kernel_rd_resp_valid_q <= 1'b0;
-                                kernel_rd_raw_pending_q <= 1'b0;
                                 kernel_start_sent_q <= 1'b0;
                                 // The final V result may have just filled the
                                 // registered write command.  Wait until that
@@ -2620,8 +2677,6 @@ module unified_its_wrapper #(
                                 kernel_w_q;
                             kernel_ctx_group_count_q <= kernel_w_q >> 2;
                             kernel_rd_req_pending_q <= 1'b0;
-                            kernel_rd_resp_valid_q <= 1'b0;
-                            kernel_rd_raw_pending_q <= 1'b0;
                             kernel_start_sent_q <= 1'b0;
                             vwrite_last_commit_seen_q <= 1'b0;
                             kernel_h_input_commit_wait_q <= 1'b0;
@@ -2684,8 +2739,6 @@ module unified_its_wrapper #(
                                 // must never expose a partially written TU.
                                 kernel_phase_q <= K_H_WAIT_COMMIT;
                                 kernel_rd_req_pending_q <= 1'b0;
-                                kernel_rd_resp_valid_q <= 1'b0;
-                                kernel_rd_raw_pending_q <= 1'b0;
                                 kernel_start_sent_q <= 1'b0;
                             end
                         end
