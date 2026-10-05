@@ -1,0 +1,18 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Mon Oct  5 16:02:30 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -quiet -of_objects [get_cells -hier -quiet -filter {NAME =~ *lfnst_grid_init_q_reg*}] -filter {REF_PIN_NAME == Q}] -to [get_pins -quiet -of_objects [get_cells -hier -quiet -filter {NAME =~ *lfnst_grid_reg*}] -filter {REF_PIN_NAME == D}] -delay_type max -max_paths 32 -nworst 1 -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify_qual/05_audit/current/85_lfnst_grid_init_physical_20261005/lfnst_init_q_to_grid_d_postroute.rpt
+| Design            : step12f_registered_neighbor_harness
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Routed
+| Temperature Grade : E
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+No timing paths found.
+
+

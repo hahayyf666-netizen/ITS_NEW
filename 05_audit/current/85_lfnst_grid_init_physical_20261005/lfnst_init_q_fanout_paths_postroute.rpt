@@ -1,0 +1,2290 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version      : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date              : Mon Oct  5 16:07:25 2026
+| Host              : Finesse running 64-bit major release  (build 9200)
+| Command           : report_timing -from [get_pins -quiet -of_objects [get_cells -hier -quiet -filter {NAME =~ *lfnst_grid_init_q_reg*}] -filter {REF_PIN_NAME == Q}] -delay_type max -max_paths 32 -nworst 1 -file C:/Users/Fine/Documents/Codex/2026-07-23/ni/_feed_counter_verify_qual/05_audit/current/85_lfnst_grid_init_physical_20261005/lfnst_init_q_fanout_paths_postroute.rpt
+| Design            : step12f_registered_neighbor_harness
+| Device            : xcku5p-ffvb676
+| Speed File        : -2  PRODUCTION 1.29 05-01-2022
+| Design State      : Routed
+| Temperature Grade : E
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             0.318ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[23][10]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.457ns  (logic 0.178ns (12.220%)  route 1.279ns (87.780%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.130ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.422ns = ( 4.422 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.734ns (routing 1.016ns, distribution 0.718ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.687     4.008    u_dut/lfnst_grid_init_q[2]
+    SLICE_X53Y35         LUT6 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.098     4.106 r  u_dut/lfnst_grid[23][15]_i_1/O
+                         net (fo=16, routed)          0.591     4.697    u_dut/lfnst_grid[23][15]_i_1_n_0
+    SLICE_X47Y43         FDCE                                         r  u_dut/lfnst_grid_reg[23][10]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.734     4.422    u_dut/clk
+    SLICE_X47Y43         FDCE                                         r  u_dut/lfnst_grid_reg[23][10]/C
+                         clock pessimism              0.689     5.111    
+                         clock uncertainty           -0.035     5.075    
+    SLICE_X47Y43         FDCE (Setup_DFF_SLICEL_C_CE)
+                                                     -0.060     5.015    u_dut/lfnst_grid_reg[23][10]
+  -------------------------------------------------------------------
+                         required time                          5.015    
+                         arrival time                          -4.697    
+  -------------------------------------------------------------------
+                         slack                                  0.318    
+
+Slack (MET) :             0.318ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[23][11]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.457ns  (logic 0.178ns (12.220%)  route 1.279ns (87.780%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.130ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.422ns = ( 4.422 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.734ns (routing 1.016ns, distribution 0.718ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.687     4.008    u_dut/lfnst_grid_init_q[2]
+    SLICE_X53Y35         LUT6 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.098     4.106 r  u_dut/lfnst_grid[23][15]_i_1/O
+                         net (fo=16, routed)          0.591     4.697    u_dut/lfnst_grid[23][15]_i_1_n_0
+    SLICE_X47Y43         FDCE                                         r  u_dut/lfnst_grid_reg[23][11]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.734     4.422    u_dut/clk
+    SLICE_X47Y43         FDCE                                         r  u_dut/lfnst_grid_reg[23][11]/C
+                         clock pessimism              0.689     5.111    
+                         clock uncertainty           -0.035     5.075    
+    SLICE_X47Y43         FDCE (Setup_CFF_SLICEL_C_CE)
+                                                     -0.060     5.015    u_dut/lfnst_grid_reg[23][11]
+  -------------------------------------------------------------------
+                         required time                          5.015    
+                         arrival time                          -4.697    
+  -------------------------------------------------------------------
+                         slack                                  0.318    
+
+Slack (MET) :             0.366ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[20][0]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.382ns  (logic 0.228ns (16.496%)  route 1.154ns (83.504%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.156ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.396ns = ( 4.396 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.708ns (routing 1.016ns, distribution 0.692ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.775     4.096    u_dut/lfnst_grid_init_q[2]
+    SLICE_X50Y31         LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     4.244 r  u_dut/lfnst_grid[20][15]_i_1/O
+                         net (fo=16, routed)          0.379     4.623    u_dut/lfnst_grid[20][15]_i_1_n_0
+    SLICE_X50Y33         FDCE                                         r  u_dut/lfnst_grid_reg[20][0]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.708     4.396    u_dut/clk
+    SLICE_X50Y33         FDCE                                         r  u_dut/lfnst_grid_reg[20][0]/C
+                         clock pessimism              0.689     5.085    
+                         clock uncertainty           -0.035     5.049    
+    SLICE_X50Y33         FDCE (Setup_GFF_SLICEM_C_CE)
+                                                     -0.061     4.988    u_dut/lfnst_grid_reg[20][0]
+  -------------------------------------------------------------------
+                         required time                          4.988    
+                         arrival time                          -4.623    
+  -------------------------------------------------------------------
+                         slack                                  0.366    
+
+Slack (MET) :             0.366ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[20][5]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.382ns  (logic 0.228ns (16.496%)  route 1.154ns (83.504%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.156ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.396ns = ( 4.396 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.708ns (routing 1.016ns, distribution 0.692ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.775     4.096    u_dut/lfnst_grid_init_q[2]
+    SLICE_X50Y31         LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     4.244 r  u_dut/lfnst_grid[20][15]_i_1/O
+                         net (fo=16, routed)          0.379     4.623    u_dut/lfnst_grid[20][15]_i_1_n_0
+    SLICE_X50Y33         FDCE                                         r  u_dut/lfnst_grid_reg[20][5]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.708     4.396    u_dut/clk
+    SLICE_X50Y33         FDCE                                         r  u_dut/lfnst_grid_reg[20][5]/C
+                         clock pessimism              0.689     5.085    
+                         clock uncertainty           -0.035     5.049    
+    SLICE_X50Y33         FDCE (Setup_HFF_SLICEM_C_CE)
+                                                     -0.061     4.988    u_dut/lfnst_grid_reg[20][5]
+  -------------------------------------------------------------------
+                         required time                          4.988    
+                         arrival time                          -4.623    
+  -------------------------------------------------------------------
+                         slack                                  0.366    
+
+Slack (MET) :             0.380ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[11][12]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.393ns  (logic 0.180ns (12.920%)  route 1.213ns (87.080%))
+  Logic Levels:           1  (LUT3=1)
+  Clock Path Skew:        -0.132ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.418ns = ( 4.418 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.239ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.005ns (routing 1.121ns, distribution 0.884ns)
+  Clock Net Delay (Destination): 1.731ns (routing 1.016ns, distribution 0.715ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.005     3.239    u_dut/clk
+    SLICE_X60Y32         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y32         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.319 r  u_dut/lfnst_grid_init_q_reg[1]/Q
+                         net (fo=8, routed)           0.756     4.074    u_dut/lfnst_grid_init_q[1]
+    SLICE_X50Y38         LUT3 (Prop_G6LUT_SLICEM_I0_O)
+                                                      0.100     4.174 r  u_dut/lfnst_grid[11][15]_i_1/O
+                         net (fo=16, routed)          0.458     4.632    u_dut/lfnst_grid[11][15]_i_1_n_0
+    SLICE_X45Y41         FDCE                                         r  u_dut/lfnst_grid_reg[11][12]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.731     4.418    u_dut/clk
+    SLICE_X45Y41         FDCE                                         r  u_dut/lfnst_grid_reg[11][12]/C
+                         clock pessimism              0.689     5.107    
+                         clock uncertainty           -0.035     5.072    
+    SLICE_X45Y41         FDCE (Setup_DFF_SLICEL_C_CE)
+                                                     -0.060     5.012    u_dut/lfnst_grid_reg[11][12]
+  -------------------------------------------------------------------
+                         required time                          5.012    
+                         arrival time                          -4.632    
+  -------------------------------------------------------------------
+                         slack                                  0.380    
+
+Slack (MET) :             0.380ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[11][14]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.393ns  (logic 0.180ns (12.920%)  route 1.213ns (87.080%))
+  Logic Levels:           1  (LUT3=1)
+  Clock Path Skew:        -0.132ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.418ns = ( 4.418 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.239ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.005ns (routing 1.121ns, distribution 0.884ns)
+  Clock Net Delay (Destination): 1.731ns (routing 1.016ns, distribution 0.715ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.005     3.239    u_dut/clk
+    SLICE_X60Y32         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y32         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.319 r  u_dut/lfnst_grid_init_q_reg[1]/Q
+                         net (fo=8, routed)           0.756     4.074    u_dut/lfnst_grid_init_q[1]
+    SLICE_X50Y38         LUT3 (Prop_G6LUT_SLICEM_I0_O)
+                                                      0.100     4.174 r  u_dut/lfnst_grid[11][15]_i_1/O
+                         net (fo=16, routed)          0.458     4.632    u_dut/lfnst_grid[11][15]_i_1_n_0
+    SLICE_X45Y41         FDCE                                         r  u_dut/lfnst_grid_reg[11][14]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.731     4.418    u_dut/clk
+    SLICE_X45Y41         FDCE                                         r  u_dut/lfnst_grid_reg[11][14]/C
+                         clock pessimism              0.689     5.107    
+                         clock uncertainty           -0.035     5.072    
+    SLICE_X45Y41         FDCE (Setup_CFF_SLICEL_C_CE)
+                                                     -0.060     5.012    u_dut/lfnst_grid_reg[11][14]
+  -------------------------------------------------------------------
+                         required time                          5.012    
+                         arrival time                          -4.632    
+  -------------------------------------------------------------------
+                         slack                                  0.380    
+
+Slack (MET) :             0.380ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[11][0]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.394ns  (logic 0.180ns (12.911%)  route 1.214ns (87.089%))
+  Logic Levels:           1  (LUT3=1)
+  Clock Path Skew:        -0.132ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.418ns = ( 4.418 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.239ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.005ns (routing 1.121ns, distribution 0.884ns)
+  Clock Net Delay (Destination): 1.731ns (routing 1.016ns, distribution 0.715ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.005     3.239    u_dut/clk
+    SLICE_X60Y32         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y32         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.319 r  u_dut/lfnst_grid_init_q_reg[1]/Q
+                         net (fo=8, routed)           0.756     4.074    u_dut/lfnst_grid_init_q[1]
+    SLICE_X50Y38         LUT3 (Prop_G6LUT_SLICEM_I0_O)
+                                                      0.100     4.174 r  u_dut/lfnst_grid[11][15]_i_1/O
+                         net (fo=16, routed)          0.459     4.633    u_dut/lfnst_grid[11][15]_i_1_n_0
+    SLICE_X45Y41         FDCE                                         r  u_dut/lfnst_grid_reg[11][0]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.731     4.418    u_dut/clk
+    SLICE_X45Y41         FDCE                                         r  u_dut/lfnst_grid_reg[11][0]/C
+                         clock pessimism              0.689     5.107    
+                         clock uncertainty           -0.035     5.072    
+    SLICE_X45Y41         FDCE (Setup_DFF2_SLICEL_C_CE)
+                                                     -0.059     5.013    u_dut/lfnst_grid_reg[11][0]
+  -------------------------------------------------------------------
+                         required time                          5.013    
+                         arrival time                          -4.633    
+  -------------------------------------------------------------------
+                         slack                                  0.380    
+
+Slack (MET) :             0.384ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[20][14]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.373ns  (logic 0.228ns (16.612%)  route 1.145ns (83.388%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.148ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.403ns = ( 4.403 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.716ns (routing 1.016ns, distribution 0.700ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.775     4.096    u_dut/lfnst_grid_init_q[2]
+    SLICE_X50Y31         LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     4.244 r  u_dut/lfnst_grid[20][15]_i_1/O
+                         net (fo=16, routed)          0.369     4.613    u_dut/lfnst_grid[20][15]_i_1_n_0
+    SLICE_X47Y31         FDCE                                         r  u_dut/lfnst_grid_reg[20][14]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.716     4.403    u_dut/clk
+    SLICE_X47Y31         FDCE                                         r  u_dut/lfnst_grid_reg[20][14]/C
+                         clock pessimism              0.689     5.092    
+                         clock uncertainty           -0.035     5.057    
+    SLICE_X47Y31         FDCE (Setup_DFF_SLICEL_C_CE)
+                                                     -0.060     4.997    u_dut/lfnst_grid_reg[20][14]
+  -------------------------------------------------------------------
+                         required time                          4.997    
+                         arrival time                          -4.613    
+  -------------------------------------------------------------------
+                         slack                                  0.384    
+
+Slack (MET) :             0.397ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[20][13]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.371ns  (logic 0.228ns (16.632%)  route 1.143ns (83.368%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.137ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.415ns = ( 4.415 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.727ns (routing 1.016ns, distribution 0.711ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.775     4.096    u_dut/lfnst_grid_init_q[2]
+    SLICE_X50Y31         LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     4.244 r  u_dut/lfnst_grid[20][15]_i_1/O
+                         net (fo=16, routed)          0.367     4.611    u_dut/lfnst_grid[20][15]_i_1_n_0
+    SLICE_X46Y35         FDCE                                         r  u_dut/lfnst_grid_reg[20][13]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.727     4.415    u_dut/clk
+    SLICE_X46Y35         FDCE                                         r  u_dut/lfnst_grid_reg[20][13]/C
+                         clock pessimism              0.689     5.104    
+                         clock uncertainty           -0.035     5.068    
+    SLICE_X46Y35         FDCE (Setup_HFF_SLICEL_C_CE)
+                                                     -0.060     5.008    u_dut/lfnst_grid_reg[20][13]
+  -------------------------------------------------------------------
+                         required time                          5.008    
+                         arrival time                          -4.611    
+  -------------------------------------------------------------------
+                         slack                                  0.397    
+
+Slack (MET) :             0.397ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[20][6]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.371ns  (logic 0.228ns (16.632%)  route 1.143ns (83.368%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.137ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.415ns = ( 4.415 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.727ns (routing 1.016ns, distribution 0.711ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.775     4.096    u_dut/lfnst_grid_init_q[2]
+    SLICE_X50Y31         LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     4.244 r  u_dut/lfnst_grid[20][15]_i_1/O
+                         net (fo=16, routed)          0.367     4.611    u_dut/lfnst_grid[20][15]_i_1_n_0
+    SLICE_X46Y35         FDCE                                         r  u_dut/lfnst_grid_reg[20][6]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.727     4.415    u_dut/clk
+    SLICE_X46Y35         FDCE                                         r  u_dut/lfnst_grid_reg[20][6]/C
+                         clock pessimism              0.689     5.104    
+                         clock uncertainty           -0.035     5.068    
+    SLICE_X46Y35         FDCE (Setup_GFF_SLICEL_C_CE)
+                                                     -0.060     5.008    u_dut/lfnst_grid_reg[20][6]
+  -------------------------------------------------------------------
+                         required time                          5.008    
+                         arrival time                          -4.611    
+  -------------------------------------------------------------------
+                         slack                                  0.397    
+
+Slack (MET) :             0.410ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[19][0]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.360ns  (logic 0.203ns (14.931%)  route 1.157ns (85.070%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.135ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.417ns = ( 4.417 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.730ns (routing 1.016ns, distribution 0.714ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.661     3.981    u_dut/lfnst_grid_init_q[2]
+    SLICE_X50Y37         LUT6 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     4.104 r  u_dut/lfnst_grid[19][15]_i_1/O
+                         net (fo=16, routed)          0.496     4.600    u_dut/lfnst_grid[19][15]_i_1_n_0
+    SLICE_X47Y41         FDCE                                         r  u_dut/lfnst_grid_reg[19][0]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.730     4.417    u_dut/clk
+    SLICE_X47Y41         FDCE                                         r  u_dut/lfnst_grid_reg[19][0]/C
+                         clock pessimism              0.689     5.106    
+                         clock uncertainty           -0.035     5.071    
+    SLICE_X47Y41         FDCE (Setup_FFF_SLICEL_C_CE)
+                                                     -0.060     5.011    u_dut/lfnst_grid_reg[19][0]
+  -------------------------------------------------------------------
+                         required time                          5.011    
+                         arrival time                          -4.600    
+  -------------------------------------------------------------------
+                         slack                                  0.410    
+
+Slack (MET) :             0.410ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[19][13]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.360ns  (logic 0.203ns (14.931%)  route 1.157ns (85.070%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.135ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.417ns = ( 4.417 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.730ns (routing 1.016ns, distribution 0.714ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.661     3.981    u_dut/lfnst_grid_init_q[2]
+    SLICE_X50Y37         LUT6 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     4.104 r  u_dut/lfnst_grid[19][15]_i_1/O
+                         net (fo=16, routed)          0.496     4.600    u_dut/lfnst_grid[19][15]_i_1_n_0
+    SLICE_X47Y41         FDCE                                         r  u_dut/lfnst_grid_reg[19][13]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.730     4.417    u_dut/clk
+    SLICE_X47Y41         FDCE                                         r  u_dut/lfnst_grid_reg[19][13]/C
+                         clock pessimism              0.689     5.106    
+                         clock uncertainty           -0.035     5.071    
+    SLICE_X47Y41         FDCE (Setup_HFF_SLICEL_C_CE)
+                                                     -0.060     5.011    u_dut/lfnst_grid_reg[19][13]
+  -------------------------------------------------------------------
+                         required time                          5.011    
+                         arrival time                          -4.600    
+  -------------------------------------------------------------------
+                         slack                                  0.410    
+
+Slack (MET) :             0.410ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[19][14]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.360ns  (logic 0.203ns (14.931%)  route 1.157ns (85.070%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.135ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.417ns = ( 4.417 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.730ns (routing 1.016ns, distribution 0.714ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.661     3.981    u_dut/lfnst_grid_init_q[2]
+    SLICE_X50Y37         LUT6 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.123     4.104 r  u_dut/lfnst_grid[19][15]_i_1/O
+                         net (fo=16, routed)          0.496     4.600    u_dut/lfnst_grid[19][15]_i_1_n_0
+    SLICE_X47Y41         FDCE                                         r  u_dut/lfnst_grid_reg[19][14]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.730     4.417    u_dut/clk
+    SLICE_X47Y41         FDCE                                         r  u_dut/lfnst_grid_reg[19][14]/C
+                         clock pessimism              0.689     5.106    
+                         clock uncertainty           -0.035     5.071    
+    SLICE_X47Y41         FDCE (Setup_GFF_SLICEL_C_CE)
+                                                     -0.060     5.011    u_dut/lfnst_grid_reg[19][14]
+  -------------------------------------------------------------------
+                         required time                          5.011    
+                         arrival time                          -4.600    
+  -------------------------------------------------------------------
+                         slack                                  0.410    
+
+Slack (MET) :             0.425ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[11][10]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.336ns  (logic 0.180ns (13.474%)  route 1.156ns (86.526%))
+  Logic Levels:           1  (LUT3=1)
+  Clock Path Skew:        -0.144ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.406ns = ( 4.406 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.239ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.005ns (routing 1.121ns, distribution 0.884ns)
+  Clock Net Delay (Destination): 1.718ns (routing 1.016ns, distribution 0.702ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.005     3.239    u_dut/clk
+    SLICE_X60Y32         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y32         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.319 r  u_dut/lfnst_grid_init_q_reg[1]/Q
+                         net (fo=8, routed)           0.756     4.074    u_dut/lfnst_grid_init_q[1]
+    SLICE_X50Y38         LUT3 (Prop_G6LUT_SLICEM_I0_O)
+                                                      0.100     4.174 r  u_dut/lfnst_grid[11][15]_i_1/O
+                         net (fo=16, routed)          0.400     4.575    u_dut/lfnst_grid[11][15]_i_1_n_0
+    SLICE_X48Y45         FDCE                                         r  u_dut/lfnst_grid_reg[11][10]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.718     4.406    u_dut/clk
+    SLICE_X48Y45         FDCE                                         r  u_dut/lfnst_grid_reg[11][10]/C
+                         clock pessimism              0.689     5.095    
+                         clock uncertainty           -0.035     5.059    
+    SLICE_X48Y45         FDCE (Setup_HFF_SLICEL_C_CE)
+                                                     -0.060     4.999    u_dut/lfnst_grid_reg[11][10]
+  -------------------------------------------------------------------
+                         required time                          4.999    
+                         arrival time                          -4.575    
+  -------------------------------------------------------------------
+                         slack                                  0.425    
+
+Slack (MET) :             0.425ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[11][15]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.336ns  (logic 0.180ns (13.474%)  route 1.156ns (86.526%))
+  Logic Levels:           1  (LUT3=1)
+  Clock Path Skew:        -0.144ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.406ns = ( 4.406 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.239ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.005ns (routing 1.121ns, distribution 0.884ns)
+  Clock Net Delay (Destination): 1.718ns (routing 1.016ns, distribution 0.702ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.005     3.239    u_dut/clk
+    SLICE_X60Y32         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y32         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.319 r  u_dut/lfnst_grid_init_q_reg[1]/Q
+                         net (fo=8, routed)           0.756     4.074    u_dut/lfnst_grid_init_q[1]
+    SLICE_X50Y38         LUT3 (Prop_G6LUT_SLICEM_I0_O)
+                                                      0.100     4.174 r  u_dut/lfnst_grid[11][15]_i_1/O
+                         net (fo=16, routed)          0.400     4.575    u_dut/lfnst_grid[11][15]_i_1_n_0
+    SLICE_X48Y45         FDCE                                         r  u_dut/lfnst_grid_reg[11][15]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.718     4.406    u_dut/clk
+    SLICE_X48Y45         FDCE                                         r  u_dut/lfnst_grid_reg[11][15]/C
+                         clock pessimism              0.689     5.095    
+                         clock uncertainty           -0.035     5.059    
+    SLICE_X48Y45         FDCE (Setup_GFF_SLICEL_C_CE)
+                                                     -0.060     4.999    u_dut/lfnst_grid_reg[11][15]
+  -------------------------------------------------------------------
+                         required time                          4.999    
+                         arrival time                          -4.575    
+  -------------------------------------------------------------------
+                         slack                                  0.425    
+
+Slack (MET) :             0.425ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[11][1]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.336ns  (logic 0.180ns (13.474%)  route 1.156ns (86.526%))
+  Logic Levels:           1  (LUT3=1)
+  Clock Path Skew:        -0.144ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.406ns = ( 4.406 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.239ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.005ns (routing 1.121ns, distribution 0.884ns)
+  Clock Net Delay (Destination): 1.718ns (routing 1.016ns, distribution 0.702ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.005     3.239    u_dut/clk
+    SLICE_X60Y32         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y32         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.319 r  u_dut/lfnst_grid_init_q_reg[1]/Q
+                         net (fo=8, routed)           0.756     4.074    u_dut/lfnst_grid_init_q[1]
+    SLICE_X50Y38         LUT3 (Prop_G6LUT_SLICEM_I0_O)
+                                                      0.100     4.174 r  u_dut/lfnst_grid[11][15]_i_1/O
+                         net (fo=16, routed)          0.400     4.575    u_dut/lfnst_grid[11][15]_i_1_n_0
+    SLICE_X48Y45         FDCE                                         r  u_dut/lfnst_grid_reg[11][1]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.718     4.406    u_dut/clk
+    SLICE_X48Y45         FDCE                                         r  u_dut/lfnst_grid_reg[11][1]/C
+                         clock pessimism              0.689     5.095    
+                         clock uncertainty           -0.035     5.059    
+    SLICE_X48Y45         FDCE (Setup_FFF_SLICEL_C_CE)
+                                                     -0.060     4.999    u_dut/lfnst_grid_reg[11][1]
+  -------------------------------------------------------------------
+                         required time                          4.999    
+                         arrival time                          -4.575    
+  -------------------------------------------------------------------
+                         slack                                  0.425    
+
+Slack (MET) :             0.425ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[11][3]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.336ns  (logic 0.180ns (13.474%)  route 1.156ns (86.526%))
+  Logic Levels:           1  (LUT3=1)
+  Clock Path Skew:        -0.144ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.406ns = ( 4.406 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.239ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.005ns (routing 1.121ns, distribution 0.884ns)
+  Clock Net Delay (Destination): 1.718ns (routing 1.016ns, distribution 0.702ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.005     3.239    u_dut/clk
+    SLICE_X60Y32         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y32         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.319 r  u_dut/lfnst_grid_init_q_reg[1]/Q
+                         net (fo=8, routed)           0.756     4.074    u_dut/lfnst_grid_init_q[1]
+    SLICE_X50Y38         LUT3 (Prop_G6LUT_SLICEM_I0_O)
+                                                      0.100     4.174 r  u_dut/lfnst_grid[11][15]_i_1/O
+                         net (fo=16, routed)          0.400     4.575    u_dut/lfnst_grid[11][15]_i_1_n_0
+    SLICE_X48Y45         FDCE                                         r  u_dut/lfnst_grid_reg[11][3]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.718     4.406    u_dut/clk
+    SLICE_X48Y45         FDCE                                         r  u_dut/lfnst_grid_reg[11][3]/C
+                         clock pessimism              0.689     5.095    
+                         clock uncertainty           -0.035     5.059    
+    SLICE_X48Y45         FDCE (Setup_EFF_SLICEL_C_CE)
+                                                     -0.060     4.999    u_dut/lfnst_grid_reg[11][3]
+  -------------------------------------------------------------------
+                         required time                          4.999    
+                         arrival time                          -4.575    
+  -------------------------------------------------------------------
+                         slack                                  0.425    
+
+Slack (MET) :             0.427ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[23][0]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.347ns  (logic 0.178ns (13.217%)  route 1.169ns (86.783%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.131ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.421ns = ( 4.421 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.733ns (routing 1.016ns, distribution 0.717ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.687     4.008    u_dut/lfnst_grid_init_q[2]
+    SLICE_X53Y35         LUT6 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.098     4.106 r  u_dut/lfnst_grid[23][15]_i_1/O
+                         net (fo=16, routed)          0.481     4.587    u_dut/lfnst_grid[23][15]_i_1_n_0
+    SLICE_X47Y40         FDCE                                         r  u_dut/lfnst_grid_reg[23][0]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.733     4.421    u_dut/clk
+    SLICE_X47Y40         FDCE                                         r  u_dut/lfnst_grid_reg[23][0]/C
+                         clock pessimism              0.689     5.110    
+                         clock uncertainty           -0.035     5.074    
+    SLICE_X47Y40         FDCE (Setup_FFF_SLICEL_C_CE)
+                                                     -0.060     5.014    u_dut/lfnst_grid_reg[23][0]
+  -------------------------------------------------------------------
+                         required time                          5.014    
+                         arrival time                          -4.587    
+  -------------------------------------------------------------------
+                         slack                                  0.427    
+
+Slack (MET) :             0.427ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[23][13]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.347ns  (logic 0.178ns (13.217%)  route 1.169ns (86.783%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.131ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.421ns = ( 4.421 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.733ns (routing 1.016ns, distribution 0.717ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.687     4.008    u_dut/lfnst_grid_init_q[2]
+    SLICE_X53Y35         LUT6 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.098     4.106 r  u_dut/lfnst_grid[23][15]_i_1/O
+                         net (fo=16, routed)          0.481     4.587    u_dut/lfnst_grid[23][15]_i_1_n_0
+    SLICE_X47Y40         FDCE                                         r  u_dut/lfnst_grid_reg[23][13]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.733     4.421    u_dut/clk
+    SLICE_X47Y40         FDCE                                         r  u_dut/lfnst_grid_reg[23][13]/C
+                         clock pessimism              0.689     5.110    
+                         clock uncertainty           -0.035     5.074    
+    SLICE_X47Y40         FDCE (Setup_HFF_SLICEL_C_CE)
+                                                     -0.060     5.014    u_dut/lfnst_grid_reg[23][13]
+  -------------------------------------------------------------------
+                         required time                          5.014    
+                         arrival time                          -4.587    
+  -------------------------------------------------------------------
+                         slack                                  0.427    
+
+Slack (MET) :             0.427ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[23][14]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.347ns  (logic 0.178ns (13.217%)  route 1.169ns (86.783%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.131ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.421ns = ( 4.421 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.733ns (routing 1.016ns, distribution 0.717ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.687     4.008    u_dut/lfnst_grid_init_q[2]
+    SLICE_X53Y35         LUT6 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.098     4.106 r  u_dut/lfnst_grid[23][15]_i_1/O
+                         net (fo=16, routed)          0.481     4.587    u_dut/lfnst_grid[23][15]_i_1_n_0
+    SLICE_X47Y40         FDCE                                         r  u_dut/lfnst_grid_reg[23][14]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.733     4.421    u_dut/clk
+    SLICE_X47Y40         FDCE                                         r  u_dut/lfnst_grid_reg[23][14]/C
+                         clock pessimism              0.689     5.110    
+                         clock uncertainty           -0.035     5.074    
+    SLICE_X47Y40         FDCE (Setup_GFF_SLICEL_C_CE)
+                                                     -0.060     5.014    u_dut/lfnst_grid_reg[23][14]
+  -------------------------------------------------------------------
+                         required time                          5.014    
+                         arrival time                          -4.587    
+  -------------------------------------------------------------------
+                         slack                                  0.427    
+
+Slack (MET) :             0.428ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[17][2]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.385ns  (logic 0.117ns (8.447%)  route 1.268ns (91.553%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.092ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.456ns = ( 4.456 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.692ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.769ns (routing 1.016ns, distribution 0.753ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.753     4.074    u_dut/lfnst_grid_init_q[2]
+    SLICE_X50Y30         LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.037     4.111 r  u_dut/lfnst_grid[17][15]_i_1/O
+                         net (fo=16, routed)          0.515     4.626    u_dut/lfnst_grid[17][15]_i_1_n_0
+    SLICE_X57Y36         FDCE                                         r  u_dut/lfnst_grid_reg[17][2]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.769     4.456    u_dut/clk
+    SLICE_X57Y36         FDCE                                         r  u_dut/lfnst_grid_reg[17][2]/C
+                         clock pessimism              0.692     5.149    
+                         clock uncertainty           -0.035     5.113    
+    SLICE_X57Y36         FDCE (Setup_HFF_SLICEL_C_CE)
+                                                     -0.060     5.053    u_dut/lfnst_grid_reg[17][2]
+  -------------------------------------------------------------------
+                         required time                          5.053    
+                         arrival time                          -4.626    
+  -------------------------------------------------------------------
+                         slack                                  0.428    
+
+Slack (MET) :             0.428ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[17][7]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.385ns  (logic 0.117ns (8.447%)  route 1.268ns (91.553%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.092ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.456ns = ( 4.456 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.692ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.769ns (routing 1.016ns, distribution 0.753ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.753     4.074    u_dut/lfnst_grid_init_q[2]
+    SLICE_X50Y30         LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.037     4.111 r  u_dut/lfnst_grid[17][15]_i_1/O
+                         net (fo=16, routed)          0.515     4.626    u_dut/lfnst_grid[17][15]_i_1_n_0
+    SLICE_X57Y36         FDCE                                         r  u_dut/lfnst_grid_reg[17][7]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.769     4.456    u_dut/clk
+    SLICE_X57Y36         FDCE                                         r  u_dut/lfnst_grid_reg[17][7]/C
+                         clock pessimism              0.692     5.149    
+                         clock uncertainty           -0.035     5.113    
+    SLICE_X57Y36         FDCE (Setup_GFF_SLICEL_C_CE)
+                                                     -0.060     5.053    u_dut/lfnst_grid_reg[17][7]
+  -------------------------------------------------------------------
+                         required time                          5.053    
+                         arrival time                          -4.626    
+  -------------------------------------------------------------------
+                         slack                                  0.428    
+
+Slack (MET) :             0.429ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[17][14]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.341ns  (logic 0.117ns (8.725%)  route 1.224ns (91.275%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.135ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.417ns = ( 4.417 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.729ns (routing 1.016ns, distribution 0.713ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.753     4.074    u_dut/lfnst_grid_init_q[2]
+    SLICE_X50Y30         LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.037     4.111 r  u_dut/lfnst_grid[17][15]_i_1/O
+                         net (fo=16, routed)          0.471     4.582    u_dut/lfnst_grid[17][15]_i_1_n_0
+    SLICE_X47Y37         FDCE                                         r  u_dut/lfnst_grid_reg[17][14]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.729     4.417    u_dut/clk
+    SLICE_X47Y37         FDCE                                         r  u_dut/lfnst_grid_reg[17][14]/C
+                         clock pessimism              0.689     5.106    
+                         clock uncertainty           -0.035     5.070    
+    SLICE_X47Y37         FDCE (Setup_HFF_SLICEL_C_CE)
+                                                     -0.060     5.010    u_dut/lfnst_grid_reg[17][14]
+  -------------------------------------------------------------------
+                         required time                          5.010    
+                         arrival time                          -4.582    
+  -------------------------------------------------------------------
+                         slack                                  0.429    
+
+Slack (MET) :             0.434ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[11][11]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.330ns  (logic 0.180ns (13.534%)  route 1.150ns (86.466%))
+  Logic Levels:           1  (LUT3=1)
+  Clock Path Skew:        -0.141ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.409ns = ( 4.409 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.239ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.005ns (routing 1.121ns, distribution 0.884ns)
+  Clock Net Delay (Destination): 1.722ns (routing 1.016ns, distribution 0.706ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.005     3.239    u_dut/clk
+    SLICE_X60Y32         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y32         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.319 r  u_dut/lfnst_grid_init_q_reg[1]/Q
+                         net (fo=8, routed)           0.756     4.074    u_dut/lfnst_grid_init_q[1]
+    SLICE_X50Y38         LUT3 (Prop_G6LUT_SLICEM_I0_O)
+                                                      0.100     4.174 r  u_dut/lfnst_grid[11][15]_i_1/O
+                         net (fo=16, routed)          0.394     4.569    u_dut/lfnst_grid[11][15]_i_1_n_0
+    SLICE_X48Y46         FDCE                                         r  u_dut/lfnst_grid_reg[11][11]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.722     4.409    u_dut/clk
+    SLICE_X48Y46         FDCE                                         r  u_dut/lfnst_grid_reg[11][11]/C
+                         clock pessimism              0.689     5.098    
+                         clock uncertainty           -0.035     5.063    
+    SLICE_X48Y46         FDCE (Setup_DFF_SLICEL_C_CE)
+                                                     -0.060     5.003    u_dut/lfnst_grid_reg[11][11]
+  -------------------------------------------------------------------
+                         required time                          5.003    
+                         arrival time                          -4.569    
+  -------------------------------------------------------------------
+                         slack                                  0.434    
+
+Slack (MET) :             0.439ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[23][15]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.321ns  (logic 0.178ns (13.479%)  route 1.143ns (86.521%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.145ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.406ns = ( 4.406 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.719ns (routing 1.016ns, distribution 0.703ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.687     4.008    u_dut/lfnst_grid_init_q[2]
+    SLICE_X53Y35         LUT6 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.098     4.106 r  u_dut/lfnst_grid[23][15]_i_1/O
+                         net (fo=16, routed)          0.455     4.561    u_dut/lfnst_grid[23][15]_i_1_n_0
+    SLICE_X48Y42         FDCE                                         r  u_dut/lfnst_grid_reg[23][15]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.719     4.406    u_dut/clk
+    SLICE_X48Y42         FDCE                                         r  u_dut/lfnst_grid_reg[23][15]/C
+                         clock pessimism              0.689     5.095    
+                         clock uncertainty           -0.035     5.060    
+    SLICE_X48Y42         FDCE (Setup_DFF_SLICEL_C_CE)
+                                                     -0.060     5.000    u_dut/lfnst_grid_reg[23][15]
+  -------------------------------------------------------------------
+                         required time                          5.000    
+                         arrival time                          -4.561    
+  -------------------------------------------------------------------
+                         slack                                  0.439    
+
+Slack (MET) :             0.439ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[23][1]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.321ns  (logic 0.178ns (13.479%)  route 1.143ns (86.521%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.145ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.406ns = ( 4.406 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.719ns (routing 1.016ns, distribution 0.703ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.687     4.008    u_dut/lfnst_grid_init_q[2]
+    SLICE_X53Y35         LUT6 (Prop_F6LUT_SLICEM_I0_O)
+                                                      0.098     4.106 r  u_dut/lfnst_grid[23][15]_i_1/O
+                         net (fo=16, routed)          0.455     4.561    u_dut/lfnst_grid[23][15]_i_1_n_0
+    SLICE_X48Y42         FDCE                                         r  u_dut/lfnst_grid_reg[23][1]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.719     4.406    u_dut/clk
+    SLICE_X48Y42         FDCE                                         r  u_dut/lfnst_grid_reg[23][1]/C
+                         clock pessimism              0.689     5.095    
+                         clock uncertainty           -0.035     5.060    
+    SLICE_X48Y42         FDCE (Setup_CFF_SLICEL_C_CE)
+                                                     -0.060     5.000    u_dut/lfnst_grid_reg[23][1]
+  -------------------------------------------------------------------
+                         required time                          5.000    
+                         arrival time                          -4.561    
+  -------------------------------------------------------------------
+                         slack                                  0.439    
+
+Slack (MET) :             0.442ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[1]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[11][13]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.330ns  (logic 0.180ns (13.536%)  route 1.150ns (86.464%))
+  Logic Levels:           1  (LUT3=1)
+  Clock Path Skew:        -0.133ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.417ns = ( 4.417 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.239ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.005ns (routing 1.121ns, distribution 0.884ns)
+  Clock Net Delay (Destination): 1.730ns (routing 1.016ns, distribution 0.714ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.005     3.239    u_dut/clk
+    SLICE_X60Y32         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[1]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y32         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.319 r  u_dut/lfnst_grid_init_q_reg[1]/Q
+                         net (fo=8, routed)           0.756     4.074    u_dut/lfnst_grid_init_q[1]
+    SLICE_X50Y38         LUT3 (Prop_G6LUT_SLICEM_I0_O)
+                                                      0.100     4.174 r  u_dut/lfnst_grid[11][15]_i_1/O
+                         net (fo=16, routed)          0.394     4.568    u_dut/lfnst_grid[11][15]_i_1_n_0
+    SLICE_X45Y40         FDCE                                         r  u_dut/lfnst_grid_reg[11][13]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.730     4.417    u_dut/clk
+    SLICE_X45Y40         FDCE                                         r  u_dut/lfnst_grid_reg[11][13]/C
+                         clock pessimism              0.689     5.106    
+                         clock uncertainty           -0.035     5.071    
+    SLICE_X45Y40         FDCE (Setup_DFF_SLICEL_C_CE)
+                                                     -0.060     5.011    u_dut/lfnst_grid_reg[11][13]
+  -------------------------------------------------------------------
+                         required time                          5.011    
+                         arrival time                          -4.568    
+  -------------------------------------------------------------------
+                         slack                                  0.442    
+
+Slack (MET) :             0.452ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[3]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[24][13]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.205ns  (logic 0.205ns (17.016%)  route 1.000ns (82.984%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.248ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.412ns = ( 4.412 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.349ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.115ns (routing 1.121ns, distribution 0.994ns)
+  Clock Net Delay (Destination): 1.724ns (routing 1.016ns, distribution 0.708ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.115     3.349    u_dut/clk
+    SLICE_X57Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[3]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X57Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.429 r  u_dut/lfnst_grid_init_q_reg[3]/Q
+                         net (fo=8, routed)           0.553     3.981    u_dut/lfnst_grid_init_q[3]
+    SLICE_X50Y30         LUT6 (Prop_A6LUT_SLICEM_I0_O)
+                                                      0.125     4.106 r  u_dut/lfnst_grid[24][15]_i_1/O
+                         net (fo=16, routed)          0.447     4.553    u_dut/lfnst_grid[24][15]_i_1_n_0
+    SLICE_X47Y34         FDCE                                         r  u_dut/lfnst_grid_reg[24][13]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.724     4.412    u_dut/clk
+    SLICE_X47Y34         FDCE                                         r  u_dut/lfnst_grid_reg[24][13]/C
+                         clock pessimism              0.689     5.101    
+                         clock uncertainty           -0.035     5.065    
+    SLICE_X47Y34         FDCE (Setup_DFF_SLICEL_C_CE)
+                                                     -0.060     5.005    u_dut/lfnst_grid_reg[24][13]
+  -------------------------------------------------------------------
+                         required time                          5.005    
+                         arrival time                          -4.553    
+  -------------------------------------------------------------------
+                         slack                                  0.452    
+
+Slack (MET) :             0.452ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[3]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[24][14]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.205ns  (logic 0.205ns (17.016%)  route 1.000ns (82.984%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.248ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.412ns = ( 4.412 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.349ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.115ns (routing 1.121ns, distribution 0.994ns)
+  Clock Net Delay (Destination): 1.724ns (routing 1.016ns, distribution 0.708ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.115     3.349    u_dut/clk
+    SLICE_X57Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[3]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X57Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.429 r  u_dut/lfnst_grid_init_q_reg[3]/Q
+                         net (fo=8, routed)           0.553     3.981    u_dut/lfnst_grid_init_q[3]
+    SLICE_X50Y30         LUT6 (Prop_A6LUT_SLICEM_I0_O)
+                                                      0.125     4.106 r  u_dut/lfnst_grid[24][15]_i_1/O
+                         net (fo=16, routed)          0.447     4.553    u_dut/lfnst_grid[24][15]_i_1_n_0
+    SLICE_X47Y34         FDCE                                         r  u_dut/lfnst_grid_reg[24][14]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.724     4.412    u_dut/clk
+    SLICE_X47Y34         FDCE                                         r  u_dut/lfnst_grid_reg[24][14]/C
+                         clock pessimism              0.689     5.101    
+                         clock uncertainty           -0.035     5.065    
+    SLICE_X47Y34         FDCE (Setup_CFF_SLICEL_C_CE)
+                                                     -0.060     5.005    u_dut/lfnst_grid_reg[24][14]
+  -------------------------------------------------------------------
+                         required time                          5.005    
+                         arrival time                          -4.553    
+  -------------------------------------------------------------------
+                         slack                                  0.452    
+
+Slack (MET) :             0.452ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[3]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[24][6]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.205ns  (logic 0.205ns (17.016%)  route 1.000ns (82.984%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.248ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.412ns = ( 4.412 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.349ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.115ns (routing 1.121ns, distribution 0.994ns)
+  Clock Net Delay (Destination): 1.724ns (routing 1.016ns, distribution 0.708ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.115     3.349    u_dut/clk
+    SLICE_X57Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[3]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X57Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.429 r  u_dut/lfnst_grid_init_q_reg[3]/Q
+                         net (fo=8, routed)           0.553     3.981    u_dut/lfnst_grid_init_q[3]
+    SLICE_X50Y30         LUT6 (Prop_A6LUT_SLICEM_I0_O)
+                                                      0.125     4.106 r  u_dut/lfnst_grid[24][15]_i_1/O
+                         net (fo=16, routed)          0.447     4.553    u_dut/lfnst_grid[24][15]_i_1_n_0
+    SLICE_X47Y34         FDCE                                         r  u_dut/lfnst_grid_reg[24][6]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.724     4.412    u_dut/clk
+    SLICE_X47Y34         FDCE                                         r  u_dut/lfnst_grid_reg[24][6]/C
+                         clock pessimism              0.689     5.101    
+                         clock uncertainty           -0.035     5.065    
+    SLICE_X47Y34         FDCE (Setup_BFF_SLICEL_C_CE)
+                                                     -0.060     5.005    u_dut/lfnst_grid_reg[24][6]
+  -------------------------------------------------------------------
+                         required time                          5.005    
+                         arrival time                          -4.553    
+  -------------------------------------------------------------------
+                         slack                                  0.452    
+
+Slack (MET) :             0.462ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[20][12]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.294ns  (logic 0.228ns (17.626%)  route 1.066ns (82.374%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.148ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.404ns = ( 4.404 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.716ns (routing 1.016ns, distribution 0.700ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.775     4.096    u_dut/lfnst_grid_init_q[2]
+    SLICE_X50Y31         LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     4.244 r  u_dut/lfnst_grid[20][15]_i_1/O
+                         net (fo=16, routed)          0.290     4.534    u_dut/lfnst_grid[20][15]_i_1_n_0
+    SLICE_X50Y35         FDCE                                         r  u_dut/lfnst_grid_reg[20][12]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.716     4.404    u_dut/clk
+    SLICE_X50Y35         FDCE                                         r  u_dut/lfnst_grid_reg[20][12]/C
+                         clock pessimism              0.689     5.092    
+                         clock uncertainty           -0.035     5.057    
+    SLICE_X50Y35         FDCE (Setup_HFF_SLICEM_C_CE)
+                                                     -0.061     4.996    u_dut/lfnst_grid_reg[20][12]
+  -------------------------------------------------------------------
+                         required time                          4.996    
+                         arrival time                          -4.534    
+  -------------------------------------------------------------------
+                         slack                                  0.462    
+
+Slack (MET) :             0.462ns  (required time - arrival time)
+  Source:                 u_dut/lfnst_grid_init_q_reg[2]/C
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Destination:            u_dut/lfnst_grid_reg[20][7]/CE
+                            (rising edge-triggered cell FDCE clocked by clk  {rise@0.000ns fall@1.000ns period=2.000ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            2.000ns  (clk rise@2.000ns - clk rise@0.000ns)
+  Data Path Delay:        1.294ns  (logic 0.228ns (17.626%)  route 1.066ns (82.374%))
+  Logic Levels:           1  (LUT6=1)
+  Clock Path Skew:        -0.148ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    2.404ns = ( 4.404 - 2.000 ) 
+    Source Clock Delay      (SCD):    3.241ns
+    Clock Pessimism Removal (CPR):    0.689ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE + UU
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+    User Uncertainty         (UU):    0.000ns
+  Clock Net Delay (Source):      2.007ns (routing 1.121ns, distribution 0.886ns)
+  Clock Net Delay (Destination): 1.716ns (routing 1.016ns, distribution 0.700ns)
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    D14                                               0.000     0.000 r  clk (IN)
+                         net (fo=0)                   0.000     0.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      1.002     1.002 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     1.002    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     1.002 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.204     1.206    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.028     1.234 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       2.007     3.241    u_dut/clk
+    SLICE_X60Y33         FDCE                                         r  u_dut/lfnst_grid_init_q_reg[2]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X60Y33         FDCE (Prop_HFF2_SLICEL_C_Q)
+                                                      0.080     3.321 r  u_dut/lfnst_grid_init_q_reg[2]/Q
+                         net (fo=8, routed)           0.775     4.096    u_dut/lfnst_grid_init_q[2]
+    SLICE_X50Y31         LUT6 (Prop_E6LUT_SLICEM_I0_O)
+                                                      0.148     4.244 r  u_dut/lfnst_grid[20][15]_i_1/O
+                         net (fo=16, routed)          0.290     4.534    u_dut/lfnst_grid[20][15]_i_1_n_0
+    SLICE_X50Y35         FDCE                                         r  u_dut/lfnst_grid_reg[20][7]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)        2.000     2.000 r  
+    D14                                               0.000     2.000 r  clk (IN)
+                         net (fo=0)                   0.000     2.000    u_boundary_ibuf/I
+    D14                  INBUF (Prop_INBUF_HDIOB_M_PAD_O)
+                                                      0.495     2.495 r  u_boundary_ibuf/INBUF_INST/O
+                         net (fo=1, routed)           0.000     2.495    u_boundary_ibuf/OUT
+    D14                  IBUFCTRL (Prop_IBUFCTRL_HDIOB_M_I_O)
+                                                      0.000     2.495 r  u_boundary_ibuf/IBUFCTRL_INST/O
+                         net (fo=1, routed)           0.169     2.664    clk_ibuf
+    BUFGCE_HDIO_X1Y7     BUFGCE (Prop_BUFCE_BUFGCE_HDIO_I_O)
+                                                      0.024     2.688 r  u_boundary_bufg/O
+    X1Y0 (CLOCK_ROOT)    net (fo=28885, routed)       1.716     4.404    u_dut/clk
+    SLICE_X50Y35         FDCE                                         r  u_dut/lfnst_grid_reg[20][7]/C
+                         clock pessimism              0.689     5.092    
+                         clock uncertainty           -0.035     5.057    
+    SLICE_X50Y35         FDCE (Setup_GFF_SLICEM_C_CE)
+                                                     -0.061     4.996    u_dut/lfnst_grid_reg[20][7]
+  -------------------------------------------------------------------
+                         required time                          4.996    
+                         arrival time                          -4.534    
+  -------------------------------------------------------------------
+                         slack                                  0.462    
+
+
+
+

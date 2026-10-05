@@ -1,0 +1,180 @@
+{
+  "schema": "step12f_lfnst_grid_init_physical_result.v1",
+  "tested_source_commit": "a1525da7d3ee299c63adbede27f32f734403edc3",
+  "source_parent_commit": "3cc0899fb06635740d7efcf271923cee5433c629",
+  "source_branch": "p9-lfnst-grid-init-localization",
+  "experiment": "deferred LFNST grid payload clear using eight registered group tokens",
+  "overall": "FUNCTIONAL_PASS_REGISTERED_NEIGHBOR_HOLD_PASS_SETUP_FAIL",
+  "functional_checkpoint": {
+    "manifest": "../84_lfnst_grid_init_20261005/20261005T064354Z_a1525da7d3ee/CHECKPOINT_MANIFEST.json",
+    "manifest_sha256": "590351A99019188072239ED332FE87051B5B7F38A5BC39B4ED2D9B8FDE558C46",
+    "status": "FUNCTIONAL_PASS",
+    "normal": "PASS",
+    "SYNTHESIS": "PASS",
+    "gate_b_cases": 156,
+    "gate_f_modes": 13,
+    "gate_c_cases": 369,
+    "gate_c_beats_per_mode": 45636,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 388,
+    "sat10_exhaustive_signed16_values": 65536,
+    "wrapper_and_submission_top": "PASS_OVERFLOW_BACKPRESSURE_TWO_TU_DONE_4X10_PACKING"
+  },
+  "profile": {
+    "name": "contest_engineering_vtm10_sat10_v2",
+    "file": "03_verification/step12d_engineering/profiles/contest_engineering_vtm10_sat10_v2.json",
+    "working_tree_byte_sha256": "AD11CA8EB0FDE362079EAB10312C48B33F4A2EC5684D0296521B60E59665CA2C",
+    "functional_checkpoint_canonical_sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746",
+    "official_equivalence": "NOT_PROVEN"
+  },
+  "source_hashes": {
+    "02_rtl/rtl/unified_its_wrapper.sv": "40D8428B1B753462B6397D0C155E446AD4DEF2AABA6ED74244F0FE6033E49D1E",
+    "03_verification/tb/unified_its_sat10_wrapper_tb.sv": "FE308E126DC329540F9F64A97E1BF994B9F3C5897C58EA5500D7748C972C2B8C"
+  },
+  "implementation": {
+    "runner": "03_verification/vivado/run_step12f_registered_neighbor.ps1",
+    "execution_command": "pwsh.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File .\\03_verification\\vivado\\run_step12f_registered_neighbor.ps1 -EvidenceDir .\\05_audit\\current\\85_lfnst_grid_init_physical_20261005",
+    "runner_sha256": "1DFD6B6F3C9F7FC7F636E79B23352F6339D06E7DD4904DF8825DDB2697123C60",
+    "tcl": "03_verification/vivado/run_step12f_registered_neighbor.tcl",
+    "tcl_sha256": "23821871662D12169AC3ADD893A75536338DEF9AA8575BC1F234CC48254CBA71",
+    "xdc": "03_verification/vivado/step12f_registered_neighbor_2ns.xdc",
+    "xdc_sha256": "346E4D1BAA867FD7F16E8474FC3E903B3616633450F487AB168383BAE38A3786",
+    "vivado": "2025.2 build 6299465",
+    "part": "xcku5p-ffvb676-2-e",
+    "top": "step12f_registered_neighbor_harness",
+    "max_threads": 4,
+    "period_ns": 2.0,
+    "user_setup_uncertainty_ns": 0.0,
+    "user_hold_uncertainty_ns": 0.0,
+    "reported_total_clock_uncertainty_ns": 0.035,
+    "old_ooc_xdc_loaded": false,
+    "flow": [
+      "synth_design -directive Default",
+      "opt_design -directive Default",
+      "place_design -directive ExtraNetDelay_high",
+      "phys_opt_design -directive AggressiveExplore",
+      "route_design -directive NoTimingRelaxation"
+    ],
+    "runner_exit_code": 0,
+    "completion_marker": "P9R5E_DONE"
+  },
+  "timing": {
+    "postsynthesis": {
+      "wns_ns": -0.524,
+      "tns_ns": -154.880,
+      "failing_endpoints": 1015,
+      "interpretation": "pre-route only; not the signoff result"
+    },
+    "setup": {
+      "wns_ns": -0.095,
+      "tns_ns": -46.653,
+      "failing_endpoints": 1321,
+      "total_endpoints": 149459
+    },
+    "hold": {
+      "whs_ns": 0.007,
+      "ths_ns": 0.0,
+      "failing_endpoints": 0,
+      "total_endpoints": 149459
+    },
+    "worst_path": {
+      "source": "u_dut/kernel_h_rd_addr_q_reg[1][1]/C",
+      "destination": "u_dut/kernel_h_rd_data_q_reg[19]/D",
+      "slack_ns": -0.095,
+      "data_delay_ns": 1.966,
+      "logic_delay_ns": 0.362,
+      "route_delay_ns": 1.604,
+      "route_fraction": 0.81587,
+      "logic_levels": 5,
+      "primitive_signature": ["RAMD64E", "LUT6", "MUXF7", "MUXF8", "LUT4"]
+    },
+    "unconstrained_internal_endpoints": 0,
+    "missing_input_delay_ports": ["rst_n"],
+    "valid_timing_exceptions": 0,
+    "package_level_signoff": "NOT_EVALUATED"
+  },
+  "lfnst_grid_init_targeted_audit": {
+    "postroute_dcp_sha256": "29849AB3B0A1303A000AD0EF35F1CF64FEBC4BCD3091F053E1BDE54209E9087F",
+    "init_token_register_count": 8,
+    "grid_register_count": 768,
+    "grid_valid_register_count": 48,
+    "queried_init_q_to_grid_ce_paths": 32,
+    "worst_init_q_to_grid_ce_slack_ns": 0.318,
+    "worst_path_data_delay_ns": 1.457,
+    "worst_path_logic_delay_ns": 0.178,
+    "worst_path_route_delay_ns": 1.279,
+    "init_q_to_grid_d_direct_paths": "NONE; payload clear is controlled by grid CE/write-enable",
+    "interpretation": "local_init_control_meets_2ns; no same-netlist baseline, so no causal QoR claim"
+  },
+  "routing": {
+    "status": "FULLY_ROUTED",
+    "routable_nets": 43205,
+    "fully_routed_nets": 43205,
+    "routing_errors": 0,
+    "drc_errors": 0,
+    "drc_critical_warnings": [
+      "NSTD-1: OOC harness clk/rst_n do not have package I/O standard assignments",
+      "UCIO-1: OOC harness clk/rst_n do not have package pin assignments"
+    ]
+  },
+  "utilization_and_power": {
+    "lut": 26349,
+    "lutram": 5718,
+    "ff": 21247,
+    "dsp48e2": 320,
+    "estimated_total_power_w": 1.465,
+    "estimated_dynamic_power_w": 1.007,
+    "estimated_static_power_w": 0.458,
+    "power_estimation": "vectorless, medium confidence; not workload power"
+  },
+  "postroute_dcp": {
+    "file": "step12f_registered_neighbor_postroute.dcp",
+    "sha256": "29849AB3B0A1303A000AD0EF35F1CF64FEBC4BCD3091F053E1BDE54209E9087F",
+    "committed": false
+  },
+  "postsynth_dcp": {
+    "file": "step12f_registered_neighbor_postsynth.dcp",
+    "sha256": "68AF96EC8A8FB885C085F749074EB47CAF8C0DE4B06FD4BADB6A1CDBE901EAD6",
+    "committed": false
+  },
+  "report_hashes": {
+    "vivado_log_sha256": "61583F02BB2E4A4A95D3A7817BC202DC416D652841EE742A33DF373CACB95149",
+    "timing_summary_postroute_sha256": "3699297B73E2F7C538B87BF609A93E97CEAC499D0C011FC9D015EFB0C8F4985C",
+    "hold_summary_postroute_sha256": "A1CF46BB3F592AD1CA70CD4B6D38250D6043AFBED30B0F8CFA50BFF23F4F4261",
+    "worst100_postroute_sha256": "1BFF4DE1155F86C9E634FA1AE6CADA6F310ED088D543E997D8C3532416E06485",
+    "route_status_postroute_sha256": "380E60751DCEBDD5F0516ACE8BAF59C565B3F660F63D64F03850473F501ED367",
+    "drc_postroute_sha256": "F64DEC8B7F73BAA7AB398F39170F7F01C74B1071066295B366F1D3A88890BC9D",
+    "check_timing_postroute_sha256": "704A7910CA1321F7F0EA297958DE73F35A60BFB51676DB154236CB1B01AABEEB",
+    "exceptions_postroute_sha256": "3AFC9EB379403E3BA9F809ED59591693C90537C20983CD0C31889AC47C38C981",
+    "utilization_postroute_sha256": "49D6EC13DE28C45424AAE126BB05D2D251A1520CCBBE23306B8967042FEC84AB",
+    "power_postroute_sha256": "B95084AE16C60F2AD4676296054B3D557A05CD1A18D5A9C08AFBF1B890327E57",
+    "lfnst_init_q_to_grid_ce_sha256": "7A4BC721635CDB35A2916DAFB5AFB460DB90AFD9839204825B1F66A6B3B69CD5",
+    "lfnst_init_q_fanout_paths_sha256": "E3982CD0FCED244BAA0F1E98D610F36303AE23B57E1B31C61FC4AA1C466BC8EA"
+  },
+  "historical_comparison": {
+    "reference_manifest": "../83_latest_source_route_ab_20261004/P9_ROUTER_AB_STATUS.json",
+    "reference_run": "CONTROL",
+    "reference_source_commit": "9d7510e75385c3b83cee7afd799c9e6db0b4d95e",
+    "reference_setup": {
+      "wns_ns": -0.110,
+      "tns_ns": -35.277,
+      "failing_endpoints": 929
+    },
+    "observed_delta_only_not_causal": {
+      "wns_ns": 0.015,
+      "tns_ns": -11.376,
+      "failing_endpoints": 392
+    },
+    "comparison_class": "NON_CONTROLLED_HISTORICAL_CONTEXT_ONLY",
+    "causal_claim": false
+  },
+  "classification": {
+    "functional": "PASS",
+    "setup_500mhz": "FAIL",
+    "registered_neighbor_hold": "PASS",
+    "500mhz_signoff": "NOT_ACHIEVED",
+    "fresh_synthesis_place_route": "COMPLETED",
+    "official_equivalence": "NOT_PROVEN",
+    "next_candidate": "H-read asynchronous temp-bank read to response register path; separate proposal required"
+  }
+}
