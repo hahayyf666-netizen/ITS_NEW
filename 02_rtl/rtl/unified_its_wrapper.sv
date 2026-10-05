@@ -423,6 +423,11 @@ module unified_its_wrapper #(
     // ordering than the former row-major sample*8+vector layout.
     logic signed [15:0] lfnst_grid [0:63];
     logic               lfnst_grid_valid [0:63];
+    // Keep eight local initialization controls so the wide grid clear is
+    // launched from registered, placement-friendly sources. Each bit owns
+    // one contiguous group of eight vector-major words.
+    (* KEEP = "TRUE", equivalent_register_removal = "no" *)
+    logic [7:0] lfnst_grid_init_q;
 `ifndef SYNTHESIS
     // Simulation-only row-major shadow proves the layout change preserves
     // every accepted LFNST gather value.
@@ -1304,6 +1309,8 @@ module unified_its_wrapper #(
     end
 
 `ifndef SYNTHESIS
+    integer lfnst_grid_init_check_i;
+
     // Compare the vector-major implementation against the former logical
     // row-major layout on every LFNST group that the P4 kernel really accepts.
     always @(posedge clk) begin
@@ -1334,6 +1341,25 @@ module unified_its_wrapper #(
                         $signed(kernel_in_data[lfnst_gather_check_lane*16 +: 16]),
                         $signed(lfnst_gather_check_data));
             end
+        end
+    end
+
+    // The token stage must finish before the LFNST engine can write the grid,
+    // and admission must already have invalidated every old word.
+    always @(posedge clk) begin
+        if (rst_n && (|lfnst_grid_init_q)) begin
+            if (lfnst_grid_init_q !== 8'hff)
+                $fatal(1, "LFNST grid init tokens lost group alignment: %h",
+                       lfnst_grid_init_q);
+            for (lfnst_grid_init_check_i = 0;
+                 lfnst_grid_init_check_i < 64;
+                 lfnst_grid_init_check_i = lfnst_grid_init_check_i + 1) begin
+                if (lfnst_grid_valid[lfnst_grid_init_check_i] !== 1'b0)
+                    $fatal(1, "LFNST grid valid remained set during init addr=%0d",
+                           lfnst_grid_init_check_i);
+            end
+            if (lfnst_out_valid)
+                $fatal(1, "LFNST output overlapped pending grid initialization");
         end
     end
 `endif
@@ -1655,6 +1681,7 @@ module unified_its_wrapper #(
     assign result_cmd_commit = result_cmd_valid_q;
 
     integer reset_i, lfnst_grid_i;
+    integer lfnst_grid_init_i;
     integer fill_replica_slot_i, fill_replica_bank_i;
     integer rd_cmd_reset_slot_i, rd_cmd_reset_bank_i;
     integer rd_cmd_load_slot_i, rd_cmd_load_bank_i;
@@ -1798,6 +1825,7 @@ module unified_its_wrapper #(
             lfnst_mem_resp_valid_q <= 1'b0;
             lfnst_mem_resp_last_q <= 1'b0;
             lfnst_input_terms_q <= '0;
+            lfnst_grid_init_q <= 8'b0;
             lfnst_start_q <= 1'b0;
             lfnst_slot_q <= 1'b0;
             lfnst_ntrs48_q <= 1'b0;
@@ -1829,6 +1857,17 @@ module unified_its_wrapper #(
             // A one-cycle pulse starts the bounded LFNST engine on the next
             // edge, after compute_slot_q and its descriptor metadata settle.
             lfnst_start_q <= 1'b0;
+
+            // The current LFNST admission edge loads eight local clear tokens.
+            // On the following edge, each token clears its own eight-word
+            // group. This retains the per-TU data initialization while moving
+            // slot arbitration and mode decode off the grid data CE cone.
+            lfnst_grid_init_q <= 8'b0;
+            for (lfnst_grid_init_i = 0; lfnst_grid_init_i < 64;
+                 lfnst_grid_init_i = lfnst_grid_init_i + 1) begin
+                if (lfnst_grid_init_q[lfnst_grid_init_i / 8])
+                    lfnst_grid[lfnst_grid_init_i] <= '0;
+            end
 
             // P9 round 3 sparse-fill write command.  The old command commits
             // on this edge; a newly accepted point may refill the same entry
@@ -2373,6 +2412,7 @@ module unified_its_wrapper #(
                     lfnst_input_terms_q <= '0;
                     lfnst_case_q <= 1'b1;
                     lfnst_slot_q <= compute_slot;
+                    lfnst_grid_init_q <= 8'hff;
                     lfnst_set_q <= slot_set[compute_slot];
                     lfnst_idx_q <= slot_lfnst[compute_slot];
                     lfnst_ntrs48_q <= !((slot_width[compute_slot] == 7'd4) ||
@@ -2395,7 +2435,6 @@ module unified_its_wrapper #(
                     kernel_start_sent_q <= 1'b0;
                     for (lfnst_grid_i = 0; lfnst_grid_i < 64;
                          lfnst_grid_i = lfnst_grid_i + 1) begin
-                        lfnst_grid[lfnst_grid_i] <= '0;
                         lfnst_grid_valid[lfnst_grid_i] <= 1'b0;
 `ifndef SYNTHESIS
                         lfnst_grid_legacy[lfnst_grid_i] <= '0;

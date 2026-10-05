@@ -18,6 +18,12 @@ module unified_its_sat10_wrapper_tb;
     logic it_data_out_vld;
     logic it_done;
     logic protocol_error;
+    integer lfnst_grid_init_admissions = 0;
+    integer lfnst_grid_init_consumes = 0;
+    integer lfnst_grid_probe_i;
+    integer lfnst_grid_probe_nonzero;
+    logic lfnst_admission_at_edge;
+    logic [7:0] lfnst_init_tokens_at_edge;
 
     unified_its_wrapper #(.FINAL_SATURATE(1)) dut (
         .clk(clk), .rst_n(rst_n),
@@ -33,6 +39,56 @@ module unified_its_sat10_wrapper_tb;
     function automatic [21:0] desc4x4;
         desc4x4 = 22'd4 | (22'd4 << 7);
     endfunction
+
+    function automatic [21:0] desc4x4_lfnst;
+        desc4x4_lfnst = desc4x4() | (22'd1 << 20);
+    endfunction
+
+    // Check the old payload at the admission edge, then verify that validity
+    // is invalidated immediately and the payload is cleared by the registered
+    // local tokens on the following edge.
+    always @(posedge clk) begin
+        lfnst_admission_at_edge = rst_n && dut.compute_valid &&
+            (dut.slot_lfnst[dut.compute_slot] != 2'd0);
+        lfnst_init_tokens_at_edge = dut.lfnst_grid_init_q;
+        if (lfnst_admission_at_edge) begin
+            lfnst_grid_init_admissions = lfnst_grid_init_admissions + 1;
+            if (lfnst_grid_init_admissions == 2) begin
+                lfnst_grid_probe_nonzero = 0;
+                for (lfnst_grid_probe_i = 0; lfnst_grid_probe_i < 64;
+                     lfnst_grid_probe_i = lfnst_grid_probe_i + 1)
+                    if (dut.lfnst_grid[lfnst_grid_probe_i] !== 16'sd0)
+                        lfnst_grid_probe_nonzero = 1;
+                if (!lfnst_grid_probe_nonzero)
+                    $fatal(1, "LFNST reinit test did not retain stale payload before clear");
+                #0.1;
+                for (lfnst_grid_probe_i = 0; lfnst_grid_probe_i < 64;
+                     lfnst_grid_probe_i = lfnst_grid_probe_i + 1)
+                    if (dut.lfnst_grid_valid[lfnst_grid_probe_i] !== 1'b0)
+                        $fatal(1, "LFNST reinit failed to invalidate word=%0d",
+                               lfnst_grid_probe_i);
+            end
+        end
+        if (rst_n && (|lfnst_init_tokens_at_edge)) begin
+            if (lfnst_init_tokens_at_edge !== 8'hff)
+                $fatal(1, "LFNST init tokens were not an atomic bundle: %h",
+                       lfnst_init_tokens_at_edge);
+            lfnst_grid_init_consumes = lfnst_grid_init_consumes + 1;
+            #0.1;
+            if (lfnst_grid_init_admissions == 2) begin
+                for (lfnst_grid_probe_i = 0; lfnst_grid_probe_i < 64;
+                     lfnst_grid_probe_i = lfnst_grid_probe_i + 1) begin
+                    if (dut.lfnst_grid[lfnst_grid_probe_i] !== 16'sd0)
+                        $fatal(1, "LFNST local clear missed word=%0d value=%0d",
+                               lfnst_grid_probe_i,
+                               $signed(dut.lfnst_grid[lfnst_grid_probe_i]));
+                    if (dut.lfnst_grid_valid[lfnst_grid_probe_i] !== 1'b0)
+                        $fatal(1, "LFNST valid unexpectedly set during clear word=%0d",
+                               lfnst_grid_probe_i);
+                end
+            end
+        end
+    end
 
     function automatic [39:0] packed_lanes(input logic signed [9:0] lane);
         packed_lanes = {lane, lane, lane, lane};
@@ -188,11 +244,85 @@ module unified_its_sat10_wrapper_tb;
         end
     endtask
 
+    task automatic submit_4x4_lfnst(input logic signed [15:0] value,
+                                    input integer case_id);
+        integer timeout;
+        begin
+            @(negedge clk);
+            it_info = desc4x4_lfnst();
+            it_info_vld = 1'b1;
+            @(negedge clk);
+            it_info_vld = 1'b0;
+
+            timeout = 0;
+            while (!it_data_in_req) begin
+                @(negedge clk);
+                timeout = timeout + 1;
+                if (timeout > 2000)
+                    $fatal(1, "LFNST grid init admission timeout case=%0d", case_id);
+            end
+            it_data_addr = 12'd0;
+            it_data_in = value;
+            it_data_in_vld = 1'b1;
+            it_data_end = 1'b1;
+            @(negedge clk);
+            it_data_in_vld = 1'b0;
+            it_data_end = 1'b0;
+        end
+    endtask
+
+    task automatic drain_lfnst_4x4(input integer case_id);
+        integer beat;
+        integer timeout;
+        integer done_count;
+        begin
+            @(negedge clk);
+            it_data_out_req = 1'b1;
+            beat = 0;
+            timeout = 0;
+            done_count = 0;
+            while (beat < 4) begin
+                @(posedge clk);
+                timeout = timeout + 1;
+                if (timeout > 3000)
+                    $fatal(1, "LFNST grid init output timeout case=%0d", case_id);
+                if (it_data_out_vld) begin
+                    if (it_done !== (beat == 3))
+                        $fatal(1, "LFNST grid init done mismatch case=%0d beat=%0d",
+                               case_id, beat);
+                    done_count = done_count + it_done;
+                    beat = beat + 1;
+                end
+            end
+            @(negedge clk);
+            it_data_out_req = 1'b0;
+            repeat (2) @(negedge clk);
+            if (done_count != 1 || protocol_error)
+                $fatal(1, "LFNST grid init completion failed case=%0d done=%0d error=%b",
+                       case_id, done_count, protocol_error);
+        end
+    endtask
+
+    task automatic run_lfnst_grid_reinitialization;
+        begin
+            reset_dut();
+            submit_4x4_lfnst(16'sd32767, 20);
+            drain_lfnst_4x4(20);
+            submit_4x4_lfnst(-16'sd32768, 21);
+            drain_lfnst_4x4(21);
+            if (lfnst_grid_init_admissions != 2 ||
+                lfnst_grid_init_consumes != 2)
+                $fatal(1, "LFNST init event count mismatch admissions=%0d clears=%0d",
+                       lfnst_grid_init_admissions, lfnst_grid_init_consumes);
+        end
+    endtask
+
     initial begin
         run_single(16'sd32767, 10'sh1ff, 0);
         run_single(-16'sd32768, 10'sh200, 1);
         run_two_tu_backpressure();
-        $display("SAT10_WRAPPER_BOUNDARY_PASS cases=3 beats=16");
+        run_lfnst_grid_reinitialization();
+        $display("SAT10_WRAPPER_BOUNDARY_PASS cases=5 beats=24 grid_init=2 stale_payload=1");
         $finish;
     end
 endmodule

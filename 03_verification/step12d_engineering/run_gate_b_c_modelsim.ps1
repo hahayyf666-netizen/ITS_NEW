@@ -118,7 +118,7 @@ foreach ($mode in @("normal", "synthesis")) {
 
         $satWrapperLog = Join-Path $dir "sat10_wrapper_boundary.log"
         & $Vsim -c work.unified_its_sat10_wrapper_tb -l $satWrapperLog -do "run -all; quit -f"
-        Assert-TranscriptPass $satWrapperLog "SAT10_WRAPPER_BOUNDARY_PASS cases=3 beats=16"
+        Assert-TranscriptPass $satWrapperLog "SAT10_WRAPPER_BOUNDARY_PASS cases=5 beats=24 grid_init=2 stale_payload=1"
 
         $modeLogs = @($compileLog, $kernelLog, $throughputLog, $smokeLog, $numericLog, $adapterLog, $satWrapperLog)
         if ($EvidenceDir) {
@@ -134,7 +134,7 @@ foreach ($mode in @("normal", "synthesis")) {
             gate_c_wrapper_smoke = "PASS"
             gate_c_wrapper_numeric = "PASS_19_CASES"
             sat10_adapter_exhaustive = "PASS_65536_VALUES"
-            sat10_wrapper_boundary = "PASS_3_CASES_16_BEATS"
+            sat10_wrapper_boundary = "PASS_5_CASES_24_BEATS_LFNST_GRID_REINIT"
             logs = @($modeLogs | ForEach-Object {
                 [ordered]@{
                     name = Split-Path $_ -Leaf

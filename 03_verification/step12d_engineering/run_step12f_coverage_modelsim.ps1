@@ -237,7 +237,7 @@ foreach ($mode in @("normal", "synthesis")) {
         Assert-TranscriptPass $adapterLog "SAT10_ADAPTER_BOUNDARY_PASS values=-513,-512,-511,510,511,512"
 
         $satWrapperLog = Join-Path $dir "sat10_wrapper_boundary.log"
-        Invoke-VsimTest $mode "unified_its_sat10_wrapper_tb" $satWrapperLog "SAT10_WRAPPER_BOUNDARY_PASS cases=3 beats=16"
+        Invoke-VsimTest $mode "unified_its_sat10_wrapper_tb" $satWrapperLog "SAT10_WRAPPER_BOUNDARY_PASS cases=5 beats=24 grid_init=2 stale_payload=1"
 
         $topLog = Join-Path $dir "sat10_submission_top.log"
         Invoke-VsimTest $mode "its_unified_submission_top_sat10_tb" $topLog "SAT10_SUBMISSION_TOP_PASS tus=2 beats=8 done=2"
@@ -268,7 +268,7 @@ foreach ($mode in @("normal", "synthesis")) {
             p4_fifo_payload_reset = "PASS_INFLIGHT_AND_QUEUED_RESET_NO_STALE_OUTPUT"
             gate_c_wrapper_numeric = "PASS_369_CASES"
             sat10_adapter_exhaustive = "PASS_65536_VALUES"
-            sat10_wrapper_boundary = "PASS_3_CASES_16_BEATS"
+            sat10_wrapper_boundary = "PASS_5_CASES_24_BEATS_LFNST_GRID_REINIT"
             sat10_submission_top = "PASS_2_TUS_8_BEATS_MIN_8_REAL_PENDING_STALL_CYCLES"
             lfnst_engine_specialty = "PASS_1088_CASES"
             lfnst_wrapper_specialty = "PASS_388_CASES"

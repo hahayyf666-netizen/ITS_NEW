@@ -215,6 +215,7 @@ try {
             $run.gate_c_wrapper_numeric -ne "PASS_369_CASES" -or
             $run.sat10_adapter_exhaustive -ne "PASS_65536_VALUES" -or
             $run.sat10_submission_top -ne "PASS_2_TUS_8_BEATS_MIN_8_REAL_PENDING_STALL_CYCLES" -or
+            $run.sat10_wrapper_boundary -ne "PASS_5_CASES_24_BEATS_LFNST_GRID_REINIT" -or
             $run.lfnst_engine_specialty -ne "PASS_1088_CASES" -or
             $run.lfnst_wrapper_specialty -ne "PASS_388_CASES") {
             throw "A normal/SYNTHESIS ModelSim mode is missing required SAT10 gates"
