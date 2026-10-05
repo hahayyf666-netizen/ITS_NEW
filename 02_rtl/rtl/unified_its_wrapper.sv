@@ -353,7 +353,15 @@ module unified_its_wrapper #(
     logic                   kernel_h_rd_pending_q;
     logic [4:0]             kernel_h_rd_group_q;
     logic [6:0]             kernel_h_rd_vector_q;
+    // The first read-response stage stores one 16-bit word per physical bank.
+    // Its payload is intentionally not reset; the registered valid bit owns
+    // whether these words can be observed.
+    logic signed [15:0]     kernel_h_rd_raw_data_q [0:3];
+    logic                   kernel_h_rd_raw_stage_valid_q;
+    logic [4:0]             kernel_h_rd_raw_stage_group_q;
+    logic [6:0]             kernel_h_rd_raw_stage_vector_q;
     logic signed [63:0]     kernel_h_rd_data_q;
+    // Legacy raw_pending/group/vector names below describe the queue head.
     logic                   kernel_h_rd_raw_pending_q;
     logic [4:0]             kernel_h_rd_raw_group_q;
     logic [6:0]             kernel_h_rd_raw_vector_q;
@@ -366,6 +374,8 @@ module unified_its_wrapper #(
     logic [4:0]             kernel_h_rd_raw_tail_group_q;
     logic [6:0]             kernel_h_rd_raw_tail_vector_q;
     logic                   kernel_h_rd_capture;
+    logic                   kernel_h_rd_raw_to_queue;
+    logic                   kernel_h_rd_raw_stage_ready;
     logic                   kernel_h_rd_consume;
     logic [4:0]             kernel_h_rd_next_group;
     logic                   kernel_h_input_last_fire_c;
@@ -381,6 +391,7 @@ module unified_its_wrapper #(
     integer                 kernel_h_capture_bank_i;
     integer                 kernel_h_seq_addr_i;
     integer                 kernel_h_seq_capture_bank_i;
+    integer                 kernel_h_raw_capture_bank_i;
 
     logic       lfnst_run_q;
     logic       lfnst_start_q;
@@ -1163,11 +1174,10 @@ module unified_its_wrapper #(
         end
     end
 
-    // The horizontal response slot is filled only while the elastic tail is
-    // available.  A consume that frees the tail is handled on the following
-    // edge rather than feeding the current kernel-ready signal back into the
-    // address/group enables.  Ready-high steady state still has one request
-    // and one response per cycle; a request-low stall may cost one refill edge.
+    // The raw bank-response stage accepts an asynchronous RAM result when it
+    // is empty or when its old word moves into the registered head/tail queue.
+    // This ready calculation uses registered occupancy only; kernel consume
+    // does not feed back through the RAM address/capture control cone.
     always_comb begin
         kernel_h_rd_consume = kernel_h_rd_raw_pending_q &&
                               kernel_stage_q &&
@@ -1175,8 +1185,12 @@ module unified_its_wrapper #(
                                (kernel_phase_q == K_H_FEED)) &&
                               !kernel_h_input_commit_wait_q &&
                               kernel_input_group_fire;
+        kernel_h_rd_raw_to_queue = kernel_h_rd_raw_stage_valid_q &&
+                                   !kernel_h_rd_raw_tail_pending_q;
+        kernel_h_rd_raw_stage_ready = !kernel_h_rd_raw_stage_valid_q ||
+                                      kernel_h_rd_raw_to_queue;
         kernel_h_rd_capture = kernel_h_rd_pending_q &&
-                              !kernel_h_rd_raw_tail_pending_q;
+                              kernel_h_rd_raw_stage_ready;
         kernel_h_rd_next_group = kernel_h_rd_group_q + 1'b1;
         // The P4 kernel's final-input condition is based on active_size (the
         // transform-support input cut), not necessarily the output group
@@ -1680,6 +1694,20 @@ module unified_its_wrapper #(
 
     assign result_cmd_commit = result_cmd_valid_q;
 
+    // Raw data captures directly from the asynchronous bank outputs.  Valid
+    // and metadata are reset in the main control process below; keeping this
+    // payload register unreset avoids adding reset muxing to the read path.
+    always_ff @(posedge clk) begin
+        if (kernel_h_rd_capture) begin
+            for (kernel_h_raw_capture_bank_i = 0;
+                 kernel_h_raw_capture_bank_i < 4;
+                 kernel_h_raw_capture_bank_i =
+                     kernel_h_raw_capture_bank_i + 1)
+                kernel_h_rd_raw_data_q[kernel_h_raw_capture_bank_i] <=
+                    tmp_rd_data[kernel_h_raw_capture_bank_i];
+        end
+    end
+
     integer reset_i, lfnst_grid_i;
     integer lfnst_grid_init_i;
     integer fill_replica_slot_i, fill_replica_bank_i;
@@ -1787,6 +1815,9 @@ module unified_its_wrapper #(
             kernel_h_rd_pending_q <= 1'b0;
             kernel_h_rd_group_q <= 5'd0;
             kernel_h_rd_vector_q <= 7'd0;
+            kernel_h_rd_raw_stage_valid_q <= 1'b0;
+            kernel_h_rd_raw_stage_group_q <= 5'd0;
+            kernel_h_rd_raw_stage_vector_q <= 7'd0;
             kernel_h_width_q <= 7'd0;
             kernel_h_groups_per_row_q <= 5'd0;
             kernel_h_groups_left_q <= 5'd0;
@@ -2060,6 +2091,7 @@ module unified_its_wrapper #(
                 ((kernel_phase_q != K_H_START) &&
                  (kernel_phase_q != K_H_FEED))) begin
                 kernel_h_rd_pending_q <= 1'b0;
+                kernel_h_rd_raw_stage_valid_q <= 1'b0;
                 kernel_h_rd_raw_pending_q <= 1'b0;
                 kernel_h_rd_raw_tail_pending_q <= 1'b0;
             end else if (kernel_h_input_commit_wait_q &&
@@ -2075,7 +2107,9 @@ module unified_its_wrapper #(
                 // cycle and sampled into the response register afterwards.
                 if ((kernel_phase_q == K_H_START) &&
                     !kernel_h_rd_pending_q &&
-                    !kernel_h_rd_raw_pending_q) begin
+                    !kernel_h_rd_raw_stage_valid_q &&
+                    !kernel_h_rd_raw_pending_q &&
+                    !kernel_h_rd_raw_tail_pending_q) begin
                     kernel_h_rd_group_q <= 5'd0;
                     kernel_h_rd_vector_q <= kernel_vector_q;
                     kernel_h_groups_left_q <= kernel_h_groups_per_row_q;
@@ -2086,58 +2120,59 @@ module unified_its_wrapper #(
                     kernel_h_rd_pending_q <= 1'b1;
                 end
 
-                if (kernel_h_rd_capture) begin
-                    // If the head is free, fill it.  If the head is being
-                    // consumed, replace it directly; otherwise fill the
-                    // elastic tail entry.  All response metadata advances
-                    // with the associated four-bank data bundle.
-                    if (!kernel_h_rd_raw_pending_q) begin
+                // Retire the old raw-stage word into the response queue.
+                // If the head consumes while the tail is empty, refill the
+                // head directly.  When the tail is occupied, a consume moves
+                // that entry to the head and the raw word remains stable for
+                // the next edge; this keeps consume out of raw-stage ready.
+                if (kernel_h_rd_consume) begin
+                    if (kernel_h_rd_raw_tail_pending_q) begin
+                        kernel_h_rd_data_q <= kernel_h_rd_data_tail_q;
+                        kernel_h_rd_raw_group_q <= kernel_h_rd_raw_tail_group_q;
+                        kernel_h_rd_raw_vector_q <= kernel_h_rd_raw_tail_vector_q;
+                        kernel_h_rd_raw_pending_q <= 1'b1;
+                        kernel_h_rd_raw_tail_pending_q <= 1'b0;
+                    end else if (!kernel_h_rd_raw_to_queue) begin
+                        kernel_h_rd_raw_pending_q <= 1'b0;
+                    end
+                end
+
+                if (kernel_h_rd_raw_to_queue) begin
+                    if (!kernel_h_rd_raw_pending_q || kernel_h_rd_consume) begin
                         for (kernel_h_seq_capture_bank_i = 0;
                              kernel_h_seq_capture_bank_i < 4;
                              kernel_h_seq_capture_bank_i =
                                  kernel_h_seq_capture_bank_i + 1)
                             kernel_h_rd_data_q[kernel_h_seq_capture_bank_i*16 +: 16] <=
-                                tmp_rd_data[kernel_h_seq_capture_bank_i];
-                        kernel_h_rd_raw_group_q <= kernel_h_rd_group_q;
-                        kernel_h_rd_raw_vector_q <= kernel_h_rd_vector_q;
+                                kernel_h_rd_raw_data_q[kernel_h_seq_capture_bank_i];
+                        kernel_h_rd_raw_group_q <=
+                            kernel_h_rd_raw_stage_group_q;
+                        kernel_h_rd_raw_vector_q <=
+                            kernel_h_rd_raw_stage_vector_q;
                         kernel_h_rd_raw_pending_q <= 1'b1;
-                    end else if (kernel_h_rd_consume) begin
-                        if (kernel_h_rd_raw_tail_pending_q) begin
-                            kernel_h_rd_data_q <= kernel_h_rd_data_tail_q;
-                            kernel_h_rd_raw_group_q <= kernel_h_rd_raw_tail_group_q;
-                            kernel_h_rd_raw_vector_q <= kernel_h_rd_raw_tail_vector_q;
-                            for (kernel_h_seq_capture_bank_i = 0;
-                                 kernel_h_seq_capture_bank_i < 4;
-                                 kernel_h_seq_capture_bank_i =
-                                     kernel_h_seq_capture_bank_i + 1)
-                                kernel_h_rd_data_tail_q[kernel_h_seq_capture_bank_i*16 +: 16] <=
-                                    tmp_rd_data[kernel_h_seq_capture_bank_i];
-                            kernel_h_rd_raw_tail_group_q <= kernel_h_rd_group_q;
-                            kernel_h_rd_raw_tail_vector_q <= kernel_h_rd_vector_q;
-                            kernel_h_rd_raw_tail_pending_q <= 1'b1;
-                        end else begin
-                            for (kernel_h_seq_capture_bank_i = 0;
-                                 kernel_h_seq_capture_bank_i < 4;
-                                 kernel_h_seq_capture_bank_i =
-                                     kernel_h_seq_capture_bank_i + 1)
-                                kernel_h_rd_data_q[kernel_h_seq_capture_bank_i*16 +: 16] <=
-                                    tmp_rd_data[kernel_h_seq_capture_bank_i];
-                            kernel_h_rd_raw_group_q <= kernel_h_rd_group_q;
-                            kernel_h_rd_raw_vector_q <= kernel_h_rd_vector_q;
-                            kernel_h_rd_raw_tail_pending_q <= 1'b0;
-                        end
                     end else begin
                         for (kernel_h_seq_capture_bank_i = 0;
                              kernel_h_seq_capture_bank_i < 4;
                              kernel_h_seq_capture_bank_i =
                                  kernel_h_seq_capture_bank_i + 1)
                             kernel_h_rd_data_tail_q[kernel_h_seq_capture_bank_i*16 +: 16] <=
-                                tmp_rd_data[kernel_h_seq_capture_bank_i];
-                        kernel_h_rd_raw_tail_group_q <= kernel_h_rd_group_q;
-                        kernel_h_rd_raw_tail_vector_q <= kernel_h_rd_vector_q;
+                                kernel_h_rd_raw_data_q[kernel_h_seq_capture_bank_i];
+                        kernel_h_rd_raw_tail_group_q <=
+                            kernel_h_rd_raw_stage_group_q;
+                        kernel_h_rd_raw_tail_vector_q <=
+                            kernel_h_rd_raw_stage_vector_q;
                         kernel_h_rd_raw_tail_pending_q <= 1'b1;
                     end
+                    kernel_h_rd_raw_stage_valid_q <= 1'b0;
+                end
 
+                // Refill the raw stage from the current asynchronous RAM
+                // response.  This assignment follows its old-word dequeue so
+                // same-edge dequeue/refill leaves the stage valid.
+                if (kernel_h_rd_capture) begin
+                    kernel_h_rd_raw_stage_valid_q <= 1'b1;
+                    kernel_h_rd_raw_stage_group_q <= kernel_h_rd_group_q;
+                    kernel_h_rd_raw_stage_vector_q <= kernel_h_rd_vector_q;
                     if (kernel_h_groups_left_q > 5'd1) begin
                         // The next group in the same row is a fixed local
                         // increment.  No width/row decode is on this path.
@@ -2169,16 +2204,6 @@ module unified_its_wrapper #(
                         kernel_h_groups_left_q <= 5'd0;
                         kernel_h_rows_left_q <= 7'd0;
                         kernel_h_rd_pending_q <= 1'b0;
-                    end
-                end else if (kernel_h_rd_consume) begin
-                    if (kernel_h_rd_raw_tail_pending_q) begin
-                        kernel_h_rd_data_q <= kernel_h_rd_data_tail_q;
-                        kernel_h_rd_raw_group_q <= kernel_h_rd_raw_tail_group_q;
-                        kernel_h_rd_raw_vector_q <= kernel_h_rd_raw_tail_vector_q;
-                        kernel_h_rd_raw_pending_q <= 1'b1;
-                        kernel_h_rd_raw_tail_pending_q <= 1'b0;
-                    end else begin
-                        kernel_h_rd_raw_pending_q <= 1'b0;
                     end
                 end
             end

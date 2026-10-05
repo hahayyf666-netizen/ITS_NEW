@@ -215,6 +215,7 @@ try {
             $run.gate_c_wrapper_numeric -ne "PASS_369_CASES" -or
             $run.sat10_adapter_exhaustive -ne "PASS_65536_VALUES" -or
             $run.sat10_submission_top -ne "PASS_2_TUS_8_BEATS_MIN_8_REAL_PENDING_STALL_CYCLES" -or
+            $run.hread_raw_capture -ne "PASS_ORDERED_PAYLOAD_METADATA_AND_REAL_STALL" -or
             $run.sat10_wrapper_boundary -ne "PASS_5_CASES_24_BEATS_LFNST_GRID_REINIT" -or
             $run.lfnst_engine_specialty -ne "PASS_1088_CASES" -or
             $run.lfnst_wrapper_specialty -ne "PASS_388_CASES") {
@@ -244,6 +245,7 @@ try {
         "03_verification/tb/unified_its_wrapper_numeric_tb.sv",
         "03_verification/tb/unified_its_final_adapter_tb.sv",
         "03_verification/tb/unified_its_sat10_wrapper_tb.sv",
+        "03_verification/tb/unified_its_hread_raw_capture_tb.sv",
         "03_verification/tb/its_unified_submission_top_sat10_tb.sv",
         "03_verification/tb/bounded_lfnst_engine_tb.sv",
         "03_verification/step12d_engineering/profile_contract.py",

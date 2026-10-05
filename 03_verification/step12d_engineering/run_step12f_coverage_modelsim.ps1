@@ -72,6 +72,7 @@ $FifoResetTb = Join-Path $RepoRoot "03_verification\tb\unified_p4_fifo_payload_r
 $NumericTb = Join-Path $RepoRoot "03_verification\tb\unified_its_wrapper_numeric_tb.sv"
 $AdapterTb = Join-Path $RepoRoot "03_verification\tb\unified_its_final_adapter_tb.sv"
 $SatWrapperTb = Join-Path $RepoRoot "03_verification\tb\unified_its_sat10_wrapper_tb.sv"
+$HReadRawCaptureTb = Join-Path $RepoRoot "03_verification\tb\unified_its_hread_raw_capture_tb.sv"
 $SubmissionTopTb = Join-Path $RepoRoot "03_verification\tb\its_unified_submission_top_sat10_tb.sv"
 $GateBGenerator = Join-Path $RepoRoot "03_verification\step12d_engineering\generate_gate_b_hdl_vectors.py"
 $GateCGenerator = Join-Path $RepoRoot "03_verification\step12d_engineering\generate_gate_c_hdl_vectors.py"
@@ -188,7 +189,8 @@ foreach ($mode in @("normal", "synthesis")) {
         $compileLog = Join-Path $dir "compile.log"
         $compileSources = @($SimpleRam, $InputBank, $Kernel, $LfnstEngine, $Wrapper, $SubmissionTop,
                             $KernelTb, $ThroughputTb, $ThroughputFullTb, $SmokeTb, $P3Tb, $P4Tb, $FifoResetTb,
-                            $NumericTb, $AdapterTb, $SatWrapperTb, $SubmissionTopTb, $LfnstTb)
+                            $NumericTb, $AdapterTb, $SatWrapperTb, $HReadRawCaptureTb,
+                            $SubmissionTopTb, $LfnstTb)
         $compileArguments = @("-sv") + $define + $compileSources + @("-l", $compileLog)
         $compileCommand = '"{0}" {1}' -f $Vlog, (($compileArguments | ForEach-Object {
             if ($_ -match '\s') { '"' + $_.Replace('"', '\"') + '"' } else { $_ }
@@ -239,6 +241,10 @@ foreach ($mode in @("normal", "synthesis")) {
         $satWrapperLog = Join-Path $dir "sat10_wrapper_boundary.log"
         Invoke-VsimTest $mode "unified_its_sat10_wrapper_tb" $satWrapperLog "SAT10_WRAPPER_BOUNDARY_PASS cases=5 beats=24 grid_init=2 stale_payload=1"
 
+        $hreadRawLog = Join-Path $dir "hread_raw_capture.log"
+        Invoke-VsimTest $mode "unified_its_hread_raw_capture_tb" $hreadRawLog `
+            "H_READ_RAW_CAPTURE_PASS"
+
         $topLog = Join-Path $dir "sat10_submission_top.log"
         Invoke-VsimTest $mode "its_unified_submission_top_sat10_tb" $topLog "SAT10_SUBMISSION_TOP_PASS tus=2 beats=8 done=2"
 
@@ -250,7 +256,7 @@ foreach ($mode in @("normal", "synthesis")) {
 
         $modeLogs = @($compileLog, $kernelLog, $throughputLog, $throughputFullLog,
                       $smokeLog, $p3Log, $p4Log, $fifoResetLog, $numericLog, $adapterLog, $satWrapperLog,
-                      $topLog, $lfnstLog, $lfnstWrapperLog)
+                      $hreadRawLog, $topLog, $lfnstLog, $lfnstWrapperLog)
         if ($EvidenceDir) {
             foreach ($log in $modeLogs) {
                 Copy-Item -LiteralPath $log -Destination (Join-Path $EvidenceDir ($mode + "_" + (Split-Path $log -Leaf)))
@@ -269,6 +275,7 @@ foreach ($mode in @("normal", "synthesis")) {
             gate_c_wrapper_numeric = "PASS_369_CASES"
             sat10_adapter_exhaustive = "PASS_65536_VALUES"
             sat10_wrapper_boundary = "PASS_5_CASES_24_BEATS_LFNST_GRID_REINIT"
+            hread_raw_capture = "PASS_ORDERED_PAYLOAD_METADATA_AND_REAL_STALL"
             sat10_submission_top = "PASS_2_TUS_8_BEATS_MIN_8_REAL_PENDING_STALL_CYCLES"
             lfnst_engine_specialty = "PASS_1088_CASES"
             lfnst_wrapper_specialty = "PASS_388_CASES"
@@ -312,6 +319,7 @@ $summary = [ordered]@{
         gate_c_numeric_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $NumericTb).Hash
         sat10_adapter_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $AdapterTb).Hash
         sat10_wrapper_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $SatWrapperTb).Hash
+        hread_raw_capture_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $HReadRawCaptureTb).Hash
         sat10_submission_top_tb = (Get-FileHash -Algorithm SHA256 -LiteralPath $SubmissionTopTb).Hash
     }
     vector_sets = [ordered]@{
