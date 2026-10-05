@@ -1,0 +1,416 @@
+{
+  "schema": "step12d_engineering.sat10_functional_checkpoint.v1",
+  "status": "FUNCTIONAL_PASS",
+  "tested_source_commit": "ae31551931107ab4f41da1ed6c1992732be1ba06",
+  "checkout_state": "DETACHED_AT_TESTED_SOURCE_COMMIT",
+  "remote_target_branch": "sat10-profile-v2",
+  "profile": {
+    "name": "contest_engineering_vtm10_sat10_v2",
+    "path": "03_verification/step12d_engineering/profiles/contest_engineering_vtm10_sat10_v2.json",
+    "canonical_sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746",
+    "decision_class": "PROVISIONAL_ENGINEERING_DECISION",
+    "official_equivalence": "NOT_PROVEN",
+    "final10": "SAT10",
+    "range": [
+      -512,
+      511
+    ]
+  },
+  "execution": {
+    "simulator": "ModelSim SE-64 2020.4",
+    "normal": "PASS",
+    "SYNTHESIS": "PASS",
+    "gate_b_cases": 156,
+    "gate_f_modes": 13,
+    "gate_c_cases": 369,
+    "gate_c_beats_per_mode": 45636,
+    "lfnst_engine_cases": 1088,
+    "lfnst_wrapper_cases": 388,
+    "sat10_exhaustive_signed16_values": 65536,
+    "wrapper_end_to_end": "PASS_POSITIVE_AND_NEGATIVE_OVERFLOW_BACKPRESSURE_TWO_TU_DONE_4X10_PACKING",
+    "submission_top_end_to_end": "PASS_POSITIVE_AND_NEGATIVE_OVERFLOW_BACKPRESSURE_TWO_TU_DONE_4X10_PACKING",
+    "exact_intermediate_end_to_end_boundaries": "NOT_CLAIMED; exact [-513,-512,-511,510,511,512] values are covered by exhaustive adapter-function simulation; no canonical end-to-end input vectors were established for each exact intermediate",
+    "official_equivalence": "NOT_PROVEN",
+    "fresh_synthesis_place_route": "NOT_RUN"
+  },
+  "stages": [
+    {
+      "name": "sat10_profile_validation",
+      "command": "C:\\Users\\Fine\\AppData\\Local\\Programs\\Python\\Python313\\python.exe C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\03_verification\\step12d_engineering\\validate_sat10_profile.py --profile contest_engineering_vtm10_sat10_v2 --evidence-dir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\05_audit\\current\\86_hread_raw_capture_functional_20261005\\20261005T094452Z_ae3155193110\\01_profile_validation",
+      "exit_code": 0,
+      "log": "01_profile_validation/command.log",
+      "log_sha256": "A363BFAA456AE01FB51306333799E693F827E1B55EA4C27570740ADFDE778FA5"
+    },
+    {
+      "name": "gate_a_inheritance",
+      "command": "C:\\Users\\Fine\\AppData\\Local\\Programs\\Python\\Python313\\python.exe C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\03_verification\\step12d_engineering\\validate_gate_a.py --profile contest_engineering_vtm10_sat10_v2 --evidence-dir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\05_audit\\current\\86_hread_raw_capture_functional_20261005\\20261005T094452Z_ae3155193110\\02_gate_a_inheritance",
+      "exit_code": 0,
+      "log": "02_gate_a_inheritance/command.log",
+      "log_sha256": "F9CA1E4575F7F6AC9FAD8704381F80F1379EFE81ADD90EF8FCAFD45B4C7C1CB3"
+    },
+    {
+      "name": "independent_vtm_oracle",
+      "command": "C:\\Users\\Fine\\AppData\\Local\\Programs\\Python\\Python313\\python.exe C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\03_verification\\step12d_engineering\\run_vtm_engineering_oracle.py --profile contest_engineering_vtm10_sat10_v2 --evidence-dir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\05_audit\\current\\86_hread_raw_capture_functional_20261005\\20261005T094452Z_ae3155193110\\03_independent_vtm_oracle",
+      "exit_code": 0,
+      "log": "03_independent_vtm_oracle/command.log",
+      "log_sha256": "65502E0AF888B043B57E55D94DC733B5838639F006C222286096D599EF123A2F"
+    },
+    {
+      "name": "independent_python_gate_c",
+      "command": "C:\\Users\\Fine\\AppData\\Local\\Programs\\Python\\Python313\\python.exe C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\03_verification\\step12d_engineering\\validate_gate_c_model.py --profile contest_engineering_vtm10_sat10_v2 --evidence-dir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\05_audit\\current\\86_hread_raw_capture_functional_20261005\\20261005T094452Z_ae3155193110\\04_independent_python_gate_c",
+      "exit_code": 0,
+      "log": "04_independent_python_gate_c/command.log",
+      "log_sha256": "7C6F4EA4B66ECFAF15BC6606670F01F25FBF3D046FD6341E558F363FA74B3731"
+    },
+    {
+      "name": "fail_closed_full_modelsims",
+      "command": "C:\\Users\\Fine\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\03_verification\\step12d_engineering\\run_step12f_coverage_modelsim.ps1 -ProfileName contest_engineering_vtm10_v1 -EvidenceDir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\05_audit\\current\\86_hread_raw_capture_functional_20261005\\20261005T094452Z_ae3155193110\\05_fail_closed_negative_tests\\full_modelsims_must_not_exist",
+      "expected_exit_code": "NONZERO",
+      "actual_exit_code": 1,
+      "log": "05_fail_closed_negative_tests/full_modelsims.log",
+      "log_sha256": "FD2204639D76AB4A91C38DD78AB68C69ADB50FCFFCDF783A26FF2657E1B34CD3",
+      "result": "PASS_REJECTED_BEFORE_MODELSIM"
+    },
+    {
+      "name": "fail_closed_gate_bc_modelsim",
+      "command": "C:\\Users\\Fine\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\03_verification\\step12d_engineering\\run_gate_b_c_modelsim.ps1 -ProfileName contest_engineering_vtm10_v1 -EvidenceDir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\05_audit\\current\\86_hread_raw_capture_functional_20261005\\20261005T094452Z_ae3155193110\\05_fail_closed_negative_tests\\gate_bc_modelsim_must_not_exist",
+      "expected_exit_code": "NONZERO",
+      "actual_exit_code": 1,
+      "log": "05_fail_closed_negative_tests/gate_bc_modelsim.log",
+      "log_sha256": "73B8DE824BD1F18EF75DDF6DDC55647A895FB220837154E20E22B8EB4311E659",
+      "result": "PASS_REJECTED_BEFORE_MODELSIM"
+    },
+    {
+      "name": "full_normal_and_synthesis_modelsim",
+      "command": "C:\\Users\\Fine\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\03_verification\\step12d_engineering\\run_step12f_coverage_modelsim.ps1 -ProfileName contest_engineering_vtm10_sat10_v2 -WorkRoot C:\\Users\\Fine\\AppData\\Local\\Temp\\sat10_functional_20261005T094452Z_ae3155193110 -EvidenceDir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\05_audit\\current\\86_hread_raw_capture_functional_20261005\\20261005T094452Z_ae3155193110\\06_full_modelsims",
+      "exit_code": 0,
+      "log": "06_full_modelsims/command.log",
+      "log_sha256": "45339A20650F464D7A051181E50A9F0CD3CBB339CC1DDFFA0B21974E15DDEAC3"
+    }
+  ],
+  "source_file_sha256": {
+    "02_rtl/rtl/its_simple_ram.sv": "DD842C57DEABDF3AD3C75DC038A70CBB871E2D3B725D3108597B58846947845D",
+    "02_rtl/rtl/its_input_cache_bank.sv": "2476D5FBC1D3663515137F8768EC7F16A689B3150E4527D78B5743DF3E7A05D7",
+    "02_rtl/rtl/unified_p4_kernel.sv": "AB79E6AF55F42E76B9B56E86C628E57A93F477E40DDF21F7298DDB25D4541064",
+    "02_rtl/rtl/bounded_lfnst_engine.sv": "560408512493C838A7F40D4D4EF8E5D1594FFD63F4E0A247E56473C225D9BF78",
+    "02_rtl/rtl/unified_its_wrapper.sv": "E92E193F51AE771C1CE24DEDC878A5FC9B2DBAEB03B6F7DA913ADC5780942A1A",
+    "02_rtl/rtl/its_unified_submission_top.sv": "39CAF8E3BBA2992FFAD8C2407F9AD10341E2AA8C03EA0A07F5C0A0E6744436D1",
+    "02_rtl/rtl/rom_coeffs.hex": "0063E92D212C6CD6116295928F1902D8C80B3335B36250D5EE18C13C0BDE9D53",
+    "02_rtl/rtl/lfnst_coeffs.hex": "4AFBAF5237AFBCDBC51048E0F43BAFE2DD0CC0A95173BA49A1CF8134A5D06F2C",
+    "02_rtl/rtl/lfnst_packed_coeffs.hex": "25ADE6EFFD2E51709C3C9BFE3EB92B341BBCE00826390516AB98CF59865E63B5",
+    "03_verification/tb/unified_p4_kernel_numeric_tb.sv": "85A466EC07F195D5C1788A30A400957C237174BA77A3B9705DE520031CC3E198",
+    "03_verification/tb/unified_p4_kernel_throughput_tb.sv": "793C6997C499ED40A91A8B9986BBA12958DDB967D06E550DA5CC204457CEEDD6",
+    "03_verification/tb/unified_p4_kernel_throughput_full_tb.sv": "E9CFBFF26BA6003017C5C69FB2ED563CB0448BB509759DA86E716023B274D180",
+    "03_verification/tb/unified_p4_kernel_p4_tb.sv": "1D7FA2BC9B4C7936D508CB79B30E97A7A6DEF7A267A8C9DA029C6A88B7036722",
+    "03_verification/tb/unified_p4_fifo_payload_reset_tb.sv": "04268398C3637DB038D5DD6A9EE85876211BF331BE562635BCA81E337EA6157C",
+    "03_verification/tb/unified_p4_coeff_layout_tb.sv": "B001E8EFB832116C58D294577803A8C6A9FADEAFE234CFAA0D4F0B0624CE672C",
+    "03_verification/tb/unified_its_wrapper_tb.sv": "37E4D5D62AA4A9DFB592D763338D58FD33E419FC3337427F5A4BD85F46E0E2C9",
+    "03_verification/tb/unified_its_wrapper_p3_tb.sv": "66ABDAD10AB9370CA50574A35A7567905CA89A771CD3D7F631C318A7592EA643",
+    "03_verification/tb/unified_its_wrapper_numeric_tb.sv": "058A530E8C17ACBA2A453A676A6CBE92BC7B3463C68B38245F2ADF279B636514",
+    "03_verification/tb/unified_its_final_adapter_tb.sv": "F71E276160F07BC7E610BDEB3D1B175C901FEF32420DE24D443E3AE10114A082",
+    "03_verification/tb/unified_its_sat10_wrapper_tb.sv": "FE308E126DC329540F9F64A97E1BF994B9F3C5897C58EA5500D7748C972C2B8C",
+    "03_verification/tb/unified_its_hread_raw_capture_tb.sv": "7089BD5DCCF547E37E3730944E8590B92CD13A198CC777F99373B1BDED256382",
+    "03_verification/tb/its_unified_submission_top_sat10_tb.sv": "BDFE7C57B05CA37350C5B4698EACBC53E510A0EEE117BE6A98B4FC00A1173A54",
+    "03_verification/tb/bounded_lfnst_engine_tb.sv": "EC7BF615953BE5752D30404A6316D845952E3913826600E33254051C161B4907",
+    "03_verification/step12d_engineering/profile_contract.py": "6FC38EC97D697236BB5E8094F329171DD124B748F7F0F0B34D846AED18C48FA0",
+    "03_verification/step12d_engineering/validate_sat10_profile.py": "CE9C625DB9F5EA63FBF780C6D9DB784DB7F44D115497C7F3C0559FD2521A5EE3",
+    "03_verification/step12d_engineering/validate_gate_a.py": "DAC584EBA3DDE07017624CE343B18F16F13A05547202E0CF8E76C8FC5AB83040",
+    "03_verification/step12d_engineering/run_vtm_engineering_oracle.py": "9C8921679E61C2F6B8B3FA1EC105CEF41A1F4E7252808A6EA6E236E3DF029052",
+    "03_verification/step12d_engineering/validate_gate_c_model.py": "9564C93A2735BF86CB29887897A439F1C6C0A0FF16AFABF8B1CDD3126485D0D5",
+    "03_verification/step12d_engineering/generate_gate_b_hdl_vectors.py": "A9F82FAC730996C0F2353119AE62BCB28CDB441767E21A77723451EEE1116D20",
+    "03_verification/step12d_engineering/generate_gate_c_hdl_vectors.py": "D826F52C5F26A2B22770AB4CE3C2D589F3AB0470195D0C131AA08B855FE61211",
+    "03_verification/step12d_engineering/generate_lfnst_engine_vectors.py": "ADD837D074661444078A1342F0C614BD01CFBDB08B983AC706DA9002B246EB55",
+    "03_verification/step12d_engineering/generate_lfnst_wrapper_vectors.py": "05250C34586CB0DD1425F7ED6253BD7273A51CA42604552BBA3BFAF9F3CBC243",
+    "03_verification/step12d_engineering/test_lfnst_layout_contract.py": "EF1D1080E8241C2DFB05A935E9ED95323B549C54A3E98B34F595CDD65CF60C5E",
+    "03_verification/step12d_engineering/run_gate_b_c_modelsim.ps1": "94695559667BBC80E7A68D942AF76DCD26ACB8A45AB5010BD1DFD851FC877210",
+    "03_verification/step12d_engineering/run_step12f_coverage_modelsim.ps1": "0C35AF38984112EC438E29BA86F42E31DAA5D21888BA5E40A51892288DCC32EC",
+    "03_verification/step12d_engineering/run_sat10_functional_checkpoint.ps1": "5D3D7EAD01CC6E74CF2772569823B6E19FC82283490B06921D9237F5D8D4B3F5",
+    "03_verification/step12d_engineering/profiles/contest_engineering_vtm10_sat10_v2.json": "AD11CA8EB0FDE362079EAB10312C48B33F4A2EC5684D0296521B60E59665CA2C"
+  },
+  "evidence_files": [
+    {
+      "path": "01_profile_validation/command.log",
+      "bytes": 106,
+      "sha256": "A363BFAA456AE01FB51306333799E693F827E1B55EA4C27570740ADFDE778FA5"
+    },
+    {
+      "path": "01_profile_validation/SAT10_PROFILE_VALIDATION.json",
+      "bytes": 1293,
+      "sha256": "6516877C1AA91AF9A2AB2A71AC2397286E605BAA4033FCB18FD0ED866453D0D0"
+    },
+    {
+      "path": "02_gate_a_inheritance/command.log",
+      "bytes": 1318,
+      "sha256": "F9CA1E4575F7F6AC9FAD8704381F80F1379EFE81ADD90EF8FCAFD45B4C7C1CB3"
+    },
+    {
+      "path": "02_gate_a_inheritance/GATE_A_VALIDATION.json",
+      "bytes": 1318,
+      "sha256": "F9CA1E4575F7F6AC9FAD8704381F80F1379EFE81ADD90EF8FCAFD45B4C7C1CB3"
+    },
+    {
+      "path": "03_independent_vtm_oracle/AMBIGUITY_IMPACT_AUDIT.json",
+      "bytes": 2021,
+      "sha256": "D95530153842B60029FB779DDA721CB3E3F244C291EEEF37DCBD548C6E76483C"
+    },
+    {
+      "path": "03_independent_vtm_oracle/command.log",
+      "bytes": 91,
+      "sha256": "65502E0AF888B043B57E55D94DC733B5838639F006C222286096D599EF123A2F"
+    },
+    {
+      "path": "03_independent_vtm_oracle/VTM_PROFILE_ORACLE_RESULTS.json",
+      "bytes": 26251,
+      "sha256": "C20FF3498693CFBCFD1EA09025CE286DE521E3E8C42D55AF8C0CB8190AB36D86"
+    },
+    {
+      "path": "04_independent_python_gate_c/command.log",
+      "bytes": 72,
+      "sha256": "7C6F4EA4B66ECFAF15BC6606670F01F25FBF3D046FD6341E558F363FA74B3731"
+    },
+    {
+      "path": "04_independent_python_gate_c/GATE_C_MODEL_VALIDATION.json",
+      "bytes": 5383,
+      "sha256": "CBA31E3206883C991CB26CAB96F4C20E1C71E4EE774C5DBFFE549D812D461D44"
+    },
+    {
+      "path": "05_fail_closed_negative_tests/full_modelsims.log",
+      "bytes": 430,
+      "sha256": "FD2204639D76AB4A91C38DD78AB68C69ADB50FCFFCDF783A26FF2657E1B34CD3"
+    },
+    {
+      "path": "05_fail_closed_negative_tests/gate_bc_modelsim.log",
+      "bytes": 422,
+      "sha256": "73B8DE824BD1F18EF75DDF6DDC55647A895FB220837154E20E22B8EB4311E659"
+    },
+    {
+      "path": "06_full_modelsims/command.log",
+      "bytes": 79316,
+      "sha256": "45339A20650F464D7A051181E50A9F0CD3CBB339CC1DDFFA0B21974E15DDEAC3"
+    },
+    {
+      "path": "06_full_modelsims/LFNST_ENGINE_VECTOR_MANIFEST.json",
+      "bytes": 368,
+      "sha256": "2B6075B24663C5D7DDC0E7B444AE631D1B67961FC33AACC90AD904A6C028F4A6"
+    },
+    {
+      "path": "06_full_modelsims/lfnst_engine_vectors.txt",
+      "bytes": 230117,
+      "sha256": "07D7CE405A40439CB23F4E14A3795862D4B59D89607C8260BA274606998EB7F8"
+    },
+    {
+      "path": "06_full_modelsims/lfnst_layout_contract.log",
+      "bytes": 74,
+      "sha256": "16CE6DEBE4904F22B673F75F634C14C515CB51284C5F89716766A1A99122A4FE"
+    },
+    {
+      "path": "06_full_modelsims/LFNST_WRAPPER_VECTOR_MANIFEST.json",
+      "bytes": 832,
+      "sha256": "1498F78A99F04DF1C543720D58B5CB73D8ED995350D01B68D87A231D0F7DC8D3"
+    },
+    {
+      "path": "06_full_modelsims/lfnst_wrapper_vectors.txt",
+      "bytes": 82329,
+      "sha256": "7360C1B5622FC83F7399918BA0D7C5137289C88626B6EA06303A74D1075E92D6"
+    },
+    {
+      "path": "06_full_modelsims/normal_compile.log",
+      "bytes": 3722,
+      "sha256": "D8CBCABC5AC8F71738838CC5754C34E2B2012FE50029CFACF67DE51712F9672A"
+    },
+    {
+      "path": "06_full_modelsims/normal_FULL_GATE_C_VECTOR_MANIFEST.json",
+      "bytes": 95684,
+      "sha256": "A54B69917BD2B329D9F1673B8DD181471378E5384A98AC47FE735F73A3BDFDE6"
+    },
+    {
+      "path": "06_full_modelsims/normal_gate_b_kernel_numeric.log",
+      "bytes": 1292,
+      "sha256": "8058B76A659613CE24BBCE6D9C03855652E596D4AEB950367961112E0F75D8B2"
+    },
+    {
+      "path": "06_full_modelsims/normal_gate_b_vector_ii.log",
+      "bytes": 1686,
+      "sha256": "6FFC9C98D7EB07D244CCAADB179D7152C1F112DF9C885E4BB470FE3F1B2C8E97"
+    },
+    {
+      "path": "06_full_modelsims/normal_GATE_B_VECTOR_MANIFEST.json",
+      "bytes": 109,
+      "sha256": "1AF05DD624933425A817ADE0078073CB83F423ED5714F1098EC91D3D402689EF"
+    },
+    {
+      "path": "06_full_modelsims/normal_GATE_B_VECTORS.txt",
+      "bytes": 26376,
+      "sha256": "45069F3B15DB5FE2C928D531457EC5700546100E4B0997E7CF895AD32A1C05BB"
+    },
+    {
+      "path": "06_full_modelsims/normal_GATE_C_VECTORS.txt",
+      "bytes": 518153,
+      "sha256": "4408A62D7ABFA3FC57B4874E47F0E85A77921AB1A3794E50A8ACCF5466748025"
+    },
+    {
+      "path": "06_full_modelsims/normal_gate_c_wrapper_numeric.log",
+      "bytes": 1304,
+      "sha256": "E057B174866A731AC599FB94369F36FBF43C073CD055806A92CA9D24BAA1589E"
+    },
+    {
+      "path": "06_full_modelsims/normal_gate_c_wrapper_smoke.log",
+      "bytes": 1278,
+      "sha256": "33AC935359889F14FC4AD7F1EDB6BA6820DAE9D7505C50269EEA97CE48011785"
+    },
+    {
+      "path": "06_full_modelsims/normal_gate_f_vector_ii.log",
+      "bytes": 2033,
+      "sha256": "3B3EF1396C7D4BCCEB1E43DA4D9ADD99A86F2C8CC0A21556375C62E17060B3B7"
+    },
+    {
+      "path": "06_full_modelsims/normal_hread_raw_capture.log",
+      "bytes": 1334,
+      "sha256": "88977FEBA5C97E06C90D37CE7DE7CDFB2439C61DC66D49D4253E506CE2934292"
+    },
+    {
+      "path": "06_full_modelsims/normal_lfnst_engine_specialty.log",
+      "bytes": 1273,
+      "sha256": "E4132AA742E18EB18FF71770B3E24DEA990592AB17F8911C3B4BB580846433C0"
+    },
+    {
+      "path": "06_full_modelsims/normal_lfnst_wrapper_specialty.log",
+      "bytes": 1345,
+      "sha256": "E7B532720A557998F5976BFF10B646CF498C3951D640C7706CA328D1E45DCD1A"
+    },
+    {
+      "path": "06_full_modelsims/normal_p3_vwrite_contract.log",
+      "bytes": 1318,
+      "sha256": "0A9FA3A5180DA820592B936C65348F6A70D18857FB45FF3314A72F0040C9AE0E"
+    },
+    {
+      "path": "06_full_modelsims/normal_p4_fifo_payload_reset.log",
+      "bytes": 1360,
+      "sha256": "9FB74DE31C4F44818A3EC6297D6CD7E5E18FE951EC9403B3527C5EFCBB0E7898"
+    },
+    {
+      "path": "06_full_modelsims/normal_p4_stage0_issue_contract.log",
+      "bytes": 1318,
+      "sha256": "A2AF6516A0F4161D747C302855E68BBABD3901E6D471BB37F1E9A6232211C495"
+    },
+    {
+      "path": "06_full_modelsims/normal_sat10_adapter_exhaustive.log",
+      "bytes": 1390,
+      "sha256": "DAE406DEB4050DF4441B921245269B723F871903AA7D2EB6D3CB55451A8FCA7B"
+    },
+    {
+      "path": "06_full_modelsims/normal_sat10_submission_top.log",
+      "bytes": 1358,
+      "sha256": "DFB16948E2879D59C97DD597FF9C251A487D4A53FEDA9A8EA478671CCC49038D"
+    },
+    {
+      "path": "06_full_modelsims/normal_sat10_wrapper_boundary.log",
+      "bytes": 1377,
+      "sha256": "8962B1A2C60D1FF9438B9F61574B746F26E0F3CD1FEC3E08C6327F961BC8BEFF"
+    },
+    {
+      "path": "06_full_modelsims/STEP12F_COVERAGE_MODELSIM_RUN.json",
+      "bytes": 31579,
+      "sha256": "175B332660BC1A0BF2F7B1705FFD16CE1EECD639EC8DCC7152AC546EE762C849"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_compile.log",
+      "bytes": 3745,
+      "sha256": "3B0F6A1B2F40F9A79A4AC517FF1E471C402962932BF1EE72E7C5F0485A2D88DD"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_FULL_GATE_C_VECTOR_MANIFEST.json",
+      "bytes": 95684,
+      "sha256": "A54B69917BD2B329D9F1673B8DD181471378E5384A98AC47FE735F73A3BDFDE6"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_gate_b_kernel_numeric.log",
+      "bytes": 1295,
+      "sha256": "DD2C98473433A53081CF8D3DBC4857B5000C68004527B47821A957EA5FA6EF1D"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_gate_b_vector_ii.log",
+      "bytes": 1689,
+      "sha256": "0B79129284AB27DC1A39F916542C8953E1265906CAD61A6D95C3DE462128488B"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_GATE_B_VECTOR_MANIFEST.json",
+      "bytes": 109,
+      "sha256": "1AF05DD624933425A817ADE0078073CB83F423ED5714F1098EC91D3D402689EF"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_GATE_B_VECTORS.txt",
+      "bytes": 26376,
+      "sha256": "45069F3B15DB5FE2C928D531457EC5700546100E4B0997E7CF895AD32A1C05BB"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_GATE_C_VECTORS.txt",
+      "bytes": 518153,
+      "sha256": "4408A62D7ABFA3FC57B4874E47F0E85A77921AB1A3794E50A8ACCF5466748025"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_gate_c_wrapper_numeric.log",
+      "bytes": 1307,
+      "sha256": "ACA9D5682CE667B1659C8FE6EA497526BF6202785DB1B95B1F1C3B169C29CE50"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_gate_c_wrapper_smoke.log",
+      "bytes": 1281,
+      "sha256": "A629F791F5218A97D691FC96B055C1A5D4108A6B6CC45597CBC8A17A326FD705"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_gate_f_vector_ii.log",
+      "bytes": 2036,
+      "sha256": "A432C016611FB5BB50082FB47BC1EE416E88DD13CC7853067C8C7FAF3C623562"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_hread_raw_capture.log",
+      "bytes": 1337,
+      "sha256": "4950E2C1B947FFB2FAAFD45B0861089097876AE8ECAC73340DF8BC11E228B6AA"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_lfnst_engine_specialty.log",
+      "bytes": 1276,
+      "sha256": "53B9297E3501FE997D46CECC88C48513B25F224386E1B36959437919EFB562AB"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_lfnst_wrapper_specialty.log",
+      "bytes": 1348,
+      "sha256": "6B6E88B63229678191B8BE925B71768CCB976FD339508E41EF465D22646685C3"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_p3_vwrite_contract.log",
+      "bytes": 1321,
+      "sha256": "DF715EE96A85DDA5DE98A3929053092AC74E7DBE6897AD602A4D0DC750834933"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_p4_fifo_payload_reset.log",
+      "bytes": 1363,
+      "sha256": "24E41A95A6802564C54D71185E95C2FAF314ECC99EFD8D767D6A7F757D6F71C4"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_p4_stage0_issue_contract.log",
+      "bytes": 1321,
+      "sha256": "2170471E8553B2355AC5A5CA11F26CE006314D0262EC957A7D240EEB48C0E50B"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_sat10_adapter_exhaustive.log",
+      "bytes": 1393,
+      "sha256": "8ABB7AF955858A1A434791366D038ECDA3D4A56C06E41E40290B4D6860748DBE"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_sat10_submission_top.log",
+      "bytes": 1361,
+      "sha256": "776E69C8B407ADBF7BA57593D3A2795E868E3263E2D62C386083DC997D24EC5F"
+    },
+    {
+      "path": "06_full_modelsims/synthesis_sat10_wrapper_boundary.log",
+      "bytes": 1380,
+      "sha256": "EF102203D07B5809ED29DD9FC0B04DE75ECD4CB58810BEDF1095DD9F5E3D99A0"
+    }
+  ],
+  "evidence_commit_expected_parent": "ae31551931107ab4f41da1ed6c1992732be1ba06",
+  "evidence_commit_sha_location": "Reported from the remote sat10-profile-v2 ref after the evidence commit; a Git commit cannot contain its own SHA in its tree.",
+  "historical_low10_audit_modified": false,
+  "physical_timing": "NOT_RUN"
+}

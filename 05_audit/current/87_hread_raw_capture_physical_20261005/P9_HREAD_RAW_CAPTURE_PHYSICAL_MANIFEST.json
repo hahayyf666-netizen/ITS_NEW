@@ -1,0 +1,206 @@
+{
+  "schema": "step12f.p9_hread_raw_capture_physical.v1",
+  "status": "PHYSICAL_COMPLETE_SETUP_FAIL_HOLD_PASS",
+  "source_commit": "ae31551931107ab4f41da1ed6c1992732be1ba06",
+  "source_parent": "41ce8c279e6f15bb0674e1eda61ce1b353cf3611",
+  "functional_evidence": {
+    "manifest": "05_audit/current/86_hread_raw_capture_functional_20261005/20261005T094452Z_ae3155193110/CHECKPOINT_MANIFEST.json",
+    "manifest_sha256": "FD8A8147576C042958DED9A91DFB47C5B5AB1D4796D55899CC9E18CB2E5E31E1",
+    "status": "FUNCTIONAL_PASS",
+    "profile": "contest_engineering_vtm10_sat10_v2",
+    "profile_canonical_sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746",
+    "official_equivalence": "NOT_PROVEN"
+  },
+  "implementation": {
+    "top": "step12f_registered_neighbor_harness",
+    "vivado": "2025.2 build 6299465",
+    "part": "xcku5p-ffvb676-2-e",
+    "max_threads": 4,
+    "clock_period_ns": 2.0,
+    "clock_uncertainty_ns": 0.0,
+    "old_ooc_xdc_loaded": false,
+    "xdc": "03_verification/vivado/step12f_registered_neighbor_2ns.xdc",
+    "flow": [
+      "synth_design -directive Default",
+      "opt_design -directive Default",
+      "place_design -directive ExtraNetDelay_high",
+      "phys_opt_design -directive AggressiveExplore",
+      "route_design -directive NoTimingRelaxation"
+    ],
+    "fresh_synthesis_of_frozen_source": true,
+    "fully_routed": true,
+    "routable_nets": 43307,
+    "fully_routed_nets": 43307,
+    "routing_errors": 0
+  },
+  "execution": {
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File 03_verification/vivado/run_step12f_registered_neighbor.ps1 -EvidenceDir 05_audit/current/87_hread_raw_capture_physical_20261005",
+    "exit_code": 0,
+    "completion_marker": "P9R5E_DONE",
+    "main_log": "vivado.log",
+    "main_journal": "vivado.jou",
+    "targeted_sta": "Vivado 2025.2 batch opened the exact postroute DCP with report_hread_raw_capture_routed.tcl; read-only, no implementation/design mutation commands"
+  },
+  "timing": {
+    "setup_wns_ns": -0.107,
+    "setup_tns_ns": -26.406,
+    "setup_failing_endpoints": 695,
+    "hold_whs_ns": 0.012,
+    "hold_ths_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "pulse_width_worst_slack_ns": 0.468,
+    "pulse_width_failing_endpoints": 0,
+    "unconstrained_internal_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "setup_signoff": "FAIL",
+    "hold_signoff": "PASS"
+  },
+  "targeted_hread_sta": {
+    "audit_mode": "READ_ONLY_EXACT_POSTROUTE_DCP",
+    "object_counts": {
+      "hread_address_q": 40,
+      "pending_q": 1,
+      "run_q": 2,
+      "stage_q": 1,
+      "raw_capture_d": 64,
+      "raw_capture_q": 64,
+      "head_data_d": 64,
+      "tail_data_d": 64,
+      "temporary_bank_ramd64e": 1280,
+      "all_ramd64e": 5706
+    },
+    "pending_through_ram_to_raw_capture": "NO_TIMING_PATHS",
+    "run_through_ram_to_raw_capture": "NO_TIMING_PATHS",
+    "stage_through_ram_to_raw_capture": "NO_TIMING_PATHS",
+    "hread_address_through_ram_to_raw_capture": {
+      "status": "PATHS_FOUND",
+      "sampled_paths": 5,
+      "worst_slack_ns": -0.033,
+      "data_delay_ns": 1.859,
+      "logic_delay_ns": 0.410,
+      "routing_delay_ns": 1.449,
+      "logic_levels": 4
+    },
+    "hread_address_through_ram_to_old_head_or_tail": "NO_TIMING_PATHS",
+    "raw_capture_to_head": {
+      "status": "PATHS_FOUND",
+      "representative_slack_ns": 0.173,
+      "data_delay_ns": 1.735
+    },
+    "raw_capture_to_tail": {
+      "status": "PATHS_FOUND",
+      "representative_slack_ns": 0.456,
+      "data_delay_ns": 1.379
+    },
+    "global_wns_leader": {
+      "source": "u_dut/kernel_phase_q_reg[1]_replica/C",
+      "destination": "u_dut/rd_cmd_addr_q_reg[1][0][0]_replica/CE",
+      "slack_ns": -0.107,
+      "data_delay_ns": 2.024,
+      "logic_delay_ns": 0.467,
+      "routing_delay_ns": 1.557,
+      "logic_levels": 7,
+      "routing_fraction": 0.769
+    }
+  },
+  "utilization": {
+    "lut": 26374,
+    "lutram": 5706,
+    "ff": 21312,
+    "dsp": 320,
+    "bram": 0,
+    "uram": 0,
+    "clb": 4617,
+    "f7_mux": 1231,
+    "f8_mux": 402
+  },
+  "power_estimate": {
+    "total_w": 1.415,
+    "dynamic_w": 0.957,
+    "static_w": 0.458,
+    "confidence": "MEDIUM",
+    "activity_basis": "VECTORLESS; NOT APPLICATION POWER SIGNOFF"
+  },
+  "caveats": {
+    "drc_errors": 0,
+    "package_io_critical_warnings": ["NSTD-1", "UCIO-1"],
+    "package_level_signoff": "NOT_EVALUATED",
+    "registered_neighbor_core_signoff": "SETUP_FAIL_HOLD_PASS",
+    "historical_comparison": "Prior registered-neighbor WNS -0.139 ns, TNS -74.139 ns, 1808 setup failures is not a same-netlist/same-placement A/B. Current run freshly synthesized changed RTL and used physical optimization; do not attribute global QoR delta solely to H-read change.",
+    "old_low10_audit_modified": false,
+    "fresh_500mhz_signoff": false
+  },
+  "source_hashes": {
+    "02_rtl/rtl/unified_its_wrapper.sv": {
+      "working_tree_byte_sha256": "E92E193F51AE771C1CE24DEDC878A5FC9B2DBAEB03B6F7DA913ADC5780942A1A",
+      "git_blob_sha1": "5e5f686a773d7cba06826fb4b4551842bdfb6be5"
+    },
+    "02_rtl/rtl/step12f_registered_neighbor_harness.sv": {
+      "working_tree_byte_sha256": "BB6BEE87957E2E399461184AEE0F054B2EF070F51426605719025623D67806A3",
+      "git_blob_sha1": "a6cdfb5d2e22893e8f4b7c963441898fb9c13c2e"
+    },
+    "02_rtl/rtl/unified_p4_kernel.sv": {
+      "working_tree_byte_sha256": "AB79E6AF55F42E76B9B56E86C628E57A93F477E40DDF21F7298DDB25D4541064",
+      "git_blob_sha1": "18a7ba56d00f83c32800d94059715b045c46517c"
+    },
+    "03_verification/tb/unified_its_hread_raw_capture_tb.sv": {
+      "working_tree_byte_sha256": "7089BD5DCCF547E37E3730944E8590B92CD13A198CC777F99373B1BDED256382",
+      "git_blob_sha1": "5d533c169febf59960f73e94ce1fc84fc19d8c0c"
+    },
+    "03_verification/vivado/run_step12f_registered_neighbor.ps1": {
+      "working_tree_byte_sha256": "1DFD6B6F3C9F7FC7F636E79B23352F6339D06E7DD4904DF8825DDB2697123C60",
+      "git_blob_sha1": "5f97848705910a99522d47a0e95c82df70206d99"
+    },
+    "03_verification/vivado/step12f_registered_neighbor_2ns.xdc": {
+      "working_tree_byte_sha256": "346E4D1BAA867FD7F16E8474FC3E903B3616633450F487AB168383BAE38A3786",
+      "git_blob_sha1": "e5565c9b7b6c99b875c55a136517e7c267450ceb"
+    },
+    "03_verification/vivado/run_step12f_registered_neighbor.tcl": {
+      "working_tree_byte_sha256": "23821871662D12169AC3ADD893A75536338DEF9AA8575BC1F234CC48254CBA71",
+      "git_blob_sha1": "6ee6bd4a5d2493d9630f1f6c57869015aa32ef65"
+    }
+  },
+  "dcp": {
+    "postsynthesis": {
+      "path": "step12f_registered_neighbor_postsynth.dcp",
+      "bytes": 30064113,
+      "sha256": "7A45584D4E361BC5C671D92D4D9855D7A22A75A05FDCA11B904ABB7819A0095F",
+      "git_policy": "LOCAL_ONLY_IGNORED_FROM_GIT"
+    },
+    "postroute": {
+      "path": "step12f_registered_neighbor_postroute.dcp",
+      "bytes": 50099878,
+      "sha256": "08A4823DEB659259E6AC8D853001426D7C80D17C5057FF1EF2F093579CFE19B1",
+      "git_policy": "LOCAL_ONLY_IGNORED_FROM_GIT"
+    }
+  },
+  "artifacts": {
+    "vivado.log": "9BC5553901B278DB764EDB95AD7886BF845E2D6CD867E6F5A15EF5715F0F9B4E",
+    "vivado.jou": "362A26D2A72CABEE00436F753621F7151F2B2EB6E82FEE18CB5526F29479315B",
+    "report_timing_summary_postroute.rpt": "B0033AA25095062FA8432AD142AB084E7266D41409788C1330CE8B0BD3DEBCCC",
+    "report_timing_hold_summary_postroute.rpt": "B63C32BD6CB836AFFCB52E0D9BC7EA750983CB7FFA3868722DF8655DB3A38814",
+    "report_timing_worst100_postroute.rpt": "C2E030055972DD65DC473BCB78661EFECDBA4056B3FBF4C0DD2BC05DBAABFDE9",
+    "report_route_status_postroute.rpt": "D077CAF5B45DCC8BEF212407626525BE9DA474D5B44FA5FE651C7EA0D42868E7",
+    "report_utilization_postroute.rpt": "8DFA021268321FFF49EEA34CC4A202A4F9E3DC290CDEDA12E99096AD2D6DCEBE",
+    "report_power_postroute.rpt": "C2803821D7A906E49134BAE4CE7183DD4FD1BD6FF82BAEF2D91799A9719E2F3E",
+    "report_check_timing_postroute.rpt": "C950E1F2D740014A698547F06319CBA850074E627989A0776ED63139046FB513",
+    "report_exceptions_postroute.rpt": "BA1EBD263220BB2E5A7A50F1A7F3F5753A12A7831DDD3A87347AEF62744F3547",
+    "report_drc_postroute.rpt": "9340FFF22004E3AEB2332F3622770CD2AE7E276DA6635F70E4C5C50B43A72B00",
+    "report_methodology_postroute.rpt": "C4CEF56027631E00F6316CBCABB1FB20E934A47BF1948BC58D5D08802D43966F",
+    "targeted_sta_summary.txt": "1C7984B1A16C25EE3B2031A315983E78A4DC6C5C81E89EF3FB0DF791BEBAD0D4",
+    "targeted_hread_addr_to_raw_capture.rpt": "3C55978EC9DE5737A75846F670F1D951C96BF4FC28D1C912E8E5511183FBC01B",
+    "targeted_raw_capture_to_head.rpt": "F7FC93EA89B5DE864929FCB8DD097E106BD1A602263613C15FFEAF059A4FE737",
+    "targeted_raw_capture_to_tail.rpt": "5D90B2A168F7547E02F79FE5A141543D79CA07ED1D2DC7AEAB9A79CD0CB6047B",
+    "targeted_audit_tcl": "6F77054DD172AEA94F1B5B1FA4EDB74367D043CC2C2C08E1F234D25406640266",
+    "targeted_sta_vivado.log": "4D4FBFC826DC0B63C924EA1479FA69F8673A0DD09B94FAC7058DC03325A78671"
+  },
+  "status": {
+    "functional": "PASS",
+    "hread_structural_gate": "PASS",
+    "fresh_synthesis_and_route": "COMPLETE",
+    "registered_neighbor_setup": "FAIL",
+    "registered_neighbor_hold": "PASS",
+    "500mhz_signoff": "NOT_ACHIEVED",
+    "package_signoff": "NOT_EVALUATED"
+  }
+}

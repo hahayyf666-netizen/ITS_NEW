@@ -1,0 +1,13 @@
+READ_ONLY=1
+DCP=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\05_audit\current\87_hread_raw_capture_physical_20261005\step12f_registered_neighbor_postroute.dcp
+VIVADO=2025.2
+OBJECT_COUNT hread_addr_q=40 pending_q=1 run_q=2 stage_q=1 raw_data_d=64 raw_data_q=64 head_data_d=64 tail_data_d=64 temp_bank_ramd64e=1280 all_ramd64e=5706
+OBJECT_NAMES temp_bank_ramd64e_sample={u_dut/gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_0_63_0_6/RAMA} {u_dut/gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_0_63_0_6/RAMB} {u_dut/gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_0_63_0_6/RAMC} {u_dut/gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_0_63_0_6/RAMD} {u_dut/gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_0_63_0_6/RAME} {u_dut/gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_0_63_0_6/RAMF} {u_dut/gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_0_63_0_6/RAMG} {u_dut/gen_tmp_banks[0].u_kernel_tmp_bank/mem_reg_0_63_0_6/RAMH}
+hread_addr_to_raw_capture STATUS=PATHS_FOUND COUNT=5 FROM=40 THROUGH=1280 TO=64 REPORT=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_hread_raw_capture/05_audit/current/87_hread_raw_capture_physical_20261005/targeted_sta/hread_addr_to_raw_capture.rpt
+hread_addr_to_head_through_ram STATUS=NO_TIMING_PATHS FROM=40 THROUGH=1280 TO=64
+hread_addr_to_tail_through_ram STATUS=NO_TIMING_PATHS FROM=40 THROUGH=1280 TO=64
+raw_capture_to_head STATUS=PATHS_FOUND COUNT=5 FROM=64 THROUGH=0 TO=64 REPORT=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_hread_raw_capture/05_audit/current/87_hread_raw_capture_physical_20261005/targeted_sta/raw_capture_to_head.rpt
+raw_capture_to_tail STATUS=PATHS_FOUND COUNT=5 FROM=64 THROUGH=0 TO=64 REPORT=C:/Users/Fine/Documents/Codex/2026-07-23/ni/_hread_raw_capture/05_audit/current/87_hread_raw_capture_physical_20261005/targeted_sta/raw_capture_to_tail.rpt
+pending_through_ram_to_raw_capture STATUS=NO_TIMING_PATHS FROM=1 THROUGH=1280 TO=64
+run_through_ram_to_raw_capture STATUS=NO_TIMING_PATHS FROM=2 THROUGH=1280 TO=64
+stage_through_ram_to_raw_capture STATUS=NO_TIMING_PATHS FROM=1 THROUGH=1280 TO=64

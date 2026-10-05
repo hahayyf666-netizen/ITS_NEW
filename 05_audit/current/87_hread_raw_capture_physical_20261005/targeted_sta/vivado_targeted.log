@@ -1,0 +1,159 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Mon Oct  5 19:50:20 2026
+# Process ID         : 41280
+# Current directory  : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_hread_raw_capture
+# Command line       : vivado.exe -mode batch -source C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\05_audit\current\87_hread_raw_capture_physical_20261005\report_hread_raw_capture_routed.tcl -log C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\05_audit\current\87_hread_raw_capture_physical_20261005\targeted_sta\vivado_targeted.log -journal C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\05_audit\current\87_hread_raw_capture_physical_20261005\targeted_sta\vivado_targeted.jou -tclargs C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\05_audit\current\87_hread_raw_capture_physical_20261005\step12f_registered_neighbor_postroute.dcp C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\05_audit\current\87_hread_raw_capture_physical_20261005\targeted_sta
+# Log file           : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_hread_raw_capture/05_audit/current/87_hread_raw_capture_physical_20261005/targeted_sta/vivado_targeted.log
+# Journal file       : C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\05_audit\current\87_hread_raw_capture_physical_20261005\targeted_sta\vivado_targeted.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 31002 MB
+# Total Virtual      : 47367 MB
+# Available Virtual  : 20488 MB
+#-----------------------------------------------------------
+INFO: [Common 17-1239] XILINX_LOCAL_USER_DATA is set to 'C:\Users\Fine\AppData\Local\Temp\step12f_r5e_vivado_user'.
+source {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\05_audit\current\87_hread_raw_capture_physical_20261005\report_hread_raw_capture_routed.tcl}
+# if {$argc < 2} {
+#     puts stderr "Usage: vivado -mode batch -source report_hread_raw_capture_routed.tcl -- <postroute.dcp> <out_dir>"
+#     exit 2
+# }
+# set dcp [lindex $argv 0]
+# set out_dir [lindex $argv 1]
+# file mkdir $out_dir
+# if {![file exists $dcp]} { error "Missing post-route DCP: $dcp" }
+# proc names_of {objs} {
+#     set out {}
+#     foreach obj $objs { lappend out [get_property NAME $obj] }
+#     return $out
+# }
+# proc emit_query {label from through to out_dir summary_fh} {
+#     set rpt [file join $out_dir "${label}.rpt"]
+#     set result {}
+#     set rc [catch {
+#         if {[llength $through] > 0} {
+#             set result [get_timing_paths -quiet -from $from -through $through -to $to \
+#                 -delay_type max -max_paths 5 -nworst 1]
+#         } else {
+#             set result [get_timing_paths -quiet -from $from -to $to \
+#                 -delay_type max -max_paths 5 -nworst 1]
+#         }
+#     } msg]
+#     if {$rc} {
+#         set rf [open $rpt w]
+#         puts $rf "QUERY_ERROR=$msg"
+#         close $rf
+#         puts $summary_fh "$label STATUS=QUERY_ERROR MESSAGE=$msg"
+#     } elseif {[llength $from] == 0 || [llength $to] == 0} {
+#         set rf [open $rpt w]
+#         puts $rf "STATUS=NO_SOURCE_OR_DEST_OBJECT"
+#         close $rf
+#         puts $summary_fh "$label STATUS=NO_SOURCE_OR_DEST_OBJECT FROM=[llength $from] THROUGH=[llength $through] TO=[llength $to]"
+#     } elseif {[llength $result] == 0} {
+#         set rf [open $rpt w]
+#         puts $rf "STATUS=NO_TIMING_PATHS"
+#         close $rf
+#         puts $summary_fh "$label STATUS=NO_TIMING_PATHS FROM=[llength $from] THROUGH=[llength $through] TO=[llength $to]"
+#     } else {
+#         if {[llength $through] > 0} {
+#             report_timing -from $from -through $through -to $to \
+#                 -delay_type max -max_paths 5 -nworst 1 -path_type full -file $rpt
+#         } else {
+#             report_timing -from $from -to $to -delay_type max \
+#                 -max_paths 5 -nworst 1 -path_type full -file $rpt
+#         }
+#         puts $summary_fh "$label STATUS=PATHS_FOUND COUNT=[llength $result] FROM=[llength $from] THROUGH=[llength $through] TO=[llength $to] REPORT=$rpt"
+#     }
+# }
+# open_checkpoint $dcp
+Command: open_checkpoint {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\05_audit\current\87_hread_raw_capture_physical_20261005\step12f_registered_neighbor_postroute.dcp}
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.031 . Memory (MB): peak = 352.191 ; gain = 5.812
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.154 . Memory (MB): peak = 1698.629 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 4131 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 3 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2025.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Read ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.051 . Memory (MB): peak = 1730.707 ; gain = 4.641
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Constraints 18-5170] The checkpoint was created with non-default parameter values which do not match the current Vivado settings.  Mismatching parameters are:
+  general.maxThreads
+INFO: [Project 1-853] Binary constraint restore complete.
+INFO: [Designutils 20-5722] Start Reading Physical Databases.
+Reading placement.
+Read Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.055 . Memory (MB): peak = 2298.711 ; gain = 0.000
+Reading placer database...
+Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.023 . Memory (MB): peak = 2298.711 ; gain = 0.000
+Read PlaceDB: Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2369.492 ; gain = 70.781
+Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2369.492 ; gain = 0.000
+Reading routing.
+Read RouteStorage: Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 2800.242 ; gain = 430.750
+Read Physdb Files: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2800.242 ; gain = 501.531
+Restored from archive | CPU: 6.000000 secs | Memory: 0.000000 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2800.242 ; gain = 501.531
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.017 . Memory (MB): peak = 2800.242 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1196 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 320 instances
+  IBUF => IBUF (IBUFCTRL, INBUF): 2 instances
+  RAM256X1D => RAM256X1D (MUXF7(x4), MUXF8(x2), RAMD64E(x8)): 32 instances
+  RAM64M => RAM64M (RAMD64E(x4)): 320 instances
+  RAM64M8 => RAM64M8 (RAMD64E(x8)): 521 instances
+  RAM64X1D => RAM64X1D (RAMD64E(x2)): 1 instance 
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2025.2 (64-bit) build 6299465
+open_checkpoint: Time (s): cpu = 00:00:34 ; elapsed = 00:00:35 . Memory (MB): peak = 2800.242 ; gain = 2464.027
+# set report_dir $out_dir
+# set sf [open [file join $report_dir hread_raw_capture_targeted_summary.txt] w]
+# puts $sf "READ_ONLY=1"
+# puts $sf "DCP=$dcp"
+# puts $sf "VIVADO=[version -short]"
+# set haddr_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_h_rd_addr_q_reg*}]
+# set pending_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_h_rd_pending_q_reg*}]
+# set run_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_run_q_reg*}]
+# set stage_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_stage_q_reg*}]
+# set raw_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *kernel_h_rd_raw_data_q_reg*}]
+# set raw_q [get_pins -hier -quiet -filter {REF_PIN_NAME == Q && NAME =~ *kernel_h_rd_raw_data_q_reg*}]
+# set head_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *kernel_h_rd_data_q_reg*}]
+# set tail_d [get_pins -hier -quiet -filter {REF_PIN_NAME == D && NAME =~ *kernel_h_rd_data_tail_q_reg*}]
+# set temp_rams {}
+# foreach cell [get_cells -hier -quiet -filter {REF_NAME == RAMD64E}] {
+#     if {[string match *u_kernel_tmp_bank* [get_property NAME $cell]]} {
+#         lappend temp_rams $cell
+#     }
+# }
+# set all_rams [get_cells -hier -quiet -filter {REF_NAME == RAMD64E}]
+# set sample_rams [lrange $temp_rams 0 7]
+# puts $sf "OBJECT_COUNT hread_addr_q=[llength $haddr_q] pending_q=[llength $pending_q] run_q=[llength $run_q] stage_q=[llength $stage_q] raw_data_d=[llength $raw_d] raw_data_q=[llength $raw_q] head_data_d=[llength $head_d] tail_data_d=[llength $tail_d] temp_bank_ramd64e=[llength $temp_rams] all_ramd64e=[llength $all_rams]"
+# puts $sf "OBJECT_NAMES temp_bank_ramd64e_sample=[names_of $sample_rams]"
+# emit_query hread_addr_to_raw_capture $haddr_q $temp_rams $raw_d $report_dir $sf
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -through_pins  -to_pins  -max_paths 5 -nworst 1 -delay_type max -sort_by slack.
+# emit_query hread_addr_to_head_through_ram $haddr_q $temp_rams $head_d $report_dir $sf
+# emit_query hread_addr_to_tail_through_ram $haddr_q $temp_rams $tail_d $report_dir $sf
+# emit_query raw_capture_to_head $raw_q {} $head_d $report_dir $sf
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -to_pins  -max_paths 5 -nworst 1 -delay_type max -sort_by slack.
+# emit_query raw_capture_to_tail $raw_q {} $tail_d $report_dir $sf
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -to_pins  -max_paths 5 -nworst 1 -delay_type max -sort_by slack.
+# emit_query pending_through_ram_to_raw_capture $pending_q $temp_rams $raw_d $report_dir $sf
+# emit_query run_through_ram_to_raw_capture $run_q $temp_rams $raw_d $report_dir $sf
+# emit_query stage_through_ram_to_raw_capture $stage_q $temp_rams $raw_d $report_dir $sf
+# close $sf
+# close_design
+# puts "HREAD_RAW_CAPTURE_TARGETED_STA_DONE"
+HREAD_RAW_CAPTURE_TARGETED_STA_DONE
+# exit
+INFO: [Common 17-206] Exiting Vivado at Mon Oct  5 19:51:16 2026...
