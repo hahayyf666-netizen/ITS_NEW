@@ -1,0 +1,531 @@
+{
+  "schema": "step12f.coverage.modelsim_run.v1",
+  "status": "PASS",
+  "simulator": "ModelSim SE-64 2020.4",
+  "simulator_path": "D:\\software\\Modelsim\\win64\\vsim.exe",
+  "license_path": "D:\\software\\Modelsim\\LICENSE.TXT",
+  "work_root": "C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f",
+  "source_hashes": {
+    "its_simple_ram": "DD842C57DEABDF3AD3C75DC038A70CBB871E2D3B725D3108597B58846947845D",
+    "its_input_cache_bank": "2476D5FBC1D3663515137F8768EC7F16A689B3150E4527D78B5743DF3E7A05D7",
+    "unified_p4_kernel": "AB79E6AF55F42E76B9B56E86C628E57A93F477E40DDF21F7298DDB25D4541064",
+    "bounded_lfnst_engine": "560408512493C838A7F40D4D4EF8E5D1594FFD63F4E0A247E56473C225D9BF78",
+    "bounded_lfnst_engine_tb": "EC7BF615953BE5752D30404A6316D845952E3913826600E33254051C161B4907",
+    "lfnst_vector_generator": "ADD837D074661444078A1342F0C614BD01CFBDB08B983AC706DA9002B246EB55",
+    "lfnst_wrapper_vector_generator": "05250C34586CB0DD1425F7ED6253BD7273A51CA42604552BBA3BFAF9F3CBC243",
+    "unified_its_wrapper": "6E13F9035DE7ABB7C9F56DDDA94EE8E8DC33AE28E181D8E3521FD78F106B3340",
+    "its_unified_submission_top": "39CAF8E3BBA2992FFAD8C2407F9AD10341E2AA8C03EA0A07F5C0A0E6744436D1",
+    "gate_b_tb": "85A466EC07F195D5C1788A30A400957C237174BA77A3B9705DE520031CC3E198",
+    "gate_b_throughput_tb": "793C6997C499ED40A91A8B9986BBA12958DDB967D06E550DA5CC204457CEEDD6",
+    "gate_f_throughput_tb": "E9CFBFF26BA6003017C5C69FB2ED563CB0448BB509759DA86E716023B274D180",
+    "gate_c_smoke_tb": "37E4D5D62AA4A9DFB592D763338D58FD33E419FC3337427F5A4BD85F46E0E2C9",
+    "p3_vwrite_tb": "66ABDAD10AB9370CA50574A35A7567905CA89A771CD3D7F631C318A7592EA643",
+    "p4_stage0_tb": "1D7FA2BC9B4C7936D508CB79B30E97A7A6DEF7A267A8C9DA029C6A88B7036722",
+    "p4_fifo_payload_reset_tb": "04268398C3637DB038D5DD6A9EE85876211BF331BE562635BCA81E337EA6157C",
+    "gate_c_numeric_tb": "058A530E8C17ACBA2A453A676A6CBE92BC7B3463C68B38245F2ADF279B636514",
+    "sat10_adapter_tb": "F71E276160F07BC7E610BDEB3D1B175C901FEF32420DE24D443E3AE10114A082",
+    "sat10_wrapper_tb": "FE308E126DC329540F9F64A97E1BF994B9F3C5897C58EA5500D7748C972C2B8C",
+    "hread_raw_capture_tb": "7089BD5DCCF547E37E3730944E8590B92CD13A198CC777F99373B1BDED256382",
+    "primary_v_return_tb": "EFCCF4AB050E1C6A123906463F76FD774340968A3AB346A223D9911FECC81A04",
+    "sat10_submission_top_tb": "BDFE7C57B05CA37350C5B4698EACBC53E510A0EEE117BE6A98B4FC00A1173A54"
+  },
+  "vector_sets": {
+    "gate_b": {
+      "cases": 156,
+      "one_d_modes": 13,
+      "stages": 2,
+      "patterns_per_stage": 6,
+      "throughput_modes_legacy": 7,
+      "throughput_modes_full": 13
+    },
+    "gate_c": {
+      "cases": 369,
+      "beats": 45636,
+      "tuple_source": "05_audit/current/27/step12d_engineering/LEGAL_TRANSFORM_MATRIX.json",
+      "includes_lfnst": true,
+      "includes_rectangles": true,
+      "sparse_inputs": true,
+      "output_adapter": "SAT10",
+      "backpressure": true
+    },
+    "lfnst_specialty": {
+      "engine_cases": 1088,
+      "engine_basis_cases": 1024,
+      "wrapper_cases": 388,
+      "wrapper_beats": 6724,
+      "all_gather_terms": true,
+      "all_set_index": true
+    }
+  },
+  "runs": [
+    {
+      "mode": "normal",
+      "compile": "PASS",
+      "gate_b_kernel_numeric": "PASS_156_CASES",
+      "gate_b_vector_ii_legacy": "PASS_7_MODES",
+      "gate_f_vector_ii": "PASS_13_MODES",
+      "gate_c_wrapper_smoke": "PASS",
+      "p3_vwrite_contract": "PASS",
+      "p4_stage0_issue_contract": "PASS_16_N4_VECTORS_SLOT_RELEASE",
+      "p4_fifo_payload_reset": "PASS_INFLIGHT_AND_QUEUED_RESET_NO_STALE_OUTPUT",
+      "gate_c_wrapper_numeric": "PASS_369_CASES",
+      "sat10_adapter_exhaustive": "PASS_65536_VALUES",
+      "sat10_wrapper_boundary": "PASS_5_CASES_24_BEATS_LFNST_GRID_REINIT",
+      "hread_raw_capture": "PASS_ORDERED_PAYLOAD_METADATA_AND_REAL_STALL",
+      "primary_v_return_credit": "PASS_DEPTH_4_REAL_STALL_ORDERED_64_BEATS_REQUEST_II1",
+      "sat10_submission_top": "PASS_2_TUS_8_BEATS_MIN_8_REAL_PENDING_STALL_CYCLES",
+      "lfnst_engine_specialty": "PASS_1088_CASES",
+      "lfnst_wrapper_specialty": "PASS_388_CASES",
+      "gate_c_beats": 45636,
+      "logs": [
+        {
+          "name": "compile.log",
+          "sha256": "E38FC913AE8C98DF87DF01942C0174C530BCA6374295766A80351CD090BF6AF2"
+        },
+        {
+          "name": "gate_b_kernel_numeric.log",
+          "sha256": "73A82A0AC027B3709A6BE0557BE90F4E3932824395E1EBC3AAF771F1BBA6F001"
+        },
+        {
+          "name": "gate_b_vector_ii.log",
+          "sha256": "E6709A52F4B240815FE2F04D6243DB93FE450D1198793022E7D59E3A5CACAB55"
+        },
+        {
+          "name": "gate_f_vector_ii.log",
+          "sha256": "B6468B6ABE6F677FF78002350180A742B4F0FDC690A3C0745C1A41BF414D98F5"
+        },
+        {
+          "name": "gate_c_wrapper_smoke.log",
+          "sha256": "172FB6B21ABA5520A8E5B8FCEAF109A51808DA208132B4B4FDB45831544896F4"
+        },
+        {
+          "name": "p3_vwrite_contract.log",
+          "sha256": "EC16F4C0D846C7E1AA9AA36FFE57F37ED943F7D03BB30327C4B0B0B8D5BADFC5"
+        },
+        {
+          "name": "p4_stage0_issue_contract.log",
+          "sha256": "C4FB36FA95710B50A2B8A4F2111EA637ABBCEBDBBB784A8194B378908D804758"
+        },
+        {
+          "name": "p4_fifo_payload_reset.log",
+          "sha256": "78A3CA69D9BF8A1ECD732B16C417477B4F45A298DBC7E52601D26F1E82794C95"
+        },
+        {
+          "name": "gate_c_wrapper_numeric.log",
+          "sha256": "6317BE4846E284AB63F0B50E1962689BB7559E13F57CB17B70D11253277D58B2"
+        },
+        {
+          "name": "sat10_adapter_exhaustive.log",
+          "sha256": "0753D2E7CEAF12B38AF0FB40338E784E3390820D24877BD6C2F97CF8D4942C9B"
+        },
+        {
+          "name": "sat10_wrapper_boundary.log",
+          "sha256": "87F902E2EBF5E1BDF12BC4E33B3E54345EA3E68BAC1DACD3A2FFD8C9D459F366"
+        },
+        {
+          "name": "hread_raw_capture.log",
+          "sha256": "1C62F25FEEFDB1CC66A997EA83A911135CC2A9AEF388414EE513EDC33BBB92E6"
+        },
+        {
+          "name": "primary_v_return_credit.log",
+          "sha256": "BE34B4EDAC152FDEA39BBB83AE170266B71567DC5D780F60B467C6F894C579EA"
+        },
+        {
+          "name": "sat10_submission_top.log",
+          "sha256": "05270E333D6732DDE8430477CB2410976E1DCF4396CA7F11061912C6C7E034CD"
+        },
+        {
+          "name": "lfnst_engine_specialty.log",
+          "sha256": "3CD60D43245DE4B1F12CC17F0B1F26505543437C6F5B6FE2AE7A5C2846FECCBE"
+        },
+        {
+          "name": "lfnst_wrapper_specialty.log",
+          "sha256": "31A4F02F3A9AD039819F62DAC25DF33AB11CE6756B5FC670631EE50D9113E47F"
+        }
+      ]
+    },
+    {
+      "mode": "synthesis",
+      "compile": "PASS",
+      "gate_b_kernel_numeric": "PASS_156_CASES",
+      "gate_b_vector_ii_legacy": "PASS_7_MODES",
+      "gate_f_vector_ii": "PASS_13_MODES",
+      "gate_c_wrapper_smoke": "PASS",
+      "p3_vwrite_contract": "PASS",
+      "p4_stage0_issue_contract": "PASS_16_N4_VECTORS_SLOT_RELEASE",
+      "p4_fifo_payload_reset": "PASS_INFLIGHT_AND_QUEUED_RESET_NO_STALE_OUTPUT",
+      "gate_c_wrapper_numeric": "PASS_369_CASES",
+      "sat10_adapter_exhaustive": "PASS_65536_VALUES",
+      "sat10_wrapper_boundary": "PASS_5_CASES_24_BEATS_LFNST_GRID_REINIT",
+      "hread_raw_capture": "PASS_ORDERED_PAYLOAD_METADATA_AND_REAL_STALL",
+      "primary_v_return_credit": "PASS_DEPTH_4_REAL_STALL_ORDERED_64_BEATS_REQUEST_II1",
+      "sat10_submission_top": "PASS_2_TUS_8_BEATS_MIN_8_REAL_PENDING_STALL_CYCLES",
+      "lfnst_engine_specialty": "PASS_1088_CASES",
+      "lfnst_wrapper_specialty": "PASS_388_CASES",
+      "gate_c_beats": 45636,
+      "logs": [
+        {
+          "name": "compile.log",
+          "sha256": "F43E4165B97EE9A91540C07D5580B11E72F169BFEC0C41F31547FCDD4591E3A0"
+        },
+        {
+          "name": "gate_b_kernel_numeric.log",
+          "sha256": "53603C838B397DF7962FFFCAD3920B2C2C84CF1FA3597251A5D5B5FF38C34760"
+        },
+        {
+          "name": "gate_b_vector_ii.log",
+          "sha256": "685611E6726F5C642389D14ED141E3FC337DB86502AD84B64F6F738E65418F26"
+        },
+        {
+          "name": "gate_f_vector_ii.log",
+          "sha256": "189A33F6DA2562AF399EABF82EC44CECD01DD32E172EE734AD42DDB0B2DC48AA"
+        },
+        {
+          "name": "gate_c_wrapper_smoke.log",
+          "sha256": "578C7833ED6E6146972678AA419FDA0648E3EE29B7102EF258A57277E793DB38"
+        },
+        {
+          "name": "p3_vwrite_contract.log",
+          "sha256": "C61B648286CAB4C0660577E0E76CF0C5D404352A614929E8F8D884C6A1EB6FDF"
+        },
+        {
+          "name": "p4_stage0_issue_contract.log",
+          "sha256": "78C740D2CA6D01467A3B8952A53B0A859207D84D57159AC7B8A5052265F27856"
+        },
+        {
+          "name": "p4_fifo_payload_reset.log",
+          "sha256": "5756D540EFFFB09F1BF1449BB5A2BD26E2F9C4DE101AD66BB2E839646AE4B9D1"
+        },
+        {
+          "name": "gate_c_wrapper_numeric.log",
+          "sha256": "BED907DAC1494A6C13CF1B4983A9CB39499FF4D65370D90038DEFA9415B1DD01"
+        },
+        {
+          "name": "sat10_adapter_exhaustive.log",
+          "sha256": "B06D7681D8821A3B7BFCF9E8772125F49E3A1D5F871EFBF2A5BDB8AC84550751"
+        },
+        {
+          "name": "sat10_wrapper_boundary.log",
+          "sha256": "348EE316BCA84BC3594AEF603DFA5E38A4EF29B25C20BE3639A2FC3C7C4AF25A"
+        },
+        {
+          "name": "hread_raw_capture.log",
+          "sha256": "F0E092DB36973C8BF163E7411C99D912C23D91B8D11C236ADFF8D6F38C3D3221"
+        },
+        {
+          "name": "primary_v_return_credit.log",
+          "sha256": "40F92434A37C4C65FC30AB7B92A6945742D4D3AF0603EE546DED3360A876E40F"
+        },
+        {
+          "name": "sat10_submission_top.log",
+          "sha256": "43236DF692239955F18DFBA15C456CA7D2DC8CD96E8E32D0726BE8D738819F56"
+        },
+        {
+          "name": "lfnst_engine_specialty.log",
+          "sha256": "9D82D32D01D4B032C3CAA095F888EDFB6790A71A7C8AE4BC07FF3123A09DE992"
+        },
+        {
+          "name": "lfnst_wrapper_specialty.log",
+          "sha256": "4DD3848EDB1B676CB1EB95288F6E620F4877AF7328625BDA877D10DE40DF617C"
+        }
+      ]
+    }
+  ],
+  "profile": {
+    "name": "contest_engineering_vtm10_sat10_v2",
+    "adapter": "SAT10",
+    "decision_class": "PROVISIONAL_ENGINEERING_DECISION",
+    "official_equivalence": "NOT_PROVEN",
+    "source": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\step12d_engineering\\profiles\\contest_engineering_vtm10_sat10_v2.json",
+    "sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746"
+  },
+  "tested_source_commit": "9b33d9f62de49f022765cd594704353edeaa352c",
+  "compile_records": [
+    {
+      "mode": "normal",
+      "command": "\"D:\\software\\Modelsim\\win64\\vlog.exe\" -sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\02_rtl\\rtl\\its_simple_ram.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\02_rtl\\rtl\\its_input_cache_bank.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\02_rtl\\rtl\\unified_p4_kernel.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\02_rtl\\rtl\\bounded_lfnst_engine.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\02_rtl\\rtl\\unified_its_wrapper.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\02_rtl\\rtl\\its_unified_submission_top.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_p4_kernel_numeric_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_p4_kernel_throughput_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_p4_kernel_throughput_full_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_wrapper_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_wrapper_p3_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_p4_kernel_p4_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_p4_fifo_payload_reset_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_wrapper_numeric_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_final_adapter_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_sat10_wrapper_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_hread_raw_capture_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_primary_v_return_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\its_unified_submission_top_sat10_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\bounded_lfnst_engine_tb.sv -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\compile.log",
+      "exit_code": 0,
+      "log": "compile.log",
+      "log_sha256": "E38FC913AE8C98DF87DF01942C0174C530BCA6374295766A80351CD090BF6AF2"
+    },
+    {
+      "mode": "synthesis",
+      "command": "\"D:\\software\\Modelsim\\win64\\vlog.exe\" -sv +define+SYNTHESIS C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\02_rtl\\rtl\\its_simple_ram.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\02_rtl\\rtl\\its_input_cache_bank.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\02_rtl\\rtl\\unified_p4_kernel.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\02_rtl\\rtl\\bounded_lfnst_engine.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\02_rtl\\rtl\\unified_its_wrapper.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\02_rtl\\rtl\\its_unified_submission_top.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_p4_kernel_numeric_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_p4_kernel_throughput_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_p4_kernel_throughput_full_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_wrapper_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_wrapper_p3_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_p4_kernel_p4_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_p4_fifo_payload_reset_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_wrapper_numeric_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_final_adapter_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_sat10_wrapper_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_hread_raw_capture_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\unified_its_primary_v_return_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\its_unified_submission_top_sat10_tb.sv C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\03_verification\\tb\\bounded_lfnst_engine_tb.sv -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\compile.log",
+      "exit_code": 0,
+      "log": "compile.log",
+      "log_sha256": "F43E4165B97EE9A91540C07D5580B11E72F169BFEC0C41F31547FCDD4591E3A0"
+    }
+  ],
+  "command_records": [
+    {
+      "mode": "normal",
+      "design": "unified_p4_kernel_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_numeric_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\gate_b_kernel_numeric.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_b_kernel_numeric.log",
+      "log_sha256": "73A82A0AC027B3709A6BE0557BE90F4E3932824395E1EBC3AAF771F1BBA6F001",
+      "pass_marker": "GATE_B_NUMERIC_TB_PASS cases=156"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_p4_kernel_throughput_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_throughput_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\gate_b_vector_ii.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_b_vector_ii.log",
+      "log_sha256": "E6709A52F4B240815FE2F04D6243DB93FE450D1198793022E7D59E3A5CACAB55",
+      "pass_marker": "GATE_B_VECTOR_II_TB_PASS modes=7"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_p4_kernel_throughput_full_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_throughput_full_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\gate_f_vector_ii.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_f_vector_ii.log",
+      "log_sha256": "B6468B6ABE6F677FF78002350180A742B4F0FDC690A3C0745C1A41BF414D98F5",
+      "pass_marker": "GATE_F_VECTOR_II_TB_PASS modes=13"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_wrapper_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\gate_c_wrapper_smoke.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_c_wrapper_smoke.log",
+      "log_sha256": "172FB6B21ABA5520A8E5B8FCEAF109A51808DA208132B4B4FDB45831544896F4",
+      "pass_marker": "GATE_C_WRAPPER_TB_PASS beats=16/16 done=1/1"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_wrapper_p3_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_p3_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\p3_vwrite_contract.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p3_vwrite_contract.log",
+      "log_sha256": "EC16F4C0D846C7E1AA9AA36FFE57F37ED943F7D03BB30327C4B0B0B8D5BADFC5",
+      "pass_marker": "P3_VWRITE_TB_PASS"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_p4_kernel_p4_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_p4_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\p4_stage0_issue_contract.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p4_stage0_issue_contract.log",
+      "log_sha256": "C4FB36FA95710B50A2B8A4F2111EA637ABBCEBDBBB784A8194B378908D804758",
+      "pass_marker": "GATE_F_P4_STAGE0_TB_PASS vectors=16 descriptors=16 captures=16 releases=16"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_p4_fifo_payload_reset_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_fifo_payload_reset_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\p4_fifo_payload_reset.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p4_fifo_payload_reset.log",
+      "log_sha256": "78A3CA69D9BF8A1ECD732B16C417477B4F45A298DBC7E52601D26F1E82794C95",
+      "pass_marker": "P4_FIFO_PAYLOAD_RESET_PASS inflight_reset=1 queued_nonzero_reset=1 stale_outputs=0"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_wrapper_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_numeric_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\gate_c_wrapper_numeric.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_c_wrapper_numeric.log",
+      "log_sha256": "6317BE4846E284AB63F0B50E1962689BB7559E13F57CB17B70D11253277D58B2",
+      "pass_marker": "GATE_C_NUMERIC_TB_PASS cases=369"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_final_adapter_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_final_adapter_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\sat10_adapter_exhaustive.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_adapter_exhaustive.log",
+      "log_sha256": "0753D2E7CEAF12B38AF0FB40338E784E3390820D24877BD6C2F97CF8D4942C9B",
+      "pass_marker": "SAT10_ADAPTER_EXHAUSTIVE_PASS values=65536"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_sat10_wrapper_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_sat10_wrapper_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\sat10_wrapper_boundary.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_wrapper_boundary.log",
+      "log_sha256": "87F902E2EBF5E1BDF12BC4E33B3E54345EA3E68BAC1DACD3A2FFD8C9D459F366",
+      "pass_marker": "SAT10_WRAPPER_BOUNDARY_PASS cases=5 beats=24 grid_init=2 stale_payload=1"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_hread_raw_capture_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_hread_raw_capture_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\hread_raw_capture.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "hread_raw_capture.log",
+      "log_sha256": "1C62F25FEEFDB1CC66A997EA83A911135CC2A9AEF388414EE513EDC33BBB92E6",
+      "pass_marker": "H_READ_RAW_CAPTURE_PASS"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_primary_v_return_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_primary_v_return_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\primary_v_return_credit.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "primary_v_return_credit.log",
+      "log_sha256": "BE34B4EDAC152FDEA39BBB83AE170266B71567DC5D780F60B467C6F894C579EA",
+      "pass_marker": "PRIMARY_V_RETURN_PASS outstanding_depth=4 real_stall_cycles=8 beats=64 done=1 request_ii_pairs=3"
+    },
+    {
+      "mode": "normal",
+      "design": "its_unified_submission_top_sat10_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.its_unified_submission_top_sat10_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\sat10_submission_top.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_submission_top.log",
+      "log_sha256": "05270E333D6732DDE8430477CB2410976E1DCF4396CA7F11061912C6C7E034CD",
+      "pass_marker": "SAT10_SUBMISSION_TOP_PASS tus=2 beats=8 done=2"
+    },
+    {
+      "mode": "normal",
+      "design": "bounded_lfnst_engine_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.bounded_lfnst_engine_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\lfnst_engine_specialty.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "lfnst_engine_specialty.log",
+      "log_sha256": "3CD60D43245DE4B1F12CC17F0B1F26505543437C6F5B6FE2AE7A5C2846FECCBE",
+      "pass_marker": "LFNST_ENGINE_TB_PASS cases=1088"
+    },
+    {
+      "mode": "normal",
+      "design": "unified_its_wrapper_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_numeric_tb -gVECTOR_FILE=lfnst_wrapper_vectors.txt -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\normal\\lfnst_wrapper_specialty.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "lfnst_wrapper_specialty.log",
+      "log_sha256": "31A4F02F3A9AD039819F62DAC25DF33AB11CE6756B5FC670631EE50D9113E47F",
+      "pass_marker": "GATE_C_NUMERIC_TB_PASS cases=388"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_kernel_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_numeric_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\gate_b_kernel_numeric.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_b_kernel_numeric.log",
+      "log_sha256": "53603C838B397DF7962FFFCAD3920B2C2C84CF1FA3597251A5D5B5FF38C34760",
+      "pass_marker": "GATE_B_NUMERIC_TB_PASS cases=156"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_kernel_throughput_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_throughput_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\gate_b_vector_ii.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_b_vector_ii.log",
+      "log_sha256": "685611E6726F5C642389D14ED141E3FC337DB86502AD84B64F6F738E65418F26",
+      "pass_marker": "GATE_B_VECTOR_II_TB_PASS modes=7"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_kernel_throughput_full_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_throughput_full_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\gate_f_vector_ii.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_f_vector_ii.log",
+      "log_sha256": "189A33F6DA2562AF399EABF82EC44CECD01DD32E172EE734AD42DDB0B2DC48AA",
+      "pass_marker": "GATE_F_VECTOR_II_TB_PASS modes=13"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_wrapper_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\gate_c_wrapper_smoke.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_c_wrapper_smoke.log",
+      "log_sha256": "578C7833ED6E6146972678AA419FDA0648E3EE29B7102EF258A57277E793DB38",
+      "pass_marker": "GATE_C_WRAPPER_TB_PASS beats=16/16 done=1/1"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_wrapper_p3_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_p3_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\p3_vwrite_contract.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p3_vwrite_contract.log",
+      "log_sha256": "C61B648286CAB4C0660577E0E76CF0C5D404352A614929E8F8D884C6A1EB6FDF",
+      "pass_marker": "P3_VWRITE_TB_PASS"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_kernel_p4_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_kernel_p4_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\p4_stage0_issue_contract.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p4_stage0_issue_contract.log",
+      "log_sha256": "78C740D2CA6D01467A3B8952A53B0A859207D84D57159AC7B8A5052265F27856",
+      "pass_marker": "GATE_F_P4_STAGE0_TB_PASS vectors=16 descriptors=16 captures=16 releases=16"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_p4_fifo_payload_reset_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_p4_fifo_payload_reset_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\p4_fifo_payload_reset.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "p4_fifo_payload_reset.log",
+      "log_sha256": "5756D540EFFFB09F1BF1449BB5A2BD26E2F9C4DE101AD66BB2E839646AE4B9D1",
+      "pass_marker": "P4_FIFO_PAYLOAD_RESET_PASS inflight_reset=1 queued_nonzero_reset=1 stale_outputs=0"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_wrapper_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_numeric_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\gate_c_wrapper_numeric.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "gate_c_wrapper_numeric.log",
+      "log_sha256": "BED907DAC1494A6C13CF1B4983A9CB39499FF4D65370D90038DEFA9415B1DD01",
+      "pass_marker": "GATE_C_NUMERIC_TB_PASS cases=369"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_final_adapter_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_final_adapter_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\sat10_adapter_exhaustive.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_adapter_exhaustive.log",
+      "log_sha256": "B06D7681D8821A3B7BFCF9E8772125F49E3A1D5F871EFBF2A5BDB8AC84550751",
+      "pass_marker": "SAT10_ADAPTER_EXHAUSTIVE_PASS values=65536"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_sat10_wrapper_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_sat10_wrapper_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\sat10_wrapper_boundary.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_wrapper_boundary.log",
+      "log_sha256": "348EE316BCA84BC3594AEF603DFA5E38A4EF29B25C20BE3639A2FC3C7C4AF25A",
+      "pass_marker": "SAT10_WRAPPER_BOUNDARY_PASS cases=5 beats=24 grid_init=2 stale_payload=1"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_hread_raw_capture_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_hread_raw_capture_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\hread_raw_capture.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "hread_raw_capture.log",
+      "log_sha256": "F0E092DB36973C8BF163E7411C99D912C23D91B8D11C236ADFF8D6F38C3D3221",
+      "pass_marker": "H_READ_RAW_CAPTURE_PASS"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_primary_v_return_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_primary_v_return_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\primary_v_return_credit.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "primary_v_return_credit.log",
+      "log_sha256": "40F92434A37C4C65FC30AB7B92A6945742D4D3AF0603EE546DED3360A876E40F",
+      "pass_marker": "PRIMARY_V_RETURN_PASS outstanding_depth=4 real_stall_cycles=8 beats=64 done=1 request_ii_pairs=3"
+    },
+    {
+      "mode": "synthesis",
+      "design": "its_unified_submission_top_sat10_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.its_unified_submission_top_sat10_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\sat10_submission_top.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "sat10_submission_top.log",
+      "log_sha256": "43236DF692239955F18DFBA15C456CA7D2DC8CD96E8E32D0726BE8D738819F56",
+      "pass_marker": "SAT10_SUBMISSION_TOP_PASS tus=2 beats=8 done=2"
+    },
+    {
+      "mode": "synthesis",
+      "design": "bounded_lfnst_engine_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.bounded_lfnst_engine_tb -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\lfnst_engine_specialty.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "lfnst_engine_specialty.log",
+      "log_sha256": "9D82D32D01D4B032C3CAA095F888EDFB6790A71A7C8AE4BC07FF3123A09DE992",
+      "pass_marker": "LFNST_ENGINE_TB_PASS cases=1088"
+    },
+    {
+      "mode": "synthesis",
+      "design": "unified_its_wrapper_numeric_tb",
+      "command": "\"D:\\software\\Modelsim\\win64\\vsim.exe\" -c work.unified_its_wrapper_numeric_tb -gVECTOR_FILE=lfnst_wrapper_vectors.txt -l C:\\Users\\Fine\\AppData\\Local\\Temp\\p9_primary_v_return_frozen_9b33d9f\\synthesis\\lfnst_wrapper_specialty.log -do \"run -all; quit -f\"",
+      "exit_code": 0,
+      "log": "lfnst_wrapper_specialty.log",
+      "log_sha256": "4DD3848EDB1B676CB1EB95288F6E620F4877AF7328625BDA877D10DE40DF617C",
+      "pass_marker": "GATE_C_NUMERIC_TB_PASS cases=388"
+    }
+  ]
+}
