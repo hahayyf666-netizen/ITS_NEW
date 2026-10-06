@@ -1,0 +1,335 @@
+{
+  "status": "FINAL_RELEASE_REVIEW_PASS",
+  "reviewed_evidence_commit": "70153eb14d62801531386af35075c770e1bf51f4",
+  "reviewed_head": "751f5b666b3b2742ab8626a93ced52a131a17d14",
+  "tested_source_commit": "cb65bbf1cc2dc9e5e649b2fe8b8affc67435c5a7",
+  "DUT_functional_source_commit": "9b33d9f62de49f022765cd594704353edeaa352c",
+  "profile": "contest_engineering_vtm10_sat10_v2",
+  "profile_sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746",
+  "source_zip_sha256": "46C55BFFA62A67CDD664FC9C68E210E3FCA1FC3B80093A4A81CEE0C9A19B461F",
+  "review_method": "Fresh source and raw-artifact review; no new simulator or implementation run",
+  "checks": [
+    {
+      "name": "tested_source_preserved",
+      "status": "PASS",
+      "details": {
+        "tested_source_commit": "cb65bbf1cc2dc9e5e649b2fe8b8affc67435c5a7",
+        "reviewed_head": "751f5b666b3b2742ab8626a93ced52a131a17d14",
+        "changed_source_paths": []
+      }
+    },
+    {
+      "name": "physical_dut_preserved",
+      "status": "PASS",
+      "details": {
+        "dut_source_commit": "9b33d9f62de49f022765cd594704353edeaa352c",
+        "changed_paths": []
+      }
+    },
+    {
+      "name": "checkpoint_stages",
+      "status": "PASS",
+      "details": [
+        {
+          "command": "python C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_delivery_packages\\download_cb65bbf\\source\\03_verification\\step12d_engineering\\validate_sat10_profile.py --profile contest_engineering_vtm10_sat10_v2 --evidence-dir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\05_audit\\current\\101_final_submission_20261006\\01_profile",
+          "exit_code": 0,
+          "stage": "01_profile"
+        },
+        {
+          "command": "python C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_delivery_packages\\download_cb65bbf\\source\\03_verification\\step12d_engineering\\validate_gate_a.py --profile contest_engineering_vtm10_sat10_v2 --evidence-dir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\05_audit\\current\\101_final_submission_20261006\\02_gate_a",
+          "exit_code": 0,
+          "stage": "02_gate_a"
+        },
+        {
+          "command": "python C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_delivery_packages\\download_cb65bbf\\source\\03_verification\\step12d_engineering\\run_vtm_engineering_oracle.py --profile contest_engineering_vtm10_sat10_v2 --evidence-dir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\05_audit\\current\\101_final_submission_20261006\\03_oracle",
+          "exit_code": 0,
+          "stage": "03_oracle"
+        },
+        {
+          "command": "python C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_delivery_packages\\download_cb65bbf\\source\\03_verification\\step12d_engineering\\validate_gate_c_model.py --profile contest_engineering_vtm10_sat10_v2 --evidence-dir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\05_audit\\current\\101_final_submission_20261006\\04_gate_c",
+          "exit_code": 0,
+          "stage": "04_gate_c"
+        },
+        {
+          "command": "C:\\Users\\Fine\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe -NoProfile -File C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_delivery_packages\\download_cb65bbf\\source\\03_verification\\step12d_engineering\\run_step12f_coverage_modelsim.ps1 -WorkRoot C:\\Users\\Fine\\AppData\\Local\\Temp\\final_submission_sim_e78cd5f5bf00462a9831b1b8d1296a5a -EvidenceDir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\05_audit\\current\\101_final_submission_20261006\\05_modelsims -ProfileName contest_engineering_vtm10_sat10_v2",
+          "exit_code": 0,
+          "stage": "05_modelsims"
+        }
+      ]
+    },
+    {
+      "name": "frozen_sat10_profile",
+      "status": "PASS",
+      "details": {
+        "canonical_sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746"
+      }
+    },
+    {
+      "name": "archive_identity",
+      "status": "PASS",
+      "details": {
+        "sha256": "46C55BFFA62A67CDD664FC9C68E210E3FCA1FC3B80093A4A81CEE0C9A19B461F",
+        "tested_source_commit": "cb65bbf1cc2dc9e5e649b2fe8b8affc67435c5a7",
+        "top": "its_unified_submission_top"
+      }
+    },
+    {
+      "name": "complete_archive_inventory",
+      "status": "PASS",
+      "details": {
+        "files": 3286,
+        "all_match_tested_git_contents": true,
+        "git_archive_eol_only_differences": 3264,
+        "failures": []
+      }
+    },
+    {
+      "name": "published_evidence_hashes",
+      "status": "PASS",
+      "details": {
+        "files": 68,
+        "failures": []
+      }
+    },
+    {
+      "name": "actual_execution_logs",
+      "status": "PASS",
+      "details": {
+        "simulations": 36,
+        "compiles": 2,
+        "failures": []
+      }
+    },
+    {
+      "name": "normal_synthesis_gates",
+      "status": "PASS",
+      "details": {
+        "gate_b_kernel_numeric": "PASS_156_CASES",
+        "gate_f_vector_ii": "PASS_13_MODES",
+        "submission_top_full_gate_c": "PASS_369_CASES_45636_BEATS",
+        "submission_top_lfnst_specialty": "PASS_388_CASES_6724_BEATS",
+        "submission_top_protocol": "PASS_END_MARKERS_RESET_INPUT_GAPS_ILLEGAL_STICKY",
+        "sat10_adapter_exhaustive": "PASS_65536_VALUES",
+        "lfnst_engine_specialty": "PASS_1088_CASES",
+        "p4_stage0_issue_contract": "PASS_16_N4_VECTORS_SLOT_RELEASE"
+      }
+    },
+    {
+      "name": "explicit_submission_entry",
+      "status": "PASS",
+      "details": {
+        "module": "its_unified_submission_top",
+        "adapter": "SAT10",
+        "legacy_top_compiled": false
+      }
+    },
+    {
+      "name": "wrong_profile_rejected",
+      "status": "PASS",
+      "details": {
+        "tested_source_commit": "cb65bbf1cc2dc9e5e649b2fe8b8affc67435c5a7",
+        "status": "PASS_REJECTED_BEFORE_MODELSIM",
+        "profile": "contest_engineering_vtm10_v1",
+        "expected_exit": "NONZERO",
+        "actual_exit": 1,
+        "log": "06_profile_negative/command.log",
+        "unexpected_evidence_created": false
+      }
+    },
+    {
+      "name": "two_fresh_physical_runs",
+      "status": "PASS",
+      "details": {
+        "runs": [
+          {
+            "authority": "05_audit/current/99_p9_primary_v_return_20261005/P9_PRIMARY_V_RETURN_PHYSICAL_MANIFEST.json",
+            "raw_reports_match": true,
+            "pass": true,
+            "timing": {
+              "setup_wns_ns": 0.001,
+              "setup_tns_ns": 0.0,
+              "setup_failing_endpoints": 0,
+              "hold_whs_ns": 0.011,
+              "hold_ths_ns": 0.0,
+              "hold_failing_endpoints": 0,
+              "pulse_width_wns_ns": 0.468,
+              "unconstrained_internal_endpoints": 0,
+              "valid_timing_exceptions": 0,
+              "registered_neighbor_one_run": "PASS",
+              "repeatability": "NOT_QUALIFIED",
+              "package_signoff": "NOT_EVALUATED"
+            },
+            "pid": null
+          },
+          {
+            "authority": "05_audit/current/100_p9_primary_v_replay_20261006/P9_PRIMARY_V_REPLAY_MANIFEST.json",
+            "raw_reports_match": true,
+            "pass": true,
+            "timing": {
+              "setup_wns_ns": 0.001,
+              "setup_tns_ns": 0,
+              "setup_failing_endpoints": 0,
+              "hold_whs_ns": 0.011,
+              "hold_ths_ns": 0,
+              "hold_failing_endpoints": 0,
+              "pulse_width_wns_ns": 0.468,
+              "unconstrained_internal_endpoints": 0,
+              "valid_timing_exceptions": 0,
+              "registered_neighbor_one_run": "PASS",
+              "repeatability": "PASS_TWO_INDEPENDENT_FRESH_RUNS_SAME_FROZEN_FLOW",
+              "package_signoff": "NOT_EVALUATED",
+              "margin_qualification": "NOT_QUALIFIED_1PS_NOMINAL_SETUP_MARGIN",
+              "boundary_setup_ns": {
+                "source_to_dut": 0.156,
+                "dut_internal": 0.008,
+                "dut_to_sink": 0.001
+              },
+              "reset": {
+                "async_endpoint_pins": 5137,
+                "recovery_worst_ns": 0.053,
+                "removal_worst_ns": 0.152,
+                "external_reset_arrival": "NOT_MODELED_NO_INPUT_DELAY_RST_N",
+                "package_reset_signoff": "NOT_EVALUATED"
+              }
+            },
+            "pid": 28680
+          }
+        ],
+        "source_hash_failures": [],
+        "source_identities": [
+          {
+            "run": "99_p9_primary_v_return_20261005",
+            "path": "02_rtl/rtl/unified_its_wrapper.sv",
+            "actual_commit_git_blob": "99e04024abf30d9b2ff9622a6d0ed83e718c106f",
+            "working_tree_sha256": "6E13F9035DE7ABB7C9F56DDDA94EE8E8DC33AE28E181D8E3521FD78F106B3340",
+            "historical_git_blob_field": "767a17db2daedcb2814de55a905f9fc57692de4d",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          },
+          {
+            "run": "99_p9_primary_v_return_20261005",
+            "path": "03_verification/vivado/run_step12f_registered_neighbor.tcl",
+            "actual_commit_git_blob": "c9df8f010ba5783d0fd95bbc926311c92475b37a",
+            "working_tree_sha256": "742A051FAD434562FF1F7606A1EE16736B3B300C775FD85064BF99370DF4D264",
+            "historical_git_blob_field": "d4e81c189b7dbe4b60a700ac7cf3b796923997c7",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          },
+          {
+            "run": "99_p9_primary_v_return_20261005",
+            "path": "03_verification/vivado/step12f_registered_neighbor_2ns.xdc",
+            "actual_commit_git_blob": "e5565c9b7b6c99b875c55a136517e7c267450ceb",
+            "working_tree_sha256": "346E4D1BAA867FD7F16E8474FC3E903B3616633450F487AB168383BAE38A3786",
+            "historical_git_blob_field": "054bac0ac87848286ccb2f38dc82f1e6ddb9c801",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          },
+          {
+            "run": "99_p9_primary_v_return_20261005",
+            "path": "03_verification/vivado/report_p9_primary_v_return_routed.tcl",
+            "actual_commit_git_blob": "0cdfb9d92366aebbfbf4f6157ab06ddaa46c2916",
+            "working_tree_sha256": "5C04D386B62CC0FFA32DDCD9D6A8AA6FA0F405F73E7BCCD0EC4383D1673DB050",
+            "historical_git_blob_field": "0cdfb9d92366aebbfbf4f6157ab06ddaa46c2916",
+            "historical_field_class": "COMMIT_GIT_BLOB"
+          },
+          {
+            "run": "99_p9_primary_v_return_20261005",
+            "path": "03_verification/vivado/run_step12f_registered_neighbor.ps1",
+            "actual_commit_git_blob": "5f97848705910a99522d47a0e95c82df70206d99",
+            "working_tree_sha256": "1DFD6B6F3C9F7FC7F636E79B23352F6339D06E7DD4904DF8825DDB2697123C60",
+            "historical_git_blob_field": "ba98b6e4020a597bda89265b47dd5dd9bad7b6e2",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          },
+          {
+            "run": "99_p9_primary_v_return_20261005",
+            "path": "02_rtl/rtl/step12f_registered_neighbor_harness.sv",
+            "actual_commit_git_blob": "a6cdfb5d2e22893e8f4b7c963441898fb9c13c2e",
+            "working_tree_sha256": "BB6BEE87957E2E399461184AEE0F054B2EF070F51426605719025623D67806A3",
+            "historical_git_blob_field": "01e7dfc5a8212c7a3d5caff7abf74547f23ad578",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          },
+          {
+            "run": "99_p9_primary_v_return_20261005",
+            "path": "02_rtl/rtl/unified_p4_kernel.sv",
+            "actual_commit_git_blob": "18a7ba56d00f83c32800d94059715b045c46517c",
+            "working_tree_sha256": "AB79E6AF55F42E76B9B56E86C628E57A93F477E40DDF21F7298DDB25D4541064",
+            "historical_git_blob_field": "ef32b45183658489ac02426526690097ea997cee",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          },
+          {
+            "run": "99_p9_primary_v_return_20261005",
+            "path": "03_verification/step12d_engineering/profiles/contest_engineering_vtm10_sat10_v2.json",
+            "actual_commit_git_blob": "073379a3a10e93130bd4ad6f5ad94920c476e683",
+            "working_tree_sha256": "AD11CA8EB0FDE362079EAB10312C48B33F4A2EC5684D0296521B60E59665CA2C",
+            "historical_git_blob_field": "49d49a0f57b1afe22f7e823c7910711a3053e38f",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          },
+          {
+            "run": "100_p9_primary_v_replay_20261006",
+            "path": "02_rtl/rtl/unified_its_wrapper.sv",
+            "actual_commit_git_blob": "99e04024abf30d9b2ff9622a6d0ed83e718c106f",
+            "working_tree_sha256": "6E13F9035DE7ABB7C9F56DDDA94EE8E8DC33AE28E181D8E3521FD78F106B3340",
+            "historical_git_blob_field": "767a17db2daedcb2814de55a905f9fc57692de4d",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          },
+          {
+            "run": "100_p9_primary_v_replay_20261006",
+            "path": "03_verification/vivado/run_step12f_registered_neighbor.tcl",
+            "actual_commit_git_blob": "c9df8f010ba5783d0fd95bbc926311c92475b37a",
+            "working_tree_sha256": "742A051FAD434562FF1F7606A1EE16736B3B300C775FD85064BF99370DF4D264",
+            "historical_git_blob_field": "d4e81c189b7dbe4b60a700ac7cf3b796923997c7",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          },
+          {
+            "run": "100_p9_primary_v_replay_20261006",
+            "path": "03_verification/vivado/step12f_registered_neighbor_2ns.xdc",
+            "actual_commit_git_blob": "e5565c9b7b6c99b875c55a136517e7c267450ceb",
+            "working_tree_sha256": "346E4D1BAA867FD7F16E8474FC3E903B3616633450F487AB168383BAE38A3786",
+            "historical_git_blob_field": "054bac0ac87848286ccb2f38dc82f1e6ddb9c801",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          },
+          {
+            "run": "100_p9_primary_v_replay_20261006",
+            "path": "03_verification/vivado/report_p9_primary_v_return_routed.tcl",
+            "actual_commit_git_blob": "0cdfb9d92366aebbfbf4f6157ab06ddaa46c2916",
+            "working_tree_sha256": "5C04D386B62CC0FFA32DDCD9D6A8AA6FA0F405F73E7BCCD0EC4383D1673DB050",
+            "historical_git_blob_field": "0cdfb9d92366aebbfbf4f6157ab06ddaa46c2916",
+            "historical_field_class": "COMMIT_GIT_BLOB"
+          },
+          {
+            "run": "100_p9_primary_v_replay_20261006",
+            "path": "03_verification/vivado/run_step12f_registered_neighbor.ps1",
+            "actual_commit_git_blob": "5f97848705910a99522d47a0e95c82df70206d99",
+            "working_tree_sha256": "1DFD6B6F3C9F7FC7F636E79B23352F6339D06E7DD4904DF8825DDB2697123C60",
+            "historical_git_blob_field": "ba98b6e4020a597bda89265b47dd5dd9bad7b6e2",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          },
+          {
+            "run": "100_p9_primary_v_replay_20261006",
+            "path": "02_rtl/rtl/step12f_registered_neighbor_harness.sv",
+            "actual_commit_git_blob": "a6cdfb5d2e22893e8f4b7c963441898fb9c13c2e",
+            "working_tree_sha256": "BB6BEE87957E2E399461184AEE0F054B2EF070F51426605719025623D67806A3",
+            "historical_git_blob_field": "01e7dfc5a8212c7a3d5caff7abf74547f23ad578",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          },
+          {
+            "run": "100_p9_primary_v_replay_20261006",
+            "path": "02_rtl/rtl/unified_p4_kernel.sv",
+            "actual_commit_git_blob": "18a7ba56d00f83c32800d94059715b045c46517c",
+            "working_tree_sha256": "AB79E6AF55F42E76B9B56E86C628E57A93F477E40DDF21F7298DDB25D4541064",
+            "historical_git_blob_field": "ef32b45183658489ac02426526690097ea997cee",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          },
+          {
+            "run": "100_p9_primary_v_replay_20261006",
+            "path": "03_verification/step12d_engineering/profiles/contest_engineering_vtm10_sat10_v2.json",
+            "actual_commit_git_blob": "073379a3a10e93130bd4ad6f5ad94920c476e683",
+            "working_tree_sha256": "AD11CA8EB0FDE362079EAB10312C48B33F4A2EC5684D0296521B60E59665CA2C",
+            "historical_git_blob_field": "49d49a0f57b1afe22f7e823c7910711a3053e38f",
+            "historical_field_class": "LF_NORMALIZED_GIT_OBJECT_HASH"
+          }
+        ]
+      }
+    }
+  ],
+  "official_equivalence": "NOT_PROVEN",
+  "package_timing": "NOT_EVALUATED",
+  "nominal_setup_margin_ns": 0.001
+}
