@@ -1,0 +1,129 @@
+#-----------------------------------------------------------
+# Vivado v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Oct  6 10:54:19 2026
+# Process ID         : 10828
+# Current directory  : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_hread_raw_capture/_p9_primary_v_return
+# Command line       : vivado.exe -mode batch -source 03_verification/vivado/report_p9_primary_v_return_routed.tcl -log C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\_p9_primary_v_return\05_audit\current\100_p9_primary_v_replay_20261006\supplemental_readonly\supplemental_vivado.log -journal C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\_p9_primary_v_return\05_audit\current\100_p9_primary_v_replay_20261006\supplemental_readonly\supplemental_vivado.jou
+# Log file           : C:/Users/Fine/Documents/Codex/2026-07-23/ni/_hread_raw_capture/_p9_primary_v_return/05_audit/current/100_p9_primary_v_replay_20261006/supplemental_readonly/supplemental_vivado.log
+# Journal file       : C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\_p9_primary_v_return\05_audit\current\100_p9_primary_v_replay_20261006\supplemental_readonly\supplemental_vivado.jou
+# Running On         : Finesse
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 26200
+# Processor Detail   : Intel(R) Core(TM) Ultra 5 225H
+# CPU Frequency      : 3686 MHz
+# CPU Physical cores : 14
+# CPU Logical cores  : 14
+# Host memory        : 16364 MB
+# Swap memory        : 31001 MB
+# Total Virtual      : 47366 MB
+# Available Virtual  : 22273 MB
+#-----------------------------------------------------------
+INFO: [Common 17-1239] XILINX_LOCAL_USER_DATA is set to 'C:\Users\Fine\AppData\Local\Temp\step12f_r5e_vivado_user'.
+source 03_verification/vivado/report_p9_primary_v_return_routed.tcl
+# if {![info exists ::env(P9_ROUTED_DCP)] || $::env(P9_ROUTED_DCP) eq ""} {
+#     error "P9_ROUTED_DCP must name the frozen routed checkpoint"
+# }
+# if {![info exists ::env(P9_REPORT_DIR)] || $::env(P9_REPORT_DIR) eq ""} {
+#     error "P9_REPORT_DIR must name a fresh evidence directory"
+# }
+# set_param general.maxThreads 4
+# file mkdir $::env(P9_REPORT_DIR)
+# open_checkpoint $::env(P9_ROUTED_DCP)
+Command: open_checkpoint {C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\_p9_primary_v_return\05_audit\current\100_p9_primary_v_replay_20261006\step12f_registered_neighbor_postroute.dcp}
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.035 . Memory (MB): peak = 352.215 ; gain = 5.945
+INFO: [Device 21-403] Loading part xcku5p-ffvb676-2-e
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.149 . Memory (MB): peak = 1701.898 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 3943 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 3 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2025.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Read ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.054 . Memory (MB): peak = 1734.477 ; gain = 4.367
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+INFO: [Designutils 20-5722] Start Reading Physical Databases.
+Reading placement.
+Read Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.055 . Memory (MB): peak = 2310.488 ; gain = 0.000
+Reading placer database...
+Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.022 . Memory (MB): peak = 2310.488 ; gain = 0.000
+Read PlaceDB: Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2372.113 ; gain = 61.625
+Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2372.113 ; gain = 0.000
+Reading routing.
+Read RouteStorage: Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 2804.062 ; gain = 431.949
+Read Physdb Files: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2804.062 ; gain = 493.574
+Restored from archive | CPU: 6.000000 secs | Memory: 0.000000 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 2804.062 ; gain = 493.574
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.016 . Memory (MB): peak = 2804.062 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1196 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 320 instances
+  IBUF => IBUF (IBUFCTRL, INBUF): 2 instances
+  RAM256X1D => RAM256X1D (MUXF7(x4), MUXF8(x2), RAMD64E(x8)): 32 instances
+  RAM64M => RAM64M (RAMD64E(x4)): 320 instances
+  RAM64M8 => RAM64M8 (RAMD64E(x8)): 521 instances
+  RAM64X1D => RAM64X1D (RAMD64E(x2)): 1 instance 
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2025.2 (64-bit) build 6299465
+open_checkpoint: Time (s): cpu = 00:00:38 ; elapsed = 00:00:34 . Memory (MB): peak = 2804.062 ; gain = 2466.742
+# puts "P9_READ_ONLY_DCP=$::env(P9_ROUTED_DCP)"
+P9_READ_ONLY_DCP=C:\Users\Fine\Documents\Codex\2026-07-23\ni\_hread_raw_capture\_p9_primary_v_return\05_audit\current\100_p9_primary_v_replay_20261006\step12f_registered_neighbor_postroute.dcp
+# puts "P9_VIVADO=[version -short]"
+P9_VIVADO=2025.2
+# puts "P9_MAX_THREADS=[get_param general.maxThreads]"
+P9_MAX_THREADS=4
+# set return_q [get_pins -hier -quiet -regexp {.*primary_return_data_q_reg.*/Q$}]
+# set ingress_q [get_pins -hier -quiet -regexp {.*ingress_data_q_reg.*/Q$}]
+# set ingress_d [get_pins -hier -quiet -regexp {.*ingress_data_q_reg.*/D$}]
+# set input_mem_d [get_pins -hier -quiet -regexp {.*input_mem_reg.*/D$}]
+# puts "P9_RETURN_FIFO_Q_COUNT=[llength $return_q]"
+P9_RETURN_FIFO_Q_COUNT=256
+# puts "P9_P4_INGRESS_Q_COUNT=[llength $ingress_q]"
+P9_P4_INGRESS_Q_COUNT=64
+# puts "P9_P4_INGRESS_D_COUNT=[llength $ingress_d]"
+P9_P4_INGRESS_D_COUNT=64
+# puts "P9_P4_INPUT_MEM_D_COUNT=[llength $input_mem_d]"
+P9_P4_INPUT_MEM_D_COUNT=4032
+# if {[llength $return_q] && [llength $ingress_d]} {
+#     report_timing -from $return_q -to $ingress_d -delay_type max \
+#         -max_paths 100 -file [file join $::env(P9_REPORT_DIR) \
+#         report_p9_return_fifo_to_p4_ingress.rpt]
+# } else {
+#     puts "P9_RETURN_FIFO_TO_INGRESS=NO_SOURCE_OR_DEST_OBJECT"
+# }
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -to_pins  -max_paths 100 -nworst 1 -delay_type max -sort_by slack.
+report_timing: Time (s): cpu = 00:00:24 ; elapsed = 00:00:10 . Memory (MB): peak = 2932.199 ; gain = 128.137
+# if {[llength $ingress_q] && [llength $input_mem_d]} {
+#     report_timing -from $ingress_q -to $input_mem_d -delay_type max \
+#         -max_paths 100 -file [file join $::env(P9_REPORT_DIR) \
+#         report_p9_p4_ingress_to_input_mem.rpt]
+# } else {
+#     puts "P9_INGRESS_TO_INPUT_MEM=NO_SOURCE_OR_DEST_OBJECT"
+# }
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+INFO: [Timing 38-78] ReportTimingParams: -from_pins  -to_pins  -max_paths 100 -nworst 1 -delay_type max -sort_by slack.
+# report_timing_summary -delay_type max -max_paths 100 \
+#     -file [file join $::env(P9_REPORT_DIR) report_p9_same_dcp_setup_summary.rpt]
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+# report_timing_summary -delay_type min -max_paths 100 \
+#     -file [file join $::env(P9_REPORT_DIR) report_p9_same_dcp_hold_summary.rpt]
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: min.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 4 CPUs
+# report_exceptions -file [file join $::env(P9_REPORT_DIR) \
+#     report_p9_same_dcp_exceptions.rpt]
+# check_timing -verbose -file [file join $::env(P9_REPORT_DIR) \
+#     report_p9_same_dcp_check_timing.rpt]
+# close_design
+# puts "P9_READ_ONLY_DIAGNOSTICS_DONE"
+P9_READ_ONLY_DIAGNOSTICS_DONE
+INFO: [Common 17-206] Exiting Vivado at Tue Oct  6 10:55:57 2026...
