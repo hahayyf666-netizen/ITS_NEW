@@ -1,0 +1,307 @@
+{
+  "status": "SUBMISSION_FUNCTIONAL_FREEZE_READY",
+  "tested_source_commit": "cb65bbf1cc2dc9e5e649b2fe8b8affc67435c5a7",
+  "package_snapshot_commit": "b2a61f9f48fe71e3d5ed588f7232486c33edd1be",
+  "builder_snapshot_commit": "5998e4c104d7b2a8c86f48ece8bca21725807241",
+  "package_sha256": "46C55BFFA62A67CDD664FC9C68E210E3FCA1FC3B80093A4A81CEE0C9A19B461F",
+  "profile": {
+    "name": "contest_engineering_vtm10_sat10_v2",
+    "adapter": "SAT10",
+    "decision_class": "PROVISIONAL_ENGINEERING_DECISION",
+    "official_equivalence": "NOT_PROVEN",
+    "source": "C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_delivery_packages\\download_cb65bbf\\source\\03_verification\\step12d_engineering\\profiles\\contest_engineering_vtm10_sat10_v2.json",
+    "sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746"
+  },
+  "stages": [
+    {
+      "command": "python C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_delivery_packages\\download_cb65bbf\\source\\03_verification\\step12d_engineering\\validate_sat10_profile.py --profile contest_engineering_vtm10_sat10_v2 --evidence-dir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\05_audit\\current\\101_final_submission_20261006\\01_profile",
+      "exit_code": 0,
+      "stage": "01_profile"
+    },
+    {
+      "command": "python C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_delivery_packages\\download_cb65bbf\\source\\03_verification\\step12d_engineering\\validate_gate_a.py --profile contest_engineering_vtm10_sat10_v2 --evidence-dir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\05_audit\\current\\101_final_submission_20261006\\02_gate_a",
+      "exit_code": 0,
+      "stage": "02_gate_a"
+    },
+    {
+      "command": "python C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_delivery_packages\\download_cb65bbf\\source\\03_verification\\step12d_engineering\\run_vtm_engineering_oracle.py --profile contest_engineering_vtm10_sat10_v2 --evidence-dir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\05_audit\\current\\101_final_submission_20261006\\03_oracle",
+      "exit_code": 0,
+      "stage": "03_oracle"
+    },
+    {
+      "command": "python C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_delivery_packages\\download_cb65bbf\\source\\03_verification\\step12d_engineering\\validate_gate_c_model.py --profile contest_engineering_vtm10_sat10_v2 --evidence-dir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\05_audit\\current\\101_final_submission_20261006\\04_gate_c",
+      "exit_code": 0,
+      "stage": "04_gate_c"
+    },
+    {
+      "command": "C:\\Users\\Fine\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe -NoProfile -File C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_delivery_packages\\download_cb65bbf\\source\\03_verification\\step12d_engineering\\run_step12f_coverage_modelsim.ps1 -WorkRoot C:\\Users\\Fine\\AppData\\Local\\Temp\\final_submission_sim_e78cd5f5bf00462a9831b1b8d1296a5a -EvidenceDir C:\\Users\\Fine\\Documents\\Codex\\2026-07-23\\ni\\_hread_raw_capture\\_p9_primary_v_return\\05_audit\\current\\101_final_submission_20261006\\05_modelsims -ProfileName contest_engineering_vtm10_sat10_v2",
+      "exit_code": 0,
+      "stage": "05_modelsims"
+    }
+  ],
+  "DUT_modified": false,
+  "official_equivalence": "NOT_PROVEN",
+  "physical": "INHERITED_TWO_RUN_REGISTERED_NEIGHBOR_PASS_NO_NEW_IMPLEMENTATION",
+  "artifacts": [
+    {
+      "sha256": "A363BFAA456AE01FB51306333799E693F827E1B55EA4C27570740ADFDE778FA5",
+      "path": "01_profile/command.log"
+    },
+    {
+      "sha256": "6516877C1AA91AF9A2AB2A71AC2397286E605BAA4033FCB18FD0ED866453D0D0",
+      "path": "01_profile/SAT10_PROFILE_VALIDATION.json"
+    },
+    {
+      "sha256": "F9CA1E4575F7F6AC9FAD8704381F80F1379EFE81ADD90EF8FCAFD45B4C7C1CB3",
+      "path": "02_gate_a/command.log"
+    },
+    {
+      "sha256": "F9CA1E4575F7F6AC9FAD8704381F80F1379EFE81ADD90EF8FCAFD45B4C7C1CB3",
+      "path": "02_gate_a/GATE_A_VALIDATION.json"
+    },
+    {
+      "sha256": "D95530153842B60029FB779DDA721CB3E3F244C291EEEF37DCBD548C6E76483C",
+      "path": "03_oracle/AMBIGUITY_IMPACT_AUDIT.json"
+    },
+    {
+      "sha256": "65502E0AF888B043B57E55D94DC733B5838639F006C222286096D599EF123A2F",
+      "path": "03_oracle/command.log"
+    },
+    {
+      "sha256": "C20FF3498693CFBCFD1EA09025CE286DE521E3E8C42D55AF8C0CB8190AB36D86",
+      "path": "03_oracle/VTM_PROFILE_ORACLE_RESULTS.json"
+    },
+    {
+      "sha256": "7C6F4EA4B66ECFAF15BC6606670F01F25FBF3D046FD6341E558F363FA74B3731",
+      "path": "04_gate_c/command.log"
+    },
+    {
+      "sha256": "CBA31E3206883C991CB26CAB96F4C20E1C71E4EE774C5DBFFE549D812D461D44",
+      "path": "04_gate_c/GATE_C_MODEL_VALIDATION.json"
+    },
+    {
+      "sha256": "68B023DFA1BAD9873FF8E440A3DF4557BB95066A8838C4E7050A1DC07AA42D9D",
+      "path": "05_modelsims/command.log"
+    },
+    {
+      "sha256": "E1FD5BEB97D2F9B5740C5E7597BA7885508E06215BDB5E8B67EA8781A7E10CE2",
+      "path": "05_modelsims/LFNST_ENGINE_VECTOR_MANIFEST.json"
+    },
+    {
+      "sha256": "07D7CE405A40439CB23F4E14A3795862D4B59D89607C8260BA274606998EB7F8",
+      "path": "05_modelsims/lfnst_engine_vectors.txt"
+    },
+    {
+      "sha256": "16CE6DEBE4904F22B673F75F634C14C515CB51284C5F89716766A1A99122A4FE",
+      "path": "05_modelsims/lfnst_layout_contract.log"
+    },
+    {
+      "sha256": "98D94211898407E3DC6C3DA870FEE6F54F838BD0B6BA83CA0229CBA3893EFBD9",
+      "path": "05_modelsims/LFNST_WRAPPER_VECTOR_MANIFEST.json"
+    },
+    {
+      "sha256": "7360C1B5622FC83F7399918BA0D7C5137289C88626B6EA06303A74D1075E92D6",
+      "path": "05_modelsims/lfnst_wrapper_vectors.txt"
+    },
+    {
+      "sha256": "E15A3A1DA96149BC865897FC2A92BD2889C6FDB995CDC93CD3D46D1A372D21B1",
+      "path": "05_modelsims/normal_compile.log"
+    },
+    {
+      "sha256": "A54B69917BD2B329D9F1673B8DD181471378E5384A98AC47FE735F73A3BDFDE6",
+      "path": "05_modelsims/normal_FULL_GATE_C_VECTOR_MANIFEST.json"
+    },
+    {
+      "sha256": "C8D7E680B282D993CBEB75E61806A75594F37C52E62C06A5FEDE934C2060D630",
+      "path": "05_modelsims/normal_gate_b_kernel_numeric.log"
+    },
+    {
+      "sha256": "B9D3548F32DA62E8865CD64F98DF7EA613AEBA0E43C828DF88987BE87BDA08D5",
+      "path": "05_modelsims/normal_gate_b_vector_ii.log"
+    },
+    {
+      "sha256": "1AF05DD624933425A817ADE0078073CB83F423ED5714F1098EC91D3D402689EF",
+      "path": "05_modelsims/normal_GATE_B_VECTOR_MANIFEST.json"
+    },
+    {
+      "sha256": "45069F3B15DB5FE2C928D531457EC5700546100E4B0997E7CF895AD32A1C05BB",
+      "path": "05_modelsims/normal_GATE_B_VECTORS.txt"
+    },
+    {
+      "sha256": "4408A62D7ABFA3FC57B4874E47F0E85A77921AB1A3794E50A8ACCF5466748025",
+      "path": "05_modelsims/normal_GATE_C_VECTORS.txt"
+    },
+    {
+      "sha256": "413F3D9ECD6C1D0C6B44A7C59443F3079DB6D4ED9A83546D4B7907F6968981B5",
+      "path": "05_modelsims/normal_gate_c_wrapper_numeric.log"
+    },
+    {
+      "sha256": "9EEFFB0CDD3804E658C30B9AF7B40636CC4F1965C510AB4E510D3C3EBF57120D",
+      "path": "05_modelsims/normal_gate_c_wrapper_smoke.log"
+    },
+    {
+      "sha256": "32098ED301E8BB4B7EA665855C16D13E779F14F132898198C265190A5F3433E0",
+      "path": "05_modelsims/normal_gate_f_vector_ii.log"
+    },
+    {
+      "sha256": "BE0B439A5B99E9E409726F38B2F354E853483D1555114259C47B8EE00F303E28",
+      "path": "05_modelsims/normal_hread_raw_capture.log"
+    },
+    {
+      "sha256": "29FE4CC9B3BE06AD22153AFD2413ABED1852FB7AF5B5B37F940742CF6B4B68B1",
+      "path": "05_modelsims/normal_lfnst_engine_specialty.log"
+    },
+    {
+      "sha256": "34613CB9FE8ADB7CA5272E1CC765E248B336319C8F37ACCB9D82F7E863E80FDC",
+      "path": "05_modelsims/normal_lfnst_wrapper_specialty.log"
+    },
+    {
+      "sha256": "BD7462ED784349FD4EE73ACCD7408AAB67B651C56C8BEE8DABC6A2F65B356170",
+      "path": "05_modelsims/normal_p3_vwrite_contract.log"
+    },
+    {
+      "sha256": "F284EE607CB20F862850C02E64B0E18A27427C677DBDE69DD37F438C7DE803B1",
+      "path": "05_modelsims/normal_p4_fifo_payload_reset.log"
+    },
+    {
+      "sha256": "C2930CCE86BC7AABA30E37A1C7F9E8E21A52E91F3D4C99652709563A1AA42040",
+      "path": "05_modelsims/normal_p4_stage0_issue_contract.log"
+    },
+    {
+      "sha256": "A42721CA6D7D2FC9AF14FC46B501C96D30584F02CDB673C706F4D61081F7A5B2",
+      "path": "05_modelsims/normal_primary_v_return_credit.log"
+    },
+    {
+      "sha256": "63010759EC0D7904D18EA35EED15DFF6E2F3174B65367BE81C3939F9BFFB35E5",
+      "path": "05_modelsims/normal_sat10_adapter_exhaustive.log"
+    },
+    {
+      "sha256": "F922B4368E11A6D3DE1309C9A6AB8963166772F6AFB72B26688AB4ACCFFCE6CA",
+      "path": "05_modelsims/normal_sat10_submission_top.log"
+    },
+    {
+      "sha256": "D79ABDBB1FE54D74FD65BC59687E0F82C1BE19CACD3D7337DBD56C9F6C5B72FF",
+      "path": "05_modelsims/normal_sat10_wrapper_boundary.log"
+    },
+    {
+      "sha256": "BED34FEC61AC2E21C975750A8790A5EE27F6A474BCF8892B860E0B24188532CB",
+      "path": "05_modelsims/normal_submission_top_full_gate_c.log"
+    },
+    {
+      "sha256": "5710F5F178EEC688D6AED664A5895FE0A43A364ECE8550D04114A122D9DAFCA8",
+      "path": "05_modelsims/normal_submission_top_lfnst_specialty.log"
+    },
+    {
+      "sha256": "CAD8C13530D86BDCD43C0B5FFBDA6ED1BB502D656874C7DAB1B3B2CCC5EF64CF",
+      "path": "05_modelsims/normal_submission_top_protocol.log"
+    },
+    {
+      "sha256": "7DB6A27D6B7631BD4FBCCF813F2EC2FE5814BB157582C2327DEC5E4969C5E16B",
+      "path": "05_modelsims/STEP12F_COVERAGE_MODELSIM_RUN.json"
+    },
+    {
+      "sha256": "7390AB3F8A157120C518671960B124752D2B799439A474FBA6C46D8797CD4665",
+      "path": "05_modelsims/synthesis_compile.log"
+    },
+    {
+      "sha256": "A54B69917BD2B329D9F1673B8DD181471378E5384A98AC47FE735F73A3BDFDE6",
+      "path": "05_modelsims/synthesis_FULL_GATE_C_VECTOR_MANIFEST.json"
+    },
+    {
+      "sha256": "2881F3C7F10602174EBE86B5DED4081F9525A58EF07148CED6E6CABCAF289071",
+      "path": "05_modelsims/synthesis_gate_b_kernel_numeric.log"
+    },
+    {
+      "sha256": "0FBBC77EFE3924A0F3832B97A63951D8DF49B5A1D759935DB957716A698D512F",
+      "path": "05_modelsims/synthesis_gate_b_vector_ii.log"
+    },
+    {
+      "sha256": "1AF05DD624933425A817ADE0078073CB83F423ED5714F1098EC91D3D402689EF",
+      "path": "05_modelsims/synthesis_GATE_B_VECTOR_MANIFEST.json"
+    },
+    {
+      "sha256": "45069F3B15DB5FE2C928D531457EC5700546100E4B0997E7CF895AD32A1C05BB",
+      "path": "05_modelsims/synthesis_GATE_B_VECTORS.txt"
+    },
+    {
+      "sha256": "4408A62D7ABFA3FC57B4874E47F0E85A77921AB1A3794E50A8ACCF5466748025",
+      "path": "05_modelsims/synthesis_GATE_C_VECTORS.txt"
+    },
+    {
+      "sha256": "BE4B03FB133967E7A4B2E4FC526D9B1CB962187B2944204776BBC75C1BE4E962",
+      "path": "05_modelsims/synthesis_gate_c_wrapper_numeric.log"
+    },
+    {
+      "sha256": "09107F020B4E2969397613175AF6345AA8F41A4B660DE92A12B37E7EC0459581",
+      "path": "05_modelsims/synthesis_gate_c_wrapper_smoke.log"
+    },
+    {
+      "sha256": "A90E35B044D107297896D8E9156D791CFEA7E31F33027FC73C618A0C9CB84CEE",
+      "path": "05_modelsims/synthesis_gate_f_vector_ii.log"
+    },
+    {
+      "sha256": "3CD1ADBA05D6EBA6B257CD198F3C66D19762C4ECAE4A7D1E5EC34273C0B4627C",
+      "path": "05_modelsims/synthesis_hread_raw_capture.log"
+    },
+    {
+      "sha256": "A673B504E50CC051AD467B4D5179AF46A16A352B528DB3E022599E9975B87C2E",
+      "path": "05_modelsims/synthesis_lfnst_engine_specialty.log"
+    },
+    {
+      "sha256": "AB8FC0CD4213DC6B8CFEFC86B728F4770182365546B6066C088B935B771E395E",
+      "path": "05_modelsims/synthesis_lfnst_wrapper_specialty.log"
+    },
+    {
+      "sha256": "F0859A6B32594AE2AF474B86B38CD3B9A5DD274A29ADC9097C9CCEED5F366BEA",
+      "path": "05_modelsims/synthesis_p3_vwrite_contract.log"
+    },
+    {
+      "sha256": "E4AEB2EA2BF90627F7793E73E5DB981B8448CC03C4A5EF5DC4D517CA4F62EBF5",
+      "path": "05_modelsims/synthesis_p4_fifo_payload_reset.log"
+    },
+    {
+      "sha256": "75B17B12733CA8A0E37B1C327FF0838AE49C7D58D8C70C31DCD4BFF9AA960B95",
+      "path": "05_modelsims/synthesis_p4_stage0_issue_contract.log"
+    },
+    {
+      "sha256": "DD1837918FBE20997E668436F6E9997A87E67173181EEEEF81F3A85C50F548A8",
+      "path": "05_modelsims/synthesis_primary_v_return_credit.log"
+    },
+    {
+      "sha256": "E93AD42B2017C9267B7D0C8BD6DBEFF594781AB2AE0980BF4AF8179F51EED031",
+      "path": "05_modelsims/synthesis_sat10_adapter_exhaustive.log"
+    },
+    {
+      "sha256": "0339D307E2DCD14731D33C40833B71731CAE9E1A1D91A982FE96EC8029AE812D",
+      "path": "05_modelsims/synthesis_sat10_submission_top.log"
+    },
+    {
+      "sha256": "D26E72CFF10B3D0060EF108AC7AFB8FC80C7B01CF27AC89915A18F601B2460EB",
+      "path": "05_modelsims/synthesis_sat10_wrapper_boundary.log"
+    },
+    {
+      "sha256": "BFECE2566B78A3A66669696F5EAF84FCB6BADA3E921FBF8B086C59CC8C6AAD97",
+      "path": "05_modelsims/synthesis_submission_top_full_gate_c.log"
+    },
+    {
+      "sha256": "916727135DD39953671888511B04D69659356E381DD379A3271FB03AD0A549F9",
+      "path": "05_modelsims/synthesis_submission_top_lfnst_specialty.log"
+    },
+    {
+      "sha256": "5A13B61FD6829AFD8BDE95BC1475593E3845E1F6BF3B4DF5E76EB74901DE29F9",
+      "path": "05_modelsims/synthesis_submission_top_protocol.log"
+    },
+    {
+      "sha256": "26414E7952E4B2EE69792FD320CE96C4534BE85D4BE81DA70C3A37E201DC2998",
+      "path": "06_profile_negative/command.log"
+    },
+    {
+      "sha256": "6A962851AD5EE6A69C836415F13807BB5356696CE9B58489A665EAEDEF2E31CE",
+      "path": "package/PACKAGE_MANIFEST.json"
+    },
+    {
+      "sha256": "46C55BFFA62A67CDD664FC9C68E210E3FCA1FC3B80093A4A81CEE0C9A19B461F",
+      "path": "package/source.zip"
+    }
+  ]
+}

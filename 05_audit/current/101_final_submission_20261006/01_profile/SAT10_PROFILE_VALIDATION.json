@@ -1,0 +1,29 @@
+{
+  "schema": "step12d_engineering.sat10_profile_validation.v1",
+  "status": "PASS_SAT10_PROFILE_INHERITS_V1_ARITHMETIC",
+  "profile_name": "contest_engineering_vtm10_sat10_v2",
+  "adapter_default": "SAT10",
+  "decision_class": "PROVISIONAL_ENGINEERING_DECISION",
+  "official_equivalence": "NOT_PROVEN",
+  "profile_path": "03_verification/step12d_engineering/profiles/contest_engineering_vtm10_sat10_v2.json",
+  "profile_sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746",
+  "historical_profile": "contest_engineering_vtm10_v1",
+  "tested_profile_sha256": "FEA3ACB18C5C35EB0FD8A8DBF533C3A6BE7536BCC8EF5FDB87135DF512643746",
+  "historical_profile_sha256": "466A795A158448B15F43B89F3014AF851D6D04694D3A2E251683754D25C59292",
+  "canonical_sha256": "D4C497CFBAE64096C69D640BAD154E4E3BAE1F5834F82149623A83028B81E9F6",
+  "arithmetic_inheritance": "PASS",
+  "final10": {
+    "default": "SAT10",
+    "range": [
+      -512,
+      511
+    ],
+    "formula": "Clip3(-512,511,wide_value)",
+    "alternate": {
+      "mode": "LOW10_TWOS_COMPLEMENT",
+      "formula": "bits = wide_value & 0x3ff; signed10 = bits if bits < 512 else bits - 1024"
+    }
+  },
+  "historical_hidden_golden_equivalence": "UNKNOWN",
+  "historical_low10_evidence_mutated": false
+}
