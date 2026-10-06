@@ -3,11 +3,22 @@ param([Parameter(Mandatory=$true)][string]$PackageManifest,
 $ErrorActionPreference='Stop'
 $repo=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
 $meta=Get-Content -LiteralPath $PackageManifest -Raw | ConvertFrom-Json
+# A downloaded archive has no .git directory. Source identity is the frozen
+# file inventory and authoritative commit, not the incidental local snapshot.
+foreach($f in $meta.files){if((Get-FileHash -LiteralPath (Join-Path $repo $f.path)).Hash -cne $f.sha256){throw "Package mutation: $($f.path)"}}
+if(-not (Test-Path -LiteralPath (Join-Path $repo '.git'))){
+ & git -C $repo init -q
+ & git -C $repo add -- .
+ & git -C $repo -c user.name=PackageSnapshot -c user.email=package@local commit -qm 'Immutable package snapshot'
+ if($LASTEXITCODE -ne 0){throw 'Downloaded package snapshot initialization failed'}
+}
+$snapshotCommit=(git -C $repo rev-parse HEAD).Trim()
+if($LASTEXITCODE -ne 0){throw 'Package snapshot unavailable'}
 if(Test-Path -LiteralPath $EvidenceDir){throw 'Evidence directory must be new'}
 New-Item -ItemType Directory -Path $EvidenceDir | Out-Null
 function Assert-Frozen {
  foreach($f in $meta.files){if((Get-FileHash -LiteralPath (Join-Path $repo $f.path)).Hash -cne $f.sha256){throw "Package mutation: $($f.path)"}}
- if((git -C $repo rev-parse HEAD).Trim() -cne $meta.package_snapshot_commit){throw 'Package snapshot changed'}
+ if((git -C $repo rev-parse HEAD).Trim() -cne $snapshotCommit){throw 'Package snapshot changed'}
 }
 $stages=@()
 try {
@@ -45,7 +56,7 @@ try {
  $stages+=@{stage='05_modelsims';command="$shell $($args -join ' ')";exit_code=$code}
  Assert-Frozen
  $out=[ordered]@{status='SUBMISSION_FUNCTIONAL_FREEZE_READY';tested_source_commit=$meta.tested_source_commit;
-  package_snapshot_commit=$meta.package_snapshot_commit;package_sha256=$meta.archive_sha256;
+  package_snapshot_commit=$snapshotCommit;builder_snapshot_commit=$meta.package_snapshot_commit;package_sha256=$meta.archive_sha256;
   profile=$result.profile;stages=$stages;DUT_modified=$false;official_equivalence='NOT_PROVEN';
   physical='INHERITED_TWO_RUN_REGISTERED_NEIGHBOR_PASS_NO_NEW_IMPLEMENTATION';
   artifacts=@(Get-ChildItem $EvidenceDir -File -Recurse | Sort-Object FullName | ForEach-Object {
@@ -58,3 +69,4 @@ try {
   ConvertTo-Json -Depth 8 | Set-Content (Join-Path $EvidenceDir 'FINAL_SUBMISSION_MANIFEST.json') -Encoding utf8
  throw
 }
+
