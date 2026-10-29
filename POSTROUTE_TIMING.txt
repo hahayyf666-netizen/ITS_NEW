@@ -1,0 +1,16 @@
+修复版时序复现
+
+所有流程使用相同2ns时钟、器件和原有约束，不改变RTL。
+最终通过与否以交付记录中的setup/hold和失败端点数量为准，工具执行完毕不等于时序通过。
+
+1. 先按README运行全新综合与布局布线：
+pwsh -File 03_verification/vivado/run_step12f_registered_neighbor.ps1 -EvidenceDir <fresh目录>
+
+2. 可从新生成的routed checkpoint执行路由后优化：
+pwsh -File 03_verification/vivado/run_full_spatial_postroute.ps1 -InputCheckpoint <fresh目录/step12f_registered_neighbor_postroute.dcp> -EvidenceDir <cleanup目录> -Mode Cleanup
+
+3. 对剩余的小幅违例，可执行至多两轮优化，保留hold合格的最佳checkpoint：
+pwsh -File 03_verification/vivado/run_full_spatial_postroute.ps1 -InputCheckpoint <cleanup目录/step12f_registered_neighbor_postroute.dcp> -EvidenceDir <refine目录> -Mode Refine
+
+每轮保留原始报告和checkpoint；输出目录必须是新目录。
+该过程属于寄存器边界下的名义500MHz时序核验，不包括封装I/O、外部复位到达或额外系统时钟余量。

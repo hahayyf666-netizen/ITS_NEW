@@ -1,0 +1,212 @@
+{
+  "date": "2026-10-29",
+  "status": "FUNCTIONAL_REPAIR_AND_500MHZ_PASS",
+  "upstream_baseline": "081efa63356be60233b9f351409a4fd547142ec3",
+  "branch": "fix/full-vertical-output",
+  "delivery_scope": "GitHub fix branch based on frozen upstream081efa6; full upstream tree/history retained. Local snapshot commit IDs differ; source equivalence is recorded separately.",
+  "functional": {
+    "positive_simulations": 42,
+    "negative_control": "EXPECTED_FAIL_DETECTED",
+    "normal_synthesis": true,
+    "native_VTM_configurations": 498,
+    "native_compared_values": 293360,
+    "new_directed_cases": 129,
+    "analytic_constant_cases": 54,
+    "mixed_TUs": 8,
+    "reset_cases": 4,
+    "notes": "Native comparison covers primary V/H inverse functions, selected shift7/10 and input mask. LFNST preprocessing uses source-checked layout model."
+  },
+  "physical": {
+    "status": "PASS_NOMINAL_500MHZ",
+    "period_ns": 2,
+    "setup": {
+      "worst_slack_ns": 0.0,
+      "total_negative_slack_ns": 0.0,
+      "failing_endpoints": 0,
+      "total_endpoints": 150635
+    },
+    "hold": {
+      "worst_slack_ns": 0.004,
+      "total_negative_slack_ns": 0.0,
+      "failing_endpoints": 0,
+      "total_endpoints": 150635
+    },
+    "resources": {
+      "LUT": 26110,
+      "FF": 21730,
+      "DSP": 320,
+      "BRAM": 0,
+      "URAM": 0
+    },
+    "vectorless_power_W": 1.789,
+    "power_confidence": "Medium",
+    "route_errors": 0,
+    "fully_routed_nets": 43932,
+    "unconstrained_internal_endpoint_checks": 0,
+    "selected_directory": "physical_2ns_refinement",
+    "attempts": [
+      {
+        "directory": "physical_2ns_fresh",
+        "setup": {
+          "worst_slack_ns": -0.033,
+          "total_negative_slack_ns": -0.98,
+          "failing_endpoints": 81,
+          "total_endpoints": 150635
+        },
+        "hold": {
+          "worst_slack_ns": 0.008,
+          "total_negative_slack_ns": 0.0,
+          "failing_endpoints": 0,
+          "total_endpoints": 150635
+        },
+        "flow": "Fresh synthesis/place/route"
+      },
+      {
+        "directory": "physical_2ns_cleanup",
+        "setup": {
+          "worst_slack_ns": -0.014,
+          "total_negative_slack_ns": -0.297,
+          "failing_endpoints": 43,
+          "total_endpoints": 150635
+        },
+        "hold": {
+          "worst_slack_ns": 0.008,
+          "total_negative_slack_ns": 0.0,
+          "failing_endpoints": 0,
+          "total_endpoints": 150635
+        },
+        "flow": "Fresh repaired routed checkpoint -> post-route AggressiveExplore -> conditional NoTimingRelaxation reroute"
+      },
+      {
+        "directory": "physical_2ns_refinement",
+        "setup": {
+          "worst_slack_ns": 0.0,
+          "total_negative_slack_ns": 0.0,
+          "failing_endpoints": 0,
+          "total_endpoints": 150635
+        },
+        "hold": {
+          "worst_slack_ns": 0.004,
+          "total_negative_slack_ns": 0.0,
+          "failing_endpoints": 0,
+          "total_endpoints": 150635
+        },
+        "flow": "At most2 post-route AggressiveExplore passes; preserve fully-routed nonnegative-hold best checkpoint"
+      }
+    ],
+    "scope": "Fresh registered-neighbor implementation, with recorded post-route cleanup if selected; Vivado2025.2 xcku5p-ffvb676-2-e, user uncertainty0ns with tool jitter. Package I/O, external reset arrival and additional system margin not qualified."
+  },
+  "performance": [
+    {
+      "n": "4",
+      "tus": "8",
+      "first_done_latency": "1195",
+      "total_cycles": "8391",
+      "first_interval": "1028",
+      "last_interval": "1028",
+      "min_interval": "1028",
+      "max_interval": "1028",
+      "steady_mean_interval": "1028.000000",
+      "output_beats": "32",
+      "full_spatial_mismatch_beats": "0",
+      "Msamples_per_second_at_500MHz": 7.782101167315175
+    },
+    {
+      "n": "16",
+      "tus": "8",
+      "first_done_latency": "1927",
+      "total_cycles": "9123",
+      "first_interval": "1028",
+      "last_interval": "1028",
+      "min_interval": "1028",
+      "max_interval": "1028",
+      "steady_mean_interval": "1028.000000",
+      "output_beats": "512",
+      "full_spatial_mismatch_beats": "0",
+      "Msamples_per_second_at_500MHz": 124.5136186770428
+    },
+    {
+      "n": "32",
+      "tus": "8",
+      "first_done_latency": "3463",
+      "total_cycles": "20508",
+      "first_interval": "2435",
+      "last_interval": "2435",
+      "min_interval": "2435",
+      "max_interval": "2435",
+      "steady_mean_interval": "2435.000000",
+      "output_beats": "2048",
+      "full_spatial_mismatch_beats": "0",
+      "Msamples_per_second_at_500MHz": 210.26694045174537
+    },
+    {
+      "n": "64",
+      "tus": "8",
+      "first_done_latency": "6087",
+      "total_cycles": "41500",
+      "first_interval": "5059",
+      "last_interval": "5059",
+      "min_interval": "5059",
+      "max_interval": "5059",
+      "steady_mean_interval": "5059.000000",
+      "output_beats": "8192",
+      "full_spatial_mismatch_beats": "0",
+      "Msamples_per_second_at_500MHz": 404.8230875667128
+    }
+  ],
+  "official_equivalence": "NOT_PROVEN",
+  "post_qualification_changes": "Preserved upstream ignores and byte-preserving fixture attributes; added archive entry/instructions and the actually used post-route reproduction scripts. Previously qualified runtime files match functional hashes; the archive entry is checked separately.",
+  "archive_entry_check": {
+    "status": "PASS_ARCHIVE_PREPARATION_AND_PROFILE",
+    "profile_status": "PASS_GATE_A_PROFILE_INHERITANCE",
+    "snapshot": "c42f2f58f25dfe03e8786d30340a3874df56445f"
+  },
+  "native_execution_note": "A fresh executable built in qualification_final was blocked by Windows application control. Successful qualification_verified explicitly reused the previously compiled and executed native oracle. Its source/header contents are verified against all9 frozen upstream VTM blobs; no OS security setting was changed.",
+  "production_source_hashes": {
+    "its_simple_ram.sv": "dd842c57deabdf3ad3c75dc038a70cbb871e2d3b725d3108597b58846947845d",
+    "its_input_cache_bank.sv": "2476d5fbc1d3663515137f8768ec7f16a689b3150e4527d78b5743df3e7a05d7",
+    "unified_p4_kernel.sv": "ab79e6af55f42e76b9b56e86c628e57a93f477e40ddf21f7298ddb25d4541064",
+    "bounded_lfnst_engine.sv": "560408512493c838a7f40d4d4ef8e5d1594ffd63f4e0a247e56473c225d9bf78",
+    "unified_its_wrapper.sv": "a9ec384cf2e50e6ad7272b99b85bbf88cd633facc78097c7aa52750c466a206b",
+    "its_unified_submission_top.sv": "39caf8e3bba2992ffad8c2407f9ad10341e2aa8c03ea0a07f5c0a0e6744436d1"
+  },
+  "patch_application_check": "PASS_PATCH_APPLIES_TO_FROZEN_UPSTREAM_CONTENT",
+  "checkpoints": {
+    "physical_2ns_fresh/step12f_registered_neighbor_postroute.dcp": {
+      "sha256": "c67b86c0e652306e6015b3e1d4e0e9f2bf3e1e0381298187727c7b07dafd3ced",
+      "bytes": 51144662
+    },
+    "physical_2ns_fresh/step12f_registered_neighbor_postsynth.dcp": {
+      "sha256": "ff4d3fde3fb3a2b6f9dde88b2552da9261ea5f9218f79a8620ef8b675ecf1818",
+      "bytes": 31124760
+    },
+    "physical_2ns_cleanup/step12f_registered_neighbor_postroute.dcp": {
+      "sha256": "473add27b22a5ca2a6ff4821ee5ead8347b2e0a77be8d4ff2fc1650c01b7e544",
+      "bytes": 24920354
+    },
+    "physical_2ns_refinement/candidate_pass1.dcp": {
+      "sha256": "2dbbc7dd959d2ea8fa1d0b6c44ea4aa2bf02811d1b04597590098bd7cd9189eb",
+      "bytes": 25252958
+    },
+    "physical_2ns_refinement/candidate_pass2.dcp": {
+      "sha256": "913c6750c5fbc210b2904d7d327f8863d12cc8cc9297a22d69b3ed00b12b1590",
+      "bytes": 25252672
+    },
+    "physical_2ns_refinement/step12f_registered_neighbor_postroute.dcp": {
+      "sha256": "09c749ca7acd133dcf2bbf98ca088a5fbe6b57527f77753fd6f9cc249beb4a28",
+      "bytes": 25302917
+    }
+  },
+  "source_archive": {
+    "name": "ITS_full_spatial_repair_source_20261029.zip",
+    "sha256": "c74151af2d92aa40e76617759089ff1ad08c6feeaae84c59255947db3d0530f7",
+    "bytes": 2379942
+  },
+  "patch": {
+    "name": "ITS_full_spatial_repair_081efa6.patch",
+    "sha256": "1da49840af20ab1ac541e4b6a851d97b6b341af541944bd518f5ebdf97a988f6"
+  },
+  "local_delivery_commit": "dcd26c75b06f17f16e96b38d4055876f420cbc38",
+  "local_functional_tested_commit": "6ea28e3b7c98a0b2ebebde3c67a0fd84bb205c3c",
+  "publication_base_commit": "081efa63356be60233b9f351409a4fd547142ec3"
+}

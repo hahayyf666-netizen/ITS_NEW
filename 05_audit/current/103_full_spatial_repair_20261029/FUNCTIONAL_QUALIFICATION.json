@@ -1,0 +1,35 @@
+{
+  "new_simulations": 6,
+  "physical": "New implementation passed after recorded post-route cleanup/refinement; see REPAIR_RESULT.json.",
+  "status": "PASS_FULL_SPATIAL_REPAIR_FUNCTIONAL_QUALIFICATION",
+  "python_stages": [
+    {
+      "status": "PASS_SAT10_PROFILE_INHERITS_V1_ARITHMETIC",
+      "exit_code": 0,
+      "stage": "01_profile"
+    },
+    {
+      "status": "PASS_GATE_A_PROFILE_INHERITANCE",
+      "exit_code": 0,
+      "stage": "02_profile_inheritance"
+    },
+    {
+      "status": "PASS_INDEPENDENT_VTM_PROFILE_ORACLE_AND_IMPACT_AUDIT",
+      "exit_code": 0,
+      "stage": "03_python_oracle"
+    },
+    {
+      "status": "PASS_ENGINEERING_PROFILE_2D_PROTOCOL_MODEL",
+      "exit_code": 0,
+      "stage": "04_python_2d"
+    }
+  ],
+  "official_equivalence": "NOT_PROVEN",
+  "native_reference_cases": 498,
+  "total_positive_simulations": 42,
+  "existing_simulations": 36,
+  "native_reference_values": 293360,
+  "negative_control": "EXPECTED_FAIL_DETECTED",
+  "local_source_commit": "6ea28e3b7c98a0b2ebebde3c67a0fd84bb205c3c",
+  "source_identity_note": "Local clean qualification snapshot; compare normalized source contents using SOURCE_EQUIVALENCE.json."
+}

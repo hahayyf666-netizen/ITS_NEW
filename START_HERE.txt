@@ -1,0 +1,21 @@
+ITS 完整空间输出修复版
+
+本源码包修复了垂直逆变换把输入系数支持范围误当作空间输出范围的问题。
+64x64 DCT2、DC=512 时，现在全部4096点输出16。
+功能验收提交为6ea28e3b7c98a0b2ebebde3c67a0fd84bb205c3c；实际交付提交和新时序结果见随附交付记录。
+
+ZIP解压目录可直接使用归档入口：
+pwsh -File RUN_REPAIR.ps1 -EvidenceDir <新的证据目录绝对路径>
+
+该入口会为没有.git的解压目录创建本地Git快照，然后运行已验收的完整核验流程。
+解压快照的Git编号与原验收提交不同，运行文件内容与哈希才是复现依据。
+若来自完整Git仓库，也可按README直接运行qualify_full_spatial_repair.ps1。
+
+需要已安装的PowerShell7、Git、Python3、ModelSim SE-64 2020.4及MinGW C++17编译器。
+ModelSim和默认编译器路径采用当前机器安装位置，编译器可通过-Compiler指定。
+可通过-NativeExe指定证据包native目录中的同源VTM核验程序；其源代码及哈希均随交付提供。
+如仅需准备Git快照，可使用 RUN_REPAIR.ps1 -PrepareOnly。
+
+official_equivalence=NOT_PROVEN。性能与500MHz结果以新的交付记录为准。
+03_verification/regression_baseline仅供预期失败对照，不加入正式DUT编译列表。
+新的物理实现及路由后优化复现步骤见 POSTROUTE_TIMING.txt。
