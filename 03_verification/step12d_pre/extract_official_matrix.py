@@ -13,7 +13,7 @@ from xml.etree import ElementTree as ET
 
 
 ROOT = Path(__file__).resolve().parents[2]
-DOCX = ROOT / "04_reference" / "huawei" / "华为附件.docx"
+DOCX = ROOT / "华为附件.docx"
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
 

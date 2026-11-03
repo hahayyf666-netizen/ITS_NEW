@@ -8,7 +8,7 @@
 |---|---|
 | 功能基线 | `1780eb9`（2026-10-29）完整空间重建修复，已并入 `main` |
 | 生产顶层 | `02_rtl/rtl/its_unified_submission_top.sv` |
-| 算术 profile | `contest_engineering_vtm10_sat10_v2`（shift 7/10，signed16 截断，SAT10 → [-512, 511]） |
+| 算术 profile | `contest_engineering_vtm10_sat10_v2`（shift 7/10，signed16 饱和裁剪，SAT10 → [-512, 511]） |
 | 官方等价性 | **`official_equivalence = NOT_PROVEN`** |
 
 ## 版本沿革
@@ -21,7 +21,11 @@
 
 ### 为什么 `081efa6` 被取代
 
-冻结版的 V 通道按**频率支撑高度**（`kernel_cut_h_q`）写回，而赛题输出索引是 `i = 0..nTbS-1`（完整空间范围）。结果是 32/64 点变换只重建了低频角块，其余空间行没有被写出。
+冻结版误将 **V 阶段的输入频率支撑高度**（`kernel_cut_h_q`）当作空间输出高度，在该支撑高度小于 TU 高度时丢失后续空间行。赛题输出索引是 `i = 0..nTbS-1`（完整空间范围），频率支撑只限制输入累加范围。
+
+LFNST 关闭时：V 轴 DCT2-64 仅写回前 32 行，DCT8/DST7-32 仅写回前 16 行；V 轴 DCT2 ≤ 32 不会因这一裁剪规则丢行。LFNST 开启路径需按实际支撑高度判断。
+
+64×64 DCT2、DC=512 时，旧版后 32 行错误为 0，修复后全部 4096 点为 16。
 
 修复把 V 写回行数与输出组数改为完整空间高度（`kernel_h_q` / `kernel_h_q>>2`），RTL 差异仅 **13 行增 / 15 行删**，全部在 `unified_its_wrapper.sv`。
 
@@ -33,7 +37,8 @@
 |---|---|
 | 完整空间修复证据 | `05_audit/current/103_full_spatial_repair_20261029/` |
 | 修复设计说明 | `01_docs/current/FULL_SPATIAL_REPAIR.md` |
-| 500 MHz 物理闭合（core 级） | `05_audit/current/100_p9_primary_v_replay_20261006/` |
+| **当前 RTL 的 500 MHz 物理闭合（core 级）** | `05_audit/current/103_full_spatial_repair_20261029/physical/` |
+| 历史：上一版 RTL 的物理闭合 | `05_audit/current/100_p9_primary_v_replay_20261006/`（对应 `081efa6` 版，已被取代） |
 | 早期冻结交付 | `05_audit/current/101_final_submission_20261006/`、`102_final_release_20261006/` |
 | 接口与形状规格提取 | `05_audit/current/58/…/HUAWEI_ATTACHMENT_INTERFACE_EXTRACT.txt` |
 

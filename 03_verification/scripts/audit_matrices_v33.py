@@ -29,7 +29,7 @@ def main():
     args = ap.parse_args()
 
     # ---- 0. Source availability (MUST be present) ----
-    att = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "..", "04_reference", "huawei", "华为附件.docx"))
+    att = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "..", "华为附件.docx"))
     romtr = os.path.join(args.vtm, "source", "Lib", "CommonLib", "RomTr.cpp")
     missing = []
     if not os.path.exists(att): missing.append(f"Huawei attachment: {att}")
