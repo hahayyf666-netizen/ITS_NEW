@@ -166,7 +166,9 @@ def inverse_2d(coeff: list[list[int]], width: int, height: int,
     active_cols = [col for col in range(cutoff_w)
                    if any(work[k][col] != 0 for k in range(cutoff_h))]
     for col in active_cols:
-        for out_row in range(cutoff_h):
+        # Input-frequency support can be reduced; inverse spatial output
+        # still spans the complete transform height.
+        for out_row in range(height):
             raw = sum(vmat[out_row][k] * work[k][col]
                       for k in range(cutoff_h))
             tmp[out_row][col] = round_clip(raw, 7, *vclip)
@@ -506,7 +508,7 @@ def main() -> int:
             "latency_semantics": "ready-high intrinsic output beats; completion is stall-dependent",
         },
         "not_proven": [
-            "full 369-tuple HDL simulation (HDL suite covers 19 directed cases / 2368 beats)",
+            "HDL execution (this command validates the Python model only)",
             "physical DSP/LUT/RAM mapping",
             "500 MHz timing",
             "official hidden-golden equivalence",

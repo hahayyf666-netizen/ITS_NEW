@@ -1,0 +1,135 @@
+{
+  "scope": "Final selected routed checkpoint reports. Large full-path reports and DCPs remain in the local delivery; excerpts are explicitly labeled.",
+  "files": [
+    {
+      "name": "report_timing_summary_postroute.rpt",
+      "bytes": 1219734,
+      "sha256": "385cf68a6b858b3db423f4e8e150118da53d9875f29fc6f1a784c54cd50f5c87",
+      "published": "excerpt"
+    },
+    {
+      "name": "report_timing_hold_summary_postroute.rpt",
+      "bytes": 1064411,
+      "sha256": "930682180644eaccd0020e7212c5100e1526117cc95549928edc9bdc49e8388b",
+      "published": "excerpt"
+    },
+    {
+      "name": "report_timing_worst100_postroute.rpt",
+      "bytes": 635219,
+      "sha256": "33707f76ff2c03086d09af42b3795c80f1e290c9a21669a62dbdea453c26bf07",
+      "published": "excerpt"
+    },
+    {
+      "name": "report_route_status_postroute.rpt",
+      "bytes": 651,
+      "sha256": "29a5c48efb520e317be61186c0bb8726272af5bafb1bc3428cbbd27686355ce3",
+      "published": "complete"
+    },
+    {
+      "name": "report_utilization_postroute.rpt",
+      "bytes": 12468,
+      "sha256": "adcc2c9cc518781770277f1ab3f6d3a761311b70e46bdd5eab12625cba2128ad",
+      "published": "complete"
+    },
+    {
+      "name": "report_check_timing_postroute.rpt",
+      "bytes": 3588,
+      "sha256": "eb711800cda1075d210fe7c8b3ce56709b601745458cbeb94adba715424a992b",
+      "published": "complete"
+    },
+    {
+      "name": "report_exceptions_postroute.rpt",
+      "bytes": 1219,
+      "sha256": "b81479db7fe63c6353351d299e0bae308e3cc55fab37492bccd0c9de827b1cbb",
+      "published": "complete"
+    },
+    {
+      "name": "report_drc_postroute.rpt",
+      "bytes": 46976,
+      "sha256": "999c07a0129c47a897c9b46482d44a24778c37ed53a0afbce379e5f60d5fe72c",
+      "published": "complete"
+    },
+    {
+      "name": "report_power_postroute.rpt",
+      "bytes": 11634,
+      "sha256": "968d815fb06c97863a5b239c513ebfded28cc6d71712468f72b2f22927cb9445",
+      "published": "complete"
+    }
+  ],
+  "checkpoints": {
+    "physical_2ns_fresh/step12f_registered_neighbor_postroute.dcp": {
+      "sha256": "c67b86c0e652306e6015b3e1d4e0e9f2bf3e1e0381298187727c7b07dafd3ced",
+      "bytes": 51144662
+    },
+    "physical_2ns_fresh/step12f_registered_neighbor_postsynth.dcp": {
+      "sha256": "ff4d3fde3fb3a2b6f9dde88b2552da9261ea5f9218f79a8620ef8b675ecf1818",
+      "bytes": 31124760
+    },
+    "physical_2ns_cleanup/step12f_registered_neighbor_postroute.dcp": {
+      "sha256": "473add27b22a5ca2a6ff4821ee5ead8347b2e0a77be8d4ff2fc1650c01b7e544",
+      "bytes": 24920354
+    },
+    "physical_2ns_refinement/candidate_pass1.dcp": {
+      "sha256": "2dbbc7dd959d2ea8fa1d0b6c44ea4aa2bf02811d1b04597590098bd7cd9189eb",
+      "bytes": 25252958
+    },
+    "physical_2ns_refinement/candidate_pass2.dcp": {
+      "sha256": "913c6750c5fbc210b2904d7d327f8863d12cc8cc9297a22d69b3ed00b12b1590",
+      "bytes": 25252672
+    },
+    "physical_2ns_refinement/step12f_registered_neighbor_postroute.dcp": {
+      "sha256": "09c749ca7acd133dcf2bbf98ca088a5fbe6b57527f77753fd6f9cc249beb4a28",
+      "bytes": 25302917
+    }
+  },
+  "implementation_attempts": [
+    {
+      "directory": "physical_2ns_fresh",
+      "setup": {
+        "worst_slack_ns": -0.033,
+        "total_negative_slack_ns": -0.98,
+        "failing_endpoints": 81,
+        "total_endpoints": 150635
+      },
+      "hold": {
+        "worst_slack_ns": 0.008,
+        "total_negative_slack_ns": 0.0,
+        "failing_endpoints": 0,
+        "total_endpoints": 150635
+      },
+      "flow": "Fresh synthesis/place/route"
+    },
+    {
+      "directory": "physical_2ns_cleanup",
+      "setup": {
+        "worst_slack_ns": -0.014,
+        "total_negative_slack_ns": -0.297,
+        "failing_endpoints": 43,
+        "total_endpoints": 150635
+      },
+      "hold": {
+        "worst_slack_ns": 0.008,
+        "total_negative_slack_ns": 0.0,
+        "failing_endpoints": 0,
+        "total_endpoints": 150635
+      },
+      "flow": "Fresh repaired routed checkpoint -> post-route AggressiveExplore -> conditional NoTimingRelaxation reroute"
+    },
+    {
+      "directory": "physical_2ns_refinement",
+      "setup": {
+        "worst_slack_ns": 0.0,
+        "total_negative_slack_ns": 0.0,
+        "failing_endpoints": 0,
+        "total_endpoints": 150635
+      },
+      "hold": {
+        "worst_slack_ns": 0.004,
+        "total_negative_slack_ns": 0.0,
+        "failing_endpoints": 0,
+        "total_endpoints": 150635
+      },
+      "flow": "At most2 post-route AggressiveExplore passes; preserve fully-routed nonnegative-hold best checkpoint"
+    }
+  ]
+}

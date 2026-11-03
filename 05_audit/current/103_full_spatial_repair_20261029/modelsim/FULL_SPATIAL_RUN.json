@@ -1,0 +1,81 @@
+{
+  "status": "PASS_FULL_SPATIAL_REPAIR_REGRESSION",
+  "reference": "PASS_NATIVE_VTM_FULL_SPATIAL_REFERENCE",
+  "reference_standard_cases": 369,
+  "reference_extra_cases": 129,
+  "reference_scalar_values": 293360,
+  "simulations": 6,
+  "records": [
+    {
+      "mode": "normal",
+      "pass_marker": "FULL_SPATIAL_DC_PASS cases=5",
+      "exit_code": 0,
+      "log_sha256": "0E347F0C3FA88E64DA01627F86733C624E7E8EA8684FE93EDCDFC5F83086BA87",
+      "test": "its_unified_submission_top_dc_full_tb"
+    },
+    {
+      "mode": "normal",
+      "pass_marker": "FULL_SPATIAL_NUMERIC_PASS cases=129",
+      "exit_code": 0,
+      "log_sha256": "29045DA348E024D0C5BB7499FCFCFFD6F9D50C4E9F6A3BC11A03A84637BFFEC1",
+      "test": "its_unified_submission_top_full_spatial_tb"
+    },
+    {
+      "mode": "normal",
+      "pass_marker": "FULL_SPATIAL_CONTRACT_PASS mixed_tus=8 boundary_stalls=8 final_stalls=8 reset_cases=4",
+      "exit_code": 0,
+      "log_sha256": "7A9F2E6A5FAC8FF02CD7B4E7BA6E45E9AA7806565F884F86F6487CE2E7959EB0",
+      "test": "its_unified_submission_top_full_spatial_contract_tb"
+    },
+    {
+      "mode": "synthesis",
+      "pass_marker": "FULL_SPATIAL_DC_PASS cases=5",
+      "exit_code": 0,
+      "log_sha256": "78C3C90031DF22BBC0382A86ACAE35C4FC88F066F6781E4CD7C138802FCD1AD6",
+      "test": "its_unified_submission_top_dc_full_tb"
+    },
+    {
+      "mode": "synthesis",
+      "pass_marker": "FULL_SPATIAL_NUMERIC_PASS cases=129",
+      "exit_code": 0,
+      "log_sha256": "9FD0A515474A873D54551158E007BEA8F41CB59A0E99D96D34B4398ABB9C2234",
+      "test": "its_unified_submission_top_full_spatial_tb"
+    },
+    {
+      "mode": "synthesis",
+      "pass_marker": "FULL_SPATIAL_CONTRACT_PASS mixed_tus=8 boundary_stalls=8 final_stalls=8 reset_cases=4",
+      "exit_code": 0,
+      "log_sha256": "F2366EE8E49B2FF921F679B67826FDE17F5576929FC657CBC7AC7A227C7BF563",
+      "test": "its_unified_submission_top_full_spatial_contract_tb"
+    }
+  ],
+  "baseline_negative_control": "EXPECTED_FAIL_DETECTED",
+  "official_equivalence": "NOT_PROVEN",
+  "source_commit": "6ea28e3b7c98a0b2ebebde3c67a0fd84bb205c3c",
+  "source_files": [
+    {
+      "path": "02_rtl/rtl/its_simple_ram.sv",
+      "sha256": "DD842C57DEABDF3AD3C75DC038A70CBB871E2D3B725D3108597B58846947845D"
+    },
+    {
+      "path": "02_rtl/rtl/its_input_cache_bank.sv",
+      "sha256": "2476D5FBC1D3663515137F8768EC7F16A689B3150E4527D78B5743DF3E7A05D7"
+    },
+    {
+      "path": "02_rtl/rtl/unified_p4_kernel.sv",
+      "sha256": "AB79E6AF55F42E76B9B56E86C628E57A93F477E40DDF21F7298DDB25D4541064"
+    },
+    {
+      "path": "02_rtl/rtl/bounded_lfnst_engine.sv",
+      "sha256": "560408512493C838A7F40D4D4EF8E5D1594FFD63F4E0A247E56473C225D9BF78"
+    },
+    {
+      "path": "02_rtl/rtl/unified_its_wrapper.sv",
+      "sha256": "A9EC384CF2E50E6AD7272B99B85BBF88CD633FACC78097C7AA52750C466A206B"
+    },
+    {
+      "path": "02_rtl/rtl/its_unified_submission_top.sv",
+      "sha256": "39CAF8E3BBA2992FFAD8C2407F9AD10341E2AA8C03EA0A07F5C0A0E6744436D1"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 
-// Directed primary-V return-credit test.  A 4x64 transform creates sixteen
-// vertical read groups.  The kernel-local request is deliberately stalled
+// Directed primary-V return-credit test.  A 4x64 transform consumes eight
+// active input groups and produces sixteen vertical result groups per column.  The kernel-local request is deliberately stalled
 // after start so the registered four-entry return reservation fills, then the
 // exact SAT10 output stream is checked after release.
 module unified_its_primary_v_return_tb;
@@ -36,39 +36,80 @@ module unified_its_primary_v_return_tb;
         desc_4x64 = 22'd4 | (22'd64 << 7);
     endfunction
 
+    // Full-height SAT10 expectations, cross-checked by the native VTM
+    // oracle in verify_full_spatial_reference.py.
     function automatic [39:0] expected_beat(input integer beat);
-        reg signed [9:0] lane0, lane1, lane2, lane3;
         begin
-            lane0 = 10'sd0;
-            lane1 = 10'sd0;
-            lane2 = 10'sd0;
-            lane3 = 10'sd0;
             case (beat)
-                0: begin lane0=10'sd511; lane1=10'sd277; lane2=10'sd277; lane3=10'sd511; end
-                1: begin lane0=10'sd511; lane1=10'sd302; lane2=10'sd302; lane3=10'sd511; end
-                2: begin lane0=10'sd511; lane1=10'sd360; lane2=10'sd360; lane3=10'sd511; end
-                3: begin lane0=10'sd511; lane1=10'sd443; lane2=10'sd443; lane3=10'sd511; end
-                12: begin lane0=10'sd443; lane1=10'sd511; lane2=10'sd511; lane3=10'sd443; end
-                13: begin lane0=10'sd360; lane1=10'sd511; lane2=10'sd511; lane3=10'sd360; end
-                14: begin lane0=10'sd302; lane1=10'sd511; lane2=10'sd511; lane3=10'sd302; end
-                15: begin lane0=10'sd277; lane1=10'sd511; lane2=10'sd511; lane3=10'sd277; end
-                16: begin lane0=10'sd277; lane1=10'sd511; lane2=10'sd511; lane3=10'sd277; end
-                17: begin lane0=10'sd302; lane1=10'sd511; lane2=10'sd511; lane3=10'sd302; end
-                18: begin lane0=10'sd360; lane1=10'sd511; lane2=10'sd511; lane3=10'sd360; end
-                19: begin lane0=10'sd443; lane1=10'sd511; lane2=10'sd511; lane3=10'sd443; end
-                28: begin lane0=10'sd511; lane1=10'sd443; lane2=10'sd443; lane3=10'sd511; end
-                29: begin lane0=10'sd511; lane1=10'sd360; lane2=10'sd360; lane3=10'sd511; end
-                30: begin lane0=10'sd511; lane1=10'sd302; lane2=10'sd302; lane3=10'sd511; end
-                31: begin lane0=10'sd511; lane1=10'sd277; lane2=10'sd277; lane3=10'sd511; end
+                0: expected_beat = 40'h7fd15455ff;
+                1: expected_beat = 40'h7fd2e4b9ff;
+                2: expected_beat = 40'h7fd685a1ff;
+                3: expected_beat = 40'h7fdbb6edff;
+                4: expected_beat = 40'h7fdff7fdff;
+                5: expected_beat = 40'h7fdff7fdff;
+                6: expected_beat = 40'h7fdff7fdff;
+                7: expected_beat = 40'h7fdff7fdff;
+                8: expected_beat = 40'h7fdff7fdff;
+                9: expected_beat = 40'h7fdff7fdff;
+                10: expected_beat = 40'h7fdff7fdff;
+                11: expected_beat = 40'h7fdff7fdff;
+                12: expected_beat = 40'h6edff7fdbb;
+                13: expected_beat = 40'h5a1ff7fd68;
+                14: expected_beat = 40'h4b9ff7fd2e;
+                15: expected_beat = 40'h455ff7fd15;
+                16: expected_beat = 40'h455ff7fd15;
+                17: expected_beat = 40'h4b9ff7fd2e;
+                18: expected_beat = 40'h5a1ff7fd68;
+                19: expected_beat = 40'h6edff7fdbb;
+                20: expected_beat = 40'h7fdff7fdff;
+                21: expected_beat = 40'h7fdff7fdff;
+                22: expected_beat = 40'h7fdff7fdff;
+                23: expected_beat = 40'h7fdff7fdff;
+                24: expected_beat = 40'h7fdff7fdff;
+                25: expected_beat = 40'h7fdff7fdff;
+                26: expected_beat = 40'h7fdff7fdff;
+                27: expected_beat = 40'h7fdff7fdff;
+                28: expected_beat = 40'h7fdbb6edff;
+                29: expected_beat = 40'h7fd685a1ff;
+                30: expected_beat = 40'h7fd2e4b9ff;
+                31: expected_beat = 40'h7fd15455ff;
+                32: expected_beat = 40'h7fd15455ff;
+                33: expected_beat = 40'h7fd2e4b9ff;
+                34: expected_beat = 40'h7fd685a1ff;
+                35: expected_beat = 40'h7fdbb6edff;
+                36: expected_beat = 40'h7fdff7fdff;
+                37: expected_beat = 40'h7fdff7fdff;
+                38: expected_beat = 40'h7fdff7fdff;
+                39: expected_beat = 40'h7fdff7fdff;
+                40: expected_beat = 40'h7fdff7fdff;
+                41: expected_beat = 40'h7fdff7fdff;
+                42: expected_beat = 40'h7fdff7fdff;
+                43: expected_beat = 40'h7fdff7fdff;
+                44: expected_beat = 40'h6edff7fdbb;
+                45: expected_beat = 40'h5a1ff7fd68;
+                46: expected_beat = 40'h4b9ff7fd2e;
+                47: expected_beat = 40'h455ff7fd15;
+                48: expected_beat = 40'h455ff7fd15;
+                49: expected_beat = 40'h4b9ff7fd2e;
+                50: expected_beat = 40'h5a1ff7fd68;
+                51: expected_beat = 40'h6edff7fdbb;
+                52: expected_beat = 40'h7fdff7fdff;
+                53: expected_beat = 40'h7fdff7fdff;
+                54: expected_beat = 40'h7fdff7fdff;
+                55: expected_beat = 40'h7fdff7fdff;
+                56: expected_beat = 40'h7fdff7fdff;
+                57: expected_beat = 40'h7fdff7fdff;
+                58: expected_beat = 40'h7fdff7fdff;
+                59: expected_beat = 40'h7fdff7fdff;
+                60: expected_beat = 40'h7fdbb6edff;
+                61: expected_beat = 40'h7fd685a1ff;
+                62: expected_beat = 40'h7fd2e4b9ff;
+                63: expected_beat = 40'h7fd15455ff;
                 default: begin
-                    if ((beat >= 4) && (beat <= 11) ||
-                        (beat >= 20) && (beat <= 27)) begin
-                        lane0=10'sd511; lane1=10'sd511;
-                        lane2=10'sd511; lane3=10'sd511;
-                    end
+                    expected_beat = 'x;
+                    $fatal(1, "primary-V expected beat out of range");
                 end
             endcase
-            expected_beat = {lane3, lane2, lane1, lane0};
         end
     endfunction
 

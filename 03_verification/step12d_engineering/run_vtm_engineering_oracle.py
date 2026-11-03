@@ -176,11 +176,12 @@ def inverse_2d(coeff: list[list[int]], width: int, height: int, hor: int, ver: i
     vclip = (-(1 << params["max_range"]), (1 << params["max_range"]) - 1)
     tmp = [[0 for _ in range(width)] for _ in range(height)]
     for col in range(cutoff_w):
-        for out_row in range(cutoff_h):
+        for out_row in range(height):
             raw = sum(vmat[out_row][k] * work[k][col] for k in range(cutoff_h))
             tmp[out_row][col] = apply_shift_clip(raw, params["vertical_shift"], *vclip)
-    # VTM explicitly zeroes skipped output rows/columns.  The horizontal
-    # stage consumes only cutoff_w columns and produces all width outputs.
+    # skipHeight truncates frequency inputs, not spatial output rows.  VTM
+    # reconstructs all height rows.  Only unprocessed frequency columns are
+    # zero; H consumes cutoff_w columns and produces all width outputs.
     out = [[0 for _ in range(width)] for _ in range(height)]
     pel_clip = (-32768, 32767)
     for row in range(height):

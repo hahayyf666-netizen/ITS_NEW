@@ -1,0 +1,54 @@
+{
+  "compiler": "D:\\AMDDesignTools\\2025.2\\tps\\mingw\\10.0.0\\win64.o\\nt\\bin\\g++.exe",
+  "version": "g++.exe (MinGW-W64 x86_64-msvcrt-posix-seh, built by Brecht Sanders) 9.5.0",
+  "flags": [
+    "-std=c++17",
+    "-O2",
+    "-static"
+  ],
+  "native_executable_sha256": "9adf01bdba5be8af58710b7be1330c7e31ac19b7a9e8069758ccd1588f5b91a5",
+  "native_executable": "oracle_native/vtm_full_spatial_oracle.exe",
+  "inputs": [
+    {
+      "path": "03_verification\\step12d_engineering\\vtm_full_spatial_oracle.cpp",
+      "sha256": "bab4ad1f4f3581d266c9820b4e082f5077943f16de64107e267b975f2a0599b6"
+    },
+    {
+      "path": "04_reference\\VTM\\source\\Lib\\CommonLib\\Common.h",
+      "sha256": "37264b05a63177eb6e8efa1c169c4967c93d40b54f7c4f3e07bb6de8bc00814e"
+    },
+    {
+      "path": "04_reference\\VTM\\source\\Lib\\CommonLib\\CommonDef.h",
+      "sha256": "76140d26c3c9d13fe5c7c47a96f4fe9a7b93974d33dd49fa3e7f210b541be42d"
+    },
+    {
+      "path": "04_reference\\VTM\\source\\Lib\\CommonLib\\CommonSimdCfg.h",
+      "sha256": "dafc544599b6d1250cdf5ccfc3ac9cb15532be53b435f56b7cac3403e1510166"
+    },
+    {
+      "path": "04_reference\\VTM\\source\\Lib\\CommonLib\\Rom.h",
+      "sha256": "b73709fc256596aa9ab1146d9f4a0693b42038ca0b3bd3fd79952245537b88cf"
+    },
+    {
+      "path": "04_reference\\VTM\\source\\Lib\\CommonLib\\RomTr.cpp",
+      "sha256": "302ebc5d69937792af7f099358756adba0df9637a50ff14999e55d13b6516fce"
+    },
+    {
+      "path": "04_reference\\VTM\\source\\Lib\\CommonLib\\TrQuant_EMT.cpp",
+      "sha256": "3a4dfd0e091c62964b83b881c0bca0fd4aa6d0fd2ee25d4aafab6f0a37b03f13"
+    },
+    {
+      "path": "04_reference\\VTM\\source\\Lib\\CommonLib\\TrQuant_EMT.h",
+      "sha256": "4a2c00c914ebb55877f9143aeb5227aba0fe40c5f2154329bca6dc35989b2639"
+    },
+    {
+      "path": "04_reference\\VTM\\source\\Lib\\CommonLib\\TypeDef.h",
+      "sha256": "75d6007a3259bbb730fd50629c1aa8917aade504c01ad2dfde87a332fe432f06"
+    },
+    {
+      "path": "04_reference\\VTM\\source\\Lib\\CommonLib\\version.h",
+      "sha256": "de5f8b2ec96c112b0809c8558b4af0452c18a8dac66ae372a64a9d8de5aac278"
+    }
+  ],
+  "source_note": "The successful executable was compiled using these identical source/header contents; VTM files were originally read from D:/Workspace/ITS_STUDY_V35_13/04_reference/VTM/source/Lib/CommonLib. All9 match frozen upstream blobs allowing line endings."
+}

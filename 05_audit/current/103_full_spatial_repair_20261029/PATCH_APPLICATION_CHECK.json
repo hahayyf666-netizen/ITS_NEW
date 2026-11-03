@@ -1,0 +1,59 @@
+{
+  "status": "PASS_PATCH_APPLIES_TO_FROZEN_UPSTREAM_CONTENT",
+  "upstream_commit": "081efa63356be60233b9f351409a4fd547142ec3",
+  "repair_commit": "dcd26c75b06f17f16e96b38d4055876f420cbc38",
+  "files": 37,
+  "verified_existing_baselines": [
+    {
+      "path": ".gitignore",
+      "baseline_git_blob": "f16b3ccef12bffc1a9868fd2a4f0309f57108673",
+      "normalized_git_blob": "f16b3ccef12bffc1a9868fd2a4f0309f57108673",
+      "verified_upstream": true
+    },
+    {
+      "path": "01_docs/current/FINAL_DELIVERY.md",
+      "baseline_git_blob": "143fca641bcbb2536be866dc2a801e762fffd7ef",
+      "normalized_git_blob": "143fca641bcbb2536be866dc2a801e762fffd7ef",
+      "verified_upstream": true
+    },
+    {
+      "path": "01_docs/current/FINAL_SUBMISSION_ACCEPTANCE.md",
+      "baseline_git_blob": "ca563e88fb483059aa79a46cc6dc936519eb61ee",
+      "normalized_git_blob": "ca563e88fb483059aa79a46cc6dc936519eb61ee",
+      "verified_upstream": true
+    },
+    {
+      "path": "02_rtl/rtl/unified_its_wrapper.sv",
+      "baseline_git_blob": "99e04024abf30d9b2ff9622a6d0ed83e718c106f",
+      "normalized_git_blob": "99e04024abf30d9b2ff9622a6d0ed83e718c106f",
+      "verified_upstream": true
+    },
+    {
+      "path": "03_verification/step12d_engineering/run_vtm_engineering_oracle.py",
+      "baseline_git_blob": "7c23137fc599373a711e94719b8357ac8f31ad56",
+      "normalized_git_blob": "7c23137fc599373a711e94719b8357ac8f31ad56",
+      "verified_upstream": true
+    },
+    {
+      "path": "03_verification/step12d_engineering/validate_gate_c_model.py",
+      "baseline_git_blob": "b5387e2b54e00df6ece0385bfad4c589cc2d6c35",
+      "normalized_git_blob": "b5387e2b54e00df6ece0385bfad4c589cc2d6c35",
+      "verified_upstream": true
+    },
+    {
+      "path": "03_verification/tb/unified_its_primary_v_return_tb.sv",
+      "baseline_git_blob": "e28a93db50a841c993007bd27ac2bc40c92b4eb1",
+      "normalized_git_blob": "e28a93db50a841c993007bd27ac2bc40c92b4eb1",
+      "verified_upstream": true
+    },
+    {
+      "path": "README.md",
+      "baseline_git_blob": "50a7f1e4e1d9d2d97b8b5532f11012cdeb9cfd5c",
+      "normalized_git_blob": "50a7f1e4e1d9d2d97b8b5532f11012cdeb9cfd5c",
+      "verified_upstream": true
+    }
+  ],
+  "omitted_identical_upstream_VTM_files": 9,
+  "negative_fixture_byte_hashes": "PASS",
+  "patch_sha256": "1da49840af20ab1ac541e4b6a851d97b6b341af541944bd518f5ebdf97a988f6"
+}

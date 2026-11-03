@@ -1,0 +1,42 @@
+{
+  "frozen_commit": "081efa63356be60233b9f351409a4fd547142ec3",
+  "purpose": "Expected-failure negative control only; never compile into the production DUT",
+  "files": [
+    {
+      "path": "02_rtl/rtl/its_simple_ram.sv",
+      "sha256": "dd842c57deabdf3ad3c75dc038a70cbb871e2d3b725d3108597b58846947845d"
+    },
+    {
+      "path": "02_rtl/rtl/its_input_cache_bank.sv",
+      "sha256": "2476d5fbc1d3663515137f8768ec7f16a689b3150e4527d78b5743df3e7a05d7"
+    },
+    {
+      "path": "02_rtl/rtl/unified_p4_kernel.sv",
+      "sha256": "ab79e6af55f42e76b9b56e86c628e57a93f477e40ddf21f7298ddb25d4541064"
+    },
+    {
+      "path": "02_rtl/rtl/bounded_lfnst_engine.sv",
+      "sha256": "560408512493c838a7f40d4d4ef8e5d1594ffd63f4e0a247e56473c225d9bf78"
+    },
+    {
+      "path": "02_rtl/rtl/unified_its_wrapper.sv",
+      "sha256": "6e13f9035de7abb7c9f56ddda94ee8e8dc33ae28e181d8e3521fd78f106b3340"
+    },
+    {
+      "path": "02_rtl/rtl/its_unified_submission_top.sv",
+      "sha256": "39caf8e3bba2992ffad8c2407f9ad10341e2aa8c03ea0a07f5c0a0e6744436d1"
+    },
+    {
+      "path": "02_rtl/rtl/rom_coeffs.hex",
+      "sha256": "0063e92d212c6cd6116295928f1902d8c80b3335b36250d5ee18c13c0bde9d53"
+    },
+    {
+      "path": "02_rtl/rtl/lfnst_coeffs.hex",
+      "sha256": "4afbaf5237afbcdbc51048e0f43bafe2dd0cc0a95173ba49a1cf8134a5d06f2c"
+    },
+    {
+      "path": "02_rtl/rtl/lfnst_packed_coeffs.hex",
+      "sha256": "25ade6effd2e51709c3c9bfe3eb92b341bbce00826390516ab98cf59865e63b5"
+    }
+  ]
+}

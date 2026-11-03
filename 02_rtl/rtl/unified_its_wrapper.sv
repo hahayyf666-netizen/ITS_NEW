@@ -205,6 +205,8 @@ module unified_its_wrapper #(
                               K_V_WAIT_COMMIT, K_H_START, K_H_FEED,
                               K_H_DRAIN, K_H_WAIT_COMMIT} kernel_phase_t;
     kernel_phase_t kernel_phase_q;
+    // cut_w/cut_h bound input-frequency support only.  Spatial outputs
+    // always cover the complete kernel_w/kernel_h transform dimensions.
     logic [6:0] kernel_w_q, kernel_h_q, kernel_cut_w_q, kernel_cut_h_q;
     logic [6:0] kernel_vector_q;
     // P8.1: keep feed-side input bookkeeping separate from drain-side output
@@ -1338,13 +1340,11 @@ module unified_its_wrapper #(
                             kernel_rd_return_data[kernel_lane_i*16 +: 16];
                 end
             end else if (kernel_in_valid && kernel_stage_q) begin
-                // The vertical transform writes only its transform-support
-                // cut.  Horizontal reads outside that cut must be treated as
-                // zero rather than exposing stale words left in the
-                // generation-tagged intermediate RAM.  This is especially
-                // important for DST7/DCT8-32, whose support is 16.
+                // V reconstructs every spatial row from its reduced input
+                // support.  Only frequency columns outside cut_w are zero;
+                // rows below cut_h contain valid reconstructed V results.
                 if ((kernel_sample_index_i < kernel_cut_w_q) &&
-                    (kernel_h_rd_raw_vector_q < kernel_cut_h_q))
+                    (kernel_h_rd_raw_vector_q < kernel_h_q))
                     kernel_in_data[kernel_lane_i*16 +: 16] =
                         kernel_h_rd_data_q[
                             tmp_bank_for(kernel_h_rd_raw_vector_q,
@@ -1443,7 +1443,7 @@ module unified_its_wrapper #(
                 kernel_drain_group_q, kernel_w_q, kernel_vector_q);
             vwrite_cmd_last_c =
                 (kernel_vector_q == (kernel_cut_w_q - 1'b1)) &&
-                (kernel_drain_group_q == ((kernel_cut_h_q >> 2) - 1'b1));
+                (kernel_drain_group_q == ((kernel_h_q >> 2) - 1'b1));
             for (vwrite_gen_bank_i = 0; vwrite_gen_bank_i < 4;
                  vwrite_gen_bank_i = vwrite_gen_bank_i + 1) begin
                 // Inverse of bank=(row+column)&3 for row=4*group+lane.
@@ -1451,7 +1451,7 @@ module unified_its_wrapper #(
                 vwrite_gen_lane_i =
                     (vwrite_gen_bank_i - (kernel_vector_q & 3)) & 3;
                 if ((kernel_drain_group_q * 4 + vwrite_gen_lane_i) <
-                    kernel_cut_h_q) begin
+                    kernel_h_q) begin
                     vwrite_cmd_bank_mask_c[vwrite_gen_bank_i] = 1'b1;
                     vwrite_cmd_data_c[vwrite_gen_bank_i] =
                         $signed(kernel_out_data[vwrite_gen_lane_i*16 +: 16]);
@@ -2455,7 +2455,7 @@ module unified_its_wrapper #(
                 if (slot_lfnst[compute_slot] == 2'd0) begin
                     // Primary-transform cases run through the real Gate-B
                     // P4 kernel.  The kernel works on the transform-support
-                    // cut; coefficients outside the cut are explicitly zero.
+                    // input cut; it reconstructs the full spatial height.
                     kernel_run_q <= 1'b1;
                     kernel_phase_q <= K_V_START;
                     kernel_w_q <= slot_width[compute_slot];
@@ -2473,11 +2473,9 @@ module unified_its_wrapper #(
                         kernel_cut_dim(slot_ver[compute_slot],
                                        slot_height[compute_slot]);
                     kernel_ctx_output_size_q <=
-                        kernel_cut_dim(slot_ver[compute_slot],
-                                       slot_height[compute_slot]);
+                        slot_height[compute_slot];
                     kernel_ctx_group_count_q <=
-                        kernel_cut_dim(slot_ver[compute_slot],
-                                       slot_height[compute_slot]) >> 2;
+                        slot_height[compute_slot] >> 2;
                     kernel_vector_q <= 7'd0;
                     kernel_drain_group_q <= 5'd0;
                     kernel_type_q <= slot_ver[compute_slot];
@@ -2590,8 +2588,8 @@ module unified_its_wrapper #(
                     kernel_ctx_stage_q <= 1'b0;
                     kernel_ctx_transform_size_q <= kernel_h_q;
                     kernel_ctx_active_size_q <= kernel_cut_h_q;
-                    kernel_ctx_output_size_q <= kernel_cut_h_q;
-                    kernel_ctx_group_count_q <= kernel_cut_h_q >> 2;
+                    kernel_ctx_output_size_q <= kernel_h_q;
+                    kernel_ctx_group_count_q <= kernel_h_q >> 2;
                     // After LFNST, the horizontal input domain is the
                     // LFNST support cut (4 or 8 columns), even when the
                     // output transform width is larger.  Re-seed the
