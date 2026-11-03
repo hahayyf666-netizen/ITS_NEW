@@ -1,0 +1,58 @@
+# 仓库状态（STATUS）
+
+> 本文件是仓库"当前状态"的唯一入口。`README.md` 讲 RTL 怎么用、怎么跑验证；版本沿革、证据索引、验证边界看这里。
+
+## 当前有效交付
+
+| 项 | 值 |
+|---|---|
+| 功能基线 | `1780eb9`（2026-10-29）完整空间重建修复，已并入 `main` |
+| 生产顶层 | `02_rtl/rtl/its_unified_submission_top.sv` |
+| 算术 profile | `contest_engineering_vtm10_sat10_v2`（shift 7/10，signed16 截断，SAT10 → [-512, 511]） |
+| 官方等价性 | **`official_equivalence = NOT_PROVEN`** |
+
+## 版本沿革
+
+| 版本 / 提交 | 日期 | 状态 |
+|---|---|---|
+| `v3.5-14` → `v3.5-18`、`v3.5-step12ar2.1-full` | 2026-09-10 ~ 09-14 | 历史内部迭代，已全部并入 `main` |
+| `081efa6` | 2026-10-06 | SAT10 冻结交付，**已被取代**（标签 `v3.5-19-freeze-superseded`） |
+| `1780eb9` | 2026-10-29 | 完整空间重建修复，**当前有效**（标签 `v3.6-full-spatial-repair`） |
+
+### 为什么 `081efa6` 被取代
+
+冻结版的 V 通道按**频率支撑高度**（`kernel_cut_h_q`）写回，而赛题输出索引是 `i = 0..nTbS-1`（完整空间范围）。结果是 32/64 点变换只重建了低频角块，其余空间行没有被写出。
+
+修复把 V 写回行数与输出组数改为完整空间高度（`kernel_h_q` / `kernel_h_q>>2`），RTL 差异仅 **13 行增 / 15 行删**，全部在 `unified_its_wrapper.sv`。
+
+当时 369 配置能全绿，是因为 Python 参考模型与 RTL 共享同一个缺陷。修复提交同时修正了两边模型，并补上原生 VTM 逐点交叉核验（498 配置 / 293,360 值）与"冻结 RTL 应当失败"的负向对照（`EXPECTED_FAIL_DETECTED`）。
+
+## 证据索引
+
+| 内容 | 位置 |
+|---|---|
+| 完整空间修复证据 | `05_audit/current/103_full_spatial_repair_20261029/` |
+| 修复设计说明 | `01_docs/current/FULL_SPATIAL_REPAIR.md` |
+| 500 MHz 物理闭合（core 级） | `05_audit/current/100_p9_primary_v_replay_20261006/` |
+| 早期冻结交付 | `05_audit/current/101_final_submission_20261006/`、`102_final_release_20261006/` |
+| 接口与形状规格提取 | `05_audit/current/58/…/HUAWEI_ATTACHMENT_INTERFACE_EXTRACT.txt` |
+
+## 验证边界（引用任何结论时必须一并说明）
+
+- 时序闭合是 **registered-neighbor core 级**，不是封装级 FPGA signoff
+- `081efa6` 版 setup 余量 +0.001 ns；`1780eb9` 版在报告精度下为 **0.000 ns**，hold +0.004 ns
+- `NSTD-1` / `UCIO-1` 未消：`clk` / `rst_n` 的封装引脚与 IOSTANDARD 不在 harness 契约内
+- 外部 `rst_n` 没有 input delay 模型
+- 官方等价性 `NOT_PROVEN`：算术 profile、逆变换移位规则、LFNST-off 的 H/V 子集都是工程绑定，不是官方金标准
+
+## 已知陷阱
+
+`02_rtl/synth/top_500_singleclk_*.rpt`（8 个文件）生成于 **2026-07-04**，设计 `its_top_500_singleclk` 只有 1886 LUT / 2214 FF / 5 DSP，WNS +0.087 ns，**与当前实现无关**。
+
+真实时序证据在 `05_audit/current/100_p9_primary_v_replay_20261006/`（LUT 26272 / FF 21369 / DSP 320）与 `05_audit/current/103_full_spatial_repair_20261029/physical/`（LUT 26110 / FF 21730 / DSP 320）。
+
+## 未完成事项
+
+- 板级 / 封装级 signoff（引脚、IOSTANDARD、外部复位时序）
+- 官方等价性证明
+- 仓库体积治理：`06_archive` 约占 76% 文件数，全仓库 86% 文件为字节级重复

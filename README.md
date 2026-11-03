@@ -19,3 +19,7 @@ Stage the three coefficient hex files in 03_verification/sim first. Functional r
 [Repair design](01_docs/current/FULL_SPATIAL_REPAIR.md), [delivery](01_docs/current/FINAL_DELIVERY.md), [acceptance](01_docs/current/FINAL_SUBMISSION_ACCEPTANCE.md).
 
 Current repair evidence: [full spatial repair audit](05_audit/current/103_full_spatial_repair_20261029/README.md).
+
+## 仓库状态
+
+当前有效版本、版本沿革、证据索引与验证边界见 [STATUS.md](STATUS.md)。
