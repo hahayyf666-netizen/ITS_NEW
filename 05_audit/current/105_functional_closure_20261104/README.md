@@ -17,3 +17,5 @@ FUNCTIONAL_CLOSURE.json中的log路径相对于压缩包根目录。
 这不冒充在另一台机器上完成的验证。
 
 当前物理证据仍在104目录；本次功能测试扩充不改变其生产RTL。
+
+最终复现已从本地提交0157697的新干净Git检出运行，全部阶段通过；运行前后源码工作区均干净。参见CLEAN_REPLAY.json。当前functional_logs.zip和FUNCTIONAL_CLOSURE.json对应这次复现，NUMERIC_DISCRIMINATORS.json记录定标歧义的原生数值例子。
