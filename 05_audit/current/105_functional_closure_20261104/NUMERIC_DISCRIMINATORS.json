@@ -1,0 +1,27 @@
+{
+  "status": "PASS_ENGINEERING_PROFILE_DISCRIMINATORS",
+  "official_expected_values": "UNKNOWN",
+  "cases": [
+    {
+      "input": "4x4 DCT2 DC",
+      "dc": 512,
+      "native_wide_value": 16,
+      "SAT10": 16,
+      "LOW10": 16
+    },
+    {
+      "input": "4x4 DCT2 DC",
+      "dc": 32767,
+      "native_wide_value": 1024,
+      "SAT10": 511,
+      "LOW10": 0
+    },
+    {
+      "input": "4x4 DCT2 DC",
+      "dc": -32768,
+      "native_wide_value": -1024,
+      "SAT10": -512,
+      "LOW10": 0
+    }
+  ]
+}

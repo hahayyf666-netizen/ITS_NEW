@@ -27,5 +27,8 @@
   "published_input_audit": "CHECKOUT_INPUT_AUDIT.json",
   "replay": "python 03_verification/step12d_engineering/run_functional_closure.py --evidence-dir <NEW_DIR>",
   "logs_archive": "functional_logs.zip",
-  "logs_archive_sha256": "7f609d36579943e61dc630568d79a4a5e0ce1672287031eb436a428f4358a9ae"
+  "logs_archive_sha256": "c699fb1b8b66897445163e9cda7fcbdfc68ee6a73af6b2efa5de0a42d56cfdd9",
+  "validated_source_commit": "0157697258d60ce34812068dee4662a6f8940bd4",
+  "clean_checkout_before": true,
+  "clean_checkout_after": true
 }

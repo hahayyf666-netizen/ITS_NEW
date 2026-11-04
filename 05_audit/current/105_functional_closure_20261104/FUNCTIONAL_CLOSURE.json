@@ -8,72 +8,72 @@
     "02_rtl/rtl/bounded_lfnst_engine.sv": "f660081e620bc99fb52ab2274a76ed964726c3b19a0bce1cb53a05e013b5c520",
     "02_rtl/rtl/unified_its_wrapper.sv": "903cd9b2526447d774332d57a6511f952f7cd6f16d14e7e78059357d06a4bc87",
     "02_rtl/rtl/its_unified_submission_top.sv": "39caf8e3bba2992ffad8c2407f9ad10341e2aa8c03ea0a07f5c0a0e6744436d1",
-    "03_verification/tb/bounded_lfnst_engine_tb.sv": "ec7bf615953be5752d30404a6316d845952e3913826600e33254051c161b4907",
+    "03_verification/tb/bounded_lfnst_engine_tb.sv": "449e74f3b4fc1d930e266c4696d564bc0432eb5c2e3afdd5cd9fed9113dd3d7b",
     "03_verification/tb/end_attribution_barrier_queue_tb.sv": "1b79d9a2d1da689056f3adeb225d36bd98578c7894a3f24af5f58928e0312897",
     "03_verification/tb/end_attribution_ordering_tb.sv": "3e7eca2b5fe4a5d9d3a44b89aa1fbd47b77039cee48dda98fcfbc0a4223a66a0",
     "03_verification/tb/end_attribution_simultaneous_tb.sv": "442941e139a0d0d85b1de2f665b1a997f176c28224f03227f35d71550b5a2de3",
-    "03_verification/tb/its_full_spatial_performance_tb.sv": "019ba0bf7557395398cbd3a155bcda7438c066d6373687849e5c34dcfbef2430",
-    "03_verification/tb/its_full_spatial_stream_performance_tb.sv": "fd04127c0139afd1fbc13b044afdefd782d14c12c805514d8db8024bc0425a19",
-    "03_verification/tb/its_unified_submission_top_dc_full_tb.sv": "439cc119d8d1212cc1598a697b23043e9329f259d915f3c2a442b1717d3b9302",
-    "03_verification/tb/its_unified_submission_top_full_spatial_contract_tb.sv": "4552ac85ff224f70e94f138c7dfa8e3c4fb70eb12e2449e14af70eea49aabc82",
-    "03_verification/tb/its_unified_submission_top_full_spatial_tb.sv": "0981514bdf22a22a7209fa8cdd892d8fc356c231c9a930ceb58e8f83e67978b4",
-    "03_verification/tb/its_unified_submission_top_numeric_tb.sv": "6bfe870eee371b7da4c639c2f2b3a3abdf60076a57ff127cac0a44cf2b62bae9",
-    "03_verification/tb/its_unified_submission_top_protocol_tb.sv": "3cc0a5bfa405a81deea3373f0ef389ae38cedfb1bca244d3bfcf412626161f92",
-    "03_verification/tb/its_unified_submission_top_sat10_tb.sv": "bdfe7c57b05ca37350c5b4698eacbc53e510a0eee117be6a98b4fc00a1173a54",
-    "03_verification/tb/p2f_dct2_64_b1_tb.sv": "a14711f7de90a3537d7902d2f2653146816acaeddead429604ee252fd8fe6cae",
-    "03_verification/tb/r4c_latency_contract_tb.sv": "acff21c601af88322394e291ab99a3ad27cf36ee09428b8b1b6336fa39b35af1",
-    "03_verification/tb/step12b_dct2_64_wrapper_descriptor_tb.sv": "7b39ea9d0554a171a76cde1a5df4ac0921b32b7dc0a7d5e6b4503cf6f76a1c06",
-    "03_verification/tb/step12b_dct2_64_wrapper_epoch_tb.sv": "80a70b2105c3ba38afeaba7efc35925bf72f3ede98a84355e9284319ba86781e",
-    "03_verification/tb/step12b_dct2_64_wrapper_random_tb.sv": "b69b1946905b3d2fd71a525c1fd916ebd4766b9de430c79d54ea43396808abf1",
-    "03_verification/tb/step12b_dct2_64_wrapper_tb.sv": "155d0298b981145c5c27fb63337b80cbca4dae1649986ab3ba3cb766657ba4f2",
-    "03_verification/tb/step12b_dct2_64_wrapper_two_tu_tb.sv": "e5e159c9d0e8301b19469277d51aa036c3f1eceb0c308ec616111463dc7815ce",
-    "03_verification/tb/step12b_memory_timing_probe_tb.sv": "6059288747b065525cb5ded2d528b98d9a273421fe78dc25d221301403202e79",
+    "03_verification/tb/its_full_spatial_performance_tb.sv": "e936bf25f07cd74abe091e69a79c600be671d89a3bbc1ad33d8f8a81e153ab08",
+    "03_verification/tb/its_full_spatial_stream_performance_tb.sv": "ae80ad9a13598f8e1ae0273cdc47a9dc67fd971e614ad537cdf6b30ee404566d",
+    "03_verification/tb/its_unified_submission_top_dc_full_tb.sv": "13576f779f3cab42d592251baa7047c058511af1b494b1f811d6e5a15115d34c",
+    "03_verification/tb/its_unified_submission_top_full_spatial_contract_tb.sv": "67a083ac6a78f8e7f10f0fcad7ca4b90a63b7e362eadf6330534d271272d88c2",
+    "03_verification/tb/its_unified_submission_top_full_spatial_tb.sv": "4ff048f0fbfdf09e682a5978544990ece64a9114060ab9470d5700c95ccb738d",
+    "03_verification/tb/its_unified_submission_top_numeric_tb.sv": "d565ee0d27ee58c1fd65c1522f4d29540e46910957e8320d8be4ebb8f834e43a",
+    "03_verification/tb/its_unified_submission_top_protocol_tb.sv": "9285af7063791fd11676f034f369fe53311d38741436afafd15cb8c3b9719097",
+    "03_verification/tb/its_unified_submission_top_sat10_tb.sv": "c3e4000fc6acfdaa022b7d2ac503478b2f873acfa26527febb1813d1c4c70765",
+    "03_verification/tb/p2f_dct2_64_b1_tb.sv": "75f0d07673f3aaa0ea2377e4c060158d45b375b30bf5874a37692a996447e769",
+    "03_verification/tb/r4c_latency_contract_tb.sv": "9e75931a5e319a33174a48b02b64b09e751ca104570e2ccf36228dbbc80b5489",
+    "03_verification/tb/step12b_dct2_64_wrapper_descriptor_tb.sv": "024e0501a838aa16cb34d2e6849b9ed1ae6f2c83710b0d41cdbb2ae7d35f4970",
+    "03_verification/tb/step12b_dct2_64_wrapper_epoch_tb.sv": "f436c6bf7fb5f254e0e9b95b2a7d43994f9ad7370c47370c8d3effa5531f2d27",
+    "03_verification/tb/step12b_dct2_64_wrapper_random_tb.sv": "3e3613f5e8996b3370662918c60e6d08c0ea557a9e36480e138de01e5d8aefab",
+    "03_verification/tb/step12b_dct2_64_wrapper_tb.sv": "9665dd1e34454cddb10bfd9c2115433fd94f7fa957f7d17a06c28a5f8a982c40",
+    "03_verification/tb/step12b_dct2_64_wrapper_two_tu_tb.sv": "44c7f50e901a7ac0ecd21709ad59ad7a3e11136a7b060c828a9fe3323e6b1fc3",
+    "03_verification/tb/step12b_memory_timing_probe_tb.sv": "9006368d5ae057a55d1d6a5143698453ee7e5baf82c7ab8ab2996c0becc57df4",
     "03_verification/tb/unified_its_end_attribution_tb.sv": "2f349bf7bad0766839ad33a1058c8fc677be33c14095e609c9436a270a337e5f",
     "03_verification/tb/unified_its_final_adapter_tb.sv": "f71e276160f07bc7e610bdeb3d1b175c901fef32420de24d443e3ae10114a082",
-    "03_verification/tb/unified_its_hread_raw_capture_tb.sv": "7089bd5dccf547e37e3730944e8590b92cd13a198cc777f99373b1bded256382",
-    "03_verification/tb/unified_its_primary_v_return_tb.sv": "a619cd625936b8b7d06a5fe494c4e73203226b0b1c4e96a5855caf8eec3dbbe3",
-    "03_verification/tb/unified_its_sat10_wrapper_tb.sv": "fe308e126dc329540f9f64a97e1bf994b9f3c5897c58ea5500d7748c972c2b8c",
+    "03_verification/tb/unified_its_hread_raw_capture_tb.sv": "384688895ad1203661d9ce1e2b86a484f7bdca83a599bc2da2618d0df1953a68",
+    "03_verification/tb/unified_its_primary_v_return_tb.sv": "b04a01b09a5b0fef89e26f3a05d97a8b77fcc3a7e53cae343e68f846be254c99",
+    "03_verification/tb/unified_its_sat10_wrapper_tb.sv": "fbca961e4cc2ac696a81f8a30efbdc5ac9d44c9c83c236654108d121ce34f54c",
     "03_verification/tb/unified_its_wrapper_numeric_tb.sv": "058a530e8c17acba2a453a676a6cbe92bc7b3463c68b38245f2adf279b636514",
     "03_verification/tb/unified_its_wrapper_p3_tb.sv": "66abdad10ab9370ca50574a35a7567905ca89a771cd3d7f631c318a7592ea643",
     "03_verification/tb/unified_its_wrapper_tb.sv": "37e4d5d62aa4a9dfb592d763338d58fd33e419fc3337427f5a4bd85f46e0e2c9",
-    "03_verification/tb/unified_p4_coeff_layout_tb.sv": "b001e8efb832116c58d294577803a8c6a9fadeafe234cfaa0d4f0b0624ce672c",
-    "03_verification/tb/unified_p4_fifo_payload_reset_tb.sv": "04268398c3637db038d5dd6a9ee85876211bf331be562635bca81e337ea6157c",
-    "03_verification/tb/unified_p4_kernel_numeric_tb.sv": "85a466ec07f195d5c1788a30a400957c237174ba77a3b9705de520031cc3e198",
-    "03_verification/tb/unified_p4_kernel_p4_tb.sv": "1d7fa2bc9b4c7936d508cb79b30e97a7a6def7a267a8c9da029c6a88b7036722",
-    "03_verification/tb/unified_p4_kernel_throughput_full_tb.sv": "e9cfbff26ba6003017c5c69fb2ed563cb0448bb509759da86e716023b274d180",
-    "03_verification/tb/unified_p4_kernel_throughput_tb.sv": "793c6997c499ed40a91a8b9986bba12958ddb967d06e550da5cc204457ceedd6",
-    "03_verification/step12d_engineering/finalize_gate_a.py": "18a2fb1273d5986772d2be9ea754cb3c9b0da002ded8f3706a465ef33d2ac903",
-    "03_verification/step12d_engineering/finalize_step12d_step12e.py": "21e19aef4a370e932acbeb2c59b410987b0b34302a820fa5aac66f314efcbf33",
-    "03_verification/step12d_engineering/generate_full_spatial_performance_vectors.py": "64fc2e11323fca989dce97faf9c068815e934e2a1340f1c59787f07ef567163f",
-    "03_verification/step12d_engineering/generate_gate_b_hdl_vectors.py": "a9f82fac730996c0f2353119ae62bcb28cdb441767e21a77723451eee1116d20",
+    "03_verification/tb/unified_p4_coeff_layout_tb.sv": "928242b58b35d7f0b61f9b28b7034b10f8f5a561755e96df0c3b90082f6b8b04",
+    "03_verification/tb/unified_p4_fifo_payload_reset_tb.sv": "c498e7e222b84c3460eef171b8c4a290efaf5ea0ad4f0d65b1334c5601249e1d",
+    "03_verification/tb/unified_p4_kernel_numeric_tb.sv": "5f3407cfb9aaf9a4f0571228af798ee18199e773f5a8da16b9bbb896913fbbf2",
+    "03_verification/tb/unified_p4_kernel_p4_tb.sv": "c91d878e460161489a83c849bd1841349378a10e602f091ee8ac5dc9dc729d5b",
+    "03_verification/tb/unified_p4_kernel_throughput_full_tb.sv": "c5eebd5787440ef592eed94c97f2a3a4f8c1bb100f751773710c4ef7e4c52b14",
+    "03_verification/tb/unified_p4_kernel_throughput_tb.sv": "38e92c79feff783e0c0fe5c6d484525ebc027ee92197a82393f91ee30d9ae284",
+    "03_verification/step12d_engineering/finalize_gate_a.py": "efbd0d68eee11e8ebd6c3592322bdb0a7ea92874bad3cce4f562f95bac491552",
+    "03_verification/step12d_engineering/finalize_step12d_step12e.py": "85031829c74d5044ed7300af390fc966ff2eca64cdd9b1e5a0511249409ef20f",
+    "03_verification/step12d_engineering/generate_full_spatial_performance_vectors.py": "1d59e40b5a59e8055b2b1dc6b8a7ad5bfd83c88c99205a9a7fd6638240252c0e",
+    "03_verification/step12d_engineering/generate_gate_b_hdl_vectors.py": "0b9352760fc4be952c68b969f7daba58cf5ebd507730ad457c89a11880cb2ff8",
     "03_verification/step12d_engineering/generate_gate_c_hdl_vectors.py": "d826f52c5f26a2b22770ab4ce3c2d589f3ab0470195d0c131aa08b855fe61211",
-    "03_verification/step12d_engineering/generate_lfnst_engine_vectors.py": "add837d074661444078a1342f0c614bd01cfbdb08b983ac706da9002b246eb55",
+    "03_verification/step12d_engineering/generate_lfnst_engine_vectors.py": "7f7cf8c9067e6bf5d83e89c7d015c86482a48bf80606ecca9e34446cff737132",
     "03_verification/step12d_engineering/generate_lfnst_wrapper_vectors.py": "05250c34586cb0dd1425f7ed6253bd7273a51ca42604552bba3bfaf9f3cbc243",
-    "03_verification/step12d_engineering/pack_lfnst_coeffs.py": "3b78aef1a323b495569ef5525719c48b569d27b0291b71b921b57063d73d960f",
+    "03_verification/step12d_engineering/pack_lfnst_coeffs.py": "73e82a55a876b418383cb6dd8a7af8c0559a745993b624ea4015117437c2a0a7",
     "03_verification/step12d_engineering/profile_contract.py": "6fc38ec97d697236bb5e8094f329171dd124b748f7f0f0b34d846aed18c48fa0",
     "03_verification/step12d_engineering/run_functional_closure.py": "8dc1fcb2174a366bdfd0d3aab06a1b25f2e9aa817855ebf396905cc04c252493",
-    "03_verification/step12d_engineering/run_vtm_engineering_oracle.py": "9a2dba2c33d41ed5770c6a4be4573fe63d79c3459522b5178f1a9b20acf4d373",
-    "03_verification/step12d_engineering/test_lfnst_layout_contract.py": "ef1d1080e8241c2dfb05a935e9ed95323b549c54a3e98b34f595cdd65cf60c5e",
+    "03_verification/step12d_engineering/run_vtm_engineering_oracle.py": "5369de650b78ff19789f473c02f65c52b117a3fcad758a47581b9d9bfecd09f2",
+    "03_verification/step12d_engineering/test_lfnst_layout_contract.py": "f7e64ef361e4f913a3352b3237ed05f89818160bd997e7836e94b906c53d63c1",
     "03_verification/step12d_engineering/validate_gate_a.py": "dac584eba3dde07017624ce343b18f16f13a05547202e0cf8e76c8fc5ab83040",
-    "03_verification/step12d_engineering/validate_gate_b.py": "4c04da81fbf9db5126ce5989f868a5021b6a014ae9ab216bc89bb5712b57a71b",
-    "03_verification/step12d_engineering/validate_gate_c_model.py": "d247740809a08e0706c80a8458172187236a7feebcdd1919d268a1cef48d217e",
+    "03_verification/step12d_engineering/validate_gate_b.py": "fc2dfe4802635f4c94bda02bdda6f0b9757bbf7b4315959dddda208df61e3d8c",
+    "03_verification/step12d_engineering/validate_gate_c_model.py": "0de663a03e451cd66f9eab9dea50f61c01a7239a825dbeb0a875cc467daa5663",
     "03_verification/step12d_engineering/validate_sat10_profile.py": "ce9c625db9f5ea63fbf780c6d9db784db7f44d115497c7f3c0559fd2521a5ee3",
     "03_verification/step12d_engineering/verify_full_spatial_reference.py": "750b66b6a4e8a99aacb7a42dd2979a75570beebc5530a15df4f5a65278346a69",
-    "03_verification/step12d_engineering/verify_p3_intermediate_mapping.py": "91751fcecd36a37550037db775006f431071d3dfc610ec68eb8b777b1b36c943",
-    "03_verification/step12d_engineering/build_final_submission_package.ps1": "917c6632a505d296213e3f05b62fbfa4bc8d27ea8f329881b897bde187f45bf7",
+    "03_verification/step12d_engineering/verify_p3_intermediate_mapping.py": "cc06b1af3a7d6a49da638f6b6c2d408fb82756ad46f558d92cee6454d38be82d",
+    "03_verification/step12d_engineering/build_final_submission_package.ps1": "ac8546c3fb164109c7fc578a19af803d2c2402f76aad22f712412296645a2ef1",
     "03_verification/step12d_engineering/qualify_full_spatial_repair.ps1": "685eb29595a22a899a9b7fe4c5677fa88ccc6133d23fd205df72a6955df818f1",
-    "03_verification/step12d_engineering/run_final_submission_package.ps1": "189e5f4437685160401d74cff02d00b3ae8ad6b10b0a00a2f43b2446b95ba3c5",
+    "03_verification/step12d_engineering/run_final_submission_package.ps1": "2121188c752858e35aac8f8203c34060d3184b8ea89eba4f86c7bd63997f62b7",
     "03_verification/step12d_engineering/run_full_spatial_performance.ps1": "24dd3adb936c01d9db1bad799bea4928de47e6a41a7caf5e69873fcdcdfaf4e1",
     "03_verification/step12d_engineering/run_full_spatial_regression.ps1": "8be2f5b4aafc4de867ee9ddb377bbd7daefb4a7b52559d1559fa2bb0950577f8",
     "03_verification/step12d_engineering/run_gate_b_c_modelsim.ps1": "94695559667bbc80e7a68d942af76dcd26acb8a45ab5010bd1dfd851fc877210",
-    "03_verification/step12d_engineering/run_sat10_functional_checkpoint.ps1": "5d3d7ead01cc6e74cf2772569823b6e19fc82283490b06921d9237f5d8d4b3f5",
+    "03_verification/step12d_engineering/run_sat10_functional_checkpoint.ps1": "5ba0b08c3fcf1e5fce5f7a8ebd22380c6e131c7747e81ab18fccb2375cb70d56",
     "03_verification/step12d_engineering/run_step12f_coverage_modelsim.ps1": "51cfb7b5685ece2fffaf5d427840079adbe8b1f4474e7e02c6c936f19d8b5975",
     "03_verification/step12d_engineering/profiles/contest_engineering_vtm10_sat10_v2.json": "ad11ca8eb0fde362079eab10312c48b33f4a2ec5684d0296521b60e59665ca2c",
     "03_verification/step12d_engineering/profiles/contest_engineering_vtm10_v1.json": "b73cfad9902208818d4d5a50d7330155ccf397b0550dc887c8d37f00b90d1cd7",
     "02_rtl/rtl/lfnst_coeffs.hex": "c213981269e2aea31c31e77717f5397278f90bbd26ea762138a5fd3e887f2bc6",
     "02_rtl/rtl/lfnst_packed_coeffs.hex": "511b2688ec5cd96aa26b52ee2ed6628b2c58fd4183ea16cbfc69337677f49073",
     "02_rtl/rtl/rom_coeffs.hex": "074d5a19ad556c55c29cdecc07c543047a67e19316c7875b3d7b0d6ea491acd6",
-    "03_verification/step12d_engineering/vtm_full_spatial_oracle.cpp": "f7b122c857e3d385ab65057ce46be39352fc1cdae29edb1d04028464a02b5eab",
+    "03_verification/step12d_engineering/vtm_full_spatial_oracle.cpp": "bab4ad1f4f3581d266c9820b4e082f5077943f16de64107e267b975f2a0599b6",
     "04_reference/VTM/source/Lib/CommonLib/Common.h": "37264b05a63177eb6e8efa1c169c4967c93d40b54f7c4f3e07bb6de8bc00814e",
     "04_reference/VTM/source/Lib/CommonLib/CommonDef.h": "76140d26c3c9d13fe5c7c47a96f4fe9a7b93974d33dd49fa3e7f210b541be42d",
     "04_reference/VTM/source/Lib/CommonLib/CommonSimdCfg.h": "dafc544599b6d1250cdf5ccfc3ac9cb15532be53b435f56b7cac3403e1510166",
@@ -83,16 +83,16 @@
     "04_reference/VTM/source/Lib/CommonLib/version.h": "de5f8b2ec96c112b0809c8558b4af0452c18a8dac66ae372a64a9d8de5aac278",
     "04_reference/VTM/source/Lib/CommonLib/RomTr.cpp": "302ebc5d69937792af7f099358756adba0df9637a50ff14999e55d13b6516fce",
     "04_reference/VTM/source/Lib/CommonLib/TrQuant_EMT.cpp": "3a4dfd0e091c62964b83b881c0bca0fd4aa6d0fd2ee25d4aafab6f0a37b03f13",
-    "03_verification/output/canonical_matrices.json": "d4c497cfbae64096c69d640bad154e4e3bae1f5834f82149623a83028b81e9f6",
-    "05_audit/current/27/step12d_engineering/ARCHITECTURE_DECISION.json": "19b1d62f1b6b185f117ae036186fada11c84ca6ad22379890cf2d59453955d34",
-    "05_audit/current/27/step12d_engineering/CYCLE_RESOURCE_CONTRACT.json": "9e59b7f29224137cb66267300bb7881bf64f6e286ff57380a6ad608b840a4f89",
-    "05_audit/current/27/step12d_engineering/ENGINEERING_PROFILE.json": "466a795a158448b15f43b89f3014af851d6d04694d3a2e251683754d25c59292",
-    "05_audit/current/27/step12d_engineering/GATE_A_CHECKPOINT.json": "03d6a2a7fce1ee808a0f23f3643e9a72c816d1aa628c2fa9e769ff67f72fb9f5",
-    "05_audit/current/27/step12d_engineering/LEGAL_TRANSFORM_MATRIX.json": "ac019f78d4a5fb9b3b6d60699f5dd7a1bc872788cf86fd5fd89deb8f4ec969e3",
-    "05_audit/current/27/step12d_engineering/LFNST_CASE_MATRIX.json": "2b8c6d197c895f152027ff476a932644286dc2cbc7e8389a6caf899534233eb9",
-    "05_audit/current/27/step12d_engineering/OFFICIAL_EXPERT_QA_EVIDENCE.json": "7df1e0115d54f5eb84bcf32807e7ea33098700058c5aa16e7f194e9582100334",
-    "05_audit/current/27/step12d_engineering/P4_EXECUTION_PROOF.json": "73028289d43b94c5589c609d03765c109355a1de3468c9ac97b1c9529e6263c0",
-    "05_audit/current/27/step12d_engineering/VTM_ZERO_OUT_RULES.json": "6b7083833bffc23b0a565c0ce3739e2b3908624fcc0a84603fa6d03497da958d"
+    "03_verification/output/canonical_matrices.json": "036a45aa22ee14d0361e4afd296e34b017ddb3608fea85d369001df696e13830",
+    "05_audit/current/27/step12d_engineering/ARCHITECTURE_DECISION.json": "d87a27675ca4737bb61cf6566dc56316405a50be838522d6201efc04c09f2711",
+    "05_audit/current/27/step12d_engineering/CYCLE_RESOURCE_CONTRACT.json": "df279de87bb03bc1f23abf23a96628b69dafe24d8854b29ffca09bd2ea8314f4",
+    "05_audit/current/27/step12d_engineering/ENGINEERING_PROFILE.json": "48c2c809a94b040fbea86d44f24a51d0db4c4441f0fccc021c09251185e5a9a0",
+    "05_audit/current/27/step12d_engineering/GATE_A_CHECKPOINT.json": "443d28eec01162f36bfe6895f9ba67da56656a66c6f1f83a2983eff7d7c47b65",
+    "05_audit/current/27/step12d_engineering/LEGAL_TRANSFORM_MATRIX.json": "ed96b430a1413ef039ee798783b1394bb6154d2aa030ba4f7ecf109e1f4393f4",
+    "05_audit/current/27/step12d_engineering/LFNST_CASE_MATRIX.json": "4719caa93adaab1323a8212db0b6d0bf80b1171fdf04c1941459eb88d21f511a",
+    "05_audit/current/27/step12d_engineering/OFFICIAL_EXPERT_QA_EVIDENCE.json": "dd6eaefc57cca196cd53f6bc3a2591292efd7cea43859c6bde412f916dafcb1f",
+    "05_audit/current/27/step12d_engineering/P4_EXECUTION_PROOF.json": "c1bb2280e08f2069bfa547ef83f2db5bcabec24bf19acba0d74ebbf3bb374f36",
+    "05_audit/current/27/step12d_engineering/VTM_ZERO_OUT_RULES.json": "6f900ddfe68319c52a8052062b9ceaf747be9baf06d0a27fc042859d51bf637e"
   },
   "records": [
     {
@@ -122,7 +122,7 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/current/normal/unified_its_end_attribution_tb/simulation.log",
-      "log_sha256": "88baddf14f17c080e7acd6673038ea70df9b9cf14474ddb0e23a445c14974d70"
+      "log_sha256": "4597e602bcc24a990f76db0344e6226b173be5d1ed255cf578ca4a85b558dc96"
     },
     {
       "variant": "current",
@@ -151,7 +151,7 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/current/synthesis/unified_its_end_attribution_tb/simulation.log",
-      "log_sha256": "7d997efc09928112f9b1333477e69abfbbf60a5b205f2a9208c66ccc19869ace"
+      "log_sha256": "9c4c01029e9e587150d52e41a4c07aae8aedfbf80f52baa0bf40c574cddfbbb4"
     },
     {
       "variant": "current",
@@ -163,7 +163,7 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/current/normal/end_attribution_simultaneous_tb/simulation.log",
-      "log_sha256": "8aa116aef8add4c140ea800d3644ad040d2c075c45fd5b0b2bc99070885aa0f5"
+      "log_sha256": "8366ad1bbdef1a3b7cda0ba242a7b7fae1316b1be06e5706450226358f32c516"
     },
     {
       "variant": "current",
@@ -175,7 +175,7 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/current/synthesis/end_attribution_simultaneous_tb/simulation.log",
-      "log_sha256": "be3d6257aec730084c82044bb5dac6e3d479a8971b1b32d2712c10f982784d57"
+      "log_sha256": "6d85cdb0c73a74f08c9594e0f24480953eb322263feceb15d9e4338e01c2224c"
     },
     {
       "variant": "current",
@@ -186,7 +186,7 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/current/normal/end_attribution_ordering_tb/simulation.log",
-      "log_sha256": "cd57e50822416bb57db662c619a94f13af06b24235c2ebfab7c56db3ab16c4de"
+      "log_sha256": "b1162cf6f6a116e003d2072b91be27ac69efff5b5cd8fbc1afa5265f73f0f909"
     },
     {
       "variant": "current",
@@ -197,7 +197,7 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/current/synthesis/end_attribution_ordering_tb/simulation.log",
-      "log_sha256": "1c7f3b511dea45bf46eb2fa076959dbdba89afcb10a52210f80cc645546026b8"
+      "log_sha256": "52a81f1b4c7c888974b9d2ef14ae265a7f7f290bbe7e3bc653e9307652448652"
     },
     {
       "variant": "current",
@@ -208,7 +208,7 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/current/normal/end_attribution_barrier_queue_tb/simulation.log",
-      "log_sha256": "0acfe7f575d4da86c8ce82edd0f1be502e5de5f67d47b802ea36a28a1de8e7c2"
+      "log_sha256": "694351f01754901f4416433dc6a7413fb90b16200ec61bf99a47048a72ee9a20"
     },
     {
       "variant": "current",
@@ -219,7 +219,7 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/current/synthesis/end_attribution_barrier_queue_tb/simulation.log",
-      "log_sha256": "016d31ab25c3befebb5a1e1881c6d9ee2006cd25a5895797dbb08ee77f8fb958"
+      "log_sha256": "a9903e58cc528efa9016439aae74d6c97169ba695c1b4dd10917c056d584ab30"
     },
     {
       "variant": "no_order_barrier",
@@ -230,7 +230,7 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/no_order_barrier/normal/end_attribution_ordering_tb/simulation.log",
-      "log_sha256": "334797d1d47ede43e27f7c92038f793c3e3744d6feb8a687342367c0c6b4fcd9"
+      "log_sha256": "ed1d725d3f2a7f085c4c1305303b0997d42af690049e88e366c4347359239f63"
     },
     {
       "variant": "no_order_barrier",
@@ -241,7 +241,7 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/no_order_barrier/synthesis/end_attribution_ordering_tb/simulation.log",
-      "log_sha256": "667a3aa4afb457bd038c9be8e595d3b269d1f6dd42394817ba763a96357cd5c1"
+      "log_sha256": "535178c369875c66a5bee35bb11ad387a8c33b42de1c2fa021eadc5efa57814c"
     },
     {
       "variant": "no_order_barrier",
@@ -252,7 +252,7 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/no_order_barrier/normal/end_attribution_barrier_queue_tb/simulation.log",
-      "log_sha256": "e572bc13f95655bc5b6afacac12580170ebb6a9c6848204eeda786448a88723f"
+      "log_sha256": "43410a26ab284810efe69b672c0af647117802553bcc63de9cf1360670930d16"
     },
     {
       "variant": "no_order_barrier",
@@ -263,7 +263,7 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/no_order_barrier/synthesis/end_attribution_barrier_queue_tb/simulation.log",
-      "log_sha256": "b05be0530b74de518558c97448651fa3529b50eddc40ba3888337bcf679e56ae"
+      "log_sha256": "1b100f9d23ee88e9255e4a2ecc901c450791905c1d26cbfb2eb456082f89f76a"
     },
     {
       "variant": "frozen_no_early_end",
@@ -292,7 +292,7 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/frozen_no_early_end/normal/unified_its_end_attribution_tb/simulation.log",
-      "log_sha256": "7747c449edd8de02c3f3ddcd7a58bd9d29478e69ebacc80b7a66739b51c85c09"
+      "log_sha256": "b45164cd35fbbe35df6f7aa50c7e754601b8797b09d434a94fe4af69056494e2"
     },
     {
       "variant": "frozen_no_early_end",
@@ -321,12 +321,42 @@
       },
       "expected_outcome_matched": true,
       "log": "directed/frozen_no_early_end/synthesis/unified_its_end_attribution_tb/simulation.log",
-      "log_sha256": "eb58c8a4dc4ac828ae68b3c94e5711d7cecd5afe2ab35d0084a845fd1587ae40"
+      "log_sha256": "7f662a4aa4991fc12d86491b7c59e792b9d45ef7339e2939e9302a0138ef11ca"
     }
   ],
   "rtl_modified_by_runner": false,
   "negative_control_policy": "Generated temporary mutants; compile failure is never a detected defect.",
   "full_qualification": {
+    "new_simulations": 6,
+    "native_reference_cases": 667,
+    "existing_simulations": 36,
+    "negative_control": "EXPECTED_FAIL_DETECTED",
+    "physical": "REQUIRES_SEPARATE_FRESH_IMPLEMENTATION_EVIDENCE",
+    "python_stages": [
+      {
+        "status": "PASS_SAT10_PROFILE_INHERITS_V1_ARITHMETIC",
+        "stage": "01_profile",
+        "exit_code": 0
+      },
+      {
+        "status": "PASS_GATE_A_PROFILE_INHERITANCE",
+        "stage": "02_profile_inheritance",
+        "exit_code": 0
+      },
+      {
+        "status": "PASS_INDEPENDENT_VTM_PROFILE_ORACLE_AND_IMPACT_AUDIT",
+        "stage": "03_python_oracle",
+        "exit_code": 0
+      },
+      {
+        "status": "PASS_ENGINEERING_PROFILE_2D_PROTOCOL_MODEL",
+        "stage": "04_python_2d",
+        "exit_code": 0
+      }
+    ],
+    "official_equivalence": "NOT_PROVEN",
+    "total_positive_simulations": 42,
+    "native_reference_values": 352896,
     "source_files": [
       {
         "path": "02_rtl\\rtl\\bounded_lfnst_engine.sv",
@@ -353,28 +383,8 @@
         "sha256": "511B2688EC5CD96AA26B52EE2ED6628B2C58FD4183EA16CBFC69337677F49073"
       },
       {
-        "path": "02_rtl\\rtl\\p2f_dct2_64_b1_step101.sv",
-        "sha256": "A16221183A6E7028792FECBF9366665FBDD4648C8157A91460C87C24BEC7E92C"
-      },
-      {
-        "path": "02_rtl\\rtl\\p2f_dct2_64_b1_step102.sv",
-        "sha256": "ED14BDC7B8DAACA5343F6718EA65E0388A5FFA04E155C337EA08BC96DC47E3DA"
-      },
-      {
-        "path": "02_rtl\\rtl\\p2f_dct2_64_b1.sv",
-        "sha256": "2680C8F2D3C5DE81D7FCC4AC2E1230244298BB586CA939774326357B214ECA97"
-      },
-      {
         "path": "02_rtl\\rtl\\rom_coeffs.hex",
         "sha256": "074D5A19AD556C55C29CDECC07C543047A67E19316C7875B3D7B0D6EA491ACD6"
-      },
-      {
-        "path": "02_rtl\\rtl\\step12b_dct2_64_wrapper.sv",
-        "sha256": "D131756726A40E18B46AFAE58A560776E0DDFB48B4FB88DAF1DA410293ECEA35"
-      },
-      {
-        "path": "02_rtl\\rtl\\step12f_registered_neighbor_harness.sv",
-        "sha256": "BB6BEE87957E2E399461184AEE0F054B2EF070F51426605719025623D67806A3"
       },
       {
         "path": "02_rtl\\rtl\\unified_its_wrapper.sv",
@@ -386,7 +396,7 @@
       },
       {
         "path": "03_verification\\tb\\bounded_lfnst_engine_tb.sv",
-        "sha256": "EC7BF615953BE5752D30404A6316D845952E3913826600E33254051C161B4907"
+        "sha256": "449E74F3B4FC1D930E266C4696D564BC0432EB5C2E3AFDD5CD9FED9113DD3D7B"
       },
       {
         "path": "03_verification\\tb\\end_attribution_barrier_queue_tb.sv",
@@ -402,67 +412,67 @@
       },
       {
         "path": "03_verification\\tb\\its_full_spatial_performance_tb.sv",
-        "sha256": "019BA0BF7557395398CBD3A155BCDA7438C066D6373687849E5C34DCFBEF2430"
+        "sha256": "E936BF25F07CD74ABE091E69A79C600BE671D89A3BBC1AD33D8F8A81E153AB08"
       },
       {
         "path": "03_verification\\tb\\its_full_spatial_stream_performance_tb.sv",
-        "sha256": "FD04127C0139AFD1FBC13B044AFDEFD782D14C12C805514D8DB8024BC0425A19"
+        "sha256": "AE80AD9A13598F8E1AE0273CDC47A9DC67FD971E614AD537CDF6B30EE404566D"
       },
       {
         "path": "03_verification\\tb\\its_unified_submission_top_dc_full_tb.sv",
-        "sha256": "439CC119D8D1212CC1598A697B23043E9329F259D915F3C2A442B1717D3B9302"
+        "sha256": "13576F779F3CAB42D592251BAA7047C058511AF1B494B1F811D6E5A15115D34C"
       },
       {
         "path": "03_verification\\tb\\its_unified_submission_top_full_spatial_contract_tb.sv",
-        "sha256": "4552AC85FF224F70E94F138C7DFA8E3C4FB70EB12E2449E14AF70EEA49AABC82"
+        "sha256": "67A083AC6A78F8E7F10F0FCAD7CA4B90A63B7E362EADF6330534D271272D88C2"
       },
       {
         "path": "03_verification\\tb\\its_unified_submission_top_full_spatial_tb.sv",
-        "sha256": "0981514BDF22A22A7209FA8CDD892D8FC356C231C9A930CEB58E8F83E67978B4"
+        "sha256": "4FF048F0FBFDF09E682A5978544990ECE64A9114060AB9470D5700C95CCB738D"
       },
       {
         "path": "03_verification\\tb\\its_unified_submission_top_numeric_tb.sv",
-        "sha256": "6BFE870EEE371B7DA4C639C2F2B3A3ABDF60076A57FF127CAC0A44CF2B62BAE9"
+        "sha256": "D565EE0D27EE58C1FD65C1522F4D29540E46910957E8320D8BE4EBB8F834E43A"
       },
       {
         "path": "03_verification\\tb\\its_unified_submission_top_protocol_tb.sv",
-        "sha256": "3CC0A5BFA405A81DEEA3373F0EF389AE38CEDFB1BCA244D3BFCF412626161F92"
+        "sha256": "9285AF7063791FD11676F034F369FE53311D38741436AFAFD15CB8C3B9719097"
       },
       {
         "path": "03_verification\\tb\\its_unified_submission_top_sat10_tb.sv",
-        "sha256": "BDFE7C57B05CA37350C5B4698EACBC53E510A0EEE117BE6A98B4FC00A1173A54"
+        "sha256": "C3E4000FC6ACFDAA022B7D2AC503478B2F873ACFA26527FEBB1813D1C4C70765"
       },
       {
         "path": "03_verification\\tb\\p2f_dct2_64_b1_tb.sv",
-        "sha256": "A14711F7DE90A3537D7902D2F2653146816ACAEDDEAD429604EE252FD8FE6CAE"
+        "sha256": "75F0D07673F3AAA0EA2377E4C060158D45B375B30BF5874A37692A996447E769"
       },
       {
         "path": "03_verification\\tb\\r4c_latency_contract_tb.sv",
-        "sha256": "ACFF21C601AF88322394E291AB99A3AD27CF36EE09428B8B1B6336FA39B35AF1"
+        "sha256": "9E75931A5E319A33174A48B02B64B09E751CA104570E2CCF36228DBBC80B5489"
       },
       {
         "path": "03_verification\\tb\\step12b_dct2_64_wrapper_descriptor_tb.sv",
-        "sha256": "7B39EA9D0554A171A76CDE1A5DF4AC0921B32B7DC0A7D5E6B4503CF6F76A1C06"
+        "sha256": "024E0501A838AA16CB34D2E6849B9ED1AE6F2C83710B0D41CDBB2AE7D35F4970"
       },
       {
         "path": "03_verification\\tb\\step12b_dct2_64_wrapper_epoch_tb.sv",
-        "sha256": "80A70B2105C3BA38AFEABA7EFC35925BF72F3EDE98A84355E9284319BA86781E"
+        "sha256": "F436C6BF7FB5F254E0E9B95B2A7D43994F9AD7370C47370C8D3EFFA5531F2D27"
       },
       {
         "path": "03_verification\\tb\\step12b_dct2_64_wrapper_random_tb.sv",
-        "sha256": "B69B1946905B3D2FD71A525C1FD916EBD4766B9DE430C79D54EA43396808ABF1"
+        "sha256": "3E3613F5E8996B3370662918C60E6D08C0EA557A9E36480E138DE01E5D8AEFAB"
       },
       {
         "path": "03_verification\\tb\\step12b_dct2_64_wrapper_tb.sv",
-        "sha256": "155D0298B981145C5C27FB63337B80CBCA4DAE1649986AB3BA3CB766657BA4F2"
+        "sha256": "9665DD1E34454CDDB10BFD9C2115433FD94F7FA957F7D17A06C28A5F8A982C40"
       },
       {
         "path": "03_verification\\tb\\step12b_dct2_64_wrapper_two_tu_tb.sv",
-        "sha256": "E5E159C9D0E8301B19469277D51AA036C3F1ECEB0C308EC616111463DC7815CE"
+        "sha256": "44C7F50E901A7AC0ECD21709AD59AD7A3E11136A7B060C828A9FE3323E6B1FC3"
       },
       {
         "path": "03_verification\\tb\\step12b_memory_timing_probe_tb.sv",
-        "sha256": "6059288747B065525CB5DED2D528B98D9A273421FE78DC25D221301403202E79"
+        "sha256": "9006368D5AE057A55D1D6A5143698453EE7E5BAF82C7AB8AB2996C0BECC57DF4"
       },
       {
         "path": "03_verification\\tb\\unified_its_end_attribution_tb.sv",
@@ -474,15 +484,15 @@
       },
       {
         "path": "03_verification\\tb\\unified_its_hread_raw_capture_tb.sv",
-        "sha256": "7089BD5DCCF547E37E3730944E8590B92CD13A198CC777F99373B1BDED256382"
+        "sha256": "384688895AD1203661D9CE1E2B86A484F7BDCA83A599BC2DA2618D0DF1953A68"
       },
       {
         "path": "03_verification\\tb\\unified_its_primary_v_return_tb.sv",
-        "sha256": "A619CD625936B8B7D06A5FE494C4E73203226B0B1C4E96A5855CAF8EEC3DBBE3"
+        "sha256": "B04A01B09A5B0FEF89E26F3A05D97A8B77FCC3A7E53CAE343E68F846BE254C99"
       },
       {
         "path": "03_verification\\tb\\unified_its_sat10_wrapper_tb.sv",
-        "sha256": "FE308E126DC329540F9F64A97E1BF994B9F3C5897C58EA5500D7748C972C2B8C"
+        "sha256": "FBCA961E4CC2AC696A81F8A30EFBDC5AC9D44C9C83C236654108D121CE34F54C"
       },
       {
         "path": "03_verification\\tb\\unified_its_wrapper_numeric_tb.sv",
@@ -498,47 +508,47 @@
       },
       {
         "path": "03_verification\\tb\\unified_p4_coeff_layout_tb.sv",
-        "sha256": "B001E8EFB832116C58D294577803A8C6A9FADEAFE234CFAA0D4F0B0624CE672C"
+        "sha256": "928242B58B35D7F0B61F9B28B7034B10F8F5A561755E96DF0C3B90082F6B8B04"
       },
       {
         "path": "03_verification\\tb\\unified_p4_fifo_payload_reset_tb.sv",
-        "sha256": "04268398C3637DB038D5DD6A9EE85876211BF331BE562635BCA81E337EA6157C"
+        "sha256": "C498E7E222B84C3460EEF171B8C4A290EFAF5EA0AD4F0D65B1334C5601249E1D"
       },
       {
         "path": "03_verification\\tb\\unified_p4_kernel_numeric_tb.sv",
-        "sha256": "85A466EC07F195D5C1788A30A400957C237174BA77A3B9705DE520031CC3E198"
+        "sha256": "5F3407CFB9AAF9A4F0571228AF798EE18199E773F5A8DA16B9BBB896913FBBF2"
       },
       {
         "path": "03_verification\\tb\\unified_p4_kernel_p4_tb.sv",
-        "sha256": "1D7FA2BC9B4C7936D508CB79B30E97A7A6DEF7A267A8C9DA029C6A88B7036722"
+        "sha256": "C91D878E460161489A83C849BD1841349378A10E602F091EE8AC5DC9DC729D5B"
       },
       {
         "path": "03_verification\\tb\\unified_p4_kernel_throughput_full_tb.sv",
-        "sha256": "E9CFBFF26BA6003017C5C69FB2ED563CB0448BB509759DA86E716023B274D180"
+        "sha256": "C5EEBD5787440EF592EED94C97F2A3A4F8C1BB100F751773710C4EF7E4C52B14"
       },
       {
         "path": "03_verification\\tb\\unified_p4_kernel_throughput_tb.sv",
-        "sha256": "793C6997C499ED40A91A8B9986BBA12958DDB967D06E550DA5CC204457CEEDD6"
+        "sha256": "38E92C79FEFF783E0C0FE5C6D484525EBC027EE92197A82393F91EE30D9AE284"
       },
       {
         "path": "03_verification\\step12d_engineering\\build_final_submission_package.ps1",
-        "sha256": "917C6632A505D296213E3F05B62FBFA4BC8D27EA8F329881B897BDE187F45BF7"
+        "sha256": "AC8546C3FB164109C7FC578A19AF803D2C2402F76AAD22F712412296645A2EF1"
       },
       {
         "path": "03_verification\\step12d_engineering\\finalize_gate_a.py",
-        "sha256": "18A2FB1273D5986772D2BE9EA754CB3C9B0DA002DED8F3706A465EF33D2AC903"
+        "sha256": "EFBD0D68EEE11E8EBD6C3592322BDB0A7EA92874BAD3CCE4F562F95BAC491552"
       },
       {
         "path": "03_verification\\step12d_engineering\\finalize_step12d_step12e.py",
-        "sha256": "21E19AEF4A370E932ACBEB2C59B410987B0B34302A820FA5AAC66F314EFCBF33"
+        "sha256": "85031829C74D5044ED7300AF390FC966FF2ECA64CDD9B1E5A0511249409EF20F"
       },
       {
         "path": "03_verification\\step12d_engineering\\generate_full_spatial_performance_vectors.py",
-        "sha256": "64FC2E11323FCA989DCE97FAF9C068815E934E2A1340F1C59787F07EF567163F"
+        "sha256": "1D59E40B5A59E8055B2B1DC6B8A7AD5BFD83C88C99205A9A7FD6638240252C0E"
       },
       {
         "path": "03_verification\\step12d_engineering\\generate_gate_b_hdl_vectors.py",
-        "sha256": "A9F82FAC730996C0F2353119AE62BCB28CDB441767E21A77723451EEE1116D20"
+        "sha256": "0B9352760FC4BE952C68B969F7DABA58CF5EBD507730AD457C89A11880CB2FF8"
       },
       {
         "path": "03_verification\\step12d_engineering\\generate_gate_c_hdl_vectors.py",
@@ -546,7 +556,7 @@
       },
       {
         "path": "03_verification\\step12d_engineering\\generate_lfnst_engine_vectors.py",
-        "sha256": "ADD837D074661444078A1342F0C614BD01CFBDB08B983AC706DA9002B246EB55"
+        "sha256": "7F7CF8C9067E6BF5D83E89C7D015C86482A48BF80606ECCA9E34446CFF737132"
       },
       {
         "path": "03_verification\\step12d_engineering\\generate_lfnst_wrapper_vectors.py",
@@ -554,7 +564,7 @@
       },
       {
         "path": "03_verification\\step12d_engineering\\pack_lfnst_coeffs.py",
-        "sha256": "3B78AEF1A323B495569EF5525719C48B569D27B0291B71B921B57063D73D960F"
+        "sha256": "73E82A55A876B418383CB6DD8A7AF8C0559A745993B624EA4015117437C2A0A7"
       },
       {
         "path": "03_verification\\step12d_engineering\\profile_contract.py",
@@ -566,7 +576,7 @@
       },
       {
         "path": "03_verification\\step12d_engineering\\run_final_submission_package.ps1",
-        "sha256": "189E5F4437685160401D74CFF02D00B3AE8AD6B10B0A00A2F43B2446B95BA3C5"
+        "sha256": "2121188C752858E35AAC8F8203C34060D3184B8EA89EBA4F86C7BD63997F62B7"
       },
       {
         "path": "03_verification\\step12d_engineering\\run_full_spatial_performance.ps1",
@@ -586,7 +596,7 @@
       },
       {
         "path": "03_verification\\step12d_engineering\\run_sat10_functional_checkpoint.ps1",
-        "sha256": "5D3D7EAD01CC6E74CF2772569823B6E19FC82283490B06921D9237F5D8D4B3F5"
+        "sha256": "5BA0B08C3FCF1E5FCE5F7A8EBD22380C6E131C7747E81AB18FCCB2375CB70D56"
       },
       {
         "path": "03_verification\\step12d_engineering\\run_step12f_coverage_modelsim.ps1",
@@ -594,11 +604,11 @@
       },
       {
         "path": "03_verification\\step12d_engineering\\run_vtm_engineering_oracle.py",
-        "sha256": "9A2DBA2C33D41ED5770C6A4BE4573FE63D79C3459522B5178F1A9B20ACF4D373"
+        "sha256": "5369DE650B78FF19789F473C02F65C52B117A3FCAD758A47581B9D9BFECD09F2"
       },
       {
         "path": "03_verification\\step12d_engineering\\test_lfnst_layout_contract.py",
-        "sha256": "EF1D1080E8241C2DFB05A935E9ED95323B549C54A3E98B34F595CDD65CF60C5E"
+        "sha256": "F7E64EF361E4F913A3352B3237ED05F89818160BD997E7836E94B906C53D63C1"
       },
       {
         "path": "03_verification\\step12d_engineering\\validate_gate_a.py",
@@ -606,11 +616,11 @@
       },
       {
         "path": "03_verification\\step12d_engineering\\validate_gate_b.py",
-        "sha256": "4C04DA81FBF9DB5126CE5989F868A5021B6A014AE9AB216BC89BB5712B57A71B"
+        "sha256": "FC2DFE4802635F4C94BDA02BDDA6F0B9757BBF7B4315959DDDDA208DF61E3D8C"
       },
       {
         "path": "03_verification\\step12d_engineering\\validate_gate_c_model.py",
-        "sha256": "D247740809A08E0706C80A8458172187236A7FEEBCDD1919D268A1CEF48D217E"
+        "sha256": "0DE663A03E451CD66F9EAB9DEA50F61C01A7239A825DBEB0A875CC467DAA5663"
       },
       {
         "path": "03_verification\\step12d_engineering\\validate_sat10_profile.py",
@@ -622,11 +632,11 @@
       },
       {
         "path": "03_verification\\step12d_engineering\\verify_p3_intermediate_mapping.py",
-        "sha256": "91751FCECD36A37550037DB775006F431071D3DFC610EC68EB8B777B1B36C943"
+        "sha256": "CC06B1AF3A7D6A49DA638F6B6C2D408FB82756AD46F558D92CEE6454D38BE82D"
       },
       {
         "path": "03_verification\\step12d_engineering\\vtm_full_spatial_oracle.cpp",
-        "sha256": "F7B122C857E3D385AB65057CE46BE39352FC1CDAE29EDB1D04028464A02B5EAB"
+        "sha256": "BAB4AD1F4F3581D266C9820B4E082F5077943F16DE64107E267B975F2A0599B6"
       },
       {
         "path": "03_verification\\step12d_engineering\\profiles\\contest_engineering_vtm10_sat10_v2.json",
@@ -637,38 +647,8 @@
         "sha256": "B73CFAD9902208818D4D5A50D7330155CCF397B0550DC887C8D37F00B90D1CD7"
       }
     ],
-    "source_commit": "4a71d7f355834cf5c29d928afc2041de47edca75",
-    "official_equivalence": "NOT_PROVEN",
-    "new_simulations": 6,
-    "negative_control": "EXPECTED_FAIL_DETECTED",
-    "physical": "REQUIRES_SEPARATE_FRESH_IMPLEMENTATION_EVIDENCE",
-    "native_reference_cases": 667,
-    "existing_simulations": 36,
-    "python_stages": [
-      {
-        "exit_code": 0,
-        "status": "PASS_SAT10_PROFILE_INHERITS_V1_ARITHMETIC",
-        "stage": "01_profile"
-      },
-      {
-        "exit_code": 0,
-        "status": "PASS_GATE_A_PROFILE_INHERITANCE",
-        "stage": "02_profile_inheritance"
-      },
-      {
-        "exit_code": 0,
-        "status": "PASS_INDEPENDENT_VTM_PROFILE_ORACLE_AND_IMPACT_AUDIT",
-        "stage": "03_python_oracle"
-      },
-      {
-        "exit_code": 0,
-        "status": "PASS_ENGINEERING_PROFILE_2D_PROTOCOL_MODEL",
-        "stage": "04_python_2d"
-      }
-    ],
-    "total_positive_simulations": 42,
     "status": "PASS_FULL_SPATIAL_REPAIR_FUNCTIONAL_QUALIFICATION",
-    "native_reference_values": 352896
+    "source_commit": "0157697258d60ce34812068dee4662a6f8940bd4"
   },
   "official_closure": "OPEN_PENDING_SPEC_CLARIFICATIONS"
 }

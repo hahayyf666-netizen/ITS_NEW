@@ -1,0 +1,11 @@
+{
+  "status": "PASS_CLEAN_LOCAL_GIT_REPLAY",
+  "source_commit": "0157697258d60ce34812068dee4662a6f8940bd4",
+  "clean_before": true,
+  "clean_after": true,
+  "command": "python 03_verification/step12d_engineering/run_functional_closure.py --evidence-dir <NEW_DIR> --license-file <LOCAL_LICENSE_PATH>",
+  "materialization": "New local sparse Git checkout containing only repository functional dependencies; no source/vector/native-exe runtime dependency on external work directories.",
+  "environment_scope": "Same host. Direct GitHub partial clone earlier failed HTTP400; not a second-machine validation.",
+  "result": "PASS_FUNCTIONAL_ENGINEERING_CONTRACT",
+  "official_closure": "OPEN_PENDING_SPEC_CLARIFICATIONS"
+}
