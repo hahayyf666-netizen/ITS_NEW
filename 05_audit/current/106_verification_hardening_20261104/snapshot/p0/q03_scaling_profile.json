@@ -1,0 +1,40 @@
+{
+  "schema": "its.p0.q03_scaling_profile.v1",
+  "official_equivalence": "NOT_PROVEN",
+  "profile": "V shift 7 (round +64), H shift 10 (round +512), signed16 clip each stage",
+  "corpus_cases": 667,
+  "lfnst_on_cases": 250,
+  "stages": {
+    "v": {
+      "calls": 89348,
+      "clipped": 1121,
+      "raw_min": -10755303,
+      "raw_max": 11319738,
+      "out_min": -32768,
+      "out_max": 32767,
+      "tie_cases": 10493,
+      "shift": 7
+    },
+    "h": {
+      "calls": 352896,
+      "clipped": 0,
+      "raw_min": -20168600,
+      "raw_max": 12750801,
+      "out_min": -19696,
+      "out_max": 12452,
+      "tie_cases": 58663,
+      "shift": 10
+    },
+    "lfnst": {
+      "calls": 9152,
+      "clipped": 0,
+      "raw_min": -3966855,
+      "raw_max": 3834250,
+      "out_min": -30991,
+      "out_max": 29955,
+      "tie_cases": 1188,
+      "shift": 7
+    }
+  },
+  "scope": "Describes the selected engineering profile on the existing corpus. No alternative candidate rule exists, so no divergence rate is reported."
+}

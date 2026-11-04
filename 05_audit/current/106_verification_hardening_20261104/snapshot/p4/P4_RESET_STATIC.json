@@ -1,0 +1,121 @@
+{
+  "schema": "its.p4.reset_static.v1",
+  "scope": "syntactic candidate list; every entry still needs a category",
+  "files": {
+    "unified_its_wrapper.sv": {
+      "always_ff_blocks": 3,
+      "blocks_without_any_reset": 1,
+      "reset_registers": 136,
+      "unreset_registers": 3,
+      "unreset_detail": {
+        "desc_mem": [
+          1833
+        ],
+        "kernel_h_rd_raw_data_q": [
+          1813
+        ],
+        "primary_return_data_q": [
+          1833
+        ]
+      }
+    },
+    "unified_p4_kernel.sv": {
+      "always_ff_blocks": 5,
+      "blocks_without_any_reset": 2,
+      "reset_registers": 81,
+      "unreset_registers": 16,
+      "unreset_detail": {
+        "fifo_data_q": [
+          729
+        ],
+        "ingress_data_q": [
+          622
+        ],
+        "input_mem": [
+          757
+        ],
+        "mul_a_q": [
+          622
+        ],
+        "mul_b_q": [
+          622
+        ],
+        "mul_m_q": [
+          622
+        ],
+        "pipe_out_data_q": [
+          622
+        ],
+        "product_q": [
+          622
+        ],
+        "reduce_l1_q": [
+          622
+        ],
+        "reduce_l2_q": [
+          622
+        ],
+        "reduce_l3_q": [
+          622
+        ],
+        "reduce_l4_q": [
+          622
+        ],
+        "reduce_l5_q": [
+          622
+        ],
+        "s0_coeff_q": [
+          622
+        ],
+        "s0_input_q": [
+          622
+        ],
+        "shifted_wide_q": [
+          622
+        ]
+      }
+    },
+    "bounded_lfnst_engine.sv": {
+      "always_ff_blocks": 2,
+      "blocks_without_any_reset": 1,
+      "reset_registers": 42,
+      "unreset_registers": 3,
+      "unreset_detail": {
+        "mul_coeff_q": [
+          170
+        ],
+        "mul_term_q": [
+          170
+        ],
+        "products_q": [
+          170
+        ]
+      }
+    },
+    "its_input_cache_bank.sv": {
+      "always_ff_blocks": 1,
+      "blocks_without_any_reset": 1,
+      "reset_registers": 0,
+      "unreset_registers": 2,
+      "unreset_detail": {
+        "data_mem": [
+          23
+        ],
+        "valid_mem": [
+          23
+        ]
+      }
+    },
+    "its_simple_ram.sv": {
+      "always_ff_blocks": 1,
+      "blocks_without_any_reset": 1,
+      "reset_registers": 0,
+      "unreset_registers": 1,
+      "unreset_detail": {
+        "mem": [
+          20
+        ]
+      }
+    }
+  }
+}

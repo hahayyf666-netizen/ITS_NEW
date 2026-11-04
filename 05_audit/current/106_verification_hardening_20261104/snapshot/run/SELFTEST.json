@@ -1,0 +1,25 @@
+{
+  "checks": {
+    "valid_result": true,
+    "nonzero_exit": true,
+    "missing_marker": true,
+    "fatal_with_zero_exit": true,
+    "mismatch_with_zero_exit": true,
+    "empty_log": true,
+    "all_required": true,
+    "gate_SKIP": true,
+    "gate_DIRTY": true,
+    "gate_FAIL": true,
+    "missing_stage": true,
+    "crlf_normalization": true,
+    "content_changed": true,
+    "real_check_clean": true,
+    "real_check_edit": true,
+    "real_check_delete": true,
+    "real_check_add": true,
+    "tool_change": true,
+    "artifact_tamper": true
+  },
+  "pass": 19,
+  "fail": 0
+}

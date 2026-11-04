@@ -1,0 +1,73 @@
+{
+  "schema": "its.p2.low10_integration.v1",
+  "purpose": "P2: verify the FINAL_SATURATE branch in hardware. Two instances of the same wrapper source differ only in that parameter and receive identical stimulus, so every beat must arrive on the same cycle and only the final mapping may differ.",
+  "production_default_unchanged": true,
+  "production_default_evidence": "02_rtl/rtl/its_unified_submission_top.sv:25-26 still hard-wires .FINAL_SATURATE(1); no RTL file was modified for P2.",
+  "repo": {
+    "head": "42009dab9ff19cadcbe25b2791e6a1fb57c2b6ea",
+    "modified_entries": 0,
+    "rtl_wrapper_sha256": "903cd9b2526447d774332d57a6511f952f7cd6f16d14e7e78059357d06a4bc87",
+    "rtl_top_sha256": "39caf8e3bba2992ffad8c2407f9ad10341e2aa8c03ea0a07f5c0a0e6744436d1"
+  },
+  "tool": {
+    "simulator": "ModelSim SE-64 2020.4 (vsim 2020.10)",
+    "run": "vsim -c -do \"run -all; quit -f\" work.final_saturate_dual_tb",
+    "clock": "2 ns (500 MHz)"
+  },
+  "artifacts": {
+    "tb": {"file": "final_saturate_dual_tb.sv", "sha256": "aaecc00b5f9b9ebc6ceda14b44f5ea12febea387f9db0d144cb325ad18d23e4c"},
+    "negative_control_tb": {"file": "final_saturate_dual_negctl.sv", "sha256": "0a2aa61ea029cc8eaf7507602633506e1ade498cb0ecde6da286a2780484f37e",
+                             "mutation": "u_low parameter forced to FINAL_SATURATE(1)"},
+    "stimulus": {"file": "p2_stim.hex", "sha256": "10c7e55f5c39383dbd8ae6fb0e2e4dc26f8ba26412e7aef42bd92df913358e11", "lines": 14},
+    "golden_sat10": {"file": "p2_sat.hex", "sha256": "52f082ba644a4253f76981dd41b071c82e42b6c7587b93f580ca947d148229ef", "beats": 1136},
+    "golden_low10": {"file": "p2_low.hex", "sha256": "749fef7bfe332d1a7ca8e362fa260b3a3846fcef170f29a23e39f2f72be1d558", "beats": 1136},
+    "generator": {"file": "gen_p2_vectors.py", "sha256": "f5ed4c5e7f1213a67d0bfb41d0e419181d030216f6773e3e7a1b428032e9c544",
+                   "note": "goldens come from validate_gate_c_model, not hand-written"}
+  },
+  "tu_group": [
+    {"label": "dc_hi_4x4",      "size": "4x4",   "transform": "DCT-II",   "lfnst": false, "beats": 4,    "points_where_modes_differ": 16},
+    {"label": "dc_lo_4x4",      "size": "4x4",   "transform": "DCT-II",   "lfnst": false, "beats": 4,    "points_where_modes_differ": 16},
+    {"label": "dc_small_4x4",   "size": "4x4",   "transform": "DCT-II",   "lfnst": false, "beats": 4,    "points_where_modes_differ": 0},
+    {"label": "lfnst_s0i1_4x4", "size": "4x4",   "transform": "DCT-II",   "lfnst": true,  "beats": 4,    "points_where_modes_differ": 0},
+    {"label": "mixed_8x8",      "size": "8x8",   "transform": "DCT-II",   "lfnst": false, "beats": 16,   "points_where_modes_differ": 45},
+    {"label": "dst7_8x8",       "size": "8x8",   "transform": "DST-VII",  "lfnst": false, "beats": 16,   "points_where_modes_differ": 37},
+    {"label": "dct8_16x16",     "size": "16x16", "transform": "DCT-VIII", "lfnst": false, "beats": 64,   "points_where_modes_differ": 193},
+    {"label": "dc_hi_64x64",    "size": "64x64", "transform": "DCT-II",   "lfnst": false, "beats": 1024, "points_where_modes_differ": 4096}
+  ],
+  "result": {
+    "beats": 1136,
+    "sat10_mismatch": 0,
+    "low10_mismatch": 0,
+    "beats_where_modes_differ": 1118,
+    "vld_skew_cycles": 0,
+    "done_sat10": 8,
+    "done_low10": 8,
+    "protocol_error_sat10": false,
+    "protocol_error_low10": false,
+    "verdict": "PASS"
+  },
+  "negative_control_result": {
+    "beats": 1136,
+    "sat10_mismatch": 0,
+    "low10_mismatch": 1118,
+    "beats_where_modes_differ": 0,
+    "verdict": "DETECTED",
+    "interpretation": "The 1118 beats reported wrong under the negative control are exactly the 1118 beats where the two mappings differ in the good run, so the check fires on precisely the discriminating set and nowhere else."
+  },
+  "mapping_table_signed16": {
+    "domain": 65536,
+    "out_of_signed10_range": 64512,
+    "sat10_ne_low10": 64450,
+    "scope": "model-level rule statement about the mapping, NOT a verification of the RTL branch",
+    "boundary_values": {"-513": "differ", "-512": "equal", "-511": "equal", "511": "equal",
+                         "512": "differ", "1535": "equal (both 511)", "2047": "equal (both -1... see json)",
+                         "-2048": "equal"}
+  },
+  "findings": [
+    {"id": "P2-F1", "severity": "observation",
+     "statement": "Over the whole signed16 domain, 64512 of 65536 values are outside [-512,511] but only 64450 differ between SAT10 and signed-LOW10. Out-of-range and divergent are therefore different populations, confirming that P0 must report them separately.",
+     "example": "wide=1535 and wide=-2048 map identically under both rules."}
+  ],
+  "official_equivalence": "NOT_PROVEN",
+  "note": "Passing P2 shows the parameter branch is self-consistent and matches the frozen model under both readings. It does NOT establish which reading the official evaluation uses; Q04 remains open."
+}

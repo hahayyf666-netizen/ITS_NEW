@@ -1,0 +1,169 @@
+{
+  "schema": "its.p4.reset_first_read_evidence.v1",
+  "repo": {
+    "head": "42009dab9ff19cadcbe25b2791e6a1fb57c2b6ea",
+    "modified_entries": 0,
+    "rtl_modified": false,
+    "rtl_wrapper_sha256": "903cd9b2526447d774332d57a6511f952f7cd6f16d14e7e78059357d06a4bc87"
+  },
+  "tool": {
+    "simulator": "ModelSim SE-64 2020.4 (vsim 2020.10, Oct 13 2020)",
+    "command": "vsim -c -do \"run -all; quit -f\" work.reset_first_read_tb",
+    "clock": "2 ns (500 MHz)",
+    "static_side_tool": "Vivado v2025.2 (SW Build 6299465) for lint; python 3.13 for the syntactic pass"
+  },
+  "artifacts": {
+    "tb": {
+      "file": "work_endattr/reset_first_read_tb.sv",
+      "sha256": "06463992a012e03ce165ba0772244b2a00902e7ab58c82986c962e3b95709925"
+    },
+    "static_script": {
+      "file": "closure_audit/p4/reset_static_audit.py",
+      "sha256": "07328fee8edf274dac3ef47e7b13f29fb54d501006901435e180733cb99761b8"
+    },
+    "static_result": {
+      "file": "closure_audit/p4/P4_RESET_STATIC.json",
+      "sha256": "bff3eb6e7f70e8fc907c05774eae59453452912cbd105ae02688831c40ab404c"
+    },
+    "report": {
+      "file": "closure_audit/p4/P4_RESET_FIRST_READ.md",
+      "sha256": "9997baaeafaab5d6bf61db1e14c16e2f4e8ef6e6865d331fe120d54b6bbb2f43"
+    }
+  },
+  "static_classification": {
+    "method": "per always_ff block, identifiers assigned inside `if (!rst_n)` versus outside; `<=` matches at parenthesis depth 0 only, so comparisons such as (active_size <= 7'd4) are not mistaken for assignments",
+    "reset_registers": {
+      "unified_its_wrapper": 136,
+      "unified_p4_kernel": 81,
+      "bounded_lfnst_engine": 42,
+      "its_input_cache_bank": 0,
+      "its_simple_ram": 0
+    },
+    "unreset_registers_total": 25,
+    "category_1_must_reset_control_state": {
+      "count": 0,
+      "verdict": "No missing control reset identified by syntactic scan; completeness NOT_PROVEN"
+    },
+    "category_2_write_before_read": {
+      "members": [
+        "valid_mem",
+        "data_mem",
+        "input_mem",
+        "desc_mem",
+        "mem"
+      ],
+      "key_argument": "scrub_index runs 0..INPUT_VALID_WORDS-1 and writes valid=0 into all four banks each cycle (unified_its_wrapper.sv:1718-1722), and reads are blocked while scrub_active; the early-exit path scrub_ended also requires scrub_index == INPUT_VALID_WORDS-1 (:559-561), so validity is always fully cleared before any read",
+      "verdict": "PROVISIONAL: establish initialization/write-before-read for each memory independently"
+    },
+    "category_3_valid_masked": {
+      "count": 20,
+      "members": [
+        "s0_coeff_q",
+        "s0_input_q",
+        "mul_a_q",
+        "mul_b_q",
+        "mul_m_q",
+        "product_q",
+        "reduce_l1_q",
+        "reduce_l2_q",
+        "reduce_l3_q",
+        "reduce_l4_q",
+        "reduce_l5_q",
+        "shifted_wide_q",
+        "pipe_out_data_q",
+        "ingress_data_q",
+        "fifo_data_q",
+        "mul_coeff_q",
+        "mul_term_q",
+        "products_q",
+        "kernel_h_rd_raw_data_q",
+        "primary_return_data_q"
+      ],
+      "evidence": "data and validity travel together: unified_its_wrapper.sv:2185-2190 and :1340-1343",
+      "verdict": "PROVISIONAL: per-path pairing assertions and dynamic checks required"
+    },
+    "category_4_unproven": [
+      {
+        "id": "4-1",
+        "path": "data_mem holds arbitrary post-power-up content in hardware and is never cleared",
+        "status": "masked by valid_mem; the argument rests on scrub completeness, which is structural, not a reset guarantee",
+        "close_by": "assert that scrub covers the full bank, or a directed read-before-scrub check"
+      },
+      {
+        "id": "4-2",
+        "path": "fifo_data_q / ingress_data_q validity pairing",
+        "status": "dynamic X coverage reaches only 24 output beats",
+        "close_by": "directed enable-before-read check"
+      },
+      {
+        "id": "4-3",
+        "path": "4-state simulation substitutes for the design: `if (valid_mem[..])` takes X as false, coincidentally matching 'treat as invalid'",
+        "status": "open; this is why 'no X in simulation' cannot be promoted to 'trustworthy in hardware'",
+        "close_by": "Prove/observe valid_mem is known on each effective read, full scrub/first-write precedes read, and payload validity pairing holds. Replacing if(valid) by ===1 alone does not close this item."
+      }
+    ]
+  },
+  "dynamic_result": {
+    "cases": [
+      {
+        "id": "R1",
+        "injection": "during scrub",
+        "target_state_hit": true,
+        "post_reset_first_tu": "exact",
+        "result": "PASS"
+      },
+      {
+        "id": "R2",
+        "injection": "during fill with partial data",
+        "target_state_hit": true,
+        "post_reset_first_tu": "exact",
+        "result": "PASS"
+      },
+      {
+        "id": "R3",
+        "injection": "during LFNST phase",
+        "target_state_hit": true,
+        "post_reset_first_tu": "exact",
+        "result": "PASS"
+      },
+      {
+        "id": "R4",
+        "injection": "during stalled output",
+        "target_state_hit": true,
+        "post_reset_first_tu": "exact",
+        "result": "PASS"
+      },
+      {
+        "id": "R5",
+        "injection": "with queued descriptors",
+        "target_state_hit": true,
+        "post_reset_first_tu": "exact",
+        "result": "PASS"
+      }
+    ],
+    "x_check": {
+      "vld_cycles": 24,
+      "x_on_it_data_out": 0,
+      "x_on_it_done": 0
+    },
+    "summary": {
+      "pass": 5,
+      "fail": 0,
+      "simulation_time_ns": 21324
+    }
+  },
+  "negative_control": {
+    "mutation": "removed the `desc_count <= 2'd0;` assignment from the reset branch (unified_its_wrapper.sv:1837)",
+    "outcome": "DETECTED",
+    "detail": "R1-R5 all failed, pass=0 fail=5",
+    "interpretation": "the suite is sensitive to a missing reset on control state"
+  },
+  "official_equivalence": "NOT_PROVEN",
+  "review_corrections": {
+    "status": "OPEN_ITEMS_RETAINED",
+    "scope": "Historical dynamic results retained; syntactic audit is not a proof of reset completeness.",
+    "category_1": "No missing control reset identified by this syntactic scan; not a complete proof.",
+    "category_2": "Per-memory write-before-read argument required; bank scrub does not prove safety of every unrelated memory.",
+    "category_3": "Validity pairing requires per-path checks; previous structural closed wording withdrawn."
+  }
+}

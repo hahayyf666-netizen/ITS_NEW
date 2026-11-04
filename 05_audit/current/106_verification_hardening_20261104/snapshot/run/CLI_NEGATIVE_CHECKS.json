@@ -1,0 +1,29 @@
+{
+  "pass": 4,
+  "cases": [
+    {
+      "case": "clean",
+      "exit_code": 0,
+      "stdout": "PASS",
+      "stderr": ""
+    },
+    {
+      "case": "stale_dependency_blocks",
+      "exit_code": 2,
+      "stdout": "STALE",
+      "stderr": ""
+    },
+    {
+      "case": "changed_receipt_blocks",
+      "exit_code": 2,
+      "stdout": "STALE",
+      "stderr": ""
+    },
+    {
+      "case": "restored_clean",
+      "exit_code": 0,
+      "stdout": "PASS",
+      "stderr": ""
+    }
+  ]
+}

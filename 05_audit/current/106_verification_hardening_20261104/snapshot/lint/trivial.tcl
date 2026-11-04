@@ -1,0 +1,1 @@
+puts "VIVADO_TRIVIAL_OK"

@@ -1,0 +1,181 @@
+{
+  "schema": "its.p2.low10_vectors.v1",
+  "official_equivalence": "NOT_PROVEN",
+  "note": "DUT instances differ only in FINAL_SATURATE; default production value remains 1.",
+  "totals": {
+    "stimulus_lines": 14,
+    "beats_per_mode": 1136,
+    "points_where_sat_ne_low": 4403
+  },
+  "tus": [
+    {
+      "label": "dc_hi_4x4",
+      "info": "0x000204",
+      "size": "4x4",
+      "tr_type_hor": 0,
+      "tr_type_ver": 0,
+      "set_idx": 0,
+      "lfnst_idx": 0,
+      "points": 1,
+      "point": 16,
+      "beats": 4,
+      "points_where_sat_ne_low": 16,
+      "wide_min": 1024,
+      "wide_max": 1024
+    },
+    {
+      "label": "dc_lo_4x4",
+      "info": "0x000204",
+      "size": "4x4",
+      "tr_type_hor": 0,
+      "tr_type_ver": 0,
+      "set_idx": 0,
+      "lfnst_idx": 0,
+      "points": 1,
+      "point": 16,
+      "beats": 4,
+      "points_where_sat_ne_low": 16,
+      "wide_min": -1024,
+      "wide_max": -1024
+    },
+    {
+      "label": "dc_small_4x4",
+      "info": "0x000204",
+      "size": "4x4",
+      "tr_type_hor": 0,
+      "tr_type_ver": 0,
+      "set_idx": 0,
+      "lfnst_idx": 0,
+      "points": 1,
+      "point": 16,
+      "beats": 4,
+      "points_where_sat_ne_low": 0,
+      "wide_min": 16,
+      "wide_max": 16
+    },
+    {
+      "label": "lfnst_s0i1_4x4",
+      "info": "0x100204",
+      "size": "4x4",
+      "tr_type_hor": 0,
+      "tr_type_ver": 0,
+      "set_idx": 0,
+      "lfnst_idx": 1,
+      "points": 1,
+      "point": 16,
+      "beats": 4,
+      "points_where_sat_ne_low": 0,
+      "wide_min": 1,
+      "wide_max": 32
+    },
+    {
+      "label": "mixed_8x8",
+      "info": "0x000408",
+      "size": "8x8",
+      "tr_type_hor": 0,
+      "tr_type_ver": 0,
+      "set_idx": 0,
+      "lfnst_idx": 0,
+      "points": 3,
+      "point": 64,
+      "beats": 16,
+      "points_where_sat_ne_low": 45,
+      "wide_min": -1734,
+      "wide_max": 3782
+    },
+    {
+      "label": "dst7_8x8",
+      "info": "0x014408",
+      "size": "8x8",
+      "tr_type_hor": 1,
+      "tr_type_ver": 1,
+      "set_idx": 0,
+      "lfnst_idx": 0,
+      "points": 3,
+      "point": 64,
+      "beats": 16,
+      "points_where_sat_ne_low": 37,
+      "wide_min": -827,
+      "wide_max": 1746
+    },
+    {
+      "label": "dct8_16x16",
+      "info": "0x028810",
+      "size": "16x16",
+      "tr_type_hor": 2,
+      "tr_type_ver": 2,
+      "set_idx": 0,
+      "lfnst_idx": 0,
+      "points": 3,
+      "point": 256,
+      "beats": 64,
+      "points_where_sat_ne_low": 193,
+      "wide_min": -1801,
+      "wide_max": 3693
+    },
+    {
+      "label": "dc_hi_64x64",
+      "info": "0x002040",
+      "size": "64x64",
+      "tr_type_hor": 0,
+      "tr_type_ver": 0,
+      "set_idx": 0,
+      "lfnst_idx": 0,
+      "points": 1,
+      "point": 4096,
+      "beats": 1024,
+      "points_where_sat_ne_low": 4096,
+      "wide_min": 1024,
+      "wide_max": 1024
+    }
+  ],
+  "mapping_table_signed16": {
+    "domain": 65536,
+    "out_of_signed10_range": 64512,
+    "sat10_ne_low10": 64450,
+    "inside_range_all_equal": true,
+    "boundary_values": {
+      "-513": {
+        "sat10": -512,
+        "low10": 511,
+        "equal": false
+      },
+      "-512": {
+        "sat10": -512,
+        "low10": -512,
+        "equal": true
+      },
+      "-511": {
+        "sat10": -511,
+        "low10": -511,
+        "equal": true
+      },
+      "511": {
+        "sat10": 511,
+        "low10": 511,
+        "equal": true
+      },
+      "512": {
+        "sat10": 511,
+        "low10": -512,
+        "equal": false
+      },
+      "1535": {
+        "sat10": 511,
+        "low10": 511,
+        "equal": true
+      },
+      "2047": {
+        "sat10": 511,
+        "low10": -1,
+        "equal": false
+      },
+      "-2048": {
+        "sat10": -512,
+        "low10": 0,
+        "equal": false
+      }
+    },
+    "scope": "model-level rule statement; does not by itself verify the RTL branch"
+  }
+}
