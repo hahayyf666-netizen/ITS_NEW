@@ -36,7 +36,7 @@ puts "PERIOD_NS=2.000"
 puts "CLOCK_UNCERTAINTY_SETUP_NS=0.000"
 puts "CLOCK_UNCERTAINTY_HOLD_NS=0.000"
 puts "OLD_OOC_XDC=NOT_LOADED"
-puts "IMPLEMENTATION_FLOW=Default_ExtraNetDelay_high_AggressiveExplore_NoTimingRelaxation"
+puts "IMPLEMENTATION_FLOW=Default_ExtraNetDelay_high_AggressiveFanoutOpt_NoTimingRelaxation"
 
 create_project -in_memory -part $part -force
 set_property include_dirs [list $rtl_dir] [current_fileset]
@@ -103,7 +103,7 @@ if {[llength $dut_q] > 0 && [llength $sink_d] > 0} {
 set impl_start [clock seconds]
 opt_design -directive Default
 place_design -directive ExtraNetDelay_high
-phys_opt_design -directive AggressiveExplore
+phys_opt_design -directive AggressiveFanoutOpt
 route_design -directive NoTimingRelaxation
 set impl_elapsed [expr {[clock seconds] - $impl_start}]
 puts "P9R5E_IMPL_ELAPSED_SEC=$impl_elapsed"

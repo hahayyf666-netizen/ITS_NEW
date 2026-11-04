@@ -1,0 +1,35 @@
+{
+  "schema": "its.physical_source_manifest.v1",
+  "tested_rtl_sha256": "903cd9b2526447d774332d57a6511f952f7cd6f16d14e7e78059357d06a4bc87",
+  "validation_base_commit": "41d3508b98b035aa8af0af280dab5dee3ff68447",
+  "physical_tool": "Vivado 2025.2",
+  "part": "xcku5p-ffvb676-2-e",
+  "top": "step12f_registered_neighbor_harness",
+  "clock_period_ns": 2.0,
+  "implementation": "common post-place checkpoint; phys_opt_design -directive AggressiveFanoutOpt; route_design -directive NoTimingRelaxation",
+  "boundary_check": "PASS; source_ff=54; sink_ff=44; clock_period_ns=2.000",
+  "inputs_sha256": {
+    "02_rtl/rtl/unified_its_wrapper.sv": "903cd9b2526447d774332d57a6511f952f7cd6f16d14e7e78059357d06a4bc87",
+    "02_rtl/rtl/unified_p4_kernel.sv": "ab79e6af55f42e76b9b56e86c628e57a93f477e40ddf21f7298ddb25d4541064",
+    "02_rtl/rtl/its_simple_ram.sv": "664b417c4cd0873a1e6c66d7b0fe5a221b84ab65ed49782dbe05676713dc826e",
+    "02_rtl/rtl/its_input_cache_bank.sv": "32b3b561a809b65bc9f321b0d716c8d049ae98fe6f38ced2a2cc34c25ced771b",
+    "02_rtl/rtl/bounded_lfnst_engine.sv": "f660081e620bc99fb52ab2274a76ed964726c3b19a0bce1cb53a05e013b5c520",
+    "02_rtl/rtl/step12f_registered_neighbor_harness.sv": "bb6bee87957e2e399461184aee0f054b2ef070f51426605719025623d67806a3",
+    "02_rtl/rtl/rom_coeffs.hex": "074d5a19ad556c55c29cdecc07c543047a67e19316c7875b3d7b0d6ea491acd6",
+    "02_rtl/rtl/lfnst_coeffs.hex": "c213981269e2aea31c31e77717f5397278f90bbd26ea762138a5fd3e887f2bc6",
+    "02_rtl/rtl/lfnst_packed_coeffs.hex": "511b2688ec5cd96aa26b52ee2ed6628b2c58fd4183ea16cbfc69337677f49073",
+    "03_verification/vivado/step12f_registered_neighbor_2ns.xdc": "346e4d1baa867fd7f16e8474fc3e903b3616633450f487ab168383bae38a3786",
+    "03_verification/vivado/run_step12f_registered_neighbor.tcl": "33e7ac2dbd4bbfd5e25470507a8417c2e7426f175270099a696945ef0d0f501c"
+  },
+  "reports_sha256": {
+    "physical/report_check_timing_postroute.rpt": "6302060a7a837b1fcc80cbbc2ce0917a03daa77a32ff7c92c728a5614157da2c",
+    "physical/report_drc_postroute.rpt": "de5c29dd375495f4a3b3f2eaaab8888194f2ab866dd4c830d120e5cb829c1e90",
+    "physical/report_exceptions_postroute.rpt": "b4da76691d224b3dad4764d095b4e87eb7e06ece4e51df699c8f35fe5955a443",
+    "physical/report_route_status_postroute.rpt": "da2b8cbf833963e7478a7686bafc63cfe5c5d6efa97a3f5ec62ac40ccd890c99",
+    "physical/report_timing_hold_summary_postroute.rpt": "c7f1dc1b17d08e131ecc96f7afc0c2e3150e1b9a097997a914cb10d21d47eda7",
+    "physical/report_timing_summary_postroute.rpt": "5e5615a6dcc6c7ec6ddd87b243910658906c2b2df09df0d26cbc21bfa51b0893",
+    "physical/report_timing_worst100_postroute.rpt": "6f9bcc6c81f5d2aff169d94ce4578f9dbb5ff699def74710406b8644f89d8382",
+    "physical/report_utilization_postroute.rpt": "cca8ef3eb84ccac9979c02352aaab53740f9ea96b0909d6cdf54d68d8d06b297"
+  },
+  "implementation_flow": "RTL synthesis; opt_design Default; place_design ExtraNetDelay_high; phys_opt_design AggressiveFanoutOpt; route_design NoTimingRelaxation"
+}

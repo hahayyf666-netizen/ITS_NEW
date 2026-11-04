@@ -6,7 +6,7 @@
 
 | 项 | 值 |
 |---|---|
-| 功能基线 | `1780eb9`（2026-10-29）完整空间重建修复，已并入 `main` |
+| 功能基线 | 本次 end-attribution 修复 + TU 顺序屏障（tag `v3.7-end-attribution-timing-closed`） |
 | 生产顶层 | `02_rtl/rtl/its_unified_submission_top.sv` |
 | 算术 profile | `contest_engineering_vtm10_sat10_v2`（shift 7/10，signed16 饱和裁剪，SAT10 → [-512, 511]） |
 | 官方等价性 | **`official_equivalence = NOT_PROVEN`** |
@@ -17,7 +17,8 @@
 |---|---|---|
 | `v3.5-14` → `v3.5-18`、`v3.5-step12ar2.1-full` | 2026-09-10 ~ 09-14 | 历史内部迭代，已全部并入 `main` |
 | `081efa6` | 2026-10-06 | SAT10 冻结交付，**已被取代**（标签 `v3.5-19-freeze-superseded`） |
-| `1780eb9` | 2026-10-29 | 完整空间重建修复，**当前有效**（标签 `v3.6-full-spatial-repair`） |
+| `1780eb9` | 2026-10-29 | 完整空间重建修复（标签 `v3.6-full-spatial-repair`） |
+| 本次提交 | 2026-11-04 | `it_data_end` 提前到达归属修复、TU 顺序屏障及 500 MHz 名义时序闭合（标签 `v3.7-end-attribution-timing-closed`） |
 
 ### 为什么 `081efa6` 被取代
 
@@ -35,17 +36,18 @@ LFNST 关闭时：V 轴 DCT2-64 仅写回前 32 行，DCT8/DST7-32 仅写回前 
 
 | 内容 | 位置 |
 |---|---|
+| End attribution 功能与当前 500 MHz 名义时序证据 | `05_audit/current/104_end_attribution_timing_20261104/` |
 | 完整空间修复证据 | `05_audit/current/103_full_spatial_repair_20261029/` |
 | 修复设计说明 | `01_docs/current/FULL_SPATIAL_REPAIR.md` |
-| **当前 RTL 的 500 MHz 物理闭合（core 级）** | `05_audit/current/103_full_spatial_repair_20261029/physical/` |
+| 历史：1780eb9 的 core 级物理结果 | `05_audit/current/103_full_spatial_repair_20261029/physical/` |
 | 历史：上一版 RTL 的物理闭合 | `05_audit/current/100_p9_primary_v_replay_20261006/`（对应 `081efa6` 版，已被取代） |
 | 早期冻结交付 | `05_audit/current/101_final_submission_20261006/`、`102_final_release_20261006/` |
 | 接口与形状规格提取 | `05_audit/current/58/…/HUAWEI_ATTACHMENT_INTERFACE_EXTRACT.txt` |
 
 ## 验证边界（引用任何结论时必须一并说明）
 
-- 时序闭合是 **registered-neighbor core 级**，不是封装级 FPGA signoff
-- `081efa6` 版 setup 余量 +0.001 ns；`1780eb9` 版在报告精度下为 **0.000 ns**，hold +0.004 ns
+- 本次 500 MHz 时序闭合是 **registered-neighbor core 级**：WNS +0.006 ns、WHS +0.011 ns；setup 余量仅 6 ps，结果依赖记录的物理优化策略
+- `081efa6` 版 setup 余量 +0.001 ns；`1780eb9` 版在报告精度下为 **0.000 ns**，hold +0.004 ns（均为历史结果）
 - `NSTD-1` / `UCIO-1` 未消：`clk` / `rst_n` 的封装引脚与 IOSTANDARD 不在 harness 契约内
 - 外部 `rst_n` 没有 input delay 模型
 - 官方等价性 `NOT_PROVEN`：算术 profile、逆变换移位规则、LFNST-off 的 H/V 子集都是工程绑定，不是官方金标准
@@ -54,7 +56,7 @@ LFNST 关闭时：V 轴 DCT2-64 仅写回前 32 行，DCT8/DST7-32 仅写回前 
 
 `02_rtl/synth/top_500_singleclk_*.rpt`（8 个文件）生成于 **2026-07-04**，设计 `its_top_500_singleclk` 只有 1886 LUT / 2214 FF / 5 DSP，WNS +0.087 ns，**与当前实现无关**。
 
-真实时序证据在 `05_audit/current/100_p9_primary_v_replay_20261006/`（LUT 26272 / FF 21369 / DSP 320）与 `05_audit/current/103_full_spatial_repair_20261029/physical/`（LUT 26110 / FF 21730 / DSP 320）。
+真实时序证据：本次实现位于 `05_audit/current/104_end_attribution_timing_20261104/physical/`（LUT 26160 / FF 19886 / DSP 320）；历史结果分别位于 `05_audit/current/100_p9_primary_v_replay_20261006/` 与 `05_audit/current/103_full_spatial_repair_20261029/physical/`。
 
 ## 未完成事项
 

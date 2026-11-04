@@ -1,0 +1,262 @@
+{
+  "status": "FUNCTIONAL_PASS_NOMINAL_500MHZ_TIMING_ROUTE_PASS",
+  "tested_rtl_sha256": "903cd9b2526447d774332d57a6511f952f7cd6f16d14e7e78059357d06a4bc87",
+  "validation_base_commit": "41d3508b98b035aa8af0af280dab5dee3ff68447",
+  "change": "Wait for previous final fill write commit before binding younger TU; all other end-attribution changes retained.",
+  "directed_cases_per_mode": 23,
+  "modes": [
+    "normal",
+    "synthesis"
+  ],
+  "directed_results": {
+    "DIRECTED_RECEIVED_RESULTS": {
+      "operator": "assistant",
+      "tb_modified": false,
+      "rtl_sha256": "903cd9b2526447d774332d57a6511f952f7cd6f16d14e7e78059357d06a4bc87",
+      "records": [
+        {
+          "version": "candidate",
+          "mode": "normal",
+          "pass": 19,
+          "fail": 0,
+          "cases": {
+            "C01": "PASS",
+            "C02": "PASS",
+            "C03": "PASS",
+            "C04": "PASS",
+            "C05": "PASS",
+            "C06": "PASS",
+            "C07a": "PASS",
+            "C07b": "PASS",
+            "C08a": "PASS",
+            "C08b": "PASS",
+            "C08c": "PASS",
+            "C09a": "PASS",
+            "C09b": "PASS",
+            "C10": "PASS",
+            "C11a": "PASS",
+            "C11b": "PASS",
+            "C11c": "PASS",
+            "C12": "PASS",
+            "C13": "PASS"
+          },
+          "expected_outcomes_match": true,
+          "log": "C:\\Users\\Fine\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-ai\\work\\end_attribution_validation_20261103\\directed_received_order_fixed_v1\\candidate_normal\\simulation.log",
+          "log_sha256": "4dd08c3b6f53929ee1567dec23b70f7f2d2672ad7ae369ab6d841958d0a52b65"
+        },
+        {
+          "version": "candidate",
+          "mode": "synthesis",
+          "pass": 19,
+          "fail": 0,
+          "cases": {
+            "C01": "PASS",
+            "C02": "PASS",
+            "C03": "PASS",
+            "C04": "PASS",
+            "C05": "PASS",
+            "C06": "PASS",
+            "C07a": "PASS",
+            "C07b": "PASS",
+            "C08a": "PASS",
+            "C08b": "PASS",
+            "C08c": "PASS",
+            "C09a": "PASS",
+            "C09b": "PASS",
+            "C10": "PASS",
+            "C11a": "PASS",
+            "C11b": "PASS",
+            "C11c": "PASS",
+            "C12": "PASS",
+            "C13": "PASS"
+          },
+          "expected_outcomes_match": true,
+          "log": "C:\\Users\\Fine\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-ai\\work\\end_attribution_validation_20261103\\directed_received_order_fixed_v1\\candidate_synthesis\\simulation.log",
+          "log_sha256": "d7dc0e15137b99dca434d454bcdd8108df3f67dc01431a25cbaf0288a8f7537f"
+        }
+      ]
+    },
+    "DIRECTED_SUPPLEMENTAL_RESULTS": {
+      "operator": "assistant",
+      "tb_modified": false,
+      "rtl_sha256": "903cd9b2526447d774332d57a6511f952f7cd6f16d14e7e78059357d06a4bc87",
+      "records": [
+        {
+          "version": "candidate",
+          "mode": "normal",
+          "pass": 2,
+          "fail": 0,
+          "cases": {
+            "S01": "PASS",
+            "S02": "PASS"
+          },
+          "expected_outcomes_match": true,
+          "log": "C:\\Users\\Fine\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-ai\\work\\end_attribution_validation_20261103\\directed_supplemental_v2_order_fixed_v1\\candidate_normal\\simulation.log",
+          "log_sha256": "cec2bfe733cb1044a631169d338b720d2c81b5b3cc17e9f867634a7495d9ca6e"
+        },
+        {
+          "version": "candidate",
+          "mode": "synthesis",
+          "pass": 2,
+          "fail": 0,
+          "cases": {
+            "S01": "PASS",
+            "S02": "PASS"
+          },
+          "expected_outcomes_match": true,
+          "log": "C:\\Users\\Fine\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-ai\\work\\end_attribution_validation_20261103\\directed_supplemental_v2_order_fixed_v1\\candidate_synthesis\\simulation.log",
+          "log_sha256": "15a4884b461f1786e951b555c4d9366e887f68181e2a968d2807bd6feb0f53d9"
+        }
+      ]
+    },
+    "DIRECTED_ORDERING_RESULTS": {
+      "operator": "assistant",
+      "tb_modified": false,
+      "rtl_sha256": "903cd9b2526447d774332d57a6511f952f7cd6f16d14e7e78059357d06a4bc87",
+      "records": [
+        {
+          "version": "baseline",
+          "mode": "normal",
+          "pass": 0,
+          "fail": 1,
+          "cases": {
+            "S03": "FAIL"
+          },
+          "expected_outcomes_match": true,
+          "log": "C:\\Users\\Fine\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-ai\\work\\end_attribution_validation_20261103\\directed_ordering_v2_order_fixed_v1\\baseline_normal\\simulation.log",
+          "log_sha256": "8237ebbdfec57584d82902b45be24c9f1a9707f56a2c1d1213d27f993f04614a"
+        },
+        {
+          "version": "baseline",
+          "mode": "synthesis",
+          "pass": 0,
+          "fail": 1,
+          "cases": {
+            "S03": "FAIL"
+          },
+          "expected_outcomes_match": true,
+          "log": "C:\\Users\\Fine\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-ai\\work\\end_attribution_validation_20261103\\directed_ordering_v2_order_fixed_v1\\baseline_synthesis\\simulation.log",
+          "log_sha256": "34245737373ce18beaf09167d8c64fbd47d27a2eb46807eacdd738822cca46b8"
+        },
+        {
+          "version": "received",
+          "mode": "normal",
+          "pass": 0,
+          "fail": 1,
+          "cases": {
+            "S03": "FAIL"
+          },
+          "expected_outcomes_match": true,
+          "log": "C:\\Users\\Fine\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-ai\\work\\end_attribution_validation_20261103\\directed_ordering_v2_order_fixed_v1\\received_normal\\simulation.log",
+          "log_sha256": "7a3e78b4bbca7cd5752270e732051b7c3a470977341782e6c20a51a8b506faad"
+        },
+        {
+          "version": "received",
+          "mode": "synthesis",
+          "pass": 0,
+          "fail": 1,
+          "cases": {
+            "S03": "FAIL"
+          },
+          "expected_outcomes_match": true,
+          "log": "C:\\Users\\Fine\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-ai\\work\\end_attribution_validation_20261103\\directed_ordering_v2_order_fixed_v1\\received_synthesis\\simulation.log",
+          "log_sha256": "7bd2611792f009ead3c0a780ae421cc41e39323f53e8fe677c36cfe67147898a"
+        },
+        {
+          "version": "candidate",
+          "mode": "normal",
+          "pass": 1,
+          "fail": 0,
+          "cases": {
+            "S03": "PASS"
+          },
+          "expected_outcomes_match": true,
+          "log": "C:\\Users\\Fine\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-ai\\work\\end_attribution_validation_20261103\\directed_ordering_v2_order_fixed_v1\\candidate_normal\\simulation.log",
+          "log_sha256": "f83f8f64aae38d42f099f26a532478284b51bc7708ca973b2c63df24e1dd9200"
+        },
+        {
+          "version": "candidate",
+          "mode": "synthesis",
+          "pass": 1,
+          "fail": 0,
+          "cases": {
+            "S03": "PASS"
+          },
+          "expected_outcomes_match": true,
+          "log": "C:\\Users\\Fine\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-ai\\work\\end_attribution_validation_20261103\\directed_ordering_v2_order_fixed_v1\\candidate_synthesis\\simulation.log",
+          "log_sha256": "a7e9886c706cba753df839cb2b491c09c6f5607106bb5a6c0e730acc70a4f8c4"
+        }
+      ]
+    },
+    "DIRECTED_QUEUE_BARRIER_RESULTS": {
+      "operator": "assistant",
+      "tb_modified": false,
+      "rtl_sha256": "903cd9b2526447d774332d57a6511f952f7cd6f16d14e7e78059357d06a4bc87",
+      "records": [
+        {
+          "version": "candidate",
+          "mode": "normal",
+          "pass": 1,
+          "fail": 0,
+          "cases": {
+            "S04": "PASS"
+          },
+          "expected_outcomes_match": true,
+          "log": "C:\\Users\\Fine\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-ai\\work\\end_attribution_validation_20261103\\directed_queue_barrier_order_fixed_v1\\candidate_normal\\simulation.log",
+          "log_sha256": "617fed48063561607ad5f4646a55de7834ae49d8ad9d569e8cbd6edd3283fe9f"
+        },
+        {
+          "version": "candidate",
+          "mode": "synthesis",
+          "pass": 1,
+          "fail": 0,
+          "cases": {
+            "S04": "PASS"
+          },
+          "expected_outcomes_match": true,
+          "log": "C:\\Users\\Fine\\Documents\\Codex\\2026-10-28\\files-pasted-by-the-user-ai\\work\\end_attribution_validation_20261103\\directed_queue_barrier_order_fixed_v1\\candidate_synthesis\\simulation.log",
+          "log_sha256": "7582ac18e4f1d06de0d1d42eab7defb77f4a2ef399826bae8d9da197e70bff93"
+        }
+      ]
+    }
+  },
+  "functional_qualification": {
+    "status": "PASS_FULL_SPATIAL_REPAIR_FUNCTIONAL_QUALIFICATION",
+    "positive_simulations": 42,
+    "native_cases": 498,
+    "native_values": 293360,
+    "negative_control": "EXPECTED_FAIL_DETECTED",
+    "evidence_scope": "Same 903 RTL SHA-256; detailed local qualification artifacts retained in work/end_attribution_validation_20261103/qualification_order_fix."
+  },
+  "physical": {
+    "strategy": "AggressiveFanoutOpt",
+    "also_passed": "AlternateReplication",
+    "tool": "Vivado 2025.2",
+    "device": "xcku5p-ffvb676-2-e",
+    "top": "step12f_registered_neighbor_harness",
+    "period_ns": 2,
+    "setup_uncertainty_user_ns": 0.0,
+    "WNS_ns": 0.006,
+    "TNS_ns": 0.0,
+    "setup_failing_endpoints": 0,
+    "WHS_ns": 0.011,
+    "THS_ns": 0.0,
+    "hold_failing_endpoints": 0,
+    "routable_nets": 42243,
+    "fully_routed_nets": 42243,
+    "routing_errors": 0,
+    "internal_unconstrained_endpoints": 0,
+    "valid_timing_exceptions": 0,
+    "boundary_recheck": "PASS: 54 source FF, 44 sink FF",
+    "resources": {
+      "LUT": 26160,
+      "FF": 19886,
+      "DSP": 320,
+      "BRAM": 0
+    },
+    "scope": "Nominal registered-neighbor harness. Existing rst_n input delay and clk/rst_n package constraints remain outside this evidence scope.",
+    "implementation_flow": "run_step12f_registered_neighbor.tcl with phys_opt_design -directive AggressiveFanoutOpt"
+  },
+  "official_equivalence": "NOT_PROVEN",
+  "historical_failed_trial": "An earlier default-flow attempt on the same functional RTL had WNS -0.067 ns; the accepted implementation uses the physical optimization strategy above."
+}

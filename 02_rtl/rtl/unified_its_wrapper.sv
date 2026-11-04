@@ -508,6 +508,85 @@ module unified_its_wrapper #(
     wire         input_end_fire;
     logic [12:0] bind_point_count_c;
 
+    // ------------------------------------------------------------------
+    // it_data_end attribution
+    //
+    // A TU may take exactly one end, and the end does not have to wait for
+    // it_data_in_req.  An end that arrives before the slot opens for filling
+    // (descriptor scrub window, or while the descriptor is still queued) is
+    // stored and consumed later.  Ownership follows receive order and skips
+    // every TU that has already taken its end.  See
+    // 01_docs/current/END_ATTRIBUTION_CONTRACT.md.
+    // ------------------------------------------------------------------
+    logic        end_seen_desc [0:1];
+    logic        end_seen_slot [0:1];
+    wire         end_owner_valid;
+    wire         end_owner_is_slot;
+    wire         end_owner_slot;
+    wire         end_owner_is_queue;
+    wire         end_owner_qidx;
+    wire         end_to_scrub;
+    wire         end_to_queue_pop;
+    wire         end_to_queue_store;
+    wire         scrub_ended;
+
+    // Priority: active input TU, then queue head, then queue second entry.
+    assign end_owner_is_slot =
+        (scrub_active && !end_seen_slot[scrub_slot]) ||
+        (fill_active  && !end_seen_slot[fill_slot]);
+    assign end_owner_slot  = scrub_active ? scrub_slot : fill_slot;
+    assign end_owner_valid =
+        end_owner_is_slot ||
+        ((desc_count != 2'd0) && !end_seen_desc[desc_rd_ptr]) ||
+        ((desc_count == 2'd2) && !end_seen_desc[~desc_rd_ptr]);
+    assign end_owner_is_queue = !end_owner_is_slot && end_owner_valid;
+    assign end_owner_qidx =
+        ((desc_count != 2'd0) && !end_seen_desc[desc_rd_ptr])
+            ? desc_rd_ptr : ~desc_rd_ptr;
+
+    // Stored ends are only ever raised for a slot still inside its scrub
+    // window; ends accepted during fill are consumed in place.
+    assign end_to_scrub = it_data_end && end_owner_is_slot && scrub_active &&
+                          (end_owner_slot == scrub_slot);
+
+    // A queued entry keeps its end in the queue unless it is being popped on
+    // this very edge, in which case the end rides along with the transfer.
+    assign end_to_queue_pop   = it_data_end && end_owner_is_queue && bind_event &&
+                                (end_owner_qidx == desc_rd_ptr);
+    assign end_to_queue_store = it_data_end && end_owner_is_queue &&
+                                !(bind_event && (end_owner_qidx == desc_rd_ptr));
+
+    assign scrub_ended = scrub_active &&
+                         (scrub_index == (INPUT_VALID_WORDS - 1)) &&
+                         (end_seen_slot[scrub_slot] || end_to_scrub);
+
+    // Single ownership: no other block may write end_seen_desc/end_seen_slot.
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            end_seen_desc[0] <= 1'b0;
+            end_seen_desc[1] <= 1'b0;
+            end_seen_slot[0] <= 1'b0;
+            end_seen_slot[1] <= 1'b0;
+        end else begin
+            if (desc_push)
+                end_seen_desc[desc_wr_ptr] <= 1'b0;
+            if (end_to_queue_store)
+                end_seen_desc[end_owner_qidx] <= 1'b1;
+
+            if (scrub_ended)
+                end_seen_slot[scrub_slot] <= 1'b0;
+            else if (end_to_scrub)
+                end_seen_slot[scrub_slot] <= 1'b1;
+
+            if (bind_event)
+                end_seen_slot[bind_slot] <=
+                    end_seen_desc[desc_rd_ptr] | end_to_queue_pop;
+
+            if (compute_valid)
+                end_seen_slot[compute_slot] <= 1'b0;
+        end
+    end
+
     // desc_rd_ptr selects only the descriptor being bound.  The expression is
     // a table decode, not a multiply, and is registered into the slot below.
     assign bind_point_count_c =
@@ -708,7 +787,10 @@ module unified_its_wrapper #(
     always_comb begin
         bind_event = 1'b0;
         bind_slot = 1'b0;
-        if (!fill_active && !scrub_active && (desc_count != 2'd0)) begin
+        // Input ordering barrier: let the previous final fill write commit
+        // before a younger TU binds and starts its scrub window.
+        if (!fill_active && !scrub_active && !fill_end_pending_q &&
+            (desc_count != 2'd0)) begin
             if (slot_state[0] == SLOT_FREE) begin
                 bind_event = 1'b1;
                 bind_slot = 1'b0;
@@ -2352,6 +2434,9 @@ module unified_its_wrapper #(
             if (input_fire &&
                 (it_data_addr > slot_last_input_addr[fill_slot]))
                 protocol_error <= 1'b1;
+            // An end that belongs to no admitted TU is a sender violation.
+            if (it_data_end && !end_owner_valid)
+                protocol_error <= 1'b1;
 
             if (desc_push) begin
                 desc_mem[desc_wr_ptr] <= it_info;
@@ -2381,10 +2466,21 @@ module unified_its_wrapper #(
             if (scrub_active) begin
                 if (scrub_index == (INPUT_VALID_WORDS - 1)) begin
                     scrub_active <= 1'b0;
-                    slot_state[scrub_slot] <= SLOT_FILL;
-                    fill_active <= 1'b1;
-                    fill_slot <= scrub_slot;
-                    scrub_index <= 12'd0;
+                    scrub_index  <= 12'd0;
+                    // An end stored during the scrub window (or landing on the
+                    // completing edge) means this TU has no data at all, so it
+                    // becomes READY instead of opening the fill window.
+                    if (scrub_ended) begin
+                        slot_state[scrub_slot] <= SLOT_READY;
+                        // The TU carried no data, so no write may still be
+                        // queued: any pending command commits on this edge.
+                        assert (!fill_wr_cmd_valid_q || fill_wr_cmd_commit)
+                            else $error("residual fill write at scrub completion");
+                    end else begin
+                        slot_state[scrub_slot] <= SLOT_FILL;
+                        fill_active <= 1'b1;
+                        fill_slot   <= scrub_slot;
+                    end
                 end else begin
                     scrub_index <= scrub_index + 1'b1;
                 end
