@@ -28,11 +28,11 @@ $ProfileSha256 = [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData
 if ($ProfileSha256 -cne $ExpectedProfileSha256) {
     throw "SAT10 release profile hash mismatch: expected $ExpectedProfileSha256 got $ProfileSha256"
 }
-$ModelSim = "D:\software\Modelsim\win64"
+$ModelSim = if($env:ITS_MODELSIM_BIN){$env:ITS_MODELSIM_BIN}else{"D:\software\Modelsim\win64"}
 $Vlib = Join-Path $ModelSim "vlib.exe"
 $Vlog = Join-Path $ModelSim "vlog.exe"
 $Vsim = Join-Path $ModelSim "vsim.exe"
-$License = "D:\software\Modelsim\LICENSE.TXT"
+$License = if($env:MGLS_LICENSE_FILE){$env:MGLS_LICENSE_FILE}elseif($env:LM_LICENSE_FILE){$env:LM_LICENSE_FILE}else{"D:\software\Modelsim\LICENSE.TXT"}
 
 foreach ($tool in @($Vlib, $Vlog, $Vsim, $License)) {
     if (-not (Test-Path -LiteralPath $tool)) {

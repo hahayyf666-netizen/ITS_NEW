@@ -14,7 +14,7 @@
 | `it_data_end` 为 1 bit，不携带 TU 编号 | 接收方无法区分"上一 TU 迟到的重复脉冲"与"当前 TU 的合法 end" |
 | 附件未要求 end 等待 `it_data_in_req` | 接收方不能假定 end 只在 `req=1` 时到达 |
 | 正文表3 无 `it_data_end` | 稀疏输入的完成条件在正文中缺失，必须按附件实现并说明 |
-| 当前 RTL `input_end_fire = it_data_end && it_data_in_req` 且不锁存 | `req=0` 时到达的 end 丢失，DUT 停在 `fill_active=1` 等待新 end |
+| 修复前 RTL仅按 `input_end_fire = it_data_end && it_data_in_req` 消费且不保存提前end | `req=0` 时到达的 end 丢失，DUT 停在 `fill_active=1` 等待新 end |
 
 ## 2. 归属规则
 
@@ -69,10 +69,10 @@
 | 位 | 唯一所有者 | 负责的转移 |
 |---|---|---|
 | `end_seen_desc[0:1]` | 专属 `always_ff` | ① `desc_push` 时按 `desc_wr_ptr` 初始化 0 ② 归属 C2/C3 且未弹出时置 1 |
-| `end_seen_slot[0:1]` | 专属 `always_ff` | ① `bind_event` 时从 `end_seen_desc[desc_rd_ptr]` 转移（含同拍 end 的 OR）② scrub 期间归属该 slot 时置 1 ③ scrub 末拍消费时清除 ④ 进入 `SLOT_OUT` 时清除 ⑤ 复位清除 |
+| `end_seen_slot[0:1]` | 专属 `always_ff` | ① `bind_event` 时从 `end_seen_desc[desc_rd_ptr]` 转移（含同拍 end 的 OR）② scrub 期间归属该 slot 时置 1 ③ scrub 末拍消费时清除 ④ `compute_valid` 接纳计算时清除 ⑤ 复位清除 |
 | `slot_state` / `fill_active` / `scrub_active` | 现有主 `always_ff` | 仅读取上述两位的沿前值，用于决定次态，不写入它们 |
 
-**置位/清除优先级**：同一拍内，**清除优先于置位**（消费优先）。实现方式为在专属块内先算次态再单次赋值，不依赖多条非阻塞赋值的书写顺序。
+**置位/清除优先级**：同一拍内，**清除优先于置位**（消费优先）。实际实现由专属块按索引、事件限定和非阻塞赋值优先级完成；例如新描述符初始化先于归属存储，绑定转移和计算接纳清除有明确门控。不得把此实现描述为每位仅有一条赋值。
 
 ## 6. scrub 末拍的统一判定
 
@@ -150,3 +150,10 @@ scrub_ended    = scrub_complete && (end_seen_slot[scrub_slot] || end_to_scrub)
 | C13 | 队首已 end、第二项未 end | **跳过 C2，归 C3** |
 
 C12/C13 直接验证"跳过已结束对象"，不可由"下一 TU 已进入 scrub/fill"的场景替代。
+## 13. TU输出顺序与绑定屏障
+
+输出TU必须保持描述符接受顺序。前TU末数据与end同拍时，在其写命令提交前，年轻TU不得绑定并开启scrub。
+绑定条件包含 `!fill_end_pending_q`：pending沿阻止绑定，提交后恢复。该屏障让较老READY TU及时被计算接纳，避免年轻slot0抢先。
+S03以B=511和C=0区分TU，S04验证pending时阻止绑定以及满队列复用时恢复绑定；S01/S02覆盖同拍pop/push/end归属。
+完整新增验证入口见 [FUNCTIONAL_REPLAY.md](FUNCTIONAL_REPLAY.md)。原19项加S01/S02/S03/S04为每种模式23项。
+scrub仍完整执行1024拍；提前end只使scrub完成后直接READY，不跳过清理。

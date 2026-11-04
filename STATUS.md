@@ -44,6 +44,13 @@ LFNST 关闭时：V 轴 DCT2-64 仅写回前 32 行，DCT8/DST7-32 仅写回前 
 | 早期冻结交付 | `05_audit/current/101_final_submission_20261006/`、`102_final_release_20261006/` |
 | 接口与形状规格提取 | `05_audit/current/58/…/HUAWEI_ATTACHMENT_INTERFACE_EXTRACT.txt` |
 
+## 当前功能复现
+
+- `05_audit/current/105_functional_closure_20261104/`：当前功能回归与可重放日志。
+- normal/SYNTHESIS各23项定向用例，42个仿真，667个原生主变换用例/352896值通过；保留原498用例并增加169个signed16极值配置。
+- S03/S04的正向通过、删除屏障负控、原end丢失与空间缺陷负控均保留；统一入口见 `01_docs/current/FUNCTIONAL_REPLAY.md`。
+- `official_equivalence=NOT_PROVEN`；六项待澄清规则见 `01_docs/current/SPEC_CLARIFICATIONS.md`。
+
 ## 验证边界（引用任何结论时必须一并说明）
 
 - 本次 500 MHz 时序闭合是 **registered-neighbor core 级**：WNS +0.006 ns、WHS +0.011 ns；setup 余量仅 6 ps，结果依赖记录的物理优化策略

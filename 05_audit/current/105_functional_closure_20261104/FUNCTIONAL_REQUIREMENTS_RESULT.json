@@ -1,0 +1,31 @@
+{
+  "status": "PASS_ENGINEERING_CONTRACT_WITH_OFFICIAL_RULES_OPEN",
+  "official_equivalence": "NOT_PROVEN",
+  "official_open_items": [
+    "Q01",
+    "Q02",
+    "Q03",
+    "Q04",
+    "Q05",
+    "Q06"
+  ],
+  "positive_directed_cases_per_mode": 23,
+  "modes": [
+    "normal",
+    "synthesis"
+  ],
+  "ordering_negative_control": "S03 and S04 FAIL after removing only the bind barrier; current RTL PASS",
+  "early_end_negative_control": "frozen fixture 8 PASS / 11 expected FAIL per mode",
+  "existing_positive_simulations": 42,
+  "native_reference_cases": 667,
+  "native_reference_values": 352896,
+  "additional_signed16_stress_configurations": 169,
+  "lfnst_off_configurations": 169,
+  "lfnst_on_configurations": 200,
+  "coverage_note": "Configured finite verification; not all input values or a formal equivalence proof.",
+  "rtl_raw_sha256": "903cd9b2526447d774332d57a6511f952f7cd6f16d14e7e78059357d06a4bc87",
+  "published_input_audit": "CHECKOUT_INPUT_AUDIT.json",
+  "replay": "python 03_verification/step12d_engineering/run_functional_closure.py --evidence-dir <NEW_DIR>",
+  "logs_archive": "functional_logs.zip",
+  "logs_archive_sha256": "7f609d36579943e61dc630568d79a4a5e0ce1672287031eb436a428f4358a9ae"
+}

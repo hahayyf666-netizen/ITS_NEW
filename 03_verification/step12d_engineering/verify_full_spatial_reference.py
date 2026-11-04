@@ -45,6 +45,14 @@ def extra_cases():
         ('fresh_lfnst_zero',Descriptor(4,16,0,0,0,1),[]),
         ('fresh64_zero',Descriptor(64,64,0,0),[])]:
         cases.append((name,d,entries,0 if not entries else None))
+    # Functional gap audit: signed16 extremes across all 169 legal LFNST-off configurations.
+    stress_rng=random.Random(20261104)
+    for di,d in enumerate(x for x in full_engineering_cases() if x.lfnst_idx==0):
+        size=d.width*d.height
+        addresses=sorted(set([0,size-1]+stress_rng.sample(range(size),min(size,32))))
+        values=(-32768,-16385,-513,-1,1,511,16384,32767)
+        entries=[(a,values[(j+di)%len(values)]) for j,a in enumerate(addresses)]
+        cases.append((f'signed16_stress_{di}_t{d.hor}{d.ver}_{d.width}x{d.height}',d,entries,None))
     return cases
 
 def main():

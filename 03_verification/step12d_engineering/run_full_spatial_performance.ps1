@@ -5,8 +5,8 @@ if(Test-Path -LiteralPath $WorkRoot){throw 'Use a new performance directory'}
 New-Item -ItemType Directory -Path $WorkRoot -Force | Out-Null
 $WorkRoot=(Resolve-Path -LiteralPath $WorkRoot).Path
 $env:PYTHONDONTWRITEBYTECODE='1';$env:PYTHONIOENCODING='utf-8'
-$env:LM_LICENSE_FILE='D:\software\Modelsim\LICENSE.TXT';$env:MGLS_LICENSE_FILE=$env:LM_LICENSE_FILE
-$sim='D:\software\Modelsim\win64'
+if(-not $env:LM_LICENSE_FILE){$env:LM_LICENSE_FILE=if($env:MGLS_LICENSE_FILE){$env:MGLS_LICENSE_FILE}else{'D:\software\Modelsim\LICENSE.TXT'}};$env:MGLS_LICENSE_FILE=$env:LM_LICENSE_FILE
+$sim=if($env:ITS_MODELSIM_BIN){$env:ITS_MODELSIM_BIN}else{'D:\software\Modelsim\win64'}
 & python (Join-Path $PSScriptRoot 'generate_full_spatial_performance_vectors.py') --output-dir $WorkRoot *> (Join-Path $WorkRoot 'generation.log')
 if($LASTEXITCODE -ne 0){throw 'Performance vectors failed'}
 New-Item -ItemType Directory -Path (Join-Path $WorkRoot '03_verification/sim') -Force | Out-Null

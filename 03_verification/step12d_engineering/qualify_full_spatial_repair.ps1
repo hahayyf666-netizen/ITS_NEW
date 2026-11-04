@@ -36,7 +36,7 @@ $result=@{status='PASS_FULL_SPATIAL_REPAIR_FUNCTIONAL_QUALIFICATION';source_comm
     negative_control='EXPECTED_FAIL_DETECTED';native_reference_cases=($full.reference_standard_cases+$full.reference_extra_cases);
     native_reference_values=$full.reference_scalar_values;official_equivalence='NOT_PROVEN';
     physical='REQUIRES_SEPARATE_FRESH_IMPLEMENTATION_EVIDENCE';
-    source_files=@(git -C $repo ls-files | ForEach-Object {@{path=$_;sha256=(Get-FileHash -LiteralPath (Join-Path $repo $_)).Hash}})
+    source_files=@(Get-ChildItem (Join-Path $repo '02_rtl/rtl'),(Join-Path $repo '03_verification/tb'),$PSScriptRoot -File -Recurse | Where-Object {$_.Extension -in '.sv','.py','.ps1','.json','.hex','.cpp'} | ForEach-Object {@{path=[IO.Path]::GetRelativePath($repo,$_.FullName);sha256=(Get-FileHash -LiteralPath $_.FullName).Hash}})
 }
 $result | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $EvidenceDir 'REPAIR_FUNCTIONAL_QUALIFICATION.json') -Encoding utf8
 Write-Output 'REPAIR_FUNCTIONAL_PASS positive_simulations=42 negative_control=EXPECTED_FAIL_DETECTED'
