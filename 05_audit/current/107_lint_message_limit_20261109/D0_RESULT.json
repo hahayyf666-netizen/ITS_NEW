@@ -1,0 +1,77 @@
+{
+  "task": "D0 lint message-limit recalibration",
+  "date": "2026-11-09",
+  "base_commit": "71c71c557b3cf80190e20fa22d7a618e9824fc10",
+  "rtl_modified": false,
+  "rtl_sha256": {
+    "02_rtl/rtl/unified_its_wrapper.sv": "903cd9b2526447d774332d57a6511f952f7cd6f16d14e7e78059357d06a4bc87"
+  },
+  "config": {
+    "final_saturate": 1,
+    "official_equivalence": "NOT_PROVEN"
+  },
+  "tool": {
+    "vivado": "2025.2",
+    "part": "xcku5p-ffvb676-2-e",
+    "mode": "synth_design full, out_of_context",
+    "msg_limit_set_to": 20000
+  },
+  "warning_totals": {
+    "default_limit_total": 166,
+    "raised_limit_total": 332,
+    "critical_warnings": 0,
+    "errors": 0
+  },
+  "per_code": [
+    {"code": "Synth 8-7137", "default_limit": 100, "raised_limit": 266, "truncated": true},
+    {"code": "Synth 8-6014", "default_limit": 45, "raised_limit": 45, "truncated": false},
+    {"code": "Synth 8-3917", "default_limit": 11, "raised_limit": 11, "truncated": false},
+    {"code": "Synth 8-7129", "default_limit": 7, "raised_limit": 7, "truncated": false},
+    {"code": "Synth 8-4767", "default_limit": 2, "raised_limit": 2, "truncated": false},
+    {"code": "Synth 8-3936", "default_limit": 1, "raised_limit": 1, "truncated": false}
+  ],
+  "code_8_7137_breakdown": [
+    {"register": "input_mem_reg[...]", "count": 256, "module": "unified_p4_kernel"},
+    {"register": "kernel_rd_bank_data_q_reg[0..1][0..3]", "count": 8, "module": "unified_its_wrapper"},
+    {"register": "desc_mem_reg", "count": 1, "module": "unified_its_wrapper"},
+    {"register": "primary_return_data_q_reg", "count": 1, "module": "unified_its_wrapper"}
+  ],
+  "unique_registers_affected": 266,
+  "input_mem_scope": {
+    "cells_matching_input_mem_any": 4235,
+    "cells_matching_input_mem_reg": 4096,
+    "cells_actually_warning": 256
+  },
+  "unchanged_metrics": {
+    "hier_cells": 52581,
+    "dsp48e2": 320,
+    "checksum": "9fa0820a"
+  },
+  "code_8_3936_netlist_check": {
+    "method": "write_verilog -mode timesim, 45.74 MB netlist",
+    "s0_coeff_q_cells": 0,
+    "s0_coeff_text_hits": 0,
+    "mul_a_q_text_hits": 0,
+    "dsp48e2_in_netlist": 320,
+    "ram64m8_instances": 457,
+    "expected_coeff_capacity_bits": 249856,
+    "observed_ram_bits_approx": 233984,
+    "verdict": "OPEN",
+    "reason": "intermediate register absent from final netlist; coefficient-to-DSP connectivity not proven equivalent to RTL"
+  },
+  "withdrawn_claims": [
+    "full synthesis reports 166 warnings",
+    "8-7137 occurs 100 times",
+    "154 warnings fully dispositioned",
+    "lint status is compliant"
+  ],
+  "artifacts": {
+    "run_d0.tcl": "raised-limit full synthesis and counting",
+    "run_d0b.tcl": "netlist export for 8-3936 check",
+    "d0.log": "full synthesis log with 332 warnings",
+    "d0b.log": "netlist export log"
+  },
+  "not_committed": {
+    "d0_netlist.v": "45 MB post-synthesis netlist, regenerate with run_d0b.tcl"
+  }
+}
