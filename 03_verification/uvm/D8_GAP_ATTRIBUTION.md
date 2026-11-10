@@ -147,6 +147,15 @@ L2715 `K_V_START → K_V_DRAIN`、L2784 `K_H_START → K_H_DRAIN`，与语句 E 
 
 20 个用例里有 4 档外部反压，仍然没有让这些内部信号出现反压。外部反压被 `output_active` 这个闸门吸收在计算准入处，传不下去。
 
+其中 L811/L812 比"传不下去"更强，是**恒等式**：
+
+```systemverilog
+assign fill_wr_cmd_commit = fill_wr_cmd_valid_q;
+assign fill_wr_cmd_ready  = !fill_wr_cmd_valid_q || fill_wr_cmd_commit;   // ≡ 1
+```
+
+`ready = !v || v` 恒为 1，所以 `it_data_in_req = fill_active`。任何要求 `fill_wr_cmd_ready=0` 的覆盖项在这份 RTL 上**按构造不可能出现**。同一条恒等式也让 L2477 那条断言（`!fill_wr_cmd_valid_q || fill_wr_cmd_commit`）恒真、永不触发。
+
 ### E. 守卫与防御检查恒真（多块，语句有命中但条件项恒定）
 
 这些行的语句命中数很高，说明代码在跑，只是守卫在合法路径上恒成立：

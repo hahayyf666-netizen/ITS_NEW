@@ -37,7 +37,7 @@
 | A 死代码 | Condition | 12 | 同语句 A 类 |
 | B 不变量证明不可达 | FSM 转移 | 13 | `kernel_run_q=0 ⟹ phase=IDLE`，L2590/L2676 只可能产生 IDLE 出发的转移 |
 | C 零馈送臂 | FSM 转移 | 2 | 同语句 E 类 |
-| D 外部反压传不到内部 | Condition/Expression | 8 | 根因 L1354 的 `output_active` 闸门，单 TU 串行化 |
+| D 外部反压传不到内部 | Condition/Expression | 8 | 根因 L1354 的 `output_active` 闸门；其中 L811 是恒等式 `ready = !v \|\| v ≡ 1`，按构造不可达 |
 | E 守卫恒真 | Condition/Expression | 若干块 | 语句有命中、条件项恒定，同防御性 `$fatal` 类 |
 | F if/else 与循环上界蕴含 | Condition | 3 | 结构上取不到另一侧 |
 | G tail 簇 | Condition/Expression | 5 | force-only，同语句 F 类 |
