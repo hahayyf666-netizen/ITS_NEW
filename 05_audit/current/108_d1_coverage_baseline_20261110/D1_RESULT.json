@@ -1,0 +1,119 @@
+{
+  "schema": "d1.coverage.baseline.v1",
+  "simulator": "ModelSim SE-64 2020.4",
+  "launch_mode": "-batch (the -c console path is blocked by Windows code-integrity policy)",
+  "compile_flags": [
+    "-sv",
+    "+cover=bcestf"
+  ],
+  "collect": [
+    "-coverage",
+    "coverage save -testname <mode>_<tag> -onexit"
+  ],
+  "runs_per_mode": 18,
+  "passed_per_mode": 18,
+  "modes": {
+    "normal": {
+      "totals": {
+        "Assertions": {
+          "bins": 220,
+          "hits": 220,
+          "misses": 0,
+          "coverage_pct": 100.0
+        },
+        "Branches": {
+          "bins": 8641,
+          "hits": 5196,
+          "misses": 3445,
+          "coverage_pct": 60.13
+        },
+        "Conditions": {
+          "bins": 2072,
+          "hits": 849,
+          "misses": 1223,
+          "coverage_pct": 40.97
+        },
+        "Expressions": {
+          "bins": 2563,
+          "hits": 992,
+          "misses": 1571,
+          "coverage_pct": 38.7
+        },
+        "FSM States": {
+          "bins": 90,
+          "hits": 81,
+          "misses": 9,
+          "coverage_pct": 90.0
+        },
+        "FSM Transitions": {
+          "bins": 260,
+          "hits": 100,
+          "misses": 160,
+          "coverage_pct": 38.46
+        },
+        "Statements": {
+          "bins": 18140,
+          "hits": 13643,
+          "misses": 4497,
+          "coverage_pct": 75.21
+        },
+        "Toggles": {
+          "bins": 96244,
+          "hits": 20667,
+          "misses": 75577,
+          "coverage_pct": 21.47
+        }
+      },
+      "instances": 255
+    },
+    "synthesis": {
+      "totals": {
+        "Branches": {
+          "bins": 8121,
+          "hits": 4851,
+          "misses": 3270,
+          "coverage_pct": 59.73
+        },
+        "Conditions": {
+          "bins": 1882,
+          "hits": 797,
+          "misses": 1085,
+          "coverage_pct": 42.35
+        },
+        "Expressions": {
+          "bins": 2563,
+          "hits": 992,
+          "misses": 1571,
+          "coverage_pct": 38.7
+        },
+        "FSM States": {
+          "bins": 90,
+          "hits": 81,
+          "misses": 9,
+          "coverage_pct": 90.0
+        },
+        "FSM Transitions": {
+          "bins": 260,
+          "hits": 100,
+          "misses": 160,
+          "coverage_pct": 38.46
+        },
+        "Statements": {
+          "bins": 17840,
+          "hits": 13472,
+          "misses": 4368,
+          "coverage_pct": 75.52
+        },
+        "Toggles": {
+          "bins": 92084,
+          "hits": 20535,
+          "misses": 71549,
+          "coverage_pct": 22.3
+        }
+      },
+      "instances": 255
+    }
+  },
+  "merge_note": "normal and synthesis cannot be merged into one total: 7 ifndef SYNTHESIS blocks in unified_its_wrapper.sv remove all 220 assertions and change statement/branch structure.",
+  "assertions_note": "synthesis mode has no assertion bins by construction"
+}
