@@ -1,4 +1,4 @@
-# D3 UVM 协议层 + D4 功能覆盖率
+# D3 UVM 协议层 + D4 功能覆盖率 + D5 回归
 
 对应方案 D3（`agent + driver + monitor + scoreboard` + 2–3 个 sequence）。
 范围为**协议层**：UVM 负责激励产生、握手检查、错误捕获；数值金标准不在这里
@@ -90,6 +90,82 @@ if (!output_active && !kernel_run_q && !lfnst_run_q && !scrub_active) begin
 `sweep` 上报 100%（25/25）。同一套采样逻辑能报出低值，说明它不是恒为 100%
 的空转指标——这是 D4 验收标准里「每个覆盖点要有正例和反例」的证据。
 
+## D5 回归
+
+三个动作按方案 84–87 条实现：
+
+| 动作 | 实现 |
+|---|---|
+| 用例列表外置 | `cases.json`，runner 不内嵌任何用例名 |
+| 覆盖率合并 | 跨运行取 bin 并集，输出每组合与总体 |
+| 失败分类自动输出 | `REGRESSION.json` 的 `failure_classes` |
+
+### 判定与日志文本解耦
+
+这是 D5 的关键约束。做法是让 TB 自己写结构化结果：
+
+`its_base_test::write_result_file()` 在 `report_phase` 把 54 个覆盖 bin 计数和
+`tus/beats/data_errors/done_errors/protocol_errors/unexpected/pending/overlap/
+uvm_error/uvm_fatal` 逐行写成 `key=value`，路径由 `+RESULT_FILE=` 指定。
+
+runner 只读这个文件做判定，**从不 grep 仿真日志**。所以 UVM 消息文案改动
+不会翻转判定结果。
+
+### 状态词表
+
+按方案要求「SKIP 视为 INCOMPLETE，DIRTY/失败/缺阶段一律不算 PASS」：
+
+| 状态 | 含义 |
+|---|---|
+| `PASS` | 所有期望字段全中，且 `uvm_fatal == 0` |
+| `FAIL/<类>` | 字段不符，带具体类别 |
+| `INCOMPLETE` | 结果文件缺失/为空/超时/被跳过 |
+| `DIRTY` | 结果文件存在但坏（重复键、缺必填字段、退出码非零却结果干净） |
+
+失败类别：`UVM_FATAL`、`UVM_ERROR_COUNT`、`EXPECTED_ERROR_MISSING`、
+`TUS_MISMATCH`、`BEATS_MISMATCH`、`DATA_ERRORS_MISMATCH`、`PENDING_MISMATCH`、
+`OVERLAP_NOT_OBSERVED`、`NO_RESULT_FILE`、`EMPTY_RESULT_FILE`、
+`MISSING_FIELD:<名>`、`RESULT_DUPLICATE_KEY:<名>`、`SKIPPED`。
+
+### 判定逻辑本身有测试
+
+七个真实用例全过，失败分支本来一行都不会执行，所以另加
+`run_regress.py selftest`：喂 9 个构造出来的结果（含 fatal、错误数不符、
+缺结果文件、空文件、重复键、缺字段）和 1 个覆盖率合并检查，核对分类结果。
+
+```
+selftest: PASS (10/10)
+```
+
+端到端也验过一次：把 `single_tu` 的期望改成 `beats=999`，runner 报
+`FAIL/BEATS_MISMATCH`、退出码 1——说明失败确实能被分类出来，不是只会报 PASS。
+
+### 结果
+
+```
+[regress] 7 case(s) from cases.json
+  [single_tu]        PASS  tus=1   beats=4
+  [rect_tu]          PASS  tus=1   beats=8
+  [multi_tu_4]       PASS  tus=4   beats=32   overlap=3
+  [multi_tu_16]      PASS  tus=16  beats=524  overlap=15
+  [neg_wrong_golden] PASS  uvm_error=4  （负向对照，期望报错）
+  [neg_illegal_desc] PASS  uvm_error=1  protocol_errors=1
+  [sweep]            PASS  tus=369 beats=45636 overlap=368
+
+status: PASS 7
+merged functional coverage: 52/54 = 96.30%
+summary: 7/7 PASS，退出码 0
+```
+
+合并后只有 `stall_phase` 的 2 个不可达 bin 未命中（见 D4 章节）。
+
+### 覆盖率合并的口径
+
+合并用**扁平 bin 命中率**（命中 bin 数 / 定义 bin 总数，共 54 个），因为跨运行
+唯一有定义的操作是 bin 并集。这与覆盖组自报的 `get_coverage()` 在部分命中时
+权重不同（`single_tu` 下 `shape` 自报 14.67%，扁平口径是 1/25 = 4.00%），
+但两者在 100% 时一致。两个数字不能混用，文档里分别标明。
+
 ## D3 验收标准对照（方案第 66–69 块）
 
 | 标准 | 状态 | 依据 |
@@ -116,4 +192,5 @@ if (!output_active && !kernel_run_q && !lfnst_run_q && !scrub_active) begin
 - `stall_phase` 的 lfnst / compute 两 bin 受 RTL 结构约束不可达（见上）
 - UVM 随机化未启用，sequence 按固定顺序或 stride 取用例
 - 单 driver 串行发激励；TU 重叠来自 DUT 流水，不是多 driver 并发
-- 覆盖率数字来自 `sweep` 单一运行，不是跨用例合并值
+- D5 只回归 UVM 层 7 个用例；D1 的代码覆盖率回归不在此 pipeline 内
+- 覆盖率合并是 bin 并集，不做跨运行的代码覆盖率 UCDB 合并

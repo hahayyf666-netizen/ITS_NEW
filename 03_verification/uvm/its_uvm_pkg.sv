@@ -903,8 +903,6 @@ package its_uvm_pkg;
         endfunction
 
         // Wait until the scoreboard has retired `want` TUs, or time out.
-        // The bound is expressed in clock cycles so it does not depend on the
-        // time unit visible inside the package.
         task wait_for_tus(int unsigned want, int unsigned max_cycles = 1_000_000);
             fork
                 begin
@@ -922,6 +920,69 @@ package its_uvm_pkg;
             join_any
             disable fork;
         endtask
+
+        // Machine-readable result file.
+        //
+        // The regression runner decides pass/fail from this file only; it never
+        // parses log text.  Every value is a plain key=value pair on its own
+        // line so a reader does not depend on message formatting.
+        // A function, not a task: report_phase is a function and cannot call a
+        // task.  Only file I/O happens here, so nothing needs time.
+        function void write_result_file();
+            int               fd;
+            string            path;
+            uvm_report_server srv;
+            if (!$value$plusargs("RESULT_FILE=%s", path)) return;
+            fd = $fopen(path, "w");
+            if (fd == 0) begin
+                `uvm_error("ITS_RESULT",
+                           $sformatf("cannot open result file %s", path))
+                return;
+            end
+            srv = uvm_report_server::get_server();
+            $fdisplay(fd, "test=%s",    get_type_name());
+            $fdisplay(fd, "tus=%0d",    env.sb.tus_completed);
+            $fdisplay(fd, "beats=%0d",  env.sb.beats_seen);
+            $fdisplay(fd, "data_errors=%0d",     env.sb.data_errors);
+            $fdisplay(fd, "done_errors=%0d",     env.sb.done_errors);
+            $fdisplay(fd, "protocol_errors=%0d", env.sb.protocol_errors);
+            $fdisplay(fd, "unexpected=%0d",      env.sb.unexpected);
+            $fdisplay(fd, "pending=%0d",         env.sb.pending.size());
+            $fdisplay(fd, "overlap=%0d",         env.sb.overlap_admissions);
+            $fdisplay(fd, "uvm_error=%0d", srv.get_severity_count(UVM_ERROR));
+            $fdisplay(fd, "uvm_fatal=%0d", srv.get_severity_count(UVM_FATAL));
+            // Functional coverage counters, one line per bin.
+            for (int i = 0; i < 5; i++)
+                for (int j = 0; j < 5; j++)
+                    $fdisplay(fd, "cg.shape.%0d_%0d=%0d", i, j,
+                              env.desc_cov.shape_hit[i][j]);
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    $fdisplay(fd, "cg.xform.%0d_%0d=%0d", i, j,
+                              env.desc_cov.xform_hit[i][j]);
+            for (int i = 0; i < 3; i++)
+                $fdisplay(fd, "cg.lfnst_mode.%0d=%0d", i,
+                          env.desc_cov.lfnst_mode_hit[i]);
+            for (int i = 0; i < 4; i++)
+                $fdisplay(fd, "cg.lfnst_idx.%0d=%0d", i,
+                          env.desc_cov.lfnst_idx_hit[i]);
+            for (int i = 0; i < 3; i++)
+                $fdisplay(fd, "cg.sat.%0d=%0d", i, env.out_cov.sat_hit[i]);
+            for (int i = 0; i < 4; i++)
+                $fdisplay(fd, "cg.backpressure.%0d=%0d", i,
+                          env.out_cov.depth_hit[i]);
+            for (int i = 0; i < 6; i++)
+                $fdisplay(fd, "cg.stall_phase.%0d=%0d", i,
+                          env.out_cov.phase_hit[i]);
+            $fclose(fd);
+            `uvm_info("ITS_RESULT", $sformatf("result file written: %s", path),
+                      UVM_LOW)
+        endfunction
+
+        function void report_phase(uvm_phase phase);
+            super.report_phase(phase);
+            write_result_file();
+        endfunction
     endclass
 
     class its_single_tu_test extends its_base_test;

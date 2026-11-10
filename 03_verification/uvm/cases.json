@@ -1,0 +1,58 @@
+{
+  "_comment": "D5 regression case list. The runner reads this file only; pass/fail is decided from the structured RESULT_FILE each simulation writes, never from log text.",
+  "vector_file": "unified_gate_c_vectors.txt",
+  "defaults": {
+    "timeout_s": 900,
+    "expect": {
+      "uvm_error": 0,
+      "uvm_fatal": 0
+    }
+  },
+  "cases": [
+    {
+      "name": "single_tu",
+      "testname": "its_single_tu_test",
+      "plusargs": ["CASE_INDEX=0"],
+      "expect": {"tus": 1, "beats": 4, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "pending": 0}
+    },
+    {
+      "name": "rect_tu",
+      "testname": "its_rect_tu_test",
+      "plusargs": [],
+      "expect": {"tus": 1, "beats": 8, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "pending": 0}
+    },
+    {
+      "name": "multi_tu_4",
+      "testname": "its_multi_tu_test",
+      "plusargs": ["TU_COUNT=4", "TU_START=0"],
+      "expect": {"tus": 4, "beats": 32, "overlap_min": 1, "data_errors": 0, "pending": 0}
+    },
+    {
+      "name": "multi_tu_16",
+      "testname": "its_multi_tu_test",
+      "plusargs": ["TU_COUNT=16", "TU_START=3"],
+      "expect": {"tus": 16, "beats": 524, "overlap_min": 1, "data_errors": 0, "pending": 0}
+    },
+    {
+      "name": "neg_wrong_golden",
+      "testname": "its_wrong_golden_test",
+      "plusargs": ["WRONG_GOLDEN"],
+      "expect": {"uvm_error_min": 1, "data_errors_min": 1},
+      "note": "negative control: the checker must reject a deliberately wrong golden"
+    },
+    {
+      "name": "neg_illegal_desc",
+      "testname": "its_illegal_desc_test",
+      "plusargs": [],
+      "expect": {"uvm_error_min": 1, "protocol_errors_min": 1},
+      "note": "negative control: width 2 must raise the sticky protocol error"
+    },
+    {
+      "name": "sweep",
+      "testname": "its_sweep_test",
+      "plusargs": [],
+      "timeout_s": 1800,
+      "expect": {"tus": 369, "beats": 45636, "overlap_min": 1, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "pending": 0}
+    }
+  ]
+}
