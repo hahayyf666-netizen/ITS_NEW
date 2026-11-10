@@ -36,6 +36,16 @@ package its_uvm_pkg;
         string       tag         = "tu";
         bit          illegal_desc = 1'b0;
 
+        // Stimulus controls for the negative and reset tests.  They live on the
+        // item so a sequence can express "drive this, then do something odd"
+        // without the driver knowing any test name.
+        int unsigned gap_cycles    = 0;      // idle clocks before the descriptor
+        bit          trigger_reset = 1'b0;   // abort mid-flight with a reset
+        bit          stray_end     = 1'b0;   // end marker with no TU outstanding
+        bit          skip_end      = 1'b0;   // never close the fill
+        bit          short_beats   = 1'b0;   // stop halfway through the inputs
+        int unsigned addr_overrun  = 0;      // added to the last beat address
+
         `uvm_object_utils(its_tu_item)
 
         function new(string name = "its_tu_item");
@@ -54,6 +64,32 @@ package its_uvm_pkg;
             return $sformatf("%s w=%0d h=%0d in=%0d beats=%0d%s",
                              tag, width(), height(), input_count, beat_count,
                              illegal_desc ? " ILLEGAL" : "");
+        endfunction
+
+        // Without this, uvm_object::copy() silently copies nothing, which makes
+        // a derived item look like a zero descriptor.  Sequences copy DB entries
+        // so the per-test knobs never leak back into the shared database.
+        virtual function void do_copy(uvm_object rhs);
+            its_tu_item src;
+            if (!$cast(src, rhs)) return;
+            super.do_copy(rhs);
+            case_desc     = src.case_desc;
+            input_count   = src.input_count;
+            beat_count    = src.beat_count;
+            tag           = src.tag;
+            illegal_desc  = src.illegal_desc;
+            gap_cycles    = src.gap_cycles;
+            trigger_reset = src.trigger_reset;
+            stray_end     = src.stray_end;
+            skip_end      = src.skip_end;
+            short_beats   = src.short_beats;
+            addr_overrun  = src.addr_overrun;
+            for (int i = 0; i < MAX_INPUTS; i++) begin
+                input_addr[i]  = src.input_addr[i];
+                input_value[i] = src.input_value[i];
+            end
+            for (int i = 0; i < src.beat_count; i++)
+                expected[i] = src.expected[i];
         endfunction
     endclass
 
@@ -258,6 +294,268 @@ package its_uvm_pkg;
         endtask
     endclass
 
+    // ------------------------------------------------------------------
+    // Negative stimulus: each one violates exactly one rule the wrapper checks,
+    // so the expected reaction is traceable to a specific RTL line.
+    // ------------------------------------------------------------------
+    // LFNST enabled while a transform type is non-zero: descriptor_legal drops
+    // at unified_its_wrapper.sv:775-778, and :2430 raises protocol_error.
+    class its_lfnst_xform_sequence extends uvm_sequence #(its_tu_item);
+        `uvm_object_utils(its_lfnst_xform_sequence)
+
+        function new(string name = "its_lfnst_xform_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            its_tu_item req = its_tu_item::new("lfnst_bad_xform");
+            req.case_desc = '0;
+            req.case_desc[6:0]   = 7'd4;   // 4 wide
+            req.case_desc[13:7]  = 7'd4;   // 4 high
+            req.case_desc[15:14] = 2'd1;   // DST-VII, illegal with LFNST
+            req.case_desc[17:16] = 2'd0;
+            req.case_desc[19:18] = 2'd0;
+            req.case_desc[21:20] = 2'd1;   // LFNST set 1
+            req.input_count      = 0;
+            req.illegal_desc     = 1'b1;
+            req.tag              = "neg_lfnst_xform";
+            start_item(req);
+            finish_item(req);
+        endtask
+    endclass
+
+    // LFNST mode 3: the encoding only allows 1 or 2, see
+    // unified_its_wrapper.sv:780-781.
+    class its_lfnst_mode3_sequence extends uvm_sequence #(its_tu_item);
+        `uvm_object_utils(its_lfnst_mode3_sequence)
+
+        function new(string name = "its_lfnst_mode3_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            its_tu_item req = its_tu_item::new("lfnst_mode3");
+            req.case_desc = '0;
+            req.case_desc[6:0]   = 7'd8;
+            req.case_desc[13:7]  = 7'd8;
+            req.case_desc[21:20] = 2'd3;   // not a legal LFNST mode
+            req.input_count      = 0;
+            req.illegal_desc     = 1'b1;
+            req.tag              = "neg_lfnst_mode3";
+            start_item(req);
+            finish_item(req);
+        endtask
+    endclass
+
+    // Data beat addressed past the last point of the TU: caught by
+    // unified_its_wrapper.sv:2434-2436 while filling.
+    class its_addr_overrun_sequence extends uvm_sequence #(its_tu_item);
+        `uvm_object_utils(its_addr_overrun_sequence)
+
+        function new(string name = "its_addr_overrun_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            its_tu_item req;
+            req = its_tu_item::new("addr_overrun");
+            if (its_case_db::items.size() == 0)
+                `uvm_fatal("ITS_SEQ", "case database is empty")
+            req.copy(its_case_db::items[0]);
+            req.tag          = "neg_addr_overrun";
+            req.addr_overrun = 16;   // 4x4 has 16 points, so index 15 is last
+            start_item(req);
+            finish_item(req);
+        endtask
+    endclass
+
+    // End marker with no TU outstanding: unified_its_wrapper.sv:2438-2439.
+    class its_stray_end_sequence extends uvm_sequence #(its_tu_item);
+        `uvm_object_utils(its_stray_end_sequence)
+
+        function new(string name = "its_stray_end_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            its_tu_item req = its_tu_item::new("stray_end");
+            req.stray_end = 1'b1;
+            req.tag       = "neg_stray_end";
+            start_item(req);
+            finish_item(req);
+        endtask
+    endclass
+
+    // Fill never closed: the TU cannot compute, so no beat may appear and the
+    // scoreboard ends the run with one TU still outstanding.
+    class its_no_end_sequence extends uvm_sequence #(its_tu_item);
+        `uvm_object_utils(its_no_end_sequence)
+
+        function new(string name = "its_no_end_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            its_tu_item req;
+            if (its_case_db::items.size() == 0)
+                `uvm_fatal("ITS_SEQ", "case database is empty")
+            req = its_tu_item::new("no_end");
+            req.copy(its_case_db::items[0]);
+            req.tag      = "neg_no_end";
+            req.skip_end = 1'b1;
+            start_item(req);
+            finish_item(req);
+        endtask
+    endclass
+
+    // Half the inputs, then end: a short TU must not reproduce the golden.
+    class its_short_beats_sequence extends uvm_sequence #(its_tu_item);
+        `uvm_object_utils(its_short_beats_sequence)
+
+        function new(string name = "its_short_beats_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            its_tu_item req;
+            if (its_case_db::items.size() == 0)
+                `uvm_fatal("ITS_SEQ", "case database is empty")
+            req = its_tu_item::new("short_beats");
+            req.copy(its_case_db::items[0]);
+            req.tag         = "neg_short_beats";
+            req.short_beats = 1'b1;
+            start_item(req);
+            finish_item(req);
+        endtask
+    endclass
+
+    // Two real TUs, then a reset while beats are still streaming, then one more
+    // TU that must come out bit-exact.  Proves the DUT restarts cleanly.
+    class its_reset_sequence extends uvm_sequence #(its_tu_item);
+        `uvm_object_utils(its_reset_sequence)
+
+        function new(string name = "its_reset_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            its_tu_item req;
+            if (its_case_db::items.size() < 3)
+                `uvm_fatal("ITS_SEQ", "case database too small for reset test")
+            for (int unsigned i = 0; i < 2; i++) begin
+                req = its_tu_item::new($sformatf("pre_reset_%0d", i));
+                req.copy(its_case_db::items[i]);
+                req.tag = $sformatf("pre_reset_%0d", i);
+                start_item(req);
+                finish_item(req);
+            end
+            req = its_tu_item::new("reset_marker");
+            req.trigger_reset = 1'b1;
+            req.tag           = "reset_marker";
+            start_item(req);
+            finish_item(req);
+            req = its_tu_item::new("post_reset");
+            req.copy(its_case_db::items[2]);
+            req.tag = "post_reset";
+            start_item(req);
+            finish_item(req);
+        endtask
+    endclass
+
+    // ------------------------------------------------------------------
+    // Constrained random stimulus.
+    //
+    // The golden beats still come from the vector file, so the randomisation is
+    // over which legal cases are drawn, in what order, and with what idle gaps.
+    // A shape mask makes the draw cover a random subset of the 25 legal shapes
+    // instead of drifting towards whatever the file happens to list first.
+    // ------------------------------------------------------------------
+    class its_random_sequence extends uvm_sequence #(its_tu_item);
+        rand int unsigned n_tu;
+        rand bit [24:0]   shape_pick;   // one bit per (w,h) combination
+        rand int unsigned max_gap;
+        // Set by the test when it wants to randomize up front and know n_tu.
+        bit pre_randomized = 1'b0;
+
+        constraint c_count { n_tu inside {[8:20]}; }
+        constraint c_gap   { max_gap inside {[0:6]}; }
+        constraint c_pop   { $countones(shape_pick) inside {[4:10]}; }
+
+        `uvm_object_utils(its_random_sequence)
+
+        function new(string name = "its_random_sequence");
+            super.new(name);
+        endfunction
+
+        function int unsigned shape_bit(int unsigned w, int unsigned h);
+            int unsigned wi, hi;
+            case (w)
+                4:       wi = 0;
+                8:       wi = 1;
+                16:      wi = 2;
+                32:      wi = 3;
+                default: wi = 4;
+            endcase
+            case (h)
+                4:       hi = 0;
+                8:       hi = 1;
+                16:      hi = 2;
+                32:      hi = 3;
+                default: hi = 4;
+            endcase
+            return wi * 5 + hi;
+        endfunction
+
+        task body();
+            its_tu_item req;
+            int unsigned pool[$];
+            int unsigned total;
+            int unsigned drawn;
+            int unsigned tmp;
+            int unsigned sel;
+
+            total = its_case_db::items.size();
+            if (total == 0) `uvm_fatal("ITS_SEQ", "case database is empty")
+            if (!pre_randomized && !randomize())
+                `uvm_fatal("ITS_SEQ", "cannot randomize sequence")
+
+            // Collect the case indices whose shape is in the picked mask.
+            foreach (its_case_db::items[i]) begin
+                its_tu_item c = its_case_db::items[i];
+                if (shape_pick[shape_bit(c.width(), c.height())])
+                    pool.push_back(i);
+            end
+            if (pool.size() == 0)
+                for (int unsigned i = 0; i < total; i++) pool.push_back(i);
+
+            `uvm_info("ITS_RAND",
+                      $sformatf("n_tu=%0d mask=%05h pool=%0d max_gap=%0d",
+                                n_tu, shape_pick, pool.size(), max_gap),
+                      UVM_LOW)
+
+            for (int unsigned k = 0; k < n_tu; k++) begin
+                // Fisher-Yates style draw without replacement from the pool,
+                // falling back to a fresh random pick once it is exhausted.
+                if (pool.size() > 0) begin
+                    sel = $urandom_range(pool.size() - 1, 0);
+                    drawn = pool[sel];
+                    tmp = pool[sel];
+                    pool[sel] = pool[pool.size() - 1];
+                    pool[pool.size() - 1] = tmp;
+                    void'(pool.pop_back());
+                end else begin
+                    drawn = $urandom_range(total - 1, 0);
+                end
+                req = its_tu_item::new($sformatf("rand_%0d", k));
+                req.copy(its_case_db::items[drawn]);
+                req.tag        = $sformatf("rand_%0d_case%0d", k, drawn);
+                req.gap_cycles = $urandom_range(max_gap, 0);
+                start_item(req);
+                finish_item(req);
+            end
+        endtask
+    endclass
+
     // Illegal descriptor: width 2 is not a legal DCT2 axis length, so the DUT
     // must raise the sticky protocol error and stop admitting input.
     class its_illegal_desc_sequence extends uvm_sequence #(its_tu_item);
@@ -307,6 +605,29 @@ package its_uvm_pkg;
             repeat (2) @(negedge vif.clk);
         endtask
 
+        // Reset while the DUT is in the middle of streaming beats.
+        //
+        // Waiting for dbg_output_active is what makes the reset land inside a
+        // TU rather than between TUs: there is a beat pending when rst_n drops.
+        task do_mid_reset();
+            int unsigned guard = 0;
+            while (!vif.dbg_output_active && guard < 50_000) begin
+                @(negedge vif.clk);
+                guard++;
+            end
+            if (guard >= 50_000)
+                `uvm_error("ITS_DRV", "mid-reset never saw an active output")
+            repeat (2) @(negedge vif.clk);
+            vif.rst_n = 1'b0;
+            repeat (4) @(negedge vif.clk);
+            vif.drive_idle();
+            repeat (2) @(negedge vif.clk);
+            vif.rst_n = 1'b1;
+            repeat (4) @(negedge vif.clk);
+            `uvm_info("ITS_DRV", "mid-TU reset applied while output was active",
+                      UVM_LOW)
+        endtask
+
         task send_info(logic [21:0] value);
             @(negedge vif.clk);
             vif.it_info     = value;
@@ -317,7 +638,18 @@ package its_uvm_pkg;
         endtask
 
         task send_data(int address, int value, bit last);
-            while (!vif.it_data_in_req) @(negedge vif.clk);
+            int unsigned guard = 0;
+            // A guard here turns "the DUT stopped asking for input" into a
+            // reported error instead of a simulation that hangs forever.
+            while (!vif.it_data_in_req) begin
+                @(negedge vif.clk);
+                guard++;
+                if (guard > 200_000) begin
+                    `uvm_fatal("ITS_DRV",
+                               "it_data_in_req never rose; DUT stopped accepting input")
+                    return;
+                end
+            end
             vif.it_data_addr   = address[11:0];
             vif.it_data_in     = value[15:0];
             vif.it_data_in_vld = 1'b1;
@@ -329,8 +661,23 @@ package its_uvm_pkg;
         endtask
 
         // Sparse TU: no data beat, only the independent end marker.
-        task send_end_only();
-            while (!vif.it_data_in_req) @(negedge vif.clk);
+        //
+        // ignore_req is for the stray-end test: there is no TU in fill, so
+        // it_data_in_req never rises and waiting for it would hang forever.
+        task send_end_only(bit ignore_req = 1'b0);
+            int unsigned guard = 0;
+            if (ignore_req) @(negedge vif.clk);
+            else begin
+                while (!vif.it_data_in_req) begin
+                    @(negedge vif.clk);
+                    guard++;
+                    if (guard > 200_000) begin
+                        `uvm_fatal("ITS_DRV",
+                                   "it_data_in_req never rose for the end marker")
+                        return;
+                    end
+                end
+            end
             vif.it_data_end = 1'b1;
             @(posedge vif.clk);
             @(negedge vif.clk);
@@ -363,24 +710,45 @@ package its_uvm_pkg;
         endtask
 
         task stream_items();
+            int unsigned n;
             forever begin
                 seq_item_port.get_next_item(req);
-                ap_expected.write(req);
-                if (req.illegal_desc) begin
+
+                if (req.trigger_reset) begin
+                    // The marker is not a TU.  Reset while the DUT is mid-beat,
+                    // then tell the scoreboard to drop whatever it was still
+                    // expecting: those beats are never going to arrive.
+                    do_mid_reset();
+                    ap_expected.write(req);
+                    seq_item_port.item_done();
+                end else if (req.stray_end) begin
+                    send_end_only(1'b1);
+                    seq_item_port.item_done();
+                end else if (req.illegal_desc) begin
+                    // The DUT must reject the descriptor, so no data follows.
                     send_info(req.case_desc);
                     repeat (6) @(negedge vif.clk);
+                    seq_item_port.item_done();
                 end else begin
+                    ap_expected.write(req);
+                    repeat (req.gap_cycles) @(negedge vif.clk);
                     send_info(req.case_desc);
                     if (req.input_count == 0) begin
-                        send_end_only();
+                        if (!req.skip_end) send_end_only();
                     end else begin
-                        for (int unsigned i = 0; i < req.input_count; i++) begin
-                            send_data(req.input_addr[i], req.input_value[i],
-                                      i == req.input_count - 1);
+                        n = req.short_beats ? (req.input_count / 2)
+                                            : req.input_count;
+                        if (n == 0) n = 1;
+                        for (int unsigned i = 0; i < n; i++) begin
+                            int unsigned addr;
+                            addr = req.input_addr[i];
+                            if (i == n - 1) addr = addr + req.addr_overrun;
+                            send_data(addr, req.input_value[i],
+                                      (i == n - 1) && !req.skip_end);
                         end
                     end
+                    seq_item_port.item_done();
                 end
-                seq_item_port.item_done();
             end
         endtask
 
@@ -478,6 +846,9 @@ package its_uvm_pkg;
         // Counts how many TUs were admitted while an earlier TU still had
         // beats outstanding: proof that TUs actually overlap in the DUT.
         int unsigned overlap_admissions = 0;
+        // Resets that aborted in-flight TUs.  Their remaining beats will never
+        // arrive, so the expectation queue is dropped at the marker.
+        int unsigned resets_seen    = 0;
         bit          wrong_golden   = 1'b0;
 
         `uvm_component_utils(its_scoreboard)
@@ -495,6 +866,18 @@ package its_uvm_pkg;
         endfunction
 
         function void write_expected(its_tu_item t);
+            // A marker arrives after the driver has already deasserted reset;
+            // every TU still queued was aborted by it, so drop them.
+            if (t.trigger_reset) begin
+                resets_seen++;
+                if (pending.size() > 0)
+                    `uvm_info("ITS_RESET",
+                              $sformatf("reset aborted %0d in-flight TU(s)",
+                                        pending.size()), UVM_LOW)
+                pending.delete();
+                beat_idx = 0;
+                return;
+            end
             // A descriptor that is not even admitted by the DUT never produces
             // beats, so it must not occupy the expectation queue.
             if (t.illegal_desc) return;
@@ -921,6 +1304,12 @@ package its_uvm_pkg;
             disable fork;
         endtask
 
+        // Plain cycle budget, for negative tests where no TU is expected to
+        // retire and wait_for_tus would only ever report a timeout.
+        task wait_cycles(int unsigned n);
+            repeat (n) @(posedge vif.clk);
+        endtask
+
         // Machine-readable result file.
         //
         // The regression runner decides pass/fail from this file only; it never
@@ -949,6 +1338,7 @@ package its_uvm_pkg;
             $fdisplay(fd, "unexpected=%0d",      env.sb.unexpected);
             $fdisplay(fd, "pending=%0d",         env.sb.pending.size());
             $fdisplay(fd, "overlap=%0d",         env.sb.overlap_admissions);
+            $fdisplay(fd, "resets=%0d",          env.sb.resets_seen);
             $fdisplay(fd, "uvm_error=%0d", srv.get_severity_count(UVM_ERROR));
             $fdisplay(fd, "uvm_fatal=%0d", srv.get_severity_count(UVM_FATAL));
             // Functional coverage counters, one line per bin.
@@ -1105,6 +1495,157 @@ package its_uvm_pkg;
             `uvm_info("ITS_SWEEP",
                       $sformatf("sweep done tus=%0d beats=%0d",
                                 env.sb.tus_completed, env.sb.beats_seen), UVM_LOW)
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    // ------------------------------------------------------------------
+    // Negative tests.  Each drives one protocol violation and expects the
+    // DUT to flag it; the runner checks the resulting error counts.
+    // ------------------------------------------------------------------
+    class its_lfnst_xform_test extends its_base_test;
+        `uvm_component_utils(its_lfnst_xform_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_lfnst_xform_sequence seq;
+            phase.raise_objection(this);
+            seq = its_lfnst_xform_sequence::type_id::create("seq");
+            seq.start(env.seqr);
+            wait_cycles(400);
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    class its_lfnst_mode3_test extends its_base_test;
+        `uvm_component_utils(its_lfnst_mode3_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_lfnst_mode3_sequence seq;
+            phase.raise_objection(this);
+            seq = its_lfnst_mode3_sequence::type_id::create("seq");
+            seq.start(env.seqr);
+            wait_cycles(400);
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    class its_addr_overrun_test extends its_base_test;
+        `uvm_component_utils(its_addr_overrun_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_addr_overrun_sequence seq;
+            phase.raise_objection(this);
+            seq = its_addr_overrun_sequence::type_id::create("seq");
+            seq.start(env.seqr);
+            wait_cycles(4_000);
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    class its_stray_end_test extends its_base_test;
+        `uvm_component_utils(its_stray_end_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_stray_end_sequence seq;
+            phase.raise_objection(this);
+            seq = its_stray_end_sequence::type_id::create("seq");
+            seq.start(env.seqr);
+            wait_cycles(400);
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    class its_no_end_test extends its_base_test;
+        `uvm_component_utils(its_no_end_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_no_end_sequence seq;
+            phase.raise_objection(this);
+            seq = its_no_end_sequence::type_id::create("seq");
+            seq.start(env.seqr);
+            wait_cycles(6_000);
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    class its_short_beats_test extends its_base_test;
+        `uvm_component_utils(its_short_beats_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_short_beats_sequence seq;
+            phase.raise_objection(this);
+            seq = its_short_beats_sequence::type_id::create("seq");
+            seq.start(env.seqr);
+            wait_cycles(6_000);
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    // Reset in the middle of streaming beats, then a clean TU.
+    class its_reset_test extends its_base_test;
+        `uvm_component_utils(its_reset_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_reset_sequence seq;
+            phase.raise_objection(this);
+            seq = its_reset_sequence::type_id::create("seq");
+            seq.start(env.seqr);
+            wait_for_tus(1, 400_000);
+            wait_cycles(200);
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    // Constrained random run.  The seed is reported so a failure can be
+    // replayed with -sv_seed.
+    class its_random_test extends its_base_test;
+        `uvm_component_utils(its_random_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_random_sequence seq;
+            phase.raise_objection(this);
+            seq = its_random_sequence::type_id::create("seq");
+            if (!seq.randomize())
+                `uvm_fatal("ITS_RAND", "sequence randomization failed")
+            seq.pre_randomized = 1'b1;
+            seq.print();
+            seq.start(env.seqr);
+            wait_for_tus(seq.n_tu, 600_000);
+            `uvm_info("ITS_RAND",
+                      $sformatf("random run done tus=%0d of %0d",
+                                env.sb.tus_completed, seq.n_tu), UVM_LOW)
             phase.drop_objection(this);
         endtask
     endclass

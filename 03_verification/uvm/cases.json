@@ -53,6 +53,63 @@
       "plusargs": [],
       "timeout_s": 1800,
       "expect": {"tus": 369, "beats": 45636, "overlap_min": 1, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "pending": 0}
+    },
+    {
+      "name": "rand",
+      "testname": "its_random_test",
+      "plusargs": [],
+      "vsim_args": ["-sv_seed", "12345"],
+      "expect": {"tus_min": 8, "beats_min": 32, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "pending": 0, "unexpected": 0},
+      "note": "constrained random draw of legal cases, fixed seed so a failure can be replayed"
+    },
+    {
+      "name": "neg_lfnst_xform",
+      "testname": "its_lfnst_xform_test",
+      "plusargs": [],
+      "expect": {"uvm_error_min": 1, "protocol_errors_min": 1, "tus": 0, "beats": 0},
+      "note": "LFNST enabled with a non-zero transform type, illegal per wrapper:775"
+    },
+    {
+      "name": "neg_lfnst_mode3",
+      "testname": "its_lfnst_mode3_test",
+      "plusargs": [],
+      "expect": {"uvm_error_min": 1, "protocol_errors_min": 1, "tus": 0, "beats": 0},
+      "note": "LFNST mode 3 is not an allowed encoding, see wrapper:780"
+    },
+    {
+      "name": "neg_addr_overrun",
+      "testname": "its_addr_overrun_test",
+      "plusargs": [],
+      "expect": {"uvm_error_min": 1, "protocol_errors_min": 1, "data_errors_min": 1},
+      "note": "beat addressed past the TU's last point, caught at wrapper:2434"
+    },
+    {
+      "name": "neg_stray_end",
+      "testname": "its_stray_end_test",
+      "plusargs": [],
+      "expect": {"uvm_error_min": 1, "protocol_errors_min": 1, "tus": 0, "beats": 0},
+      "note": "end marker with no TU outstanding, caught at wrapper:2438"
+    },
+    {
+      "name": "neg_no_end",
+      "testname": "its_no_end_test",
+      "plusargs": [],
+      "expect": {"tus": 0, "beats": 0, "pending": 1, "uvm_error_min": 1},
+      "note": "fill never closed, so the TU must never produce a beat"
+    },
+    {
+      "name": "neg_short_beats",
+      "testname": "its_short_beats_test",
+      "plusargs": [],
+      "expect": {"uvm_error_min": 1, "data_errors_min": 1, "protocol_errors": 0, "pending": 0},
+      "note": "truncated input closes the TU but cannot reproduce the golden"
+    },
+    {
+      "name": "reset_mid_tu",
+      "testname": "its_reset_test",
+      "plusargs": [],
+      "expect": {"tus": 2, "resets": 1, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "unexpected": 0, "pending": 0},
+      "note": "reset while beats are streaming; only the post-reset TU must complete"
     }
   ]
 }

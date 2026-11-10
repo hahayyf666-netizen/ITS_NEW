@@ -130,8 +130,8 @@ def stage_prep():
     # The library and the sources must go through vlog in one invocation so the
     # UVM_NO_DPI define applies to both; a separate library pass leaves DPI
     # exports behind and vsim then demands a C compiler at load time.
-    cmd = [VLOG, "-sv", "+define+UVM_NO_DPI", f"+incdir+{UVM}", f"+incdir+{HERE}",
-           UVM / "uvm_pkg.sv"]
+    cmd = [VLOG, "-sv", "+cover=bcestf", "+define+UVM_NO_DPI",
+           f"+incdir+{UVM}", f"+incdir+{HERE}", UVM / "uvm_pkg.sv"]
     cmd += files
     cmd += ["-l", OUT / "logs/compile.log"]
     rc, dt = run(cmd, OUT / "logs/compile.stdout.log", OUT, 3600)

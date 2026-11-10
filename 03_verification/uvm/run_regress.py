@@ -37,6 +37,7 @@ import run_its_uvm as env_mod  # noqa: E402  (shares tools, paths and prep)
 
 OUT = HERE / "run"
 RESULT_DIR = OUT / "results"
+UCDB_DIR = OUT / "ucdb"
 CASES = HERE / "cases.json"
 
 # Coverage bin layout, kept next to the emitter so both sides agree.
@@ -147,6 +148,17 @@ def classify(fields, expect, parse_error):
         if key in expect and as_int(fields, key) != expect[key]:
             return "FAIL", f"{key.upper()}_MISMATCH"
 
+    # Minimum forms let a randomised case assert "at least this much ran"
+    # without pinning a count that depends on the draw.
+    for key in ("tus_min", "beats_min"):
+        base = key.replace("_min", "")
+        if key in expect and (as_int(fields, base) or 0) < expect[key]:
+            return "FAIL", f"{base.upper()}_TOO_FEW"
+
+    for key in ("resets", "overlap"):
+        if key in expect and as_int(fields, key) != expect[key]:
+            return "FAIL", f"{key.upper()}_MISMATCH"
+
     for key in ("data_errors_min", "protocol_errors_min"):
         base = key.replace("_min", "")
         if key in expect:
@@ -211,19 +223,31 @@ def merge_coverage(per_run):
     return report
 
 
-def run_one(case, vector_file):
+def run_one(case, vector_file, want_ucdb=False):
     RESULT_DIR.mkdir(parents=True, exist_ok=True)
     res_path = RESULT_DIR / f"{case['name']}.result"
     log_path = OUT / "logs" / f"regress_{case['name']}.log"
+    ucdb = (UCDB_DIR / f"{case['name']}.ucdb") if want_ucdb else None
     if res_path.exists():
         res_path.unlink()
 
-    cmd = [env_mod.VSIM, "-batch", "-t", "1ps", "+UVM_NO_DPI", "-voptargs=+acc"]
+    cmd = [env_mod.VSIM, "-batch", "-coverage", "-t", "1ps", "+UVM_NO_DPI",
+           "-voptargs=+acc"]
     cmd += [f"+UVM_TESTNAME={case['testname']}"]
+    # Raw vsim options, e.g. -sv_seed for a reproducible random draw.
+    cmd += [str(a) for a in case.get("vsim_args", [])]
     cmd += [f"+{p}" for p in case["plusargs"]]
     cmd += [f"+RESULT_FILE={res_path}"]
     cmd += [f"-gVECTOR_FILE={OUT / vector_file}"]
-    cmd += ["-do", "run -all; quit -f", "work.its_uvm_tb"]
+    if ucdb is not None:
+        if ucdb.exists():
+            ucdb.unlink()
+        ucdb.parent.mkdir(parents=True, exist_ok=True)
+        cmd += ["-do", f"coverage save -testname {case['name']} -onexit {{{ucdb}}}; "
+                       "run -all; quit -f"]
+    else:
+        cmd += ["-do", "run -all; quit -f"]
+    cmd += ["work.its_uvm_tb"]
 
     t0 = time.time()
     rc, _ = env_mod.run(cmd, log_path, OUT, case["timeout_s"])
@@ -264,7 +288,7 @@ def stage_run(only, cases_path=None):
     rows = []
     for case in sel:
         print(f"  [{case['name']}] ...", end=" ", flush=True)
-        r = run_one(case, vector_file)
+        r = run_one(case, vector_file, want_ucdb=True)
         rows.append(r)
         extra = ""
         f = r["fields"]
@@ -348,6 +372,22 @@ def stage_selftest():
          {"test": "t", "tus": "1", "beats": "3", "uvm_error": "0",
           "uvm_fatal": "0"},
          {"beats": 4}, None, "FAIL", "BEATS_MISMATCH"),
+        ("overlap not observed",
+         {"test": "t", "tus": "4", "beats": "32", "uvm_error": "0",
+          "uvm_fatal": "0", "overlap": "0"},
+         {"overlap_min": 1}, None, "FAIL", "OVERLAP_NOT_OBSERVED"),
+        ("tus_min satisfied",
+         {"test": "t", "tus": "10", "beats": "99", "uvm_error": "0",
+          "uvm_fatal": "0"},
+         {"tus_min": 8}, None, "PASS", ""),
+        ("tus_min violated",
+         {"test": "t", "tus": "3", "beats": "99", "uvm_error": "0",
+          "uvm_fatal": "0"},
+         {"tus_min": 8}, None, "FAIL", "TUS_TOO_FEW"),
+        ("reset count",
+         {"test": "t", "tus": "2", "beats": "10", "uvm_error": "0",
+          "uvm_fatal": "0", "resets": "0"},
+         {"resets": 1}, None, "FAIL", "RESETS_MISMATCH"),
         ("no result file", {}, {}, "RESULT_MISSING", "INCOMPLETE",
          "NO_RESULT_FILE"),
         ("empty result file", {}, {}, "RESULT_EMPTY", "INCOMPLETE",
@@ -387,9 +427,55 @@ def stage_selftest():
     return 0 if bad == 0 else 1
 
 
+def stage_coverage_merge():
+    """Merge every per-case UCDB and report the DUT's code coverage.
+
+    The UVM layer previously produced no code coverage at all: the D1 baseline
+    numbers came from a separate directed testbench, so nothing tied these tests
+    to the RTL lines they execute.  Merging the per-case databases closes that.
+    """
+    vcover = env_mod.MS / "vcover.exe"
+    ucbs = sorted(UCDB_DIR.glob("*.ucdb"))
+    if not ucbs:
+        print("[cov] no UCDB files, skipping merge", flush=True)
+        return None
+    merged = OUT / "uvm_merged.ucdb"
+    if merged.exists():
+        merged.unlink()
+    rc, dt = env_mod.run([vcover, "merge", *ucbs, "-out", merged],
+                         OUT / "logs/vcover_merge.log", OUT, 1800)
+    print(f"[cov] merge {len(ucbs)} ucdb -> exit={rc} ({dt:.0f}s)", flush=True)
+    if rc != 0:
+        return None
+
+    # Report the DUT hierarchy only.  A whole-design report prints one block per
+# instance, so a flat key/value parse would silently keep the last instance's
+# numbers under a name that looks like a global total.  One -du report has a
+# single block, so every value below is genuinely the DUT's.
+    out = {}
+    rpt = OUT / "coverage_uvm_dut.txt"
+    env_mod.run([vcover, "report", "-du=unified_its_wrapper",
+                 "-output", rpt, merged],
+                OUT / "logs/vcover_report_dut.log", OUT, 1800)
+    if rpt.exists():
+        text = rpt.read_text(encoding="utf-8", errors="replace")
+        for line in text.splitlines():
+            parts = line.split()
+            if len(parts) < 5 or not parts[-1].endswith("%"):
+                continue
+            if parts[0] in ("Statements", "Branches", "Conditions",
+                            "Expressions", "Toggles", "Assertions"):
+                out[parts[0]] = parts[-1]
+            elif parts[0] == "FSM" and len(parts) >= 6:
+                out[f"FSM {parts[1]}"] = parts[-1]
+    for k in sorted(out):
+        print(f"[cov] dut {k:<20} {out[k]}", flush=True)
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["prep", "run", "all", "selftest"])
+    ap.add_argument("stage", choices=["prep", "run", "all", "selftest", "coverage"])
     ap.add_argument("--only", default="")
     ap.add_argument("--cases", default="",
                     help="alternate case list (used to prove failure classification)")
@@ -398,6 +484,8 @@ def main():
     cases_path = Path(args.cases) if args.cases else None
     if args.stage == "selftest":
         return stage_selftest()
+    if args.stage == "coverage":
+        return 0 if stage_coverage_merge() else 1
     if args.stage in ("prep", "all"):
         stage_prep()
     if args.stage in ("run", "all"):

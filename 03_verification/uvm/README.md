@@ -1,4 +1,4 @@
-# D3 UVM 协议层 + D4 功能覆盖率 + D5 回归
+# D3 UVM 协议层 + D4 功能覆盖率 + D5 回归 + 覆盖率/随机/复位补强
 
 对应方案 D3（`agent + driver + monitor + scoreboard` + 2–3 个 sequence）。
 范围为**协议层**：UVM 负责激励产生、握手检查、错误捕获；数值金标准不在这里
@@ -90,7 +90,105 @@ if (!output_active && !kernel_run_q && !lfnst_run_q && !scrub_active) begin
 `sweep` 上报 100%（25/25）。同一套采样逻辑能报出低值，说明它不是恒为 100%
 的空转指标——这是 D4 验收标准里「每个覆盖点要有正例和反例」的证据。
 
-## D5 回归
+## 补强：代码覆盖率、约束随机、运行中复位、负向用例
+
+D5 收口时判定这套 UVM 还不算完结，五个缺口里有四个在这里补上。
+
+### 一、UVM 流程现在有代码覆盖率
+
+之前 D1 的覆盖率数字来自另一套定向 TB，UVM 回归本身不采任何覆盖率。现在：
+
+- 编译加 `+cover=bcestf`
+- 每次仿真 `-coverage` 并 `coverage save -onexit <case>.ucdb`
+- `run_regress.py coverage` 合并 15 个 UCDB 后按 `-du=unified_its_wrapper` 出报告
+
+DUT 口径（`unified_its_wrapper`，15 个用例合并）：
+
+| 指标 | 命中/总数 | 覆盖率 |
+|---|---|---:|
+| Assertions | 25/25 | 100.00% |
+| Statements | 837/991 | 84.46% |
+| Branches | 372/522 | 71.26% |
+| Conditions | 87/136 | 63.97% |
+| Expressions | 87/161 | 54.03% |
+| FSM States | 9/9 | 100.00% |
+| FSM Transitions | 11/26 | 42.30% |
+| Toggles | 2142/5229 | 40.96% |
+
+**不能拿这组数字和 D1 的 75.21% 直接比。** D1 的 75.21% 是全设计口径
+（18140 条语句，16 个定向 TB 合并）；这里是 DUT 单模块口径（991 条语句，
+UVM 15 个用例）。两者母体不同。就 wrapper 自身而言，D1 全套定向 TB 打完剩
+143 条语句缺口，UVM 这套单独打剩 154 条，量级相当，没有谁显著更强。
+
+报告只出 `-du` 单块的原因：全设计报告每个实例打印一个小节，用扁平键解析会
+把最后一个实例的数字当成全局值——我第一版就踩了这个坑，`Expressions` 被
+报成 100%。
+
+### 二、约束随机
+
+`its_random_sequence` 三个 `rand` 字段：
+
+| 字段 | 约束 |
+|---|---|
+| `n_tu` | `inside {[8:20]}` |
+| `shape_pick` | 25 位形状掩码，`$countones` 落在 `[4:10]` |
+| `max_gap` | `inside {[0:6]}`，TU 之间插随机空拍 |
+
+抽取逻辑：按掩码筛出合法用例池，Fisher-Yates 不放回抽取，池空后退化为全库随机；
+每个 TU 带 `gap_cycles` 随机空拍。
+
+随机化的边界要讲清楚：**金标准仍来自向量文件**，所以随机的对象是"抽哪些合法
+用例、什么顺序、间隔多少"，不是"随机造一个描述符再算期望值"。后者需要一个
+独立的变换模型，UVM 层没有，也不该在这里造。
+
+可复现：用例表里固定 `-sv_seed 12345`，同 seed 连跑两次结果一致
+（两次都是 10 TU / 2472 beat）。
+
+### 三、运行中复位
+
+`its_reset_test`：先发 2 个 TU，然后 driver 等 `dbg_output_active` 拉高
+（确保复位落在有待发 beat 的时刻）再拉低 `rst_n`，释放后发第 3 个 TU。
+
+复位后 driver 向 scoreboard 写一个 marker，scoreboard 在 marker 处清空待比对
+队列——被复位打断的 TU 剩下的 beat 永远不会来了。
+
+结果：`tus=2 resets=1 data_errors=0 done_errors=0 unexpected=0 pending=0`。
+含义是：复位打断了一个在飞 TU，此后**没有吐出任何脏 beat**，复位后的 TU 逐位
+正确。`unexpected=0` 就是"没吐脏数据"的直接证据。
+
+### 四、负向用例从 2 个扩到 8 个
+
+新增 6 个，每个对应 RTL 里一条具体检查：
+
+| 用例 | 违反的规则 | RTL 位置 | 实测反应 |
+|---|---|---|---|
+| `neg_lfnst_xform` | LFNST 开启但变换类型非 0 | `:775-778` | 1 次 protocol_error |
+| `neg_lfnst_mode3` | LFNST mode=3 非法编码 | `:780-781` | 1 次 protocol_error |
+| `neg_addr_overrun` | 数据地址越过 TU 最后一点 | `:2434-2436` | protocol_error + 4 条数据错 |
+| `neg_stray_end` | 没有 TU 在填充时发 end | `:2438-2439` | 1 次 protocol_error |
+| `neg_no_end` | 填充永不关闭 | — | 0 beat，1 个 TU 悬挂 |
+| `neg_short_beats` | 只发一半输入就 end | — | TU 完成但 4 拍全错 |
+
+后两个是 TB 级检测：DUT 不报协议错，但"不关闭填充就不该出 beat"和"截断输入
+不该复现金标准"这两条由 scoreboard 兜住。
+
+### 五、过程中被抓出来的三个 bug
+
+**`do_copy` 没实现**：`uvm_object::copy()` 不报错也不复制，派生 item 变成全 0
+描述符，于是非法描述符 → driver 死等 `it_data_in_req` → 仿真挂死十几分钟。
+补 `do_copy` 后正常。
+
+**`send_end_only` 无条件等 req**：裸 end 测试里没有 TU 在填充，`it_data_in_req`
+永远不拉高，同样挂死。加了 `ignore_req` 参数。
+
+**`-code bces` / `-du xxx` 不合法**：这个版本的 vcover 只认 `-du=xxx`，且不接受
+`-code`。抄 D1 脚本的最简写法后正常。
+
+三处挂死/失效都不是读代码看出来的，是靠加超时守卫和实跑暴露的。现在
+`send_data` / `send_end_only` 里都有 20 万拍守卫，DUT 不再要数据会直接
+`uvm_fatal` 而不是挂住。
+
+## D5 回归（原始三个动作）
 
 三个动作按方案 84–87 条实现：
 
@@ -143,18 +241,26 @@ selftest: PASS (10/10)
 ### 结果
 
 ```
-[regress] 7 case(s) from cases.json
+[regress] 15 case(s) from cases.json
   [single_tu]        PASS  tus=1   beats=4
   [rect_tu]          PASS  tus=1   beats=8
   [multi_tu_4]       PASS  tus=4   beats=32   overlap=3
   [multi_tu_16]      PASS  tus=16  beats=524  overlap=15
-  [neg_wrong_golden] PASS  uvm_error=4  （负向对照，期望报错）
+  [neg_wrong_golden] PASS  uvm_error=4        （负向对照，期望报错）
   [neg_illegal_desc] PASS  uvm_error=1  protocol_errors=1
   [sweep]            PASS  tus=369 beats=45636 overlap=368
+  [rand]             PASS  tus=10  beats=2472  （seed 12345）
+  [neg_lfnst_xform]  PASS  protocol_errors=1
+  [neg_lfnst_mode3]  PASS  protocol_errors=1
+  [neg_addr_overrun] PASS  protocol_errors=1  data_errors=4
+  [neg_stray_end]    PASS  protocol_errors=1
+  [neg_no_end]       PASS  beats=0  pending=1
+  [neg_short_beats]  PASS  data_errors=4
+  [reset_mid_tu]     PASS  tus=2  resets=1  data_errors=0
 
-status: PASS 7
+status: PASS 15
 merged functional coverage: 52/54 = 96.30%
-summary: 7/7 PASS，退出码 0
+summary: 15/15 PASS，退出码 0
 ```
 
 合并后只有 `stall_phase` 的 2 个不可达 bin 未命中（见 D4 章节）。
@@ -189,8 +295,10 @@ summary: 7/7 PASS，退出码 0
 ## 已知限制
 
 - 数值正确性依赖项目向量集（369 case），UVM 层未独立实现变换模型
+- 随机化的对象是用例抽取/顺序/间隔，不是描述符本身的随机生成
 - `stall_phase` 的 lfnst / compute 两 bin 受 RTL 结构约束不可达（见上）
-- UVM 随机化未启用，sequence 按固定顺序或 stride 取用例
-- 单 driver 串行发激励；TU 重叠来自 DUT 流水，不是多 driver 并发
-- D5 只回归 UVM 层 7 个用例；D1 的代码覆盖率回归不在此 pipeline 内
-- 覆盖率合并是 bin 并集，不做跨运行的代码覆盖率 UCDB 合并
+- 单 driver、单 agent，没有 virtual sequencer；TU 重叠来自 DUT 流水
+- 复位只测了"处理途中拉低 rst_n"一种时序，没有覆盖复位抖动或多拍复位
+- DUT 覆盖率是 15 个用例合并的 DUT 单模块口径，不是全设计口径，也不是与 D1
+  定向套件合并后的数；跨套件合并（UCDB 联并）尚未做
+- 覆盖率合并（功能）是 bin 并集，不做加权
