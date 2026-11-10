@@ -470,6 +470,16 @@ def stage_coverage_merge():
                 out[f"FSM {parts[1]}"] = parts[-1]
     for k in sorted(out):
         print(f"[cov] dut {k:<20} {out[k]}", flush=True)
+    # Persist as JSON too: the vcover text report is human-readable but a
+    # regression gate cannot diff against it.
+    ucdbs = sorted(p.name for p in (OUT / "ucdb").glob("*.ucdb"))
+    (OUT / "COVERAGE_CODE.json").write_text(
+        json.dumps({"dut": "unified_its_wrapper",
+                    "ucdbs": len(ucdbs),
+                    "ucdb_files": ucdbs,
+                    "metrics": out}, indent=2, ensure_ascii=False),
+        encoding="utf-8")
+    print(f"[cov] wrote run/COVERAGE_CODE.json ({len(ucdbs)} ucdb)", flush=True)
     return out
 
 

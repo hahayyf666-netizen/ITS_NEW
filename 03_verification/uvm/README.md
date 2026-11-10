@@ -10,9 +10,17 @@ oracle 生成），因此 UVM 层增加的是协议验证能力，不是第二�
 | 文件 | 作用 |
 |---|---|
 | `its_if.sv` | DUT 接口，含 `drive_idle()` 复位辅助 |
-| `its_uvm_pkg.sv` | 全部 UVM 类：item / 数据库 / 3 个 sequence / driver / monitor / scoreboard / env / 5 个 test |
+| `its_uvm_pkg.sv` | 全部 UVM 类：item / 数据库 / sequence / 两个 agent / monitor / scoreboard / env / virtual sequencer / 15 个 test |
 | `its_uvm_tb.sv` | 顶层：时钟、接口、DUT、`run_test()` |
-| `run_its_uvm.py` | 生成向量、编译、跑 6 个用例、独立核对数字 |
+| `run_its_uvm.py` | 生成向量、编译、跑 7 个用例（D3 冒烟路径）、独立核对数字 |
+| `run_regress.py` | D5/D7/D8 全量回归：16 个用例、结构化判定、覆盖率合并、代码覆盖率 |
+| `cases.json` | 回归用例表（16 条），判定期望写在这里而不是日志里 |
+| `probe_case.py` | 单个用例的诊断探针，跑完直接打印 `RESULT_FILE`，不在流水线里 |
+| `D3_RESULTS.json` | D3 证据：`run_its_uvm.py` 7 个用例的逐条结果与覆盖点 |
+| `D4_COVERAGE.json` | D4 证据：`sweep` 单独跑 369 个 case 时的 7 个功能覆盖点 |
+| `D5_REGRESSION.json` | D5 证据：16 个用例的结构化判定 + 合并功能覆盖率 + 失败分类表 |
+| `D8_CODE_COVERAGE.json` | 代码覆盖率：16 个 UCDB 合并，DUT 口径，机器可读 |
+| `coverage_uvm_dut.txt` | 同一份代码覆盖率的 vcover 原始报告（给人看） |
 
 DUT 是 `unified_its_wrapper #(.FINAL_SATURATE(1))`，与
 `its_unified_submission_top` 内部实例化的是同一个配置。选 wrapper 而不是 top，
@@ -30,7 +38,7 @@ DUT 是 `unified_its_wrapper #(.FINAL_SATURATE(1))`，与
 
 ```powershell
 python run_its_uvm.py prep    # 生成向量 + 编译
-python run_its_uvm.py run     # 跑 6 个用例
+python run_its_uvm.py run     # 跑 7 个用例（D3 冒烟路径）
 python run_its_uvm.py all
 ```
 
@@ -100,9 +108,9 @@ D5 收口时判定这套 UVM 还不算完结，五个缺口里有四个在这里
 
 - 编译加 `+cover=bcestf`
 - 每次仿真 `-coverage` 并 `coverage save -onexit <case>.ucdb`
-- `run_regress.py coverage` 合并 15 个 UCDB 后按 `-du=unified_its_wrapper` 出报告
+- `run_regress.py coverage` 合并 16 个 UCDB 后按 `-du=unified_its_wrapper` 出报告
 
-DUT 口径（`unified_its_wrapper`，15 个用例合并）：
+DUT 口径（`unified_its_wrapper`，16 个用例合并）：
 
 | 指标 | 命中/总数 | 覆盖率 |
 |---|---|---:|
@@ -117,7 +125,7 @@ DUT 口径（`unified_its_wrapper`，15 个用例合并）：
 
 **不能拿这组数字和 D1 的 75.21% 直接比。** D1 的 75.21% 是全设计口径
 （18140 条语句，16 个定向 TB 合并）；这里是 DUT 单模块口径（991 条语句，
-UVM 15 个用例）。两者母体不同。就 wrapper 自身而言，D1 全套定向 TB 打完剩
+UVM 16 个用例）。两者母体不同。就 wrapper 自身而言，D1 全套定向 TB 打完剩
 143 条语句缺口，UVM 这套单独打剩 154 条，量级相当，没有谁显著更强。
 
 报告只出 `-du` 单块的原因：全设计报告每个实例打印一个小节，用扁平键解析会
@@ -197,6 +205,12 @@ its_if.sv 端口：it_info/it_data_in/it_data_addr/it_data_in_vld/it_data_end
 - 独立 sequencer `grant_seqr`
 - **默认 profile 与旧行为逐字相同**（`light 7/11`、`deep 64/8`），所以原有
   15 个用例的 tus/beats/overlap 数字一个没变
+
+  但有一个必须写明的差别：反压计数器 `cyc` 现在在独立组件里自由计数，起点不再
+  与激励 driver 的 `run_phase` fork 点对齐，所以**单看某个短用例，反压 bin 的
+  命中会变**（`rect_tu`、`multi_tu_4` 从 backpressure 3/4 变成 2/4）。DUT 侧
+  行为不受影响，16 个用例合并后仍是 4/4、总覆盖率仍是 52/54。这种"bin 相位变了
+  但结论不变"的差别如果不说，事后对不上数就说不清。
 - `duration_cycles` 到期自动回落默认 profile，sequence 不需要知道时钟周期
 
 `its_virtual_sequencer` 持有 `in_seqr` 与 `grant_seqr` 两个句柄，
@@ -282,11 +296,12 @@ runner 只读这个文件做判定，**从不 grep 仿真日志**。所以 UVM �
 ### 判定逻辑本身有测试
 
 七个真实用例全过，失败分支本来一行都不会执行，所以另加
-`run_regress.py selftest`：喂 9 个构造出来的结果（含 fatal、错误数不符、
-缺结果文件、空文件、重复键、缺字段）和 1 个覆盖率合并检查，核对分类结果。
+`run_regress.py selftest`：喂 13 个构造出来的结果（含 fatal、错误数不符、
+缺结果文件、空文件、重复键、缺字段、tus_min 不足、复位计数不符）和 1 个
+覆盖率合并检查，核对分类结果。
 
 ```
-selftest: PASS (10/10)
+selftest: PASS (14/14)
 ```
 
 端到端也验过一次：把 `single_tu` 的期望改成 `beats=999`，runner 报
@@ -331,7 +346,7 @@ summary: 16/16 PASS，退出码 0
 
 | 标准 | 状态 | 依据 |
 |---|---|---|
-| `uvm_info` 层级不乱、逐位顺序正确 | 满足 | 7 个用例逐 beat 比对，40 位全等；`sweep` 共 45636 拍零差异 |
+| `uvm_info` 层级不乱、逐位顺序正确 | 满足 | 16 个用例逐 beat 比对，40 位全等；`sweep` 共 45636 拍零差异 |
 | 多个 TU 并行测试稳定 | 满足 | `sweep` 368 次重叠接纳，`multi_tu_16` 15 次；driver 不在 TU 之间等 done |
 | 故意注错时 scoreboard 能报错 | 满足 | 金标准人为翻转 1 bit → 恰好 4 条 `ITS_DATA_MISMATCH`；非法描述符 → `ITS_PROTOCOL_ERROR` |
 
@@ -346,6 +361,27 @@ summary: 16/16 PASS，退出码 0
 - **覆盖率探针**：`scrub_active` / `fill_active` / `lfnst_busy` / `kernel_busy` /
   `output_active` 由 TB 顶层 `assign` 到接口，不改 RTL；`vsim` 需
   `-voptargs=+acc`，否则这些内部信号被优化掉，vopt 直接报错
+
+## 自查发现并修正的不一致（2026-11-10）
+
+做完之后逐条核对「文档写的 vs 实际跑的」，找出 6 处，全部已修：
+
+| # | 问题 | 具体 | 处理 |
+|---|---|---|---|
+| 1 | 文档用例数滞后 | README 三处写「15 个用例」「7 个用例」，实际已是 16 个 | 改为 16 |
+| 2 | 冒烟流程用例数写错 | README 写「跑 6 个用例」，`run_its_uvm.py` 实跑 7 个，自己输出的也是 `7/7 passed` | 改为 7 |
+| 3 | 文件表缺项 | `probe_case.py`、`cases.json`、`run_regress.py` 没进文件表 | 补齐，并标明探针不在流水线里 |
+| 4 | 自检用例数滞后 | README 写 `selftest 10/10`、9 个构造用例，实际 14/14、13 个 | 改为 14/14 |
+| 5 | 覆盖率无机器可读产物 | 只有 `coverage_uvm_dut.txt` 这种给人看的文本，回归门禁无法比对 | `coverage` 阶段增写 `run/COVERAGE_CODE.json`，落库为 `D8_CODE_COVERAGE.json` |
+| 6 | 用例表与测试类未对账 | 15 个测试类是否都被 `cases.json` 覆盖，之前没人查过 | 逐一比对：15 个非基类测试全部有用例（`its_multi_tu_test` 用两次），无孤儿测试 |
+
+另外确认了两件容易被误判的事：
+
+- **仓库是 `blob:none` 部分克隆**（`remote.origin.promisor=true`、28448 个已跟踪
+  文件、2327 个未取回 blob）。所以 `git ls-tree -l` 会尝试联网取对象，离网就失败；
+  用它算出来的"仓库体积"只是已取回对象的子集，不能当真实体积报。
+- **D3_RESULTS.json 已按当前代码重新生成**。重跑发现 3 个短用例的反压 bin 命中
+  变了（原因见上文 agent 拆分那段），tus/beats/errors/overlap 全部不变。
 
 ## 已知限制
 
