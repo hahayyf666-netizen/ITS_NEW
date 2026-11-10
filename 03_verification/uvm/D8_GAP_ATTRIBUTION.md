@@ -1,6 +1,6 @@
 # 代码覆盖率缺口归因（UVM 流程，2026-11-10）
 
-DUT：`unified_its_wrapper`，19 个用例的 UCDB 合并，`vcover report -details -du=unified_its_wrapper`。
+DUT：`unified_its_wrapper`，20 个用例的 UCDB 合并，`vcover report -details -du=unified_its_wrapper`。
 
 这份文档回答一个问题：**85.06% 的语句覆盖率，剩下 148 条为什么不覆盖。**
 
@@ -28,7 +28,7 @@ DUT：`unified_its_wrapper`，19 个用例的 UCDB 合并，`vcover report -deta
 | C. 防御性 `$fatal` | 4 | 4 | 1464 / 1479 / 1485 / 1489 | 命中即中止仿真；通过回归（PASS 语义）不可能覆盖 |
 | D. 内部错误 → protocol_error | 2 | 2 | 2638 / 2640 | 需 `kernel_error` / `lfnst_error` 内部错误位；协议层无法合法构造 |
 | E. 零馈送量向量 | 5 | 2 | 2714–2715 / 2782–2784 | 需 `K_V_START`/`K_H_START` 阶段 `kernel_input_vector_done` 已为高，即该向量没有工作要馈送；支持的最小形状 4 点恒有 ≥1 点馈送 |
-| F. 内部读流水线 tail 路径 | 11 | 2 | 2279–2283 / 2303–2313 | 需 raw 响应在 head 未消费时再次到达（tail 缓冲）。**D1 的定向 TB 覆盖过这 11 行**，所以它可达，是 UVM 这套的激励缺口 |
+| F. 内部读流水线 tail 路径 | 11 | 2 | 2279–2283 / 2303–2313 | 只有在 kernel 入口 `in_req` 被**内部 force** 拉低时才可达；D1 就是这么打到的（`force dut.u_unified_p4_kernel.in_req = 1'b0;`）。协议管脚上无法构造，不属于 UVM 协议层应覆盖的范围 |
 | G. 队列内 TU 的 end | 1 | 1 | 574 / 573 | 需 TU-B 已入队、且 TU-A 已收到 end，此时 end 才落到队列而非 slot |
 | H. 断言前置与包围条件互斥 | 0 | 1 | 1642 | `if (scrub_active)` 位于 fill 写提交的断言块内；scrub 期间不提交 fill 写，两个条件互斥，该断言前置永假 |
 | **合计** | **148** | **145** | | |
@@ -79,7 +79,25 @@ G 类（574/573）可以继续构造，但需要两个 TU 的时序配合，收�
 
 E 类要真正判定为不可达，需要从 RTL 的 `for`/`if` 上给出形式化论证，或者用强制注入（force）打一次——force 属于对 RTL 的攻击性验证，会污染"协议层验证"的边界，需要单独一轮讨论后再做。
 
-F 类是明确的待办：D1 能打到，UVM 打不到，说明缺一个能触发 raw-capture tail 的激励。
+### F 类：结论是「协议层构造不出来」，不是「UVM 缺激励」
+
+我先按 RTL 读法做了推理：tail 缓冲（L2302 的 else 分支）只在 `raw_to_queue` 为真、head 仍有未消费字、且本拍不消费时写入；而 `kernel_h_rd_consume` 需要 `kernel_input_group_fire` 且不在 `kernel_h_input_commit_wait_q` 期间。于是推论是"让 kernel 消费端停拍、读请求流水线继续产出，tail 就会填"。
+
+据此写了 `tail_stress`：取数据库里最大用例（32×32、1024 拍输出），在描述符之前就把输出许可拉低 600 拍（`deep_period=1, deep_len=600`），让 kernel 侧面持续被反压。
+
+结果：**L2279–2283、L2303–2313 仍然 0 命中**（单用例 UCDB 核对）。用例本身有效（1024 拍逐位正确、`data_errors=0`），但它碰不到 tail。
+
+然后去查 D1 到底怎么打到的。仓库里有专门的 `03_verification/tb/unified_its_hread_raw_capture_tb.sv`，第 186 行：
+
+```systemverilog
+force dut.u_unified_p4_kernel.in_req = 1'b0;
+```
+
+它自己的注释写着"forcing the kernel-local ready low isolates a real consumer stall without changing any public ready/valid behavior"。
+
+所以：**这 11 行只有靠内部 force 才能到达**。输出反压不行（已实测），公共管脚上也不行——`in_req` 是 kernel 子模块的输出信号，协议层无法在保持自身 valid/ready 合法的前提下把它单独按低。而 L2246 那条守卫在 `kernel_h_input_commit_wait_q` 期间冻结整个读状态，正好挡住了自然停拍产生的窗口。
+
+结论修正：这不是"UVM 的激励缺口"，是**白盒 force 类用例才能覆盖的点**。要不要补取决于是否允许在 UVM 里放 force 类白盒测试；那是另一个验证层级的问题，不该混进协议层回归。`tail_stress` 保留，因为它在"宽变换 + 长时间输出关断"这个组合上是有效的新激励，只是它的作用不是补这一簇。
 
 ## 七、复现
 

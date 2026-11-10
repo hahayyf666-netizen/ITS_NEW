@@ -189,7 +189,7 @@
       "testname": "its_multi_tu_test",
       "status": "PASS",
       "reason": "",
-      "elapsed_s": 2.1,
+      "elapsed_s": 2.2,
       "returncode": 0,
       "fields": {
         "test": "its_multi_tu_test",
@@ -281,7 +281,7 @@
       "testname": "its_multi_tu_test",
       "status": "PASS",
       "reason": "",
-      "elapsed_s": 2.5,
+      "elapsed_s": 2.6,
       "returncode": 0,
       "fields": {
         "test": "its_multi_tu_test",
@@ -465,7 +465,7 @@
       "testname": "its_illegal_desc_test",
       "status": "PASS",
       "reason": "",
-      "elapsed_s": 2.0,
+      "elapsed_s": 2.1,
       "returncode": 0,
       "fields": {
         "test": "its_illegal_desc_test",
@@ -557,7 +557,7 @@
       "testname": "its_sweep_test",
       "status": "PASS",
       "reason": "",
-      "elapsed_s": 55.9,
+      "elapsed_s": 25.5,
       "returncode": 0,
       "fields": {
         "test": "its_sweep_test",
@@ -833,7 +833,7 @@
       "testname": "its_lfnst_mode3_test",
       "status": "PASS",
       "reason": "",
-      "elapsed_s": 2.0,
+      "elapsed_s": 2.1,
       "returncode": 0,
       "fields": {
         "test": "its_lfnst_mode3_test",
@@ -1747,10 +1747,102 @@
           "5": 3
         }
       }
+    },
+    {
+      "name": "tail_stress",
+      "testname": "its_vseq_tail_test",
+      "status": "PASS",
+      "reason": "",
+      "elapsed_s": 2.4,
+      "returncode": 0,
+      "fields": {
+        "test": "its_vseq_tail_test",
+        "tus": "1",
+        "beats": "1024",
+        "data_errors": "0",
+        "done_errors": "0",
+        "protocol_errors": "0",
+        "unexpected": "0",
+        "pending": "0",
+        "overlap": "0",
+        "resets": "0",
+        "uvm_error": "0",
+        "uvm_fatal": "0"
+      },
+      "coverage": {
+        "shape": {
+          "0_0": 0,
+          "0_1": 0,
+          "0_2": 0,
+          "0_3": 0,
+          "0_4": 0,
+          "1_0": 0,
+          "1_1": 0,
+          "1_2": 0,
+          "1_3": 0,
+          "1_4": 0,
+          "2_0": 0,
+          "2_1": 0,
+          "2_2": 0,
+          "2_3": 0,
+          "2_4": 0,
+          "3_0": 0,
+          "3_1": 0,
+          "3_2": 0,
+          "3_3": 0,
+          "3_4": 0,
+          "4_0": 0,
+          "4_1": 0,
+          "4_2": 0,
+          "4_3": 0,
+          "4_4": 1
+        },
+        "xform": {
+          "0_0": 1,
+          "0_1": 0,
+          "0_2": 0,
+          "1_0": 0,
+          "1_1": 0,
+          "1_2": 0,
+          "2_0": 0,
+          "2_1": 0,
+          "2_2": 0
+        },
+        "lfnst_mode": {
+          "0": 1,
+          "1": 0,
+          "2": 0
+        },
+        "lfnst_idx": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "sat": {
+          "0": 0,
+          "1": 0,
+          "2": 1024
+        },
+        "backpressure": {
+          "0": 754,
+          "1": 213,
+          "2": 33,
+          "3": 24
+        },
+        "stall_phase": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 270,
+          "5": 754
+        }
+      }
     }
   ],
   "status_counts": {
-    "PASS": 19
+    "PASS": 20
   },
   "failure_classes": {},
   "merged_coverage": {

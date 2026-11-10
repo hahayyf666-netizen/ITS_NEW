@@ -628,6 +628,16 @@ package its_uvm_pkg;
     class its_grant_profile_sequence extends uvm_sequence #(its_grant_item);
         `uvm_object_utils(its_grant_profile_sequence)
 
+        // single == 1 replaces the three-window script with one window, used
+        // by the tail-stress virtual sequence to hold the grant closed for a
+        // long, exactly-known stretch.
+        bit          single   = 1'b0;
+        int unsigned s_mod    = 7;
+        int unsigned s_off    = 11;
+        int unsigned s_dper   = 1;
+        int unsigned s_dlen   = 600;
+        int unsigned s_dur    = 600;
+
         function new(string name = "its_grant_profile_sequence");
             super.new(name);
         endfunction
@@ -646,6 +656,10 @@ package its_uvm_pkg;
         endtask
 
         task body();
+            if (single) begin
+                send(1'b0, s_mod, s_off, s_dper, s_dlen, s_dur);
+                return;
+            end
             // Tight stalls early, then a long grant-open window, then a deep
             // stall pattern.  Each window is long enough to straddle a TU
             // boundary, which is what makes the two agents actually interact.
@@ -688,6 +702,81 @@ package its_uvm_pkg;
                 end
             join
             `uvm_info("ITS_VSEQ", "vseq done", UVM_LOW)
+        endtask
+    endclass
+
+    // Raw-capture tail stress: the widest TU in the database driven against a
+    // long output-grant blackout.
+    //
+    // The H read sequencer keeps one group of bank responses in a registered
+    // head and has a one-deep tail for the case where the kernel consumer
+    // misses a fire while the request pipeline is still producing words.  The
+    // tail only fills when the consumer stalls (kernel input not accepted)
+    // while at least two groups remain in the row, so this needs both a wide
+    // transform (cut_w > 4, i.e. more than one H group per row) and a stall
+    // long enough to reach the kernel.  Nothing in the directed flows paired
+    // those two, which is why the tail path stayed dark.
+    class its_vseq_tail_stress extends uvm_sequence;
+        `uvm_declare_p_sequencer(its_virtual_sequencer)
+
+        int unsigned stall_cycles = 600;
+        int unsigned pick         = 0;   // index override, 0 = widest
+
+        `uvm_object_utils(its_vseq_tail_stress)
+
+        function new(string name = "its_vseq_tail_stress");
+            super.new(name);
+        endfunction
+
+        task body();
+            its_multi_tu_sequence    stim;
+            its_grant_profile_sequence prof;
+            int unsigned             best;
+            int unsigned             cand;
+
+            if (its_case_db::items.size() == 0)
+                `uvm_fatal("ITS_SEQ", "case database is empty")
+
+            // Widest transform wins: cut_w > 4 is what gives a row more than
+            // one H read group, and the tail can only fill when a second group
+            // is in flight while the consumer stalls.
+            best = pick;
+            if (best == 0) begin
+                best = 1;
+                for (int i = 1; i < its_case_db::items.size(); i++)
+                    if (its_case_db::items[i].beat_count >
+                        its_case_db::items[best-1].beat_count)
+                        best = i + 1;
+            end
+            cand = best - 1;
+            `uvm_info("ITS_VSEQ",
+                      $sformatf("tail stress: case%0d inputs=%0d beats=%0d stall=%0d",
+                                cand, its_case_db::items[cand].input_count,
+                                its_case_db::items[cand].beat_count,
+                                stall_cycles), UVM_LOW)
+
+            // The sequence must run on the stimulus sequencer itself; calling
+            // start_item/finish_item from the virtual sequence would hand the
+            // item to a sequencer that has no driver, and finish_item would
+            // wait for an item_done that never comes.
+            fork
+                begin
+                    stim = its_multi_tu_sequence::type_id::create("stim");
+                    stim.count       = 1;
+                    stim.start_index = cand;
+                    stim.start(p_sequencer.in_seqr);
+                end
+                begin
+                    // Held from before the descriptor, so the stall is already
+                    // in force when the kernel reaches its first H row.
+                    prof = its_grant_profile_sequence::type_id::create("prof");
+                    prof.single = 1'b1;
+                    prof.s_dper = 1;
+                    prof.s_dlen = stall_cycles;
+                    prof.s_dur  = stall_cycles;
+                    prof.start(p_sequencer.grant_seqr);
+                end
+            join
         endtask
     endclass
 
@@ -1970,6 +2059,27 @@ package its_uvm_pkg;
                       $sformatf("vseq complete tus=%0d beats=%0d overlap=%0d",
                                 env.sb.tus_completed, env.sb.beats_seen,
                                 env.sb.overlap_admissions), UVM_LOW)
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    class its_vseq_tail_test extends its_base_test;
+        `uvm_component_utils(its_vseq_tail_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_vseq_tail_stress seq;
+            int unsigned stall;
+            stall = 600;
+            void'($value$plusargs("TAIL_STALL=%d", stall));
+            phase.raise_objection(this);
+            seq = its_vseq_tail_stress::type_id::create("seq");
+            seq.stall_cycles = stall;
+            seq.start(env.vseqr);
+            wait_cycles(6_000);
             phase.drop_objection(this);
         endtask
     endclass

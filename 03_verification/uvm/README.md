@@ -13,13 +13,13 @@ oracle 生成），因此 UVM 层增加的是协议验证能力，不是第二�
 | `its_uvm_pkg.sv` | 全部 UVM 类：item / 数据库 / sequence / 两个 agent / monitor / scoreboard / env / virtual sequencer / 15 个 test |
 | `its_uvm_tb.sv` | 顶层：时钟、接口、DUT、`run_test()` |
 | `run_its_uvm.py` | 生成向量、编译、跑 7 个用例（D3 冒烟路径）、独立核对数字 |
-| `run_regress.py` | D5/D7/D8 全量回归：19 个用例、结构化判定、覆盖率合并、代码覆盖率 |
+| `run_regress.py` | D5/D7/D8 全量回归：20 个用例、结构化判定、覆盖率合并、代码覆盖率 |
 | `cases.json` | 回归用例表（19 条），判定期望写在这里而不是日志里 |
 | `probe_case.py` | 单个用例的诊断探针，跑完直接打印 `RESULT_FILE`，不在流水线里 |
 | `D3_RESULTS.json` | D3 证据：`run_its_uvm.py` 7 个用例的逐条结果与覆盖点 |
 | `D4_COVERAGE.json` | D4 证据：`sweep` 单独跑 369 个 case 时的 7 个功能覆盖点 |
-| `D5_REGRESSION.json` | D5 证据：19 个用例的结构化判定 + 合并功能覆盖率 + 失败分类表 |
-| `D8_CODE_COVERAGE.json` | 代码覆盖率：19 个 UCDB 合并，DUT 口径，机器可读 |
+| `D5_REGRESSION.json` | D5 证据：20 个用例的结构化判定 + 合并功能覆盖率 + 失败分类表 |
+| `D8_CODE_COVERAGE.json` | 代码覆盖率：20 个 UCDB 合并，DUT 口径，机器可读 |
 | `D8_GAP_ATTRIBUTION.md` | 代码覆盖率缺口归因：148 条语句缺口逐类给出原因 |
 | `D8_GAPS.csv` | 384 行缺口明细（设计单元 / 类型 / 行号 / 是否全局缺口 / RTL 源码） |
 | `coverage_uvm_dut.txt` | 同一份代码覆盖率的 vcover 原始报告（给人看） |
@@ -110,9 +110,9 @@ D5 收口时判定这套 UVM 还不算完结，五个缺口里有四个在这里
 
 - 编译加 `+cover=bcestf`
 - 每次仿真 `-coverage` 并 `coverage save -onexit <case>.ucdb`
-- `run_regress.py coverage` 合并 19 个 UCDB 后按 `-du=unified_its_wrapper` 出报告
+- `run_regress.py coverage` 合并 20 个 UCDB 后按 `-du=unified_its_wrapper` 出报告
 
-DUT 口径（`unified_its_wrapper`，19 个用例合并）：
+DUT 口径（`unified_its_wrapper`，20 个用例合并）：
 
 | 指标 | 命中/总数 | 覆盖率 |
 |---|---|---:|
@@ -135,7 +135,7 @@ DUT 口径（`unified_its_wrapper`，19 个用例合并）：
 | 防御性 `$fatal` | 4 | 4 | 命中即中止仿真 |
 | 内部错误 → protocol_error | 2 | 2 | 需 kernel/lfnst 内部错误位 |
 | 零馈送量向量 | 5 | 2 | 需向量无工作可馈送；支持的最小形状恒有 ≥1 点，未能证明可达 |
-| 内部读流水线 tail 路径 | 11 | 2 | **D1 打到过、UVM 没打到 → UVM 的真实激励缺口** |
+| 内部读流水线 tail 路径 | 11 | 2 | **只有内部 `force` 才能到达（D1 即如此），协议管脚构造不出** |
 | 队列内 TU 的 end | 1 | 1 | 需两 TU 时序配合，收益低于成本 |
 | 断言前置与包围条件互斥 | 0 | 1 | scrub 期间不提交 fill 写，前置恒假 |
 
@@ -152,10 +152,15 @@ DUT 口径（`unified_its_wrapper`，19 个用例合并）：
 | Statements | 143 | 148 | 137 | 6 | **11** |
 | Branches | 132 | 128 | 126 | 6 | **2** |
 
-结论要改成：两者量级相当（143 vs 148）。**UVM 有 11 行是 D1 覆盖到、UVM 没覆盖的**，
-全部落在 `kernel_h_rd_raw_tail` 那条路径（L2279–2283、L2303–2313）——这是 UVM 这套
-的真实激励缺口，不是不可达路径；UVM 另外多覆盖了 6 行 D1 没覆盖的。所以正确说法是
-"各有长短"，不是"谁更强"。
+结论是：两者量级相当（143 vs 148）。UVM 有 11 行 D1 覆盖到而它没覆盖，全部落在
+`kernel_h_rd_raw_tail` 那条路径（L2279–2283、L2303–2313）；UVM 另外多覆盖了 6 行
+D1 没覆盖的。所以是"各有长短"，不是"谁更强"。
+
+那 11 行我去查了 D1 是怎么打到的：`03_verification/tb/unified_its_hread_raw_capture_tb.sv`
+第 186 行是 `force dut.u_unified_p4_kernel.in_req = 1'b0;`——**靠内部 force**。
+我也实测过一次"宽变换 + 600 拍输出关断"（`tail_stress`，32×32、1024 拍），这 11 行
+仍然 0 命中。所以它们不是协议层能构造的激励，只有白盒 force 类用例能覆盖，
+不能算成 UVM 回归该补的缺口。
 
 报告只出 `-du` 单块的原因：全设计报告每个实例打印一个小节，用扁平键解析会
 把最后一个实例的数字当成全局值——我第一版就踩了这个坑，`Expressions` 被
@@ -362,7 +367,7 @@ selftest: PASS (14/14)
 
 status: PASS 19
 merged functional coverage: 52/54 = 96.30%
-summary: 19/19 PASS，退出码 0
+summary: 20/20 PASS，退出码 0
 ```
 
 合并后只有 `stall_phase` 的 2 个不可达 bin 未命中（见 D4 章节）。
@@ -378,7 +383,7 @@ summary: 19/19 PASS，退出码 0
 
 | 标准 | 状态 | 依据 |
 |---|---|---|
-| `uvm_info` 层级不乱、逐位顺序正确 | 满足 | 19 个用例逐 beat 比对，40 位全等；`sweep` 共 45636 拍零差异 |
+| `uvm_info` 层级不乱、逐位顺序正确 | 满足 | 20 个用例逐 beat 比对，40 位全等；`sweep` 共 45636 拍零差异 |
 | 多个 TU 并行测试稳定 | 满足 | `sweep` 368 次重叠接纳，`multi_tu_16` 15 次；driver 不在 TU 之间等 done |
 | 故意注错时 scoreboard 能报错 | 满足 | 金标准人为翻转 1 bit → 恰好 4 条 `ITS_DATA_MISMATCH`；非法描述符 → `ITS_PROTOCOL_ERROR` |
 
@@ -426,13 +431,14 @@ summary: 19/19 PASS，退出码 0
 - 两个 agent 按管脚组拆分（激励 / 反压），**不是两路 DUT 通道并发**；DUT 只有
   一路输入和一路输出，这是接口决定的
 - 复位只测了"处理途中拉低 rst_n"一种时序，没有覆盖复位抖动或多拍复位
-- DUT 覆盖率是 19 个用例合并的 DUT 单模块口径，不是全设计口径，也不是与 D1
+- DUT 覆盖率是 20 个用例合并的 DUT 单模块口径，不是全设计口径，也不是与 D1
   定向套件合并后的数；跨套件合并（UCDB 联并）尚未做
 - 覆盖率合并（功能）是 bin 并集，不做加权
 - 代码覆盖率有归因（`D8_GAP_ATTRIBUTION.md`）：其中"零馈送量向量"一类只是**未能
   证明可达**，不是**已证明不可达**；要证明需要形式化论证或用 `force` 注入，后者会
   越过协议层验证的边界，尚未做
-- **明确的激励缺口**：`kernel_h_rd_raw_tail` 那 11 行 + 2 个分支，D1 的定向 TB 打到
-  过、UVM 这套打不到。要补必须复现"两个 raw 响应背靠背到达"的条件，属于下一轮工作
+- **`kernel_h_rd_raw_tail` 那 11 行 + 2 个分支**：协议管脚构造不出来，D1 是用
+  `force dut.u_unified_p4_kernel.in_req` 打进去的。已实测宽变换 + 600 拍输出关断也
+  不行。要覆盖只能加白盒 force 类用例，属另一个验证层级，未做
 - 分支缺口账目有一次对不齐：`vcover` 摘要报 144 miss，明细 CSV 是 145 行，
   **差 1 行原因未查明**，两边原始数字都保留

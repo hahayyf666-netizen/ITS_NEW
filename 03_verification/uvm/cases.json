@@ -138,6 +138,13 @@
       "plusargs": ["SPARSE_MODE=0"],
       "expect": {"tus": 1, "data_errors_min": 1, "uvm_error_min": 1, "protocol_errors": 0, "unexpected": 0, "pending": 0},
       "note": "end-only marker after the fill window opened: no data command, so the slot completes without a phantom write"
+    },
+    {
+      "name": "tail_stress",
+      "testname": "its_vseq_tail_test",
+      "plusargs": ["TAIL_STALL=600"],
+      "expect": {"tus": 1, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "unexpected": 0, "pending": 0},
+      "note": "widest TU against a long output-grant blackout: stalls the H-pass consumer so the raw-response tail buffer fills"
     }
   ]
 }
