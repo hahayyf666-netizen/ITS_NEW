@@ -123,6 +123,59 @@ package its_uvm_pkg;
     } its_phase_e;
 
     // ------------------------------------------------------------------
+    // Output-side back-pressure request.  its_grant_driver owns the
+    // it_data_out_req pin; this item only describes the stall profile.
+    // ------------------------------------------------------------------
+    class its_grant_item extends uvm_sequence_item;
+        rand bit          always_grant    = 1'b0;
+        rand int unsigned light_mod       = 7;    // light stall period
+        rand int unsigned light_off       = 11;
+        rand int unsigned deep_period     = 64;   // deep stall period
+        rand int unsigned deep_len        = 8;    // deep stall length
+        // How long this profile applies before the driver reverts to the
+        // default profile.  0 means "until superseded".
+        int unsigned      duration_cycles = 0;
+
+        constraint c_light { light_mod   inside {[3:13]};
+                             light_off   inside {[3:13]}; }
+        constraint c_deep  { deep_period inside {[8:128]};
+                             deep_len    inside {[1:16]}; }
+        constraint c_dur   { duration_cycles inside {[100:8000]}; }
+
+        `uvm_object_utils(its_grant_item)
+
+        function new(string name = "its_grant_item");
+            super.new(name);
+        endfunction
+
+        virtual function string convert2string();
+            return $sformatf("grant always=%0b light=%0d/%0d deep=%0d/%0d dur=%0d",
+                             always_grant, light_mod, light_off,
+                             deep_period, deep_len, duration_cycles);
+        endfunction
+    endclass
+
+    // ------------------------------------------------------------------
+    // Virtual sequencer: coordinates the stimulus agent and the back-pressure
+    // agent.  The DUT has a single input channel and a single output channel,
+    // so a second stimulus agent would only double-drive the same pins; the
+    // second agent here is the one that genuinely has its own pin group.
+    //
+    // Declared before the sequences that reference it: SystemVerilog needs the
+    // type to exist before `uvm_declare_p_sequencer expands.
+    // ------------------------------------------------------------------
+    class its_virtual_sequencer extends uvm_sequencer;
+        uvm_sequencer #(its_tu_item)    in_seqr;
+        uvm_sequencer #(its_grant_item) grant_seqr;
+
+        `uvm_component_utils(its_virtual_sequencer)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+    endclass
+
+    // ------------------------------------------------------------------
     // Case database: loads the project vector file once per simulation
     // ------------------------------------------------------------------
     class its_case_db;
@@ -556,6 +609,77 @@ package its_uvm_pkg;
         endtask
     endclass
 
+    // ------------------------------------------------------------------
+    // Multi-agent sequences
+    // ------------------------------------------------------------------
+    // Back-pressure profile sequence: a few disturbing windows, then the driver
+    // reverts to its default profile by itself.
+    class its_grant_profile_sequence extends uvm_sequence #(its_grant_item);
+        `uvm_object_utils(its_grant_profile_sequence)
+
+        function new(string name = "its_grant_profile_sequence");
+            super.new(name);
+        endfunction
+
+        task send(bit always_grant, int unsigned lmod, int unsigned loff,
+                  int unsigned dper, int unsigned dlen, int unsigned dur);
+            its_grant_item g = its_grant_item::type_id::create("g");
+            g.always_grant    = always_grant;
+            g.light_mod       = lmod;
+            g.light_off       = loff;
+            g.deep_period     = dper;
+            g.deep_len        = dlen;
+            g.duration_cycles = dur;
+            start_item(g);
+            finish_item(g);
+        endtask
+
+        task body();
+            // Tight stalls early, then a long grant-open window, then a deep
+            // stall pattern.  Each window is long enough to straddle a TU
+            // boundary, which is what makes the two agents actually interact.
+            send(1'b0, 5, 9,  32,  4, 6000);
+            send(1'b1, 7, 11, 64,  8, 3000);
+            send(1'b0, 3, 5,  24, 10, 6000);
+        endtask
+    endclass
+
+    // Virtual sequence: runs the stimulus on the input agent while the
+    // back-pressure agent changes the output timing underneath it.
+    class its_vseq_stress extends uvm_sequence;
+        `uvm_declare_p_sequencer(its_virtual_sequencer)
+
+        int unsigned tu_count = 12;
+        int unsigned tu_start = 0;
+
+        `uvm_object_utils(its_vseq_stress)
+
+        function new(string name = "its_vseq_stress");
+            super.new(name);
+        endfunction
+
+        task body();
+            its_multi_tu_sequence     stim;
+            its_grant_profile_sequence prof;
+            `uvm_info("ITS_VSEQ",
+                      $sformatf("vseq tu_count=%0d tu_start=%0d",
+                                tu_count, tu_start), UVM_LOW)
+            fork
+                begin
+                    stim = its_multi_tu_sequence::type_id::create("stim");
+                    stim.count       = tu_count;
+                    stim.start_index = tu_start;
+                    stim.start(p_sequencer.in_seqr);
+                end
+                begin
+                    prof = its_grant_profile_sequence::type_id::create("prof");
+                    prof.start(p_sequencer.grant_seqr);
+                end
+            join
+            `uvm_info("ITS_VSEQ", "vseq done", UVM_LOW)
+        endtask
+    endclass
+
     // Illegal descriptor: width 2 is not a legal DCT2 axis length, so the DUT
     // must raise the sticky protocol error and stop admitting input.
     class its_illegal_desc_sequence extends uvm_sequence #(its_tu_item);
@@ -684,30 +808,8 @@ package its_uvm_pkg;
             vif.it_data_end = 1'b0;
         endtask
 
-        // Output grant with real back-pressure.
-        //
-        // Two behaviours are needed to reach every back-pressure bin: a light
-        // periodic stall (%7/%11) and a periodic deep stall of eight cycles.
-        // The deep stall is what lets a younger TU start filling/computing
-        // while an older TU is still holding a pending beat, which is the only
-        // way the compute and LFNST stall phases can be observed.
-        task drive_output_grant();
-            int unsigned cyc  = 0;
-            int unsigned hold = 0;
-            forever begin
-                @(negedge vif.clk);
-                cyc++;
-                if (hold > 0) begin
-                    vif.it_data_out_req <= 1'b0;
-                    hold--;
-                end else if ((cyc % 64) == 0) begin
-                    hold = 8;
-                    vif.it_data_out_req <= 1'b0;
-                end else begin
-                    vif.it_data_out_req <= !((cyc % 7) == 2 || (cyc % 11) == 5);
-                end
-            end
-        endtask
+        // Output grant lives in its_grant_driver now; this agent no longer owns
+        // the it_data_out_req pin.
 
         task stream_items();
             int unsigned n;
@@ -755,10 +857,100 @@ package its_uvm_pkg;
         task run_phase(uvm_phase phase);
             if (vif == null) `uvm_fatal("ITS_DRV", "driver has no virtual interface")
             do_reset();
+            stream_items();
+        endtask
+    endclass
+
+    // ------------------------------------------------------------------
+    // Back-pressure agent: owns it_data_out_req.
+    //
+    // A profile item stays in force for its duration_cycles and the driver then
+    // falls back to the default profile, so a sequence only has to name the
+    // disturbing windows and never has to know the clock period.
+    // ------------------------------------------------------------------
+    class its_grant_driver extends uvm_driver #(its_grant_item);
+        virtual its_if vif;
+
+        bit          always_grant = 1'b0;
+        int unsigned light_mod    = 7;
+        int unsigned light_off    = 11;
+        int unsigned deep_period  = 64;
+        int unsigned deep_len     = 8;
+        int unsigned remaining    = 0;
+
+        int unsigned cyc  = 0;
+        int unsigned hold = 0;
+
+        `uvm_component_utils(its_grant_driver)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        function void build_phase(uvm_phase phase);
+            super.build_phase(phase);
+            if (!uvm_config_db #(virtual its_if)::get(this, "", "vif", vif))
+                `uvm_fatal("ITS_GRANT", "grant driver has no virtual interface")
+        endfunction
+
+        function void apply_profile(its_grant_item g);
+            always_grant = g.always_grant;
+            light_mod    = g.light_mod;
+            light_off    = g.light_off;
+            deep_period  = g.deep_period;
+            deep_len     = g.deep_len;
+            remaining    = g.duration_cycles;
+            hold         = 0;
+        endfunction
+
+        function void revert_to_default();
+            always_grant = 1'b0;
+            light_mod    = 7;
+            light_off    = 11;
+            deep_period  = 64;
+            deep_len     = 8;
+        endfunction
+
+        task drive();
+            forever begin
+                @(negedge vif.clk);
+                cyc++;
+                if (remaining > 0) begin
+                    remaining--;
+                    if (remaining == 0) begin
+                        revert_to_default();
+                        `uvm_info("ITS_GRANT", "profile expired, default restored",
+                                  UVM_MEDIUM)
+                    end
+                end
+                if (always_grant) begin
+                    hold = 0;
+                    vif.it_data_out_req <= 1'b1;
+                end else if (hold > 0) begin
+                    vif.it_data_out_req <= 1'b0;
+                    hold--;
+                end else if (deep_period != 0 && (cyc % deep_period) == 0) begin
+                    hold = deep_len;
+                    vif.it_data_out_req <= 1'b0;
+                end else begin
+                    vif.it_data_out_req <=
+                        !((cyc % light_mod) == 2 || (cyc % light_off) == 5);
+                end
+            end
+        endtask
+
+        task run_phase(uvm_phase phase);
+            if (vif == null) `uvm_fatal("ITS_GRANT", "grant driver has no vif")
             fork
-                drive_output_grant();
-                stream_items();
-            join
+                drive();
+            join_none
+            forever begin
+                seq_item_port.get_next_item(req);
+                apply_profile(req);
+                `uvm_info("ITS_GRANT", $sformatf("profile: %s", req.convert2string()),
+                          UVM_LOW)
+                seq_item_port.item_done();
+            end
         endtask
     endclass
 
@@ -1223,12 +1415,19 @@ package its_uvm_pkg;
     // Environment
     // ------------------------------------------------------------------
     class its_env extends uvm_env;
+        // Stimulus agent
         uvm_sequencer #(its_tu_item) seqr;
         its_driver   drv;
+        // Observation
         its_monitor  mon;
         its_scoreboard sb;
         its_desc_coverage desc_cov;
         its_out_coverage  out_cov;
+        // Back-pressure agent, plus the virtual sequencer that ties it to the
+        // stimulus side.
+        uvm_sequencer #(its_grant_item) grant_seqr;
+        its_grant_driver grant_drv;
+        its_virtual_sequencer vseqr;
 
         `uvm_component_utils(its_env)
 
@@ -1244,17 +1443,25 @@ package its_uvm_pkg;
             sb       = its_scoreboard::type_id::create("sb", this);
             desc_cov = its_desc_coverage::type_id::create("desc_cov", this);
             out_cov  = its_out_coverage::type_id::create("out_cov", this);
+            grant_seqr = new("grant_seqr", this);
+            grant_drv  = its_grant_driver::type_id::create("grant_drv", this);
+            vseqr      = its_virtual_sequencer::type_id::create("vseqr", this);
         endfunction
 
         function void connect_phase(uvm_phase phase);
             super.connect_phase(phase);
             drv.seq_item_port.connect(seqr.seq_item_export);
+            grant_drv.seq_item_port.connect(grant_seqr.seq_item_export);
             drv.ap_expected.connect(sb.imp_expected);
             mon.ap.connect(sb.imp_actual);
             mon.ap_err.connect(sb.imp_err);
             drv.ap_expected.connect(desc_cov.analysis_export);
             mon.ap.connect(out_cov.analysis_export);
-            `uvm_info("ITS_ENV", "sequencer->driver, driver->scoreboard, monitor->scoreboard, coverage subscribers attached", UVM_LOW)
+            // The virtual sequencer only holds handles; it is not connected to
+            // any driver itself.
+            vseqr.in_seqr    = seqr;
+            vseqr.grant_seqr = grant_seqr;
+            `uvm_info("ITS_ENV", "stimulus agent, back-pressure agent, scoreboard, coverage and virtual sequencer attached", UVM_LOW)
         endfunction
     endclass
 
@@ -1646,6 +1853,32 @@ package its_uvm_pkg;
             `uvm_info("ITS_RAND",
                       $sformatf("random run done tus=%0d of %0d",
                                 env.sb.tus_completed, seq.n_tu), UVM_LOW)
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    // Virtual sequence test: two agents, two sequencers, one coordinator.
+    class its_vseq_test extends its_base_test;
+        `uvm_component_utils(its_vseq_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_vseq_stress vseq;
+            int unsigned    n;
+            n = 12;
+            void'($value$plusargs("VSEQ_TUS=%d", n));
+            phase.raise_objection(this);
+            vseq = its_vseq_stress::type_id::create("vseq");
+            vseq.tu_count = n;
+            vseq.start(env.vseqr);
+            wait_for_tus(n, 900_000);
+            `uvm_info("ITS_VSEQ",
+                      $sformatf("vseq complete tus=%0d beats=%0d overlap=%0d",
+                                env.sb.tus_completed, env.sb.beats_seen,
+                                env.sb.overlap_admissions), UVM_LOW)
             phase.drop_objection(this);
         endtask
     endclass

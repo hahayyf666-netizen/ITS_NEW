@@ -110,6 +110,13 @@
       "plusargs": [],
       "expect": {"tus": 2, "resets": 1, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "unexpected": 0, "pending": 0},
       "note": "reset while beats are streaming; only the post-reset TU must complete"
+    },
+    {
+      "name": "vseq_multi_agent",
+      "testname": "its_vseq_test",
+      "plusargs": ["VSEQ_TUS=12"],
+      "expect": {"tus": 12, "overlap_min": 1, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "unexpected": 0, "pending": 0},
+      "note": "virtual sequence drives the stimulus agent while the back-pressure agent changes profile underneath it"
     }
   ]
 }

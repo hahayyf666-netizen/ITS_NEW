@@ -42,7 +42,8 @@ interface its_if (input logic clk);
         it_data_addr   = '0;
         it_data_in_vld = 1'b0;
         it_data_end    = 1'b0;
-        it_data_out_req = 1'b0;
+        // it_data_out_req is deliberately not touched here: its_grant_driver
+        // owns that pin, and two procedural writers would race.
     endtask
 endinterface
 

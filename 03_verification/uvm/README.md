@@ -172,7 +172,61 @@ UVM 15 个用例）。两者母体不同。就 wrapper 自身而言，D1 全套�
 后两个是 TB 级检测：DUT 不报协议错，但"不关闭填充就不该出 beat"和"截断输入
 不该复现金标准"这两条由 scoreboard 兜住。
 
-### 五、过程中被抓出来的三个 bug
+### 五、多 agent 与 virtual sequencer
+
+先查了 DUT 到底有没有两路通道，结论是**没有**：
+
+```
+its_if.sv 端口：it_info/it_data_in/it_data_addr/it_data_in_vld/it_data_end
+                + it_data_out_req（单个）/it_data_out/it_data_out_vld
+```
+
+一路输入、一路输出、单个 req。所以「两个激励 agent 并发」只能重复驱动同一批
+管脚，那是假并发。因此按**管脚组**拆，拆出来的是真独立的 agent：
+
+| 组件 | 拥有管脚 | 类型 |
+|---|---|---|
+| `its_driver` | `it_info*` / `it_data_in*` / `it_data_addr` / `it_data_end` | 激励 agent |
+| `its_grant_driver` | `it_data_out_req` | 反压 agent |
+| `its_monitor` | 只读观察 | 被动 |
+
+反压驱动原本埋在输入 driver 里（`drive_output_grant()`），现在：
+
+- 独立 item `its_grant_item`：`always_grant` / `light_mod` / `light_off` /
+  `deep_period` / `deep_len` / `duration_cycles`
+- 独立 sequencer `grant_seqr`
+- **默认 profile 与旧行为逐字相同**（`light 7/11`、`deep 64/8`），所以原有
+  15 个用例的 tus/beats/overlap 数字一个没变
+- `duration_cycles` 到期自动回落默认 profile，sequence 不需要知道时钟周期
+
+`its_virtual_sequencer` 持有 `in_seqr` 与 `grant_seqr` 两个句柄，
+`its_vseq_stress` 用 `fork...join` 同时启动激励序列与 profile 序列：
+
+```systemverilog
+fork
+    stim.start(p_sequencer.in_seqr);     // 12 个 TU
+    prof.start(p_sequencer.grant_seqr);  // 三档反压
+join
+```
+
+实测日志证明两路真的在协作：
+
+```
+ITS_VSEQ] vseq tu_count=12 tu_start=0
+ITS_GRANT] profile: grant always=0 light=5/9 deep=32/4 dur=6000
+ITS_GRANT] profile: grant always=1 light=7/11 deep=64/8 dur=3000
+ITS_GRANT] profile: grant always=0 light=3/5 deep=24/10 dur=6000
+ITS_GRANT] profile expired, default restored
+ITS_VSEQ] vseq complete tus=12 beats=200 overlap=11
+```
+
+`tus=12 beats=200 overlap=11 data_errors=0` —— 反压被程序化改变的同时，输出
+仍然逐位正确。
+
+**边界**：这是「两个真独立 agent + virtual sequencer」，不是「两路 DUT 通道
+并发」。后者 DUT 不提供，硬做只能是假验证。
+
+### 六、过程中被抓出来的三个 bug
 
 **`do_copy` 没实现**：`uvm_object::copy()` 不报错也不复制，派生 item 变成全 0
 描述符，于是非法描述符 → driver 死等 `it_data_in_req` → 仿真挂死十几分钟。
@@ -241,7 +295,7 @@ selftest: PASS (10/10)
 ### 结果
 
 ```
-[regress] 15 case(s) from cases.json
+[regress] 16 case(s) from cases.json
   [single_tu]        PASS  tus=1   beats=4
   [rect_tu]          PASS  tus=1   beats=8
   [multi_tu_4]       PASS  tus=4   beats=32   overlap=3
@@ -257,10 +311,11 @@ selftest: PASS (10/10)
   [neg_no_end]       PASS  beats=0  pending=1
   [neg_short_beats]  PASS  data_errors=4
   [reset_mid_tu]     PASS  tus=2  resets=1  data_errors=0
+  [vseq_multi_agent] PASS  tus=12 beats=200  overlap=11
 
-status: PASS 15
+status: PASS 16
 merged functional coverage: 52/54 = 96.30%
-summary: 15/15 PASS，退出码 0
+summary: 16/16 PASS，退出码 0
 ```
 
 合并后只有 `stall_phase` 的 2 个不可达 bin 未命中（见 D4 章节）。
@@ -297,8 +352,9 @@ summary: 15/15 PASS，退出码 0
 - 数值正确性依赖项目向量集（369 case），UVM 层未独立实现变换模型
 - 随机化的对象是用例抽取/顺序/间隔，不是描述符本身的随机生成
 - `stall_phase` 的 lfnst / compute 两 bin 受 RTL 结构约束不可达（见上）
-- 单 driver、单 agent，没有 virtual sequencer；TU 重叠来自 DUT 流水
+- 两个 agent 按管脚组拆分（激励 / 反压），**不是两路 DUT 通道并发**；DUT 只有
+  一路输入和一路输出，这是接口决定的
 - 复位只测了"处理途中拉低 rst_n"一种时序，没有覆盖复位抖动或多拍复位
-- DUT 覆盖率是 15 个用例合并的 DUT 单模块口径，不是全设计口径，也不是与 D1
+- DUT 覆盖率是 16 个用例合并的 DUT 单模块口径，不是全设计口径，也不是与 D1
   定向套件合并后的数；跨套件合并（UCDB 联并）尚未做
 - 覆盖率合并（功能）是 bin 并集，不做加权
