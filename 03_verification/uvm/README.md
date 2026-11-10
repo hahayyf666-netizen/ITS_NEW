@@ -1,4 +1,4 @@
-# D3 最小 UVM 协议层
+# D3 UVM 协议层 + D4 功能覆盖率
 
 对应方案 D3（`agent + driver + monitor + scoreboard` + 2–3 个 sequence）。
 范围为**协议层**：UVM 负责激励产生、握手检查、错误捕获；数值金标准不在这里
@@ -48,26 +48,72 @@ python run_its_uvm.py all
 `TU` 与 `beat` 两列不是 scoreboard 自报，而是 `run_its_uvm.py` 用 Python 从向量
 文件独立重算后比对的结果，不一致即判 FAIL。
 
-## 验收标准对照（方案第 66–69 块）
+## D4 功能覆盖率
+
+覆盖点取自方案 D4 表，六个维度，全部实现在 `its_desc_coverage` 与
+`its_out_coverage` 两个 subscriber 里。采样口径：
+
+- 形状 / 变换类型 / LFNST 三个维度在 **TU 接纳时**采样，来自 `it_info` 字段
+- 饱和分级 / 反压深度 / 停拍阶段三个维度在 **每个输出 beat 上**采样
+
+### 结果（`sweep` 用例，369 TU / 45636 beat）
+
+| 覆盖点 | 百分比 | bin | 分布 |
+|---|---:|---|---|
+| `shape` | 100.00% | 25/25 | 25 种合法 (w,h) 组合全覆盖 |
+| `xform` | 100.00% | 9/9 | 双轴各 3 种变换类型的 9 种组合 |
+| `lfnst_mode` | 100.00% | 3/3 | off=169 / set1=100 / set2=100 |
+| `lfnst_idx` | 100.00% | 4/4 | idx 0–3 各 50 次（仅在开启 LFNST 时采样） |
+| `sat` | 100.00% | 3/3 | 无饱和 8010 / 正轨 14620 / 负轨 23006 |
+| `backpressure` | 100.00% | 4/4 | 深度 0=33635 / 1=9508 / 2=1436 / ≥3=1057 |
+| `stall_phase` | 66.67% | 4/6 | scrub 2827 / fill 32 / output 12001 / 无停拍 33635 |
+
+### 两个未命中 bin 是结构性不可达，不是测试不足
+
+`stall_phase` 的 `lfnst` 与 `compute` 两 bin 恒为 0。原因在 RTL：
+
+```systemverilog
+// unified_its_wrapper.sv:1354
+if (!output_active && !kernel_run_q && !lfnst_run_q && !scrub_active) begin
+    // 只有在此条件下才会拉起新的 compute_valid
+```
+
+`output_active` 为真时（即存在待发 beat）DUT 不允许开启新的 kernel 或 LFNST
+运行，因此「输出被反压」与「compute/LFNST 正在跑」在物理上不可能同时发生。
+这条结论有 RTL 行号支撑，且与 45636 个 beat、含 8 拍深反压的实测结果一致。
+
+按合法空间计算，`stall_phase` 是 4/4。
+
+### 指标可证伪
+
+同一个 covergroup 在 `single_tu`（单个 4×4 DCT-II）上报 14.67%（1/25），在
+`sweep` 上报 100%（25/25）。同一套采样逻辑能报出低值，说明它不是恒为 100%
+的空转指标——这是 D4 验收标准里「每个覆盖点要有正例和反例」的证据。
+
+## D3 验收标准对照（方案第 66–69 块）
 
 | 标准 | 状态 | 依据 |
 |---|---|---|
-| `uvm_info` 层级不乱、逐位顺序正确 | 满足 | 6 个用例逐 beat 比对，40 位全等；`multi_tu_16` 共 524 拍零差异 |
-| 多个 TU 并行测试稳定 | 满足 | `multi_tu_16` 有 15 次「上一个 TU 未排空即接纳新 TU」的重叠接纳；driver 不在 TU 之间等 done |
+| `uvm_info` 层级不乱、逐位顺序正确 | 满足 | 7 个用例逐 beat 比对，40 位全等；`sweep` 共 45636 拍零差异 |
+| 多个 TU 并行测试稳定 | 满足 | `sweep` 368 次重叠接纳，`multi_tu_16` 15 次；driver 不在 TU 之间等 done |
 | 故意注错时 scoreboard 能报错 | 满足 | 金标准人为翻转 1 bit → 恰好 4 条 `ITS_DATA_MISMATCH`；非法描述符 → `ITS_PROTOCOL_ERROR` |
 
 ## 定向细节
 
-- **背压**：`it_data_out_req` 按 `%7/%11` 双周期模式周期性拉低，DUT 必须在
-  停拍期间保持输出稳定，monitor 持续采样
+- **背压**：`it_data_out_req` 平时按 `%7/%11` 双周期模式拉低，另每 64 拍注入一次
+  连续 8 拍深停拍。没有深停拍时 `backpressure` 的 ≥3 bin 和重叠接纳都上不去
 - **Sparse TU**：`input_count == 0` 的用例只发独立的 `it_data_end`，不发数据拍
 - **done 配对**：scoreboard 要求 `done` 恰好落在最后一个 beat，且全 TU 只出现一次
 - **负向对照的必要性**：`neg_wrong_golden` 翻转金标准后仍能"跑完"，若 scoreboard
   是空壳就查不出来；这条用例证明检查器可被证伪
+- **覆盖率探针**：`scrub_active` / `fill_active` / `lfnst_busy` / `kernel_busy` /
+  `output_active` 由 TB 顶层 `assign` 到接口，不改 RTL；`vsim` 需
+  `-voptargs=+acc`，否则这些内部信号被优化掉，vopt 直接报错
 
 ## 已知限制
 
 - 数值正确性依赖项目向量集（369 case），UVM 层未独立实现变换模型
-- 功能覆盖率（covergroup）未做，属 D4
-- UVM 随机化未启用，sequence 按固定 stride 取用例
+- `stall_phase` 的 lfnst / compute 两 bin 受 RTL 结构约束不可达（见上）
+- UVM 随机化未启用，sequence 按固定顺序或 stride 取用例
 - 单 driver 串行发激励；TU 重叠来自 DUT 流水，不是多 driver 并发
+- 覆盖率数字来自 `sweep` 单一运行，不是跨用例合并值

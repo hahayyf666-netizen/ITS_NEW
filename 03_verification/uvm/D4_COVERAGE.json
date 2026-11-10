@@ -1,0 +1,48 @@
+{
+  "stimulus": "sweep = all 369 vector cases in one simulation",
+  "tus": 369,
+  "beats": 45636,
+  "coverage": {
+    "shape": {
+      "pct": 100.0,
+      "bins": "25/25"
+    },
+    "xform": {
+      "pct": 100.0,
+      "bins": "9/9"
+    },
+    "lfnst_mode": {
+      "pct": 100.0,
+      "bins": "3/3"
+    },
+    "lfnst_idx": {
+      "pct": 100.0,
+      "bins": "4/4"
+    },
+    "sat": {
+      "pct": 100.0,
+      "bins": "3/3"
+    },
+    "backpressure": {
+      "pct": 100.0,
+      "bins": "4/4"
+    },
+    "stall_phase": {
+      "pct": 66.67,
+      "bins": "4/6"
+    },
+    "_beats": {
+      "pct": null,
+      "bins": "45636"
+    }
+  },
+  "gap_notes": {
+    "shape": "complete: all 25 supported (w,h) pairs hit",
+    "xform": "complete: DCT-II / DST-VII / DCT-VIII on both axes",
+    "lfnst_mode": "complete: off / set1 / set2",
+    "lfnst_idx": "complete: idx 0..3",
+    "sat": "complete: no-clamp / positive rail / negative rail",
+    "backpressure": "complete: depth 0 / 1 / 2 / >=3",
+    "stall_phase": "4 of 6 reachable. lfnst and compute can never coincide with an output stall: unified_its_wrapper.sv:1354 gates compute_valid on !output_active, so no new kernel or LFNST run can start while a beat is pending. The two bins are unreachable by construction, not by missing stimulus."
+  }
+}

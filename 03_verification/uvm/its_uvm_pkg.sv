@@ -64,6 +64,11 @@ package its_uvm_pkg;
         logic [39:0] data = '0;
         bit          done = 1'b0;
         time         cyc  = 0;
+        // Back-pressure observed before this beat: how many consecutive cycles
+        // the DUT had a beat pending while the grant was low, and which stages
+        // were busy during those cycles (see its_phase_e).
+        int unsigned stall_depth = 0;
+        bit   [4:0]  stall_phases = 5'b0;
 
         `uvm_object_utils(its_out_item)
 
@@ -71,6 +76,15 @@ package its_uvm_pkg;
             super.new(name);
         endfunction
     endclass
+
+    // Stage attribution for a stalled output cycle.
+    typedef enum bit [2:0] {
+        PH_SCRUB   = 3'd0,
+        PH_FILL    = 3'd1,
+        PH_LFNST   = 3'd2,
+        PH_COMPUTE = 3'd3,
+        PH_OUTPUT  = 3'd4
+    } its_phase_e;
 
     // ------------------------------------------------------------------
     // Case database: loads the project vector file once per simulation
@@ -219,6 +233,31 @@ package its_uvm_pkg;
         endtask
     endclass
 
+    // Every case of the vector set in order.  This is the D4 stimulus: the
+    // functional coverage numbers are only meaningful if the whole set runs in
+    // one simulation.
+    class its_full_sweep_sequence extends uvm_sequence #(its_tu_item);
+        int unsigned limit = 0;   // 0 means the whole set
+
+        `uvm_object_utils(its_full_sweep_sequence)
+
+        function new(string name = "its_full_sweep_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            int unsigned n = its_case_db::items.size();
+            int unsigned m = (limit == 0 || limit > n) ? n : limit;
+            if (n == 0) `uvm_fatal("ITS_SEQ", "case database is empty")
+            for (int unsigned i = 0; i < m; i++) begin
+                its_tu_item req = its_case_db::items[i];
+                start_item(req);
+                finish_item(req);
+            end
+            `uvm_info("ITS_SEQ", $sformatf("sweep sent %0d TUs of %0d", m, n), UVM_LOW)
+        endtask
+    endclass
+
     // Illegal descriptor: width 2 is not a legal DCT2 axis length, so the DUT
     // must raise the sticky protocol error and stop admitting input.
     class its_illegal_desc_sequence extends uvm_sequence #(its_tu_item);
@@ -298,14 +337,28 @@ package its_uvm_pkg;
             vif.it_data_end = 1'b0;
         endtask
 
-        // Output grant with real back-pressure: the DUT must hold its pending
-        // beat stable across the stalled cycles the monitor keeps sampling.
+        // Output grant with real back-pressure.
+        //
+        // Two behaviours are needed to reach every back-pressure bin: a light
+        // periodic stall (%7/%11) and a periodic deep stall of eight cycles.
+        // The deep stall is what lets a younger TU start filling/computing
+        // while an older TU is still holding a pending beat, which is the only
+        // way the compute and LFNST stall phases can be observed.
         task drive_output_grant();
-            int unsigned cyc = 0;
+            int unsigned cyc  = 0;
+            int unsigned hold = 0;
             forever begin
                 @(negedge vif.clk);
                 cyc++;
-                vif.it_data_out_req <= !((cyc % 7) == 2 || (cyc % 11) == 5);
+                if (hold > 0) begin
+                    vif.it_data_out_req <= 1'b0;
+                    hold--;
+                end else if ((cyc % 64) == 0) begin
+                    hold = 8;
+                    vif.it_data_out_req <= 1'b0;
+                end else begin
+                    vif.it_data_out_req <= !((cyc % 7) == 2 || (cyc % 11) == 5);
+                end
             end
         endtask
 
@@ -366,15 +419,33 @@ package its_uvm_pkg;
 
         task run_phase(uvm_phase phase);
             its_out_item item;
+            int unsigned depth   = 0;
+            bit   [4:0]  phases  = 5'b0;
+            bit          stalled = 1'b0;
             if (vif == null) `uvm_fatal("ITS_MON", "monitor has no virtual interface")
             forever begin
                 @(posedge vif.clk);
+                stalled = vif.dbg_output_active && !vif.it_data_out_req;
+                if (stalled) begin
+                    depth++;
+                    // Attribute the stall to every stage that is busy now; a
+                    // cycle can legitimately have more than one active.
+                    if (vif.dbg_scrub_active)  phases[PH_SCRUB]   = 1'b1;
+                    if (vif.dbg_fill_active)   phases[PH_FILL]    = 1'b1;
+                    if (vif.dbg_lfnst_busy)    phases[PH_LFNST]   = 1'b1;
+                    if (vif.dbg_kernel_busy)   phases[PH_COMPUTE] = 1'b1;
+                    if (vif.dbg_output_active) phases[PH_OUTPUT]  = 1'b1;
+                end
                 if (vif.it_data_out_vld && vif.it_data_out_req) begin
                     item      = its_out_item::type_id::create("beat");
                     item.data = vif.it_data_out;
                     item.done = vif.it_done;
                     item.cyc  = $time;
+                    item.stall_depth  = depth;
+                    item.stall_phases = phases;
                     ap.write(item);
+                    depth  = 0;
+                    phases = 5'b0;
                 end
                 if (vif.protocol_error && !prev_error) begin
                     item      = its_out_item::type_id::create("err");
@@ -506,6 +577,266 @@ package its_uvm_pkg;
     endclass
 
     // ------------------------------------------------------------------
+    // Functional coverage, descriptor side.
+    //
+    // The six dimensions come from the D4 coverage table in the plan.  Bins are
+    // limited to values the DUT actually accepts (see shape_supported and
+    // axis_supported in the wrapper), so a bin that never fills is a stimulus
+    // gap rather than an illegal value.
+    // ------------------------------------------------------------------
+    class its_desc_coverage extends uvm_subscriber #(its_tu_item);
+
+        int unsigned n_tu = 0;
+        int unsigned shape_hit[5][5];   // [w][h]
+        int unsigned xform_hit[3][3];   // [t0][t1]
+        int unsigned lfnst_mode_hit[3]; // 0 off, 1 set1, 2 set2
+        int unsigned lfnst_idx_hit[4];
+
+        int unsigned cur_w, cur_h, cur_t0, cur_t1, cur_mode, cur_idx;
+
+        covergroup cg_shape;
+            option.per_instance = 1;
+            option.name         = "its_shape";
+            cp_w: coverpoint cur_w {
+                bins b4[] = {4}; bins b8[] = {8}; bins b16[] = {16};
+                bins b32[] = {32}; bins b64[] = {64};
+            }
+            cp_h: coverpoint cur_h {
+                bins b4[] = {4}; bins b8[] = {8}; bins b16[] = {16};
+                bins b32[] = {32}; bins b64[] = {64};
+            }
+            cx_wh: cross cp_w, cp_h;
+        endgroup
+
+        covergroup cg_xform;
+            option.per_instance = 1;
+            option.name         = "its_xform";
+            cp_t0: coverpoint cur_t0 {
+                bins dct2[] = {0}; bins dst7[] = {1}; bins dct8[] = {2};
+            }
+            cp_t1: coverpoint cur_t1 {
+                bins dct2[] = {0}; bins dst7[] = {1}; bins dct8[] = {2};
+            }
+            cx_tt: cross cp_t0, cp_t1;
+        endgroup
+
+        covergroup cg_lfnst_mode;
+            option.per_instance = 1;
+            option.name         = "its_lfnst_mode";
+            cp_mode: coverpoint cur_mode {
+                bins off[]  = {0};
+                bins set1[] = {1};
+                bins set2[] = {2};
+            }
+        endgroup
+
+        // Only sampled when LFNST is enabled, so all four indices are legal
+        // samples rather than dead bins.
+        covergroup cg_lfnst_idx;
+            option.per_instance = 1;
+            option.name         = "its_lfnst_idx";
+            cp_idx: coverpoint cur_idx {
+                bins i0[] = {0}; bins i1[] = {1}; bins i2[] = {2}; bins i3[] = {3};
+            }
+        endgroup
+
+        `uvm_component_utils(its_desc_coverage)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+            cg_shape       = new();
+            cg_xform       = new();
+            cg_lfnst_mode  = new();
+            cg_lfnst_idx   = new();
+        endfunction
+
+        function void write(its_tu_item t);
+            n_tu++;
+            cur_w  = t.width();
+            cur_h  = t.height();
+            cur_t0 = t.case_desc[15:14];
+            cur_t1 = t.case_desc[17:16];
+            cur_mode = t.case_desc[21:20];
+            cur_idx  = t.case_desc[19:18];
+            cg_shape.sample();
+            cg_xform.sample();
+            cg_lfnst_mode.sample();
+            if (cur_mode != 0) cg_lfnst_idx.sample();
+            if (cur_w inside {4,8,16,32,64} && cur_h inside {4,8,16,32,64})
+                shape_hit[wid(cur_w)][wid(cur_h)]++;
+            if (cur_t0 <= 2 && cur_t1 <= 2) xform_hit[cur_t0][cur_t1]++;
+            if (cur_mode <= 2) lfnst_mode_hit[cur_mode]++;
+            if (cur_mode != 0) lfnst_idx_hit[cur_idx]++;
+        endfunction
+
+        function int unsigned wid(int unsigned v);
+            case (v)
+                4:       return 0;
+                8:       return 1;
+                16:      return 2;
+                32:      return 3;
+                default: return 4;
+            endcase
+        endfunction
+
+        function int unsigned xform_hit_total();
+            int unsigned n = 0;
+            foreach (xform_hit[i, j]) if (xform_hit[i][j] > 0) n++;
+            return n;
+        endfunction
+
+        function int unsigned shape_hit_total();
+            int unsigned n = 0;
+            foreach (shape_hit[i, j]) if (shape_hit[i][j] > 0) n++;
+            return n;
+        endfunction
+
+        function void report_phase(uvm_phase phase);
+            int unsigned mode_bins = 0;
+            int unsigned idx_bins  = 0;
+            super.report_phase(phase);
+            foreach (lfnst_mode_hit[i]) if (lfnst_mode_hit[i] > 0) mode_bins++;
+            foreach (lfnst_idx_hit[i])  if (lfnst_idx_hit[i]  > 0) idx_bins++;
+            `uvm_info("ITS_CG",
+                      $sformatf("ITS_CG shape %.2f bins=%0d/25 tus=%0d",
+                                cg_shape.get_coverage(), shape_hit_total(), n_tu),
+                      UVM_LOW)
+            `uvm_info("ITS_CG",
+                      $sformatf("ITS_CG xform %.2f bins=%0d/9",
+                                cg_xform.get_coverage(), xform_hit_total()),
+                      UVM_LOW)
+            `uvm_info("ITS_CG",
+                      $sformatf("ITS_CG lfnst_mode %.2f bins=%0d/3 off=%0d set1=%0d set2=%0d",
+                                cg_lfnst_mode.get_coverage(), mode_bins,
+                                lfnst_mode_hit[0], lfnst_mode_hit[1],
+                                lfnst_mode_hit[2]), UVM_LOW)
+            `uvm_info("ITS_CG",
+                      $sformatf("ITS_CG lfnst_idx %.2f bins=%0d/4 i0=%0d i1=%0d i2=%0d i3=%0d",
+                                cg_lfnst_idx.get_coverage(), idx_bins,
+                                lfnst_idx_hit[0], lfnst_idx_hit[1],
+                                lfnst_idx_hit[2], lfnst_idx_hit[3]), UVM_LOW)
+        endfunction
+    endclass
+
+    // ------------------------------------------------------------------
+    // Functional coverage, output side: saturation class, back-pressure depth
+    // and which stage was busy while the beat was held.
+    // ------------------------------------------------------------------
+    class its_out_coverage extends uvm_subscriber #(its_out_item);
+
+        int unsigned n_beats = 0;
+        int unsigned sat_hit[3];        // none / positive clamp / negative clamp
+        int unsigned depth_hit[4];      // 0 / 1 / 2 / 3+
+        int unsigned phase_hit[6];      // five stages + no_stall
+
+        int unsigned cur_sat, cur_depth, cur_phase;
+
+        covergroup cg_sat;
+            option.per_instance = 1;
+            option.name         = "its_sat";
+            cp_sat: coverpoint cur_sat {
+                bins none[]  = {0};
+                bins pos[]   = {1};
+                bins neg[]   = {2};
+            }
+        endgroup
+
+        covergroup cg_depth;
+            option.per_instance = 1;
+            option.name         = "its_backpressure";
+            cp_depth: coverpoint cur_depth {
+                bins d0[]    = {0};
+                bins d1[]    = {1};
+                bins d2[]    = {2};
+                bins d3plus[] = {3};
+            }
+        endgroup
+
+        covergroup cg_phase;
+            option.per_instance = 1;
+            option.name         = "its_stall_phase";
+            cp_phase: coverpoint cur_phase {
+                bins scrub[]   = {0};
+                bins fill[]    = {1};
+                bins lfnst[]   = {2};
+                bins compute[] = {3};
+                bins out_stage[] = {4};
+                bins no_stall[] = {5};
+            }
+        endgroup
+
+        `uvm_component_utils(its_out_coverage)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+            cg_sat   = new();
+            cg_depth = new();
+            cg_phase = new();
+        endfunction
+
+        function void write(its_out_item t);
+            int unsigned cls = 0;
+            its_out_item item;
+            item = t;
+            n_beats++;
+            // A word saturates when any 10-bit lane sits on the clamp rail.
+            foreach (item.data[i]) begin
+                if (item.data[i*10 +: 10] == 10'h1FF) cls = 1;
+            end
+            foreach (item.data[i]) begin
+                if (item.data[i*10 +: 10] == 10'h200) begin
+                    cls = (cls == 1) ? 0 : 2;
+                end
+            end
+            cur_sat = cls;
+            cg_sat.sample();
+            sat_hit[cls]++;
+
+            cur_depth = (item.stall_depth >= 3) ? 3 : item.stall_depth;
+            cg_depth.sample();
+            depth_hit[cur_depth]++;
+
+            if (item.stall_phases == 5'b0) begin
+                cur_phase = 5;
+                cg_phase.sample();
+                phase_hit[5]++;
+            end else begin
+                for (int p = 0; p < 5; p++) begin
+                    if (item.stall_phases[p]) begin
+                        cur_phase = p;
+                        cg_phase.sample();
+                        phase_hit[p]++;
+                    end
+                end
+            end
+        endfunction
+
+        function void report_phase(uvm_phase phase);
+            int unsigned sat_bins = 0, depth_bins = 0, phase_bins = 0;
+            super.report_phase(phase);
+            foreach (sat_hit[i])   if (sat_hit[i]   > 0) sat_bins++;
+            foreach (depth_hit[i]) if (depth_hit[i] > 0) depth_bins++;
+            foreach (phase_hit[i]) if (phase_hit[i] > 0) phase_bins++;
+            `uvm_info("ITS_CG",
+                      $sformatf("ITS_CG sat %.2f bins=%0d/3 none=%0d pos=%0d neg=%0d",
+                                cg_sat.get_coverage(), sat_bins, sat_hit[0],
+                                sat_hit[1], sat_hit[2]), UVM_LOW)
+            `uvm_info("ITS_CG",
+                      $sformatf("ITS_CG backpressure %.2f bins=%0d/4 d0=%0d d1=%0d d2=%0d d3plus=%0d",
+                                cg_depth.get_coverage(), depth_bins,
+                                depth_hit[0], depth_hit[1], depth_hit[2],
+                                depth_hit[3]), UVM_LOW)
+            `uvm_info("ITS_CG",
+                      $sformatf("ITS_CG stall_phase %.2f bins=%0d/6 scrub=%0d fill=%0d lfnst=%0d compute=%0d output=%0d none=%0d",
+                                cg_phase.get_coverage(), phase_bins,
+                                phase_hit[0], phase_hit[1], phase_hit[2],
+                                phase_hit[3], phase_hit[4], phase_hit[5]), UVM_LOW)
+            `uvm_info("ITS_CG",
+                      $sformatf("ITS_CG beats=%0d", n_beats), UVM_LOW)
+        endfunction
+    endclass
+
+    // ------------------------------------------------------------------
     // Environment
     // ------------------------------------------------------------------
     class its_env extends uvm_env;
@@ -513,6 +844,8 @@ package its_uvm_pkg;
         its_driver   drv;
         its_monitor  mon;
         its_scoreboard sb;
+        its_desc_coverage desc_cov;
+        its_out_coverage  out_cov;
 
         `uvm_component_utils(its_env)
 
@@ -522,10 +855,12 @@ package its_uvm_pkg;
 
         function void build_phase(uvm_phase phase);
             super.build_phase(phase);
-            seqr = new("seqr", this);
-            drv  = its_driver::type_id::create("drv", this);
-            mon  = its_monitor::type_id::create("mon", this);
-            sb   = its_scoreboard::type_id::create("sb", this);
+            seqr     = new("seqr", this);
+            drv      = its_driver::type_id::create("drv", this);
+            mon      = its_monitor::type_id::create("mon", this);
+            sb       = its_scoreboard::type_id::create("sb", this);
+            desc_cov = its_desc_coverage::type_id::create("desc_cov", this);
+            out_cov  = its_out_coverage::type_id::create("out_cov", this);
         endfunction
 
         function void connect_phase(uvm_phase phase);
@@ -534,7 +869,9 @@ package its_uvm_pkg;
             drv.ap_expected.connect(sb.imp_expected);
             mon.ap.connect(sb.imp_actual);
             mon.ap_err.connect(sb.imp_err);
-            `uvm_info("ITS_ENV", "sequencer->driver, driver->scoreboard, monitor->scoreboard", UVM_LOW)
+            drv.ap_expected.connect(desc_cov.analysis_export);
+            mon.ap.connect(out_cov.analysis_export);
+            `uvm_info("ITS_ENV", "sequencer->driver, driver->scoreboard, monitor->scoreboard, coverage subscribers attached", UVM_LOW)
         endfunction
     endclass
 
@@ -680,6 +1017,33 @@ package its_uvm_pkg;
             `uvm_info("ITS_NEGATIVE_CONTROL",
                       $sformatf("illegal descriptor detected, protocol_errors=%0d",
                                 env.sb.protocol_errors), UVM_LOW)
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    class its_sweep_test extends its_base_test;
+        `uvm_component_utils(its_sweep_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_full_sweep_sequence seq;
+            int unsigned limit;
+            int unsigned total;
+            phase.raise_objection(this);
+            limit = 0;
+            void'($value$plusargs("SWEEP_LIMIT=%d", limit));
+            total = its_case_db::items.size();
+            if (limit != 0 && limit < total) total = limit;
+            seq = its_full_sweep_sequence::type_id::create("seq");
+            seq.limit = limit;
+            seq.start(env.seqr);
+            wait_for_tus(total, 50_000_000);
+            `uvm_info("ITS_SWEEP",
+                      $sformatf("sweep done tus=%0d beats=%0d",
+                                env.sb.tus_completed, env.sb.beats_seen), UVM_LOW)
             phase.drop_objection(this);
         endtask
     endclass

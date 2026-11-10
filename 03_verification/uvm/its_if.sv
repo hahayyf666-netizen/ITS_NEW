@@ -25,6 +25,15 @@ interface its_if (input logic clk);
     logic        it_done;
     logic        protocol_error;
 
+    // Debug taps used by functional coverage.  These are connected in the TB
+    // top module from ports/instances the wrapper already exposes; no RTL is
+    // modified for coverage.
+    logic        dbg_scrub_active;
+    logic        dbg_fill_active;
+    logic        dbg_lfnst_busy;
+    logic        dbg_kernel_busy;
+    logic        dbg_output_active;
+
     task automatic drive_idle();
         rst_n          = 1'b0;
         it_info        = '0;

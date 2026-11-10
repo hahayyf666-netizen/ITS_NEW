@@ -61,6 +61,10 @@ RUNS = [
     ("multi_tu_16", ["+UVM_TESTNAME=its_multi_tu_test", "+TU_COUNT=16", "+TU_START=3"], "pass"),
     ("neg_wrong_golden", ["+UVM_TESTNAME=its_wrong_golden_test", "+WRONG_GOLDEN"], "mismatch"),
     ("neg_illegal_desc", ["+UVM_TESTNAME=its_illegal_desc_test"], "protocol"),
+    # D4 stimulus: the entire vector set in one simulation.  Coverage numbers
+    # are only meaningful when this runs, because it is the only run that
+    # touches every shape, transform type and LFNST mode.
+    ("sweep", ["+UVM_TESTNAME=its_sweep_test"], "pass"),
 ]
 
 
@@ -149,7 +153,7 @@ def stage_run(only):
         if only and name not in only:
             continue
         log = OUT / "logs" / f"sim_{name}.log"
-        cmd = [VSIM, "-batch", "-t", "1ps", "+UVM_NO_DPI"]
+        cmd = [VSIM, "-batch", "-t", "1ps", "+UVM_NO_DPI", "-voptargs=+acc"]
         cmd += plusargs
         cmd += [f"-gVECTOR_FILE={OUT / 'unified_gate_c_vectors.txt'}"]
         cmd += ["-do", "run -all; quit -f", "work.its_uvm_tb"]
@@ -173,6 +177,9 @@ def stage_run(only):
                 want_tus, want_beats = 1, cases[0][2]
             elif name == "rect_tu":
                 want_tus, want_beats = expected_shape(cases, "rect_tu")
+            elif name == "sweep":
+                want_tus = len(cases)
+                want_beats = sum(c[2] for c in cases)
             elif name.startswith("multi_tu"):
                 count = next(int(p.split("=")[1]) for p in plusargs
                              if p.startswith("+TU_COUNT="))
@@ -192,22 +199,56 @@ def stage_run(only):
             ok = proto and n_err > 0
         else:
             ok = False
+        cg = {}
+        for m in re.finditer(r"ITS_CG (\w+) ([\d.]+) bins=(\S+)", text):
+            cg[m.group(1)] = {"pct": float(m.group(2)), "bins": m.group(3)}
+        m = re.search(r"ITS_CG beats=(\d+)", text)
+        if m:
+            cg["_beats"] = {"pct": None, "bins": m.group(1)}
         status = "PASS" if ok else "FAIL"
         detail = ""
         if expect == "pass":
             detail = (f" tus={saw_tus}/{want_tus} beats={saw_beats}/{want_beats}"
                       f" overlap={saw_overlap}")
         print(f"{status} err={n_err} fatal={fatal}{detail} ({dt:.0f}s)", flush=True)
+        if cg:
+            for k in ("shape", "xform", "lfnst", "sat", "backpressure", "stall_phase"):
+                if k in cg:
+                    print(f"        cg {k:<14} {cg[k]['pct']:6.2f}%  bins={cg[k]['bins']}",
+                          flush=True)
         results.append({"name": name, "expect": expect, "status": status,
                         "uvm_errors": n_err, "uvm_fatals": fatal,
                         "check_pass_seen": check_pass, "mismatch_seen": mismatch,
                         "protocol_error_seen": proto,
                         "tus_reported": saw_tus, "tus_expected": want_tus,
                         "beats_reported": saw_beats, "beats_expected": want_beats,
-                        "overlap_admissions": saw_overlap,
+                        "overlap_admissions": saw_overlap, "coverage": cg,
                         "returncode": rc, "elapsed_s": round(dt, 1)})
     (OUT / "UVM_RESULTS.json").write_text(json.dumps(results, indent=2),
                                           encoding="utf-8")
+    sweep = next((r for r in results if r["name"] == "sweep"), None)
+    if sweep and sweep.get("coverage"):
+        gaps = {
+            "shape":        "complete: all 25 supported (w,h) pairs hit",
+            "xform":        "complete: DCT-II / DST-VII / DCT-VIII on both axes",
+            "lfnst_mode":   "complete: off / set1 / set2",
+            "lfnst_idx":    "complete: idx 0..3",
+            "sat":          "complete: no-clamp / positive rail / negative rail",
+            "backpressure": "complete: depth 0 / 1 / 2 / >=3",
+            "stall_phase": (
+                "4 of 6 reachable. lfnst and compute can never coincide with an "
+                "output stall: unified_its_wrapper.sv:1354 gates compute_valid on "
+                "!output_active, so no new kernel or LFNST run can start while a "
+                "beat is pending. The two bins are unreachable by construction, "
+                "not by missing stimulus."
+            ),
+        }
+        d4 = {"stimulus": "sweep = all 369 vector cases in one simulation",
+              "tus": sweep.get("tus_reported"),
+              "beats": sweep.get("beats_reported"),
+              "coverage": sweep["coverage"], "gap_notes": gaps}
+        (OUT / "D4_COVERAGE.json").write_text(json.dumps(d4, indent=2),
+                                              encoding="utf-8")
     ok = sum(1 for r in results if r["status"] == "PASS")
     print(f"\nsummary: {ok}/{len(results)} passed")
 

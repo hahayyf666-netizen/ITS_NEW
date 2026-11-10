@@ -41,4 +41,13 @@ module its_uvm_tb;
         run_test();
     end
 
+    // Coverage taps.  These read internal state of the wrapper instance that is
+    // already declared (no RTL edit) so back-pressure can be attributed to the
+    // stage that was actually busy.
+    assign dif.dbg_scrub_active  = dut.scrub_active;
+    assign dif.dbg_fill_active   = dut.fill_active;
+    assign dif.dbg_lfnst_busy    = dut.lfnst_busy;
+    assign dif.dbg_kernel_busy   = dut.kernel_busy;
+    assign dif.dbg_output_active = dut.output_active;
+
 endmodule

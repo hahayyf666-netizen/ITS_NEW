@@ -13,6 +13,40 @@
     "beats_reported": 4,
     "beats_expected": 4,
     "overlap_admissions": 0,
+    "coverage": {
+      "shape": {
+        "pct": 14.67,
+        "bins": "1/25"
+      },
+      "xform": {
+        "pct": 25.93,
+        "bins": "1/9"
+      },
+      "lfnst_mode": {
+        "pct": 33.33,
+        "bins": "1/3"
+      },
+      "lfnst_idx": {
+        "pct": 0.0,
+        "bins": "0/4"
+      },
+      "sat": {
+        "pct": 66.67,
+        "bins": "2/3"
+      },
+      "backpressure": {
+        "pct": 25.0,
+        "bins": "1/4"
+      },
+      "stall_phase": {
+        "pct": 16.67,
+        "bins": "1/6"
+      },
+      "_beats": {
+        "pct": null,
+        "bins": "4"
+      }
+    },
     "returncode": 0,
     "elapsed_s": 1.6
   },
@@ -30,8 +64,42 @@
     "beats_reported": 8,
     "beats_expected": 8,
     "overlap_admissions": 0,
+    "coverage": {
+      "shape": {
+        "pct": 14.67,
+        "bins": "1/25"
+      },
+      "xform": {
+        "pct": 25.93,
+        "bins": "1/9"
+      },
+      "lfnst_mode": {
+        "pct": 33.33,
+        "bins": "1/3"
+      },
+      "lfnst_idx": {
+        "pct": 0.0,
+        "bins": "0/4"
+      },
+      "sat": {
+        "pct": 66.67,
+        "bins": "2/3"
+      },
+      "backpressure": {
+        "pct": 75.0,
+        "bins": "3/4"
+      },
+      "stall_phase": {
+        "pct": 33.33,
+        "bins": "2/6"
+      },
+      "_beats": {
+        "pct": null,
+        "bins": "8"
+      }
+    },
     "returncode": 0,
-    "elapsed_s": 1.5
+    "elapsed_s": 1.6
   },
   {
     "name": "multi_tu_4",
@@ -47,8 +115,42 @@
     "beats_reported": 32,
     "beats_expected": 32,
     "overlap_admissions": 3,
+    "coverage": {
+      "shape": {
+        "pct": 30.67,
+        "bins": "3/25"
+      },
+      "xform": {
+        "pct": 81.48,
+        "bins": "4/9"
+      },
+      "lfnst_mode": {
+        "pct": 33.33,
+        "bins": "1/3"
+      },
+      "lfnst_idx": {
+        "pct": 0.0,
+        "bins": "0/4"
+      },
+      "sat": {
+        "pct": 100.0,
+        "bins": "3/3"
+      },
+      "backpressure": {
+        "pct": 75.0,
+        "bins": "3/4"
+      },
+      "stall_phase": {
+        "pct": 50.0,
+        "bins": "3/6"
+      },
+      "_beats": {
+        "pct": null,
+        "bins": "32"
+      }
+    },
     "returncode": 0,
-    "elapsed_s": 1.5
+    "elapsed_s": 1.6
   },
   {
     "name": "multi_tu_16",
@@ -64,8 +166,42 @@
     "beats_reported": 524,
     "beats_expected": 524,
     "overlap_admissions": 15,
+    "coverage": {
+      "shape": {
+        "pct": 85.33,
+        "bins": "14/25"
+      },
+      "xform": {
+        "pct": 96.3,
+        "bins": "8/9"
+      },
+      "lfnst_mode": {
+        "pct": 33.33,
+        "bins": "1/3"
+      },
+      "lfnst_idx": {
+        "pct": 0.0,
+        "bins": "0/4"
+      },
+      "sat": {
+        "pct": 100.0,
+        "bins": "3/3"
+      },
+      "backpressure": {
+        "pct": 100.0,
+        "bins": "4/4"
+      },
+      "stall_phase": {
+        "pct": 66.67,
+        "bins": "4/6"
+      },
+      "_beats": {
+        "pct": null,
+        "bins": "524"
+      }
+    },
     "returncode": 0,
-    "elapsed_s": 1.5
+    "elapsed_s": 1.7
   },
   {
     "name": "neg_wrong_golden",
@@ -81,6 +217,40 @@
     "beats_reported": null,
     "beats_expected": null,
     "overlap_admissions": null,
+    "coverage": {
+      "shape": {
+        "pct": 14.67,
+        "bins": "1/25"
+      },
+      "xform": {
+        "pct": 25.93,
+        "bins": "1/9"
+      },
+      "lfnst_mode": {
+        "pct": 33.33,
+        "bins": "1/3"
+      },
+      "lfnst_idx": {
+        "pct": 0.0,
+        "bins": "0/4"
+      },
+      "sat": {
+        "pct": 66.67,
+        "bins": "2/3"
+      },
+      "backpressure": {
+        "pct": 25.0,
+        "bins": "1/4"
+      },
+      "stall_phase": {
+        "pct": 16.67,
+        "bins": "1/6"
+      },
+      "_beats": {
+        "pct": null,
+        "bins": "4"
+      }
+    },
     "returncode": 0,
     "elapsed_s": 1.5
   },
@@ -98,7 +268,92 @@
     "beats_reported": null,
     "beats_expected": null,
     "overlap_admissions": null,
+    "coverage": {
+      "shape": {
+        "pct": 6.67,
+        "bins": "0/25"
+      },
+      "xform": {
+        "pct": 25.93,
+        "bins": "1/9"
+      },
+      "lfnst_mode": {
+        "pct": 33.33,
+        "bins": "1/3"
+      },
+      "lfnst_idx": {
+        "pct": 0.0,
+        "bins": "0/4"
+      },
+      "sat": {
+        "pct": 0.0,
+        "bins": "0/3"
+      },
+      "backpressure": {
+        "pct": 0.0,
+        "bins": "0/4"
+      },
+      "stall_phase": {
+        "pct": 0.0,
+        "bins": "0/6"
+      },
+      "_beats": {
+        "pct": null,
+        "bins": "0"
+      }
+    },
     "returncode": 0,
-    "elapsed_s": 1.4
+    "elapsed_s": 1.5
+  },
+  {
+    "name": "sweep",
+    "expect": "pass",
+    "status": "PASS",
+    "uvm_errors": 0,
+    "uvm_fatals": 0,
+    "check_pass_seen": true,
+    "mismatch_seen": false,
+    "protocol_error_seen": false,
+    "tus_reported": 369,
+    "tus_expected": 369,
+    "beats_reported": 45636,
+    "beats_expected": 45636,
+    "overlap_admissions": 368,
+    "coverage": {
+      "shape": {
+        "pct": 100.0,
+        "bins": "25/25"
+      },
+      "xform": {
+        "pct": 100.0,
+        "bins": "9/9"
+      },
+      "lfnst_mode": {
+        "pct": 100.0,
+        "bins": "3/3"
+      },
+      "lfnst_idx": {
+        "pct": 100.0,
+        "bins": "4/4"
+      },
+      "sat": {
+        "pct": 100.0,
+        "bins": "3/3"
+      },
+      "backpressure": {
+        "pct": 100.0,
+        "bins": "4/4"
+      },
+      "stall_phase": {
+        "pct": 66.67,
+        "bins": "4/6"
+      },
+      "_beats": {
+        "pct": null,
+        "bins": "45636"
+      }
+    },
+    "returncode": 0,
+    "elapsed_s": 8.9
   }
 ]
