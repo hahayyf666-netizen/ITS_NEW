@@ -13,13 +13,15 @@ oracle 生成），因此 UVM 层增加的是协议验证能力，不是第二�
 | `its_uvm_pkg.sv` | 全部 UVM 类：item / 数据库 / sequence / 两个 agent / monitor / scoreboard / env / virtual sequencer / 15 个 test |
 | `its_uvm_tb.sv` | 顶层：时钟、接口、DUT、`run_test()` |
 | `run_its_uvm.py` | 生成向量、编译、跑 7 个用例（D3 冒烟路径）、独立核对数字 |
-| `run_regress.py` | D5/D7/D8 全量回归：16 个用例、结构化判定、覆盖率合并、代码覆盖率 |
-| `cases.json` | 回归用例表（16 条），判定期望写在这里而不是日志里 |
+| `run_regress.py` | D5/D7/D8 全量回归：19 个用例、结构化判定、覆盖率合并、代码覆盖率 |
+| `cases.json` | 回归用例表（19 条），判定期望写在这里而不是日志里 |
 | `probe_case.py` | 单个用例的诊断探针，跑完直接打印 `RESULT_FILE`，不在流水线里 |
 | `D3_RESULTS.json` | D3 证据：`run_its_uvm.py` 7 个用例的逐条结果与覆盖点 |
 | `D4_COVERAGE.json` | D4 证据：`sweep` 单独跑 369 个 case 时的 7 个功能覆盖点 |
-| `D5_REGRESSION.json` | D5 证据：16 个用例的结构化判定 + 合并功能覆盖率 + 失败分类表 |
-| `D8_CODE_COVERAGE.json` | 代码覆盖率：16 个 UCDB 合并，DUT 口径，机器可读 |
+| `D5_REGRESSION.json` | D5 证据：19 个用例的结构化判定 + 合并功能覆盖率 + 失败分类表 |
+| `D8_CODE_COVERAGE.json` | 代码覆盖率：19 个 UCDB 合并，DUT 口径，机器可读 |
+| `D8_GAP_ATTRIBUTION.md` | 代码覆盖率缺口归因：148 条语句缺口逐类给出原因 |
+| `D8_GAPS.csv` | 384 行缺口明细（设计单元 / 类型 / 行号 / 是否全局缺口 / RTL 源码） |
 | `coverage_uvm_dut.txt` | 同一份代码覆盖率的 vcover 原始报告（给人看） |
 
 DUT 是 `unified_its_wrapper #(.FINAL_SATURATE(1))`，与
@@ -108,25 +110,39 @@ D5 收口时判定这套 UVM 还不算完结，五个缺口里有四个在这里
 
 - 编译加 `+cover=bcestf`
 - 每次仿真 `-coverage` 并 `coverage save -onexit <case>.ucdb`
-- `run_regress.py coverage` 合并 16 个 UCDB 后按 `-du=unified_its_wrapper` 出报告
+- `run_regress.py coverage` 合并 19 个 UCDB 后按 `-du=unified_its_wrapper` 出报告
 
-DUT 口径（`unified_its_wrapper`，16 个用例合并）：
+DUT 口径（`unified_its_wrapper`，19 个用例合并）：
 
 | 指标 | 命中/总数 | 覆盖率 |
 |---|---|---:|
-| Assertions | 25/25 | 100.00% |
-| Statements | 837/991 | 84.46% |
-| Branches | 372/522 | 71.26% |
-| Conditions | 87/136 | 63.97% |
-| Expressions | 87/161 | 54.03% |
+| Assertions | 27/27 | 100.00% |
+| Statements | 843/991 | 85.06% |
+| Branches | 378/522 | 72.41% |
+| Conditions | 92/136 | 67.64% |
+| Expressions | 95/161 | 59.00% |
 | FSM States | 9/9 | 100.00% |
 | FSM Transitions | 11/26 | 42.30% |
-| Toggles | 2142/5229 | 40.96% |
+| Toggles | 2147/5229 | 41.05% |
 
-**不能拿这组数字和 D1 的 75.21% 直接比。** D1 的 75.21% 是全设计口径
-（18140 条语句，16 个定向 TB 合并）；这里是 DUT 单模块口径（991 条语句，
-UVM 16 个用例）。两者母体不同。就 wrapper 自身而言，D1 全套定向 TB 打完剩
-143 条语句缺口，UVM 这套单独打剩 154 条，量级相当，没有谁显著更强。
+这组数字**不是**"全部覆盖"，也不是"和 D1 比谁强"，而是"每一条缺口都有归因"。
+148 条语句缺口的分层见 `D8_GAP_ATTRIBUTION.md`：
+
+| 类别 | 语句 | 分支 | 说明 |
+|---|---:|---:|---|
+| 从未被调用的函数 | 121 | 129 | 死代码，L841–1085 六个函数 |
+| `case` 的 `default` 臂 | 4 | 4 | 合法形状全枚举，非法描述符更早被拦 |
+| 防御性 `$fatal` | 4 | 4 | 命中即中止仿真 |
+| 内部错误 → protocol_error | 2 | 2 | 需 kernel/lfnst 内部错误位 |
+| 零馈送量向量 | 5 | 2 | 未能证明可达；369 个合法用例全跑过未触发 |
+| 内部读流水线 tail 路径 | 11 | 2 | 由内部 RAM 时序决定，TB 无法直接控制 |
+| 队列内 TU 的 end | 1 | 1 | 需两 TU 时序配合，收益低于成本 |
+| 断言前置与包围条件互斥 | 0 | 1 | scrub 期间不提交 fill 写，前置恒假 |
+
+**D1 对比的更正**：之前这里写"D1 打完剩 143 条语句缺口、UVM 剩 154 条、量级相当"，
+这个 143 是错的。用 D2 的 `GAPS.csv` 复核，D1 的 wrapper 语句缺口集是 **954 行**，
+而 UVM 这套 148 行——并且 UVM 的缺口集完全被 D1 的缺口集包含（差集为 0 行）。
+也就是说在 wrapper 这一级，UVM 这套打得比 D1 的全套定向 TB 更深，而不是"相当"。
 
 报告只出 `-du` 单块的原因：全设计报告每个实例打印一个小节，用扁平键解析会
 把最后一个实例的数字当成全局值——我第一版就踩了这个坑，`Expressions` 被
@@ -327,10 +343,13 @@ selftest: PASS (14/14)
   [neg_short_beats]  PASS  data_errors=4
   [reset_mid_tu]     PASS  tus=2  resets=1  data_errors=0
   [vseq_multi_agent] PASS  tus=12 beats=200  overlap=11
+  [neg_zero_data]    PASS  tus=1  beats=4  data_errors=4   （scrub 窗口内 end）
+  [neg_desc_flood]   PASS  tus=0  beats=0  protocol_errors=1  pending=1
+  [neg_end_only_fill] PASS tus=1  beats=4  data_errors=4   （fill 窗口内裸 end）
 
-status: PASS 16
+status: PASS 19
 merged functional coverage: 52/54 = 96.30%
-summary: 16/16 PASS，退出码 0
+summary: 19/19 PASS，退出码 0
 ```
 
 合并后只有 `stall_phase` 的 2 个不可达 bin 未命中（见 D4 章节）。
@@ -346,7 +365,7 @@ summary: 16/16 PASS，退出码 0
 
 | 标准 | 状态 | 依据 |
 |---|---|---|
-| `uvm_info` 层级不乱、逐位顺序正确 | 满足 | 16 个用例逐 beat 比对，40 位全等；`sweep` 共 45636 拍零差异 |
+| `uvm_info` 层级不乱、逐位顺序正确 | 满足 | 19 个用例逐 beat 比对，40 位全等；`sweep` 共 45636 拍零差异 |
 | 多个 TU 并行测试稳定 | 满足 | `sweep` 368 次重叠接纳，`multi_tu_16` 15 次；driver 不在 TU 之间等 done |
 | 故意注错时 scoreboard 能报错 | 满足 | 金标准人为翻转 1 bit → 恰好 4 条 `ITS_DATA_MISMATCH`；非法描述符 → `ITS_PROTOCOL_ERROR` |
 
@@ -354,7 +373,9 @@ summary: 16/16 PASS，退出码 0
 
 - **背压**：`it_data_out_req` 平时按 `%7/%11` 双周期模式拉低，另每 64 拍注入一次
   连续 8 拍深停拍。没有深停拍时 `backpressure` 的 ≥3 bin 和重叠接纳都上不去
-- **Sparse TU**：`input_count == 0` 的用例只发独立的 `it_data_end`，不发数据拍
+- **Sparse TU**：`input_count == 0` 的用例只发独立的 `it_data_end`，不发数据拍。
+  `sparse_mode` 决定 end 落在哪个窗口：`2` = bind 后的 scrub 窗口内（DUT 按零数据
+  退休该 TU），`0` = fill 窗口打开后（end-only marker，不产生数据命令）
 - **done 配对**：scoreboard 要求 `done` 恰好落在最后一个 beat，且全 TU 只出现一次
 - **负向对照的必要性**：`neg_wrong_golden` 翻转金标准后仍能"跑完"，若 scoreboard
   是空壳就查不出来；这条用例证明检查器可被证伪
@@ -392,6 +413,11 @@ summary: 16/16 PASS，退出码 0
 - 两个 agent 按管脚组拆分（激励 / 反压），**不是两路 DUT 通道并发**；DUT 只有
   一路输入和一路输出，这是接口决定的
 - 复位只测了"处理途中拉低 rst_n"一种时序，没有覆盖复位抖动或多拍复位
-- DUT 覆盖率是 16 个用例合并的 DUT 单模块口径，不是全设计口径，也不是与 D1
+- DUT 覆盖率是 19 个用例合并的 DUT 单模块口径，不是全设计口径，也不是与 D1
   定向套件合并后的数；跨套件合并（UCDB 联并）尚未做
 - 覆盖率合并（功能）是 bin 并集，不做加权
+- 代码覆盖率有归因（`D8_GAP_ATTRIBUTION.md`），但其中"零馈送量向量""内部读
+  流水线 tail 路径"两类只是**未能证明可达**，不是**已证明不可达**；要证明需要
+  形式化论证或用 `force` 注入，后者会越过协议层验证的边界，尚未做
+- 分支缺口账目有一次对不齐：`vcover` 摘要报 144 miss，明细 CSV 是 145 行，
+  **差 1 行原因未查明**，两边原始数字都保留

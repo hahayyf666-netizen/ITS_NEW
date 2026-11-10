@@ -45,6 +45,15 @@ package its_uvm_pkg;
         bit          skip_end      = 1'b0;   // never close the fill
         bit          short_beats   = 1'b0;   // stop halfway through the inputs
         int unsigned addr_overrun  = 0;      // added to the last beat address
+        // Push this many descriptors back to back before driving data.  The
+        // scrub window keeps bind_event low for INPUT_VALID_WORDS cycles, so a
+        // burst larger than the queue depth drives desc_count to 2 and trips
+        // the "descriptor queue full without a bind" guard.
+        int unsigned desc_burst    = 1;
+        // 0 = normal; 1 = end marker once the fill window is open; 2 = end
+        // marker during the pre-fill scrub window, which makes the DUT retire
+        // the TU as zero-data instead of opening a fill.
+        int unsigned sparse_mode   = 0;
 
         `uvm_object_utils(its_tu_item)
 
@@ -84,6 +93,8 @@ package its_uvm_pkg;
             skip_end      = src.skip_end;
             short_beats   = src.short_beats;
             addr_overrun  = src.addr_overrun;
+            desc_burst    = src.desc_burst;
+            sparse_mode   = src.sparse_mode;
             for (int i = 0; i < MAX_INPUTS; i++) begin
                 input_addr[i]  = src.input_addr[i];
                 input_value[i] = src.input_value[i];
@@ -680,6 +691,58 @@ package its_uvm_pkg;
         endtask
     endclass
 
+    // Zero-data TU: the descriptor is followed by an end marker inside the scrub
+    // window, so the DUT retires the slot as READY without ever opening a fill.
+    class its_zero_data_sequence extends uvm_sequence #(its_tu_item);
+        // 2 = end inside the scrub window (retire as zero-data),
+        // 0 = end once the fill window is open (end-only marker, no beat)
+        int unsigned mode = 2;
+
+        `uvm_object_utils(its_zero_data_sequence)
+
+        function new(string name = "its_zero_data_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            its_tu_item req;
+            if (its_case_db::items.size() == 0)
+                `uvm_fatal("ITS_SEQ", "case database is empty")
+            req = its_tu_item::new("zero_data");
+            req.copy(its_case_db::items[0]);
+            req.tag         = (mode == 2) ? "zero_data_scrub" : "zero_data_fill";
+            req.input_count = 0;
+            req.sparse_mode = mode;
+            start_item(req);
+            finish_item(req);
+        endtask
+    endclass
+
+    // Descriptor flood: four descriptors pushed while the scrub window still
+    // blocks bind_event, so desc_count reaches 2 and the next push trips the
+    // "queue full without a bind" guard.  No data follows.
+    class its_desc_flood_sequence extends uvm_sequence #(its_tu_item);
+        `uvm_object_utils(its_desc_flood_sequence)
+
+        function new(string name = "its_desc_flood_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            its_tu_item req;
+            if (its_case_db::items.size() == 0)
+                `uvm_fatal("ITS_SEQ", "case database is empty")
+            req = its_tu_item::new("desc_flood");
+            req.copy(its_case_db::items[0]);
+            req.tag         = "desc_flood";
+            req.input_count = 0;
+            req.skip_end    = 1'b1;
+            req.desc_burst  = 4;
+            start_item(req);
+            finish_item(req);
+        endtask
+    endclass
+
     // Illegal descriptor: width 2 is not a legal DCT2 axis length, so the DUT
     // must raise the sticky protocol error and stop admitting input.
     class its_illegal_desc_sequence extends uvm_sequence #(its_tu_item);
@@ -811,6 +874,31 @@ package its_uvm_pkg;
         // Output grant lives in its_grant_driver now; this agent no longer owns
         // the it_data_out_req pin.
 
+        // End marker asserted inside the pre-fill scrub window.
+        //
+        // Every bind raises scrub_active for INPUT_VALID_WORDS cycles before the
+        // fill window opens.  An end that lands in that window (scrub_ended in
+        // the RTL) tells the DUT this TU carries no data at all, so it retires
+        // the slot READY instead of opening a fill.  Nothing in the directed
+        // flows ever drove an end there, so the whole scrub_ended branch was
+        // dark.
+        task send_end_in_scrub();
+            int unsigned guard = 0;
+            while (!vif.dbg_scrub_active) begin
+                @(negedge vif.clk);
+                guard++;
+                if (guard > 400) begin
+                    `uvm_fatal("ITS_DRV",
+                               "scrub window never observed; cannot place the end marker")
+                    return;
+                end
+            end
+            vif.it_data_end = 1'b1;
+            @(posedge vif.clk);
+            @(negedge vif.clk);
+            vif.it_data_end = 1'b0;
+        endtask
+
         task stream_items();
             int unsigned n;
             forever begin
@@ -835,8 +923,11 @@ package its_uvm_pkg;
                     ap_expected.write(req);
                     repeat (req.gap_cycles) @(negedge vif.clk);
                     send_info(req.case_desc);
+                    for (int unsigned b = 1; b < req.desc_burst; b++)
+                        send_info(req.case_desc);
                     if (req.input_count == 0) begin
-                        if (!req.skip_end) send_end_only();
+                        if (req.sparse_mode == 2) send_end_in_scrub();
+                        else if (!req.skip_end) send_end_only();
                     end else begin
                         n = req.short_beats ? (req.input_count / 2)
                                             : req.input_count;
@@ -1879,6 +1970,44 @@ package its_uvm_pkg;
                       $sformatf("vseq complete tus=%0d beats=%0d overlap=%0d",
                                 env.sb.tus_completed, env.sb.beats_seen,
                                 env.sb.overlap_admissions), UVM_LOW)
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    class its_zero_data_test extends its_base_test;
+        `uvm_component_utils(its_zero_data_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_zero_data_sequence seq;
+            int unsigned mode;
+            mode = 2;
+            void'($value$plusargs("SPARSE_MODE=%d", mode));
+            phase.raise_objection(this);
+            seq = its_zero_data_sequence::type_id::create("seq");
+            seq.mode = mode;
+            seq.start(env.seqr);
+            wait_cycles(8_000);
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    class its_desc_flood_test extends its_base_test;
+        `uvm_component_utils(its_desc_flood_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_desc_flood_sequence seq;
+            phase.raise_objection(this);
+            seq = its_desc_flood_sequence::type_id::create("seq");
+            seq.start(env.seqr);
+            wait_cycles(8_000);
             phase.drop_objection(this);
         endtask
     endclass

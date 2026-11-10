@@ -281,7 +281,7 @@
       "testname": "its_multi_tu_test",
       "status": "PASS",
       "reason": "",
-      "elapsed_s": 2.6,
+      "elapsed_s": 2.5,
       "returncode": 0,
       "fields": {
         "test": "its_multi_tu_test",
@@ -465,7 +465,7 @@
       "testname": "its_illegal_desc_test",
       "status": "PASS",
       "reason": "",
-      "elapsed_s": 2.1,
+      "elapsed_s": 2.0,
       "returncode": 0,
       "fields": {
         "test": "its_illegal_desc_test",
@@ -557,7 +557,7 @@
       "testname": "its_sweep_test",
       "status": "PASS",
       "reason": "",
-      "elapsed_s": 47.4,
+      "elapsed_s": 55.9,
       "returncode": 0,
       "fields": {
         "test": "its_sweep_test",
@@ -833,7 +833,7 @@
       "testname": "its_lfnst_mode3_test",
       "status": "PASS",
       "reason": "",
-      "elapsed_s": 2.1,
+      "elapsed_s": 2.0,
       "returncode": 0,
       "fields": {
         "test": "its_lfnst_mode3_test",
@@ -1109,7 +1109,7 @@
       "testname": "its_no_end_test",
       "status": "PASS",
       "reason": "",
-      "elapsed_s": 2.0,
+      "elapsed_s": 2.1,
       "returncode": 0,
       "fields": {
         "test": "its_no_end_test",
@@ -1385,7 +1385,7 @@
       "testname": "its_vseq_test",
       "status": "PASS",
       "reason": "",
-      "elapsed_s": 2.3,
+      "elapsed_s": 2.4,
       "returncode": 0,
       "fields": {
         "test": "its_vseq_test",
@@ -1471,10 +1471,286 @@
           "5": 137
         }
       }
+    },
+    {
+      "name": "neg_zero_data",
+      "testname": "its_zero_data_test",
+      "status": "PASS",
+      "reason": "",
+      "elapsed_s": 2.1,
+      "returncode": 0,
+      "fields": {
+        "test": "its_zero_data_test",
+        "tus": "1",
+        "beats": "4",
+        "data_errors": "4",
+        "done_errors": "0",
+        "protocol_errors": "0",
+        "unexpected": "0",
+        "pending": "0",
+        "overlap": "0",
+        "resets": "0",
+        "uvm_error": "4",
+        "uvm_fatal": "0"
+      },
+      "coverage": {
+        "shape": {
+          "0_0": 1,
+          "0_1": 0,
+          "0_2": 0,
+          "0_3": 0,
+          "0_4": 0,
+          "1_0": 0,
+          "1_1": 0,
+          "1_2": 0,
+          "1_3": 0,
+          "1_4": 0,
+          "2_0": 0,
+          "2_1": 0,
+          "2_2": 0,
+          "2_3": 0,
+          "2_4": 0,
+          "3_0": 0,
+          "3_1": 0,
+          "3_2": 0,
+          "3_3": 0,
+          "3_4": 0,
+          "4_0": 0,
+          "4_1": 0,
+          "4_2": 0,
+          "4_3": 0,
+          "4_4": 0
+        },
+        "xform": {
+          "0_0": 1,
+          "0_1": 0,
+          "0_2": 0,
+          "1_0": 0,
+          "1_1": 0,
+          "1_2": 0,
+          "2_0": 0,
+          "2_1": 0,
+          "2_2": 0
+        },
+        "lfnst_mode": {
+          "0": 1,
+          "1": 0,
+          "2": 0
+        },
+        "lfnst_idx": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "sat": {
+          "0": 4,
+          "1": 0,
+          "2": 0
+        },
+        "backpressure": {
+          "0": 3,
+          "1": 1,
+          "2": 0,
+          "3": 0
+        },
+        "stall_phase": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 1,
+          "5": 3
+        }
+      }
+    },
+    {
+      "name": "neg_desc_flood",
+      "testname": "its_desc_flood_test",
+      "status": "PASS",
+      "reason": "",
+      "elapsed_s": 2.1,
+      "returncode": 0,
+      "fields": {
+        "test": "its_desc_flood_test",
+        "tus": "0",
+        "beats": "0",
+        "data_errors": "0",
+        "done_errors": "0",
+        "protocol_errors": "1",
+        "unexpected": "0",
+        "pending": "1",
+        "overlap": "0",
+        "resets": "0",
+        "uvm_error": "2",
+        "uvm_fatal": "0"
+      },
+      "coverage": {
+        "shape": {
+          "0_0": 1,
+          "0_1": 0,
+          "0_2": 0,
+          "0_3": 0,
+          "0_4": 0,
+          "1_0": 0,
+          "1_1": 0,
+          "1_2": 0,
+          "1_3": 0,
+          "1_4": 0,
+          "2_0": 0,
+          "2_1": 0,
+          "2_2": 0,
+          "2_3": 0,
+          "2_4": 0,
+          "3_0": 0,
+          "3_1": 0,
+          "3_2": 0,
+          "3_3": 0,
+          "3_4": 0,
+          "4_0": 0,
+          "4_1": 0,
+          "4_2": 0,
+          "4_3": 0,
+          "4_4": 0
+        },
+        "xform": {
+          "0_0": 1,
+          "0_1": 0,
+          "0_2": 0,
+          "1_0": 0,
+          "1_1": 0,
+          "1_2": 0,
+          "2_0": 0,
+          "2_1": 0,
+          "2_2": 0
+        },
+        "lfnst_mode": {
+          "0": 1,
+          "1": 0,
+          "2": 0
+        },
+        "lfnst_idx": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "sat": {
+          "0": 0,
+          "1": 0,
+          "2": 0
+        },
+        "backpressure": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "stall_phase": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        }
+      }
+    },
+    {
+      "name": "neg_end_only_fill",
+      "testname": "its_zero_data_test",
+      "status": "PASS",
+      "reason": "",
+      "elapsed_s": 2.1,
+      "returncode": 0,
+      "fields": {
+        "test": "its_zero_data_test",
+        "tus": "1",
+        "beats": "4",
+        "data_errors": "4",
+        "done_errors": "0",
+        "protocol_errors": "0",
+        "unexpected": "0",
+        "pending": "0",
+        "overlap": "0",
+        "resets": "0",
+        "uvm_error": "4",
+        "uvm_fatal": "0"
+      },
+      "coverage": {
+        "shape": {
+          "0_0": 1,
+          "0_1": 0,
+          "0_2": 0,
+          "0_3": 0,
+          "0_4": 0,
+          "1_0": 0,
+          "1_1": 0,
+          "1_2": 0,
+          "1_3": 0,
+          "1_4": 0,
+          "2_0": 0,
+          "2_1": 0,
+          "2_2": 0,
+          "2_3": 0,
+          "2_4": 0,
+          "3_0": 0,
+          "3_1": 0,
+          "3_2": 0,
+          "3_3": 0,
+          "3_4": 0,
+          "4_0": 0,
+          "4_1": 0,
+          "4_2": 0,
+          "4_3": 0,
+          "4_4": 0
+        },
+        "xform": {
+          "0_0": 1,
+          "0_1": 0,
+          "0_2": 0,
+          "1_0": 0,
+          "1_1": 0,
+          "1_2": 0,
+          "2_0": 0,
+          "2_1": 0,
+          "2_2": 0
+        },
+        "lfnst_mode": {
+          "0": 1,
+          "1": 0,
+          "2": 0
+        },
+        "lfnst_idx": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0
+        },
+        "sat": {
+          "0": 4,
+          "1": 0,
+          "2": 0
+        },
+        "backpressure": {
+          "0": 3,
+          "1": 1,
+          "2": 0,
+          "3": 0
+        },
+        "stall_phase": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 1,
+          "5": 3
+        }
+      }
     }
   ],
   "status_counts": {
-    "PASS": 16
+    "PASS": 19
   },
   "failure_classes": {},
   "merged_coverage": {

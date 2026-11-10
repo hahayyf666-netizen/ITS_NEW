@@ -1,10 +1,12 @@
 {
   "dut": "unified_its_wrapper",
-  "ucdbs": 16,
+  "ucdbs": 19,
   "ucdb_files": [
     "multi_tu_16.ucdb",
     "multi_tu_4.ucdb",
     "neg_addr_overrun.ucdb",
+    "neg_desc_flood.ucdb",
+    "neg_end_only_fill.ucdb",
     "neg_illegal_desc.ucdb",
     "neg_lfnst_mode3.ucdb",
     "neg_lfnst_xform.ucdb",
@@ -12,6 +14,7 @@
     "neg_short_beats.ucdb",
     "neg_stray_end.ucdb",
     "neg_wrong_golden.ucdb",
+    "neg_zero_data.ucdb",
     "rand.ucdb",
     "rect_tu.ucdb",
     "reset_mid_tu.ucdb",
@@ -21,12 +24,12 @@
   ],
   "metrics": {
     "Assertions": "100.00%",
-    "Branches": "71.26%",
-    "Conditions": "63.97%",
-    "Expressions": "54.03%",
+    "Branches": "72.41%",
+    "Conditions": "67.64%",
+    "Expressions": "59.00%",
     "FSM States": "100.00%",
     "FSM Transitions": "42.30%",
-    "Statements": "84.46%",
-    "Toggles": "40.96%"
+    "Statements": "85.06%",
+    "Toggles": "41.05%"
   }
 }

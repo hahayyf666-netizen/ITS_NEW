@@ -1,0 +1,71 @@
+# 代码覆盖率缺口归因（UVM 流程，2026-11-10）
+
+DUT：`unified_its_wrapper`，19 个用例的 UCDB 合并，`vcover report -details -du=unified_its_wrapper`。
+
+这份文档回答一个问题：**85.06% 的语句覆盖率，剩下 148 条为什么不覆盖。**
+
+## 一、总账
+
+| 指标 | 命中/总数 | 覆盖率 | 缺口 |
+|---|---|---:|---:|
+| Assertions | 27/27 | 100.00% | 0 |
+| Statements | 843/991 | 85.06% | 148 |
+| Branches | 378/522 | 72.41% | 144 |
+| Conditions | 92/136 | 67.64% | 44 |
+| Expressions | 95/161 | 59.00% | 66 |
+| FSM States | 9/9 | 100.00% | 0 |
+| FSM Transitions | 11/26 | 42.30% | 15 |
+| Toggles | 2147/5229 | 41.05% | 3082 |
+
+语句缺口 148 条，全部可以归到下面 7 类。
+
+## 二、归因表
+
+| 类别 | 语句 | 分支 | 行号 | 判定依据 |
+|---|---:|---:|---|---|
+| A. 从未被调用的函数 | 121 | 129 | 841–1085 | `diagonal_count()` 等 6 个函数在本设计中无调用点；扫描全文无引用 |
+| B. `case` 的 `default` 臂 | 4 | 4 | 736 / 750 / 764 / 2852 | 合法形状全枚举；非法描述符在更早的 `descriptor_legal` 处就被拦下，到不了这些 `case` |
+| C. 防御性 `$fatal` | 4 | 4 | 1464 / 1479 / 1485 / 1489 | 命中即中止仿真；通过回归（PASS 语义）不可能覆盖 |
+| D. 内部错误 → protocol_error | 2 | 2 | 2638 / 2640 | 需 `kernel_error` / `lfnst_error` 内部错误位；协议层无法合法构造 |
+| E. 零馈送量向量 | 5 | 2 | 2714–2715 / 2782–2784 | 需 `K_V_START`/`K_H_START` 阶段 `kernel_input_vector_done` 已为高，即该向量没有工作要馈送；支持的最小形状 4 点恒有 ≥1 点馈送 |
+| F. 内部读流水线 tail 路径 | 11 | 2 | 2279–2283 / 2303–2313 | 需 raw 响应在 head 未消费时再次到达（tail 缓冲）；由内部 RAM 固定时序决定，TB 无法直接控制 |
+| G. 队列内 TU 的 end | 1 | 1 | 574 / 573 | 需 TU-B 已入队、且 TU-A 已收到 end，此时 end 才落到队列而非 slot |
+| H. 断言前置与包围条件互斥 | 0 | 1 | 1642 | `if (scrub_active)` 位于 fill 写提交的断言块内；scrub 期间不提交 fill 写，两个条件互斥，该断言前置永假 |
+| **合计** | **148** | **145** | | |
+
+记账口径说明：`vcover` 摘要报 Branch misses = 144，而明细 CSV 是 145 行（去重键 `(line, item)`，128 个不同行号）。**差 1 行我没有查清原因**，不编造解释；两边都保留原始数字，供后续核对。
+
+A 类是死代码，与验证无关。C 类按定义不可覆盖。B/E/F/G/H 属"未能证明可达"——不是"证明不可达"，这个区别我保留在表里。
+
+## 三、这一轮真正补掉的
+
+归因过程中发现三条**可达但从未被激励**的路径，已补 3 个用例，语句覆盖率 84.46% → 85.06%、分支 71.26% → 72.41%、条件 63.97% → 67.64%、表达式 54.03% → 59.00%。
+
+| 新用例 | 触发的 RTL 机制 | 覆盖的行 |
+|---|---|---|
+| `neg_zero_data` | end 落在 bind 后的 scrub 窗口内 → `scrub_ended`，TU 按零数据退休，不打开 fill | 577 / 579 / 2474 |
+| `neg_end_only_fill` | fill 窗口打开后只发 end、不发数据 → `input_end_fire && !input_fire` | 2515 / 2516 / 分支 1652 |
+| `neg_desc_flood` | scrub 窗口期内连续压 4 个描述符 → `desc_count` 到 2，触发"队列满且无 bind" | 2433 / 分支 2432 |
+
+这三条原来一直是暗的，因为所有激励都是"正常节奏"：描述符 → 等 req → 发数据 → 带 end 的最后一拍。没有任何一个用例把 end 放到别的时刻，也没有一个用例在 fill 期间继续压描述符。
+
+## 四、为什么之前没发现
+
+D1 的定向 TB 同样没覆盖这三条（UVM 的缺口集完全被 D1 的缺口集包含，一行都没多）。也就是说这不是 UVM 层的退步，是整个项目的激励盲区——所有测试都假设了一个"规矩的"主机行为。
+
+## 五、还差什么
+
+G 类（574/573）可以继续构造，但需要两个 TU 的时序配合，收益是 1 条语句 + 1 个分支，成本高于收益，先记录不补。
+
+E 类和 F 类要真正判定为不可达，需要从 RTL 的 `for`/`if` 上给出形式化论证，或者用强制注入（force）打一次——force 属于对 RTL 的攻击性验证，会污染"协议层验证"的边界，需要单独一轮讨论后再做。
+
+## 六、复现
+
+```powershell
+python run_regress.py run                       # 19 个用例，产出 19 个 UCDB
+python run_regress.py coverage                  # 合并 + -du 报告 + COVERAGE_CODE.json
+vcover report -details -du=unified_its_wrapper -output cov_details_dut.txt run/uvm_merged.ucdb
+python <gap_analysis.py> cov_details_dut.txt GAPS.json GAPS.csv
+```
+
+机器可读的 384 行缺口明细见 `D8_GAPS.csv`。
