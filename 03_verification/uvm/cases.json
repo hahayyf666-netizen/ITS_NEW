@@ -12,39 +12,81 @@
     {
       "name": "single_tu",
       "testname": "its_single_tu_test",
-      "plusargs": ["CASE_INDEX=0"],
-      "expect": {"tus": 1, "beats": 4, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "pending": 0}
+      "plusargs": [
+        "CASE_INDEX=0"
+      ],
+      "expect": {
+        "tus": 1,
+        "beats": 4,
+        "data_errors": 0,
+        "done_errors": 0,
+        "protocol_errors": 0,
+        "pending": 0
+      }
     },
     {
       "name": "rect_tu",
       "testname": "its_rect_tu_test",
       "plusargs": [],
-      "expect": {"tus": 1, "beats": 8, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "pending": 0}
+      "expect": {
+        "tus": 1,
+        "beats": 8,
+        "data_errors": 0,
+        "done_errors": 0,
+        "protocol_errors": 0,
+        "pending": 0
+      }
     },
     {
       "name": "multi_tu_4",
       "testname": "its_multi_tu_test",
-      "plusargs": ["TU_COUNT=4", "TU_START=0"],
-      "expect": {"tus": 4, "beats": 32, "overlap_min": 1, "data_errors": 0, "pending": 0}
+      "plusargs": [
+        "TU_COUNT=4",
+        "TU_START=0"
+      ],
+      "expect": {
+        "tus": 4,
+        "beats": 32,
+        "overlap_min": 1,
+        "data_errors": 0,
+        "pending": 0
+      }
     },
     {
       "name": "multi_tu_16",
       "testname": "its_multi_tu_test",
-      "plusargs": ["TU_COUNT=16", "TU_START=3"],
-      "expect": {"tus": 16, "beats": 524, "overlap_min": 1, "data_errors": 0, "pending": 0}
+      "plusargs": [
+        "TU_COUNT=16",
+        "TU_START=3"
+      ],
+      "expect": {
+        "tus": 16,
+        "beats": 524,
+        "overlap_min": 1,
+        "data_errors": 0,
+        "pending": 0
+      }
     },
     {
       "name": "neg_wrong_golden",
       "testname": "its_wrong_golden_test",
-      "plusargs": ["WRONG_GOLDEN"],
-      "expect": {"uvm_error_min": 1, "data_errors_min": 1},
+      "plusargs": [
+        "WRONG_GOLDEN"
+      ],
+      "expect": {
+        "uvm_error_min": 1,
+        "data_errors_min": 1
+      },
       "note": "negative control: the checker must reject a deliberately wrong golden"
     },
     {
       "name": "neg_illegal_desc",
       "testname": "its_illegal_desc_test",
       "plusargs": [],
-      "expect": {"uvm_error_min": 1, "protocol_errors_min": 1},
+      "expect": {
+        "uvm_error_min": 1,
+        "protocol_errors_min": 1
+      },
       "note": "negative control: width 2 must raise the sticky protocol error"
     },
     {
@@ -52,99 +94,224 @@
       "testname": "its_sweep_test",
       "plusargs": [],
       "timeout_s": 1800,
-      "expect": {"tus": 369, "beats": 45636, "overlap_min": 1, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "pending": 0}
+      "expect": {
+        "tus": 369,
+        "beats": 45636,
+        "overlap_min": 1,
+        "data_errors": 0,
+        "done_errors": 0,
+        "protocol_errors": 0,
+        "pending": 0
+      }
     },
     {
       "name": "rand",
       "testname": "its_random_test",
       "plusargs": [],
-      "vsim_args": ["-sv_seed", "12345"],
-      "expect": {"tus_min": 8, "beats_min": 32, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "pending": 0, "unexpected": 0},
+      "vsim_args": [
+        "-sv_seed",
+        "12345"
+      ],
+      "expect": {
+        "tus_min": 8,
+        "beats_min": 32,
+        "data_errors": 0,
+        "done_errors": 0,
+        "protocol_errors": 0,
+        "pending": 0,
+        "unexpected": 0
+      },
       "note": "constrained random draw of legal cases, fixed seed so a failure can be replayed"
     },
     {
       "name": "neg_lfnst_xform",
       "testname": "its_lfnst_xform_test",
       "plusargs": [],
-      "expect": {"uvm_error_min": 1, "protocol_errors_min": 1, "tus": 0, "beats": 0},
+      "expect": {
+        "uvm_error_min": 1,
+        "protocol_errors_min": 1,
+        "tus": 0,
+        "beats": 0
+      },
       "note": "LFNST enabled with a non-zero transform type, illegal per wrapper:775"
     },
     {
       "name": "neg_lfnst_mode3",
       "testname": "its_lfnst_mode3_test",
       "plusargs": [],
-      "expect": {"uvm_error_min": 1, "protocol_errors_min": 1, "tus": 0, "beats": 0},
+      "expect": {
+        "uvm_error_min": 1,
+        "protocol_errors_min": 1,
+        "tus": 0,
+        "beats": 0
+      },
       "note": "LFNST mode 3 is not an allowed encoding, see wrapper:780"
     },
     {
       "name": "neg_addr_overrun",
       "testname": "its_addr_overrun_test",
       "plusargs": [],
-      "expect": {"uvm_error_min": 1, "protocol_errors_min": 1, "data_errors_min": 1},
+      "expect": {
+        "uvm_error_min": 1,
+        "protocol_errors_min": 1,
+        "data_errors_min": 1
+      },
       "note": "beat addressed past the TU's last point, caught at wrapper:2434"
     },
     {
       "name": "neg_stray_end",
       "testname": "its_stray_end_test",
       "plusargs": [],
-      "expect": {"uvm_error_min": 1, "protocol_errors_min": 1, "tus": 0, "beats": 0},
+      "expect": {
+        "uvm_error_min": 1,
+        "protocol_errors_min": 1,
+        "tus": 0,
+        "beats": 0
+      },
       "note": "end marker with no TU outstanding, caught at wrapper:2438"
     },
     {
       "name": "neg_no_end",
       "testname": "its_no_end_test",
       "plusargs": [],
-      "expect": {"tus": 0, "beats": 0, "pending": 1, "uvm_error_min": 1},
+      "expect": {
+        "tus": 0,
+        "beats": 0,
+        "pending": 1,
+        "uvm_error_min": 1
+      },
       "note": "fill never closed, so the TU must never produce a beat"
     },
     {
       "name": "neg_short_beats",
       "testname": "its_short_beats_test",
       "plusargs": [],
-      "expect": {"uvm_error_min": 1, "data_errors_min": 1, "protocol_errors": 0, "pending": 0},
+      "expect": {
+        "uvm_error_min": 1,
+        "data_errors_min": 1,
+        "protocol_errors": 0,
+        "pending": 0
+      },
       "note": "truncated input closes the TU but cannot reproduce the golden"
     },
     {
       "name": "reset_mid_tu",
       "testname": "its_reset_test",
       "plusargs": [],
-      "expect": {"tus": 2, "resets": 1, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "unexpected": 0, "pending": 0},
+      "expect": {
+        "tus": 2,
+        "resets": 1,
+        "data_errors": 0,
+        "done_errors": 0,
+        "protocol_errors": 0,
+        "unexpected": 0,
+        "pending": 0
+      },
       "note": "reset while beats are streaming; only the post-reset TU must complete"
     },
     {
       "name": "vseq_multi_agent",
       "testname": "its_vseq_test",
-      "plusargs": ["VSEQ_TUS=12"],
-      "expect": {"tus": 12, "overlap_min": 1, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "unexpected": 0, "pending": 0},
+      "plusargs": [
+        "VSEQ_TUS=12"
+      ],
+      "expect": {
+        "tus": 12,
+        "overlap_min": 1,
+        "data_errors": 0,
+        "done_errors": 0,
+        "protocol_errors": 0,
+        "unexpected": 0,
+        "pending": 0
+      },
       "note": "virtual sequence drives the stimulus agent while the back-pressure agent changes profile underneath it"
     },
     {
       "name": "neg_zero_data",
       "testname": "its_zero_data_test",
       "plusargs": [],
-      "expect": {"tus": 1, "data_errors_min": 1, "uvm_error_min": 1, "protocol_errors": 0, "unexpected": 0, "pending": 0},
+      "expect": {
+        "tus": 1,
+        "data_errors_min": 1,
+        "uvm_error_min": 1,
+        "protocol_errors": 0,
+        "unexpected": 0,
+        "pending": 0
+      },
       "note": "end marker inside the pre-fill scrub window: the DUT retires the TU with no data, so it cannot reproduce the golden"
     },
     {
       "name": "neg_desc_flood",
       "testname": "its_desc_flood_test",
       "plusargs": [],
-      "expect": {"tus": 0, "beats": 0, "protocol_errors_min": 1, "uvm_error_min": 1, "pending": 1},
+      "expect": {
+        "tus": 0,
+        "beats": 0,
+        "protocol_errors_min": 1,
+        "uvm_error_min": 1,
+        "pending": 1
+      },
       "note": "four descriptors pushed while the scrub window blocks bind_event, tripping the queue-full guard"
     },
     {
       "name": "neg_end_only_fill",
       "testname": "its_zero_data_test",
-      "plusargs": ["SPARSE_MODE=0"],
-      "expect": {"tus": 1, "data_errors_min": 1, "uvm_error_min": 1, "protocol_errors": 0, "unexpected": 0, "pending": 0},
+      "plusargs": [
+        "SPARSE_MODE=0"
+      ],
+      "expect": {
+        "tus": 1,
+        "data_errors_min": 1,
+        "uvm_error_min": 1,
+        "protocol_errors": 0,
+        "unexpected": 0,
+        "pending": 0
+      },
       "note": "end-only marker after the fill window opened: no data command, so the slot completes without a phantom write"
     },
     {
       "name": "tail_stress",
       "testname": "its_vseq_tail_test",
-      "plusargs": ["TAIL_STALL=600"],
-      "expect": {"tus": 1, "data_errors": 0, "done_errors": 0, "protocol_errors": 0, "unexpected": 0, "pending": 0},
+      "plusargs": [
+        "TAIL_STALL=600"
+      ],
+      "expect": {
+        "tus": 1,
+        "data_errors": 0,
+        "done_errors": 0,
+        "protocol_errors": 0,
+        "unexpected": 0,
+        "pending": 0
+      },
       "note": "widest TU against a long output-grant blackout: stalls the H-pass consumer so the raw-response tail buffer fills"
+    },
+    {
+      "name": "queued_end",
+      "testname": "its_queued_end_test",
+      "plusargs": [],
+      "expect": {
+        "tus": 2,
+        "data_errors": 0,
+        "done_errors": 0,
+        "protocol_errors": 0,
+        "unexpected": 0,
+        "pending": 0
+      },
+      "note": "second descriptor waits in the queue and its end arrives before it binds; the DUT parks the end and retires that TU with zero data, so both TUs are checked beat by beat"
+    },
+    {
+      "name": "queued_end_store",
+      "testname": "its_queued_end_store_test",
+      "plusargs": [],
+      "expect": {
+        "tus": 2,
+        "data_errors": 0,
+        "done_errors": 0,
+        "protocol_errors": 0,
+        "unexpected": 0,
+        "pending": 0
+      },
+      "note": "head TU closes its end inside the scrub window and retires as zero-data while the scrub still blocks bind, so the queued TU's end has to be parked in end_seen_desc[] and inherited at bind time"
     }
   ]
 }

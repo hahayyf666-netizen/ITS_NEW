@@ -1,23 +1,23 @@
 # 代码覆盖率缺口归因（UVM 流程，2026-11-10）
 
-DUT：`unified_its_wrapper`，20 个用例的 UCDB 合并，`vcover report -details -du=unified_its_wrapper`。
+DUT：`unified_its_wrapper`，22 个用例的 UCDB 合并，`vcover report -details -du=unified_its_wrapper`。
 
-这份文档回答一个问题：**85.06% 的语句覆盖率，剩下 148 条为什么不覆盖。**
+这份文档回答一个问题：**85.16% 的语句覆盖率，剩下 147 条为什么不覆盖。**
 
 ## 一、总账
 
 | 指标 | 命中/总数 | 覆盖率 | 缺口 |
 |---|---|---:|---:|
 | Assertions | 27/27 | 100.00% | 0 |
-| Statements | 843/991 | 85.06% | 148 |
-| Branches | 378/522 | 72.41% | 144 |
+| Statements | 844/991 | 85.16% | 147 |
+| Branches | 379/522 | 72.60% | 143 |
 | Conditions | 92/136 | 67.64% | 44 |
-| Expressions | 95/161 | 59.00% | 66 |
+| Expressions | 105/161 | 65.21% | 56 |
 | FSM States | 9/9 | 100.00% | 0 |
 | FSM Transitions | 11/26 | 42.30% | 15 |
 | Toggles | 2147/5229 | 41.05% | 3082 |
 
-语句缺口 148 条，全部可以归到下面 7 类。
+语句缺口 147 条，全部可以归到下面 8 类。
 
 ## 二、归因表
 
@@ -29,15 +29,15 @@ DUT：`unified_its_wrapper`，20 个用例的 UCDB 合并，`vcover report -deta
 | D. 内部错误 → protocol_error | 2 | 2 | 2638 / 2640 | 需 `kernel_error` / `lfnst_error` 内部错误位；协议层无法合法构造 |
 | E. 零馈送量向量 | 5 | 2 | 2714–2715 / 2782–2784 | 需 `K_V_START`/`K_H_START` 阶段 `kernel_input_vector_done` 已为高，即该向量没有工作要馈送；支持的最小形状 4 点恒有 ≥1 点馈送 |
 | F. 内部读流水线 tail 路径 | 11 | 2 | 2279–2283 / 2303–2313 | 只有在 kernel 入口 `in_req` 被**内部 force** 拉低时才可达；D1 就是这么打到的（`force dut.u_unified_p4_kernel.in_req = 1'b0;`）。协议管脚上无法构造，不属于 UVM 协议层应覆盖的范围 |
-| G. 队列内 TU 的 end | 1 | 1 | 574 / 573 | 需 TU-B 已入队、且 TU-A 已收到 end，此时 end 才落到队列而非 slot |
+| G. 队列内 TU 的 end | 0 | 0 | 574 / 573 | **本轮已补**：`queued_end` 与 `queued_end_store` 两个用例覆盖，明细见第八节 H 类 |
 | H. 断言前置与包围条件互斥 | 0 | 1 | 1642 | `if (scrub_active)` 位于 fill 写提交的断言块内；scrub 期间不提交 fill 写，两个条件互斥，该断言前置永假 |
-| **合计** | **148** | **145** | | |
+| **合计** | **147** | **143** | | |
 
-Conditions 44、Expressions 66、FSM 转移 15 这三类的归因不在上表，单独见第八节。
+Conditions 44、Expressions 56、FSM 转移 15 这三类的归因不在上表，单独见第七节。
 
-记账口径说明：`vcover` 摘要报 Branch misses = 144，而明细 CSV 是 145 行（去重键 `(line, item)`，128 个不同行号）。**差 1 行我没有查清原因**，不编造解释；两边都保留原始数字，供后续核对。
+记账口径说明：`vcover` 摘要现在报 Branch misses = 143，而 `D8_GAPS.csv`（20 例时点的全设计快照）是 145 行，去掉本轮补掉的 1 行后仍差 1 行。**这 1 行差我没有查清原因**，不编造解释；原始数字两边都保留。该 CSV 未随本轮两个用例重生成，逐实例命中数以文件自身为准，DUT 口径以 `coverage_uvm_dut.txt` 为准。
 
-A 类是死代码，与验证无关。C 类按定义不可覆盖。B/E/G/H 属"未能证明可达"——不是"证明不可达"，这个区别我保留在表里。F 类已查清：D1 是用内部 `force` 打到的，协议层构造不出来（见第六节）。
+A 类是死代码，与验证无关。C 类按定义不可覆盖。B/E/H 属"未能证明可达"——不是"证明不可达"，这个区别我保留在表里。F 类已查清：D1 是用内部 `force` 打到的，协议层构造不出来（见第六节）。G 类原先也只标"未能证明可达"，本轮已由激励正面打中，从缺口表里移除。
 
 ## 三、这一轮真正补掉的
 
@@ -50,6 +50,19 @@ A 类是死代码，与验证无关。C 类按定义不可覆盖。B/E/G/H 属"�
 | `neg_desc_flood` | scrub 窗口期内连续压 4 个描述符 → `desc_count` 到 2，触发"队列满且无 bind" | 2433 / 分支 2432 |
 
 这三条原来一直是暗的，因为所有激励都是"正常节奏"：描述符 → 等 req → 发数据 → 带 end 的最后一拍。没有任何一个用例把 end 放到别的时刻，也没有一个用例在 fill 期间继续压描述符。
+
+### 三之二、第二轮补掉的两个 end 归属用例
+
+同一条归因线继续往下推，又补了两个用例，都是关于"end 归谁"：
+
+| 新用例 | 触发的 RTL 机制 | 覆盖的行 |
+|---|---|---|
+| `queued_end` | 队列里的 TU 还没 bind，它的 end 就到了，且恰逢队列头 bind → `end_to_queue_pop` 同拍弹出 | 表达式 L554 / L556 / L583 |
+| `queued_end_store` | 队列里的 TU 还没 bind，其 end 到达时 bind 被 scrub 挡住 → 只能存进 `end_seen_desc[]`（`end_to_queue_store`），绑定时再继承 | 语句 L574 / 分支 L573 / 表达式 L539 / L544 / L583 |
+
+两条都是**正向检查**而非"预期报错"：拿到遗留 end 的那个 TU 按零数据退休，期望值置零后逐 beat 比对（`tus=2 beats=8 err=0`）。副产物是这两条用例顺带把"同一拍里 end 与 bind 的相对时序"两侧都走了一遍。
+
+覆盖率影响：语句 85.06% → 85.16%、分支 72.41% → 72.60%、表达式 59.00% → 65.21%，条件不变。
 
 ## 四、和 D1 定向套件的对比
 
@@ -108,10 +121,10 @@ force dut.u_unified_p4_kernel.in_req = 1'b0;
 | 指标 | 命中/总数 | 缺口 |
 |---|---|---:|
 | Conditions | 92/136 | 44 |
-| Expressions | 95/161 | 66 |
+| Expressions | 105/161 | 56 |
 | FSM Transitions | 11/26 | 15 |
 
-按块能定位到的是 31 个 condition 块和 31 个 expression 块；块内缺项相加（30 / 63）与汇总的 44 / 66 有小差异，原因是同一行的多个 item 在报表里合并计数。**这个差我没有完全对齐**，和分支 144/145 的差属于同一类报表粒度问题，两个口径都保留。
+按块能定位到的是 31 个 condition 块和 31 个 expression 块；块内缺项相加与汇总有小差异，原因是同一行的多个 item 在报表里合并计数。**这个差我没有完全对齐**，和分支 143/144 的差属于同一类报表粒度问题，两个口径都保留。
 
 ### A. 死代码（12 个 condition 块）
 
@@ -145,7 +158,7 @@ L2715 `K_V_START → K_V_DRAIN`、L2784 `K_H_START → K_H_DRAIN`，与语句 E 
 - E L1513 / L1788 `kernel_out_req=_0`
 - C L2365 `lfnst_mem_req_accept=_0`、C L2387、C L2500 `fill_wr_cmd_commit=_0`
 
-20 个用例里有 4 档外部反压，仍然没有让这些内部信号出现反压。外部反压被 `output_active` 这个闸门吸收在计算准入处，传不下去。
+22 个用例里有 4 档外部反压，仍然没有让这些内部信号出现反压。外部反压被 `output_active` 这个闸门吸收在计算准入处，传不下去。
 
 其中 L811/L812 比"传不下去"更强，是**恒等式**：
 
@@ -178,17 +191,24 @@ assign fill_wr_cmd_ready  = !fill_wr_cmd_valid_q || fill_wr_cmd_commit;   // ≡
 
 C L2257、L2290；E L1312、L1314、L1316。与语句 F 类同源，见上一节。
 
-### H. end 归属与队列满组合（这一类是真缺激励，本轮未构造）
+### H. end 归属（本轮已构造两个用例，缺口基本补掉）
 
-E L535、L539、L549、L554、L556、L559、L583、L802。
+原表里的 E L535、L539、L544、L549、L554、L556、L559、L583、L802。
 
-证据很直接：`(desc_count == 2)=_1` 从未出现——**整个回归里描述符队列从未同时持有 2 项**。于是所有依赖"队列满 + end 与 bind 同拍"的子项都没走到。
+先说上一版留下的那个"说不清的地方"，现在查清了：
 
-构造方法（已从 RTL 推出，未执行）：先让 slot0 与 slot1 都被占住，再压入第 3、4 个描述符把队列填到 2；然后在"slot 已收到 end 但仍在填充"的窗口里多发一个 `it_data_end`。此时 `end_owner_is_slot` 为 0（该 slot 的 `end_seen_slot` 已是 1），这个 end 会被归给队列里的描述符，走 `end_to_queue_store`，同时打中语句 573/574、分支 573/574 以及上面那批表达式项。
+**`(desc_count == 2)=_1` 从未出现，不是因为队列没满，是因为这个项从没被采样。** `end_owner_valid = end_owner_is_slot || ((desc_count != 0) && ...) || ((desc_count == 2) && ...)`，而 scrub/fill 期间 `end_owner_is_slot` 恒为 1，`||` 在第一个操作数就短路，后面两项永远不参与求值。`neg_desc_flood` 的日志证实队列确实到过 2：它在 `t=29000` 报了 `ITS_PROTOCOL_ERROR`，正是 L2433 的 `desc_count == 2 && !bind_event` 满队列守卫。
 
-这是目前唯一一类我认为还能靠激励真实提升的缺口，量级是 1 条语句 + 1 个分支 + 8 个表达式块。
+这条路径有**两个不同出口**，各需要一种激励：
 
-但有个我说不清的地方：`neg_desc_flood` 已经连压 4 个描述符且不发 end，按理第 3、4 个会滞留在队列里把 `desc_count` 推到 2，可这个项从未命中。要么推入被更早的合法性检查挡掉了，要么第二个描述符直接绑到了空着的 slot1。**这一点我没有查清**，所以在按上面的方法构造之前，得先弄明白 flood 为什么没把队列填满。
+1. **同拍 pop**（`end_to_queue_pop`，L554）：end 到达的那一刻恰好队列头正在 bind，end 被直接交给新 slot。新用例 `queued_end` 打这个：压 2 个描述符，头一个收完 data+end，再补一个裸 end。结果 L554 **0/4 → 4/4**、L556 **2/4 → 4/4**、L583 **0/2 → 1/2**。
+2. **入队存储**（`end_to_queue_store`，L573/574）：end 到达时 bind 被 scrub 挡着，只能存进 `end_seen_desc[]`，等该 TU 绑定时再继承。新用例 `queued_end_store` 打这个：头一个 TU 在 scrub 窗口内收 end 退休为零数据（此时 `scrub_active` 仍为 1，bind 被挡），紧接着发裸 end。结果 L574 命中 1 次、L539 **2/5 → 3/5**、L544 **2/3 → 3/3**、L583 **0/2 → 2/2**。
+
+两个用例都是正向检查：第二个 TU 因 end 先到而退休为零数据，期望值置零后逐 beat 比对通过（`tus=2 beats=8 err=0`），不是靠"预期报错"糊过去。
+
+净收益：**语句 +1（L574）、分支 +1（L573）、表达式 +10 项**，语句 85.06% → 85.16%、分支 72.41% → 72.60%、表达式 59.00% → 65.21%。
+
+剩下的 H 类残项：L535 `end_seen_slot[fill_slot]=_1`（需要在 fill 窗口里再收一个 end，属另一种时序）和 L559 `end_to_scrub=_1`（只在 `scrub_index==1023` 同拍有效）。这两条没构造，量级是 2 个表达式块。
 
 ### I. 口径异常（2 个 expression 块）
 
@@ -197,10 +217,10 @@ L616 `axis_supported`、L651 `lfnst_shape_supported`：同一行的语句命中�
 ## 八、复现
 
 ```powershell
-python run_regress.py run                       # 20 个用例，产出 20 个 UCDB
+python run_regress.py run                       # 22 个用例，产出 22 个 UCDB
 python run_regress.py coverage                  # 合并 + -du 报告 + COVERAGE_CODE.json
 vcover report -details -du=unified_its_wrapper -output cov_details_dut.txt run/uvm_merged.ucdb
 python <gap_analysis.py> cov_details_dut.txt GAPS.json GAPS.csv
 ```
 
-机器可读的 384 行缺口明细见 `D8_GAPS.csv`（只含语句/分支/条件/表达式四类，FSM 转移不在其中）。
+机器可读的缺口明细见 `D8_GAPS.csv`（384 行，只含语句/分支/条件/表达式四类，FSM 转移不在其中）。这份 CSV 是 **20 例时点的全设计快照**，本轮新增的两个 end 归属用例未回写进去；当前 DUT 口径的缺口数以 `coverage_uvm_dut.txt` 为准，两者的差异已在第二节记账说明里列明。

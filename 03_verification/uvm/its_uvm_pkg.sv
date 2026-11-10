@@ -50,6 +50,14 @@ package its_uvm_pkg;
         // burst larger than the queue depth drives desc_count to 2 and trips
         // the "descriptor queue full without a bind" guard.
         int unsigned desc_burst    = 1;
+        // End marker that belongs to a descriptor already sitting in the queue
+        // rather than to the slot being filled.  The DUT parks it in
+        // end_seen_desc[] and hands it to the slot at bind time; such a TU
+        // retires with zero data, so the golden expectation is all zeros.
+        bit          end_only_queued = 1'b0;
+        // Retire this TU as zero-data (end inside the scrub window) and check
+        // it against an all-zero golden instead of the database vector.
+        bit          zero_golden   = 1'b0;
         // 0 = normal; 1 = end marker once the fill window is open; 2 = end
         // marker during the pre-fill scrub window, which makes the DUT retire
         // the TU as zero-data instead of opening a fill.
@@ -95,6 +103,8 @@ package its_uvm_pkg;
             addr_overrun  = src.addr_overrun;
             desc_burst    = src.desc_burst;
             sparse_mode   = src.sparse_mode;
+            end_only_queued = src.end_only_queued;
+            zero_golden   = src.zero_golden;
             for (int i = 0; i < MAX_INPUTS; i++) begin
                 input_addr[i]  = src.input_addr[i];
                 input_value[i] = src.input_value[i];
@@ -832,6 +842,58 @@ package its_uvm_pkg;
         endtask
     endclass
 
+    // A second TU waits in the descriptor queue while the first one is still
+    // being processed, and its end marker arrives before the second TU binds.
+    //
+    // The wrapper has an explicit path for that (end_to_queue_store): the end is
+    // parked in end_seen_desc[] and handed to the slot at bind time.  Every
+    // other sequence sends an end only while a slot owns it, so that whole path
+    // stayed dark even though the RTL is written to accept it.
+    class its_queued_end_sequence extends uvm_sequence #(its_tu_item);
+        `uvm_object_utils(its_queued_end_sequence)
+
+        int unsigned pick = 0;
+
+        function new(string name = "its_queued_end_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            its_tu_item req;
+            its_tu_item tail;
+            int unsigned cand;
+
+            if (its_case_db::items.size() == 0)
+                `uvm_fatal("ITS_SEQ", "case database is empty")
+
+            cand = pick;
+            if (cand >= its_case_db::items.size()) cand = 0;
+
+            // Head: two descriptors pushed back to back, so the second one has
+            // to queue up behind the first.  The head gets its own data and end.
+            req = its_tu_item::new("queued_end");
+            req.copy(its_case_db::items[cand]);
+            req.tag        = "queued_end";
+            req.desc_burst = 2;
+            req.skip_end   = 1'b0;
+            start_item(req);
+            finish_item(req);
+
+            // The queued TU is still missing its end, so this extra end belongs
+            // to it.  It is sent without waiting for it_data_in_req because a
+            // queue-owned end never accompanies a data word.
+            tail = its_tu_item::new("queued_end_tail");
+            tail.copy(its_case_db::items[cand]);
+            tail.tag            = "queued_end_tail";
+            tail.input_count    = 0;
+            tail.desc_burst     = 1;
+            tail.skip_end       = 1'b0;
+            tail.end_only_queued = 1'b1;
+            start_item(tail);
+            finish_item(tail);
+        endtask
+    endclass
+
     // Illegal descriptor: width 2 is not a legal DCT2 axis length, so the DUT
     // must raise the sticky protocol error and stop admitting input.
     class its_illegal_desc_sequence extends uvm_sequence #(its_tu_item);
@@ -1000,6 +1062,15 @@ package its_uvm_pkg;
                     do_mid_reset();
                     ap_expected.write(req);
                     seq_item_port.item_done();
+                end else if (req.end_only_queued) begin
+                    // The descriptor is already queued; this end belongs to it.
+                    // The TU retires with zero data, so the golden is all zero
+                    // and the beats are still checked one by one.
+                    for (int unsigned i = 0; i < req.beat_count; i++)
+                        req.expected[i] = '0;
+                    ap_expected.write(req);
+                    send_end_only(1'b1);
+                    seq_item_port.item_done();
                 end else if (req.stray_end) begin
                     send_end_only(1'b1);
                     seq_item_port.item_done();
@@ -1009,6 +1080,9 @@ package its_uvm_pkg;
                     repeat (6) @(negedge vif.clk);
                     seq_item_port.item_done();
                 end else begin
+                    if (req.zero_golden)
+                        for (int unsigned i = 0; i < req.beat_count; i++)
+                            req.expected[i] = '0;
                     ap_expected.write(req);
                     repeat (req.gap_cycles) @(negedge vif.clk);
                     send_info(req.case_desc);
@@ -2116,6 +2190,90 @@ package its_uvm_pkg;
             its_desc_flood_sequence seq;
             phase.raise_objection(this);
             seq = its_desc_flood_sequence::type_id::create("seq");
+            seq.start(env.seqr);
+            wait_cycles(8_000);
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    // Same queue ownership, but the end has to be parked instead of handed over
+    // on the bind edge.
+    //
+    // The head TU closes its end inside the scrub window, so the slot retires as
+    // zero-data while still holding scrub_active.  At that moment the queued TU
+    // is the only owner left, and bind_event is blocked by the active scrub, so
+    // the end cannot be popped straight into a slot: the wrapper has to store it
+    // in end_seen_desc[] (end_to_queue_store).  The second TU then binds later
+    // and inherits the stored end.
+    class its_queued_end_store_sequence extends uvm_sequence #(its_tu_item);
+        `uvm_object_utils(its_queued_end_store_sequence)
+
+        int unsigned pick = 0;
+
+        function new(string name = "its_queued_end_store_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            its_tu_item req;
+            its_tu_item tail;
+            int unsigned cand;
+
+            if (its_case_db::items.size() == 0)
+                `uvm_fatal("ITS_SEQ", "case database is empty")
+
+            cand = pick;
+            if (cand >= its_case_db::items.size()) cand = 0;
+
+            req = its_tu_item::new("queued_end_store");
+            req.copy(its_case_db::items[cand]);
+            req.tag         = "queued_end_store";
+            req.input_count = 0;
+            req.desc_burst  = 2;
+            req.sparse_mode = 2;      // end inside the scrub window
+            req.zero_golden = 1'b1;   // such a TU retires with zero data
+            start_item(req);
+            finish_item(req);
+
+            tail = its_tu_item::new("queued_end_store_tail");
+            tail.copy(its_case_db::items[cand]);
+            tail.tag             = "queued_end_store_tail";
+            tail.input_count     = 0;
+            tail.desc_burst      = 1;
+            tail.end_only_queued = 1'b1;
+            start_item(tail);
+            finish_item(tail);
+        endtask
+    endclass
+
+    class its_queued_end_test extends its_base_test;
+        `uvm_component_utils(its_queued_end_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_queued_end_sequence seq;
+            phase.raise_objection(this);
+            seq = its_queued_end_sequence::type_id::create("seq");
+            seq.start(env.seqr);
+            wait_cycles(8_000);
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    class its_queued_end_store_test extends its_base_test;
+        `uvm_component_utils(its_queued_end_store_test)
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_queued_end_store_sequence seq;
+            phase.raise_objection(this);
+            seq = its_queued_end_store_sequence::type_id::create("seq");
             seq.start(env.seqr);
             wait_cycles(8_000);
             phase.drop_objection(this);

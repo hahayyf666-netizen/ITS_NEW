@@ -1,6 +1,6 @@
 {
   "dut": "unified_its_wrapper",
-  "ucdbs": 20,
+  "ucdbs": 22,
   "ucdb_files": [
     "multi_tu_16.ucdb",
     "multi_tu_4.ucdb",
@@ -15,6 +15,8 @@
     "neg_stray_end.ucdb",
     "neg_wrong_golden.ucdb",
     "neg_zero_data.ucdb",
+    "queued_end.ucdb",
+    "queued_end_store.ucdb",
     "rand.ucdb",
     "rect_tu.ucdb",
     "reset_mid_tu.ucdb",
@@ -25,12 +27,12 @@
   ],
   "metrics": {
     "Assertions": "100.00%",
-    "Branches": "72.41%",
+    "Branches": "72.60%",
     "Conditions": "67.64%",
-    "Expressions": "59.00%",
+    "Expressions": "65.21%",
     "FSM States": "100.00%",
     "FSM Transitions": "42.30%",
-    "Statements": "85.06%",
-    "Toggles": "41.05%"
+    "Statements": "85.16%",
+    "Toggles": "41.13%"
   }
 }
