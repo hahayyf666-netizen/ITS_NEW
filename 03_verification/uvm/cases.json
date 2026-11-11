@@ -74,20 +74,31 @@
         "WRONG_GOLDEN"
       ],
       "expect": {
-        "uvm_error_min": 1,
-        "data_errors_min": 1
+        "uvm_error_ids": {
+          "ITS_DATA_MISMATCH": "@beats"
+        },
+        "data_errors": "@beats",
+        "done_errors": 0,
+        "protocol_errors": 0,
+        "pending": 0
       },
-      "note": "negative control: the checker must reject a deliberately wrong golden"
+      "note": "negative control: the checker must reject a deliberately wrong golden",
+      "causality": "inject: the expected value of every beat is XORed with 1, so no beat can match. check: the comparator must fire on every beat, i.e. ITS_DATA_MISMATCH and data_errors both equal the beat count. forbidden: every other id, and any effect on done_errors."
     },
     {
       "name": "neg_illegal_desc",
       "testname": "its_illegal_desc_test",
       "plusargs": [],
       "expect": {
-        "uvm_error_min": 1,
-        "protocol_errors_min": 1
+        "uvm_error_ids": {
+          "ITS_PROTOCOL_ERROR": 1
+        },
+        "tus": 0,
+        "beats": 0,
+        "pending": 0
       },
-      "note": "negative control: width 2 must raise the sticky protocol error"
+      "note": "negative control: width 2 must raise the sticky protocol error",
+      "causality": "inject: a descriptor with width 2, which the wrapper rejects. check: the DUT raises its sticky protocol_error, which the monitor edge-detects exactly once, so ITS_PROTOCOL_ERROR is exactly 1. forbidden: any beat, any data or done mismatch, any other id."
     },
     {
       "name": "sweep",
@@ -128,71 +139,90 @@
       "testname": "its_lfnst_xform_test",
       "plusargs": [],
       "expect": {
-        "uvm_error_min": 1,
-        "protocol_errors_min": 1,
+        "uvm_error_ids": {
+          "ITS_PROTOCOL_ERROR": 1
+        },
         "tus": 0,
         "beats": 0
       },
-      "note": "LFNST enabled with a non-zero transform type, illegal per wrapper:775"
+      "note": "LFNST enabled with a non-zero transform type, illegal per wrapper:775",
+      "causality": "inject: an LFNST descriptor with a non-zero transform type. check: rejected at the descriptor gate, so the sticky error is asserted and edge-detected once -> ITS_PROTOCOL_ERROR exactly 1, and no TU ever runs. forbidden: any beat, any other id."
     },
     {
       "name": "neg_lfnst_mode3",
       "testname": "its_lfnst_mode3_test",
       "plusargs": [],
       "expect": {
-        "uvm_error_min": 1,
-        "protocol_errors_min": 1,
+        "uvm_error_ids": {
+          "ITS_PROTOCOL_ERROR": 1
+        },
         "tus": 0,
         "beats": 0
       },
-      "note": "LFNST mode 3 is not an allowed encoding, see wrapper:780"
+      "note": "LFNST mode 3 is not an allowed encoding, see wrapper:780",
+      "causality": "inject: LFNST mode 3, which is not an allowed encoding. check: rejected at the descriptor gate -> ITS_PROTOCOL_ERROR exactly 1, no TU runs. forbidden: any beat, any other id."
     },
     {
       "name": "neg_addr_overrun",
       "testname": "its_addr_overrun_test",
       "plusargs": [],
       "expect": {
-        "uvm_error_min": 1,
-        "protocol_errors_min": 1,
-        "data_errors_min": 1
+        "uvm_error_ids": {
+          "ITS_PROTOCOL_ERROR": 1,
+          "ITS_DATA_MISMATCH": {
+            "min": 1,
+            "max": "@beats"
+          }
+        }
       },
-      "note": "beat addressed past the TU's last point, caught at wrapper:2434"
+      "note": "beat addressed past the TU's last point, caught at wrapper:2434",
+      "causality": "inject: one beat addressed past the TU's last point. check: the DUT accepts the descriptor and still retires the TU, but flags the overrun once (ITS_PROTOCOL_ERROR exactly 1) and the beat that hit the wrong region cannot match the golden. The mismatch count is bounded rather than fixed: at least one beat must differ, and no more beats can differ than were produced. forbidden: any other id, any done mismatch."
     },
     {
       "name": "neg_stray_end",
       "testname": "its_stray_end_test",
       "plusargs": [],
       "expect": {
-        "uvm_error_min": 1,
-        "protocol_errors_min": 1,
+        "uvm_error_ids": {
+          "ITS_PROTOCOL_ERROR": 1
+        },
         "tus": 0,
         "beats": 0
       },
-      "note": "end marker with no TU outstanding, caught at wrapper:2438"
+      "note": "end marker with no TU outstanding, caught at wrapper:2438",
+      "causality": "inject: an end marker while no TU owns the slot. check: the DUT flags it once (ITS_PROTOCOL_ERROR exactly 1) and must not manufacture output. forbidden: any beat, any data or done mismatch, any other id."
     },
     {
       "name": "neg_no_end",
       "testname": "its_no_end_test",
       "plusargs": [],
       "expect": {
+        "uvm_error_ids": {
+          "ITS_INCOMPLETE_TU": 1
+        },
         "tus": 0,
         "beats": 0,
-        "pending": 1,
-        "uvm_error_min": 1
+        "pending": 1
       },
-      "note": "fill never closed, so the TU must never produce a beat"
+      "note": "fill never closed, so the TU must never produce a beat",
+      "causality": "inject: a TU whose end marker is never sent. check: the TU never drains, so check_phase reports the one stranded TU exactly once -> ITS_INCOMPLETE_TU exactly 1, pending exactly 1, and zero beats. forbidden: any beat, any other id."
     },
     {
       "name": "neg_short_beats",
       "testname": "its_short_beats_test",
       "plusargs": [],
       "expect": {
-        "uvm_error_min": 1,
-        "data_errors_min": 1,
+        "uvm_error_ids": {
+          "ITS_DATA_MISMATCH": {
+            "min": 1,
+            "max": "@beats"
+          }
+        },
         "protocol_errors": 0,
         "pending": 0
       },
-      "note": "truncated input closes the TU but cannot reproduce the golden"
+      "note": "truncated input closes the TU but cannot reproduce the golden",
+      "causality": "inject: the input stream stops before the descriptor is satisfied. check: the TU still retires, but the output cannot reproduce the golden, so at least one beat must mismatch. The exact count is bounded, not fixed, because which beats cover unfilled locations depends on the write order. forbidden: any protocol error (the handshake itself stays legal), any other id."
     },
     {
       "name": "reset_mid_tu",
@@ -231,27 +261,35 @@
       "testname": "its_zero_data_test",
       "plusargs": [],
       "expect": {
+        "uvm_error_ids": {
+          "ITS_DATA_MISMATCH": {
+            "min": 1,
+            "max": "@beats"
+          }
+        },
         "tus": 1,
-        "data_errors_min": 1,
-        "uvm_error_min": 1,
         "protocol_errors": 0,
         "unexpected": 0,
         "pending": 0
       },
-      "note": "end marker inside the pre-fill scrub window: the DUT retires the TU with no data, so it cannot reproduce the golden"
+      "note": "end marker inside the pre-fill scrub window: the DUT retires the TU with no data, so it cannot reproduce the golden",
+      "causality": "inject: the end marker arrives inside the pre-fill scrub window, so the TU retires with no data fed. check: the TU completes (tus exactly 1) with zero fill, which cannot reproduce the golden, so at least one beat must mismatch; the count is bounded because the beat-to-region map depends on the fill order. forbidden: any protocol error, any other id."
     },
     {
       "name": "neg_desc_flood",
       "testname": "its_desc_flood_test",
       "plusargs": [],
       "expect": {
+        "uvm_error_ids": {
+          "ITS_PROTOCOL_ERROR": 1,
+          "ITS_INCOMPLETE_TU": 1
+        },
         "tus": 0,
         "beats": 0,
-        "protocol_errors_min": 1,
-        "uvm_error_min": 1,
-        "pending": 1
+        "pending_min": 1
       },
-      "note": "four descriptors pushed while the scrub window blocks bind_event, tripping the queue-full guard"
+      "note": "four descriptors pushed while the scrub window blocks bind_event, tripping the queue-full guard",
+      "causality": "inject: four descriptors pushed while the scrub window holds bind_event low, so the queue overflows. check: the DUT flags the rejected descriptor once (ITS_PROTOCOL_ERROR exactly 1), no TU ever completes, and the descriptors already queued are stranded, so check_phase reports them once and pending is at least 1 (the exact number left behind depends on how far the queue drained). forbidden: any beat, any data or done mismatch, any other id."
     },
     {
       "name": "neg_end_only_fill",
@@ -260,14 +298,19 @@
         "SPARSE_MODE=0"
       ],
       "expect": {
+        "uvm_error_ids": {
+          "ITS_DATA_MISMATCH": {
+            "min": 1,
+            "max": "@beats"
+          }
+        },
         "tus": 1,
-        "data_errors_min": 1,
-        "uvm_error_min": 1,
         "protocol_errors": 0,
         "unexpected": 0,
         "pending": 0
       },
-      "note": "end-only marker after the fill window opened: no data command, so the slot completes without a phantom write"
+      "note": "end-only marker after the fill window opened: no data command, so the slot completes without a phantom write",
+      "causality": "inject: an end marker with no data beat after the fill window opened. check: the slot closes without a phantom write, the TU retires (tus exactly 1), and with no data fed the output cannot reproduce the golden, so at least one beat must mismatch; the count is bounded because the fill order decides which beats differ. forbidden: any protocol error, any unexpected beat, any other id."
     },
     {
       "name": "tail_stress",

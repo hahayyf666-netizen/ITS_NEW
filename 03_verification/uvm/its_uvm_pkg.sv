@@ -115,11 +115,52 @@ package its_uvm_pkg;
     endclass
 
     // ------------------------------------------------------------------
+    // Report server: counts messages by (severity, id).
+    //
+    // UVM 1.1d only offers get_id_count(id) and get_severity_count(severity),
+    // so an id-level expectation cannot be paired with its severity through the
+    // stock server.  Overriding compose_message supplies that pairing without
+    // having to instrument every call site.
+    // ------------------------------------------------------------------
+    class its_report_server extends uvm_report_server;
+        int unsigned err_id[string];   // UVM_ERROR counts per id
+        int unsigned fat_id[string];   // UVM_FATAL counts per id
+        int unsigned tot_err = 0;
+        int unsigned tot_fat = 0;
+
+        function new();
+            super.new();
+        endfunction
+
+        virtual function string compose_message(uvm_severity severity,
+                                                string name,
+                                                string id,
+                                                string message,
+                                                string filename,
+                                                int line);
+            if (severity == UVM_ERROR) begin
+                err_id[id] = err_id.exists(id) ? (err_id[id] + 1) : 1;
+                tot_err++;
+            end else if (severity == UVM_FATAL) begin
+                fat_id[id] = fat_id.exists(id) ? (fat_id[id] + 1) : 1;
+                tot_fat++;
+            end
+            return super.compose_message(severity, name, id, message,
+                                         filename, line);
+        endfunction
+    endclass
+
+    // Package-scope handle: the result writer reads the counters from here.
+    its_report_server its_srv = null;
+
+    // ------------------------------------------------------------------
     // Output beat as observed by the monitor
     // ------------------------------------------------------------------
     class its_out_item extends uvm_object;
         logic [39:0] data = '0;
-        bit          done = 1'b0;
+        // Four-state on purpose: the interface signal is `logic`, and folding an
+        // X into 1'b0 here would let a broken beat pass the done check.
+        logic        done = 1'b0;
         time         cyc  = 0;
         // Back-pressure observed before this beat: how many consecutive cycles
         // the DUT had a beat pending while the grant was low, and which stages
@@ -1217,6 +1258,27 @@ package its_uvm_pkg;
         uvm_analysis_port #(its_out_item) ap_err;
         bit prev_error = 1'b0;
 
+        // --------------------------------------------------------------
+        // Independent protocol checks.
+        //
+        // These are separate from the scoreboard on purpose: a beat that the
+        // handshake drops never reaches the scoreboard, so a protocol violation
+        // would otherwise be invisible.  Every check below is reported with its
+        // own id so a case can state exactly which diagnostics it accepts.
+        // --------------------------------------------------------------
+        int unsigned sig_errors      = 0;  // done with no completed handshake
+        int unsigned x_errors        = 0;  // X/Z on a control or data signal
+        int unsigned vld_stall_guard = 0;  // vld high while req low
+        int unsigned in_errors       = 0;  // stimulus side: in_vld while in_req low
+
+        // Reset state machine.  Checks only run once reset has been seen low and
+        // then high for WARMUP cycles, so a half-initialised DUT cannot produce
+        // a burst of spurious X reports.
+        localparam int unsigned WARMUP = 3;
+        bit          rst_seen_low = 1'b0;
+        bit          checks_on    = 1'b0;
+        int unsigned warmup       = 0;
+
         `uvm_component_utils(its_monitor)
 
         function new(string name, uvm_component parent);
@@ -1239,6 +1301,79 @@ package its_uvm_pkg;
             if (vif == null) `uvm_fatal("ITS_MON", "monitor has no virtual interface")
             forever begin
                 @(posedge vif.clk);
+
+                // ---- reset state machine -----------------------------
+                if (vif.rst_n === 1'b0) begin
+                    rst_seen_low = 1'b1;
+                    checks_on    = 1'b0;
+                    warmup       = 0;
+                    depth        = 0;
+                    phases       = 5'b0;
+                    prev_error   = 1'b0;
+                end else if (vif.rst_n === 1'b1) begin
+                    if (!checks_on) begin
+                        warmup++;
+                        if (rst_seen_low && warmup >= WARMUP) checks_on = 1'b1;
+                    end
+                end else begin
+                    // rst_n itself is X/Z: report once and stop checking until
+                    // the next clean reset.
+                    if (checks_on) begin
+                        x_errors++;
+                        `uvm_error("ITS_RST_X",
+                                   $sformatf("rst_n is %b while checking t=%0t",
+                                             vif.rst_n, $time))
+                    end
+                    checks_on  = 1'b0;
+                    warmup     = 0;
+                    depth      = 0;
+                    phases     = 5'b0;
+                    prev_error = 1'b0;
+                end
+
+                if (checks_on) begin
+                    // Control signals must be two-state while checking.
+                    if ((vif.it_data_out_vld === 1'bx) || (vif.it_done === 1'bx)) begin
+                        x_errors++;
+                        `uvm_error("ITS_SIG_X",
+                                   $sformatf("control X: vld=%b done=%b req=%b t=%0t",
+                                             vif.it_data_out_vld, vif.it_done,
+                                             vif.it_data_out_req, $time))
+                    end
+                    // vld while req is low.  The DUT gates the external valid by
+                    // the request (wrapper:1678), so this state is unreachable
+                    // from legal RTL behaviour: it fires only under a forced
+                    // output or an RTL regression.  Kept as a guard, reported as
+                    // info, and never counted as a passing protocol check.
+                    if ((vif.it_data_out_vld === 1'b1) &&
+                        (vif.it_data_out_req === 1'b0)) begin
+                        vld_stall_guard++;
+                        `uvm_info("ITS_VLD_STALL",
+                                  $sformatf("vld high while req low (guard) t=%0t", $time),
+                                  UVM_LOW)
+                    end
+                    // done must ride a completed handshake.
+                    if ((vif.it_done === 1'b1) &&
+                        !((vif.it_data_out_vld === 1'b1) &&
+                          (vif.it_data_out_req === 1'b1))) begin
+                        sig_errors++;
+                        `uvm_error("ITS_DONE_NO_FIRE",
+                                   $sformatf("src=done_no_fire done without a completed handshake: vld=%b req=%b t=%0t",
+                                             vif.it_data_out_vld, vif.it_data_out_req,
+                                             $time))
+                    end
+                    // Stimulus side: the driver must not present a beat while
+                    // the DUT is not asking for one, otherwise a lost input word
+                    // would be blamed on the DUT.
+                    if ((vif.it_data_in_vld === 1'b1) &&
+                        (vif.it_data_in_req === 1'b0)) begin
+                        in_errors++;
+                        `uvm_error("ITS_IN_VLD_NO_REQ",
+                                   $sformatf("stimulus presented in_vld while in_req low: addr=%0h t=%0t",
+                                             vif.it_data_addr, $time))
+                    end
+                end
+
                 stalled = vif.dbg_output_active && !vif.it_data_out_req;
                 if (stalled) begin
                     depth++;
@@ -1251,6 +1386,12 @@ package its_uvm_pkg;
                     if (vif.dbg_output_active) phases[PH_OUTPUT]  = 1'b1;
                 end
                 if (vif.it_data_out_vld && vif.it_data_out_req) begin
+                    if (checks_on && ((^vif.it_data_out) === 1'bx)) begin
+                        x_errors++;
+                        `uvm_error("ITS_DATA_X",
+                                   $sformatf("accepted beat carries X: data=%010h t=%0t",
+                                             vif.it_data_out, $time))
+                    end
                     item      = its_out_item::type_id::create("beat");
                     item.data = vif.it_data_out;
                     item.done = vif.it_done;
@@ -1726,6 +1867,10 @@ package its_uvm_pkg;
         its_env      env;
         virtual its_if vif;
         string       vector_file = "unified_gate_c_vectors.txt";
+        // Run identity: written into the result file so a reader can prove the
+        // file belongs to this run and this case, not to a stale artefact.
+        string       run_id    = "unknown";
+        string       case_name = "unknown";
 
         `uvm_component_utils(its_base_test)
 
@@ -1737,6 +1882,13 @@ package its_uvm_pkg;
             int unsigned n;
             super.build_phase(phase);
             void'($value$plusargs("VECTOR_FILE=%s", vector_file));
+            void'($value$plusargs("RUN_ID=%s", run_id));
+            void'($value$plusargs("CASE_NAME=%s", case_name));
+            // Install the id-counting server before any child can report.
+            if (its_srv == null) begin
+                its_srv = new();
+                uvm_report_server::set_server(its_srv);
+            end
             if (!uvm_config_db #(virtual its_if)::get(this, "", "vif", vif))
                 `uvm_fatal("ITS_TEST", "no virtual interface in config db")
             uvm_config_db #(virtual its_if)::set(this, "env.drv", "vif", vif);
@@ -1781,6 +1933,7 @@ package its_uvm_pkg;
         function void write_result_file();
             int               fd;
             string            path;
+            string            k;
             uvm_report_server srv;
             if (!$value$plusargs("RESULT_FILE=%s", path)) return;
             fd = $fopen(path, "w");
@@ -1802,6 +1955,31 @@ package its_uvm_pkg;
             $fdisplay(fd, "resets=%0d",          env.sb.resets_seen);
             $fdisplay(fd, "uvm_error=%0d", srv.get_severity_count(UVM_ERROR));
             $fdisplay(fd, "uvm_fatal=%0d", srv.get_severity_count(UVM_FATAL));
+            // ---- run identity -------------------------------------------
+            $fdisplay(fd, "run_id=%s", run_id);
+            $fdisplay(fd, "case=%s", case_name);
+            // ---- independent protocol checks -----------------------------
+            $fdisplay(fd, "sig_errors=%0d",       env.mon.sig_errors);
+            $fdisplay(fd, "x_errors=%0d",         env.mon.x_errors);
+            $fdisplay(fd, "vld_stall_guard=%0d",  env.mon.vld_stall_guard);
+            $fdisplay(fd, "in_errors=%0d",        env.mon.in_errors);
+            // ---- per-id severity counts ---------------------------------
+            // The runner asserts on ids, not just totals, so that a case can
+            // say which diagnostics it accepts and reject every other one.
+            if (its_srv != null) begin
+                if (its_srv.err_id.first(k)) begin
+                    do begin
+                        $fdisplay(fd, "err.error.%s=%0d", k, its_srv.err_id[k]);
+                    end while (its_srv.err_id.next(k));
+                end
+                if (its_srv.fat_id.first(k)) begin
+                    do begin
+                        $fdisplay(fd, "err.fatal.%s=%0d", k, its_srv.fat_id[k]);
+                    end while (its_srv.fat_id.next(k));
+                end
+                $fdisplay(fd, "err_server_total_error=%0d", its_srv.tot_err);
+                $fdisplay(fd, "err_server_total_fatal=%0d", its_srv.tot_fat);
+            end
             // Functional coverage counters, one line per bin.
             for (int i = 0; i < 5; i++)
                 for (int j = 0; j < 5; j++)
