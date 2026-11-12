@@ -17,22 +17,26 @@
 （空结果文件掩盖 UVM_FATAL 与原生错误、超时可返回 PASS、`reasons` 不是
 判定原因的集合）。三处已在 §10 关闭，判定顺序据此重写。
 
+第四轮独立复核确认 §10 可复现，又指出两处：非零退出码会改写已确认的主因，
+以及"超时 + 截断产物"仍判 DIRTY（与 §10 的文字相矛盾）。两处已在 §11 关闭，
+其中一处是我在 §10 里自己引入的回归。
+
 | 验收项 | 结果 | 证据 |
 | --- | --- | --- |
 | 全量回归 | **22/22 PASS** | `run/regress_A2_summary.txt`、`run/REGRESSION.json` |
-| 分类器自检 | **53/53**（49 条用例 + 4 条附加检查） | `python run_regress.py selftest` |
+| 分类器自检 | **62/62**（56 条用例 + 6 条附加检查） | `python run_regress.py selftest` |
 | 检查器反例自检 | **9 场景 / 46 断言 / 46 通过** | `run/logs/selftest_*.log`、`python a5_selftest.py` |
 | final_phase 真实反例 | **10 断言 / 10 通过** | `run/A5_FINAL_FATAL.json`、`python a5_final_fatal.py` |
-| 分类器修前/修后对照 | 16 个反例：**13 个被修正**，3 个原本已正确（作回归守卫），新判定器 0 个错 | §9.1、§10.4、`run/probe/classifier_before_after.txt` |
+| 分类器修前/修后对照 | 19 个 fixture：**15 个被修正**，4 个原本已正确（含 2 个证明"曾被改坏又改回"），新判定器 0 个错 | §9.1、§10.4、§11.4、`run/probe/classifier_before_after.txt` |
 | 功能覆盖 | 52/54 = 96.30%（与 A 阶段前一致） | `run/REGRESSION.json` 的 `merged_coverage` |
 | 代码覆盖 | 语句 85.16% / 分支 72.60% / 条件 67.64% / 表达式 65.21% / 断言 100% / FSM 状态 100% / FSM 转移 42.30% / 翻转 41.13% | `run/COVERAGE_CODE.json`（在最终回归**之后**生成，与同一轮 ucdb 对应） |
-| 输入指纹 | `77a8c726791dfce8`，18 个文件，无缺失，与提交态一致 | `run/RUN_MANIFEST.json` |
+| 输入指纹 | `205690cbfe0000a0`，18 个文件，无缺失，与提交态一致 | `run/RUN_MANIFEST.json` |
 | 产物一致性 | 回归收尾复核 22 个结果文件 sha256，`artifact_drift` 为空 | `run/REGRESSION.json` |
 | 运行身份 | 22 例 `run_id` 互不相同，且每例结果文件内的 `run_id` 与本次运行一致 | 同上 |
 
 自检计数的账目按真实清单写：第一轮结束时是 32 条用例 + 1 条合并检查 = 33；
 第二轮加入 9 条反例与 1 条 `reasons` 检查 = 43；第三轮加入 8 条异常组合用例
-与 1 条四诊断 `reasons` 检查、1 条超时单独判定检查 = 53。
+与 2 条附加检查 = 53；第四轮加入 7 条退出码/截断用例与 2 条附加检查 = 62。
 （此前正文写过"33 + 9 条反例 + 2 条附加"，把原有的合并检查重复计入，
 已按实际清单更正。）
 
@@ -184,7 +188,7 @@ A5 证明的正是后者。
 | `run/RUN_MANIFEST.json` | 启动/结束记录、每例 `run_id`、完整命令行、日志计数、缺失输入、退出码 |
 | `run/COVERAGE_CODE.json` | DUT 代码覆盖率 |
 | `run/A5_FINAL_FATAL.json` | final_phase 反例两次运行的判定与产物 sha256 |
-| `run/probe/classifier_before_after.txt` | 16 个反例的修前/修后判定 |
+| `run/probe/classifier_before_after.txt` | 19 个反例的修前/修后判定 |
 | `run/probe/a5_final_fatal_*.result` | 反例的产物（不占用 `run/results/`） |
 | `run/logs/regress_<case>.log` | 每例原始日志 |
 | `run/logs/selftest_*.log` | A5 九个场景日志 |
@@ -194,7 +198,7 @@ A5 证明的正是后者。
 
 ```
 python run_its_uvm.py prep
-python run_regress.py selftest      # 53/53
+python run_regress.py selftest      # 62/62
 python a5_selftest.py               # 9 场景 / 46 断言
 python a5_final_fatal.py            # 10 断言
 python probe_classifier_history.py  # 修前/修后对照
@@ -297,7 +301,7 @@ python run_regress.py coverage
    契约本身是否成立，是最容易出问题的地方。
 2. 再看 `run_regress.py` 中 `_classify` 的分支顺序（§10.2 是当前生效的版本），
    特别是"诊断事实先于产物形态、身份先于计数、超时先于形态"这三条。
-3. 复跑三个自检：`python run_regress.py selftest`（53/53）、
+3. 复跑三个自检：`python run_regress.py selftest`（62/62）、
    `python a5_selftest.py`（9 场景 46/46）、`python a5_final_fatal.py`（10/10）。
 4. 看 `its_uvm_pkg.sv` 中 monitor 的 `run_phase` 复位状态机与
    `not_two_state()`，确认 `warmup` 与 `checks_on` 既不漏检也不多检。
@@ -349,13 +353,14 @@ D1/D2 属于**把已约定的验收条件降级**，不是新需求；其余为�
 | D5 超时优先，吞掉已发生的原生错误 | `RESULT_MISSING` + native error + 超时 | INCOMPLETE / TIMEOUT | FAIL / `NATIVE_ERROR`（`reasons` 保留 TIMEOUT） |
 | D6 指纹漏 3 个实际编译的 RTL | 改这 3 个文件，指纹不变 | 指纹 15 个文件 | 18 个文件，源自编译清单 |
 
-分类器自检从 33/33 变为 **43/43**（第三轮后为 53/53，见 §10.5）；新增 9 条反例行中，8 条在修前被判 PASS。
+分类器自检从 33/33 变为 **43/43**（第三轮后为 53/53，第四轮后为 62/62，见 §10.5、§11.5）；新增 9 条反例行中，8 条在修前被判 PASS。
 
 ### 9.2 判定顺序（D5）
 
-> 本节记的是第二轮修完后的顺序，**已被 §10.2 取代**：第三轮复核指出它把
+> 本节记的是第二轮修完后的顺序，**已被 §10.2、§11.3 取代**：第三轮复核指出它把
 > 产物形态排在诊断之前，导致空文件仍会掩盖 UVM_FATAL 与原生错误，且超时
-> 排在形态判定之前会把"超时 + 缺文件"判成 DIRTY。当前生效的判定顺序见 §10.2。
+> 排在形态判定之前会把"超时 + 缺文件"判成 DIRTY；第四轮又指出超时不区分
+> "截断类"与"独立类"发现。当前生效的判定顺序见 §11.3。
 
 修前：`RESULT_MISSING` 内部先看超时；有结果文件时完全不看日志里的 fatal。
 修后：fatal 与原生错误**无条件先判**，超时不再具有豁免力。
@@ -470,7 +475,11 @@ A5 新增 `done_z`、`req_x` 两个场景，各 2 拍，均报 2 次 `ITS_SIG_X`
 `TimeoutExpired` 分支里写 `*** TIMEOUT after Ns` 并返回 `rc=-9`，判定器只认
 这条**专用标记**；`rc=-9` 本身不作为超时证据，因为其他异常终止也报同样的码。
 
-### 10.2 事实集合与判定顺序（当前生效）
+### 10.2 事实集合与判定顺序（第三轮）
+
+> **已被 §11.3 取代。** 本节第 2 步把"字段缺失/格式错"一类与"身份不符"混在
+> 一起，第 4 步又把超时排在全部产物检查之后——第四轮复核据此构造出"超时 +
+> 截断文件"，仍被判 DIRTY，与本节自己的说明相矛盾。当前生效的版本见 §11.3。
 
 判定器先收事实，再由事实定档位，不按文件状态分叉。
 
@@ -535,7 +544,8 @@ A5 新增 `done_z`、`req_x` 两个场景，各 2 拍，均报 2 次 `ITS_SIG_X`
 ### 10.5 自检账目
 
 49 条用例 + 4 条附加检查（合并、双原因、四诊断 `reasons`、超时单独判定）
-= **53/53**。第一轮结束时是 32 + 1 = 33，第二轮 33 + 10 = 43，
+= **53/53**（第四轮加入 7 条用例与 2 条附加检查后为 62/62，见 §11.5）。
+第一轮结束时是 32 + 1 = 33，第二轮 33 + 10 = 43，
 第三轮 43 + 10 = 53。此前正文写的"33 + 9 条反例 + 2 条附加"把原有的合并检查
 重复计入，已按实际清单更正为现在的写法。
 
@@ -559,3 +569,90 @@ A5 新增 `done_z`、`req_x` 两个场景，各 2 拍，均报 2 次 `ITS_SIG_X`
   `092609-19988-001` 属于更早一轮；实际是 09:28:23 / `092823-25528-001`。
   原因是先读了旧 summary，随后用新 manifest 重生成文件，写文字时引用了读到的旧值。
 - **自检账目算错。** "33 + 9 + 2 = 44" 与 43 对不上，因为 33 里已经含合并检查。
+
+---
+
+## 11 第四轮复核：退出码与截断产物的判定
+
+第四轮独立复核确认 §10 可复现，仍发现两处分类问题——**没有发现新的误判 PASS
+路径**，所以 Monitor、身份校验、覆盖流程都不动。
+
+### 11.1 两处问题与根因
+
+| 问题 | 实测（我复现，与复核方一致） | 根因 |
+| --- | --- | --- |
+| 非零退出码改写已确认的主因 | 无文件＋原生 fatal＋`rc=1` → `SIMULATOR_ERROR`；无文件＋UVM_FATAL＋`rc=1` → `SIMULATOR_ERROR`；空文件＋原生 error＋`rc=1` → `SIMULATOR_ERROR` | `_with_exit()` 的条件写的是"`parse_error` 非空就改写"，而不是"只有在没有更明确诊断时才用它"。`uvm_fatal` 本身就以非零码退出，这条路上每个人都带着 `rc≠0` |
+| 退出码没进 `reasons` | 错 `run_id`＋`rc=1` → `DIRTY/RUN_ID_MISMATCH`，`reasons` 只有一条 | `_verdict_reasons()` 不接收退出码，§10.3 声称 F4 属于判定原因集合，实现没做到 |
+| 超时＋截断产物仍判 DIRTY | 截断文件（`tus=` 后即止）＋超时 → `DIRTY/MISSING_FIELD:beats`；结构错误＋超时 → `DIRTY` | 字段检查与结构错误分支都在超时判断之前，§10 声称"超时期间的截断只作为不完整证据"，实现没做到 |
+
+### 11.2 改法
+
+- **退出码不再改写主因**：只有 `INCOMPLETE` 会被提升为 `FAIL/SIMULATOR_ERROR`
+  （确实什么都没跑出来）；`FAIL` 与 `DIRTY` 保留它们各自更具体的原因；
+  `PASS` 才是 `DIRTY/NONZERO_EXIT_WITH_CLEAN_RESULT`。
+- **退出码进入 `reasons`**：当它没有成为主因时追加一条 `NONZERO_EXIT`；
+  若主因本身就是 `SIMULATOR_ERROR` 或 `NONZERO_EXIT_WITH_CLEAN_RESULT`，
+  不再重复追加（同一个事实不给两个标签）。
+- **产物检查分两类**，见 `TORN_FINDINGS` / `FIRM_FINDINGS`：
+  - *可能由写中断造成*：缺字段、空值（`FIELD_FORMAT:…=''`）、结构错误、
+    ID 总和不符。这些在**只有超时**成立时降为 `INCOMPLETE/TIMEOUT`，
+    原因仍写进 `reasons`。
+  - *写中断不可能造成*：身份三元组指向另一轮（`RUN_ID_/CASE_/TEST_MISMATCH`）、
+    完整但非数值的字段。这些即使有超时也保留原判定——文件必须可读才能说出
+    这句话，说明它不是被截断出来的。
+- 不做"把超时放到所有检查之前"那种改法：那会把已确认的身份错误也吞掉。
+
+### 11.3 判定顺序（当前生效）
+
+| # | 步骤 | 说明 |
+| --- | --- | --- |
+| 1 | 日志诊断 | native fatal / UVM_FATAL / 超预算原生错误 → FAIL，与产物无关 |
+| 2 | 产物可信门 | 字段存在性与类型、身份、ID 总和；同时标记该发现属于"截断可解释"还是"独立可确认" |
+| 3 | 超时对截断类发现的抑制 | 有超时且发现属截断类 → `INCOMPLETE/TIMEOUT`，发现仍留在 `reasons` |
+| 4 | 计数比较 | 只在可信门通过后执行 |
+| 5 | 退出码 | `INCOMPLETE`→`FAIL/SIMULATOR_ERROR`；`DIRTY`/`FAIL` 保留主因；另加 `NONZERO_EXIT` 到 `reasons` |
+| 6 | 超时 | 其余情形下判 `INCOMPLETE/TIMEOUT` |
+| 7 | 产物形态 | 无文件/空文件 → DIRTY 或 INCOMPLETE |
+| 8 | 其余 | PASS |
+
+### 11.4 新增反例的修前/修后
+
+| 组合 | 第三轮（错） | 现在 |
+| --- | --- | --- |
+| 无文件＋原生 fatal＋`rc=1` | FAIL/`SIMULATOR_ERROR` | FAIL/`NATIVE_FATAL`，`reasons` 加 `NONZERO_EXIT` |
+| 无文件＋UVM_FATAL＋`rc=1` | FAIL/`SIMULATOR_ERROR` | FAIL/`UVM_FATAL_EARLY_EXIT`，同上 |
+| 空文件＋原生 error＋`rc=1` | FAIL/`SIMULATOR_ERROR` | FAIL/`NATIVE_ERROR`，同上 |
+| 错 `run_id`＋`rc=1` | DIRTY/`RUN_ID_MISMATCH`，`reasons` 一条 | 同判定，`reasons` 两条（加 `NONZERO_EXIT`） |
+| 截断文件＋超时 | DIRTY/`MISSING_FIELD:beats` | INCOMPLETE/`TIMEOUT`，`reasons`＝`[TIMEOUT, MISSING_FIELD:beats]` |
+| 结构错误＋超时 | DIRTY/`RESULT_…` | INCOMPLETE/`TIMEOUT` |
+| 错 `run_id`＋超时 | DIRTY/`RUN_ID_MISMATCH` | 同（身份类不因超时降级） |
+
+历史对照里加了三行，其中"fatal + rc"与 9e5c2b6 一致——**这一条不是旧洞，
+是我在 §10 引入的回归**，第四轮复核把它抓了出来：
+
+```
+guard  A4 exit rewrite: fatal + rc        old=FAIL/NATIVE_FATAL   new=FAIL/NATIVE_FATAL
+FIXED  A4 exit rewrite: stale run id + rc old=DIRTY/NONZERO_EXIT_WITH_CLEAN_RESULT
+FIXED  A4 torn artefact + timeout         old=DIRTY/MISSING_FIELD:beats
+```
+
+19 个 fixture：15 个被修正、4 个原本已正确，新判定器 0 个错。
+
+### 11.5 自检账目
+
+56 条用例 + 6 条附加检查（合并、双原因、四诊断 `reasons`、超时单独判定、
+退出码进 `reasons`、截断发现进 `reasons`）= **62/62**。
+
+### 11.6 我在这一轮犯的错
+
+- **改写主因。** `_with_exit` 里写成"`parse_error` 非空就换成 SIMULATOR_ERROR"，
+  于是一个已被 UVM_FATAL 或原生 fatal 明确定性的运行被降格成"工具崩了"。
+  根子是把"退出码异常"当成了比日志诊断更硬的证据，实际正好相反。
+- **写了做不到的规则。** §10.2 第 4 步与 10.7 都写了"超时期间的缺文件、空文件、
+  截断文件都是次生现象，不能单凭它们升级成 DIRTY"，但代码里超时排在字段检查
+  之后，截断文件照样判 DIRTY。**这是第四次"声明超过实现"**——前三次是
+  `reasons` 完整列表、检查器可信化完成、可达性降级；这次是判定规则。
+  现在这条规则有对应用例锁住（`truncated result plus timeout` 等两行 + 一条
+  附加检查），并且把"截断类/独立类"写成显式常量，不再只存在于散文里。
+- **忘了把 F4 放进 `reasons`。** §10.3 把 F4 列入判定原因集合，实现里
+  `_verdict_reasons` 根本没接收退出码。
