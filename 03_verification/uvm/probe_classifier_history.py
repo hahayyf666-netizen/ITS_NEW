@@ -18,6 +18,7 @@ Run:  python probe_classifier_history.py [--rev <rev>]
 
 import argparse
 import importlib.util
+import inspect
 import subprocess
 import sys
 import tempfile
@@ -77,13 +78,24 @@ def no_log(**over):
     return d
 
 
-def old_effective(old, fields, kase, perr, log, to, rc):
+def old_effective(old, fields, kase, perr, log, to, rc, run_id=None):
     """The verdict the old flow produced: classify plus its caller-side patch.
 
     The exit-code handling lived in run_one() back then, not in the classifier,
     so reproducing it here is what makes the comparison fair.
+
+    Only the arguments that revision's classify actually accepts are passed.
+    9e5c2b6 had no run_id parameter at all, so dropping it there was faithful;
+    passing nothing to a later revision would have reported an identity check
+    it did have as a difference it did not.
     """
-    status, reason = old.classify(fields, kase, perr, log, to)[:2]
+    params = inspect.signature(old.classify).parameters
+    args = [fields, kase, perr, log, to]
+    if "expected_run_id" in params:
+        args.append(run_id)
+        if "returncode" in params:
+            args.append(rc)
+    status, reason = old.classify(*args)[:2]
     if rc:
         if status == "PASS":
             status, reason = "DIRTY", "NONZERO_EXIT_WITH_CLEAN_RESULT"
@@ -178,7 +190,8 @@ def main():
     leaks = guards = 0
     new_wrong = []
     for defect, fields, kase, perr, log, to, rid, rc in FIXTURES:
-        o_status, o_reason = old_effective(old, fields, kase, perr, log, to, rc)
+        o_status, o_reason = old_effective(old, fields, kase, perr, log, to, rc,
+                                           rid)
         n_status, n_reason, n_reasons = new.classify(
             fields, kase, perr, log, to, rid, rc)
         old_s = f"{o_status}/{o_reason}" if o_reason else o_status
