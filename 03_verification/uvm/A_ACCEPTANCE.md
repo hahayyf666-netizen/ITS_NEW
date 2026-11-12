@@ -41,6 +41,7 @@
 | 功能覆盖 | 52/54 = 96.30%（与 A 阶段前一致） | `run/REGRESSION.json` 的 `merged_coverage` |
 | 代码覆盖 | 语句 85.16% / 分支 72.60% / 条件 67.64% / 表达式 65.21% / 断言 100% / FSM 状态 100% / FSM 转移 42.30% / 翻转 41.13% | `run/COVERAGE_CODE.json`（在最终回归**之后**生成，与同一轮 ucdb 对应） |
 | 输入指纹 | `2fbc8065da68a933`，18 个文件，无缺失，与提交态一致 | `run/RUN_MANIFEST.json` |
+| 指纹覆盖范围 | 18 项 = 5 个 RTL 源 + TB/接口/cases + 判定器与两个会驱动 DUT 的探针 + 输入向量。**纯分析脚本（如 `probe_classifier_history.py`）由 git 追踪，不进指纹**——它们不参与判定，改它们不会改变 22 例的结论 | `run/regress_A2_summary.txt` 第 4 行 |
 | 产物一致性 | 回归收尾复核 22 个结果文件 sha256，`artifact_drift` 为空 | `run/REGRESSION.json` |
 | 运行身份 | 22 例 `run_id` 互不相同，且每例结果文件内的 `run_id` 与本次运行一致 | 同上 |
 
@@ -794,6 +795,23 @@ probe    rc=0  status=FAIL  reason=UVM_FATAL_IN_LOG
 
 第二行是反向用例：它证明"重复的 `run_id` 不被采信"，而不是被悄悄拿去比较。
 
+修前一栏是用**上一版判定器实测**得到的，不是推理：把 `fd8e9ec` 的
+`run_regress.py` 从 git 取出、单独载入，对同一组 fixture 调用 `classify`：
+
+```
+基线 fd8e9ec（上一轮）:
+  FIXED A6 duplicate key hid run_id        old=INCOMPLETE/TIMEOUT  new=DIRTY/RUN_ID_MISMATCH:file=old-run
+  FIXED A6 garbage error id under torn     old=INCOMPLETE/TIMEOUT  new=DIRTY/FIELD_FORMAT:NOT_A_COUNT:err.error.BOGUS='abc'
+  fixtures: 23   changed by the fix: 2   already handled before: 21
+  new classifier wrong: 0
+
+基线 9e5c2b6（A 阶段前）:
+  fixtures: 23   changed by the fix: 19   already handled before: 4
+```
+
+复现命令：`python probe_classifier_history.py --rev fd8e9ec`。对本轮而言 23 条里
+只有这 2 条发生变化、其余 21 条判定不变——这是"没有连带改动"的直接证据。
+
 ### 13.4 这条规则的边界（不再写成无条件成立）
 
 能保证的是：**一个可读且可归属的矛盾，不会被截断症状遮住。** 两个前提都要成立：
@@ -818,3 +836,8 @@ probe    rc=0  status=FAIL  reason=UVM_FATAL_IN_LOG
 - **枚举字段时只抄了自己记得的那一组。** 动态 `err.error.*` 是这份结果格式里最
   需要严格检查的部分（ID 计数），却因为不在 `REQUIRED_FIELDS` 里被漏掉。这一类
   "按名单遍历、名单不全"的错误与前面几轮同源。
+- **对照脚本本身有缺陷，用 `--rev` 才发现。** `old_effective()` 调旧版 `classify`
+  时固定只传 5 个参数，把 `run_id` 丢掉了。对 `9e5c2b6` 这是忠实的（那一版根本没有
+  这个参数），但对任何更晚的版本都会凭空造出"身份检查缺失"的假差异——第一次跑
+  `--rev fd8e9ec` 报了 6 条变化，实际只有 2 条。已改成按目标版本的真实签名传参。
+  教训：对照脚本也是被测代码，它错了会把"变化"算多。
