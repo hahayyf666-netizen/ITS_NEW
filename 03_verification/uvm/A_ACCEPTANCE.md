@@ -166,20 +166,27 @@ A5 证明的正是后者。
 
 | 文件 | 内容 |
 | --- | --- |
-| `run/regress_A_final.txt` | 22 例逐例状态 |
-| `run/REGRESSION.json` | 状态计数、失败分类、合并覆盖 |
-| `run/RUN_MANIFEST.json` | 每例 `run_id`、指纹、日志计数、缺失输入、退出码 |
+| `run/regress_A2_summary.txt` | 22 例逐例状态、`run_id`、产物 sha256 前 8 位、覆盖 |
+| `run/REGRESSION.json` | 状态计数、失败分类、`artifact_drift`、合并覆盖 |
+| `run/RUN_MANIFEST.json` | 启动/结束记录、每例 `run_id`、完整命令行、日志计数、缺失输入、退出码 |
+| `run/COVERAGE_CODE.json` | DUT 代码覆盖率 |
+| `run/A5_FINAL_FATAL.json` | final_phase 反例两次运行的判定与产物 sha256 |
+| `run/probe/classifier_before_after.txt` | 8 个反例的修前/修后判定 |
+| `run/probe/a5_final_fatal_*.result` | 反例的产物（不占用 `run/results/`） |
 | `run/logs/regress_<case>.log` | 每例原始日志 |
-| `run/logs/selftest_*.log` | A5 六个场景日志 |
-| `run/results/<case>.result` | 结构化结果（含 `run_id`、`case`、按 ID 计数） |
+| `run/logs/selftest_*.log` | A5 九个场景日志 |
+| `run/results/<case>.result` | 结构化结果（含 `run_id`、`case`、按 ID 计数、四个检查计数、两个汇总总数） |
 
-复现：
+复现（顺序有意义：回归要在自检之后跑，`run/results/` 的最终状态才由回归本身产生）：
 
 ```
 python run_its_uvm.py prep
-python run_regress.py selftest
-python run_regress.py run
-python a5_selftest.py
+python run_regress.py selftest      # 43/43
+python a5_selftest.py               # 9 场景 / 46 断言
+python a5_final_fatal.py            # 10 断言
+python probe_classifier_history.py  # 修前/修后对照
+python run_regress.py all           # 22/22 + 产物 sha256 复核
+python run_regress.py coverage
 ```
 
 ---
