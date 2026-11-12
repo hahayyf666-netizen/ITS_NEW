@@ -531,10 +531,17 @@ def merge_coverage(per_run):
     return report
 
 
-def run_one(case, vector_file, want_ucdb=False, fp=None, extra_plusargs=()):
-    RESULT_DIR.mkdir(parents=True, exist_ok=True)
-    res_path = RESULT_DIR / f"{case['name']}.result"
-    log_path = OUT / "logs" / f"regress_{case['name']}.log"
+def run_one(case, vector_file, want_ucdb=False, fp=None, extra_plusargs=(),
+            artifact_name=None, result_dir=None):
+    # A probe that reuses a case's artefact name overwrites the regression's
+    # evidence: the manifest records a sha256 that no longer matches the file on
+    # disk.  Probes therefore pass their own name and directory and leave the
+    # regression artefact set untouched.
+    tag = artifact_name or case["name"]
+    rdir = result_dir or RESULT_DIR
+    rdir.mkdir(parents=True, exist_ok=True)
+    res_path = rdir / f"{tag}.result"
+    log_path = OUT / "logs" / f"regress_{tag}.log"
     ucdb = (UCDB_DIR / f"{case['name']}.ucdb") if want_ucdb else None
     if res_path.exists():
         res_path.unlink()
@@ -692,6 +699,26 @@ def stage_run(only, cases_path=None):
         planned=planned)
     print(f"[regress] manifest {manifest_path}", flush=True)
 
+    # The manifest records the bytes each artefact held.  Confirm those bytes are
+    # still on disk at the moment the run reports, so the record cannot describe
+    # a truncated or replaced file.  Preventing a later overwrite is the caller's
+    # job: probes write into run/probe/ under their own name.
+    drift = []
+    for r in rows:
+        art = r.get("artifact")
+        if not art:
+            continue
+        p = Path(art["path"])
+        if not p.exists():
+            drift.append(f"{r['name']}: missing")
+        elif hashlib.sha256(p.read_bytes()).hexdigest() != art["sha256"]:
+            drift.append(f"{r['name']}: sha256 differs")
+    if drift:
+        print(f"[regress] ARTEFACT DRIFT: {'; '.join(drift)}", flush=True)
+    else:
+        print(f"[regress] artefacts verified: {len([r for r in rows if r.get('artifact')])} files",
+              flush=True)
+
     counts = {}
     for r in rows:
         counts[r["status"]] = counts.get(r["status"], 0) + 1
@@ -704,6 +731,7 @@ def stage_run(only, cases_path=None):
         "cases": rows,
         "status_counts": counts,
         "failure_classes": classes,
+        "artifact_drift": drift,
         "merged_coverage": merged,
         "vector_file": vector_file,
     }
@@ -727,8 +755,9 @@ def stage_run(only, cases_path=None):
     if ov:
         print(f"  {'OVERALL':<14} {ov['pct']:6.2f}%  bins={ov['hit_bins']}/{ov['total_bins']}")
     ok = counts.get("PASS", 0)
-    print(f"\nsummary: {ok}/{len(rows)} PASS")
-    return 0 if ok == len(rows) else 1
+    print(f"\nsummary: {ok}/{len(rows)} PASS"
+          f"{'   ARTEFACT DRIFT' if drift else '   artefacts verified'}")
+    return 0 if (ok == len(rows) and not drift) else 1
 
 
 def stage_selftest():

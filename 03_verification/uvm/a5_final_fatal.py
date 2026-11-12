@@ -37,6 +37,11 @@ def main():
     rr.stage_prep()
     vector_file, cases = rr.load_cases()
     case = next(c for c in cases if c["name"] == "single_tu")
+    # Both runs write their own artefacts: reusing the case's name would
+    # overwrite the regression's result file and log, leaving the manifest's
+    # recorded sha256 pointing at bytes that no longer exist.
+    probe_dir = rr.OUT / "probe"
+    probe_dir.mkdir(parents=True, exist_ok=True)
 
     results = []
 
@@ -46,8 +51,10 @@ def main():
 
     # -- control: same case, same writer, no injection --------------------
     print("[A5] control run (no injection)", flush=True)
-    ctl = rr.run_one(case, vector_file, want_ucdb=False)
-    res = rr.RESULT_DIR / f"{case['name']}.result"
+    ctl = rr.run_one(case, vector_file, want_ucdb=False,
+                     artifact_name="a5_final_fatal_control",
+                     result_dir=probe_dir)
+    res = probe_dir / "a5_final_fatal_control.result"
     raw = res.read_bytes() if res.exists() else b""
     ctl_fields, ctl_perr = rr.parse_result(res)
     check("control: judged PASS", ctl["status"] == "PASS",
@@ -62,7 +69,10 @@ def main():
     # -- probe: identical run, fatal injected after the file was written ---
     print("[A5] probe run (+FATAL_IN_FINAL=1)", flush=True)
     probe = rr.run_one(case, vector_file, want_ucdb=False,
-                       extra_plusargs=("FATAL_IN_FINAL=1",))
+                       extra_plusargs=("FATAL_IN_FINAL=1",),
+                       artifact_name="a5_final_fatal_fatal",
+                       result_dir=probe_dir)
+    res = probe_dir / "a5_final_fatal_fatal.result"
     praw = res.read_bytes() if res.exists() else b""
     pfields, pperr = rr.parse_result(res)
     missing, has_cov = completeness(pfields)
@@ -81,6 +91,8 @@ def main():
 
     evidence = {
         "case": case["name"],
+        "artifacts": {"control": str(probe_dir / "a5_final_fatal_control.result"),
+                      "probe": str(probe_dir / "a5_final_fatal_fatal.result")},
         "control": {"status": ctl["status"], "reason": ctl["reason"],
                     "uvm_fatal_lines": ctl["log"]["uvm_fatal_lines"],
                     "bytes": len(raw),

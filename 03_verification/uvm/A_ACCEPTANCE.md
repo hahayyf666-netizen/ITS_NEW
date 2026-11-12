@@ -357,7 +357,9 @@ D1/D2 属于**把已约定的验收条件降级**，不是新需求；其余为�
 | 探针（`+FATAL_IN_FINAL=1`） | 完整，且 `uvm_error=0 uvm_fatal=0` | 1 | FAIL / `UVM_FATAL_IN_LOG` |
 
 字段完整性用 `run_regress.REQUIRED_FIELDS` 判定，不硬编码条数——新增字段后
-探针自动跟着变。证据写在 `run/A5_FINAL_FATAL.json`（含两次结果文件的 sha256）。
+探针自动跟着变。两次运行的结果文件分别写在 `run/probe/a5_final_fatal_control.result`
+与 `run/probe/a5_final_fatal_fatal.result`，**不占用该用例在 `run/results/` 下的
+正式产物**；证据汇总在 `run/A5_FINAL_FATAL.json`（含两次结果文件的 sha256）。
 
 ### 9.4 四态与控制信号的逐信号覆盖（D2 的准确表述）
 
@@ -400,6 +402,8 @@ A5 新增 `done_z`、`req_x` 两个场景，各 2 拍，均报 2 次 `ITS_SIG_X`
   `planned_cases` / `runs_completed`。原实现只在结束时写一次，进程中途崩掉就
   什么都不留，与它自己"start/end record"的说明不符。
 - 每例额外记录完整 `command`、结果文件 `bytes` 与 `sha256`、`run_id`、`reasons`。
+- 回归收尾时逐个复核结果文件的 sha256（`REGRESSION.json` 的 `artifact_drift`），
+  本次 22/22 与记录一致；探针产物写到 `run/probe/` 且自带名字，不替换正式证据。
 
 ### 9.7 我在这一轮犯的错
 
@@ -415,3 +419,9 @@ A5 新增 `done_z`、`req_x` 两个场景，各 2 拍，均报 2 次 `ITS_SIG_X`
   否则会把新校验误判成 bug。改的是 fixture，不是判定逻辑。
 - **把"断言数等于场景数"当成问题。** 真正的缺口是没有分列统计场景数、
   断言数、通过数，不是两个数字恰好相等；刻意让它们不等是形式主义。
+- **探针覆写了回归的证据。** `a5_final_fatal.py` 第一版复用 `single_tu` 的
+  产物名，跑完探针后 `run/results/single_tu.result` 与对应日志已被替换，
+  manifest 里记的 sha256 指向的内容在磁盘上不存在了——证据集自相矛盾。
+  现改为探针自带名字、写进 `run/probe/`，且全量回归在自检之后跑，
+  保证 `run/results/` 的最终状态由回归本身产生。
+  这类问题正是这一轮反复强调的：**记录对不对，要看它描述的文件还在不在。**
