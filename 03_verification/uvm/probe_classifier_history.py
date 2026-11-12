@@ -94,7 +94,8 @@ def old_effective(old, fields, kase, perr, log, to, rc):
 
 # (defect, fields, case, parse_error, loginfo, timed_out, run_id, returncode)
 # Rows where a timeout with no other defect is the intended verdict.
-INCOMPLETE_OK = {"D5 clean result + timeout", "D5 no result + finish + timeout"}
+INCOMPLETE_OK = {"D5 clean result + timeout", "D5 no result + finish + timeout",
+                 "A4 torn artefact + timeout"}
 
 FIXTURES = [
     # -- first round: the six defects the first audit found ----------------
@@ -139,6 +140,17 @@ FIXTURES = [
      no_log(saw_finish=False, saw_uvm_summary=False), False, None, 1),
     ("D5 abnormal exit, clean result",
      base(), mk_case(uvm_error=0, tus=1), None, no_log(), False, None, 1),
+    # -- fourth round: damage the third round introduced, not old holes -----
+    # 9e5c2b6 kept the definite diagnosis in both of these; the A3 exit-code
+    # rewrite lost it, so these two rows show the old behaviour was right.
+    ("A4 exit rewrite: fatal + rc",
+     {}, mk_case(), "RESULT_MISSING", no_log(native_fatal=1), False, None, 1),
+    ("A4 exit rewrite: stale run id + rc",
+     base(run_id="stale-run"), mk_case(), None, no_log(), False, "r1", 1),
+    # A killed write leaves exactly this shape; it must not decide the verdict.
+    ("A4 torn artefact + timeout",
+     {"run_id": "r1", "case": "c1", "test": "t1", "tus": ""},
+     mk_case(), None, no_log(), True, None, None),
 ]
 
 

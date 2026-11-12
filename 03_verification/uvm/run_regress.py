@@ -297,9 +297,10 @@ TIMEOUT_MARK = "*** TIMEOUT after "
 def _with_exit(status, reason, returncode, timed_out, parse_error):
     """Apply the exit code without overwriting a verdict the content supports.
 
-    An abnormal exit is a fact about the process, not about the DUT, so it may
-    raise the tier and may add a reason, but it must not relabel a case as a
-    "clean result" when there is no readable result to speak of.
+    A definite diagnosis already earned by the content outranks a process-level
+    symptom: the exit code may raise an incomplete run to a failed one, but it
+    never replaces a reason that says more.  The exit code itself is kept as an
+    entry in reasons by _verdict_reasons.
     """
     if returncode in (None, 0) or timed_out:
         return status, reason
@@ -307,11 +308,40 @@ def _with_exit(status, reason, returncode, timed_out, parse_error):
         # A complete, readable, self-consistent record is the only situation in
         # which this label is true.
         return "DIRTY", "NONZERO_EXIT_WITH_CLEAN_RESULT"
-    if parse_error is not None:
-        # No usable artefact: the run itself failed, so say that rather than
-        # describing a file that does not exist as clean.
+    if status == "INCOMPLETE":
+        # Nothing usable came out and the process did not end normally either:
+        # the run itself failed, which says more than the artefact's shape.
         return "FAIL", "SIMULATOR_ERROR"
     return status, reason
+
+
+# Findings that a write cut short can produce: a field that never made it to
+# disk, an empty value on the last line, a line cut in half, or id sums that
+# disagree because a line is missing.  During a timeout these are symptoms, so
+# they downgrade the verdict to "incomplete" rather than "the writer is broken".
+TORN_FINDINGS = ("MISSING_FIELD:", "FIELD_FORMAT:", "RESULT_",
+                 "ID_COUNT_MISMATCH", "FATAL_ID_COUNT_MISMATCH")
+# Findings a torn write cannot produce: a complete identity triple naming
+# another run, or a complete value that is not a number.  Those stand even
+# during a timeout, because the file had to be readable to say them at all.
+FIRM_FINDINGS = ("RUN_ID_MISMATCH:", "CASE_MISMATCH:", "TEST_MISMATCH:")
+
+
+def _torn(reason):
+    """True when an interrupted write could explain this finding."""
+    if not reason:
+        return False
+    for prefix in FIRM_FINDINGS:
+        if reason.startswith(prefix):
+            return False
+    if reason.startswith("FIELD_FORMAT:"):
+        # An empty value is what a cut line leaves behind; a non-empty value
+        # that does not parse is a writer bug, not a torn file.
+        return reason.endswith("=''")
+    for prefix in TORN_FINDINGS:
+        if reason.startswith(prefix):
+            return True
+    return False
 
 
 def _classify(fields, case, parse_error, loginfo, timed_out,
@@ -327,17 +357,20 @@ def _classify(fields, case, parse_error, loginfo, timed_out,
       3. only then are its counters compared with the case's expectations, so a
          stale or malformed record cannot produce a count verdict that hides
          the fact that it is not usable at all;
-      4. a timeout is judged before the artefact's shape: during a timeout a
-         missing, empty or cut-short file is a symptom of the timeout, not
-         independent evidence that the writer is broken;
+      4. a timeout is judged before damage that it could itself have caused;
       5. the shape decides between incomplete and dirty last.
+
+    Returns (status, reason, extra) where extra carries findings that did not
+    become the primary reason but must still reach the reason set.
     """
     loginfo = loginfo or {}
     native_errs = loginfo.get("native_error", 0) + loginfo.get("native_assert", 0)
     allowed_native = int(case["expect"].get("native_errors_allowed", 0))
+    extra = []
 
     def done(status, reason):
-        return _with_exit(status, reason, returncode, timed_out, parse_error)
+        return (*_with_exit(status, reason, returncode, timed_out,
+                            parse_error), extra)
 
     # -- 1. definite failures, whatever the artefact looks like ------------
     # A fatal can land after the result file was written: the file is produced
@@ -361,15 +394,23 @@ def _classify(fields, case, parse_error, loginfo, timed_out,
     if parse_error is None:
         status, reason = _judge_artifact(fields, case, expected_run_id)
         if status != "PASS":
+            if timed_out and _torn(reason):
+                # The file was cut while the run was being killed, so what it
+                # is missing says nothing about the writer.
+                extra.append(reason)
+                return "INCOMPLETE", "TIMEOUT", extra
             return done(status, reason)
     elif parse_error not in ("RESULT_MISSING", "RESULT_EMPTY"):
-        # Structurally broken: nothing inside it can be used, so there is no
-        # count to compare and no verdict to derive from it.
+        # Structurally broken: nothing inside it can be used.  A timeout can
+        # leave a half-written line, so that stays incomplete evidence.
+        if timed_out:
+            extra.append(parse_error)
+            return "INCOMPLETE", "TIMEOUT", extra
         return done("DIRTY", parse_error)
 
     # -- 4. timeout before the artefact's shape ----------------------------
     if timed_out:
-        return "INCOMPLETE", "TIMEOUT"
+        return "INCOMPLETE", "TIMEOUT", extra
 
     # -- 5. shape ----------------------------------------------------------
     if parse_error == "RESULT_MISSING":
@@ -519,7 +560,12 @@ def _judge_artifact(fields, case, expected_run_id=None):
     return "PASS", ""
 
 
-def _verdict_reasons(status, reason, case, loginfo, parse_error, timed_out):
+# The two labels an abnormal exit can become the primary reason for.
+EXIT_DERIVED_LABELS = ("SIMULATOR_ERROR", "NONZERO_EXIT_WITH_CLEAN_RESULT")
+
+
+def _verdict_reasons(status, reason, case, loginfo, parse_error, timed_out,
+                     returncode=None, extra=()):
     """Every fact that independently justifies a non-PASS verdict.
 
     This is the verdict reason set, not the full set of counters the run
@@ -546,8 +592,16 @@ def _verdict_reasons(status, reason, case, loginfo, parse_error, timed_out):
             else "UVM_FATAL_IN_LOG")
     if loginfo.get("native_error", 0) + loginfo.get("native_assert", 0) > allowed:
         add("NATIVE_ERROR")
+    # The exit code decided nothing when it is already the primary reason (as
+    # either of those two labels); otherwise it is a fact that still has to
+    # appear in the record - and only once.
+    if (returncode not in (None, 0) and not timed_out
+            and reason not in EXIT_DERIVED_LABELS):
+        add("NONZERO_EXIT")
     if timed_out:
         add("TIMEOUT")
+    for label in extra:
+        add(label)
     return out
 
 
@@ -558,10 +612,11 @@ def classify(fields, case, parse_error, loginfo, timed_out,
     The first two elements keep the old shape so existing callers are
     unaffected.
     """
-    status, reason = _classify(fields, case, parse_error, loginfo, timed_out,
-                               expected_run_id, returncode)
+    status, reason, extra = _classify(fields, case, parse_error, loginfo,
+                                      timed_out, expected_run_id, returncode)
     return status, reason, _verdict_reasons(status, reason, case, loginfo,
-                                            parse_error, timed_out)
+                                            parse_error, timed_out, returncode,
+                                            extra)
 
 
 def coverage_bins(fields):
@@ -1041,6 +1096,30 @@ def stage_selftest():
         ("abnormal exit, clean result", clean(), mk_case(uvm_error=0, tus=1),
          None, no_log(), False, "DIRTY", "NONZERO_EXIT_WITH_CLEAN_RESULT",
          None, 1),
+        # -- fourth round: the exit code must not outrank a definite diagnosis
+        # A uvm_fatal run exits non-zero too, so overwriting its reason with a
+        # process-level label loses the more specific fact.
+        ("fatal with abnormal exit", {}, mk_case(), "RESULT_MISSING",
+         no_log(native_fatal=1), False, "FAIL", "NATIVE_FATAL", None, 1),
+        ("uvm fatal with abnormal exit", {}, mk_case(), "RESULT_MISSING",
+         no_log(uvm_fatal_lines=1), False, "FAIL", "UVM_FATAL_EARLY_EXIT",
+         None, 1),
+        ("empty result, native error, bad exit", {}, mk_case(), "RESULT_EMPTY",
+         no_log(native_error=1), False, "FAIL", "NATIVE_ERROR", None, 1),
+        ("stale run id with abnormal exit", clean(run_id="stale-run"),
+         mk_case(), None, no_log(), False,
+         "DIRTY", "RUN_ID_MISMATCH:file=stale-run", "r1", 1),
+        # Damage a killed write can cause stays incomplete evidence when the
+        # run was killed for being too slow.
+        ("truncated result plus timeout",
+         {"run_id": "r1", "case": "c1", "test": "t1", "tus": ""},
+         mk_case(), None, no_log(), True, "INCOMPLETE", "TIMEOUT"),
+        ("struct error plus timeout", {}, mk_case(), "RESULT_DUPLICATE_KEY:tus",
+         no_log(), True, "INCOMPLETE", "TIMEOUT"),
+        # An identity error is readable, so a timeout does not explain it away.
+        ("stale run id plus timeout", clean(run_id="stale-run"), mk_case(),
+         None, no_log(), True, "DIRTY",
+         "RUN_ID_MISMATCH:file=stale-run", "r1"),
     ]
     bad = 0
     print("[selftest] classifier behaviour", flush=True)
@@ -1092,6 +1171,31 @@ def stage_selftest():
     print(f"  {'ok ' if ok else 'BAD'} {'timeout alone not a pass':<24} -> {got}"
           f"   want ('INCOMPLETE', 'TIMEOUT', ['TIMEOUT'])", flush=True)
 
+    # The exit code is a fact even when it did not decide the verdict, so it has
+    # to reach the reason set too.
+    extra_checks += 1
+    _s, _r, rs = classify(clean(run_id="stale-run"), mk_case(), None,
+                          no_log(), False, "r1", 1)
+    want_rs = ["RUN_ID_MISMATCH:file=stale-run", "NONZERO_EXIT"]
+    ok = rs == want_rs
+    if not ok:
+        bad += 1
+    print(f"  {'ok ' if ok else 'BAD'} {'exit code in reasons':<24} -> {rs}"
+          f"   want {want_rs}", flush=True)
+
+    # A field lost to a killed write is recorded, but it does not decide the
+    # verdict: the timeout did.
+    extra_checks += 1
+    _s, _r, rs = classify({"run_id": "r1", "case": "c1", "test": "t1",
+                           "tus": ""}, mk_case(), None, no_log(), True)
+    want_rs = ["TIMEOUT", "MISSING_FIELD:beats"]
+    ok = (_s, _r, rs) == ("INCOMPLETE", "TIMEOUT", want_rs)
+    if not ok:
+        bad += 1
+    print(f"  {'ok ' if ok else 'BAD'} {'torn finding kept as reason':<24} -> "
+          f"{(_s, _r, rs)}   want ('INCOMPLETE', 'TIMEOUT', {want_rs})",
+          flush=True)
+
     # Coverage merge must union bins across runs, not average them.
     merged = merge_coverage([
         {"shape": {"0_0": 1, "0_1": 0}},
@@ -1104,7 +1208,8 @@ def stage_selftest():
     print(f"  {'ok ' if ok else 'BAD'} merge unions bins      -> "
           f"hit={m.get('hit_bins')} pct={m.get('pct')}  want hit=2", flush=True)
 
-    total = len(cases) + 4   # + merge, both-reasons, four-reasons, timeout-alone
+    total = len(cases) + 6   # + merge, both-reasons, four-reasons, timeout-alone,
+    #                          exit-in-reasons, torn-finding
     print(f"\nselftest: {'PASS' if bad == 0 else 'FAIL'} ({total - bad}/{total})")
     return 0 if bad == 0 else 1
 
