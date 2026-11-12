@@ -158,6 +158,13 @@ FIXTURES = [
     ("A5 firm hidden by torn: case",
      {"run_id": "r1", "case": "other", "test": "t1"},
      mk_case(), None, no_log(), True, "r1", None),
+    # -- sixth round: the firm scope, still too narrow -----------------------
+    ("A6 duplicate key hid run_id",
+     base(run_id="old-run"), mk_case(), "RESULT_DUPLICATE_KEY:tus",
+     no_log(), True, "r1", None),
+    ("A6 garbage error id under torn",
+     {"run_id": "r1", "case": "c1", "test": "t1", "err.error.BOGUS": "abc"},
+     mk_case(), None, no_log(), True, "r1", None),
 ]
 
 

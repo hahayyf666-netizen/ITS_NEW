@@ -352,13 +352,17 @@ def _classify(fields, case, parse_error, loginfo, timed_out,
 
       1. definite failures read from the log - they hold whatever the artefact
          looks like, and nothing below may downgrade them;
-      2. the artefact has to prove it is this run's output before any count in
-         it is believed: presence, types, identity, then the id totals;
-      3. only then are its counters compared with the case's expectations, so a
+      2. contradictions that are legible and attributable on their own are
+         collected next, so the ordered checks below cannot bury them: a
+         duplicated key elsewhere or a cut tail does not make run_id, case,
+         test or a complete-but-unparsable number unreadable;
+      3. otherwise the artefact has to prove it is this run's output before any
+         count in it is believed: presence, types, identity, then the id totals;
+      4. only then are its counters compared with the case's expectations, so a
          stale or malformed record cannot produce a count verdict that hides
          the fact that it is not usable at all;
-      4. a timeout is judged before damage that it could itself have caused;
-      5. the shape decides between incomplete and dirty last.
+      5. a timeout is judged before damage that it could itself have caused;
+      6. the shape decides between incomplete and dirty last.
 
     Returns (status, reason, extra) where extra carries findings that did not
     become the primary reason but must still reach the reason set.
@@ -390,33 +394,40 @@ def _classify(fields, case, parse_error, loginfo, timed_out,
     if native_errs > allowed_native:
         return done("FAIL", "NATIVE_ERROR")
 
-    # -- 2./3. the artefact, when there is a readable one ------------------
+    # -- 2. legible, attributable contradictions ---------------------------
+    # Not gated on the artefact's shape: a duplicated key elsewhere, or a cut
+    # tail, does not make the untouched fields any less readable.  The
+    # duplicated key itself is the one thing that cannot be attributed.
+    ambiguous = set()
+    if parse_error and parse_error.startswith("RESULT_DUPLICATE_KEY:"):
+        ambiguous = set(parse_error.split(":", 1)[1].split(","))
+    firm = _firm_findings(fields, case, expected_run_id, ambiguous)
+
+    # -- 3. the artefact, when there is a readable one ---------------------
     if parse_error is None:
-        # Readable contradictions are collected before the ordered judgement,
-        # because the order stops at the first gap and would otherwise let a
-        # torn file hide the identity error that is still legible in it.
-        firm = _firm_findings(fields, case, expected_run_id)
         status, reason = _judge_artifact(fields, case, expected_run_id)
-        if firm:
-            for label in firm[1:]:
-                extra.append(label)
-            if reason and reason not in firm:
-                extra.append(reason)
-            return done("DIRTY", firm[0])
-        if status != "PASS":
-            if timed_out and _torn(reason):
-                # The file was cut while the run was being killed, so what it
-                # is missing says nothing about the writer.
-                extra.append(reason)
-                return "INCOMPLETE", "TIMEOUT", extra
-            return done(status, reason)
-    elif parse_error not in ("RESULT_MISSING", "RESULT_EMPTY"):
-        # Structurally broken: nothing inside it can be used.  A timeout can
-        # leave a half-written line, so that stays incomplete evidence.
-        if timed_out:
-            extra.append(parse_error)
+    elif parse_error in ("RESULT_MISSING", "RESULT_EMPTY"):
+        status, reason = None, None
+    else:
+        # Structurally broken: nothing inside it can be used as a whole, but
+        # the individual fields may still have been judged above.
+        status, reason = "DIRTY", parse_error
+
+    if firm:
+        # A contradiction that is legible outranks whatever else the file is.
+        for label in firm[1:]:
+            extra.append(label)
+        if reason and reason not in firm:
+            extra.append(reason)
+        return done("DIRTY", firm[0])
+
+    if status is not None and status != "PASS":
+        if timed_out and _torn(reason):
+            # The file was cut while the run was being killed, so what it
+            # is missing says nothing about the writer.
+            extra.append(reason)
             return "INCOMPLETE", "TIMEOUT", extra
-        return done("DIRTY", parse_error)
+        return done(status, reason)
 
     # -- 4. timeout before the artefact's shape ----------------------------
     if timed_out:
@@ -432,8 +443,18 @@ def _classify(fields, case, parse_error, loginfo, timed_out,
     return done("PASS", "")
 
 
-def _firm_findings(fields, case, expected_run_id=None):
-    """Findings that stand whatever else the artefact is missing.
+DYNAMIC_COUNT_PREFIXES = ("err.error.", "err.fatal.")
+
+
+def _count_keys(fields):
+    """Every field the verdict reads as a number: fixed ones and per-id ones."""
+    keys = [k for k in REQUIRED_FIELDS if k not in STRING_FIELDS]
+    keys.extend(k for k in fields if k.startswith(DYNAMIC_COUNT_PREFIXES))
+    return keys
+
+
+def _firm_findings(fields, case, expected_run_id=None, ambiguous=()):
+    """Contradictions that are legible and attributable on their own.
 
     _judge_artifact stops at the first absent field, so on a torn file the
     identity block below it is never reached - yet run_id, case and test are
@@ -441,27 +462,34 @@ def _firm_findings(fields, case, expected_run_id=None):
     on their own keeps a readable contradiction from being hidden behind a
     truncation symptom.
 
-    An empty value is not reported here: that is what a cut line leaves behind,
-    which is the torn case, not this one.
+    Two things stay out of scope:
+      * an empty value, because that is what a cut line leaves behind;
+      * a key named in `ambiguous` - a duplicated key kept only its last value,
+        so it cannot be attributed.  Duplicating tus says nothing about run_id,
+        and a duplicated run_id is not compared at all.
     """
     out = []
+    skip = set(ambiguous)
 
     def add(label):
         if label not in out:
             out.append(label)
 
-    rid = fields.get("run_id")
-    if (expected_run_id is not None and rid not in (None, "")
-            and rid != expected_run_id):
-        add(f"RUN_ID_MISMATCH:file={rid}")
-    name = fields.get("case")
-    if name not in (None, "") and name != case["name"]:
-        add(f"CASE_MISMATCH:file={name}")
-    testname = fields.get("test")
-    if testname not in (None, "") and testname != case["testname"]:
-        add(f"TEST_MISMATCH:file={testname}")
-    for key in REQUIRED_FIELDS:
-        if key in STRING_FIELDS:
+    if "run_id" not in skip:
+        rid = fields.get("run_id")
+        if (expected_run_id is not None and rid not in (None, "")
+                and rid != expected_run_id):
+            add(f"RUN_ID_MISMATCH:file={rid}")
+    if "case" not in skip:
+        name = fields.get("case")
+        if name not in (None, "") and name != case["name"]:
+            add(f"CASE_MISMATCH:file={name}")
+    if "test" not in skip:
+        testname = fields.get("test")
+        if testname not in (None, "") and testname != case["testname"]:
+            add(f"TEST_MISMATCH:file={testname}")
+    for key in _count_keys(fields):
+        if key in skip:
             continue
         raw = fields.get(key)
         if raw in (None, ""):
@@ -1187,6 +1215,24 @@ def stage_selftest():
          {"run_id": "r1", "case": "c1", "test": "t1", "tus": "abc"},
          mk_case(), None, no_log(), True, "DIRTY",
          "FIELD_FORMAT:NOT_A_COUNT:tus='abc'"),
+        # -- sixth round: the firm scope was still too narrow --------------
+        # A duplicated key elsewhere does not make the untouched run_id
+        # unreadable...
+        ("duplicate key with stale run id", clean(run_id="old-run"),
+         mk_case(), "RESULT_DUPLICATE_KEY:tus", no_log(), True, "DIRTY",
+         "RUN_ID_MISMATCH:file=old-run", "r1"),
+        # ...but a duplicated run_id itself cannot be attributed, so it is not
+        # compared at all and the torn verdict stands.
+        ("duplicated run id is not trusted", clean(run_id="old-run"),
+         mk_case(), "RESULT_DUPLICATE_KEY:run_id", no_log(), True,
+         "INCOMPLETE", "TIMEOUT", "r1"),
+        # Per-id counters are judged as strictly as the fixed ones, even when
+        # the required fields never got written.
+        ("garbage error id under torn artefact",
+         {"run_id": "r1", "case": "c1", "test": "t1",
+          "err.error.BOGUS": "abc"},
+         mk_case(), None, no_log(), True, "DIRTY",
+         "FIELD_FORMAT:NOT_A_COUNT:err.error.BOGUS='abc'"),
     ]
     bad = 0
     print("[selftest] classifier behaviour", flush=True)
@@ -1276,6 +1322,20 @@ def stage_selftest():
           f"{(_s, _r, rs)}   want ('DIRTY', 'RUN_ID_MISMATCH:file=old-run', "
           f"{want_rs})", flush=True)
 
+    # The reason the artefact was rejected has to survive next to the
+    # contradiction that outranked it.
+    extra_checks += 1
+    _s, _r, rs = classify(clean(run_id="old-run"), mk_case(),
+                          "RESULT_DUPLICATE_KEY:tus", no_log(), True, "r1")
+    want_rs = ["RUN_ID_MISMATCH:file=old-run", "TIMEOUT",
+               "RESULT_DUPLICATE_KEY:tus"]
+    ok = (_s, _r) == ("DIRTY", "RUN_ID_MISMATCH:file=old-run") and rs == want_rs
+    if not ok:
+        bad += 1
+    print(f"  {'ok ' if ok else 'BAD'} {'duplicate key kept as reason':<24} -> "
+          f"{(_s, _r, rs)}   want ('DIRTY', 'RUN_ID_MISMATCH:file=old-run', "
+          f"{want_rs})", flush=True)
+
     # Coverage merge must union bins across runs, not average them.
     merged = merge_coverage([
         {"shape": {"0_0": 1, "0_1": 0}},
@@ -1288,8 +1348,9 @@ def stage_selftest():
     print(f"  {'ok ' if ok else 'BAD'} merge unions bins      -> "
           f"hit={m.get('hit_bins')} pct={m.get('pct')}  want hit=2", flush=True)
 
-    total = len(cases) + 7   # + merge, both-reasons, four-reasons, timeout-alone,
-    #                          exit-in-reasons, torn-finding, firm-beats-torn
+    total = len(cases) + 8   # + merge, both-reasons, four-reasons, timeout-alone,
+    #                          exit-in-reasons, torn-finding, firm-beats-torn,
+    #                          duplicate-key-in-reasons
     print(f"\nselftest: {'PASS' if bad == 0 else 'FAIL'} ({total - bad}/{total})")
     return 0 if bad == 0 else 1
 
