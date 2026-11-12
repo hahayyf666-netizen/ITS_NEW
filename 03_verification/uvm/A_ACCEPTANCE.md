@@ -13,18 +13,31 @@
 不是新需求。本文件所在提交已把 6 类缺陷全部在 A 阶段内关闭：未进入 B 阶段、
 未改 DUT。逐项修前/修后证据见 §9。
 
+第三轮独立复核确认上述修复可复现，但指出 D5 的**异常组合**判定仍有遗留
+（空结果文件掩盖 UVM_FATAL 与原生错误、超时可返回 PASS、`reasons` 不是
+判定原因的集合）。三处已在 §10 关闭，判定顺序据此重写。
+
 | 验收项 | 结果 | 证据 |
 | --- | --- | --- |
 | 全量回归 | **22/22 PASS** | `run/regress_A2_summary.txt`、`run/REGRESSION.json` |
-| 分类器自检 | **43/43**（32 条原有用例 + 9 条新反例 + 2 条附加检查） | `python run_regress.py selftest` |
+| 分类器自检 | **53/53**（49 条用例 + 4 条附加检查） | `python run_regress.py selftest` |
 | 检查器反例自检 | **9 场景 / 46 断言 / 46 通过** | `run/logs/selftest_*.log`、`python a5_selftest.py` |
 | final_phase 真实反例 | **10 断言 / 10 通过** | `run/A5_FINAL_FATAL.json`、`python a5_final_fatal.py` |
-| 分类器修前/修后对照 | 8 个反例：修前 **8 个全部漏检**，修后 **8 个全部拒绝** | §9.1、`run/probe/classifier_before_after.txt` |
-| 功能覆盖 | 52/54 = 96.30%（与 A 阶段前一致） | `run/COVERAGE_CODE.json` |
-| 代码覆盖 | 语句 85.16% / 分支 72.60% / 条件 67.64% / 断言 100%（修前修后逐位相同） | 同上 |
-| 输入指纹 | `5976e47b6be513ca`，18 个文件，无缺失，与提交态一致 | `run/RUN_MANIFEST.json` |
+| 分类器修前/修后对照 | 16 个反例：**13 个被修正**，3 个原本已正确（作回归守卫），新判定器 0 个错 | §9.1、§10.4、`run/probe/classifier_before_after.txt` |
+| 功能覆盖 | 52/54 = 96.30%（与 A 阶段前一致） | `run/REGRESSION.json` 的 `merged_coverage` |
+| 代码覆盖 | 语句 85.16% / 分支 72.60% / 条件 67.64% / 表达式 65.21% / 断言 100% / FSM 状态 100% / FSM 转移 42.30% / 翻转 41.13% | `run/COVERAGE_CODE.json`（在最终回归**之后**生成，与同一轮 ucdb 对应） |
+| 输入指纹 | `77a8c726791dfce8`，18 个文件，无缺失，与提交态一致 | `run/RUN_MANIFEST.json` |
 | 产物一致性 | 回归收尾复核 22 个结果文件 sha256，`artifact_drift` 为空 | `run/REGRESSION.json` |
 | 运行身份 | 22 例 `run_id` 互不相同，且每例结果文件内的 `run_id` 与本次运行一致 | 同上 |
+
+自检计数的账目按真实清单写：第一轮结束时是 32 条用例 + 1 条合并检查 = 33；
+第二轮加入 9 条反例与 1 条 `reasons` 检查 = 43；第三轮加入 8 条异常组合用例
+与 1 条四诊断 `reasons` 检查、1 条超时单独判定检查 = 53。
+（此前正文写过"33 + 9 条反例 + 2 条附加"，把原有的合并检查重复计入，
+已按实际清单更正。）
+
+本次回归的时间窗与身份以文件为准，不在正文重抄：`run/regress_A2_summary.txt`
+第 4 行是 start/end，第 7 行起是逐例 `run_id`。
 
 场景数（9）、断言数（46）、通过数（46）分列记录，不要求断言数与场景数
 互不相等：反例自检的价值在于**每条断言都能独立成立**，而不在数字关系。
@@ -171,7 +184,7 @@ A5 证明的正是后者。
 | `run/RUN_MANIFEST.json` | 启动/结束记录、每例 `run_id`、完整命令行、日志计数、缺失输入、退出码 |
 | `run/COVERAGE_CODE.json` | DUT 代码覆盖率 |
 | `run/A5_FINAL_FATAL.json` | final_phase 反例两次运行的判定与产物 sha256 |
-| `run/probe/classifier_before_after.txt` | 8 个反例的修前/修后判定 |
+| `run/probe/classifier_before_after.txt` | 16 个反例的修前/修后判定 |
 | `run/probe/a5_final_fatal_*.result` | 反例的产物（不占用 `run/results/`） |
 | `run/logs/regress_<case>.log` | 每例原始日志 |
 | `run/logs/selftest_*.log` | A5 九个场景日志 |
@@ -181,7 +194,7 @@ A5 证明的正是后者。
 
 ```
 python run_its_uvm.py prep
-python run_regress.py selftest      # 43/43
+python run_regress.py selftest      # 53/53
 python a5_selftest.py               # 9 场景 / 46 断言
 python a5_final_fatal.py            # 10 断言
 python probe_classifier_history.py  # 修前/修后对照
@@ -282,9 +295,9 @@ python run_regress.py coverage
 
 1. 先看 `cases.json` 中 11 个 `causality` 与 `uvm_error_ids`：
    契约本身是否成立，是最容易出问题的地方。
-2. 再看 `run_regress.py` 中 `_classify` 的分支顺序，
-   特别是"fatal/原生错误无条件先判"与 `RESULT_MISSING` 内部的优先级。
-3. 复跑三个自检：`python run_regress.py selftest`（43/43）、
+2. 再看 `run_regress.py` 中 `_classify` 的分支顺序（§10.2 是当前生效的版本），
+   特别是"诊断事实先于产物形态、身份先于计数、超时先于形态"这三条。
+3. 复跑三个自检：`python run_regress.py selftest`（53/53）、
    `python a5_selftest.py`（9 场景 46/46）、`python a5_final_fatal.py`（10/10）。
 4. 看 `its_uvm_pkg.sv` 中 monitor 的 `run_phase` 复位状态机与
    `not_two_state()`，确认 `warmup` 与 `checks_on` 既不漏检也不多检。
@@ -336,9 +349,13 @@ D1/D2 属于**把已约定的验收条件降级**，不是新需求；其余为�
 | D5 超时优先，吞掉已发生的原生错误 | `RESULT_MISSING` + native error + 超时 | INCOMPLETE / TIMEOUT | FAIL / `NATIVE_ERROR`（`reasons` 保留 TIMEOUT） |
 | D6 指纹漏 3 个实际编译的 RTL | 改这 3 个文件，指纹不变 | 指纹 15 个文件 | 18 个文件，源自编译清单 |
 
-分类器自检从 33/33 变为 **43/43**；新增 9 条反例行中，8 条在修前被判 PASS。
+分类器自检从 33/33 变为 **43/43**（第三轮后为 53/53，见 §10.5）；新增 9 条反例行中，8 条在修前被判 PASS。
 
 ### 9.2 判定顺序（D5）
+
+> 本节记的是第二轮修完后的顺序，**已被 §10.2 取代**：第三轮复核指出它把
+> 产物形态排在诊断之前，导致空文件仍会掩盖 UVM_FATAL 与原生错误，且超时
+> 排在形态判定之前会把"超时 + 缺文件"判成 DIRTY。当前生效的判定顺序见 §10.2。
 
 修前：`RESULT_MISSING` 内部先看超时；有结果文件时完全不看日志里的 fatal。
 修后：fatal 与原生错误**无条件先判**，超时不再具有豁免力。
@@ -348,10 +365,9 @@ D1/D2 属于**把已约定的验收条件降级**，不是新需求；其余为�
 3. 有结果文件 + 日志 UVM_FATAL → FAIL / `UVM_FATAL_IN_LOG`
 4. 无结果文件时：`UVM_FATAL_EARLY_EXIT` → `NATIVE_ERROR` → 超时 → DIRTY → INCOMPLETE
 
-`reasons` 是列表，`reason` 仍是单值主因，既有调用方（自检、汇总表、
-`REGRESSION.json`）不受影响；超时与失败同时出现时两者都留在 `reasons` 里，
-不作为通过证据。原生错误"可能来自半途状态"不构成忽略它的理由：若某类错误在
-中断流程中允许发生，需要在契约里写明限定条件，而不是由判定器代为豁免。
+`reason` 是单值主因，既有调用方（自检、汇总表、`REGRESSION.json`）不受影响。
+原生错误"可能来自半途状态"不构成忽略它的理由：若某类错误在中断流程中允许
+发生，需要在契约里写明限定条件，而不是由判定器代为豁免。
 
 ### 9.3 final_phase fatal：真实仿真反例（D5）
 
@@ -433,3 +449,113 @@ A5 新增 `done_z`、`req_x` 两个场景，各 2 拍，均报 2 次 `ITS_SIG_X`
   现改为探针自带名字、写进 `run/probe/`，且全量回归在自检之后跑，
   保证 `run/results/` 的最终状态由回归本身产生。
   这类问题正是这一轮反复强调的：**记录对不对，要看它描述的文件还在不在。**
+
+---
+
+## 10 第三轮复核：D5 异常组合的修正
+
+第三轮独立复核确认 §9 的修复可复现，同时指出三处判定口径问题。三处都不是
+"再加一个分支"能解决的，根因是**判定顺序把产物形态放在了诊断事实之前**。
+
+### 10.1 三处问题与根因
+
+| 问题 | 现象（复核方实测） | 根因 | 现在 |
+| --- | --- | --- | --- |
+| 空结果文件掩盖两类错误 | `RESULT_EMPTY`＋日志 UVM_FATAL → `INCOMPLETE/EMPTY_RESULT_FILE`；`RESULT_EMPTY`＋原生 error → 同上 | UVM_FATAL 检查被 `parse_error not in (MISSING, EMPTY)` 挡住（本意是让 MISSING 走自己的分支，却没给 EMPTY 等价分支）；原生 error 只在超时时提前处理，通用预算检查在 EMPTY 返回之后 | 两条都先于形态判定，见 §10.2 |
+| 超时仍可返回 PASS | 干净完整文件＋`timed_out=True` → `PASS`，`reasons=['TIMEOUT']` | 超时只在外层补一条原因，规则本身没有"超时不得判 PASS"；且外层覆盖式改写 `reasons` 会丢掉 TIMEOUT | 超时在形态判定之前，单独出现即 `INCOMPLETE/TIMEOUT` |
+| `reasons` 不是完整列表 | 四类诊断同时存在 → `[NATIVE_FATAL, TIMEOUT]` | 实现是"主因 + 可选 TIMEOUT"，docstring 写的却是"complete list, nothing dropped" | 改为**判定原因集合**，四条都在；`log`/`fields` 才是诊断计数全集 |
+
+超时来源同时改掉：原用 `elapsed >= timeout_s - 1` 推断，会把刚好在限内跑完的
+运行判成超时，也会漏掉别处发来的终止。执行器 `run_its_uvm.run()` 在
+`TimeoutExpired` 分支里写 `*** TIMEOUT after Ns` 并返回 `rc=-9`，判定器只认
+这条**专用标记**；`rc=-9` 本身不作为超时证据，因为其他异常终止也报同样的码。
+
+### 10.2 事实集合与判定顺序（当前生效）
+
+判定器先收事实，再由事实定档位，不按文件状态分叉。
+
+| 事实 | 来源 | 性质 |
+| --- | --- | --- |
+| F1 native fatal | 日志 `** Fatal` | 诊断，独立否决 PASS |
+| F2 native error/assert 超出用例允许值 | 日志 | 同上 |
+| F3 UVM_FATAL 行 | 日志 | 同上 |
+| F4 非超时的非零退出 | 执行器 `rc` | 同上（档位为 DIRTY） |
+| F5 超时 | 日志 `*** TIMEOUT` 标记 | 同上 |
+| F6 无结果文件 / F7 空结果文件 | 解析 | 形态 |
+| F8 结构错误 / F9 身份或格式不符 | 解析 | 可信度 |
+| F10 计数与期望不符 | 字段 | 判定（**仅当 F8/F9 全部通过时成立**） |
+
+顺序：
+
+1. **F1 → FAIL/`NATIVE_FATAL`**；F3 → FAIL/`UVM_FATAL_EARLY_EXIT`（无文件时）
+   或 `UVM_FATAL_IN_LOG`；F2 → FAIL/`NATIVE_ERROR`。三条都只看日志，与产物无关。
+2. **可信门**：字段缺失/类型错/身份不符/ID 总和不自洽 → DIRTY。到此为止，
+   这份记录里的任何计数都不采信。
+3. **F10 计数比较**——只有过了可信门才执行，所以"错 `run_id` ＋ 计数不符"
+   得到 DIRTY 而不是 FAIL：另一轮运行的计数不构成本轮的判定依据。
+4. **F4 退出码**：有干净完整产物 → DIRTY/`NONZERO_EXIT_WITH_CLEAN_RESULT`；
+   无可用产物 → FAIL/`SIMULATOR_ERROR`（不把不存在的文件称作"干净结果"）。
+5. **F5 超时 → INCOMPLETE/`TIMEOUT`**，在形态判定**之前**：超时期间缺文件、
+   空文件、截断文件都是超时的次生现象，不能单凭它们升级成 DIRTY。
+6. F6/F7 → 形态判定：无文件且摘要干净且有 `$finish` → DIRTY/`FINISHED_WITHOUT_RESULT`，
+   否则 INCOMPLETE/`NO_RESULT_FILE`；空文件 → INCOMPLETE/`EMPTY_RESULT_FILE`。
+7. 都不成立 → PASS。
+
+### 10.3 `reasons` 的语义
+
+`reasons` = **判定原因集合**：本次判定中所有成立、且能独立支撑非 PASS 的事实
+（F1–F5 按固定顺序去重），加上决定档位的那条形态原因。四诊断叠加得到
+`[NATIVE_FATAL, UVM_FATAL_EARLY_EXIT, NATIVE_ERROR, TIMEOUT]`，四条都在。
+
+它**不是**诊断计数全集：完整的 `native_error` / `uvm_error_lines` 等计数在
+`log` 与 `fields` 里，负向用例"预期内"的 UVM_ERROR 不进 `reasons`（那不是判定原因）。
+之所以不另开一个 diagnostics 集合：两套字段各自演化，正是这次"文档说完整列表、
+实现只有两条"的成因。
+
+### 10.4 新增反例的修前/修后
+
+`probe_classifier_history.py` 把 16 个 fixture 同时喂给历史判定器（`9e5c2b6`，
+含当时 `run_one` 里的退出码补丁）与当前判定器：
+
+| 组合 | 修前 | 修后 |
+| --- | --- | --- |
+| `RESULT_EMPTY` + 日志 UVM_FATAL | INCOMPLETE/`EMPTY_RESULT_FILE` | FAIL/`UVM_FATAL_IN_LOG` |
+| `RESULT_EMPTY` + 原生 error（未超时） | INCOMPLETE/`EMPTY_RESULT_FILE` | FAIL/`NATIVE_ERROR` |
+| 完整干净文件 + 超时 | PASS | INCOMPLETE/`TIMEOUT` |
+| 无文件 + 干净摘要 + `$finish` + 超时 | INCOMPLETE/`TIMEOUT` | INCOMPLETE/`TIMEOUT`（守卫） |
+| 四诊断叠加 | INCOMPLETE/`TIMEOUT` | FAIL/`NATIVE_FATAL`，`reasons` 四条 |
+| 错 `run_id` + 计数不符 | FAIL/`BEATS_MISMATCH` | DIRTY/`RUN_ID_MISMATCH` |
+| 非超时异常退出 + 无文件 | FAIL/`SIMULATOR_ERROR` | FAIL/`SIMULATOR_ERROR`（守卫） |
+| 非超时异常退出 + 干净结果 | DIRTY/`NONZERO_EXIT_WITH_CLEAN_RESULT` | 同（守卫） |
+
+16 个 fixture 中 13 个被本次修正改变，3 个原本已正确并留作回归守卫；
+新判定器 0 个错。后三行是复核方要求补的组合，其中两行证明的是"没有被改坏"，
+不宣称新发现。
+
+### 10.5 自检账目
+
+49 条用例 + 4 条附加检查（合并、双原因、四诊断 `reasons`、超时单独判定）
+= **53/53**。第一轮结束时是 32 + 1 = 33，第二轮 33 + 10 = 43，
+第三轮 43 + 10 = 53。此前正文写的"33 + 9 条反例 + 2 条附加"把原有的合并检查
+重复计入，已按实际清单更正为现在的写法。
+
+### 10.6 代码覆盖的产物来源（自查）
+
+`run/COVERAGE_CODE.json` 之前是上一轮 ucdb 的产物（09:19:44），而 `run/ucdb/`
+已被最终回归覆盖，把这个文件列为本轮代码覆盖的证据并不成立。现在 coverage
+阶段排在回归之后执行，`COVERAGE_CODE.json`（10:12:58）与 22 个 ucdb
+（10:11:47–10:12:58）同轮，八项数字未变。
+
+### 10.7 我在这一轮犯的错
+
+- **只测了刚改的那条路径。** 空文件相关的反例我只加了"空文件 + native fatal"，
+  正好是当次修好的那条；相邻的 UVM_FATAL 与原生 error 两条没测，于是同一个
+  分支里的另外两个洞留到了第三轮。这与"只 grep 计数名就下全局结论"是同一类
+  错误，只是发生在测试覆盖而不是代码阅读上。
+- **把 `reasons` 说成完整列表。** docstring 写 "complete list … nothing
+  observed is dropped"，实现只有"主因 + TIMEOUT"。能力声明超过实现，第三次
+  出现同类问题，这次改成按实现写。
+- **手抄了上一轮的时间与 `run_id`。** 交付文字里的 start 09:26:09 与
+  `092609-19988-001` 属于更早一轮；实际是 09:28:23 / `092823-25528-001`。
+  原因是先读了旧 summary，随后用新 manifest 重生成文件，写文字时引用了读到的旧值。
+- **自检账目算错。** "33 + 9 + 2 = 44" 与 43 对不上，因为 33 里已经含合并检查。
