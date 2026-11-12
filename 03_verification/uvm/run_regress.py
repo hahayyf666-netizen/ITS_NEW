@@ -392,7 +392,17 @@ def _classify(fields, case, parse_error, loginfo, timed_out,
 
     # -- 2./3. the artefact, when there is a readable one ------------------
     if parse_error is None:
+        # Readable contradictions are collected before the ordered judgement,
+        # because the order stops at the first gap and would otherwise let a
+        # torn file hide the identity error that is still legible in it.
+        firm = _firm_findings(fields, case, expected_run_id)
         status, reason = _judge_artifact(fields, case, expected_run_id)
+        if firm:
+            for label in firm[1:]:
+                extra.append(label)
+            if reason and reason not in firm:
+                extra.append(reason)
+            return done("DIRTY", firm[0])
         if status != "PASS":
             if timed_out and _torn(reason):
                 # The file was cut while the run was being killed, so what it
@@ -420,6 +430,46 @@ def _classify(fields, case, parse_error, loginfo, timed_out,
     if parse_error == "RESULT_EMPTY":
         return done("INCOMPLETE", "EMPTY_RESULT_FILE")
     return done("PASS", "")
+
+
+def _firm_findings(fields, case, expected_run_id=None):
+    """Findings that stand whatever else the artefact is missing.
+
+    _judge_artifact stops at the first absent field, so on a torn file the
+    identity block below it is never reached - yet run_id, case and test are
+    the first three lines and are exactly what survives a cut.  Comparing them
+    on their own keeps a readable contradiction from being hidden behind a
+    truncation symptom.
+
+    An empty value is not reported here: that is what a cut line leaves behind,
+    which is the torn case, not this one.
+    """
+    out = []
+
+    def add(label):
+        if label not in out:
+            out.append(label)
+
+    rid = fields.get("run_id")
+    if (expected_run_id is not None and rid not in (None, "")
+            and rid != expected_run_id):
+        add(f"RUN_ID_MISMATCH:file={rid}")
+    name = fields.get("case")
+    if name not in (None, "") and name != case["name"]:
+        add(f"CASE_MISMATCH:file={name}")
+    testname = fields.get("test")
+    if testname not in (None, "") and testname != case["testname"]:
+        add(f"TEST_MISMATCH:file={testname}")
+    for key in REQUIRED_FIELDS:
+        if key in STRING_FIELDS:
+            continue
+        raw = fields.get(key)
+        if raw in (None, ""):
+            continue
+        _val, err = as_count(fields, key)
+        if err:
+            add(f"FIELD_FORMAT:{err}")
+    return out
 
 
 def _judge_artifact(fields, case, expected_run_id=None):
@@ -1120,6 +1170,23 @@ def stage_selftest():
         ("stale run id plus timeout", clean(run_id="stale-run"), mk_case(),
          None, no_log(), True, "DIRTY",
          "RUN_ID_MISMATCH:file=stale-run", "r1"),
+        # -- fifth round: a readable identity error must not be hidden by a
+        # truncation symptom found earlier in the same file.
+        ("identity under torn artefact",
+         {"run_id": "old-run", "case": "c1", "test": "t1"},
+         mk_case(), None, no_log(), True, "DIRTY",
+         "RUN_ID_MISMATCH:file=old-run", "r1"),
+        ("case mismatch under torn artefact",
+         {"run_id": "r1", "case": "other", "test": "t1"},
+         mk_case(), None, no_log(), True, "DIRTY", "CASE_MISMATCH:file=other"),
+        ("test mismatch under torn artefact",
+         {"run_id": "r1", "case": "c1", "test": "other"},
+         mk_case(), None, no_log(), True, "DIRTY", "TEST_MISMATCH:file=other"),
+        # Same shadowing for a complete but unusable value.
+        ("bad value under torn artefact",
+         {"run_id": "r1", "case": "c1", "test": "t1", "tus": "abc"},
+         mk_case(), None, no_log(), True, "DIRTY",
+         "FIELD_FORMAT:NOT_A_COUNT:tus='abc'"),
     ]
     bad = 0
     print("[selftest] classifier behaviour", flush=True)
@@ -1196,6 +1263,19 @@ def stage_selftest():
           f"{(_s, _r, rs)}   want ('INCOMPLETE', 'TIMEOUT', {want_rs})",
           flush=True)
 
+    # The identity error is the primary reason, but the truncation that hid it
+    # and the timeout that caused it are still facts.
+    extra_checks += 1
+    _s, _r, rs = classify({"run_id": "old-run", "case": "c1", "test": "t1"},
+                          mk_case(), None, no_log(), True, "r1")
+    want_rs = ["RUN_ID_MISMATCH:file=old-run", "TIMEOUT", "MISSING_FIELD:tus"]
+    ok = (_s, _r) == ("DIRTY", "RUN_ID_MISMATCH:file=old-run") and rs == want_rs
+    if not ok:
+        bad += 1
+    print(f"  {'ok ' if ok else 'BAD'} {'firm beats torn in reasons':<24} -> "
+          f"{(_s, _r, rs)}   want ('DIRTY', 'RUN_ID_MISMATCH:file=old-run', "
+          f"{want_rs})", flush=True)
+
     # Coverage merge must union bins across runs, not average them.
     merged = merge_coverage([
         {"shape": {"0_0": 1, "0_1": 0}},
@@ -1208,8 +1288,8 @@ def stage_selftest():
     print(f"  {'ok ' if ok else 'BAD'} merge unions bins      -> "
           f"hit={m.get('hit_bins')} pct={m.get('pct')}  want hit=2", flush=True)
 
-    total = len(cases) + 6   # + merge, both-reasons, four-reasons, timeout-alone,
-    #                          exit-in-reasons, torn-finding
+    total = len(cases) + 7   # + merge, both-reasons, four-reasons, timeout-alone,
+    #                          exit-in-reasons, torn-finding, firm-beats-torn
     print(f"\nselftest: {'PASS' if bad == 0 else 'FAIL'} ({total - bad}/{total})")
     return 0 if bad == 0 else 1
 

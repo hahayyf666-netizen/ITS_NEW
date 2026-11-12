@@ -151,6 +151,13 @@ FIXTURES = [
     ("A4 torn artefact + timeout",
      {"run_id": "r1", "case": "c1", "test": "t1", "tus": ""},
      mk_case(), None, no_log(), True, None, None),
+    # -- fifth round: the readable contradiction was behind the first gap ----
+    ("A5 firm hidden by torn: run_id",
+     {"run_id": "old-run", "case": "c1", "test": "t1"},
+     mk_case(), None, no_log(), True, "r1", None),
+    ("A5 firm hidden by torn: case",
+     {"run_id": "r1", "case": "other", "test": "t1"},
+     mk_case(), None, no_log(), True, "r1", None),
 ]
 
 
