@@ -7,20 +7,33 @@
 
 ## 0 结论
 
+**状态：修复方自验通过，待独立复核。**
+
+第二轮独立审核发现 6 类缺陷，其中 D1/D2 属于把**已约定的验收条件降级**，
+不是新需求。本文件所在提交已把 6 类缺陷全部在 A 阶段内关闭：未进入 B 阶段、
+未改 DUT。逐项修前/修后证据见 §9。
+
 | 验收项 | 结果 | 证据 |
 | --- | --- | --- |
-| 全量回归 | **22/22 PASS** | `run/regress_A_final.txt`、`run/REGRESSION.json` |
-| 分类器自检 | **33/33** | `python run_regress.py selftest` |
-| 检查器反例自检 | **15/15** | `run/logs/selftest_*.log`、`python a5_selftest.py` |
-| 功能覆盖 | 52/54 = 96.30%（与 A 阶段前一致） | 合并覆盖输出 |
-| 输入指纹 | `b7d0f145ad57684f` | `run/RUN_MANIFEST.json` |
+| 全量回归 | **22/22 PASS** | `run/regress_A2_summary.txt`、`run/REGRESSION.json` |
+| 分类器自检 | **43/43**（32 条原有用例 + 9 条新反例 + 2 条附加检查） | `python run_regress.py selftest` |
+| 检查器反例自检 | **9 场景 / 46 断言 / 46 通过** | `run/logs/selftest_*.log`、`python a5_selftest.py` |
+| final_phase 真实反例 | **10 断言 / 10 通过** | `run/A5_FINAL_FATAL.json`、`python a5_final_fatal.py` |
+| 分类器修前/修后对照 | 8 个反例：修前 **8 个全部漏检**，修后 **8 个全部拒绝** | §9.1、`run/probe/classifier_before_after.txt` |
+| 功能覆盖 | 52/54 = 96.30%（与 A 阶段前一致） | `run/COVERAGE_CODE.json` |
+| 代码覆盖 | 语句 85.16% / 分支 72.60% / 条件 67.64% / 断言 100%（修前修后逐位相同） | 同上 |
+| 输入指纹 | `647fb64c3bdf78e6`，18 个文件，无缺失 | `run/RUN_MANIFEST.json` |
+| 运行身份 | 22 例 `run_id` 互不相同，且每例结果文件内的 `run_id` 与本次运行一致 | 同上 |
+
+场景数（9）、断言数（46）、通过数（46）分列记录，不要求断言数与场景数
+互不相等：反例自检的价值在于**每条断言都能独立成立**，而不在数字关系。
 
 覆盖数字没有变化是**预期**的：A 阶段只改判定与检查器，不碰覆盖模型。
 分母 54 与 `stall_phase` 的 66.67% 仍需带上 RTL 门控解释（wrapper:1354），
 这部分留到 B 阶段。
 
-**审核请从第 7 节开始看**：那里列了工具链限制、四个我自己犯的错误、
-一处坏检查差点导致的错误结论，以及两处我认为证据偏弱的判断。
+**审核请从第 7 节和第 9 节开始看**：第 7 节列了工具链限制、我自己犯的错误、
+一处坏检查差点导致的错误结论；第 9 节是第二轮审核 6 类缺陷的修前/修后证据。
 
 ---
 
@@ -42,6 +55,10 @@
 | A4 因果契约 | `cases.json` 11 个 `neg_*` | 由 `uvm_error_min:1` 改为「精确 ID + 精确/上下界数量 + 因果说明」 |
 | A4 符号期望 | `run_regress.py:271` | 期望可写 `@beats`/`@tus`，把契约绑到计数而不是绑到某条向量的观测值 |
 | A5 反例环境 | `its_check_selftest_tb.sv`、`a5_selftest.py` | 无 DUT，直接驱动接口，证明检查器会红 |
+
+第二轮审核后的修复（D1–D6）落点表见 §9.1；本节的 A0–A5 落点行号未变，
+`run_regress.py` 因新增分支整体下移，引用时以符号名（`REQUIRED_FIELDS`、
+`_classify`、`write_manifest`）为准。
 
 ---
 
@@ -65,8 +82,8 @@ valid 被 request **组合门控**（源码注释写明这是赛题契约），�
 | 检查 ID | 条件 | 在现 RTL 上是否可达 | 计入"协议通过" |
 | --- | --- | --- | --- |
 | `ITS_DONE_NO_FIRE` | `done=1` 且未完成握手 | 否，需 force 或 RTL 回归 | 是（失败即红） |
-| `ITS_VLD_STALL` | `vld=1 && req=0` | 否 | **否**，只记 guard 计数并发 info |
-| `ITS_SIG_X` | `vld`/`done` 为 X | 是，X 传播是真实风险 | 是 |
+| `ITS_VLD_STALL` | `vld=1 && req=0` | 否 | **是**（见下方更正） |
+| `ITS_SIG_X` | 控制信号既非 0 也非 1 | 是，X/Z 传播是真实风险 | 是 |
 | `ITS_DATA_X` | 被接收 beat 的 data 含 X | 是 | 是 |
 | `ITS_RST_X` | 有效期内 `rst_n` 为 X | 是 | 是 |
 | `ITS_IN_VLD_NO_REQ` | 激励侧在 `req=0` 时拉高 `in_vld` | 是，属激励自检 | 是 |
@@ -74,6 +91,17 @@ valid 被 request **组合门控**（源码注释写明这是赛题契约），�
 结论要照实说：**输出侧握手性质在本 RTL 上是被单条 always_comb 构造保证的**，
 检查器的真实价值在 X 传播与激励自检，以及在被 force 注入时能立即变红。
 A5 证明的正是后者。
+
+### 2.1 第二轮更正：可达性不是降级依据
+
+上一版把 `ITS_VLD_STALL` 降级成 `uvm_info`，理由是"真 DUT 不可达"。这是**拿
+可达性去改验收条件**：方案 R1 明确要求该状态判 FAIL 并计入 PROTOCOL_SIG 计数，
+可达性只说明它不会被合法激励触发，不说明它可以不报错。而且这条已约定的验收
+条件被我单方面改掉、改完才写进文档——即使标注了，也应该先问。
+
+现改为 `uvm_error("ITS_VLD_STALL")`，`vld_stall_guard` 计数保留，用于交叉
+检查"计数路径"与"诊断路径"是否一致（两者不一致本身就是 DIRTY 级的证据）。
+可达性说明只留在代码注释里，不再作为免检理由。
 
 ---
 
@@ -223,8 +251,9 @@ python a5_selftest.py
    当前写法选择了"换向量不会假失败"，代价是漏检变弱。
 2. **反例自检只证明"会红"，不证明"对真 DUT 有效"。**
    `its_check_selftest_tb.sv` 是无 DUT 的接口驱动测试；真 DUT 路径上
-   `ITS_SIG_X` / `ITS_DATA_X` 在 22 例全过程中从未触发（计数恒为 0），
-   因此 X 类检查的有效性目前仅由合成激励支持。
+   `ITS_SIG_X` / `ITS_DATA_X` 在 22 例全过程中从未触发（第二轮修复后
+   `sig/x/in/guard` 四个计数仍全为 0），因此 X 类检查的有效性目前仅由合成
+   激励支持。这一条在第二轮修复后**仍然成立**，是 A 阶段剩下的主要弱点。
 3. 附带说明：`neg_wrong_golden` 用精确值（每 beat 都错）依据是
    "每个期望值与真实值差 bit0"；该推理成立，但审核方可复核 XOR 是否
    作用于全部 beat，而非仅首拍。
@@ -236,22 +265,32 @@ python a5_selftest.py
 - X 类检查在真 DUT 上从未触发，有效性仅由合成激励证明（见 7.5 第 2 条）。
 - 指纹不含工具版本（ModelSim、UVM 1.1d、Vivado 2025.2），换工具后的结果
   不在这份保证范围内。
-- 本文件列出的行号基于提交 `9e5c2b6`；后续提交若改动代码，行号需重核。
+- 本文件列出的行号基于本文件所在提交；后续提交若改动代码，行号需重核。
+  第二轮修复后 `run_regress.py` 整体下移，引用请优先用符号名。
+- **A 阶段尚未被独立复核关闭。** 在复核方确认前，不进入 B 阶段。
+- 零计数的适用范围已收窄（见 §9.5）：只覆盖检查已开启且实际采样到的窗口。
 
 ### 7.7 建议的复核顺序
 
 1. 先看 `cases.json` 中 11 个 `causality` 与 `uvm_error_ids`：
    契约本身是否成立，是最容易出问题的地方。
-2. 再看 `run_regress.py` 中 `classify` 的分支顺序，
-   特别是 `RESULT_MISSING` 内部的判定优先级。
-3. 复跑 `python run_regress.py selftest` 与 `python a5_selftest.py`，
-   确认 33/33 与 15/15。
-4. 最后看 `its_uvm_pkg.sv` 中 monitor 的 `run_phase` 复位状态机，
-   确认 `warmup` 与 `checks_on` 既不漏检也不多检。
+2. 再看 `run_regress.py` 中 `_classify` 的分支顺序，
+   特别是"fatal/原生错误无条件先判"与 `RESULT_MISSING` 内部的优先级。
+3. 复跑三个自检：`python run_regress.py selftest`（43/43）、
+   `python a5_selftest.py`（9 场景 46/46）、`python a5_final_fatal.py`（10/10）。
+4. 看 `its_uvm_pkg.sv` 中 monitor 的 `run_phase` 复位状态机与
+   `not_two_state()`，确认 `warmup` 与 `checks_on` 既不漏检也不多检。
+5. 最后看 `run_regress.py` 的 `FINGERPRINT_FILES`：它从编译清单派生，
+   新增 RTL 时不需要再手工登记。
 
 ---
 
 ## 8 下一步
+
+**出口条件**：本阶段的收尾顺序是——反例按预期失败、正常对照通过、全量回归
+完成、身份与指纹检查通过，才标记"修复方自验通过，待独立复核"；独立复核完成
+后才关闭验收项。以上四项均已完成（见 §0），因此当前状态停在"待独立复核"，
+**不进入 B 阶段**。
 
 B 阶段（`v3.10.2-b-grant-cov`）：
 
@@ -260,3 +299,119 @@ B 阶段（`v3.10.2-b-grant-cov`）：
 2. B4 覆盖点：`out_rail`（每 beat）+ `clip_signed10`（每 `horizontal_result_fire`，
    wrapper:1788），组数 7→8，bin 54→55，X 单独作完整性计数器。
 3. 重基线：`tail_stress` 的 601 拍描述作废，所有用例需在新语义下重跑。
+
+---
+
+## 9 第二轮独立审核：6 类缺陷的修复与证据
+
+审核方独立复跑后指出 6 类缺陷。全部在本阶段内关闭，未改 DUT，未进入 B。
+D1/D2 属于**把已约定的验收条件降级**，不是新需求；其余为判定路径与记录缺口。
+先写反例、确认它在修前不被拦，再修、确认它被具体原因拒绝——每一步的顺序都是
+"先红后绿"，因为上一轮的两个真 bug 都是反例抓出来的，不是回归暴露的。
+
+### 9.1 逐项修前 / 修后
+
+下表由 `probe_classifier_history.py` 生成：它把提交 `9e5c2b6` 的判定器从 git
+取出、与当前判定器加载进同一进程，喂同一批 fixture，结果写在
+`run/probe/classifier_before_after.txt`。复核方可用同一条命令复跑。
+
+| 缺陷 | 反例 fixture | 修前判定 | 修后判定 |
+| --- | --- | --- | --- |
+| D1 vld-only 从 FAIL 降级为 INFO | `vld_stall_guard=1` 但无 error 记录 | PASS | FAIL / `VLD_STALL_GUARD_NONZERO` |
+| D2 四态只查 X、漏 Z，且不看 req | 真实仿真 `done=Z` / `req=X` | 无任何诊断（审计日志 `ITS_SIG_X` 0 次） | FAIL / `ITS_SIG_X` |
+| D3 run_id 写入但从不校验 | 结果文件 `run_id=stale-run` | PASS | DIRTY / `RUN_ID_MISMATCH` |
+| D4 错误 ID 值解析失败被静默丢弃 | `err.error.BOGUS=garbage` | PASS | DIRTY / `FIELD_FORMAT` |
+| D4 汇总字段可选 | 缺 `err_server_total_error` | PASS | DIRTY / `MISSING_FIELD` |
+| D4 fatal 侧 ID 从不做自洽校验 | `err.fatal.X=1`、总数 1、fatal 0 | PASS | DIRTY / `FATAL_ID_COUNT_MISMATCH` |
+| D5 有结果文件时不看日志 fatal | 文件完整 + 日志 1 条 UVM_FATAL | PASS | FAIL / `UVM_FATAL_IN_LOG` |
+| D5 空文件先返回，吞掉已发生的 fatal | `RESULT_EMPTY` + native fatal | INCOMPLETE | FAIL / `NATIVE_FATAL` |
+| D5 超时优先，吞掉已发生的原生错误 | `RESULT_MISSING` + native error + 超时 | INCOMPLETE / TIMEOUT | FAIL / `NATIVE_ERROR`（`reasons` 保留 TIMEOUT） |
+| D6 指纹漏 3 个实际编译的 RTL | 改这 3 个文件，指纹不变 | 指纹 15 个文件 | 18 个文件，源自编译清单 |
+
+分类器自检从 33/33 变为 **43/43**；新增 9 条反例行中，8 条在修前被判 PASS。
+
+### 9.2 判定顺序（D5）
+
+修前：`RESULT_MISSING` 内部先看超时；有结果文件时完全不看日志里的 fatal。
+修后：fatal 与原生错误**无条件先判**，超时不再具有豁免力。
+
+1. native fatal → FAIL / `NATIVE_FATAL`
+2. 超时 + 原生错误 → FAIL / `NATIVE_ERROR`（`reasons` 同时保留 `TIMEOUT`）
+3. 有结果文件 + 日志 UVM_FATAL → FAIL / `UVM_FATAL_IN_LOG`
+4. 无结果文件时：`UVM_FATAL_EARLY_EXIT` → `NATIVE_ERROR` → 超时 → DIRTY → INCOMPLETE
+
+`reasons` 是列表，`reason` 仍是单值主因，既有调用方（自检、汇总表、
+`REGRESSION.json`）不受影响；超时与失败同时出现时两者都留在 `reasons` 里，
+不作为通过证据。原生错误"可能来自半途状态"不构成忽略它的理由：若某类错误在
+中断流程中允许发生，需要在契约里写明限定条件，而不是由判定器代为豁免。
+
+### 9.3 final_phase fatal：真实仿真反例（D5）
+
+唯一"结果文件干净但运行失败"的路径：`report_phase` 先写并 `$fclose` 结果文件
+（`its_uvm_pkg.sv:1953`、`:2026`），`final_phase` 之后才跑。
+`a5_final_fatal.py` 用**真实 TB** 跑同一用例两次：
+
+| 运行 | 结果文件 | 日志 fatal | 判定 |
+| --- | --- | --- | --- |
+| 控制（无注入） | 完整，全部必填字段齐 | 0 | PASS |
+| 探针（`+FATAL_IN_FINAL=1`） | 完整，且 `uvm_error=0 uvm_fatal=0` | 1 | FAIL / `UVM_FATAL_IN_LOG` |
+
+字段完整性用 `run_regress.REQUIRED_FIELDS` 判定，不硬编码条数——新增字段后
+探针自动跟着变。证据写在 `run/A5_FINAL_FATAL.json`（含两次结果文件的 sha256）。
+
+### 9.4 四态与控制信号的逐信号覆盖（D2 的准确表述）
+
+修前 `run_phase` 只查 `it_data_out_vld === 1'bx` 与 `it_done === 1'bx`。
+
+| 信号 | 方向 | 修前 | 修后 |
+| --- | --- | --- | --- |
+| `it_data_out_vld` | DUT 出 | 只查 X，漏 Z | 既非 0 也非 1 → `ITS_SIG_X` |
+| `it_done` | DUT 出 | 只查 X，漏 Z | 同上 |
+| `it_data_out_req` | 握手入 | 完全不查 | 同上 |
+| `protocol_error` | DUT 出 | 完全不查 | 同上 |
+| `it_data_in_vld` | 激励 | 只查 `vld&&!req` 组合 | 同上（新增两态） |
+| `it_data_in_req` | 激励 | 只查组合 | 同上（新增两态） |
+| `it_data_out[39:0]` | DUT 出 | 只在被接受的那一拍查 X | 不变（`ITS_DATA_X`） |
+| `rst_n` | 激励 | 三态分开 | 不变（`ITS_RST_X`） |
+
+A5 新增 `done_z`、`req_x` 两个场景，各 2 拍，均报 2 次 `ITS_SIG_X`；
+`vld_only` 场景只报 `ITS_VLD_STALL`、不报 `ITS_DONE_NO_FIRE`，
+证明三条检查互不搭靠，不是靠别的诊断顺带触发。
+
+### 9.5 零计数的适用范围（收窄后的表述）
+
+零计数只能说明**检查已开启、且实际采样到**的窗口里没发生该事件，不包括：
+
+- 初始化期与复位屏蔽期（`checks_on=0`，含复位后的 3 拍 warmup）；
+- 未采样的信号（例如 `it_data_out` 只在被接受的那一拍检查，空闲拍不查）；
+- 本阶段没有规则的属性（数值正确性只由 scoreboard 覆盖）。
+
+因此正确表述是：**这些数字可复现，说明当前用例在现有检查规则下全部通过；
+新增反例证明规则仍有漏检面，所以不能据此排除未被检查到的异常。**
+既没有"因为检查器有洞，所以之前的通过都是假的"这样的证据；也不能从
+"检查器没报错"反推"漏检条件没有发生"。
+
+### 9.6 输入指纹与运行记录（D6）
+
+- 指纹改为**从编译清单派生**（`run_its_uvm.RTL` + `SRC`），不再手抄。手抄版
+  漏了 `its_simple_ram.sv`、`its_input_cache_bank.sv`、`bounded_lfnst_engine.sv`
+  三个实际参与编译的 RTL，改它们不会改变指纹。现为 18 个文件，无缺失。
+- `RUN_MANIFEST.json` 改为**启动即写、结束重写**：`record` / `start` / `end` /
+  `planned_cases` / `runs_completed`。原实现只在结束时写一次，进程中途崩掉就
+  什么都不留，与它自己"start/end record"的说明不符。
+- 每例额外记录完整 `command`、结果文件 `bytes` 与 `sha256`、`run_id`、`reasons`。
+
+### 9.7 我在这一轮犯的错
+
+- **把可达性当成了降级依据。** D1 的检查我判断"真 DUT 不可达"，就把它的
+  严重度从 FAIL 降成 INFO 并写进文档。方案 R1 明确要求该状态判 FAIL 并计入
+  PROTOCOL_SIG。即使标注了，改已约定的验收条件也应该先问，而不是改完再记录。
+- **只 grep 了计数名就下全局结论。** 我曾判断"改成 error 也没人拦"，实际
+  `cases.json` 的 `defaults.expect` 已让全部干净用例继承 `uvm_error: 0`，
+  11 个 `neg_*` 又走精确 ID 集，两条路都会拦住。这与 §7.4 记的是同一个毛病：
+  用一个局部检查的结果去下全局结论。
+- **自检 fixture 本身不自洽。** 加上严格 ID 自洽校验后，3 条旧 fixture
+  （物理上不可能出现的记录：severity 总数与 ID 之和不符）必须先修正数据，
+  否则会把新校验误判成 bug。改的是 fixture，不是判定逻辑。
+- **把"断言数等于场景数"当成问题。** 真正的缺口是没有分列统计场景数、
+  断言数、通过数，不是两个数字恰好相等；刻意让它们不等是形式主义。

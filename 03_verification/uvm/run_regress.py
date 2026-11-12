@@ -57,17 +57,18 @@ CG_TOTALS = {
 
 # Everything a verdict depends on.  If any of these changes, a stored result is
 # no longer evidence about the current tree, so the manifest records all of them.
+#
+# The compiled sources are taken from the compile list itself rather than
+# repeated here: a hand-written list already drifted once, omitting three RTL
+# files that the simulator really compiles, so a change there could not
+# invalidate a stored result.  One source of truth, no second copy to forget.
 ROOT = HERE.parent.parent
-FINGERPRINT_FILES = [
-    ROOT / "02_rtl/rtl/unified_its_wrapper.sv",
-    ROOT / "02_rtl/rtl/unified_p4_kernel.sv",
-    HERE / "its_uvm_pkg.sv",
-    HERE / "its_uvm_tb.sv",
-    HERE / "its_if.sv",
+FINGERPRINT_FILES = list(env_mod.RTL) + list(env_mod.SRC) + [
     HERE / "cases.json",
     HERE / "run_regress.py",
     HERE / "run_its_uvm.py",
     HERE / "a5_selftest.py",
+    HERE / "a5_final_fatal.py",
     HERE / "its_check_selftest_tb.sv",
     OUT / "unified_gate_c_vectors.txt",
     ROOT / "03_verification/sim/rom_coeffs.hex",
@@ -254,6 +255,10 @@ REQUIRED_FIELDS = (
     "run_id", "case", "test", "tus", "beats", "overlap", "resets",
     "data_errors", "done_errors", "protocol_errors", "unexpected", "pending",
     "uvm_error", "uvm_fatal", "sig_errors", "x_errors", "in_errors",
+    # The guard counter is evidence like the others, and the two server totals
+    # are the only cross-check on the per-id breakdown: leaving them optional
+    # meant a writer could omit them and still be trusted.
+    "vld_stall_guard", "err_server_total_error", "err_server_total_fatal",
 )
 STRING_FIELDS = ("run_id", "case", "test")
 
@@ -283,37 +288,50 @@ def resolve_num(value, counts):
     return value
 
 
-def classify(fields, case, parse_error, loginfo, timed_out):
+def _classify(fields, case, parse_error, loginfo, timed_out, expected_run_id=None):
     """Map the structured result plus the native channel to a status."""
     loginfo = loginfo or {}
     expect = case["expect"]
+    native_errs = loginfo.get("native_error", 0) + loginfo.get("native_assert", 0)
+
+    # -- definite failures first, whatever the artefact looks like ---------
+    # A fatal can land after the result file was written: the file is produced
+    # in report_phase, and final_phase still runs afterwards.  So both fatal
+    # channels are checked unconditionally, and a definite failure is never
+    # downgraded to "incomplete" because a timeout or a missing file also
+    # happened.  A timeout is recorded by the caller, never used as an excuse.
+    if loginfo.get("native_fatal", 0) > 0:
+        return "FAIL", "NATIVE_FATAL"
+    if timed_out and native_errs > 0:
+        return "FAIL", "NATIVE_ERROR"
+    if parse_error not in ("RESULT_MISSING", "RESULT_EMPTY"):
+        if loginfo.get("uvm_fatal_lines", 0) > 0:
+            return "FAIL", "UVM_FATAL_IN_LOG"
 
     # -- runs without a result file still have to be judged ---------------
     # A uvm_fatal exits through UVM_EXIT (uvm_report_handler.svh:431), so
     # report_phase never runs and the result file is never written.  Without
     # this branch such a run would look like a mere missing artefact.
     if parse_error == "RESULT_MISSING":
-        if timed_out:
-            return "INCOMPLETE", "TIMEOUT"
         if loginfo.get("uvm_fatal_lines", 0) > 0:
             return "FAIL", "UVM_FATAL_EARLY_EXIT"
-        if loginfo.get("native_fatal", 0) > 0:
-            return "FAIL", "NATIVE_FATAL"
-        if loginfo.get("native_error", 0) + loginfo.get("native_assert", 0) > 0:
+        if native_errs > 0:
             return "FAIL", "NATIVE_ERROR"
+        if timed_out:
+            return "INCOMPLETE", "TIMEOUT"
         if loginfo.get("summary_errors") == 0 and loginfo.get("saw_finish"):
             return "DIRTY", "FINISHED_WITHOUT_RESULT"
         return "INCOMPLETE", "NO_RESULT_FILE"
     if parse_error == "RESULT_EMPTY":
+        # Native failures were already returned above; what is left is a run
+        # that produced nothing usable, which is incomplete rather than failed.
         return "INCOMPLETE", "EMPTY_RESULT_FILE"
     if parse_error:
         return "DIRTY", parse_error
 
-    # -- native channel: a failure whatever the structured counters say ----
-    if loginfo.get("native_fatal", 0) > 0:
-        return "FAIL", "NATIVE_FATAL"
+    # -- native error budget, now that a result file exists ----------------
     allowed_native = int(expect.get("native_errors_allowed", 0))
-    if loginfo.get("native_error", 0) + loginfo.get("native_assert", 0) > allowed_native:
+    if native_errs > allowed_native:
         return "FAIL", "NATIVE_ERROR"
 
     # -- fields: presence and type ----------------------------------------
@@ -329,25 +347,44 @@ def classify(fields, case, parse_error, loginfo, timed_out):
             return "DIRTY", f"FIELD_FORMAT:{err}"
         counts[key] = val
 
-    # -- identity: the file must belong to this case and this test ---------
+    # -- identity: the file must belong to this case, this test, this run ---
+    # run_id is minted per run, so a stale artefact cannot pass as this run's
+    # output even when the case and test names happen to match.
+    if expected_run_id is not None and fields["run_id"] != expected_run_id:
+        return "DIRTY", f"RUN_ID_MISMATCH:file={fields['run_id']}"
     if fields["case"] != case["name"]:
         return "DIRTY", f"CASE_MISMATCH:file={fields['case']}"
     if fields["test"] != case["testname"]:
         return "DIRTY", f"TEST_MISMATCH:file={fields['test']}"
 
     # -- per-id error expectations -----------------------------------------
-    actual_err = {k[len("err.error."):]: int(v) for k, v in fields.items()
-                  if k.startswith("err.error.") and v.strip().isdigit()}
+    # Every id entry must parse.  Filtering the malformed ones out would let a
+    # broken writer add arbitrary junk and still be judged, so a bad value is a
+    # dirty artefact rather than something to skip.
+    actual_err, actual_fat = {}, {}
+    for key in fields:
+        for prefix, sink in (("err.error.", actual_err),
+                             ("err.fatal.", actual_fat)):
+            if key.startswith(prefix):
+                cnt, bad = as_count(fields, key)
+                if bad:
+                    return "DIRTY", f"FIELD_FORMAT:{bad}"
+                sink[key[len(prefix):]] = cnt
 
-    # The per-id counts must add up to the severity total, and the server's own
-    # total must agree with the UVM severity count.  A gap here means the
-    # counting path missed a report, so no verdict can be trusted.
-    if "err_server_total_error" in fields:
-        tot, fmt_err = as_count(fields, "err_server_total_error")
-        if fmt_err:
-            return "DIRTY", f"FIELD_FORMAT:{fmt_err}"
-        if tot != counts["uvm_error"] or sum(actual_err.values()) != tot:
-            return "DIRTY", "ID_COUNT_MISMATCH"
+    # The per-id counts must add up to the server's own total, and that total
+    # must agree with the UVM severity count.  A gap here means the counting
+    # path missed a report, so no verdict can be trusted.  Both totals are
+    # required fields, so an omission is caught before this point.
+    tot, fmt_err = as_count(fields, "err_server_total_error")
+    if fmt_err:
+        return "DIRTY", f"FIELD_FORMAT:{fmt_err}"
+    if tot != counts["uvm_error"] or sum(actual_err.values()) != tot:
+        return "DIRTY", "ID_COUNT_MISMATCH"
+    ftot, ffmt_err = as_count(fields, "err_server_total_fatal")
+    if ffmt_err:
+        return "DIRTY", f"FIELD_FORMAT:{ffmt_err}"
+    if ftot != counts["uvm_fatal"] or sum(actual_fat.values()) != ftot:
+        return "DIRTY", "FATAL_ID_COUNT_MISMATCH"
     want_ids = expect.get("uvm_error_ids")
     if want_ids is not None:
         for eid, want in want_ids.items():
@@ -392,8 +429,10 @@ def classify(fields, case, parse_error, loginfo, timed_out):
 
     # The independent protocol checks catch stimulus and handshake defects that
     # the scoreboard cannot see, so they must stay at zero unless a case states
-    # a count.
-    for key in ("sig_errors", "x_errors", "in_errors"):
+    # a count.  vld_stall_guard belongs here too: a non-zero guard with no
+    # matching ITS_VLD_STALL error means one of the two counting paths is
+    # broken, which is exactly what this cross-check exists to catch.
+    for key in ("sig_errors", "x_errors", "in_errors", "vld_stall_guard"):
         if counts[key] > resolve_num(int(expect.get(key, 0)), counts):
             return "FAIL", f"{key.upper()}_NONZERO"
 
@@ -423,6 +462,22 @@ def classify(fields, case, parse_error, loginfo, timed_out):
             return "FAIL", "OVERLAP_NOT_OBSERVED"
 
     return "PASS", ""
+
+
+def classify(fields, case, parse_error, loginfo, timed_out, expected_run_id=None):
+    """Verdict, primary reason, and the complete list of reasons.
+
+    The first two elements keep the old shape so existing callers are
+    unaffected.  The list additionally keeps facts that did not become the
+    primary reason - a timeout next to a definite failure, for instance - so
+    nothing observed is dropped from the record.
+    """
+    status, reason = _classify(fields, case, parse_error, loginfo, timed_out,
+                               expected_run_id)
+    reasons = [reason] if reason else []
+    if timed_out and "TIMEOUT" not in reasons:
+        reasons.append("TIMEOUT")
+    return status, reason, reasons
 
 
 def coverage_bins(fields):
@@ -476,7 +531,7 @@ def merge_coverage(per_run):
     return report
 
 
-def run_one(case, vector_file, want_ucdb=False, fp=None):
+def run_one(case, vector_file, want_ucdb=False, fp=None, extra_plusargs=()):
     RESULT_DIR.mkdir(parents=True, exist_ok=True)
     res_path = RESULT_DIR / f"{case['name']}.result"
     log_path = OUT / "logs" / f"regress_{case['name']}.log"
@@ -494,6 +549,9 @@ def run_one(case, vector_file, want_ucdb=False, fp=None):
     # Raw vsim options, e.g. -sv_seed for a reproducible random draw.
     cmd += [str(a) for a in case.get("vsim_args", [])]
     cmd += [f"+{p}" for p in case["plusargs"]]
+    # Probe-only extra plusargs, used by the A5 counterexamples; a normal
+    # regression run passes none.
+    cmd += [f"+{p}" for p in extra_plusargs]
     cmd += [f"+RESULT_FILE={res_path}"]
     cmd += [f"+RUN_ID={run_id}", f"+CASE_NAME={case['name']}"]
     cmd += [f"-gVECTOR_FILE={OUT / vector_file}"]
@@ -514,21 +572,31 @@ def run_one(case, vector_file, want_ucdb=False, fp=None):
 
     fields, parse_error = parse_result(res_path)
     loginfo = scan_log(log_path)
-    status, reason = classify(fields, case, parse_error, loginfo, timed_out)
+    status, reason, reasons = classify(fields, case, parse_error, loginfo,
+                                       timed_out, expected_run_id=run_id)
     if rc != 0:
         if status == "PASS":
-            status, reason = "DIRTY", "NONZERO_EXIT_WITH_CLEAN_RESULT"
+            status, reason, reasons = "DIRTY", "NONZERO_EXIT_WITH_CLEAN_RESULT", [
+                "NONZERO_EXIT_WITH_CLEAN_RESULT"]
         elif reason in ("NO_RESULT_FILE", "FINISHED_WITHOUT_RESULT"):
             # The simulator itself failed to produce evidence.
-            status, reason = "FAIL", "SIMULATOR_ERROR"
+            status, reason, reasons = "FAIL", "SIMULATOR_ERROR", ["SIMULATOR_ERROR"]
 
     missing = [str(p) for p in FINGERPRINT_FILES if not p.exists()]
+    # The artefact's own bytes: a later reader can tell whether the file it is
+    # looking at is the one this record describes.
+    artifact = None
+    if res_path.exists():
+        data = res_path.read_bytes()
+        artifact = {"path": str(res_path), "bytes": len(data),
+                    "sha256": hashlib.sha256(data).hexdigest()}
     return {
         "name": case["name"],
         "testname": case["testname"],
         "run_id": run_id,
         "status": status,
         "reason": reason,
+        "reasons": reasons,
         "elapsed_s": round(elapsed, 1),
         "returncode": rc,
         "timed_out": timed_out,
@@ -544,19 +612,30 @@ def run_one(case, vector_file, want_ucdb=False, fp=None):
             "first": loginfo["first"],
         },
         "fingerprint": (fp or {}).get("digest", "unrecorded"),
+        "command": [str(c) for c in cmd],
+        "artifact": artifact,
         "missing_inputs": missing,
         "fields": {k: v for k, v in fields.items() if not k.startswith("cg.")},
         "coverage": coverage_bins(fields),
     }
 
 
-def write_manifest(rows, fp, path=None):
-    """Start/end record for the whole regression: what ran, on what inputs."""
+def write_manifest(rows, fp, path=None, start=None, end=None, planned=None):
+    """Start/end record for the whole regression: what ran, on what inputs.
+
+    Written once before the first case runs and again when the last one
+    finishes.  If the process dies in between, the start record on disk still
+    says what was attempted and on which inputs - a record that only appears at
+    the end documents nothing about a run that never finished.
+    """
     path = path or (OUT / "RUN_MANIFEST.json")
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
-        "generated_at": datetime.now().isoformat(timespec="seconds"),
-        "runs": len(rows),
+        "record": "end" if end else "start",
+        "start": start or {},
+        "end": end,
+        "runs_completed": len(rows),
+        "planned_cases": planned or [],
         "fingerprint": fp,
         "missing_inputs": [str(p) for p in FINGERPRINT_FILES if not p.exists()],
         "cases": rows,
@@ -581,6 +660,12 @@ def stage_run(only, cases_path=None):
     absent = [k for k, v in fp["files"].items() if v == "absent"]
     if absent:
         print(f"[regress] WARNING inputs not present: {', '.join(absent)}", flush=True)
+
+    start = {"at": datetime.now().isoformat(timespec="seconds"),
+             "only": sorted(only), "cases_path": str(cases_path) if cases_path else None}
+    planned = [c["name"] for c in sel]
+    write_manifest([], fp, start=start, planned=planned)
+
     rows = []
     for case in sel:
         print(f"  [{case['name']}] ...", end=" ", flush=True)
@@ -601,7 +686,10 @@ def stage_run(only, cases_path=None):
                      "reason": "SKIPPED", "elapsed_s": 0.0, "returncode": None,
                      "fields": {}, "coverage": {}, "log": {}, "missing_inputs": []})
 
-    manifest_path = write_manifest(rows, fp)
+    manifest_path = write_manifest(
+        rows, fp, start=start,
+        end={"at": datetime.now().isoformat(timespec="seconds")},
+        planned=planned)
     print(f"[regress] manifest {manifest_path}", flush=True)
 
     counts = {}
@@ -651,14 +739,30 @@ def stage_selftest():
     """
     # A complete clean record; each case overrides one field, so a missing-field
     # or format failure cannot be masked by an unrelated absence.
-    def clean(**over):
+    def clean(ids=None, **over):
+        """A complete, self-consistent record; ids carries the per-id lines.
+
+        The record must be physically possible: the server totals follow the
+        severity counts and every non-zero count has an attributable id.  Tests
+        that want a malformed record say so explicitly.
+        """
         f = {"run_id": "r1", "case": "c1", "test": "t1",
              "tus": "1", "beats": "4", "overlap": "0", "resets": "0",
              "data_errors": "0", "done_errors": "0", "protocol_errors": "0",
              "unexpected": "0", "pending": "0", "uvm_error": "0",
              "uvm_fatal": "0", "sig_errors": "0", "x_errors": "0",
-             "in_errors": "0"}
+             "in_errors": "0", "vld_stall_guard": "0",
+             "err_server_total_error": "0", "err_server_total_fatal": "0"}
+        f.update({k: str(v) for k, v in (ids or {}).items()})
         f.update({k: str(v) for k, v in over.items()})
+        if "err_server_total_error" not in over:
+            f["err_server_total_error"] = f["uvm_error"]
+        if "err_server_total_fatal" not in over:
+            f["err_server_total_fatal"] = f["uvm_fatal"]
+        if not any(k.startswith("err.error.") for k in f) and f["uvm_error"] != "0":
+            f["err.error.SYNTH"] = f["uvm_error"]
+        if not any(k.startswith("err.fatal.") for k in f) and f["uvm_fatal"] != "0":
+            f["err.fatal.SYNTH"] = f["uvm_fatal"]
         return f
 
     def mk_case(**expect):
@@ -683,17 +787,16 @@ def stage_selftest():
          no_log(), False, "FAIL", "UVM_ERROR_COUNT"),
         ("expected error missing", clean(), mk_case(uvm_error_min=1), None,
          no_log(), False, "FAIL", "EXPECTED_ERROR_MISSING"),
-        ("error id match", dict(clean(uvm_error=2),
-                                **{"err.error.ITS_DATA_MISMATCH": "2"}),
+        ("error id match", clean({"err.error.ITS_DATA_MISMATCH": 2}, uvm_error=2),
          mk_case(uvm_error=2, uvm_error_ids={"ITS_DATA_MISMATCH": 2}), None,
          no_log(), False, "PASS", ""),
         ("error id count off",
-         dict(clean(uvm_error=2), **{"err.error.ITS_DATA_MISMATCH": "1"}),
-         mk_case(uvm_error=2, uvm_error_ids={"ITS_DATA_MISMATCH": 2}), None,
+         clean({"err.error.ITS_DATA_MISMATCH": 1}, uvm_error=1),
+         mk_case(uvm_error=1, uvm_error_ids={"ITS_DATA_MISMATCH": 2}), None,
          no_log(), False, "FAIL", "ERROR_ID_MISMATCH:ITS_DATA_MISMATCH=1"),
         ("unexpected error id",
-         dict(clean(uvm_error=2), **{"err.error.ITS_DATA_MISMATCH": "1",
-                                     "err.error.ITS_DONE_MISMATCH": "1"}),
+         clean({"err.error.ITS_DATA_MISMATCH": 1,
+                "err.error.ITS_DONE_MISMATCH": 1}, uvm_error=2),
          mk_case(uvm_error=2, uvm_error_ids={"ITS_DATA_MISMATCH": 1}), None,
          no_log(), False, "FAIL", "UNEXPECTED_ERROR_ID:ITS_DONE_MISMATCH"),
         ("beat count", clean(beats=3), mk_case(beats=4), None, no_log(), False,
@@ -751,24 +854,57 @@ def stage_selftest():
          False, "FAIL", "IN_ERRORS_NONZERO"),
         # An expectation may name a counter instead of hard-coding a number.
         ("symbolic bound ok",
-         dict(clean(uvm_error="4"), **{"err.error.X": "3"}),
+         clean({"err.error.X": 3}, uvm_error=3),
          mk_case(uvm_error_ids={"X": {"min": 1, "max": "@beats"}}),
          None, no_log(), False, "PASS", ""),
         ("symbolic bound violated",
-         dict(clean(uvm_error="1"), **{"err.error.X": "0"}),
+         clean({"err.error.X": 0}, uvm_error=0),
          mk_case(uvm_error_ids={"X": {"min": 1, "max": "@beats"}}),
          None, no_log(), False, "FAIL", "ERROR_ID_MISMATCH:X=0"),
         # The per-id counts must add up to the reported severity total.
         ("id count mismatch",
-         dict(clean(uvm_error="4", err_server_total_error="3"),
-              **{"err.error.X": "3"}),
+         clean({"err.error.X": 3}, uvm_error=4, err_server_total_error=3),
          mk_case(uvm_error_ids={"X": {"min": 1, "max": "@beats"}}),
          None, no_log(), False, "DIRTY", "ID_COUNT_MISMATCH"),
+        # -- counterexamples for the holes an independent audit found --------
+        # Every row below used to be accepted; each one is a state the old
+        # classifier let through.
+        ("stale run id", clean(run_id="stale-run"), mk_case(), None, no_log(),
+         False, "DIRTY", "RUN_ID_MISMATCH:file=stale-run", "r1"),
+        ("garbage id value",
+         clean({"err.error.ITS_DATA_MISMATCH": 1,
+                "err.error.BOGUS": "garbage"}, uvm_error=1),
+         mk_case(uvm_error_ids={"ITS_DATA_MISMATCH": 1}), None, no_log(),
+         False, "DIRTY", "FIELD_FORMAT:NOT_A_COUNT:err.error.BOGUS='garbage'"),
+        ("missing server total",
+         {k: v for k, v in clean().items() if k != "err_server_total_error"},
+         mk_case(), None, no_log(), False, "DIRTY",
+         "MISSING_FIELD:err_server_total_error"),
+        ("fatal id total mismatch",
+         clean({"err.fatal.X": 1}, uvm_fatal=0, err_server_total_fatal=1),
+         mk_case(), None, no_log(), False, "DIRTY", "FATAL_ID_COUNT_MISMATCH"),
+        ("guard counter leaked", clean(vld_stall_guard=1), mk_case(), None,
+         no_log(), False, "FAIL", "VLD_STALL_GUARD_NONZERO"),
+        ("guard counter declared", clean(vld_stall_guard=1),
+         mk_case(vld_stall_guard=1), None, no_log(), False, "PASS", ""),
+        # A fatal after the result file was written (final_phase) must fail:
+        # the artefact exists, so the old code never looked at the log.
+        ("fatal after result file", clean(), mk_case(), None,
+         no_log(uvm_fatal_lines=1), False, "FAIL", "UVM_FATAL_IN_LOG"),
+        # A definite native failure outranks "the artefact was empty".
+        ("empty result plus native fatal", {}, mk_case(), "RESULT_EMPTY",
+         no_log(native_fatal=1), False, "FAIL", "NATIVE_FATAL"),
+        # A definite native error outranks a timeout; both are kept.
+        ("timeout plus native error", {}, mk_case(), "RESULT_MISSING",
+         no_log(native_error=1), True, "FAIL", "NATIVE_ERROR"),
     ]
     bad = 0
     print("[selftest] classifier behaviour", flush=True)
-    for label, fields, kase, perr, log, to, want_status, want_reason in cases:
-        status, reason = classify(fields, kase, perr, log, to)
+    extra_checks = 0
+    for row in cases:
+        label, fields, kase, perr, log, to, want_status, want_reason = row[:8]
+        want_rid = row[8] if len(row) > 8 else None
+        status, reason, _reasons = classify(fields, kase, perr, log, to, want_rid)
         ok = (status == want_status and reason == want_reason)
         if not ok:
             bad += 1
@@ -776,6 +912,17 @@ def stage_selftest():
               f"{('/' + reason) if reason else ''}"
               f"   want {want_status}{('/' + want_reason) if want_reason else ''}",
               flush=True)
+
+    # A definite failure must not swallow the timeout that accompanied it: the
+    # reason list carries both facts even though the primary one is the failure.
+    extra_checks += 1
+    _s, _r, rs = classify({}, mk_case(), "RESULT_MISSING",
+                          no_log(native_error=1), True)
+    ok = rs == ["NATIVE_ERROR", "TIMEOUT"]
+    if not ok:
+        bad += 1
+    print(f"  {'ok ' if ok else 'BAD'} {'both reasons kept':<24} -> {rs}"
+          f"   want ['NATIVE_ERROR', 'TIMEOUT']", flush=True)
 
     # Coverage merge must union bins across runs, not average them.
     merged = merge_coverage([
@@ -789,8 +936,8 @@ def stage_selftest():
     print(f"  {'ok ' if ok else 'BAD'} merge unions bins      -> "
           f"hit={m.get('hit_bins')} pct={m.get('pct')}  want hit=2", flush=True)
 
-    print(f"\nselftest: {'PASS' if bad == 0 else 'FAIL'} "
-          f"({len(cases) + 1 - bad}/{len(cases) + 1})")
+    total = len(cases) + 2   # + merge check + both-reasons check
+    print(f"\nselftest: {'PASS' if bad == 0 else 'FAIL'} ({total - bad}/{total})")
     return 0 if bad == 0 else 1
 
 

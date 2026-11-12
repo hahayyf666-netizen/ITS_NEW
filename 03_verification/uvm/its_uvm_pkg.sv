@@ -1285,6 +1285,13 @@ package its_uvm_pkg;
             super.new(name, parent);
         endfunction
 
+        // A control signal carries information only when it is 0 or 1.  Both X
+        // and Z fail this test; asking "== 1'bx" would accept Z, which is how
+        // an undriven request line used to pass unnoticed.
+        function automatic bit not_two_state(logic v);
+            return !((v === 1'b0) || (v === 1'b1));
+        endfunction
+
         function void build_phase(uvm_phase phase);
             super.build_phase(phase);
             ap     = new("ap", this);
@@ -1332,25 +1339,38 @@ package its_uvm_pkg;
                 end
 
                 if (checks_on) begin
-                    // Control signals must be two-state while checking.
-                    if ((vif.it_data_out_vld === 1'bx) || (vif.it_done === 1'bx)) begin
+                    // Control signals must be two-state while checking: a value
+                    // that is neither 0 nor 1 makes every downstream decision
+                    // meaningless, so it is an error rather than a warning.
+                    // Testing "not 0 and not 1" covers X and Z; the earlier
+                    // "=== 1'bx" form silently accepted Z, and it never looked
+                    // at req or protocol_error at all.
+                    if (not_two_state(vif.it_data_out_vld) ||
+                        not_two_state(vif.it_done)         ||
+                        not_two_state(vif.it_data_out_req) ||
+                        not_two_state(vif.protocol_error)  ||
+                        not_two_state(vif.it_data_in_vld)  ||
+                        not_two_state(vif.it_data_in_req)) begin
                         x_errors++;
                         `uvm_error("ITS_SIG_X",
-                                   $sformatf("control X: vld=%b done=%b req=%b t=%0t",
+                                   $sformatf("control not two-state: out_vld=%b done=%b out_req=%b perr=%b in_vld=%b in_req=%b t=%0t",
                                              vif.it_data_out_vld, vif.it_done,
-                                             vif.it_data_out_req, $time))
+                                             vif.it_data_out_req, vif.protocol_error,
+                                             vif.it_data_in_vld, vif.it_data_in_req,
+                                             $time))
                     end
-                    // vld while req is low.  The DUT gates the external valid by
-                    // the request (wrapper:1678), so this state is unreachable
-                    // from legal RTL behaviour: it fires only under a forced
-                    // output or an RTL regression.  Kept as a guard, reported as
-                    // info, and never counted as a passing protocol check.
+                    // vld while req is low.  The current RTL gates the external
+                    // valid by the request (wrapper:1678), so this state cannot
+                    // arise from legal behaviour today.  It is still an error:
+                    // a checker that stays quiet when a contract is violated
+                    // would pass exactly the regression it exists to catch.
+                    // The counter stays separate from the error count so the
+                    // runner can cross-check that the two paths agree.
                     if ((vif.it_data_out_vld === 1'b1) &&
                         (vif.it_data_out_req === 1'b0)) begin
                         vld_stall_guard++;
-                        `uvm_info("ITS_VLD_STALL",
-                                  $sformatf("vld high while req low (guard) t=%0t", $time),
-                                  UVM_LOW)
+                        `uvm_error("ITS_VLD_STALL",
+                                   $sformatf("vld high while req low: t=%0t", $time))
                     end
                     // done must ride a completed handshake.
                     if ((vif.it_done === 1'b1) &&
@@ -2011,6 +2031,20 @@ package its_uvm_pkg;
         function void report_phase(uvm_phase phase);
             super.report_phase(phase);
             write_result_file();
+        endfunction
+
+        // Fault injection for the A5 self-test only: report_phase has already
+        // written and closed a complete result file by the time final_phase
+        // runs, so this reproduces the one path where a fatal leaves a clean,
+        // finished-looking artefact behind.  The regression must judge it FAIL;
+        // nothing in normal operation sets the plusarg.
+        function void final_phase(uvm_phase phase);
+            bit inject;
+            super.final_phase(phase);
+            if (!$value$plusargs("FATAL_IN_FINAL=%b", inject)) inject = 1'b0;
+            if (inject)
+                uvm_report_fatal("ITS_INJECTED_FINAL_FATAL",
+                                 "injected in final_phase for the A5 self-test");
         endfunction
     endclass
 

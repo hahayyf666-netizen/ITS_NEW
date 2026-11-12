@@ -9,6 +9,9 @@
 //
 //   clean         nothing happens; no diagnostic may appear
 //   done_no_fire  done with the request low  -> ITS_DONE_NO_FIRE
+//   vld_only      valid with the request low -> ITS_VLD_STALL on its own
+//   done_z        done undriven (Z)          -> ITS_SIG_X
+//   req_x         request unknown (X)        -> ITS_SIG_X
 //   data_x        accepted beat carrying X   -> ITS_DATA_X
 //   uvm_fatal     UVM_FATAL, which exits before report_phase writes anything
 //   native_error  native $error, which leaves the process exit code at 0
@@ -26,6 +29,7 @@ import its_uvm_pkg::*;
 
 class its_check_selftest_test extends uvm_test;
     virtual its_if vif;
+    its_monitor     mon;
 
     `uvm_component_utils(its_check_selftest_test)
 
@@ -37,13 +41,16 @@ class its_check_selftest_test extends uvm_test;
         super.build_phase(phase);
         if (!uvm_config_db #(virtual its_if)::get(this, "", "vif", vif))
             `uvm_fatal("ITS_SELFTEST", "no virtual interface in config db")
-        void'(its_monitor::type_id::create("mon", this));
+        mon = its_monitor::type_id::create("mon", this);
     endfunction
 
     task run_phase(uvm_phase phase);
         string scen;
         phase.raise_objection(this);
         if (!$value$plusargs("SCEN=%s", scen)) scen = "clean";
+        // Positive evidence that the scenario ran at all: a scenario that never
+        // executes would otherwise look exactly like one that stayed quiet.
+        $display("ITS_SELFTEST_RAN scen=%s", scen);
 
         vif.rst_n = 1'b0;
         repeat (5) @(negedge vif.clk);
@@ -61,6 +68,31 @@ class its_check_selftest_test extends uvm_test;
                 vif.it_data_out_vld = 1'b0;
                 vif.it_done         = 1'b0;
             end
+            "vld_only": begin
+                // Valid with no request, and nothing else wrong: done stays low
+                // and the run does not time out, so the diagnostic cannot be
+                // piggy-backed on either of those.
+                vif.it_data_out_req = 1'b0;
+                vif.it_data_out_vld = 1'b1;
+                vif.it_done         = 1'b0;
+                repeat (2) @(negedge vif.clk);
+                vif.it_data_out_vld = 1'b0;
+            end
+            "done_z": begin
+                vif.it_data_out_req = 1'b0;
+                vif.it_data_out_vld = 1'b0;
+                vif.it_done         = 1'bz;
+                repeat (2) @(negedge vif.clk);
+                vif.it_done         = 1'b0;
+            end
+            "req_x": begin
+                vif.it_data_out_req = 1'bx;
+                vif.it_data_out_vld = 1'b1;
+                vif.it_done         = 1'b0;
+                repeat (2) @(negedge vif.clk);
+                vif.it_data_out_req = 1'b0;
+                vif.it_data_out_vld = 1'b0;
+            end
             "data_x": begin
                 vif.it_data_out_req = 1'b1;
                 vif.it_data_out     = 40'hx;
@@ -74,6 +106,12 @@ class its_check_selftest_test extends uvm_test;
         endcase
 
         repeat (4) @(negedge vif.clk);
+
+        // Printed before any injected fault, so an injected fatal cannot hide
+        // the counters it would otherwise overwrite.
+        $display("ITS_SELFTEST_COUNTERS scen=%s sig=%0d x=%0d in=%0d guard=%0d",
+                 scen, mon.sig_errors, mon.x_errors, mon.in_errors,
+                 mon.vld_stall_guard);
 
         // The uvm_fatal macro expands to a begin/end block, which cannot be a
         // case item; calling the report function keeps it a plain statement and
