@@ -288,51 +288,106 @@ def resolve_num(value, counts):
     return value
 
 
-def _classify(fields, case, parse_error, loginfo, timed_out, expected_run_id=None):
-    """Map the structured result plus the native channel to a status."""
-    loginfo = loginfo or {}
-    expect = case["expect"]
-    native_errs = loginfo.get("native_error", 0) + loginfo.get("native_assert", 0)
+# Written by run_its_uvm.run() only in its TimeoutExpired branch, so the marker
+# is an explicit statement by the executor.  A bare rc == -9 is not: other
+# abnormal terminations surface the same way.
+TIMEOUT_MARK = "*** TIMEOUT after "
 
-    # -- definite failures first, whatever the artefact looks like ---------
+
+def _with_exit(status, reason, returncode, timed_out, parse_error):
+    """Apply the exit code without overwriting a verdict the content supports.
+
+    An abnormal exit is a fact about the process, not about the DUT, so it may
+    raise the tier and may add a reason, but it must not relabel a case as a
+    "clean result" when there is no readable result to speak of.
+    """
+    if returncode in (None, 0) or timed_out:
+        return status, reason
+    if status == "PASS":
+        # A complete, readable, self-consistent record is the only situation in
+        # which this label is true.
+        return "DIRTY", "NONZERO_EXIT_WITH_CLEAN_RESULT"
+    if parse_error is not None:
+        # No usable artefact: the run itself failed, so say that rather than
+        # describing a file that does not exist as clean.
+        return "FAIL", "SIMULATOR_ERROR"
+    return status, reason
+
+
+def _classify(fields, case, parse_error, loginfo, timed_out,
+              expected_run_id=None, returncode=None):
+    """Map log facts and the structured result to a status.
+
+    The order is deliberate:
+
+      1. definite failures read from the log - they hold whatever the artefact
+         looks like, and nothing below may downgrade them;
+      2. the artefact has to prove it is this run's output before any count in
+         it is believed: presence, types, identity, then the id totals;
+      3. only then are its counters compared with the case's expectations, so a
+         stale or malformed record cannot produce a count verdict that hides
+         the fact that it is not usable at all;
+      4. a timeout is judged before the artefact's shape: during a timeout a
+         missing, empty or cut-short file is a symptom of the timeout, not
+         independent evidence that the writer is broken;
+      5. the shape decides between incomplete and dirty last.
+    """
+    loginfo = loginfo or {}
+    native_errs = loginfo.get("native_error", 0) + loginfo.get("native_assert", 0)
+    allowed_native = int(case["expect"].get("native_errors_allowed", 0))
+
+    def done(status, reason):
+        return _with_exit(status, reason, returncode, timed_out, parse_error)
+
+    # -- 1. definite failures, whatever the artefact looks like ------------
     # A fatal can land after the result file was written: the file is produced
     # in report_phase, and final_phase still runs afterwards.  So both fatal
     # channels are checked unconditionally, and a definite failure is never
-    # downgraded to "incomplete" because a timeout or a missing file also
-    # happened.  A timeout is recorded by the caller, never used as an excuse.
+    # downgraded because a timeout or a missing file also happened.
     if loginfo.get("native_fatal", 0) > 0:
-        return "FAIL", "NATIVE_FATAL"
-    if timed_out and native_errs > 0:
-        return "FAIL", "NATIVE_ERROR"
-    if parse_error not in ("RESULT_MISSING", "RESULT_EMPTY"):
-        if loginfo.get("uvm_fatal_lines", 0) > 0:
-            return "FAIL", "UVM_FATAL_IN_LOG"
-
-    # -- runs without a result file still have to be judged ---------------
-    # A uvm_fatal exits through UVM_EXIT (uvm_report_handler.svh:431), so
-    # report_phase never runs and the result file is never written.  Without
-    # this branch such a run would look like a mere missing artefact.
-    if parse_error == "RESULT_MISSING":
-        if loginfo.get("uvm_fatal_lines", 0) > 0:
-            return "FAIL", "UVM_FATAL_EARLY_EXIT"
-        if native_errs > 0:
-            return "FAIL", "NATIVE_ERROR"
-        if timed_out:
-            return "INCOMPLETE", "TIMEOUT"
-        if loginfo.get("summary_errors") == 0 and loginfo.get("saw_finish"):
-            return "DIRTY", "FINISHED_WITHOUT_RESULT"
-        return "INCOMPLETE", "NO_RESULT_FILE"
-    if parse_error == "RESULT_EMPTY":
-        # Native failures were already returned above; what is left is a run
-        # that produced nothing usable, which is incomplete rather than failed.
-        return "INCOMPLETE", "EMPTY_RESULT_FILE"
-    if parse_error:
-        return "DIRTY", parse_error
-
-    # -- native error budget, now that a result file exists ----------------
-    allowed_native = int(expect.get("native_errors_allowed", 0))
+        return done("FAIL", "NATIVE_FATAL")
+    if loginfo.get("uvm_fatal_lines", 0) > 0:
+        # uvm_fatal exits through UVM_EXIT (uvm_report_handler.svh:431), so
+        # report_phase never runs and no file is written.  When the file does
+        # exist, the fatal landed after it, which is a different situation
+        # worth telling apart in the record.
+        return done("FAIL", "UVM_FATAL_EARLY_EXIT"
+                    if parse_error == "RESULT_MISSING" else
+                    "UVM_FATAL_IN_LOG")
     if native_errs > allowed_native:
-        return "FAIL", "NATIVE_ERROR"
+        return done("FAIL", "NATIVE_ERROR")
+
+    # -- 2./3. the artefact, when there is a readable one ------------------
+    if parse_error is None:
+        status, reason = _judge_artifact(fields, case, expected_run_id)
+        if status != "PASS":
+            return done(status, reason)
+    elif parse_error not in ("RESULT_MISSING", "RESULT_EMPTY"):
+        # Structurally broken: nothing inside it can be used, so there is no
+        # count to compare and no verdict to derive from it.
+        return done("DIRTY", parse_error)
+
+    # -- 4. timeout before the artefact's shape ----------------------------
+    if timed_out:
+        return "INCOMPLETE", "TIMEOUT"
+
+    # -- 5. shape ----------------------------------------------------------
+    if parse_error == "RESULT_MISSING":
+        if loginfo.get("summary_errors") == 0 and loginfo.get("saw_finish"):
+            return done("DIRTY", "FINISHED_WITHOUT_RESULT")
+        return done("INCOMPLETE", "NO_RESULT_FILE")
+    if parse_error == "RESULT_EMPTY":
+        return done("INCOMPLETE", "EMPTY_RESULT_FILE")
+    return done("PASS", "")
+
+
+def _judge_artifact(fields, case, expected_run_id=None):
+    """Judge a parsed artefact: trust first, then the counters.
+
+    Every check here reads a file that already parsed, so the first block is
+    about whether this file may be believed at all.
+    """
+    expect = case["expect"]
 
     # -- fields: presence and type ----------------------------------------
     for key in REQUIRED_FIELDS:
@@ -464,20 +519,49 @@ def _classify(fields, case, parse_error, loginfo, timed_out, expected_run_id=Non
     return "PASS", ""
 
 
-def classify(fields, case, parse_error, loginfo, timed_out, expected_run_id=None):
-    """Verdict, primary reason, and the complete list of reasons.
+def _verdict_reasons(status, reason, case, loginfo, parse_error, timed_out):
+    """Every fact that independently justifies a non-PASS verdict.
+
+    This is the verdict reason set, not the full set of counters the run
+    printed: the diagnostic counts stay in log/fields, which is where a reader
+    who wants every observed number should look.  Declared diagnostics - the
+    UVM_ERROR lines a negative case expects - are not verdict reasons and do
+    not appear here.
+    """
+    if status == "PASS":
+        return []
+    loginfo = loginfo or {}
+    allowed = int(case["expect"].get("native_errors_allowed", 0))
+    out = []
+
+    def add(label):
+        if label and label not in out:
+            out.append(label)
+
+    add(reason)
+    if loginfo.get("native_fatal", 0) > 0:
+        add("NATIVE_FATAL")
+    if loginfo.get("uvm_fatal_lines", 0) > 0:
+        add("UVM_FATAL_EARLY_EXIT" if parse_error == "RESULT_MISSING"
+            else "UVM_FATAL_IN_LOG")
+    if loginfo.get("native_error", 0) + loginfo.get("native_assert", 0) > allowed:
+        add("NATIVE_ERROR")
+    if timed_out:
+        add("TIMEOUT")
+    return out
+
+
+def classify(fields, case, parse_error, loginfo, timed_out,
+             expected_run_id=None, returncode=None):
+    """Verdict, primary reason, and the reasons that justified it.
 
     The first two elements keep the old shape so existing callers are
-    unaffected.  The list additionally keeps facts that did not become the
-    primary reason - a timeout next to a definite failure, for instance - so
-    nothing observed is dropped from the record.
+    unaffected.
     """
     status, reason = _classify(fields, case, parse_error, loginfo, timed_out,
-                               expected_run_id)
-    reasons = [reason] if reason else []
-    if timed_out and "TIMEOUT" not in reasons:
-        reasons.append("TIMEOUT")
-    return status, reason, reasons
+                               expected_run_id, returncode)
+    return status, reason, _verdict_reasons(status, reason, case, loginfo,
+                                            parse_error, timed_out)
 
 
 def coverage_bins(fields):
@@ -575,19 +659,18 @@ def run_one(case, vector_file, want_ucdb=False, fp=None, extra_plusargs=(),
     t0 = time.time()
     rc, _ = env_mod.run(cmd, log_path, OUT, case["timeout_s"])
     elapsed = time.time() - t0
-    timed_out = elapsed >= case["timeout_s"] - 1
+    # The executor's own marker, written only when it had to kill the run for
+    # being too slow.  Deriving this from the elapsed time would call a run that
+    # finished just under the limit a timeout, and would miss a kill that came
+    # from somewhere else.
+    timed_out = TIMEOUT_MARK in log_path.read_text(encoding="utf-8",
+                                                   errors="replace")
 
     fields, parse_error = parse_result(res_path)
     loginfo = scan_log(log_path)
     status, reason, reasons = classify(fields, case, parse_error, loginfo,
-                                       timed_out, expected_run_id=run_id)
-    if rc != 0:
-        if status == "PASS":
-            status, reason, reasons = "DIRTY", "NONZERO_EXIT_WITH_CLEAN_RESULT", [
-                "NONZERO_EXIT_WITH_CLEAN_RESULT"]
-        elif reason in ("NO_RESULT_FILE", "FINISHED_WITHOUT_RESULT"):
-            # The simulator itself failed to produce evidence.
-            status, reason, reasons = "FAIL", "SIMULATOR_ERROR", ["SIMULATOR_ERROR"]
+                                       timed_out, expected_run_id=run_id,
+                                       returncode=rc)
 
     missing = [str(p) for p in FINGERPRINT_FILES if not p.exists()]
     # The artefact's own bytes: a later reader can tell whether the file it is
@@ -926,6 +1009,38 @@ def stage_selftest():
         # A definite native error outranks a timeout; both are kept.
         ("timeout plus native error", {}, mk_case(), "RESULT_MISSING",
          no_log(native_error=1), True, "FAIL", "NATIVE_ERROR"),
+        # -- second round: the anomalous combinations the review found --------
+        # A definite failure is a fact about the run, not about the artefact,
+        # so it holds when the artefact is empty as well.
+        ("empty result plus uvm fatal", {}, mk_case(), "RESULT_EMPTY",
+         no_log(uvm_fatal_lines=1), False, "FAIL", "UVM_FATAL_IN_LOG"),
+        ("empty result plus native error", {}, mk_case(), "RESULT_EMPTY",
+         no_log(native_error=1), False, "FAIL", "NATIVE_ERROR"),
+        # A timeout is not a pass, whatever the artefact looks like.
+        ("valid result plus timeout", clean(), mk_case(uvm_error=0, tus=1),
+         None, no_log(), True, "INCOMPLETE", "TIMEOUT"),
+        # During a timeout, a missing file is a symptom, not evidence of a
+        # broken writer, so it must not be graded DIRTY.
+        ("no result, finish, timeout", {}, mk_case(), "RESULT_MISSING",
+         no_log(), True, "INCOMPLETE", "TIMEOUT"),
+        # Four independent diagnostics: the primary decides the status, the
+        # rest still have to survive into the reason set.
+        ("all diagnostics at once", {}, mk_case(), "RESULT_MISSING",
+         no_log(native_fatal=1, native_error=1, uvm_fatal_lines=1), True,
+         "FAIL", "NATIVE_FATAL"),
+        # A record that is not this run's output must not produce count
+        # verdicts: the counts belong to someone else.
+        ("stale run id with bad count", clean(run_id="stale-run", beats="3"),
+         mk_case(beats=4), None, no_log(), False,
+         "DIRTY", "RUN_ID_MISMATCH:file=stale-run", "r1"),
+        # An abnormal exit with nothing to show for it is a simulator failure,
+        # not a clean result with a strange status.
+        ("abnormal exit, no result", {}, mk_case(), "RESULT_MISSING",
+         no_log(saw_finish=False, saw_uvm_summary=False), False,
+         "FAIL", "SIMULATOR_ERROR", None, 1),
+        ("abnormal exit, clean result", clean(), mk_case(uvm_error=0, tus=1),
+         None, no_log(), False, "DIRTY", "NONZERO_EXIT_WITH_CLEAN_RESULT",
+         None, 1),
     ]
     bad = 0
     print("[selftest] classifier behaviour", flush=True)
@@ -933,7 +1048,9 @@ def stage_selftest():
     for row in cases:
         label, fields, kase, perr, log, to, want_status, want_reason = row[:8]
         want_rid = row[8] if len(row) > 8 else None
-        status, reason, _reasons = classify(fields, kase, perr, log, to, want_rid)
+        rc = row[9] if len(row) > 9 else None
+        status, reason, _reasons = classify(fields, kase, perr, log, to,
+                                            want_rid, rc)
         ok = (status == want_status and reason == want_reason)
         if not ok:
             bad += 1
@@ -953,6 +1070,28 @@ def stage_selftest():
     print(f"  {'ok ' if ok else 'BAD'} {'both reasons kept':<24} -> {rs}"
           f"   want ['NATIVE_ERROR', 'TIMEOUT']", flush=True)
 
+    # Four independent diagnostics: none of them may be dropped just because
+    # another one was chosen as the primary reason.
+    extra_checks += 1
+    _s, _r, rs = classify({}, mk_case(), "RESULT_MISSING",
+                          no_log(native_fatal=1, native_error=1,
+                                 uvm_fatal_lines=1), True)
+    want_rs = ["NATIVE_FATAL", "UVM_FATAL_EARLY_EXIT", "NATIVE_ERROR", "TIMEOUT"]
+    ok = rs == want_rs
+    if not ok:
+        bad += 1
+    print(f"  {'ok ' if ok else 'BAD'} {'all four reasons kept':<24} -> {rs}"
+          f"   want {want_rs}", flush=True)
+
+    # A timeout on its own is incomplete evidence, never a pass.
+    extra_checks += 1
+    got = classify(clean(), mk_case(uvm_error=0, tus=1), None, no_log(), True)
+    ok = got == ("INCOMPLETE", "TIMEOUT", ["TIMEOUT"])
+    if not ok:
+        bad += 1
+    print(f"  {'ok ' if ok else 'BAD'} {'timeout alone not a pass':<24} -> {got}"
+          f"   want ('INCOMPLETE', 'TIMEOUT', ['TIMEOUT'])", flush=True)
+
     # Coverage merge must union bins across runs, not average them.
     merged = merge_coverage([
         {"shape": {"0_0": 1, "0_1": 0}},
@@ -965,7 +1104,7 @@ def stage_selftest():
     print(f"  {'ok ' if ok else 'BAD'} merge unions bins      -> "
           f"hit={m.get('hit_bins')} pct={m.get('pct')}  want hit=2", flush=True)
 
-    total = len(cases) + 2   # + merge check + both-reasons check
+    total = len(cases) + 4   # + merge, both-reasons, four-reasons, timeout-alone
     print(f"\nselftest: {'PASS' if bad == 0 else 'FAIL'} ({total - bad}/{total})")
     return 0 if bad == 0 else 1
 

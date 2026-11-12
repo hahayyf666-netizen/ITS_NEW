@@ -1,11 +1,14 @@
 #!/usr/bin/env python
-"""Before/after evidence for the classifier counterexamples the audit found.
+"""Before/after evidence for the classifier counterexamples the audits found.
 
 Runs the same fixtures through two classifiers: the one at a historical revision
 (default: the original A-phase commit) and the one on disk.  A fixture "leaked"
 when the old classifier did not fail it.  This is the only way to show the holes
 were real: the current classifier rejecting a fixture says nothing about whether
 the previous one would have.
+
+Fixtures that the old flow already handled are kept as regression guards; the
+summary says which is which rather than pretending every row was a new hole.
 
 The historical source is read out of git, so this stays reproducible as long as
 the revision exists; nothing is copied into the tree.
@@ -74,28 +77,68 @@ def no_log(**over):
     return d
 
 
-# (defect, fields, case, parse_error, loginfo, timed_out, expected_run_id)
+def old_effective(old, fields, kase, perr, log, to, rc):
+    """The verdict the old flow produced: classify plus its caller-side patch.
+
+    The exit-code handling lived in run_one() back then, not in the classifier,
+    so reproducing it here is what makes the comparison fair.
+    """
+    status, reason = old.classify(fields, kase, perr, log, to)[:2]
+    if rc:
+        if status == "PASS":
+            status, reason = "DIRTY", "NONZERO_EXIT_WITH_CLEAN_RESULT"
+        elif reason in ("NO_RESULT_FILE", "FINISHED_WITHOUT_RESULT"):
+            status, reason = "FAIL", "SIMULATOR_ERROR"
+    return status, reason
+
+
+# (defect, fields, case, parse_error, loginfo, timed_out, run_id, returncode)
+# Rows where a timeout with no other defect is the intended verdict.
+INCOMPLETE_OK = {"D5 clean result + timeout", "D5 no result + finish + timeout"}
+
 FIXTURES = [
+    # -- first round: the six defects the first audit found ----------------
     ("D1 guard counter unwatched",
-     base(vld_stall_guard=1), mk_case(), None, no_log(), False, None),
+     base(vld_stall_guard=1), mk_case(), None, no_log(), False, None, None),
     ("D3 run_id not verified",
-     base(run_id="stale-run"), mk_case(), None, no_log(), False, "r1"),
+     base(run_id="stale-run"), mk_case(), None, no_log(), False, "r1", None),
     ("D4 garbage id value accepted",
      base({"err.error.ITS_DATA_MISMATCH": 1, "err.error.BOGUS": "garbage"},
           uvm_error=1), mk_case(uvm_error_ids={"ITS_DATA_MISMATCH": 1}),
-     None, no_log(), False, None),
+     None, no_log(), False, None, None),
     ("D4 server total optional",
      {k: v for k, v in base().items() if k != "err_server_total_error"},
-     mk_case(), None, no_log(), False, None),
+     mk_case(), None, no_log(), False, None, None),
     ("D4 fatal id total unchecked",
      base({"err.fatal.X": 1}, uvm_fatal=0, err_server_total_fatal=1),
-     mk_case(), None, no_log(), False, None),
+     mk_case(), None, no_log(), False, None, None),
     ("D5 fatal after result file",
-     base(), mk_case(), None, no_log(uvm_fatal_lines=1), False, None),
+     base(), mk_case(), None, no_log(uvm_fatal_lines=1), False, None, None),
     ("D5 empty result + native fatal",
-     {}, mk_case(), "RESULT_EMPTY", no_log(native_fatal=1), False, None),
+     {}, mk_case(), "RESULT_EMPTY", no_log(native_fatal=1), False, None, None),
     ("D5 timeout + native error",
-     {}, mk_case(), "RESULT_MISSING", no_log(native_error=1), True, None),
+     {}, mk_case(), "RESULT_MISSING", no_log(native_error=1), True, None, None),
+    # -- second round: the anomalous combinations the review found ---------
+    ("D5 empty result + uvm fatal",
+     {}, mk_case(), "RESULT_EMPTY", no_log(uvm_fatal_lines=1), False, None, None),
+    ("D5 empty result + native error",
+     {}, mk_case(), "RESULT_EMPTY", no_log(native_error=1), False, None, None),
+    ("D5 clean result + timeout",
+     base(), mk_case(uvm_error=0, tus=1), None, no_log(), True, None, None),
+    ("D5 no result + finish + timeout",
+     {}, mk_case(), "RESULT_MISSING", no_log(), True, None, None),
+    ("D5 four diagnostics at once",
+     {}, mk_case(), "RESULT_MISSING",
+     no_log(native_fatal=1, native_error=1, uvm_fatal_lines=1),
+     True, None, None),
+    ("D5 stale run id + bad count",
+     base(run_id="stale-run", beats="3"), mk_case(beats=4), None, no_log(),
+     False, "r1", None),
+    ("D5 abnormal exit, no result",
+     {}, mk_case(), "RESULT_MISSING",
+     no_log(saw_finish=False, saw_uvm_summary=False), False, None, 1),
+    ("D5 abnormal exit, clean result",
+     base(), mk_case(uvm_error=0, tus=1), None, no_log(), False, None, 1),
 ]
 
 
@@ -106,24 +149,46 @@ def main():
 
     old = load_old(args.rev)
     lines = [f"classifier before/after  (old = {args.rev}, new = working tree)"]
-    leaks = rejected = 0
-    for defect, fields, kase, perr, log, to, rid in FIXTURES:
-        o = old.classify(fields, kase, perr, log, to)
-        n = new.classify(fields, kase, perr, log, to, rid)
-        old_s = f"{o[0]}/{o[1]}" if o[1] else o[0]
-        new_s = f"{n[0]}/{n[1]}" if n[1] else n[0]
-        leaked = o[0] not in ("FAIL", "DIRTY")
-        leaks += leaked
-        rejected += n[0] in ("FAIL", "DIRTY")
-        lines.append(f"{'LEAK' if leaked else 'ok  '}  {defect:<30} "
-                     f"old={old_s:<34} new={new_s}")
-        if not leaked:
-            lines.append("      note: the old classifier already failed this one")
-        if n[0] not in ("FAIL", "DIRTY"):
+    leaks = guards = 0
+    new_wrong = []
+    for defect, fields, kase, perr, log, to, rid, rc in FIXTURES:
+        o_status, o_reason = old_effective(old, fields, kase, perr, log, to, rc)
+        n_status, n_reason, n_reasons = new.classify(
+            fields, kase, perr, log, to, rid, rc)
+        old_s = f"{o_status}/{o_reason}" if o_reason else o_status
+        new_s = f"{n_status}/{n_reason}" if n_reason else n_status
+        changed = (o_status, o_reason) != (n_status, n_reason)
+        if changed:
+            leaks += 1
+        else:
+            guards += 1
+        label = "FIXED" if changed else "guard"
+        lines.append(f"{label:<6}{defect:<34} old={old_s:<38} new={new_s}")
+        # A timeout on its own is incomplete evidence by design, so those rows
+        # are only wrong if they come out as anything else.
+        if defect in INCOMPLETE_OK:
+            if (n_status, n_reason) != ("INCOMPLETE", "TIMEOUT"):
+                new_wrong.append(defect)
+                lines.append("      !! expected INCOMPLETE/TIMEOUT")
+        elif n_status not in ("FAIL", "DIRTY"):
+            new_wrong.append(defect)
             lines.append("      !! the new classifier did not fail this fixture")
+
+    # The four-diagnostic row also has to keep every fact, not just the primary.
+    _s, _r, rs = new.classify({}, mk_case(), "RESULT_MISSING",
+                              no_log(native_fatal=1, native_error=1,
+                                     uvm_fatal_lines=1), True)
+    want = ["NATIVE_FATAL", "UVM_FATAL_EARLY_EXIT", "NATIVE_ERROR", "TIMEOUT"]
     lines.append("")
-    lines.append(f"fixtures: {len(FIXTURES)}   old leaked: {leaks}   "
-                 f"new rejected: {rejected}")
+    lines.append(f"reasons on the four-diagnostic row: {rs}")
+    lines.append(f"                                     want {want}")
+    if rs != want:
+        new_wrong.append("four-diagnostic reason set")
+
+    lines.append("")
+    lines.append(f"fixtures: {len(FIXTURES)}   changed by the fix: {leaks}   "
+                 f"already handled before: {guards}")
+    lines.append(f"new classifier wrong: {len(new_wrong)}")
 
     out = new.OUT / "probe"
     out.mkdir(parents=True, exist_ok=True)
@@ -131,7 +196,7 @@ def main():
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))
     print(f"\nwrote {path}")
-    return 0 if (leaks == len(FIXTURES) and rejected == len(FIXTURES)) else 1
+    return 0 if not new_wrong else 1
 
 
 if __name__ == "__main__":
