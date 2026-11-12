@@ -26,23 +26,28 @@
 关闭；同时更正 §11.1 里关于"fatal 必带非零退出码"的错误说法——实测真实
 `final_phase` fatal 的 `rc=0`。
 
+第六轮复核确认 §12 的四个反例通过，352 项组合矩阵全绿，又指出 FIRM 收集范围
+仍不完整：重复键会让全部 FIRM 检查被跳过，动态 `err.error.*` 数值不进严格检查。
+两处在 §13 关闭。这一轮把"可读矛盾不会被遮住"的适用条件写清楚了，不再作为
+无条件结论。
+
 | 验收项 | 结果 | 证据 |
 | --- | --- | --- |
 | 全量回归 | **22/22 PASS** | `run/regress_A2_summary.txt`、`run/REGRESSION.json` |
-| 分类器自检 | **67/67**（60 条用例 + 7 条附加检查） | `python run_regress.py selftest` |
+| 分类器自检 | **71/71**（63 条用例 + 8 条附加检查） | `python run_regress.py selftest` |
 | 检查器反例自检 | **9 场景 / 46 断言 / 46 通过** | `run/logs/selftest_*.log`、`python a5_selftest.py` |
 | final_phase 真实反例 | **10 断言 / 10 通过**（并记录两次运行的 `returncode`） | `run/A5_FINAL_FATAL.json`、`python a5_final_fatal.py` |
-| 分类器修前/修后对照 | 21 个 fixture：**17 个被修正**，4 个原本已正确（含 1 个证明"曾被改坏又改回"），新判定器 0 个错 | §9.1、§10.4、§11.4、§12.3、`run/probe/classifier_before_after.txt` |
+| 分类器修前/修后对照 | 23 个 fixture：**19 个被修正**，4 个原本已正确（含 1 个证明"曾被改坏又改回"），新判定器 0 个错 | §9.1、§10.4、§11.4、§12.3、`run/probe/classifier_before_after.txt` |
 | 功能覆盖 | 52/54 = 96.30%（与 A 阶段前一致） | `run/REGRESSION.json` 的 `merged_coverage` |
 | 代码覆盖 | 语句 85.16% / 分支 72.60% / 条件 67.64% / 表达式 65.21% / 断言 100% / FSM 状态 100% / FSM 转移 42.30% / 翻转 41.13% | `run/COVERAGE_CODE.json`（在最终回归**之后**生成，与同一轮 ucdb 对应） |
-| 输入指纹 | `64fe32272d99ba80`，18 个文件，无缺失，与提交态一致 | `run/RUN_MANIFEST.json` |
+| 输入指纹 | `2fbc8065da68a933`，18 个文件，无缺失，与提交态一致 | `run/RUN_MANIFEST.json` |
 | 产物一致性 | 回归收尾复核 22 个结果文件 sha256，`artifact_drift` 为空 | `run/REGRESSION.json` |
 | 运行身份 | 22 例 `run_id` 互不相同，且每例结果文件内的 `run_id` 与本次运行一致 | 同上 |
 
 自检计数的账目按真实清单写：第一轮结束时是 32 条用例 + 1 条合并检查 = 33；
 第二轮加入 9 条反例与 1 条 `reasons` 检查 = 43；第三轮加入 8 条异常组合用例
 与 2 条附加检查 = 53；第四轮加入 7 条退出码/截断用例与 2 条附加检查 = 62；
-第五轮加入 4 条 FIRM 遮蔽用例与 1 条附加检查 = 67。
+第五轮加入 4 条 FIRM 遮蔽用例与 1 条附加检查 = 67；第六轮加入 3 条 FIRM 范围用例与 1 条附加检查 = 71。
 （此前正文写过"33 + 9 条反例 + 2 条附加"，把原有的合并检查重复计入，
 已按实际清单更正。）
 
@@ -194,7 +199,7 @@ A5 证明的正是后者。
 | `run/RUN_MANIFEST.json` | 启动/结束记录、每例 `run_id`、完整命令行、日志计数、缺失输入、退出码 |
 | `run/COVERAGE_CODE.json` | DUT 代码覆盖率 |
 | `run/A5_FINAL_FATAL.json` | final_phase 反例两次运行的判定与产物 sha256 |
-| `run/probe/classifier_before_after.txt` | 21 个反例的修前/修后判定 |
+| `run/probe/classifier_before_after.txt` | 23 个反例的修前/修后判定 |
 | `run/probe/a5_final_fatal_*.result` | 反例的产物（不占用 `run/results/`） |
 | `run/logs/regress_<case>.log` | 每例原始日志 |
 | `run/logs/selftest_*.log` | A5 九个场景日志 |
@@ -204,7 +209,7 @@ A5 证明的正是后者。
 
 ```
 python run_its_uvm.py prep
-python run_regress.py selftest      # 67/67
+python run_regress.py selftest      # 71/71
 python a5_selftest.py               # 9 场景 / 46 断言
 python a5_final_fatal.py            # 10 断言
 python probe_classifier_history.py  # 修前/修后对照
@@ -307,7 +312,7 @@ python run_regress.py coverage
    契约本身是否成立，是最容易出问题的地方。
 2. 再看 `run_regress.py` 中 `_classify` 的分支顺序（§10.2 是当前生效的版本），
    特别是"诊断事实先于产物形态、身份先于计数、超时先于形态"这三条。
-3. 复跑三个自检：`python run_regress.py selftest`（67/67）、
+3. 复跑三个自检：`python run_regress.py selftest`（71/71）、
    `python a5_selftest.py`（9 场景 46/46）、`python a5_final_fatal.py`（10/10）。
 4. 看 `its_uvm_pkg.sv` 中 monitor 的 `run_phase` 复位状态机与
    `not_two_state()`，确认 `warmup` 与 `checks_on` 既不漏检也不多检。
@@ -359,7 +364,7 @@ D1/D2 属于**把已约定的验收条件降级**，不是新需求；其余为�
 | D5 超时优先，吞掉已发生的原生错误 | `RESULT_MISSING` + native error + 超时 | INCOMPLETE / TIMEOUT | FAIL / `NATIVE_ERROR`（`reasons` 保留 TIMEOUT） |
 | D6 指纹漏 3 个实际编译的 RTL | 改这 3 个文件，指纹不变 | 指纹 15 个文件 | 18 个文件，源自编译清单 |
 
-分类器自检从 33/33 变为 **43/43**（第三轮后为 53/53，第四轮后为 62/62，第五轮后为 67/67，见 §10.5、§11.5、§12.5）；新增 9 条反例行中，8 条在修前被判 PASS。
+分类器自检从 33/33 变为 **43/43**（第三轮后为 53/53，第四轮后为 62/62，第五轮后为 67/67，第六轮后为 71/71，见 §10.5、§11.5、§12.5、§13.5）；新增 9 条反例行中，8 条在修前被判 PASS。
 
 ### 9.2 判定顺序（D5）
 
@@ -700,6 +705,7 @@ test=its_single_tu_test
   只是把它的前置条件放宽到"读到就算"）。
 
 不变量：**可读的矛盾不因后面的缺口而消失**；不可读的东西不因猜测而成立。
+（这条规则的完整适用条件见 §13.4，第六轮补充了"可归属"这一半。）
 
 ### 12.3 新增反例
 
@@ -740,7 +746,8 @@ probe    rc=0  status=FAIL  reason=UVM_FATAL_IN_LOG
 ### 12.5 自检账目
 
 60 条用例 + 7 条附加检查（合并、双原因、四诊断 `reasons`、超时单独判定、
-退出码进 `reasons`、截断发现进 `reasons`、FIRM 优先于 TORN）= **67/67**。
+退出码进 `reasons`、截断发现进 `reasons`、FIRM 优先于 TORN）= **67/67**
+（第六轮加入 3 条用例与 1 条附加检查后为 71/71，见 §13.5）。
 
 ### 12.6 我这一轮的错误
 
@@ -749,3 +756,65 @@ probe    rc=0  status=FAIL  reason=UVM_FATAL_IN_LOG
   恰好把两件事拆开了。
 - **把假设当事实。** "fatal 必带非零退出码"没有实测就写进 §11.1，并在提交信息里
   重复了一遍。已经改成实测结论，并让产物记录 `returncode`。
+
+---
+
+## 13 第六轮复核：FIRM 收集范围
+
+352 项组合矩阵全绿，§12 的四个反例通过。剩下两处都在"哪些字段算 FIRM"这一层：
+收集范围比判定需要窄。
+
+### 13.1 两处遗漏
+
+| 构造 | 修前 | 漏在哪 |
+| --- | --- | --- |
+| `run_id=old` + `tus=1` 重复两行 + 超时 | INCOMPLETE/`TIMEOUT`，`reasons=[TIMEOUT, RESULT_DUPLICATE_KEY:tus]` | `_classify` 只在 `parse_error is None` 时才调 `_firm_findings()`；有结构错误就整段跳过 |
+| 身份正确、`err.error.BOGUS=abc`、其余计数未写完 + 超时 | INCOMPLETE/`TIMEOUT`，`reasons=[TIMEOUT, MISSING_FIELD:tus]` | `_firm_findings()` 只遍历 `REQUIRED_FIELDS`，动态 `err.error.*` / `err.fatal.*` 不在其中 |
+
+两处都仍然拒绝 PASS，影响的是 DIRTY 与 TIMEOUT 的分类和矛盾记录。
+
+### 13.2 改法
+
+- **FIRM 收集不再受结构错误门控。** 逐字段判定本来就是逐字段的：`tus` 重复不
+  影响 `run_id` 是否可读。`parse_error` 只决定"整份文件能不能当完整记录用"，
+  不该决定"其中某些字段能不能被单独读出来"。
+- **重复的键单独列出为 `ambiguous`**（从 `RESULT_DUPLICATE_KEY:a,b` 解析）。
+  这些键的值只剩最后一行，不能归属，因此不参与 FIRM；其余键照常比较。
+  重复的是 `run_id` 就直接不比 `run_id`，不拿"最后留下的那个值"当结论。
+- **动态计数与固定计数同等对待**：新增 `_count_keys()`，把 `err.error.*` /
+  `err.fatal.*` 一起送进严格数值检查。之前只有字段齐全时它们才会被检查。
+
+### 13.3 新增反例
+
+| 组合 | 修前 | 现在 | `reasons` |
+| --- | --- | --- | --- |
+| 重复键 `tus` + 错 `run_id` + 超时 | INCOMPLETE/`TIMEOUT` | DIRTY/`RUN_ID_MISMATCH` | `[RUN_ID_MISMATCH, TIMEOUT, RESULT_DUPLICATE_KEY:tus]` |
+| 重复键 `run_id` 本身 + 超时 | INCOMPLETE/`TIMEOUT` | INCOMPLETE/`TIMEOUT`（保持：该值不可归属） | `[TIMEOUT, RESULT_DUPLICATE_KEY:run_id]` |
+| `err.error.BOGUS=abc` + 缺字段 + 超时 | INCOMPLETE/`TIMEOUT` | DIRTY/`FIELD_FORMAT` | 同上形状 |
+
+第二行是反向用例：它证明"重复的 `run_id` 不被采信"，而不是被悄悄拿去比较。
+
+### 13.4 这条规则的边界（不再写成无条件成立）
+
+能保证的是：**一个可读且可归属的矛盾，不会被截断症状遮住。** 两个前提都要成立：
+
+- *可读*：该字段在文件里存在，且值非空。空值是截断留下的形状，不算。
+- *可归属*：该键在文件里只出现一次。重复键只剩最后一个值，不能归属。
+
+不满足这两条时，判定回到 `INCOMPLETE/TIMEOUT`，并把这些发现写进 `reasons`——
+不猜、也不丢。还没写进文件的字段当然也无从判断。
+
+### 13.5 自检账目
+
+63 条用例 + 8 条附加检查（合并、双原因、四诊断 `reasons`、超时单独判定、
+退出码进 `reasons`、截断发现进 `reasons`、FIRM 优先于 TORN、重复键留在
+`reasons`）= **71/71**。
+
+### 13.6 我这一轮的错误
+
+- **规则写成了无处不在的措辞，实现却是"在某个分支里"。** §12.2 我写"可读的矛盾
+  不因后面的缺口而消失"，没写"也不因别的字段坏掉而消失"。实现正好漏了这一半：
+  `_firm_findings` 被挂在 `parse_error is None` 上。
+- **枚举字段时只抄了自己记得的那一组。** 动态 `err.error.*` 是这份结果格式里最
+  需要严格检查的部分（ID 计数），却因为不在 `REQUIRED_FIELDS` 里被漏掉。这一类
+  "按名单遍历、名单不全"的错误与前面几轮同源。
