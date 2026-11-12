@@ -21,22 +21,28 @@
 以及"超时 + 截断产物"仍判 DIRTY（与 §10 的文字相矛盾）。两处已在 §11 关闭，
 其中一处是我在 §10 里自己引入的回归。
 
+第五轮独立复核用 224 项组合矩阵验证了 §11 的修复，只剩一处：FIRM 发现（身份
+错误）会被排在前面的 TORN 发现（缺字段）遮住，因而没进入判定。该处在 §12
+关闭；同时更正 §11.1 里关于"fatal 必带非零退出码"的错误说法——实测真实
+`final_phase` fatal 的 `rc=0`。
+
 | 验收项 | 结果 | 证据 |
 | --- | --- | --- |
 | 全量回归 | **22/22 PASS** | `run/regress_A2_summary.txt`、`run/REGRESSION.json` |
-| 分类器自检 | **62/62**（56 条用例 + 6 条附加检查） | `python run_regress.py selftest` |
+| 分类器自检 | **67/67**（60 条用例 + 7 条附加检查） | `python run_regress.py selftest` |
 | 检查器反例自检 | **9 场景 / 46 断言 / 46 通过** | `run/logs/selftest_*.log`、`python a5_selftest.py` |
-| final_phase 真实反例 | **10 断言 / 10 通过** | `run/A5_FINAL_FATAL.json`、`python a5_final_fatal.py` |
-| 分类器修前/修后对照 | 19 个 fixture：**15 个被修正**，4 个原本已正确（含 2 个证明"曾被改坏又改回"），新判定器 0 个错 | §9.1、§10.4、§11.4、`run/probe/classifier_before_after.txt` |
+| final_phase 真实反例 | **10 断言 / 10 通过**（并记录两次运行的 `returncode`） | `run/A5_FINAL_FATAL.json`、`python a5_final_fatal.py` |
+| 分类器修前/修后对照 | 21 个 fixture：**17 个被修正**，4 个原本已正确（含 1 个证明"曾被改坏又改回"），新判定器 0 个错 | §9.1、§10.4、§11.4、§12.3、`run/probe/classifier_before_after.txt` |
 | 功能覆盖 | 52/54 = 96.30%（与 A 阶段前一致） | `run/REGRESSION.json` 的 `merged_coverage` |
 | 代码覆盖 | 语句 85.16% / 分支 72.60% / 条件 67.64% / 表达式 65.21% / 断言 100% / FSM 状态 100% / FSM 转移 42.30% / 翻转 41.13% | `run/COVERAGE_CODE.json`（在最终回归**之后**生成，与同一轮 ucdb 对应） |
-| 输入指纹 | `205690cbfe0000a0`，18 个文件，无缺失，与提交态一致 | `run/RUN_MANIFEST.json` |
+| 输入指纹 | `64fe32272d99ba80`，18 个文件，无缺失，与提交态一致 | `run/RUN_MANIFEST.json` |
 | 产物一致性 | 回归收尾复核 22 个结果文件 sha256，`artifact_drift` 为空 | `run/REGRESSION.json` |
 | 运行身份 | 22 例 `run_id` 互不相同，且每例结果文件内的 `run_id` 与本次运行一致 | 同上 |
 
 自检计数的账目按真实清单写：第一轮结束时是 32 条用例 + 1 条合并检查 = 33；
 第二轮加入 9 条反例与 1 条 `reasons` 检查 = 43；第三轮加入 8 条异常组合用例
-与 2 条附加检查 = 53；第四轮加入 7 条退出码/截断用例与 2 条附加检查 = 62。
+与 2 条附加检查 = 53；第四轮加入 7 条退出码/截断用例与 2 条附加检查 = 62；
+第五轮加入 4 条 FIRM 遮蔽用例与 1 条附加检查 = 67。
 （此前正文写过"33 + 9 条反例 + 2 条附加"，把原有的合并检查重复计入，
 已按实际清单更正。）
 
@@ -188,7 +194,7 @@ A5 证明的正是后者。
 | `run/RUN_MANIFEST.json` | 启动/结束记录、每例 `run_id`、完整命令行、日志计数、缺失输入、退出码 |
 | `run/COVERAGE_CODE.json` | DUT 代码覆盖率 |
 | `run/A5_FINAL_FATAL.json` | final_phase 反例两次运行的判定与产物 sha256 |
-| `run/probe/classifier_before_after.txt` | 19 个反例的修前/修后判定 |
+| `run/probe/classifier_before_after.txt` | 21 个反例的修前/修后判定 |
 | `run/probe/a5_final_fatal_*.result` | 反例的产物（不占用 `run/results/`） |
 | `run/logs/regress_<case>.log` | 每例原始日志 |
 | `run/logs/selftest_*.log` | A5 九个场景日志 |
@@ -198,7 +204,7 @@ A5 证明的正是后者。
 
 ```
 python run_its_uvm.py prep
-python run_regress.py selftest      # 62/62
+python run_regress.py selftest      # 67/67
 python a5_selftest.py               # 9 场景 / 46 断言
 python a5_final_fatal.py            # 10 断言
 python probe_classifier_history.py  # 修前/修后对照
@@ -301,7 +307,7 @@ python run_regress.py coverage
    契约本身是否成立，是最容易出问题的地方。
 2. 再看 `run_regress.py` 中 `_classify` 的分支顺序（§10.2 是当前生效的版本），
    特别是"诊断事实先于产物形态、身份先于计数、超时先于形态"这三条。
-3. 复跑三个自检：`python run_regress.py selftest`（62/62）、
+3. 复跑三个自检：`python run_regress.py selftest`（67/67）、
    `python a5_selftest.py`（9 场景 46/46）、`python a5_final_fatal.py`（10/10）。
 4. 看 `its_uvm_pkg.sv` 中 monitor 的 `run_phase` 复位状态机与
    `not_two_state()`，确认 `warmup` 与 `checks_on` 既不漏检也不多检。
@@ -353,7 +359,7 @@ D1/D2 属于**把已约定的验收条件降级**，不是新需求；其余为�
 | D5 超时优先，吞掉已发生的原生错误 | `RESULT_MISSING` + native error + 超时 | INCOMPLETE / TIMEOUT | FAIL / `NATIVE_ERROR`（`reasons` 保留 TIMEOUT） |
 | D6 指纹漏 3 个实际编译的 RTL | 改这 3 个文件，指纹不变 | 指纹 15 个文件 | 18 个文件，源自编译清单 |
 
-分类器自检从 33/33 变为 **43/43**（第三轮后为 53/53，第四轮后为 62/62，见 §10.5、§11.5）；新增 9 条反例行中，8 条在修前被判 PASS。
+分类器自检从 33/33 变为 **43/43**（第三轮后为 53/53，第四轮后为 62/62，第五轮后为 67/67，见 §10.5、§11.5、§12.5）；新增 9 条反例行中，8 条在修前被判 PASS。
 
 ### 9.2 判定顺序（D5）
 
@@ -581,7 +587,7 @@ A5 新增 `done_z`、`req_x` 两个场景，各 2 拍，均报 2 次 `ITS_SIG_X`
 
 | 问题 | 实测（我复现，与复核方一致） | 根因 |
 | --- | --- | --- |
-| 非零退出码改写已确认的主因 | 无文件＋原生 fatal＋`rc=1` → `SIMULATOR_ERROR`；无文件＋UVM_FATAL＋`rc=1` → `SIMULATOR_ERROR`；空文件＋原生 error＋`rc=1` → `SIMULATOR_ERROR` | `_with_exit()` 的条件写的是"`parse_error` 非空就改写"，而不是"只有在没有更明确诊断时才用它"。`uvm_fatal` 本身就以非零码退出，这条路上每个人都带着 `rc≠0` |
+| 非零退出码改写已确认的主因 | 无文件＋原生 fatal＋`rc=1` → `SIMULATOR_ERROR`；无文件＋UVM_FATAL＋`rc=1` → `SIMULATOR_ERROR`；空文件＋原生 error＋`rc=1` → `SIMULATOR_ERROR` | `_with_exit()` 的条件写的是"`parse_error` 非空就改写"，而不是"只有在没有更明确诊断时才用它" |
 | 退出码没进 `reasons` | 错 `run_id`＋`rc=1` → `DIRTY/RUN_ID_MISMATCH`，`reasons` 只有一条 | `_verdict_reasons()` 不接收退出码，§10.3 声称 F4 属于判定原因集合，实现没做到 |
 | 超时＋截断产物仍判 DIRTY | 截断文件（`tus=` 后即止）＋超时 → `DIRTY/MISSING_FIELD:beats`；结构错误＋超时 → `DIRTY` | 字段检查与结构错误分支都在超时判断之前，§10 声称"超时期间的截断只作为不完整证据"，实现没做到 |
 
@@ -636,12 +642,14 @@ FIXED  A4 exit rewrite: stale run id + rc old=DIRTY/NONZERO_EXIT_WITH_CLEAN_RESU
 FIXED  A4 torn artefact + timeout         old=DIRTY/MISSING_FIELD:beats
 ```
 
-19 个 fixture：15 个被修正、4 个原本已正确，新判定器 0 个错。
+19 个 fixture：15 个被修正、4 个原本已正确，新判定器 0 个错
+（第五轮后为 21 / 17 / 4，见 §12.3）。
 
 ### 11.5 自检账目
 
 56 条用例 + 6 条附加检查（合并、双原因、四诊断 `reasons`、超时单独判定、
-退出码进 `reasons`、截断发现进 `reasons`）= **62/62**。
+退出码进 `reasons`、截断发现进 `reasons`）= **62/62**
+（第五轮加入 4 条用例与 1 条附加检查后为 67/67，见 §12.5）。
 
 ### 11.6 我在这一轮犯的错
 
@@ -656,3 +664,88 @@ FIXED  A4 torn artefact + timeout         old=DIRTY/MISSING_FIELD:beats
   附加检查），并且把"截断类/独立类"写成显式常量，不再只存在于散文里。
 - **忘了把 F4 放进 `reasons`。** §10.3 把 F4 列入判定原因集合，实现里
   `_verdict_reasons` 根本没接收退出码。
+
+---
+
+## 12 第五轮复核：FIRM 被 TORN 遮住，以及一处关于退出码的错误说法
+
+224 项组合矩阵验证了 §11 的修复，只剩一处分类遗漏，另有一句文档写错。
+
+### 12.1 遗漏：可读的身份错误被截断症状遮住
+
+```
+run_id=old-run
+case=single_tu
+test=its_single_tu_test
+<计数部分没写完，运行超时>
+```
+
+修前：`INCOMPLETE/TIMEOUT`，`reasons = [TIMEOUT, MISSING_FIELD:tus]`，
+已存在的 `run_id` 不匹配没有被记录。把错误放在 `case` 或 `test` 上结果相同。
+
+根因：`_judge_artifact()` 先遍历全部必填字段，遇到第一个缺失就返回；身份比较
+在它后面，永远走不到。`_torn()` 再按这一条发现判定，于是"文件被截断"这个
+可解释症状吞掉了"这份文件不属于本轮"这个不可解释的矛盾。
+
+### 12.2 改法
+
+新增 `_firm_findings()`：在有序判定之前，单独比较**已经存在且非空**的
+`run_id` / `case` / `test`，并单独取出完整但不可解析的数值字段（空值不算，
+因为空值正是被截断的行留下的形状）。`_classify` 拿到它之后：
+
+- 有 FIRM → `DIRTY`，主因取第一条 FIRM；其余 FIRM、被遮住的 TORN 发现、
+  `TIMEOUT` 全部进 `reasons`；
+- 只有 TORN ＋超时 → 仍为 `INCOMPLETE/TIMEOUT`（原行为不变）；
+- 全部字段齐全时的判定完全不变（`_judge_artifact` 仍是权威，`_firm_findings`
+  只是把它的前置条件放宽到"读到就算"）。
+
+不变量：**可读的矛盾不因后面的缺口而消失**；不可读的东西不因猜测而成立。
+
+### 12.3 新增反例
+
+| 组合 | 修前 | 现在 | `reasons` |
+| --- | --- | --- | --- |
+| 错 `run_id` ＋缺计数字段＋超时 | INCOMPLETE/`TIMEOUT` | DIRTY/`RUN_ID_MISMATCH` | `[RUN_ID_MISMATCH, TIMEOUT, MISSING_FIELD:tus]` |
+| 错 `case` ＋缺计数字段＋超时 | INCOMPLETE/`TIMEOUT` | DIRTY/`CASE_MISMATCH` | 同上形状 |
+| 错 `test` ＋缺计数字段＋超时 | INCOMPLETE/`TIMEOUT` | DIRTY/`TEST_MISMATCH` | 同上形状 |
+| `tus=abc` ＋缺计数字段＋超时 | INCOMPLETE/`TIMEOUT` | DIRTY/`FIELD_FORMAT:NOT_A_COUNT:tus='abc'` | 同上形状 |
+
+第四条是我按同一类问题补的：完整但非数值的字段与身份错误同属 FIRM，之前同样
+会被缺字段遮住。你若认为它超出"只补这一处"，可以只看前三条。
+
+### 12.4 更正：fatal 与退出码无关
+
+§11.1 写过"`uvm_fatal` 本身就以非零码退出，这条路上每个人都带着 `rc≠0`"。
+**这句话是错的。** 用当前真实 TB 重跑 `final_phase` fatal（`run/A5_FINAL_FATAL.json`
+现在记录 `returncode`）：
+
+```
+control  rc=0  status=PASS  reason=""
+probe    rc=0  status=FAIL  reason=UVM_FATAL_IN_LOG
+```
+
+正确说法是：**fatal 与非零退出可能同时发生，也可能不**。因此
+
+- 退出码不能用来推断是否发生过 fatal，也不能当作"这里有 fatal"的伴随特征；
+- §11 的修复仍然必要（那三个反例是显式给 `rc=1` 构造的，判定器必须处理这种
+  输入），但我对它的触发频率的描述是错的——它只在进程确实非零退出时发生
+  （被 supervisor 杀掉、崩溃、`vsim` 自身报错），不是"每个 fatal 都会中"；
+- 本工具链下这条路径在 22 例正常回归里一次都没触发（`returncodes observed: [0]`），
+  这也正说明它只能靠构造的异常输入来验证。
+
+这类错误的共同点与"`reasons` 是完整列表"一样：把对工具行为的假设当成事实写进
+文档。现在 `A5_FINAL_FATAL.json` 与 `regress_A2_summary.txt` 都直接记录
+`returncode`，这句话以后可以对着产物核。
+
+### 12.5 自检账目
+
+60 条用例 + 7 条附加检查（合并、双原因、四诊断 `reasons`、超时单独判定、
+退出码进 `reasons`、截断发现进 `reasons`、FIRM 优先于 TORN）= **67/67**。
+
+### 12.6 我这一轮的错误
+
+- **只看第一条发现就下结论。** `_firm_findings` 这个问题第四轮就埋下了：我当时
+  写"身份先于计数"，却让身份比较依赖"全部字段齐全"这个前提。复核方构造的文件
+  恰好把两件事拆开了。
+- **把假设当事实。** "fatal 必带非零退出码"没有实测就写进 §11.1，并在提交信息里
+  重复了一遍。已经改成实测结论，并让产物记录 `returncode`。
