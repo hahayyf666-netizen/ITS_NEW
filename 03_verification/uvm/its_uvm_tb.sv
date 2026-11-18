@@ -50,4 +50,27 @@ module its_uvm_tb;
     assign dif.dbg_kernel_busy   = dut.kernel_busy;
     assign dif.dbg_output_active = dut.output_active;
 
+    // Grant-profile audit.  One CSV row per rising clock edge, recording what the
+    // DUT actually saw on that edge rather than what the driver believes it
+    // drove.  The driver updates req with a non-blocking assignment on the
+    // falling edge, so a reader on the falling edge would see the previous
+    // value; the rising edge is the edge the DUT samples.
+    //   off unless +GRANT_AUDIT=<path> is passed, so normal runs are unaffected
+    int    audit_fd = 0;
+    string audit_path;
+    initial begin
+        if ($value$plusargs("GRANT_AUDIT=%s", audit_path))
+            audit_fd = $fopen(audit_path, "w");
+    end
+
+    always @(posedge clk) begin
+        if (audit_fd != 0)
+            $fdisplay(audit_fd, "%0t,%0d,%0d", $time, dif.rst_n,
+                      dif.it_data_out_req);
+    end
+
+    final begin
+        if (audit_fd != 0) $fclose(audit_fd);
+    end
+
 endmodule
