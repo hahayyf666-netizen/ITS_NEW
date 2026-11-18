@@ -40,6 +40,19 @@ import b1_pin_model as model  # noqa: E402
 
 PERIOD = 2000  # ps, from the TB clock
 
+# The acceptance contract for this probe: three windows, in this order.
+#
+# It is written here, and not read from either log, so that the three records
+# are checked against a statement none of them can satisfy on its own.  Two
+# false passes came from the absence of exactly this: dropping a window from
+# both logs left the two logs agreeing with each other, and editing a duration
+# in the sequence's record had nothing to disagree with.
+EXPECTED = [
+    {"always": False, "lm": 5, "lo": 9, "dp": 32, "dl": 4, "dur": 6000},
+    {"always": True, "lm": 7, "lo": 11, "dp": 64, "dl": 8, "dur": 3000},
+    {"always": False, "lm": 3, "lo": 5, "dp": 24, "dl": 10, "dur": 6000},
+]
+
 
 # --------------------------------------------------------------------------
 # Parsing
@@ -87,20 +100,31 @@ def edge_rows(csv_text: str):
 # --------------------------------------------------------------------------
 # The judge.  Pure function of (events, edges, verdict, profiles).
 # --------------------------------------------------------------------------
-def judge(ev, rows, verdict, profiles, period=PERIOD):
+def judge(ev, rows, verdict, profiles, expected=None, period=PERIOD):
+    expected = EXPECTED if expected is None else expected
     failures = []
     table = []
 
-    if not verdict.startswith("PASS"):
+    # 0. Evidence has to be present before anything can be concluded.
+    if not verdict:
+        failures.append("underlying verdict missing: no result artefact")
+    elif not verdict.startswith("PASS"):
         failures.append(f"underlying case verdict is {verdict}, not PASS")
 
-    # 1. Exactly the declared windows, each with exactly one begin and one end.
-    if len(profiles) == 0:
-        failures.append("no profile line in the log: nothing to check")
-    if len(ev) != len(profiles):
-        failures.append(f"{len(ev)} transaction record(s) for "
-                        f"{len(profiles)} declared profile(s)")
-    for i in range(max(len(profiles), max(ev) + 1 if ev else 0)):
+    # 1. Both logs must describe the same three windows as the contract.
+    if len(profiles) != len(expected):
+        failures.append(f"driver recorded {len(profiles)} profile(s), "
+                        f"contract has {len(expected)}")
+    for i, want in enumerate(expected):
+        if i < len(profiles) and profiles[i] != want:
+            diff = {k: (profiles[i].get(k), want[k]) for k in want
+                    if profiles[i].get(k) != want[k]}
+            failures.append(f"txn {i}: driver recorded {diff} "
+                            f"(recorded, contract)")
+    if len(ev) != len(expected):
+        failures.append(f"{len(ev)} transaction record(s), "
+                        f"contract has {len(expected)}")
+    for i, want in enumerate(expected):
         rec = ev.get(i)
         if rec is None:
             failures.append(f"txn {i}: no begin/end record")
@@ -108,6 +132,9 @@ def judge(ev, rows, verdict, profiles, period=PERIOD):
         if rec.get("begin_count", 0) != 1 or rec.get("end_count", 0) != 1:
             failures.append(f"txn {i}: {rec.get('begin_count', 0)} begin / "
                             f"{rec.get('end_count', 0)} end record(s)")
+        if rec.get("dur") != want["dur"]:
+            failures.append(f"txn {i}: sequence declared dur={rec.get('dur')}, "
+                            f"contract says {want['dur']}")
 
     # 2. Reset edges are guard edges.
     for t, rst, req in rows:
@@ -117,7 +144,7 @@ def judge(ev, rows, verdict, profiles, period=PERIOD):
 
     # 3. Per window: liveness, spacing and the expected waveform.
     prev_end = None
-    for i, prof in enumerate(profiles):
+    for i, prof in enumerate(expected):
         rec = ev.get(i) or {}
         begin, end = rec.get("begin"), rec.get("end")
         dur = prof["dur"]
@@ -174,7 +201,7 @@ def judge(ev, rows, verdict, profiles, period=PERIOD):
         # The guard edge after this window must itself be req=1.
         guard_t = end + period
         guard = [q for t, rst, q in rows if t == guard_t]
-        if i + 1 < len(profiles):
+        if i + 1 < len(expected):
             if not guard:
                 failures.append(f"txn {i}: guard edge at {guard_t} is missing")
             elif guard[0] != 1:
@@ -228,16 +255,30 @@ def run_probe(label, case_name):
 
 
 def load_artefacts(label):
+    """Recorded evidence for `label`.
+
+    A missing result file or a file without a verdict is reported as None, not
+    defaulted to PASS: absent evidence and a passing case have to stay
+    distinguishable, or every check downstream of it is optional.
+    """
     import run_regress as rr
     probe_dir = rr.OUT / "probe"
     csv_path = probe_dir / f"b1_grant_{label}.csv"
     log_path = rr.OUT / "logs" / f"regress_b1_audit_{label}.log"
-    out = json.loads((probe_dir / f"b1_grant_{label}.json").read_text(
-        encoding="utf-8")) if (probe_dir / f"b1_grant_{label}.json").exists() else {}
-    return (txn_events(log_path.read_text(encoding="utf-8", errors="replace")),
-            edge_rows(csv_path.read_text(encoding="utf-8", errors="replace")),
-            out.get("verdict", "PASS"),
-            parse_profiles(log_path.read_text(encoding="utf-8", errors="replace")))
+    json_path = probe_dir / f"b1_grant_{label}.json"
+    verdict = None
+    if json_path.exists():
+        verdict = json.loads(json_path.read_text(encoding="utf-8")).get("verdict")
+    missing = [str(p) for p in (csv_path, log_path, json_path) if not p.exists()]
+    if missing:
+        print(f"[b1] missing evidence: {', '.join(m.split(chr(92))[-1] for m in missing)}",
+              flush=True)
+    csv_text = csv_path.read_text(encoding="utf-8", errors="replace") \
+        if csv_path.exists() else ""
+    log_text = log_path.read_text(encoding="utf-8", errors="replace") \
+        if log_path.exists() else ""
+    return (txn_events(log_text), edge_rows(csv_text), verdict,
+            parse_profiles(log_text))
 
 
 def report(res, label):
@@ -273,6 +314,8 @@ def selftest():
             ({}, rows, verdict, profiles),
         "underlying verdict FAIL":
             (ev, rows, "FAIL/UVME", profiles),
+        "underlying verdict missing":
+            (ev, rows, None, profiles),
         "one req bit flipped in window 1":
             (ev, [(t, rst, (1 - q) if t == 5011000 else q) for t, rst, q in rows],
              verdict, profiles),
@@ -280,6 +323,17 @@ def selftest():
             ({0: ev[0], 1: {"begin": ev[1]["begin"], "dur": ev[1]["dur"],
                             "begin_count": 1, "end_count": 0},
               2: ev[2]} if len(ev) >= 3 else ev, rows, verdict, profiles),
+        # Both logs lose window 2 together: they still agree with each other,
+        # so only a statement from outside both can catch it.
+        "window 2 dropped from both logs":
+            ({k: v for k, v in ev.items() if k != 2}, rows, verdict,
+             [p for i, p in enumerate(profiles) if i != 2]),
+        "sequence-side dur edited":
+            ({0: dict(ev[0], dur=17), **{k: v for k, v in ev.items() if k != 0}},
+             rows, verdict, profiles),
+        "driver-side params edited":
+            (ev, rows, verdict,
+             [dict(profiles[0], dp=33)] + profiles[1:]),
     }
     faults = 0
     if base["failures"]:
