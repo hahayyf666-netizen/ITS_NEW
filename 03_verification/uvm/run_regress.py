@@ -776,6 +776,20 @@ def run_one(case, vector_file, want_ucdb=False, fp=None, extra_plusargs=(),
     # Probe-only extra plusargs, used by the A5 counterexamples; a normal
     # regression run passes none.
     cmd += [f"+{p}" for p in extra_plusargs]
+    # The audit CSV a directed case's judgement reads.  Kept next to the case's
+    # other artefacts so the manifest's record and the evidence stay together.
+    # If the caller already asked for an audit path, that is the one the
+    # simulation will honour, so it is also the one to judge: adding a second
+    # plusarg would leave the judge reading a file nothing writes.
+    audit_csv = rdir / f"{tag}.edges.csv"
+    if case.get("audit"):
+        given = [p for p in extra_plusargs if p.startswith("GRANT_AUDIT=")]
+        if given:
+            audit_csv = Path(given[0].split("=", 1)[1])
+        else:
+            if audit_csv.exists():
+                audit_csv.unlink()
+            cmd += [f"+GRANT_AUDIT={audit_csv}"]
     cmd += [f"+RESULT_FILE={res_path}"]
     cmd += [f"+RUN_ID={run_id}", f"+CASE_NAME={case['name']}"]
     cmd += [f"-gVECTOR_FILE={OUT / vector_file}"]
@@ -804,6 +818,23 @@ def run_one(case, vector_file, want_ucdb=False, fp=None, extra_plusargs=(),
     status, reason, reasons = classify(fields, case, parse_error, loginfo,
                                        timed_out, expected_run_id=run_id,
                                        returncode=rc)
+
+    # A directed case's own acceptance criterion.  The waveform evidence is part
+    # of the case's result, not a separate probe a reader has to remember to run:
+    # a case that merely finishes is not a case that proved what it was written
+    # to prove.
+    directed = None
+    if case.get("audit"):
+        import b1_grant_audit as b1_audit
+        directed = b1_audit.judge_from_files(log_path, audit_csv,
+                                             f"{status}/{reason}",
+                                             case["audit"])
+        if directed["failures"]:
+            status = "FAIL"
+            reason = "DIRECTED"
+            reasons = list(reasons) + [
+                "DIRECTED: " + f for f in directed["failures"]
+            ]
 
     missing = [str(p) for p in FINGERPRINT_FILES if not p.exists()]
     # The artefact's own bytes: a later reader can tell whether the file it is
@@ -840,6 +871,7 @@ def run_one(case, vector_file, want_ucdb=False, fp=None, extra_plusargs=(),
         "missing_inputs": missing,
         "fields": {k: v for k, v in fields.items() if not k.startswith("cg.")},
         "coverage": coverage_bins(fields),
+        "directed": directed,
     }
 
 

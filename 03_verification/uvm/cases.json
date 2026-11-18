@@ -313,6 +313,23 @@
       "causality": "inject: an end marker with no data beat after the fill window opened. check: the slot closes without a phantom write, the TU retires (tus exactly 1), and with no data fed the output cannot reproduce the golden, so at least one beat must mismatch; the count is bounded because the fill order decides which beats differ. forbidden: any protocol error, any unexpected beat, any other id."
     },
     {
+      "name": "grant_reset",
+      "testname": "its_grant_reset_test",
+      "plusargs": [
+        "RESET_CYCLES=4"
+      ],
+      "audit": "grant_reset",
+      "expect": {
+        "tus": 0,
+        "beats": 0,
+        "data_errors": 0,
+        "done_errors": 0,
+        "protocol_errors": 0,
+        "pending": 0
+      },
+      "note": "directed: reset asserted inside an active finite grant window, on the cycle after its first deep stall; the window must resume with hold cleared and be acknowledged once. No TU is driven on purpose - the subject is the grant driver, and a profile-timed reset cannot be aligned to an item boundary. The case result includes the waveform judgement from the +GRANT_AUDIT CSV."
+    },
+    {
       "name": "tail_stress",
       "testname": "its_vseq_tail_test",
       "plusargs": [

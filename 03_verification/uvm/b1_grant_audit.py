@@ -53,6 +53,22 @@ EXPECTED = [
     {"always": False, "lm": 3, "lo": 5, "dp": 24, "dl": 10, "dur": 6000},
 ]
 
+# The directed reset case.  Two windows with the same length, so the hand
+# computed table is checkable: 100 edges, one guard, 24 edges, four reset edges,
+# 76 edges.  The reset position is part of the contract, because "the driver
+# handled whatever reset it saw" and "the stimulus really applied the agreed
+# reset" are different claims and the probe has to make both.
+EXPECTED_RESET = [
+    {"always": True, "lm": 7, "lo": 11, "dp": 64, "dl": 8, "dur": 100},
+    {"always": False, "lm": 11, "lo": 11, "dp": 32, "dl": 8, "dur": 100},
+]
+RESET_SPEC = {"segment": 1, "after_executed": 24, "length": 4}
+
+CONTRACTS = {
+    "vseq_multi_agent": {"expected": EXPECTED, "reset_spec": None},
+    "grant_reset": {"expected": EXPECTED_RESET, "reset_spec": RESET_SPEC},
+}
+
 
 # --------------------------------------------------------------------------
 # Parsing
@@ -124,16 +140,26 @@ def walk_window(rows, start_idx, prof, period=PERIOD):
     resets = 0
     zeros = 0
     bad = []
+    reset_runs = []     # (executed edges before the run, run length)
+    run_start = None
+    run_len = 0
     k = start_idx
     while k < len(rows):
         t, rst, req = rows[k]
         if rst != 1:
             resets += 1
+            if run_start is None:
+                run_start = executed
+                run_len = 0
+            run_len += 1
             if req != 1:
                 bad.append((t, req, 1, "reset edge must be guard"))
             hold = 0
             k += 1
             continue
+        if run_start is not None:
+            reset_runs.append((run_start, run_len))
+            run_start = None
         want, hold = model.pattern(model.cyc_of_edge(t, period),
                                    always=prof["always"], lm=prof["lm"],
                                    lo=prof["lo"], dp=prof["dp"], dl=prof["dl"],
@@ -144,14 +170,19 @@ def walk_window(rows, start_idx, prof, period=PERIOD):
             zeros += 1
         executed += 1
         if executed == dur:
+            if run_start is not None:
+                reset_runs.append((run_start, run_len))
             return {"end_t": t, "end_idx": k, "resets": resets, "zeros": zeros,
-                    "bad": bad, "executed": executed}
+                    "bad": bad, "executed": executed, "reset_runs": reset_runs}
         k += 1
+    if run_start is not None:
+        reset_runs.append((run_start, run_len))
     return {"end_t": None, "end_idx": None, "resets": resets, "zeros": zeros,
-            "bad": bad, "executed": executed}
+            "bad": bad, "executed": executed, "reset_runs": reset_runs}
 
 
-def judge(ev, rows, verdict, profiles, expected=None, period=PERIOD):
+def judge(ev, rows, verdict, profiles, expected=None, reset_spec=None,
+          period=PERIOD):
     expected = EXPECTED if expected is None else expected
     failures = []
     table = []
@@ -254,6 +285,23 @@ def judge(ev, rows, verdict, profiles, expected=None, period=PERIOD):
             failures.append(f"txn {i}: window executed {row['span_edges']} "
                             f"edge(s), declared {dur}")
 
+        # The reset the case is about: the stimulus must have produced it, at
+        # the agreed place, with the agreed width.  Without this the judge only
+        # shows that the driver handled whatever reset it happened to see.
+        if reset_spec is not None:
+            row["reset_runs"] = w["reset_runs"]
+            if i == reset_spec["segment"]:
+                want_runs = [(reset_spec["after_executed"],
+                              reset_spec["length"])]
+                if w["reset_runs"] != want_runs:
+                    failures.append(
+                        f"txn {i}: reset runs {w['reset_runs']} "
+                        f"(edges executed, width), contract says {want_runs}")
+            elif w["reset_runs"]:
+                failures.append(f"txn {i}: unexpected reset run "
+                                f"{w['reset_runs']}, only segment "
+                                f"{reset_spec['segment']} is supposed to see one")
+
         row["ok"] = not any(f.startswith(f"txn {i}:") for f in failures)
         prev_end_idx = w["end_idx"]
 
@@ -348,6 +396,77 @@ def report(res, label):
     return 0
 
 
+def judge_from_files(log_path, csv_path, verdict, case_name):
+    """Judge a recorded run from the files a regression leaves behind."""
+    contract = CONTRACTS.get(case_name)
+    if contract is None:
+        return {"table": [], "failures": [f"no directed contract for {case_name}"]}
+    log_text = Path(log_path).read_text(encoding="utf-8", errors="replace")
+    csv_text = (Path(csv_path).read_text(encoding="utf-8", errors="replace")
+                if Path(csv_path).exists() else "")
+    return judge(txn_events(log_text), edge_rows(csv_text), verdict,
+                 parse_profiles(log_text),
+                 expected=contract["expected"],
+                 reset_spec=contract["reset_spec"])
+
+
+def synthetic_reset_run(reset_len=4, freeze_hold=False, release_low=False,
+                        ack_delta=0):
+    """The record a correct directed run would leave behind.
+
+    Edges come from the contract model, so what the mutants below exercise is
+    the structural part of the judge - where the reset sits, how wide it is, and
+    when the transaction was acknowledged - rather than the pattern model.
+    """
+    period = PERIOD
+    seg_a, seg_b = EXPECTED_RESET
+    t_of = lambda c: 1000 + c * period  # noqa: E731
+    rows = [(t_of(c), 0, 1) for c in range(4)]      # startup reset
+    ev = {0: {"begin": 0, "begin_dur": seg_a["dur"], "begin_count": 1,
+              "end_count": 1}}
+
+    def run(cyc, prof, dur, hold=0):
+        """Append `dur` executing edges from `cyc`; return (next cyc, hold)."""
+        for _ in range(dur):
+            req, hold = model.pattern(cyc, always=prof["always"],
+                                      lm=prof["lm"], lo=prof["lo"],
+                                      dp=prof["dp"], dl=prof["dl"], hold=hold)
+            rows.append((t_of(cyc), 1, req))
+            cyc += 1
+        return cyc, hold
+
+    cyc, _ = run(4, seg_a, seg_a["dur"])
+    ev[0]["end"] = rows[-1][0]
+    ev[0]["end_dur"] = seg_a["dur"]
+
+    rows.append((t_of(cyc), 1, 1))          # the guard edge
+    cyc += 1
+
+    ev[1] = {"begin": ev[0]["end"], "begin_dur": seg_b["dur"],
+             "begin_count": 1, "end_count": 1}
+    before = RESET_SPEC["after_executed"]
+    cyc, hold = run(cyc, seg_b, before)
+    if reset_len:
+        saved = hold
+        for _ in range(reset_len):          # reset edges: guard, not executed
+            rows.append((t_of(cyc), 0, 1))
+            cyc += 1
+        hold = saved if freeze_hold else 0
+    if release_low:
+        # A driver that kept its hold would drive the first cycle after release
+        # low; that is the failure this case is aimed at.
+        rows.append((t_of(cyc), 1, 0))
+        cyc += 1
+        left = seg_b["dur"] - before - 1
+        hold = 0
+    else:
+        left = seg_b["dur"] - before
+    cyc, _ = run(cyc, seg_b, left, hold=hold)
+    ev[1]["end"] = rows[-1][0] + ack_delta * period
+    ev[1]["end_dur"] = seg_b["dur"]
+    return (ev, rows, "PASS/", list(EXPECTED_RESET))
+
+
 def selftest():
     import run_regress as rr
     ev, rows, verdict, profiles = load_artefacts("new")
@@ -413,6 +532,33 @@ def selftest():
               f"  ({len(res['failures'])} finding(s))", flush=True)
         if not caught:
             faults += 1
+
+    # The directed reset case: the contract has to accept the run it describes
+    # and reject every neighbouring failure.  These are synthetic records built
+    # from the contract, so they exercise the structural checks without a
+    # simulator; the real case is judged from the regression's own artefacts.
+    print("[b1] selftest  directed reset contract", flush=True)
+    good = judge(*synthetic_reset_run(), expected=EXPECTED_RESET,
+                 reset_spec=RESET_SPEC)
+    print(f"[b1] selftest  {'accepted' if not good['failures'] else 'REJECTED'}"
+          f"  the agreed run ({len(good['failures'])} finding(s))", flush=True)
+    if good["failures"]:
+        faults += 1
+        for msg in good["failures"]:
+            print(f"[b1]     {msg}", flush=True)
+    for name, kw in (("no reset at all", {"reset_len": 0}),
+                     ("three reset edges", {"reset_len": 3}),
+                     ("five reset edges", {"reset_len": 5}),
+                     ("release cycle still low", {"release_low": True}),
+                     ("acknowledged one cycle late", {"ack_delta": 1}),
+                     ("acknowledged one cycle early", {"ack_delta": -1})):
+        res = judge(*synthetic_reset_run(**kw), expected=EXPECTED_RESET,
+                    reset_spec=RESET_SPEC)
+        caught = len(res["failures"]) > 0
+        print(f"[b1] selftest  {'caught' if caught else 'MISSED'}  {name}"
+              f"  ({len(res['failures'])} finding(s))", flush=True)
+        if not caught:
+            faults += 1
     return 1 if faults else 0
 
 
@@ -443,7 +589,11 @@ def main():
     print(f"[b1] edges: total={len(rows)} reset={n_rst} "
           f"rst_n_high={len(rows) - n_rst}", flush=True)
 
-    res = judge(ev, rows, f"{r['status']}/{r['reason']}", profiles)
+    contract = CONTRACTS.get(args.case, {"expected": EXPECTED,
+                                         "reset_spec": None})
+    res = judge(ev, rows, f"{r['status']}/{r['reason']}", profiles,
+                expected=contract["expected"],
+                reset_spec=contract["reset_spec"])
     rc = report(res, f"label={args.label}")
 
     probe_dir = csv_path.parent

@@ -39,6 +39,13 @@ interface its_if (input logic clk);
     logic        dbg_kernel_busy;
     logic        dbg_output_active;
 
+    // Grant-driver taps.  A directed case has to place a reset on a specific
+    // profile cycle; waiting a fixed number of cycles would re-encode the
+    // schedule, so the stimulus reads where the driver actually is.
+    int          dbg_grant_cyc;
+    bit          dbg_grant_run;
+    int          dbg_grant_deep;
+
     task automatic drive_idle();
         rst_n          = 1'b0;
         it_info        = '0;

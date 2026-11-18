@@ -1,0 +1,65 @@
+B1: a directed reset inside an active window, judged as the case's result
+
+The probe could already show that the driver handled whatever reset it saw.
+That is a different claim from the stimulus having applied the agreed reset,
+and the four synthetic replays with 0, 3, 4 and 5 reset edges all passing
+showed exactly that gap: the judge described the driver's response and was
+silent about the reset itself.  This adds the second half and puts it on the
+acceptance path instead of beside it.
+
+Contract.  grant_reset is two windows of the same length - 100 executing
+edges with always_grant, one guard edge, 100 executing edges with
+deep=32/8 and light=11/11 - plus a reset spec saying that segment 1 must
+carry exactly one reset run, starting after 24 executed edges and four edges
+wide.  The position is recorded per segment by the walk (the number of
+executed edges before each run of reset edges), so the criterion is stated
+in contract terms rather than in absolute cycle numbers.
+
+Stimulus.  its_grant_reset_test starts the profile script and, on the rising
+edge that samples the target window's first deep stall, holds rst_n low for
+four falling edges.  Trigger detection samples the driver taps on a rising
+edge: reading them on the falling edge races the grant driver's own update on
+that edge, and the reset then lands one cycle late - the first run of this
+case did exactly that and was caught by the position check, 25 executed edges
+instead of 24.  do_reset_exact(n) writes low on a falling edge and high again
+after n falling edges, so exactly n rising edges sample rst_n=0;
+do_mid_reset() holds for six by accident and is left alone.
+
+No TU is driven, on purpose.  A profile-timed reset cannot be aligned to an
+item boundary, and with a TU in flight the reset lands between descriptor and
+beats, the DUT drops the transaction and stops asserting it_data_in_req, so
+the pin record would have a second possible explanation.  Keeping the DUT idle
+makes the waveform the only evidence in play; the case is about the grant
+driver's reset contract, not about DUT traffic.
+
+Acceptance path.  cases.json carries the case with the audit hook, so the
+regression appends +GRANT_AUDIT and judges the recorded CSV as part of the
+case result: a run that merely finishes now fails if the waveform disagrees.
+--case selects the contract as well as the simulation case, so the probe
+stops judging the directed run against the three-window table.
+
+Mutants.  Six synthetic records built from the contract, all rejected without
+a simulator: no reset, three edges, five edges (position check), release cycle
+still low (waveform), acknowledgement one cycle late and one cycle early
+(completion time).  The agreed record is accepted.
+
+Measured on the real DUT (fingerprint 302759e593adc06a):
+
+  cyc      pin
+  4-103    rst_n=1 req=1, 100 executing edges, last at t=207000
+  104      guard, req=1
+  105-128  target window, 24 executing edges
+  128      deep stall, req=0
+  129-132  rst_n=0, req=1, executed count held at 24
+  133      release, req=1 - hold was cleared
+  134      light stall, req=0 (134 % 11 = 2)
+  133-208  76 executing edges, acknowledgement at t=417000
+
+100 = 24 + 76 executing edges, four suspended in between, ends exactly where
+the contract puts them.  Regression 23/23 PASS, functional coverage unchanged
+at 52/54 - this case adds no bin, it adds a check.
+
+Honest limits.  The reset width check reads the tap record, so it proves the
+pin was held four sampling edges, not that every internal register cleared;
+that remains the DUT's own reset behaviour and is covered elsewhere.  The
+no-stimulus choice means this case contributes nothing to data checking.

@@ -736,6 +736,29 @@ package its_uvm_pkg;
         endtask
     endclass
 
+    // Directed two-window script for the mid-window reset case.
+    //
+    // The first window is always_grant so the pin is unambiguous and its end is
+    // easy to see; the target window carries a deep stall that the reset will
+    // interrupt.  Both are the same length, which is what makes the hand
+    // computed table checkable: 100 edges, one guard edge, 24 edges, 4 reset
+    // edges, 76 edges.
+    class its_grant_reset_sequence extends its_grant_profile_sequence;
+        `uvm_object_utils(its_grant_reset_sequence)
+
+        int unsigned seg_a_cycles = 100;
+        int unsigned seg_b_cycles = 100;
+
+        function new(string name = "its_grant_reset_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            send(1'b1,  7, 11, 64, 8, seg_a_cycles);   // always grant
+            send(1'b0, 11, 11, 32, 8, seg_b_cycles);   // target: deep at cyc%32
+        endtask
+    endclass
+
     // Virtual sequence: runs the stimulus on the input agent while the
     // back-pressure agent changes the output timing underneath it.
     class its_vseq_stress extends uvm_sequence;
@@ -1023,6 +1046,23 @@ package its_uvm_pkg;
                       UVM_LOW)
         endtask
 
+        // Reset for a directed case that needs an exact width.
+        //
+        // rst_n is written low on a falling edge and high again after n falling
+        // edges, so exactly n rising edges sample rst_n=0.  do_mid_reset() holds
+        // it low for six by accident (four, then drive_idle() keeps it low for
+        // two more), which is fine where the width does not matter and wrong
+        // here.
+        task do_reset_exact(int unsigned n);
+            @(negedge vif.clk);
+            vif.rst_n = 1'b0;
+            repeat (n) @(negedge vif.clk);
+            vif.rst_n = 1'b1;
+            `uvm_info("ITS_DRV",
+                      $sformatf("directed reset held for %0d sampling edges", n),
+                      UVM_LOW)
+        endtask
+
         task send_info(logic [21:0] value);
             @(negedge vif.clk);
             vif.it_info     = value;
@@ -1276,6 +1316,9 @@ package its_uvm_pkg;
                 @(negedge vif.clk);
                 #1ps;
                 cyc++;
+                vif.dbg_grant_cyc  = int'(cyc);
+                vif.dbg_grant_run  = (mode == GRANT_RUN);
+                vif.dbg_grant_deep = int'(deep_period);
                 if (vif.rst_n !== 1'b1) begin
                     // Reset: guard on the pin, hold cleared, counting paused.
                     // A running window keeps its `executed` count and resumes
@@ -2457,6 +2500,66 @@ package its_uvm_pkg;
                       $sformatf("vseq complete tus=%0d beats=%0d overlap=%0d",
                                 env.sb.tus_completed, env.sb.beats_seen,
                                 env.sb.overlap_admissions), UVM_LOW)
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    // Directed case: a reset asserted inside an active finite window.
+    //
+    // The reset is placed on the cycle after the target window's first deep
+    // stall, so the pin is low when it arrives and the release cycle is the one
+    // that shows whether hold was cleared.  The window must then run its
+    // remaining cycles and be acknowledged exactly once.
+    //
+    // No TU is driven.  The subject here is the grant driver's reset contract,
+    // and a reset timed to a profile cycle cannot be aligned to an item
+    // boundary: with a TU in flight the reset lands between descriptor and
+    // beats, the DUT legitimately drops the transaction and stops asserting
+    // it_data_in_req, and the pin record then has a second possible explanation.
+    // Keeping the DUT idle makes the waveform the only evidence in play.
+    class its_grant_reset_test extends its_base_test;
+        `uvm_component_utils(its_grant_reset_test)
+
+        int unsigned reset_cycles = 4;
+        int unsigned seg_a_cycles = 100;
+        int unsigned seg_b_cycles = 100;
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_grant_reset_sequence prof;
+            void'($value$plusargs("RESET_CYCLES=%d", reset_cycles));
+            void'($value$plusargs("GRANT_SEG_A=%d", seg_a_cycles));
+            void'($value$plusargs("GRANT_SEG_B=%d", seg_b_cycles));
+            phase.raise_objection(this);
+            fork
+                begin
+                    prof = its_grant_reset_sequence::type_id::create("prof");
+                    prof.seg_a_cycles = seg_a_cycles;
+                    prof.seg_b_cycles = seg_b_cycles;
+                    prof.start(env.grant_seqr);
+                end
+                begin : reset_at_deep
+                    // Sampling on the rising edge, where the tap has settled.
+                    // Reading it on the falling edge races the grant driver's
+                    // own update on that edge, and the reset then lands one
+                    // cycle late - exactly the defect this case exists to catch.
+                    forever begin
+                        @(posedge vif.clk);
+                        if (vif.dbg_grant_run && vif.dbg_grant_deep == 32 &&
+                            (vif.dbg_grant_cyc % 32) == 0) break;
+                    end
+                    // The DUT has just sampled the deep stall; the reset starts
+                    // on the next falling edge.
+                    env.drv.do_reset_exact(reset_cycles);
+                end
+            join
+            wait_cycles(8);
+            `uvm_info("ITS_GRANT_RST",
+                      $sformatf("directed reset done reset=%0d seg_a=%0d seg_b=%0d",
+                                reset_cycles, seg_a_cycles, seg_b_cycles), UVM_LOW)
             phase.drop_objection(this);
         endtask
     endclass
