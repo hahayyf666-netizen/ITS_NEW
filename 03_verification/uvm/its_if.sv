@@ -19,7 +19,12 @@ interface its_if (input logic clk);
     logic        it_data_in_vld = 1'b0;
     logic        it_data_end    = 1'b0;
     logic        it_data_in_req;
-    logic        it_data_out_req = 1'b0;
+    // The pin starts in guard, not at 0.  its_grant_driver only takes the pin on
+    // its first falling edge, so a 0 here leaves the first rising edge of reset
+    // with req low, which contradicts "the guard owns req while reset is
+    // asserted" - the first edge of a run would be the one cycle where the rule
+    // does not hold.
+    logic        it_data_out_req = 1'b1;
     logic [39:0] it_data_out;
     logic        it_data_out_vld;
     logic        it_done;

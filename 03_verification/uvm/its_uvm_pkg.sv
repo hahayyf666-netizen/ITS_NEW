@@ -1212,17 +1212,12 @@ package its_uvm_pkg;
         bit          window_done = 1'b0;   // release the sequence
         int unsigned guard_left  = 0;      // guard edges before the next window
 
-        // Reset as the DUT saw it, latched on the rising edge.
-        //
-        // The input driver changes rst_n with a blocking assignment on a falling
-        // edge.  If this driver also read rst_n on that edge, the two processes
-        // would race and the first cycle after reset would depend on scheduling
-        // order.  Latching on the rising edge - the edge that matters - removes
-        // the race: the falling-edge decision uses the value the DUT just
-        // sampled, not a value another process may or may not have written yet.
-        bit          rst_active  = 1'b1;
         // Set while the pin was actually driven by a finite window's pattern, so
         // that a guard edge after reset release is not counted as execution.
+        //
+        // Reset is not latched into a variable: drive_pins reads rst_n 1 ps after
+        // the falling edge (see the note there), which is both deterministic and
+        // the value the following rising edge will sample.
         bit          drove_profile = 1'b0;
 
         `uvm_component_utils(its_grant_driver)
@@ -1268,11 +1263,20 @@ package its_uvm_pkg;
 
         // Drives on the falling edge, which leaves the pin stable across the
         // rising edge the DUT samples.
+        //
+        // The 1 ps step is not decoration: the input driver writes rst_n with a
+        // blocking assignment on this same falling edge, and two processes
+        // reacting to one edge have no defined order.  Reading immediately could
+        // therefore see the old rst_n and drive one more pattern cycle into the
+        // first reset cycle - req low while the DUT samples reset, which the
+        // contract forbids.  Resuming 1 ps later reads what the other driver has
+        // already written, and is still well before the rising edge.
         task drive_pins();
             forever begin
                 @(negedge vif.clk);
+                #1ps;
                 cyc++;
-                if (rst_active) begin
+                if (vif.rst_n !== 1'b1) begin
                     // Reset: guard on the pin, hold cleared, counting paused.
                     // A running window keeps its `executed` count and resumes
                     // its remaining cycles after release.
@@ -1306,8 +1310,7 @@ package its_uvm_pkg;
         task count_edges();
             forever begin
                 @(posedge vif.clk);
-                rst_active = (vif.rst_n !== 1'b1);
-                if (rst_active) continue;
+                if (vif.rst_n !== 1'b1) continue;
                 if (mode == GRANT_RUN && drove_profile) begin
                     executed++;
                     if (executed >= duration) begin
@@ -1326,6 +1329,10 @@ package its_uvm_pkg;
 
         task run_phase(uvm_phase phase);
             if (vif == null) `uvm_fatal("ITS_GRANT", "grant driver has no vif")
+            // Take the pin in guard at time 0 rather than waiting for the first
+            // falling edge: the interface's own initial value is guard too, and
+            // this makes the driver's ownership explicit from the first edge.
+            vif.it_data_out_req = 1'b1;
             fork
                 drive_pins();
                 count_edges();
