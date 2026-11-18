@@ -58,7 +58,12 @@ EXPECTED = [
 # Parsing
 # --------------------------------------------------------------------------
 def txn_events(log_text: str):
-    """begin/end timestamps per transaction, from the sequence's own prints."""
+    """begin/end timestamps per transaction, from the sequence's own prints.
+
+    The duration is kept per record: begin and end each print the duration the
+    item carried, and letting the later line overwrite the earlier one hides an
+    edit to exactly one of them.
+    """
     ev = {}
     pat = re.compile(r"\[ITS_GRANT_TXN\]\s+txn\s+(\d+)\s+(begin|end)\s+"
                      r"t=(\d+)\s+dur=(\d+)")
@@ -69,7 +74,7 @@ def txn_events(log_text: str):
         key = f"{phase}_count"
         rec[key] = rec.get(key, 0) + 1
         rec[phase] = t
-        rec["dur"] = dur
+        rec[f"{phase}_dur"] = dur
     return ev
 
 
@@ -100,15 +105,63 @@ def edge_rows(csv_text: str):
 # --------------------------------------------------------------------------
 # The judge.  Pure function of (events, edges, verdict, profiles).
 # --------------------------------------------------------------------------
+def walk_window(rows, start_idx, prof, period=PERIOD):
+    """Walk forward from a first edge decided outside the recorded end.
+
+    This is the primary criterion.  Executing edges count; a reset edge does not
+    execute, must carry req=1 and clears hold; the global cyc keeps running
+    throughout.  When the count reaches the declared duration the edge reached
+    is the one on which the transaction must be acknowledged, and only then is
+    that time compared with what finish_item() actually returned.
+
+    Counting forward is what makes a late acknowledgement visible: an extra edge
+    at the end of the window shifts the computed completion, whereas counting
+    back from the recorded end would move the supposed start with it.
+    """
+    dur = prof["dur"]
+    hold = 0
+    executed = 0
+    resets = 0
+    zeros = 0
+    bad = []
+    k = start_idx
+    while k < len(rows):
+        t, rst, req = rows[k]
+        if rst != 1:
+            resets += 1
+            if req != 1:
+                bad.append((t, req, 1, "reset edge must be guard"))
+            hold = 0
+            k += 1
+            continue
+        want, hold = model.pattern(model.cyc_of_edge(t, period),
+                                   always=prof["always"], lm=prof["lm"],
+                                   lo=prof["lo"], dp=prof["dp"], dl=prof["dl"],
+                                   hold=hold)
+        if req != want:
+            bad.append((t, req, want, "pattern"))
+        if req == 0:
+            zeros += 1
+        executed += 1
+        if executed == dur:
+            return {"end_t": t, "end_idx": k, "resets": resets, "zeros": zeros,
+                    "bad": bad, "executed": executed}
+        k += 1
+    return {"end_t": None, "end_idx": None, "resets": resets, "zeros": zeros,
+            "bad": bad, "executed": executed}
+
+
 def judge(ev, rows, verdict, profiles, expected=None, period=PERIOD):
     expected = EXPECTED if expected is None else expected
     failures = []
     table = []
 
-    # 0. Evidence has to be present before anything can be concluded.
-    if not verdict:
+    # 0. Evidence has to be present before anything can be concluded.  The
+    # status is compared exactly: a prefix test accepts PASS_BROKEN.
+    status = verdict.split("/")[0].strip() if verdict else None
+    if status is None:
         failures.append("underlying verdict missing: no result artefact")
-    elif not verdict.startswith("PASS"):
+    elif status != "PASS":
         failures.append(f"underlying case verdict is {verdict}, not PASS")
 
     # 1. Both logs must describe the same three windows as the contract.
@@ -132,84 +185,77 @@ def judge(ev, rows, verdict, profiles, expected=None, period=PERIOD):
         if rec.get("begin_count", 0) != 1 or rec.get("end_count", 0) != 1:
             failures.append(f"txn {i}: {rec.get('begin_count', 0)} begin / "
                             f"{rec.get('end_count', 0)} end record(s)")
-        if rec.get("dur") != want["dur"]:
-            failures.append(f"txn {i}: sequence declared dur={rec.get('dur')}, "
-                            f"contract says {want['dur']}")
+        # Both records carry the duration the item had; each is checked, so an
+        # edit to one of them cannot be hidden by the other.
+        for phase in ("begin", "end"):
+            got = rec.get(f"{phase}_dur")
+            if got is not None and got != want["dur"]:
+                failures.append(f"txn {i}: {phase} record declares dur={got}, "
+                                f"contract says {want['dur']}")
 
-    # 2. Reset edges are guard edges.
+    # 2. Reset edges are guard edges, including outside any window.
     for t, rst, req in rows:
         if rst != 1 and req != 1:
             failures.append(f"reset edge at t={t} carries req={req}, not 1")
             break
 
-    # 3. Per window: liveness, spacing and the expected waveform.
-    prev_end = None
+    # 3. Forward walk per window from an independently decided first edge.
+    prev_end_idx = None
     for i, prof in enumerate(expected):
         rec = ev.get(i) or {}
         begin, end = rec.get("begin"), rec.get("end")
         dur = prof["dur"]
-        row = {"txn": i, "dur": dur, "begin": begin, "end": end,
-               "span_edges": None, "gap_edges": None, "gap_expected": None,
-               "zeros": None, "wave_mismatch": None, "ok": False}
+        row = {"txn": i, "dur": dur, "begin": begin, "recorded_end": end,
+               "first_edge": None, "computed_end": None, "span_edges": None,
+               "resets": None, "zeros": None, "wave_mismatch": None, "ok": False}
         table.append(row)
-        if begin is None or end is None:
+        if begin is None:
+            failures.append(f"txn {i}: no begin record to anchor the window")
             continue
 
-        # The Nth sampling edge is the end timestamp, so the window's first edge
-        # is exactly dur-1 periods earlier.  No start detection, no circularity.
-        first_edge = end - (dur - 1) * period
-        got = [(t, q) for t, rst, q in rows if first_edge <= t <= end]
-        # Only edges the DUT could execute count: a reset edge is not one.
-        row["span_edges"] = len([t for t, rst, q in rows
-                                 if begin <= t <= end and rst == 1])
-        if len(got) != dur:
-            failures.append(f"txn {i}: window holds {len(got)} edges, "
-                            f"declared {dur}")
+        if prev_end_idx is None:
+            # Window 0 starts at the first sampling edge after the item was
+            # handed over, which is also the first edge out of reset.
+            start = next((k for k in range(len(rows))
+                          if rows[k][0] >= begin and rows[k][1] == 1), None)
+        else:
+            guard = prev_end_idx + 1
+            if guard >= len(rows):
+                failures.append(f"txn {i}: no edge after the previous window")
+                continue
+            if rows[guard][2] != 1:
+                failures.append(f"txn {i}: guard edge at t={rows[guard][0]} "
+                                f"carries req={rows[guard][2]}, not 1")
+            start = next((k for k in range(guard + 1, len(rows))
+                          if rows[k][1] == 1), None)
+        if start is None:
+            failures.append(f"txn {i}: no sampling edge to start the window")
             continue
-        if row["span_edges"] < dur:
-            failures.append(f"txn {i}: released after {row['span_edges']} "
-                            f"edge(s), needs {dur}")
-        if first_edge < (begin if begin is not None else 0) - period * 2:
-            # begin is the hand-over instant; a window starting long before it
-            # means the timestamps do not describe this pin activity.
-            failures.append(f"txn {i}: window starts at {first_edge}, before "
-                            f"the item was handed over at {begin}")
 
-        want = model.window_reqs(model.cyc_of_edge(first_edge, period), dur,
-                                 always=prof["always"], lm=prof["lm"],
-                                 lo=prof["lo"], dp=prof["dp"], dl=prof["dl"])
-        mism = [k for k in range(dur) if got[k][1] != want[k]]
-        row["zeros"] = sum(1 for _, q in got if q == 0)
-        row["wave_mismatch"] = len(mism)
-        if mism:
-            k = mism[0]
-            failures.append(f"txn {i}: {len(mism)} edge(s) differ from the "
-                            f"declared pattern, first at t={got[k][0]} "
-                            f"req={got[k][1]} expected {want[k]}")
-
-        if prev_end is not None:
-            gap = len([t for t, rst, q in rows if prev_end < t <= end])
-            row["gap_edges"] = gap
-            row["gap_expected"] = dur + 1
-            if gap != dur + 1:
-                failures.append(f"txn {i}: {gap} edges since the previous "
-                                f"window ended, expected {dur + 1} "
-                                f"(one guard + {dur})")
-            if first_edge != prev_end + 2 * period:
-                failures.append(f"txn {i}: first edge {first_edge}, expected "
-                                f"one guard edge after {prev_end}")
-        # The guard edge after this window must itself be req=1.
-        guard_t = end + period
-        guard = [q for t, rst, q in rows if t == guard_t]
-        if i + 1 < len(expected):
-            if not guard:
-                failures.append(f"txn {i}: guard edge at {guard_t} is missing")
-            elif guard[0] != 1:
-                failures.append(f"txn {i}: guard edge at {guard_t} carries "
-                                f"req={guard[0]}, not 1")
+        w = walk_window(rows, start, prof, period)
+        row.update({"first_edge": rows[start][0], "computed_end": w["end_t"],
+                    "span_edges": w["executed"], "resets": w["resets"],
+                    "zeros": w["zeros"], "wave_mismatch": len(w["bad"])})
+        if w["end_t"] is None:
+            failures.append(f"txn {i}: window did not complete in the "
+                            f"recording ({w['executed']} of {dur} edges)")
+            continue
+        if end is None:
+            failures.append(f"txn {i}: no end record to compare against")
+        elif end != w["end_t"]:
+            delta = (end - w["end_t"]) // period
+            failures.append(f"txn {i}: finish_item() returned at t={end}, "
+                            f"computed completion {w['end_t']} "
+                            f"({delta:+d} cycle(s))")
+        for t, req, want, kind in w["bad"][:3]:
+            failures.append(f"txn {i}: edge t={t} req={req} expected {want} "
+                            f"({kind})")
+        if row["span_edges"] != dur:
+            failures.append(f"txn {i}: window executed {row['span_edges']} "
+                            f"edge(s), declared {dur}")
 
         row["ok"] = not any(f.startswith(f"txn {i}:") for f in failures)
-        prev_end = end
+        prev_end_idx = w["end_idx"]
 
     return {"table": table, "failures": failures}
 
@@ -282,13 +328,14 @@ def load_artefacts(label):
 
 
 def report(res, label):
-    print(f"[b1] {'txn':>3} {'dur':>6} {'begin':>10} {'end':>10} {'span':>5} "
-          f"{'gap':>5} {'want':>5} {'req=0':>6} {'wave':>5}  result", flush=True)
+    print(f"[b1] {'txn':>3} {'dur':>6} {'first':>10} {'computed':>10} "
+          f"{'recorded':>10} {'exec':>5} {'rst':>4} {'req=0':>6} {'wave':>5}  "
+          f"result", flush=True)
     for r in res["table"]:
         f = lambda v: "-" if v is None else str(v)  # noqa: E731
-        print(f"[b1] {r['txn']:>3} {f(r['dur']):>6} {f(r['begin']):>10} "
-              f"{f(r['end']):>10} {f(r['span_edges']):>5} "
-              f"{f(r['gap_edges']):>5} {f(r['gap_expected']):>5} "
+        print(f"[b1] {r['txn']:>3} {f(r['dur']):>6} {f(r['first_edge']):>10} "
+              f"{f(r['computed_end']):>10} {f(r['recorded_end']):>10} "
+              f"{f(r['span_edges']):>5} {f(r['resets']):>4} "
               f"{f(r['zeros']):>6} {f(r['wave_mismatch']):>5}  "
               f"{'ok' if r['ok'] else 'FAIL'}", flush=True)
     if res["failures"]:
@@ -304,8 +351,23 @@ def report(res, label):
 def selftest():
     import run_regress as rr
     ev, rows, verdict, profiles = load_artefacts("new")
+    log_text = (rr.OUT / "logs" / "regress_b1_audit_new.log").read_text(
+        encoding="utf-8", errors="replace")
     base = judge(ev, rows, verdict, profiles)
     report(base, "recorded run")
+
+    # Timing mutants act on the recorded end timestamp: a late or early
+    # acknowledgement is exactly the failure this probe exists to catch, so both
+    # directions have to be red.
+    def shifted(delta):
+        return {k: (dict(v, end=v["end"] + delta) if v.get("end") is not None
+                    else v) for k, v in ev.items()}
+
+    # The duration edit is injected into the raw log text rather than into the
+    # parsed record, so the parser is exercised along with the judge.
+    edited_log = log_text.replace("txn 0 begin t=0 dur=6000",
+                                  "txn 0 begin t=0 dur=17", 1)
+    ev_edited = txn_events(edited_log)
 
     mutants = {
         "all req forced to 0":
@@ -316,24 +378,29 @@ def selftest():
             (ev, rows, "FAIL/UVME", profiles),
         "underlying verdict missing":
             (ev, rows, None, profiles),
+        "underlying verdict PASS_BROKEN":
+            (ev, rows, "PASS_BROKEN/", profiles),
         "one req bit flipped in window 1":
             (ev, [(t, rst, (1 - q) if t == 5011000 else q) for t, rst, q in rows],
              verdict, profiles),
         "one end timestamp dropped":
-            ({0: ev[0], 1: {"begin": ev[1]["begin"], "dur": ev[1]["dur"],
-                            "begin_count": 1, "end_count": 0},
+            ({0: ev[0], 1: {"begin": ev[1]["begin"], "end_count": 0,
+                            "begin_count": 1},
               2: ev[2]} if len(ev) >= 3 else ev, rows, verdict, profiles),
         # Both logs lose window 2 together: they still agree with each other,
         # so only a statement from outside both can catch it.
         "window 2 dropped from both logs":
             ({k: v for k, v in ev.items() if k != 2}, rows, verdict,
              [p for i, p in enumerate(profiles) if i != 2]),
-        "sequence-side dur edited":
-            ({0: dict(ev[0], dur=17), **{k: v for k, v in ev.items() if k != 0}},
-             rows, verdict, profiles),
+        "begin-record duration edited (raw log)":
+            (ev_edited, rows, verdict, profiles),
         "driver-side params edited":
             (ev, rows, verdict,
              [dict(profiles[0], dp=33)] + profiles[1:]),
+        "acknowledgement one cycle late":
+            (shifted(2000), rows, verdict, profiles),
+        "acknowledgement one cycle early":
+            (shifted(-2000), rows, verdict, profiles),
     }
     faults = 0
     if base["failures"]:

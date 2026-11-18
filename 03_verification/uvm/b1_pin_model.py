@@ -16,11 +16,6 @@ so the result can be compared against the recorded pin cycle by cycle.
 from __future__ import annotations
 
 
-def period_cyc():
-    """Falling edge t=2000 holds cyc=1, so posedge t=1000+2000k holds cyc=k+1-1."""
-    raise NotImplementedError
-
-
 def cyc_of_edge(t_ps: int, period_ps: int = 2000) -> int:
     """Global cyc for the sampling edge at t_ps.
 
