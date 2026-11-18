@@ -195,6 +195,22 @@ def judge(ev, rows, verdict, profiles, expected=None, reset_spec=None,
     elif status != "PASS":
         failures.append(f"underlying case verdict is {verdict}, not PASS")
 
+    # 0b. One row per clock.  Counting rows is not counting edges unless the
+    # timestamps actually advance by one period: a duplicated row reads as an
+    # extra sampling edge, and four rows carrying three distinct instants is
+    # three cycles of reset, not four.  This also guards every later length
+    # measurement, which is expressed in edges.
+    if len(rows) < 2:
+        failures.append(f"sampling record has {len(rows)} row(s)")
+    else:
+        gaps = sorted({b[0] - a[0] for a, b in zip(rows, rows[1:])})
+        if gaps != [period]:
+            failures.append(f"sampling record is not one row per clock: "
+                            f"adjacent gaps {gaps}, period {period}")
+        dupes = len(rows) - len({r[0] for r in rows})
+        if dupes:
+            failures.append(f"sampling record repeats {dupes} timestamp(s)")
+
     # 1. Both logs must describe the same three windows as the contract.
     if len(profiles) != len(expected):
         failures.append(f"driver recorded {len(profiles)} profile(s), "
@@ -559,6 +575,53 @@ def selftest():
               f"  ({len(res['failures'])} finding(s))", flush=True)
         if not caught:
             faults += 1
+
+    # A duplicated row must not read as an extra sampling edge: four rows with
+    # three distinct instants is three cycles of reset, not four.
+    ev_r, rows_r = synthetic_reset_run()[:2]
+    dup = list(rows_r)
+    k = next(i for i, r in enumerate(dup) if r[1] == 0 and r[0] > 200_000)
+    dup[k] = dup[k - 1]
+    res = judge(ev_r, dup, "PASS/", list(EXPECTED_RESET),
+                expected=EXPECTED_RESET, reset_spec=RESET_SPEC)
+    caught = len(res["failures"]) > 0
+    print(f"[b1] selftest  {'caught' if caught else 'MISSED'}  "
+          f"reset row duplicated instead of a fourth edge"
+          f"  ({len(res['failures'])} finding(s))", flush=True)
+    if not caught:
+        faults += 1
+    dropped = [r for r in rows_r if r[0] != rows_r[1][0]]
+    res = judge(ev_r, dropped, "PASS/", list(EXPECTED_RESET),
+                expected=EXPECTED_RESET, reset_spec=RESET_SPEC)
+    caught = len(res["failures"]) > 0
+    print(f"[b1] selftest  {'caught' if caught else 'MISSED'}  "
+          f"sampling row deleted (gap in the record)"
+          f"  ({len(res['failures'])} finding(s))", flush=True)
+    if not caught:
+        faults += 1
+
+    # The regression's directed hook must not hide why a case really failed.
+    print("[b1] selftest  directed findings keep the underlying cause", flush=True)
+    import run_regress as rr
+    st, rsn, rl = rr.apply_directed(
+        "INCOMPLETE", "TIMEOUT", ["TIMEOUT"],
+        {"failures": ["underlying case verdict is INCOMPLETE/TIMEOUT, not PASS",
+                      "sampling record has 0 row(s)"]})
+    ok_low = (st == "INCOMPLETE" and rsn == "TIMEOUT"
+              and any("0 row(s)" in r for r in rl)
+              and not any("underlying case verdict" in r for r in rl))
+    print(f"[b1] selftest  {'kept' if ok_low else 'MISATTRIBUTED'}  "
+          f"timeout stays the primary cause ({st}/{rsn})", flush=True)
+    if not ok_low:
+        faults += 1
+    st, rsn, rl = rr.apply_directed("PASS", "", [],
+                                    {"failures": ["txn 1: reset runs [(24, 3)]"]})
+    ok_wave = (st == "FAIL" and rsn == "DIRECTED")
+    print(f"[b1] selftest  {'kept' if ok_wave else 'MISATTRIBUTED'}  "
+          f"a waveform-only failure is attributed to the waveform ({st}/{rsn})",
+          flush=True)
+    if not ok_wave:
+        faults += 1
     return 1 if faults else 0
 
 

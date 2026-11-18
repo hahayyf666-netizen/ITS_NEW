@@ -69,6 +69,10 @@ FINGERPRINT_FILES = list(env_mod.RTL) + list(env_mod.SRC) + [
     HERE / "run_its_uvm.py",
     HERE / "a5_selftest.py",
     HERE / "a5_final_fatal.py",
+    # The directed judge decides PASS/FAIL, so its own source is an input: a
+    # change here can turn a stored result into a claim nobody re-checked.
+    HERE / "b1_grant_audit.py",
+    HERE / "b1_pin_model.py",
     HERE / "its_check_selftest_tb.sv",
     OUT / "unified_gate_c_vectors.txt",
     ROOT / "03_verification/sim/rom_coeffs.hex",
@@ -748,6 +752,28 @@ def merge_coverage(per_run):
     return report
 
 
+def apply_directed(status, reason, reasons, directed):
+    """Merge a directed judgement into a case result without hiding the cause.
+
+    A run that timed out, ran under a foreign run id, or hit a native error is
+    already a failure, and its waveform record is usually absent or truncated as
+    a consequence.  Re-labelling that as a waveform failure would send the next
+    reader looking at the wrong thing, so the underlying status/reason stay and
+    the waveform findings are appended.  Only a case that passed on its own but
+    disagrees with the waveform is attributed to the waveform.
+    """
+    if not directed or not directed.get("failures"):
+        return status, reason, reasons
+    findings = ["DIRECTED: " + f for f in directed["failures"]
+                # The verdict echo is redundant when the verdict is the cause.
+                if not (status != "PASS"
+                        and f.startswith("underlying case verdict is"))]
+    reasons = list(reasons) + findings
+    if status == "PASS":
+        return "FAIL", "DIRECTED", reasons
+    return status, reason, reasons
+
+
 def run_one(case, vector_file, want_ucdb=False, fp=None, extra_plusargs=(),
             artifact_name=None, result_dir=None):
     # A probe that reuses a case's artefact name overwrites the regression's
@@ -829,12 +855,22 @@ def run_one(case, vector_file, want_ucdb=False, fp=None, extra_plusargs=(),
         directed = b1_audit.judge_from_files(log_path, audit_csv,
                                              f"{status}/{reason}",
                                              case["audit"])
-        if directed["failures"]:
-            status = "FAIL"
-            reason = "DIRECTED"
-            reasons = list(reasons) + [
-                "DIRECTED: " + f for f in directed["failures"]
-            ]
+        status, reason, reasons = apply_directed(status, reason, reasons,
+                                                 directed)
+
+    # Which bytes the decision was made from: the result file alone does not say
+    # which waveform and which log were read, and those are what the directed
+    # judgement actually examines.
+    evidence = []
+    if case.get("audit"):
+        for role, path in (("grant_audit_csv", audit_csv),
+                           ("log", log_path)):
+            p = Path(path)
+            if p.exists():
+                data = p.read_bytes()
+                evidence.append({"role": role, "path": str(p),
+                                 "bytes": len(data),
+                                 "sha256": hashlib.sha256(data).hexdigest()})
 
     missing = [str(p) for p in FINGERPRINT_FILES if not p.exists()]
     # The artefact's own bytes: a later reader can tell whether the file it is
@@ -868,10 +904,11 @@ def run_one(case, vector_file, want_ucdb=False, fp=None, extra_plusargs=(),
         "fingerprint": (fp or {}).get("digest", "unrecorded"),
         "command": [str(c) for c in cmd],
         "artifact": artifact,
+        "directed": directed,
+        "evidence": evidence,
         "missing_inputs": missing,
         "fields": {k: v for k, v in fields.items() if not k.startswith("cg.")},
         "coverage": coverage_bins(fields),
-        "directed": directed,
     }
 
 

@@ -1,0 +1,43 @@
+B1: count rows only when the clock agrees, and keep the cause of a failure
+
+Three defects found by replaying records against the judge, each fixed at the
+place it can be proved rather than at the place it was noticed.
+
+1. A duplicated row passed as an extra sampling edge.  Replacing the cyc=130
+   row with a copy of cyc=129 left the contract reporting reset_runs=[(24,4)]
+   and failures=[]  - eight reset rows carrying seven distinct instants, three
+   in the target window.  Counting rows is only counting edges if the
+   timestamps say so, so the judge now requires one row per clock before it
+   looks at the waveform, and rejects repeated instants outright.  This also
+   guards the length measurements B1 still has to make: a length stated in
+   edges is worthless if rows can be duplicated or dropped.  Two mutants.
+
+2. The judge's own source was not an input.  b1_grant_audit.py and
+   b1_pin_model.py decide PASS/FAIL and were absent from FINGERPRINT_FILES, so
+   a stored result could survive a change to the thing that judged it.  Both
+   are in the fingerprint now, and a case with a directed judgement records the
+   sha256 of the waveform CSV and the log it was read from, because the .result
+   digest alone does not say which bytes were examined.
+
+3. The directed hook hid why a case had failed.  classify() ran first, then any
+   directed finding overwrote status/reason with FAIL/DIRECTED - and "the
+   underlying verdict is not PASS" is itself one of those findings.  Driving a
+   timed-out run through the hook did exactly that.  apply_directed() now keeps
+   the underlying status and reason and appends the waveform findings, dropping
+   the verdict echo that duplicated the cause; only a case that passed on its
+   own and disagrees with the waveform is attributed to the waveform.  Two
+   checks in the self-test, one per direction.
+
+Measured after the change:
+
+  timeout + no evidence      INCOMPLETE/TIMEOUT, waveform findings appended
+  passed case, bad waveform  FAIL/DIRECTED
+  regression                 23/23 PASS, functional coverage 52/54
+  fingerprint                19fddf6bef8ba9ca (moves: the judge is an input now)
+  self-test                  20 mutants caught, 2 attributions kept, agreed
+                             record accepted
+
+Direction of travel: these are checks about the checker, so the honest claim is
+that the judge now refuses a record it used to accept, not that the DUT behaves
+better.  deep_len boundaries, ITS_GRANT_DUR and the tail_stress expiry are next,
+and the timestamp rule is what makes an edge count usable as a length.
