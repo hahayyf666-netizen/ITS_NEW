@@ -330,6 +330,21 @@
       "note": "directed: reset asserted inside an active finite grant window, on the cycle after its first deep stall; the window must resume with hold cleared and be acknowledged once. No TU is driven on purpose - the subject is the grant driver, and a profile-timed reset cannot be aligned to an item boundary. The case result includes the waveform judgement from the +GRANT_AUDIT CSV."
     },
     {
+      "name": "grant_deep_len",
+      "testname": "its_grant_deep_len_test",
+      "plusargs": [],
+      "audit": "grant_deep_len",
+      "expect": {
+        "tus": 0,
+        "beats": 0,
+        "data_errors": 0,
+        "done_errors": 0,
+        "protocol_errors": 0,
+        "pending": 0
+      },
+      "note": "directed: deep stall width on the pin at deep_len 1, 2, 15 and 16 - the legal range is [1:16]. One window per length, deep_period=64, light 10/13 so every first and release cycle of the six agreed stalls is clear of the light rule. Judged as positions (cycle before high, deep_len cycles low, cycle after high), so a window that drops its second stall still fails. No TU driven on purpose."
+    },
+    {
       "name": "tail_stress",
       "testname": "its_vseq_tail_test",
       "plusargs": [

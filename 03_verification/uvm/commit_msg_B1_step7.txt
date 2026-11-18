@@ -1,0 +1,51 @@
+B1: deep_len at both ends of its legal range, judged by position
+
+Four windows in one run, deep_len 1, 2, 15 and 16 - the constrained range is
+[1:16], so this is the lower bound, the upper bound and one interior point on
+each side.  deep_period is 64 throughout, which matters: cyc is global, so with
+the first edge at cyc=4 and one guard edge between windows the six multiples of
+64 inside the four windows are 64, 128, 192, 256, 320 and 384, and two of the
+windows see two stalls each.
+
+Parameters.  light_mod=10, not 12.  At cyc=192 a two-cycle stall ends on 193 and
+194 % 12 == 2 would put a light stall on the release cycle: the pin would be low
+for three cycles while the driver is still correct, and the criterion would call
+it a failure.  With 10/13 every first and release cycle of the six stalls was
+checked by hand and is clear of the light rule.
+
+Criterion.  Positions, not lengths found in the recording: for each agreed
+trigger T, req[T-1] is 1, req[T..T+deep_len-1] are all 0, and req[T+deep_len] is
+1.  The last two separate "too short" from "too long"; the first catches a stall
+that starts a cycle late.  Checking each trigger rather than "at least one stall
+per window" is what makes a dropped second stall visible - window 1 would still
+have passed on its cyc=128 stall alone.  An independent scan then collects low
+runs that begin on a deep-period boundary and requires the set to be exactly the
+six agreed cycles, so an invented stall fails too.
+
+Measured on the real DUT (fingerprint 1044026b0cf11637):
+
+  deep_len  window  T    T-1  low interval    first high
+  1         0       64   1    64-64           65
+  2         1       128  1    128-129         130
+  2         1       192  1    192-193         194
+  15        2       256  1    256-270         271
+  16        3       320  1    320-335         336
+  16        3       384  1    384-399         400
+
+The independent scan returns exactly [64, 128, 192, 256, 320, 384].  Low-run
+widths across the four windows are 49x1, 8x2, 1x15 and 2x16, which is why the
+criterion cannot be "find a run of the right length": eight unrelated cycles
+already produce two-cycle lows.
+
+Mutants, all rejected without a simulator: one cycle short at deep_len=1 (the
+trigger cycle high - no need to send deep_len=0, which the constraint does not
+allow), one cycle short at deep_len=16, one cycle long at cyc=192, and window 1
+never issuing its second stall.  The agreed record is accepted.
+
+Regression 24/24 PASS, functional coverage unchanged at 52/54: a directed case
+adds a check, not a bin.
+
+Two record corrections: the three-window probe CSV is 204,543 bytes and 15,007
+lines, not "200k rows" as I wrote earlier; and only grant_reset and
+grant_deep_len carry the audit hook in cases.json, while vseq_multi_agent's
+timestamp rule is verified through the probe replay, not through the regression.

@@ -69,6 +69,39 @@ CONTRACTS = {
     "grant_reset": {"expected": EXPECTED_RESET, "reset_spec": RESET_SPEC},
 }
 
+# The directed deep-stall-length case: one window per deep_len, and the same
+# deep_period throughout, so global cyc decides where the stalls land.  With the
+# first edge at cyc=4 and 100 executing edges per window separated by one guard
+# edge, the windows cover 4-103, 105-204, 206-305, 307-406 and there are six
+# multiples of 64 inside them: 64, 128, 192, 256, 320, 384.
+#
+# light_mod=10 / light_off=13 rather than 12/13: at cyc=192 a two-cycle stall
+# ends on 193, and 194 % 12 == 2 would put a light stall on the release cycle,
+# making the pin low for three cycles while the driver is still correct.  Every
+# first and release cycle below was checked against the light rule:
+#   T=64  -> 63, 65     T=128 -> 127, 130    T=192 -> 191, 194
+#   T=256 -> 255, 271   T=320 -> 319, 336    T=384 -> 383, 400
+EXPECTED_DEEP_LEN = [
+    {"always": False, "lm": 10, "lo": 13, "dp": 64, "dl": 1,  "dur": 100},
+    {"always": False, "lm": 10, "lo": 13, "dp": 64, "dl": 2,  "dur": 100},
+    {"always": False, "lm": 10, "lo": 13, "dp": 64, "dl": 15, "dur": 100},
+    {"always": False, "lm": 10, "lo": 13, "dp": 64, "dl": 16, "dur": 100},
+]
+# Where each stall must be, counted from the contract rather than found in the
+# recording: two windows see two stalls each, and a window that silently drops
+# its second one is still a failing case.
+DEEP_LEN_SPEC = [
+    {"window": 0, "t_cyc": 64,  "len": 1},
+    {"window": 1, "t_cyc": 128, "len": 2},
+    {"window": 1, "t_cyc": 192, "len": 2},
+    {"window": 2, "t_cyc": 256, "len": 15},
+    {"window": 3, "t_cyc": 320, "len": 16},
+    {"window": 3, "t_cyc": 384, "len": 16},
+]
+CONTRACTS["grant_deep_len"] = {"expected": EXPECTED_DEEP_LEN,
+                               "reset_spec": None,
+                               "deep_len_spec": DEEP_LEN_SPEC}
+
 
 # --------------------------------------------------------------------------
 # Parsing
@@ -182,7 +215,7 @@ def walk_window(rows, start_idx, prof, period=PERIOD):
 
 
 def judge(ev, rows, verdict, profiles, expected=None, reset_spec=None,
-          period=PERIOD):
+          period=PERIOD, deep_len_spec=None):
     expected = EXPECTED if expected is None else expected
     failures = []
     table = []
@@ -321,6 +354,56 @@ def judge(ev, rows, verdict, profiles, expected=None, reset_spec=None,
         row["ok"] = not any(f.startswith(f"txn {i}:") for f in failures)
         prev_end_idx = w["end_idx"]
 
+    # 2. The deep stalls, checked as positions rather than as lengths found in
+    # the recording.  For every agreed trigger T the cycle before it must be
+    # high, T..T+deep_len-1 must be low, and T+deep_len must be high again: the
+    # last two separate "too short" from "too long", and the first catches a
+    # stall that starts a cycle late.  Checking per trigger rather than "at
+    # least one stall per window" is what makes a dropped second stall visible.
+    if deep_len_spec:
+        by_cyc = {model.cyc_of_edge(t, period): (rst, req)
+                  for t, rst, req in rows}
+        for spec in deep_len_spec:
+            T, dl = spec["t_cyc"], spec["len"]
+            if T - 1 not in by_cyc or T + dl not in by_cyc:
+                failures.append(f"deep stall at cyc {T}: the recording does not "
+                                f"cover cyc {T-1} to {T+dl}")
+                continue
+            before = by_cyc[T - 1][1]
+            run = [by_cyc.get(T + j, (1, None))[1] for j in range(dl)]
+            after = by_cyc[T + dl][1]
+            if before != 1:
+                failures.append(f"deep stall at cyc {T}: req on cyc {T-1} is "
+                                f"{before}, the stall starts late")
+            short = [T + j for j, q in enumerate(run) if q != 0]
+            if short:
+                failures.append(f"deep stall at cyc {T} of length {dl}: req is "
+                                f"{[by_cyc[c][1] for c in short]} on cyc "
+                                f"{short}, so it is too short")
+            if after != 1:
+                failures.append(f"deep stall at cyc {T} of length {dl}: req on "
+                                f"cyc {T+dl} is {after}, so it is too long")
+
+        # Independent scan: a deep stall is a low run whose first low edge sits
+        # on a deep-period boundary.  The set of such starts must be exactly the
+        # agreed six - no missing one, and none invented.
+        dps = {p["dp"] for p in expected}
+        if len(dps) == 1:
+            dp = dps.pop()
+            found = []
+            for k, (t, rst, req) in enumerate(rows):
+                if rst != 1 or req != 0:
+                    continue
+                prev_low = k > 0 and rows[k - 1][1] == 1 and rows[k - 1][2] == 0
+                if not prev_low and model.cyc_of_edge(t, period) % dp == 0:
+                    found.append(model.cyc_of_edge(t, period))
+            want = [s["t_cyc"] for s in deep_len_spec]
+            if found != want:
+                missing = [c for c in want if c not in found]
+                extra = [c for c in found if c not in want]
+                failures.append(f"deep stalls observed at {found}, contract says "
+                                f"{want} (missing {missing}, unexpected {extra})")
+
     return {"table": table, "failures": failures}
 
 
@@ -423,7 +506,8 @@ def judge_from_files(log_path, csv_path, verdict, case_name):
     return judge(txn_events(log_text), edge_rows(csv_text), verdict,
                  parse_profiles(log_text),
                  expected=contract["expected"],
-                 reset_spec=contract["reset_spec"])
+                 reset_spec=contract["reset_spec"],
+                 deep_len_spec=contract.get("deep_len_spec"))
 
 
 def synthetic_reset_run(reset_len=4, freeze_hold=False, release_low=False,
@@ -481,6 +565,54 @@ def synthetic_reset_run(reset_len=4, freeze_hold=False, release_low=False,
     ev[1]["end"] = rows[-1][0] + ack_delta * period
     ev[1]["end_dur"] = seg_b["dur"]
     return (ev, rows, "PASS/", list(EXPECTED_RESET))
+
+
+def synthetic_deep_len_run(short=None, long_=None, drop=None):
+    """The record a correct directed deep_len run would leave behind.
+
+    short / long_ / drop index DEEP_LEN_SPEC: make one stall a cycle shorter, a
+    cycle longer, or remove it entirely.  For the deep_len=1 stall "one cycle
+    short" means the trigger cycle itself carries req=1, which is what a driver
+    that ignored the trigger would look like - no need to send deep_len=0, a
+    value the constrained range does not allow.
+    """
+    period = PERIOD
+    t_of = lambda c: 1000 + c * period  # noqa: E731
+    rows = [(t_of(c), 0, 1) for c in range(4)]      # startup reset
+    ev, cyc = {}, 4
+    for i, prof in enumerate(EXPECTED_DEEP_LEN):
+        ev[i] = {"begin": 0 if i == 0 else rows[-1][0],
+                 "begin_dur": prof["dur"], "begin_count": 1, "end_count": 1}
+        hold = 0
+        for _ in range(prof["dur"]):
+            req, hold = model.pattern(cyc, always=prof["always"],
+                                      lm=prof["lm"], lo=prof["lo"],
+                                      dp=prof["dp"], dl=prof["dl"], hold=hold)
+            rows.append((t_of(cyc), 1, req))
+            cyc += 1
+        ev[i]["end"] = rows[-1][0]
+        ev[i]["end_dur"] = prof["dur"]
+        if i != len(EXPECTED_DEEP_LEN) - 1:
+            rows.append((t_of(cyc), 1, 1))          # guard edge
+            cyc += 1
+    at = {model.cyc_of_edge(t, period): k for k, (t, r, q) in enumerate(rows)}
+
+    def put(c, val):
+        k = at[c]
+        t, rst, _ = rows[k]
+        rows[k] = (t, rst, val)
+
+    if short is not None:
+        s = DEEP_LEN_SPEC[short]
+        put(s["t_cyc"] + s["len"] - 1, 1)
+    if long_ is not None:
+        s = DEEP_LEN_SPEC[long_]
+        put(s["t_cyc"] + s["len"], 0)
+    if drop is not None:
+        s = DEEP_LEN_SPEC[drop]
+        for j in range(s["len"]):
+            put(s["t_cyc"] + j, 1)
+    return (ev, rows, "PASS/", list(EXPECTED_DEEP_LEN))
 
 
 def selftest():
@@ -601,6 +733,29 @@ def selftest():
         faults += 1
 
     # The regression's directed hook must not hide why a case really failed.
+    print("[b1] selftest  directed deep_len contract", flush=True)
+    res = judge(*synthetic_deep_len_run(), expected=EXPECTED_DEEP_LEN,
+                deep_len_spec=DEEP_LEN_SPEC)
+    print(f"[b1] selftest  {'accepted' if not res['failures'] else 'REJECTED'}"
+          f"  the six agreed stalls ({len(res['failures'])} finding(s))", flush=True)
+    if res["failures"]:
+        faults += 1
+        for msg in res["failures"]:
+            print(f"[b1]     {msg}", flush=True)
+    for name, kw in (("stall one cycle short (deep_len=1: trigger high)",
+                      {"short": 0}),
+                     ("stall one cycle short (deep_len=16: cycle 399 high)",
+                      {"short": 5}),
+                     ("stall one cycle long (deep_len=2, cyc 192)", {"long_": 2}),
+                     ("second stall in window 1 never issued", {"drop": 2})):
+        res = judge(*synthetic_deep_len_run(**kw), expected=EXPECTED_DEEP_LEN,
+                    deep_len_spec=DEEP_LEN_SPEC)
+        caught = len(res["failures"]) > 0
+        print(f"[b1] selftest  {'caught' if caught else 'MISSED'}  {name}"
+              f"  ({len(res['failures'])} finding(s))", flush=True)
+        if not caught:
+            faults += 1
+
     print("[b1] selftest  directed findings keep the underlying cause", flush=True)
     import run_regress as rr
     st, rsn, rl = rr.apply_directed(
@@ -656,7 +811,8 @@ def main():
                                          "reset_spec": None})
     res = judge(ev, rows, f"{r['status']}/{r['reason']}", profiles,
                 expected=contract["expected"],
-                reset_spec=contract["reset_spec"])
+                reset_spec=contract["reset_spec"],
+                deep_len_spec=contract.get("deep_len_spec"))
     rc = report(res, f"label={args.label}")
 
     probe_dir = csv_path.parent

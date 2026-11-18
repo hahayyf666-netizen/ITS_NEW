@@ -759,6 +759,32 @@ package its_uvm_pkg;
         endtask
     endclass
 
+    // Directed deep-stall-length script.  One window per deep_len, same
+// deep_period, so global cyc decides where the stalls land: with the first edge
+// at cyc=4 and one guard edge between windows the windows cover 4-103, 105-204,
+// 206-305, 307-406, and the multiples of 64 inside them are 64, 128, 192, 256,
+// 320 and 384 - six stalls, two of the windows seeing two.
+    //
+    // light_mod=10 rather than 12: at cyc=192 a two-cycle stall ends on 193, and
+    // 194 % 12 == 2 would put a light stall on the release cycle, making the pin
+    // low for three cycles while the driver is still correct.
+    class its_grant_deep_len_sequence extends its_grant_profile_sequence;
+        `uvm_object_utils(its_grant_deep_len_sequence)
+
+        int unsigned window_cycles = 100;
+
+        function new(string name = "its_grant_deep_len_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            send(1'b0, 10, 13, 64,  1, window_cycles);
+            send(1'b0, 10, 13, 64,  2, window_cycles);
+            send(1'b0, 10, 13, 64, 15, window_cycles);
+            send(1'b0, 10, 13, 64, 16, window_cycles);
+        endtask
+    endclass
+
     // Virtual sequence: runs the stimulus on the input agent while the
     // back-pressure agent changes the output timing underneath it.
     class its_vseq_stress extends uvm_sequence;
@@ -2560,6 +2586,41 @@ package its_uvm_pkg;
             `uvm_info("ITS_GRANT_RST",
                       $sformatf("directed reset done reset=%0d seg_a=%0d seg_b=%0d",
                                 reset_cycles, seg_a_cycles, seg_b_cycles), UVM_LOW)
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    // Directed case: the length of the deep stall, measured on the pin at both
+    // ends of the legal range and twice in between.
+    //
+    // The criteria are positions, not lengths found in the recording: for each
+    // agreed trigger the cycle before must be high, the stall must be exactly
+    // deep_len cycles low, and the cycle after must be high again.  A window
+    // that drops its second stall is then still a failure, which "at least one
+    // stall per window" would have missed.
+    //
+    // Like the reset case this drives no TU: the subject is the grant driver's
+    // stall width, and traffic could only add a second explanation.
+    class its_grant_deep_len_test extends its_base_test;
+        `uvm_component_utils(its_grant_deep_len_test)
+
+        int unsigned window_cycles = 100;
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_grant_deep_len_sequence prof;
+            void'($value$plusargs("GRANT_SEG_B=%d", window_cycles));
+            phase.raise_objection(this);
+            prof = its_grant_deep_len_sequence::type_id::create("prof");
+            prof.window_cycles = window_cycles;
+            prof.start(env.grant_seqr);
+            wait_cycles(8);
+            `uvm_info("ITS_GRANT_DL",
+                      $sformatf("deep_len script done windows=4 x %0d edges",
+                                window_cycles), UVM_LOW)
             phase.drop_objection(this);
         endtask
     endclass
