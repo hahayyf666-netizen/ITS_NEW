@@ -1,0 +1,48 @@
+B1: refuse duration_cycles=0 and prove the refusal left nothing behind
+
+Three behaviours, kept apart so one cannot cover for another: the driver refuses
+the illegal item by name, the refusal leaves no trace on the pin, and the driver
+can still run the next window.  A zero is injected by hand because the item's
+default is 600 and the constraint keeps it in [100:8000], so the value can only
+come from a directed test; the comment in the rejection branch said "the item's
+own default", which stopped being true when the default changed.
+
+Sequence, all with no TU driven:
+  1. a legal 100-cycle window, so the pin is known to be in guard afterwards and
+     a later req=1 cannot be attributed to the driver never having started;
+  2. an item with duration_cycles=0 whose other fields are legal and stall often
+     (light_mod=3, deep_period=8, deep_len=16) - if it were applied the pin
+     would go low within a few cycles, so a pin that stays high is evidence;
+  3. a deliberate 20-cycle gap, then a second legal window with a different
+     pattern (light 3/5, deep 24/10) whose waveform is easy to tell apart.
+
+Judged on four things rather than on "the error was reported":
+  - exactly one ITS_GRANT_DUR and no other UVM_ERROR id, via the case's exact id
+    set, so a second report or a different id fails;
+  - the rejected item returns with no cycle of execution (end == begin) and its
+    own begin/end records both carry duration 0;
+  - the driver recorded two profiles, not three: a rejected item must not appear
+    as an applied profile;
+  - the guard stretch between the rejection and the next window is all req=1 and
+    at least 15 edges long, and the second window's first edge, executed count,
+    waveform and completion time all match the contract.
+
+Measured on the real DUT:
+
+  txn 0 (legal A)   first edge 9000, 100 edges, 32 low, ends 207000
+  txn 1 (rejected)  returned 0 cycles after it was handed over
+  txn 2 (legal B)   first edge 247000, 100 edges, 59 low, ends 445000
+  guard stretch     19 edges, 0 low
+  UVM_ERROR ids     {ITS_GRANT_DUR: 1}
+  wave mismatches   0 in both windows
+
+Four mutants, all rejected without a simulator: the rejection report deleted,
+two reports instead of one, the right id with the pin still stalling after it,
+and the illegal item logged as an applied profile.
+
+Regression 25/25 PASS, functional coverage unchanged at 52/54 (a directed case
+adds a check, not a bin).  Fingerprint 2c7b2ebf2d126d2b.
+
+Limits: the guard stretch proves the pin did not move, not that no internal state
+was touched; the profile-log check covers the part that is observable.  What
+remains of the listed B1 directed work is the tail_stress expiry.

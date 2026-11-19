@@ -785,6 +785,35 @@ package its_uvm_pkg;
         endtask
     endclass
 
+    // Directed script for the duration rejection: a legal window, an item whose
+// duration_cycles is 0 injected by hand, a deliberate guard stretch, then a
+// second legal window with a different pattern.
+    //
+    // The illegal item's other fields are legal and stall often (light_mod=3,
+    // deep_period=8, deep_len=16): if the driver applied it after all, the pin
+    // would go low within a few cycles, so "the pin stayed in guard" is
+    // evidence rather than a coincidence.
+    class its_grant_dur_sequence extends its_grant_profile_sequence;
+        `uvm_object_utils(its_grant_dur_sequence)
+
+        // The gap has to be measured on the clock, and a sequence has no clock;
+        // the test hands its interface over before starting this.
+        virtual its_if vif;
+        int unsigned   guard_cycles = 20;
+
+        function new(string name = "its_grant_dur_sequence");
+            super.new(name);
+        endfunction
+
+        task body();
+            send(1'b0, 10, 13, 64, 16, 100);   // legal window, already known
+            send(1'b0,  3,  5,  8, 16,   0);   // rejected: duration_cycles = 0
+            if (vif != null)
+                repeat (guard_cycles) @(negedge vif.clk);
+            send(1'b0,  3,  5, 24, 10, 100);   // second legal window
+        endtask
+    endclass
+
     // Virtual sequence: runs the stimulus on the input agent while the
     // back-pressure agent changes the output timing underneath it.
     class its_vseq_stress extends uvm_sequence;
@@ -1409,9 +1438,11 @@ package its_uvm_pkg;
             forever begin
                 seq_item_port.get_next_item(req);
                 if (req.duration_cycles == 0) begin
-                    // The item's own default.  A finite transaction with no
-                    // duration would either never end or end immediately, and
-                    // both are silent; reject it by name instead.
+                    // An illegal value the case injected by hand: the item's
+                    // default is 600 and the constraint keeps it in [100:8000],
+                    // so a zero can only arrive from a directed test.  A finite
+                    // transaction with no duration would either never end or end
+                    // immediately, and both are silent; reject it by name.
                     `uvm_error("ITS_GRANT_DUR",
                                "finite grant profile with duration_cycles=0")
                     seq_item_port.item_done();
@@ -2621,6 +2652,39 @@ package its_uvm_pkg;
             `uvm_info("ITS_GRANT_DL",
                       $sformatf("deep_len script done windows=4 x %0d edges",
                                 window_cycles), UVM_LOW)
+            phase.drop_objection(this);
+        endtask
+    endclass
+
+    // Directed negative case: the driver refuses duration_cycles=0 by name, the
+    // refusal leaves no trace on the pin, and the next window still runs.
+    //
+    // Three behaviours, separated so that one cannot cover for another: exactly
+    // one ITS_GRANT_DUR report, a guard stretch as long as the injected gap, and
+    // a second window whose first edge, executed count and completion time all
+    // match the contract.  The last one is what catches "the right error was
+    // reported, but the driver then stalled or poisoned the next profile".
+    class its_grant_dur_test extends its_base_test;
+        `uvm_component_utils(its_grant_dur_test)
+
+        int unsigned guard_cycles = 20;
+
+        function new(string name, uvm_component parent);
+            super.new(name, parent);
+        endfunction
+
+        task run_phase(uvm_phase phase);
+            its_grant_dur_sequence prof;
+            void'($value$plusargs("DUR_GUARD_CYCLES=%d", guard_cycles));
+            phase.raise_objection(this);
+            prof = its_grant_dur_sequence::type_id::create("prof");
+            prof.vif          = vif;
+            prof.guard_cycles = guard_cycles;
+            prof.start(env.grant_seqr);
+            wait_cycles(8);
+            `uvm_info("ITS_GRANT_DUR_CASE",
+                      $sformatf("duration rejection done guard_cycles=%0d",
+                                guard_cycles), UVM_LOW)
             phase.drop_objection(this);
         endtask
     endclass

@@ -345,6 +345,26 @@
       "note": "directed: deep stall width on the pin at deep_len 1, 2, 15 and 16 - the legal range is [1:16]. One window per length, deep_period=64, light 10/13 so every first and release cycle of the six agreed stalls is clear of the light rule. Judged as positions (cycle before high, deep_len cycles low, cycle after high), so a window that drops its second stall still fails. No TU driven on purpose."
     },
     {
+      "name": "grant_dur",
+      "testname": "its_grant_dur_test",
+      "plusargs": [
+        "DUR_GUARD_CYCLES=20"
+      ],
+      "audit": "grant_dur",
+      "expect": {
+        "tus": 0,
+        "beats": 0,
+        "data_errors": 0,
+        "done_errors": 0,
+        "protocol_errors": 0,
+        "pending": 0,
+        "uvm_error_ids": {
+          "ITS_GRANT_DUR": 1
+        }
+      },
+      "note": "directed negative: duration_cycles=0 injected by hand must be refused by name and exactly once, must leave the pin in guard for the injected gap, and must not stop the next window from running. The illegal item carries stall-often legal parameters (light_mod=3, deep_period=8), so a pin that stays high is evidence. uvm_error_ids is exact: any other error id fails."
+    },
+    {
       "name": "tail_stress",
       "testname": "its_vseq_tail_test",
       "plusargs": [

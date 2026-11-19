@@ -102,6 +102,23 @@ CONTRACTS["grant_deep_len"] = {"expected": EXPECTED_DEEP_LEN,
                                "reset_spec": None,
                                "deep_len_spec": DEEP_LEN_SPEC}
 
+# The ITS_GRANT_DUR case: a legal window, then an item whose duration_cycles is
+# 0 injected by hand, then another legal window whose waveform is easy to tell
+# apart.  Three things are being separated: the driver rejects the illegal item
+# by name, it leaves no trace on the pin while doing so, and it is still able to
+# run the next window.
+EXPECTED_DUR = [
+    {"always": False, "lm": 10, "lo": 13, "dp": 64, "dl": 16, "dur": 100},
+    {"always": False, "lm": 3,  "lo": 5,  "dp": 24, "dl": 10, "dur": 100},
+]
+# The illegal item's own parameters are legal and stall-often: lm=3 and dp=8 put
+# a low on the pin within a few cycles, so "the pin stayed in guard" is evidence
+# rather than a coincidence of the parameters being inert.
+DUR_SPEC = {"rejected_dur": 0, "min_guard": 15,
+            "error_ids": {"ITS_GRANT_DUR": 1}}
+CONTRACTS["grant_dur"] = {"judge": "dur", "expected": EXPECTED_DUR,
+                          "spec": DUR_SPEC}
+
 
 # --------------------------------------------------------------------------
 # Parsing
@@ -407,6 +424,165 @@ def judge(ev, rows, verdict, profiles, expected=None, reset_spec=None,
     return {"table": table, "failures": failures}
 
 
+ERR_ID_RE = re.compile(r"UVM_ERROR\b[^\n]*?\[([A-Za-z0-9_]+)\]")
+
+
+def uvm_error_ids(log_text: str):
+    """Which UVM_ERROR ids the log reports, and how often.
+
+    The summary line ("# UVM_ERROR :    1") has no id and is not matched; the
+    result file's own total is what ties the summary to these counts.
+    """
+    ids = {}
+    for m in ERR_ID_RE.finditer(log_text):
+        ids[m.group(1)] = ids.get(m.group(1), 0) + 1
+    return ids
+
+
+def judge_dur(ev, rows, verdict, profiles, expected, error_ids,
+              spec=None, period=PERIOD):
+    """The ITS_GRANT_DUR case: rejection, no side effect, still usable.
+
+    The record has three items - a legal window, the rejected one, and a second
+    legal window - but only two profiles: a rejected item must not be applied,
+    so it cannot appear in the driver's profile log.  The stretch between the
+    rejected item and the next window is where "no side effect" is observable:
+    the pin has to stay in guard there even though the illegal item carried
+    parameters that would have stalled within a few cycles.
+    """
+    spec = spec or DUR_SPEC
+    failures = []
+    table = []
+    rej_idx = 1
+
+    status = verdict.split("/")[0].strip() if verdict else None
+    if status is None:
+        failures.append("underlying verdict missing: no result artefact")
+    elif status != "PASS":
+        failures.append(f"underlying case verdict is {verdict}, not PASS")
+
+    if len(rows) < 2:
+        failures.append(f"sampling record has {len(rows)} row(s)")
+    else:
+        gaps = sorted({b[0] - a[0] for a, b in zip(rows, rows[1:])})
+        if gaps != [period]:
+            failures.append(f"sampling record is not one row per clock: "
+                            f"adjacent gaps {gaps}, period {period}")
+        dupes = len(rows) - len({r[0] for r in rows})
+        if dupes:
+            failures.append(f"sampling record repeats {dupes} timestamp(s)")
+
+    if list(profiles) != list(expected):
+        failures.append(f"driver recorded {len(profiles)} profile(s) {profiles}, "
+                        f"expected only the two legal windows {expected}: a "
+                        f"rejected item must leave no profile behind")
+
+    want = spec["error_ids"]
+    if error_ids != want:
+        failures.append(f"UVM_ERROR ids {error_ids}, contract says {want}")
+
+    n_txn = len(expected) + 1
+    if len(ev) != n_txn:
+        failures.append(f"{len(ev)} transaction record(s), contract has {n_txn}")
+
+    for i in range(n_txn):
+        rec = ev.get(i)
+        if rec is None:
+            failures.append(f"txn {i}: no begin/end record")
+            continue
+        if rec.get("begin_count", 0) != 1 or rec.get("end_count", 0) != 1:
+            failures.append(f"txn {i}: {rec.get('begin_count', 0)} begin / "
+                            f"{rec.get('end_count', 0)} end record(s); "
+                            f"finish_item() must return exactly once")
+
+    # The rejected item comes back without running, and its duration is the
+    # illegal zero both sides saw.
+    rej = ev.get(rej_idx)
+    legal_idx = [i for i in range(n_txn) if i != rej_idx]
+    if rej is not None and rej.get("begin") is not None \
+            and rej.get("end") is not None:
+        if rej["end"] != rej["begin"]:
+            failures.append(f"rejected item returned {rej['end']} after "
+                            f"{rej['begin']}, {(rej['end'] - rej['begin']) // period}"
+                            f" cycle(s) later; rejection must not run the profile")
+        for phase in ("begin", "end"):
+            if rej.get(f"{phase}_dur") not in (None, spec["rejected_dur"]):
+                failures.append(f"rejected item's {phase} record says duration "
+                                f"{rej[f'{phase}_dur']}, not "
+                                f"{spec['rejected_dur']}")
+        table.append({"txn": rej_idx, "kind": "rejected",
+                      "returned_after_cycles": (rej["end"] - rej["begin"]) // period})
+
+    prev_end_idx = None
+    for j, idx in enumerate(legal_idx):
+        prof = expected[j]
+        rec = ev.get(idx) or {}
+        begin, end = rec.get("begin"), rec.get("end")
+        row = {"txn": idx, "kind": "window", "dur": prof["dur"],
+               "begin": begin, "recorded_end": end, "first_edge": None,
+               "computed_end": None, "span_edges": None, "zeros": None,
+               "wave_mismatch": None, "ok": False}
+        table.append(row)
+        if begin is None:
+            failures.append(f"txn {idx}: no begin record to anchor the window")
+            continue
+        # Both legal windows are found the same way: the first sampling edge at
+        # or after the item was handed over.  Window 0 cannot use the "one guard
+        # edge after the previous end" rule the other contracts use, because the
+        # rejected item sits in between and its stretch is many edges long.
+        start = next((k for k in range(len(rows))
+                      if rows[k][0] >= begin and rows[k][1] == 1), None)
+        if start is None:
+            failures.append(f"txn {idx}: no sampling edge to start the window")
+            continue
+        w = walk_window(rows, start, prof, period)
+        row.update({"first_edge": rows[start][0], "computed_end": w["end_t"],
+                    "span_edges": w["executed"], "zeros": w["zeros"],
+                    "wave_mismatch": len(w["bad"])})
+        if w["end_t"] is None:
+            failures.append(f"txn {idx}: window did not complete in the "
+                            f"recording ({w['executed']} of {prof['dur']} edges)")
+            continue
+        if end is None:
+            failures.append(f"txn {idx}: no end record to compare against")
+        elif end != w["end_t"]:
+            failures.append(f"txn {idx}: finish_item() returned at t={end}, "
+                            f"computed completion {w['end_t']} "
+                            f"({(end - w['end_t']) // period:+d} cycle(s))")
+        for t, req, want_q, kind in w["bad"][:3]:
+            failures.append(f"txn {idx}: edge t={t} req={req} expected {want_q} "
+                            f"({kind})")
+        if row["span_edges"] != prof["dur"]:
+            failures.append(f"txn {idx}: window executed {row['span_edges']} "
+                            f"edge(s), declared {prof['dur']}")
+        row["ok"] = not any(f.startswith(f"txn {idx}:") for f in failures)
+
+    # The guard stretch: no side effect from the rejected item.
+    if rej is not None and len(legal_idx) > 1:
+        lo_t = rej.get("end")
+        hi_t = (ev.get(legal_idx[1]) or {}).get("begin")
+        if lo_t is not None and hi_t is not None:
+            stretch = [(t, q) for t, rst, q in rows
+                       if rst == 1 and lo_t < t <= hi_t]
+            lows = [t for t, q in stretch if q != 1]
+            table.append({"kind": "guard_stretch", "edges": len(stretch),
+                          "low_edges": len(lows)})
+            if lows:
+                failures.append(f"the rejected item changed the pin: req is 0 "
+                                f"on {len(lows)} edge(s) after it, first at "
+                                f"t={lows[0]}; it must leave the pin in guard")
+            if len(stretch) < spec["min_guard"]:
+                failures.append(f"only {len(stretch)} guard edge(s) between the "
+                                f"rejected item and the next window, contract "
+                                f"wants at least {spec['min_guard']} so that "
+                                f"'the pin stayed in guard' is observable")
+
+    return {"table": table, "failures": failures,
+            "guard_edges": next((r["edges"] for r in table
+                                 if r.get("kind") == "guard_stretch"), None),
+            "error_ids": error_ids}
+
+
 # --------------------------------------------------------------------------
 # Driver
 # --------------------------------------------------------------------------
@@ -474,15 +650,34 @@ def load_artefacts(label):
             parse_profiles(log_text))
 
 
+def probe_log_text(label):
+    """The log of the last probe run for `label`, for evidence the CSV lacks.
+
+    The pin record says nothing about which UVM_ERROR ids were reported, so the
+    duration case needs the log as well as the waveform.
+    """
+    import run_regress as rr
+    p = rr.OUT / "logs" / f"regress_b1_audit_{label}.log"
+    return p.read_text(encoding="utf-8", errors="replace") if p.exists() else ""
+
+
 def report(res, label):
     print(f"[b1] {'txn':>3} {'dur':>6} {'first':>10} {'computed':>10} "
           f"{'recorded':>10} {'exec':>5} {'rst':>4} {'req=0':>6} {'wave':>5}  "
           f"result", flush=True)
     for r in res["table"]:
         f = lambda v: "-" if v is None else str(v)  # noqa: E731
+        if r.get("kind") == "rejected":
+            print(f"[b1] {r['txn']:>3} rejected item returned after "
+                  f"{r['returned_after_cycles']} cycle(s)", flush=True)
+            continue
+        if r.get("kind") == "guard_stretch":
+            print(f"[b1] guard stretch: {r['edges']} edge(s), "
+                  f"{r['low_edges']} of them low", flush=True)
+            continue
         print(f"[b1] {r['txn']:>3} {f(r['dur']):>6} {f(r['first_edge']):>10} "
               f"{f(r['computed_end']):>10} {f(r['recorded_end']):>10} "
-              f"{f(r['span_edges']):>5} {f(r['resets']):>4} "
+              f"{f(r['span_edges']):>5} {f(r.get('resets')):>4} "
               f"{f(r['zeros']):>6} {f(r['wave_mismatch']):>5}  "
               f"{'ok' if r['ok'] else 'FAIL'}", flush=True)
     if res["failures"]:
@@ -503,6 +698,10 @@ def judge_from_files(log_path, csv_path, verdict, case_name):
     log_text = Path(log_path).read_text(encoding="utf-8", errors="replace")
     csv_text = (Path(csv_path).read_text(encoding="utf-8", errors="replace")
                 if Path(csv_path).exists() else "")
+    if contract.get("judge") == "dur":
+        return judge_dur(txn_events(log_text), edge_rows(csv_text), verdict,
+                         parse_profiles(log_text), contract["expected"],
+                         uvm_error_ids(log_text), spec=contract["spec"])
     return judge(txn_events(log_text), edge_rows(csv_text), verdict,
                  parse_profiles(log_text),
                  expected=contract["expected"],
@@ -613,6 +812,64 @@ def synthetic_deep_len_run(short=None, long_=None, drop=None):
         for j in range(s["len"]):
             put(s["t_cyc"] + j, 1)
     return (ev, rows, "PASS/", list(EXPECTED_DEEP_LEN))
+
+
+def synthetic_dur_run(drop_error=False, extra_error=False,
+                      illegal_applies=False, illegal_recorded=False):
+    """The record a correct ITS_GRANT_DUR run would leave behind.
+
+    The mutants are the two failure modes the case exists for: the rejection
+    report going missing, and the report being right while the pin disagrees -
+    plus the variant where the illegal item is logged as an applied profile.
+    """
+    period = PERIOD
+    seg_a, seg_b = EXPECTED_DUR
+    t_of = lambda c: 1000 + c * period  # noqa: E731
+    rows = [(t_of(c), 0, 1) for c in range(4)]      # startup reset
+    ev = {}
+
+    hold = 0
+    cyc = 4
+    for _ in range(seg_a["dur"]):
+        req, hold = model.pattern(cyc, always=seg_a["always"], lm=seg_a["lm"],
+                                  lo=seg_a["lo"], dp=seg_a["dp"],
+                                  dl=seg_a["dl"], hold=hold)
+        rows.append((t_of(cyc), 1, req))
+        cyc += 1
+    ev[0] = {"begin": 0, "end": rows[-1][0], "begin_dur": seg_a["dur"],
+             "end_dur": seg_a["dur"], "begin_count": 1, "end_count": 1}
+
+    # The rejected item: handed over and returned at the same timestamp, no
+    # cycle of profile run, then a guard stretch before the next window.
+    ev[1] = {"begin": rows[-1][0], "end": rows[-1][0], "begin_dur": 0,
+             "end_dur": 0, "begin_count": 1, "end_count": 1}
+    guard = 20
+    for _ in range(guard):
+        rows.append((t_of(cyc), 1, 0 if illegal_applies and _ == 0 else 1))
+        cyc += 1
+
+    hold = 0
+    ev[2] = {"begin": rows[-1][0], "begin_dur": seg_b["dur"],
+             "end_dur": seg_b["dur"], "begin_count": 1, "end_count": 1}
+    ev[2]["begin"] = t_of(cyc)
+    for _ in range(seg_b["dur"]):
+        req, hold = model.pattern(cyc, always=seg_b["always"], lm=seg_b["lm"],
+                                  lo=seg_b["lo"], dp=seg_b["dp"],
+                                  dl=seg_b["dl"], hold=hold)
+        rows.append((t_of(cyc), 1, req))
+        cyc += 1
+    ev[2]["end"] = rows[-1][0]
+
+    profiles = list(EXPECTED_DUR)
+    if illegal_recorded:
+        profiles = [EXPECTED_DUR[0],
+                    {"always": False, "lm": 3, "lo": 5, "dp": 8, "dl": 16,
+                     "dur": 0},
+                    EXPECTED_DUR[1]]
+    ids = {} if drop_error else {"ITS_GRANT_DUR": 1}
+    if extra_error:
+        ids["ITS_GRANT_DUR"] = 2
+    return (ev, rows, "PASS/", profiles, ids)
 
 
 def selftest():
@@ -756,6 +1013,33 @@ def selftest():
         if not caught:
             faults += 1
 
+    print("[b1] selftest  directed ITS_GRANT_DUR contract", flush=True)
+    ev_d, rows_d, ver_d, prof_d, ids_d = synthetic_dur_run()
+    res = judge_dur(ev_d, rows_d, ver_d, prof_d, EXPECTED_DUR, ids_d,
+                    spec=DUR_SPEC)
+    print(f"[b1] selftest  {'accepted' if not res['failures'] else 'REJECTED'}"
+          f"  the agreed reject-then-continue run "
+          f"({len(res['failures'])} finding(s), guard edges="
+          f"{res['guard_edges']})", flush=True)
+    if res["failures"]:
+        faults += 1
+        for msg in res["failures"]:
+            print(f"[b1]     {msg}", flush=True)
+    for name, kw in (("the rejection report deleted", {"drop_error": True}),
+                     ("two reports instead of one", {"extra_error": True}),
+                     ("right report id, pin still stalls after it",
+                      {"illegal_applies": True}),
+                     ("illegal item logged as an applied profile",
+                      {"illegal_recorded": True})):
+        ev_r, rows_r, ver_r, prof_r, ids_r = synthetic_dur_run(**kw)
+        res = judge_dur(ev_r, rows_r, ver_r, prof_r, EXPECTED_DUR, ids_r,
+                        spec=DUR_SPEC)
+        caught = len(res["failures"]) > 0
+        print(f"[b1] selftest  {'caught' if caught else 'MISSED'}  {name}"
+              f"  ({len(res['failures'])} finding(s))", flush=True)
+        if not caught:
+            faults += 1
+
     print("[b1] selftest  directed findings keep the underlying cause", flush=True)
     import run_regress as rr
     st, rsn, rl = rr.apply_directed(
@@ -809,10 +1093,16 @@ def main():
 
     contract = CONTRACTS.get(args.case, {"expected": EXPECTED,
                                          "reset_spec": None})
-    res = judge(ev, rows, f"{r['status']}/{r['reason']}", profiles,
-                expected=contract["expected"],
-                reset_spec=contract["reset_spec"],
-                deep_len_spec=contract.get("deep_len_spec"))
+    if contract.get("judge") == "dur":
+        ids = uvm_error_ids(log_text if log_text else probe_log_text(args.label))
+        print(f"[b1] UVM_ERROR ids in the log: {ids}", flush=True)
+        res = judge_dur(ev, rows, f"{r['status']}/{r['reason']}", profiles,
+                        contract["expected"], ids, spec=contract["spec"])
+    else:
+        res = judge(ev, rows, f"{r['status']}/{r['reason']}", profiles,
+                    expected=contract["expected"],
+                    reset_spec=contract.get("reset_spec"),
+                    deep_len_spec=contract.get("deep_len_spec"))
     rc = report(res, f"label={args.label}")
 
     probe_dir = csv_path.parent
