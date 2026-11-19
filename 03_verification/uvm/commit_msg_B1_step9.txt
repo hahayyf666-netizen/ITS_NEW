@@ -1,0 +1,42 @@
+B1: tie the duration rejection to the item it refused
+
+The independent audit found four records that judge_dur() accepted although the
+contract they claim to satisfy does not hold.  Each one is a place where the
+judgement read a weaker fact than the claim:
+
+  1. the report was only counted, never located - moving the ITS_GRANT_DUR stamp
+     to the end of the second window kept failures empty.  "That id occurred
+     once somewhere" and "the driver raised it while refusing this item" are
+     different claims; the branch reports synchronously, so both the component
+     and the timestamp are now checked against the item;
+  2. the three items had no order - moving the rejected item one cycle ahead of
+     the first window's completion kept end == begin, and the guard stretch even
+     grew to 20 edges.  Now window[0].end <= rejected.begin <= rejected.end <=
+     window[1].begin, with equality allowed because a waiting driver hands over
+     in a zero-cycle handshake;
+  3. the guard stretch was filtered on rst_n before counting - flipping one row
+     to rst_n=0, req=0 removed it from the count and 18 edges still cleared the
+     floor of 15.  Every row in the stretch is now inspected for both signals,
+     which is also what the case's own contract says: no reset during guard;
+  4. the two legal windows never had their declared durations checked - editing
+     the second window's begin record to dur=17 while it ran 100 edges passed,
+     because only the rejected item's records were compared.  Both sides of
+     every item are now compared with the contract, as the three-window judge
+     already did.
+
+Measured against the saved independent run, before and after:
+
+  error stamp moved to 445000      [] -> report stamped t=445000, outside 207000..207000
+  report raised by the scoreboard  [] -> came from uvm_test_top.env.sb, not grant_drv
+  rejected item moved to 205000    [] -> begins at t=205000, before window 0 ended at 207000
+  one guard row set to reset       [] (18 edges) -> edge t=217000 has rst_n=0 req=0 (19 edges)
+  window 1 begin dur edited to 17  [] -> begin record says 17, contract says 100
+
+The agreed record still passes unchanged: report at 207000 from grant_drv, three
+items in order, 19 guard edges with no reset, windows ending 207000 and 445000,
+two profiles.
+
+Mutants for this contract are now eight, all rejected without a simulator.  The
+fingerprint moves to 94926252d74ada14 because the judge source is one of its
+inputs; regression 25/25 PASS and functional coverage 52/54 are otherwise
+unchanged.
