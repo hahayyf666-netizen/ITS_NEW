@@ -116,7 +116,7 @@ EXPECTED_DUR = [
 # rather than a coincidence of the parameters being inert.
 DUR_SPEC = {"rejected_dur": 0, "min_guard": 15,
             "error_ids": {"ITS_GRANT_DUR": 1},
-            "error_component": "grant_drv"}
+            "error_component": "uvm_test_top.env.grant_drv"}
 CONTRACTS["grant_dur"] = {"judge": "dur", "expected": EXPECTED_DUR,
                           "spec": DUR_SPEC}
 
@@ -537,8 +537,10 @@ def judge_dur(ev, rows, verdict, profiles, expected, reports,
         # Who reported, and when.  The rejection branch reports from the driver
         # on the spot, so the report has to sit inside the item it refused; an
         # id counted somewhere else in the run proves nothing about this item.
+        # The component is compared whole, not by suffix: a component named
+        # fake_grant_drv ends with grant_drv and is a different component.
         for rep in reports:
-            if not rep["component"].endswith(spec["error_component"]):
+            if rep["component"] != spec["error_component"]:
                 failures.append(f"the {rep['id']} report came from "
                                 f"{rep['component']}, not from "
                                 f"{spec['error_component']}")
@@ -644,6 +646,157 @@ def judge_dur(ev, rows, verdict, profiles, expected, reports,
             "error_ids": got}
 
 
+# The tail_stress case reuses an existing test rather than adding one: the
+# window is a single stretch of 600 low edges, so the boundary is the edge after
+# it, and the pin stays in guard from there to the end of the run.  There is no
+# next window to take over, so the other contracts' "one guard edge in between"
+# rule has no meaning here.
+PROF_TAIL = {"always": False, "lm": 7, "lo": 11, "dp": 1, "dl": 600,
+             "dur": 600}
+TAIL_SPEC = {"dur": 600}
+CONTRACTS["tail_stress"] = {"judge": "tail", "expected": [PROF_TAIL],
+                            "spec": TAIL_SPEC}
+
+TAIL_DONE_RE = re.compile(r"\[TEST_DONE\]")
+
+
+def test_done_time(log_text: str):
+    """The timestamp of the run's own TEST_DONE report, or None.
+
+    The tail's end is the end of the run, and the run's end is the only thing in
+    the record that is not derived from the pin.  Anchoring on it is what makes
+    a truncated recording visible: the remaining edges stay contiguous and stay
+    high, but they no longer reach this timestamp.
+    """
+    for line in log_text.splitlines():
+        if not TAIL_DONE_RE.search(line):
+            continue
+        m = re.search(r"@\s*(\d+):", line)
+        if m:
+            return int(m.group(1))
+    return None
+
+
+def judge_tail(ev, rows, verdict, profiles, expected, test_done,
+               spec=None, period=PERIOD):
+    """The tail_stress case: 600 executing edges, then guard to the end.
+
+    Two ends are checked, not one: the first guard edge (so the refusal to keep
+    executing is visible at the boundary) and the last sampling edge (so a
+    recording that stops early is not mistaken for a short run).
+    """
+    spec = spec or TAIL_SPEC
+    profiles_expected = expected[0]
+    failures = []
+    table = []
+
+    status = verdict.split("/")[0].strip() if verdict else None
+    if status is None:
+        failures.append("underlying verdict missing: no result artefact")
+    elif status != "PASS":
+        failures.append(f"underlying case verdict is {verdict}, not PASS")
+
+    if len(rows) < 2:
+        failures.append(f"sampling record has {len(rows)} row(s)")
+    else:
+        gaps = sorted({b[0] - a[0] for a, b in zip(rows, rows[1:])})
+        if gaps != [period]:
+            failures.append(f"sampling record is not one row per clock: "
+                            f"adjacent gaps {gaps}, period {period}")
+        dupes = len(rows) - len({r[0] for r in rows})
+        if dupes:
+            failures.append(f"sampling record repeats {dupes} timestamp(s)")
+
+    if list(profiles) != list(expected):
+        failures.append(f"driver recorded {len(profiles)} profile(s) {profiles}, "
+                        f"contract says exactly one {profiles_expected}")
+
+    if len(ev) != 1:
+        failures.append(f"{len(ev)} transaction record(s), contract has 1")
+    rec = ev.get(0) or {}
+    for key in ("begin_count", "end_count"):
+        if rec.get(key, 0) != 1:
+            failures.append(f"txn 0: {rec.get(key, 0)} {key} record(s); "
+                            f"finish_item() must return exactly once")
+    for phase in ("begin", "end"):
+        declared = rec.get(f"{phase}_dur")
+        if declared is not None and declared != profiles_expected["dur"]:
+            failures.append(f"txn 0: {phase} record says duration {declared}, "
+                            f"contract says {profiles_expected['dur']}")
+
+    start = next((k for k in range(len(rows))
+                  if rows[k][1] == 1), None)
+    if start is None:
+        failures.append("no sampling edge with rst_n high to start the window")
+        return {"table": table, "failures": failures, "tail_edges": None}
+
+    dur = spec["dur"]
+    if start + dur > len(rows):
+        failures.append(f"the recording ends {len(rows) - start} edge(s) into "
+                        f"the window, which declares {dur}")
+        return {"table": table, "failures": failures, "tail_edges": None}
+
+    w = walk_window(rows, start, profiles_expected, period)
+    row = {"txn": 0, "kind": "window", "dur": dur,
+           "first_edge": rows[start][0], "computed_end": w["end_t"],
+           "recorded_end": rec.get("end"), "span_edges": w["executed"],
+           "zeros": w["zeros"], "wave_mismatch": len(w["bad"]),
+           "ok": not w["bad"] and w["end_t"] == rec.get("end")}
+    table.append(row)
+    for t, req, want_q, kind in w["bad"][:3]:
+        failures.append(f"txn 0: edge t={t} req={req} expected {want_q} ({kind})")
+    if w["executed"] != dur:
+        failures.append(f"txn 0: window executed {w['executed']} edge(s), "
+                        f"declared {dur}")
+    if w["end_t"] is None:
+        failures.append("the window did not complete in the recording")
+        return {"table": table, "failures": failures, "tail_edges": None}
+    if rec.get("end") is not None and rec["end"] != w["end_t"]:
+        failures.append(f"txn 0: finish_item() returned at t={rec['end']}, "
+                        f"computed completion {w['end_t']}")
+
+    # E is the last executing edge.  The contract says the window is still
+    # driving there, so the low at E is part of the evidence, not a defect.
+    e_idx = start + dur - 1
+    e_t, e_rst, e_req = rows[e_idx]
+    if e_req != 0:
+        failures.append(f"edge t={e_t} is the {dur}th executing edge but req="
+                        f"{e_req}; the window must still be driving there")
+
+    tail = rows[e_idx + 1:]
+    bad = [(t, rst, q) for t, rst, q in tail if rst != 1 or q != 1]
+    tail_row = {"kind": "tail", "edges": len(tail),
+                "first_edge": tail[0][0] if tail else None,
+                "last_edge": tail[-1][0] if tail else None,
+                "test_done": test_done, "bad_rows": len(bad)}
+    table.append(tail_row)
+
+    if not tail:
+        failures.append(f"no sampling edge after the window's last edge "
+                        f"(t={e_t}); the guard stretch has to exist")
+    else:
+        if bad:
+            t, rst, q = bad[0]
+            failures.append(f"edge t={t} in the guard stretch has rst_n={rst} "
+                            f"req={q}, {len(bad)} bad row(s); guard is req=1 "
+                            f"with no reset")
+        if tail[0][0] != e_t + period:
+            failures.append(f"the guard starts at t={tail[0][0]}, "
+                            f"{tail[0][0] - e_t} ps after the last executing "
+                            f"edge instead of one clock")
+        if test_done is None:
+            failures.append("the log has no TEST_DONE, so the tail has no end "
+                            "to be checked against")
+        elif tail[-1][0] != test_done:
+            delta = (test_done - tail[-1][0]) // period
+            failures.append(f"the recording ends at t={tail[-1][0]} but the run "
+                            f"ends at t={test_done}: {delta} guard cycle(s) are "
+                            f"missing from the record")
+
+    return {"table": table, "failures": failures,
+            "tail_edges": len(tail) if tail else None}
+
+
 # --------------------------------------------------------------------------
 # Driver
 # --------------------------------------------------------------------------
@@ -736,6 +889,11 @@ def report(res, label):
             print(f"[b1] guard stretch: {r['edges']} edge(s), "
                   f"{r['low_edges']} of them low", flush=True)
             continue
+        if r.get("kind") == "tail":
+            print(f"[b1] tail: {r['edges']} edge(s) from t={r['first_edge']} "
+                  f"to t={r['last_edge']}, run ends t={r['test_done']}, "
+                  f"{r['bad_rows']} bad row(s)", flush=True)
+            continue
         print(f"[b1] {r['txn']:>3} {f(r['dur']):>6} {f(r['first_edge']):>10} "
               f"{f(r['computed_end']):>10} {f(r['recorded_end']):>10} "
               f"{f(r['span_edges']):>5} {f(r.get('resets')):>4} "
@@ -763,6 +921,10 @@ def judge_from_files(log_path, csv_path, verdict, case_name):
         return judge_dur(txn_events(log_text), edge_rows(csv_text), verdict,
                          parse_profiles(log_text), contract["expected"],
                          uvm_error_reports(log_text), spec=contract["spec"])
+    if contract.get("judge") == "tail":
+        return judge_tail(txn_events(log_text), edge_rows(csv_text), verdict,
+                          parse_profiles(log_text), contract["expected"],
+                          test_done_time(log_text), spec=contract["spec"])
     return judge(txn_events(log_text), edge_rows(csv_text), verdict,
                  parse_profiles(log_text),
                  expected=contract["expected"],
@@ -944,6 +1106,43 @@ def synthetic_dur_run(drop_error=False, extra_error=False,
     return (ev, rows, "PASS/", profiles, reports)
 
 
+def synthetic_tail_run(tail_edges=6433, first_low=False, middle_low=False,
+                       last_low=False, truncate=0, drop_profile=False):
+    """The record a correct tail_stress run would leave behind.
+
+    The mutants separate the three ways the tail can lie: it can start late (the
+    first guard edge is not what it claims), it can be wrong in the middle or at
+    the very end, and it can simply stop early while the run's own TEST_DONE
+    still sits at the real end.
+    """
+    period = PERIOD
+    prof = PROF_TAIL
+    t_of = lambda c: 1000 + c * period  # noqa: E731
+    rows = [(t_of(c), 0, 1) for c in range(4)]      # startup reset
+    cyc = 4
+    hold = 0
+    for _ in range(prof["dur"]):
+        req, hold = model.pattern(cyc, always=prof["always"], lm=prof["lm"],
+                                  lo=prof["lo"], dp=prof["dp"],
+                                  dl=prof["dl"], hold=hold)
+        rows.append((t_of(cyc), 1, req))
+        cyc += 1
+    end_t = rows[-1][0]
+    for k in range(tail_edges):
+        low = ((first_low and k == 0) or (middle_low and k == tail_edges // 2)
+               or (last_low and k == tail_edges - 1))
+        rows.append((t_of(cyc), 1, 0 if low else 1))
+        cyc += 1
+    # The run ends at the last guard edge; TEST_DONE carries that timestamp.
+    test_done = t_of(cyc - 1)
+    if truncate:
+        rows = rows[:-truncate]
+    ev = {0: {"begin": 0, "end": end_t, "begin_dur": prof["dur"],
+              "end_dur": prof["dur"], "begin_count": 1, "end_count": 1}}
+    profiles = [] if drop_profile else [dict(prof)]
+    return (ev, rows, "PASS/", profiles, test_done)
+
+
 def selftest():
     import run_regress as rr
     ev, rows, verdict, profiles = load_artefacts("new")
@@ -1120,6 +1319,35 @@ def selftest():
         if not caught:
             faults += 1
 
+    print("[b1] selftest  directed tail_stress contract", flush=True)
+    ev_t, rows_t, ver_t, prof_t, done_t = synthetic_tail_run()
+    res = judge_tail(ev_t, rows_t, ver_t, prof_t, [PROF_TAIL], done_t,
+                     spec=TAIL_SPEC)
+    print(f"[b1] selftest  {'accepted' if not res['failures'] else 'REJECTED'}"
+          f"  600 executing edges then guard to the end "
+          f"({len(res['failures'])} finding(s), tail edges="
+          f"{res['tail_edges']})", flush=True)
+    if res["failures"]:
+        faults += 1
+        for msg in res["failures"]:
+            print(f"[b1]     {msg}", flush=True)
+    for name, kw in (("the first guard edge is low", {"first_low": True}),
+                     ("a guard edge in the middle is low",
+                      {"middle_low": True}),
+                     ("the last guard edge is low", {"last_low": True}),
+                     ("the recording stops early, TEST_DONE kept",
+                      {"truncate": 40}),
+                     ("the applied profile is not in the log",
+                      {"drop_profile": True})):
+        ev_r, rows_r, ver_r, prof_r, done_r = synthetic_tail_run(**kw)
+        res = judge_tail(ev_r, rows_r, ver_r, prof_r, [PROF_TAIL], done_r,
+                         spec=TAIL_SPEC)
+        caught = len(res["failures"]) > 0
+        print(f"[b1] selftest  {'caught' if caught else 'MISSED'}  {name}"
+              f"  ({len(res['failures'])} finding(s))", flush=True)
+        if not caught:
+            faults += 1
+
     print("[b1] selftest  directed findings keep the underlying cause", flush=True)
     import run_regress as rr
     st, rsn, rl = rr.apply_directed(
@@ -1179,6 +1407,12 @@ def main():
         print(f"[b1] UVM_ERROR reports: {reps}", flush=True)
         res = judge_dur(ev, rows, f"{r['status']}/{r['reason']}", profiles,
                         contract["expected"], reps, spec=contract["spec"])
+    elif contract.get("judge") == "tail":
+        full_log = log_text if log_text else probe_log_text(args.label)
+        done = test_done_time(full_log)
+        print(f"[b1] TEST_DONE at t={done}", flush=True)
+        res = judge_tail(ev, rows, f"{r['status']}/{r['reason']}", profiles,
+                         contract["expected"], done, spec=contract["spec"])
     else:
         res = judge(ev, rows, f"{r['status']}/{r['reason']}", profiles,
                     expected=contract["expected"],

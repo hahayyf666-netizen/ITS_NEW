@@ -378,7 +378,8 @@
         "unexpected": 0,
         "pending": 0
       },
-      "note": "widest TU against a long output-grant blackout: stalls the H-pass consumer so the raw-response tail buffer fills"
+      "note": "widest TU against a long output-grant blackout: stalls the H-pass consumer so the raw-response tail buffer fills",
+      "audit": "tail_stress"
     },
     {
       "name": "queued_end",

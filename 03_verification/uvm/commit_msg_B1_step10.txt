@@ -1,0 +1,55 @@
+B1: judge the tail on the pin, anchored to the run's own end
+
+The tail_stress case already drives the window and checks the TU output; what it
+did not do was judge the boundary the grant contract is about.  It does now, on
+the same run, without a new test: the pin record is tapped by the existing
++GRANT_AUDIT hook and the case names its contract.
+
+What is checked, and why each part is needed:
+
+  - one applied profile and one 600-edge transaction, the profile's own
+    parameters compared with the log line (always=0 light=7/11 deep=1/600
+    dur=600), so an edited profile cannot pass as this run's;
+  - the window: 600 edges from the first valid edge, all req=0, completing at
+    1,207,000 ps with finish_item() returning at the same timestamp;
+  - E, the 600th executing edge, must still be driving (req=0 at E): the
+    contract counts executed edges, so expiry lands after that edge, and the
+    edge itself is part of the evidence;
+  - from E+1 to the last sampling edge every row must be rst_n=1 and req=1.  No
+    minimum length: the user's reading of the contract is that the guard runs to
+    the end of the run, and the length is whatever the run makes it;
+  - the first guard edge must be exactly one clock after E, and the last
+    sampling edge must equal the run's own TEST_DONE timestamp.  The TEST_DONE
+    anchor is what makes a truncated recording visible: the remaining edges stay
+    contiguous and stay high, but they no longer reach the end of the run.
+
+Measured on the real DUT, and identical to the independent run of c011fb2:
+
+  window      600 edges from t=9000, all req=0, ends t=1207000
+  guard       first edge t=1209000 (one clock after E), last t=14073000
+  tail        6,433 edges, every one rst_n=1 req=1
+  TEST_DONE   t=14073000, matching the last sampling edge
+  CSV         7,037 rows, one per clock, 4 of them the startup reset
+
+The 6,433 is recorded as this run's measurement, not as a constant: the judge
+computes the expected tail from TEST_DONE each time.
+
+Five mutants on the real record, all rejected: the first guard edge low, a guard
+edge in the middle low, the last guard edge low, the recording cut by 40 edges
+with TEST_DONE kept, and the window's last edge raised to req=1.
+
+Also fixed in this commit: the report-source check compared with endswith, so a
+component called fake_grant_drv satisfied "reported by grant_drv".  It is now an
+equality against the full instance path uvm_test_top.env.grant_drv, which also
+rejects a bare "grant_drv".
+
+One observation about the stimulus, recorded rather than changed: the profile log
+says deep=1/600, and deep_period=1 is outside the item's randomised range of
+[8:128].  The sequence sets it through its own single-shot fields, which is how
+600 consecutive low edges are produced.  The contract therefore states the
+profile exactly as the driver logs it instead of re-deriving it from the item's
+constraints.
+
+Regression 25/25 PASS, functional coverage 52/54 = 96.30% unchanged.  The
+fingerprint moves to dda3c9eb57d64374 because the judge and the case
+configuration are both inputs to it.
